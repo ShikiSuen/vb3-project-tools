@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<bitfields product="vbprojecttools">
+	<bitfielddefs>
+		<group name="ugp">
+			<group name="ptpermissions">
+				<bitfield name="canviewprojecttools" group="project_tools_permissions" phrase="can_view_project_tools" install="1,2,3,4,5,6,7">16</bitfield>
+				<bitfield name="cancreatereport" group="project_tools_permissions" phrase="can_create_report" install="2,5,6,7">1</bitfield>
+				<bitfield name="cancreatepublicreport" group="project_tools_permissions" phrase="can_create_public_report" install="5,6,7">2</bitfield>
+				<bitfield name="candeletepublicreportown" group="project_tools_permissions" phrase="can_delete_public_report_own" install="2,5,6,7">4</bitfield>
+				<bitfield name="candeletepublicreportothers" group="project_tools_permissions" phrase="can_delete_public_report_others" install="5,6,7">8</bitfield>
+				<bitfield name="cancustomtag" group="project_tools_permissions" phrase="can_create_custom_tags" install="5,6,7">32</bitfield>
+			</group>
+		</group>
+		<group name="pt_permissions">
+			<group name="general">
+				<bitfield group="general" name="canview" phrase="ptperm_can_view" install="1,2,3,4,5,6,7">1</bitfield>
+				<bitfield group="general" name="canviewothers" phrase="ptperm_can_view_others" install="1,2,3,4,5,6,7">2</bitfield>
+				<bitfield group="general" name="canviewprivateown" phrase="ptperm_can_view_private_own" install="2,5,6,7">16384</bitfield>
+				<bitfield group="general" name="cansearch" phrase="ptperm_can_search" install="1,2,3,4,5,6,7">16</bitfield>
+				<bitfield group="general" name="canvote" phrase="ptperm_can_vote" install="2,5,6,7">32</bitfield>
+				<bitfield group="general" name="canviewmilestone" phrase="ptperm_can_view_milestones" install="1,2,3,4,5,6,7">65536</bitfield>
+				<bitfield group="general_manage" name="canassigned" phrase="ptperm_can_assigned" install="5,6,7">64</bitfield>
+				<bitfield group="general_manage" name="canmanage" phrase="ptperm_can_manage" install="5,6,7">8</bitfield>
+				<bitfield group="general_manage" name="canviewprivateothers" phrase="ptperm_can_view_private_others" install="5,6,7">4</bitfield>
+				<bitfield group="general_manage" name="canmoveissue" phrase="ptperm_can_move_issue" install="5,6,7">32768</bitfield>
+				<bitfield group="general_edit" name="canassignedit" phrase="ptperm_can_assign_edit" install="5,6,7">128</bitfield>
+				<bitfield group="general_edit" name="canassigneditothers" phrase="ptperm_can_assign_edit_others" install="5,6,7">256</bitfield>
+				<bitfield group="general_edit" name="canstatusassigned" phrase="ptperm_can_status_assigned" install="5,6,7">512</bitfield>
+				<bitfield group="general_edit" name="canstatusunassigned" phrase="ptperm_can_status_unassigned" install="5,6,7">1024</bitfield>
+				<bitfield group="general_edit" name="cantagsassigned" phrase="ptperm_can_tags_assigned" install="5,6,7">2048</bitfield>
+				<bitfield group="general_edit" name="cantagsunassigned" phrase="ptperm_can_tags_unassigned" install="5,6,7">4096</bitfield>
+			</group>
+			<group name="post">
+				<bitfield group="issue_post" name="canpostnew" phrase="ptperm_can_post_new" install="2,5,6,7">1</bitfield>
+				<bitfield group="issue_post" name="canreply" phrase="ptperm_can_reply" install="2,5,6,7">4</bitfield>
+				<bitfield group="issue_post" name="canreplyothers" phrase="ptperm_can_reply_others" install="2,5,6,7">2</bitfield>
+				<bitfield group="issue_post" name="canpetition" phrase="ptperm_can_petition" install="2,5,6,7">8</bitfield>
+				<bitfield group="issue_post" name="cancreateprivate" phrase="ptperm_can_create_private" install="2,5,6,7">4096</bitfield>
+				<bitfield group="issue_edit" name="caneditissue" phrase="ptperm_can_edit_issue" install="2,5,6,7">16</bitfield>
+				<bitfield group="issue_edit" name="caneditissueothers" phrase="ptperm_can_edit_issue_others" install="5,6,7">32</bitfield>
+				<bitfield group="issue_edit" name="canchangemilestone" phrase="ptperm_can_change_milestone" install="5,6,7">32768</bitfield>
+				<bitfield group="issue_edit" name="cancloseissue" phrase="ptperm_can_open_close_issue" install="5,6,7">16384</bitfield>
+				<bitfield group="issue_edit" name="caneditnote" phrase="ptperm_can_edit_note" install="2,5,6,7">256</bitfield>
+				<bitfield group="issue_edit" name="caneditnoteothers" phrase="ptperm_can_edit_note_others" install="5,6,7">512</bitfield>
+				<bitfield group="issue_edit" name="caneditprivate" phrase="ptperm_can_edit_private" install="2,5,6,7">8192</bitfield>
+				<bitfield group="issue_delete" name="candeleteissue" phrase="ptperm_can_delete_issue" install="2,5,6,7">64</bitfield>
+				<bitfield group="issue_delete" name="candeleteissueothers" phrase="ptperm_can_delete_issue_others" install="5,6,7">128</bitfield>
+				<bitfield group="issue_delete" name="candeletenote" phrase="ptperm_can_delete_note" install="2,5,6,7">1024</bitfield>
+				<bitfield group="issue_delete" name="candeletenoteothers" phrase="ptperm_can_delete_note_others" install="5,6,7">2048</bitfield>
+			</group>
+			<group name="attach">
+				<bitfield group="attach" name="canattachview" phrase="ptperm_can_attach_view" install="1,2,3,4,5,6,7">1</bitfield>
+				<bitfield group="attach" name="canattach" phrase="ptperm_can_attach" install="2,5,6,7">2</bitfield>
+				<bitfield group="attach" name="canattachedit" phrase="ptperm_can_attach_edit" install="2,5,6,7">4</bitfield>
+				<bitfield group="attach" name="canattacheditothers" phrase="ptperm_can_attach_edit_others" install="5,6,7">8</bitfield>
+			</group>
+		</group>
+		<group name="misc">
+			<group name="pt_projectoptions">
+				<bitfield name="requireappliesversion">1</bitfield>
+				<bitfield name="requirecategory">2</bitfield>
+				<bitfield name="requirepriority">4</bitfield>
+				<bitfield name="emailonassignment">8</bitfield>
+			</group>
+		</group>
+	</bitfielddefs>
+</bitfields>
+
+<!-- CVS: $RCSfile$ - $Revision: 15806 $ -->

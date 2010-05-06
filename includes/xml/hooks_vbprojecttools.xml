@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<hooks>
+
+	<hooktype type="project">
+		<hook>project_start</hook>
+		<hook>project_historybit</hook>
+		<hook>project_history_complete</hook>
+		<hook>project_issue_fetch</hook>
+		<hook>project_issue_prepare</hook>
+		<hook>project_issue_verify</hook>
+		<hook>project_issue_start</hook>
+		<hook>project_issue_typecount_query</hook>
+		<hook>project_issue_note_query</hook>
+		<hook>project_issue_notebit</hook>
+		<hook>project_issue_attachmentbit</hook>
+		<hook>project_issue_complete</hook>
+		<hook>project_issuebit</hook>
+		<hook>project_issuelist_start</hook>
+		<hook>project_issuelist_sort</hook>
+		<hook>project_issuelist_query</hook>
+		<hook>project_issuelist_complete</hook>
+		<hook>project_overview_start</hook>
+		<hook>project_overview_projectbit</hook>
+		<hook>project_overview_complete</hook>
+		<hook>project_patch_complete</hook>
+		<hook>project_project_verify</hook>
+		<hook>project_project_start</hook>
+		<hook>project_project_recent_query</hook>
+		<hook>project_project_petitionbit</hook>
+		<hook>project_project_complete</hook>
+		<hook>project_timeline_start</hook>
+		<hook>project_timeline_prepare</hook>
+		<hook>project_timeline_item</hook>
+		<hook>project_timeline_group</hook>
+		<hook>project_timeline_complete</hook>
+		<hook>project_viewip_complete</hook>
+		<hook>project_vote</hook>
+		<hook>project_system_note_translate</hook>
+		<hook>project_forumbit</hook>
+		<hook>project_report_start</hook>
+		<hook>project_report_form_start</hook>
+	</hooktype>
+
+	<hooktype type="projectajax">
+		<hook>projectajax_start</hook>
+		<hook>projectajax_save_start</hook>
+		<hook>projectajax_fetch_start</hook>
+	</hooktype>
+
+	<hooktype type="projectarchive">
+		<hook>projectarchive_start</hook>
+		<hook>projectarchive_postheader</hook>
+		<hook>projectarchive_index_project</hook>
+		<hook>projectarchive_project_issue</hook>
+		<hook>projectarchive_issue_note</hook>
+		<hook>projectarchive_complete</hook>
+	</hooktype>
+
+	<hooktype type="projectattachment">
+		<hook>projectattachment_start</hook>
+		<hook>projectattachment_output</hook>
+	</hooktype>
+
+	<hooktype type="projectexternal">
+		<hook>projectexternal_start</hook>
+		<hook>projectexternal_complete</hook>
+	</hooktype>
+
+	<hooktype type="projectpost">
+		<hook>projectpost_start</hook>
+		<hook>projectpost_reply_setup</hook>
+		<hook>projectpost_addreply_start</hook>
+		<hook>projectpost_addreply_complete</hook>
+		<hook>projectpost_postreply_start</hook>
+		<hook>projectpost_postreply_save</hook>
+		<hook>projectpost_postreply_preview</hook>
+		<hook>projectpost_postreply_complete</hook>
+		<hook>projectpost_issue_setup</hook>
+		<hook>projectpost_postissue_start</hook>
+		<hook>projectpost_postissue_save</hook>
+		<hook>projectpost_postissue_preview</hook>
+		<hook>projectpost_postissue_complete</hook>
+		<hook>projectpost_addissue_start</hook>
+		<hook>projectpost_addissue_complete</hook>
+		<hook>projectpost_attachment_upload</hook>
+		<hook>projectpost_attachment_update</hook>
+		<hook>projectpost_attachment_manage</hook>
+		<hook>projectpost_subscription_update</hook>
+		<hook>projectpost_subscription_manage</hook>
+		<hook>projectpost_subscription_bit</hook>
+		<hook>projectpost_subscription_complete</hook>
+		<hook>projectpost_petition</hook>
+	</hooktype>
+
+	<hooktype type="projectsearch">
+		<hook>projectsearch_start</hook>
+		<hook>projectsearch_form_start</hook>
+		<hook>projectsearch_form_complete</hook>
+		<hook>projectsearch_dosearch_start</hook>
+		<hook>projectsearch_dosearch_aux</hook>
+		<hook>projectsearch_dosearch_fields</hook>
+		<hook>projectsearch_dosearch_complete</hook>
+		<hook>projectsearch_douser</hook>
+		<hook>projectsearch_resort</hook>
+		<hook>projectsearch_results_start</hook>
+		<hook>projectsearch_results_grouping</hook>
+		<hook>projectsearch_results_query</hook>
+		<hook>projectsearch_results_groupbit</hook>
+		<hook>projectsearch_results_bit</hook>
+		<hook>projectsearch_results_complete</hook>
+		<hook>projectsearch_report_form</hook>
+		<hook>projectsearch_report_save</hook>
+		<hook>projectsearch_report_view</hook>
+		<hook>projectsearch_reportlist_start</hook>
+		<hook>projectsearch_reportlist_bit</hook>
+		<hook>projectsearch_reportlist_complete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issuedata">
+		<hook>pt_issuedata_start</hook>
+		<hook>pt_issuedata_presave</hook>
+		<hook>pt_issuedata_postsave</hook>
+		<hook>pt_issuedata_delete</hook>
+		<hook>pt_issuedata_undelete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issueassigndata">
+		<hook>pt_issueassigndata_start</hook>
+		<hook>pt_issueassigndata_presave</hook>
+		<hook>pt_issueassigndata_postsave</hook>
+		<hook>pt_issueassigndata_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issuechangedata">
+		<hook>pt_issuechangedata_start</hook>
+		<hook>pt_issuechangedata_presave</hook>
+		<hook>pt_issuechangedata_postsave</hook>
+		<hook>pt_issuechangedata_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issuenotedata">
+		<hook>pt_issuenotedata_start</hook>
+		<hook>pt_issuenotedata_presave</hook>
+		<hook>pt_issuenotedata_postsave</hook>
+		<hook>pt_issuenotedata_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issuepetitiondata">
+		<hook>pt_issuepetitiondata_start</hook>
+		<hook>pt_issuepetitiondata_presave</hook>
+		<hook>pt_issuepetitiondata_postsave</hook>
+		<hook>pt_issuepetitiondata_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issuereportdata">
+		<hook>pt_issuereportdata_start</hook>
+		<hook>pt_issuereportdata_presave</hook>
+		<hook>pt_issuereportdata_postsave</hook>
+		<hook>pt_issuereportdata_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issuestatusdata">
+		<hook>pt_issuestatusdata_start</hook>
+		<hook>pt_issuestatusdata_presave</hook>
+		<hook>pt_issuestatusdata_postsave</hook>
+		<hook>pt_issuestatusdata_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issuesubscribedata">
+		<hook>pt_issuesubscribedata_start</hook>
+		<hook>pt_issuesubscribedata_presave</hook>
+		<hook>pt_issuesubscribedata_postsave</hook>
+		<hook>pt_issuesubscribedata_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issuetypedata">
+		<hook>pt_issuetypedata_start</hook>
+		<hook>pt_issuetypedata_presave</hook>
+		<hook>pt_issuetypedata_postsave</hook>
+		<hook>pt_issuetypedata_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issuevotedata">
+		<hook>pt_issuevotedata_start</hook>
+		<hook>pt_issuevotedata_presave</hook>
+		<hook>pt_issuevotedata_postsave</hook>
+		<hook>pt_issuevotedata_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_projectdata">
+		<hook>pt_projectdata_start</hook>
+		<hook>pt_projectdata_presave</hook>
+		<hook>pt_projectdata_postsave</hook>
+		<hook>pt_projectdata_delete</hook>
+	</hooktype>
+
+</hooks>
+
+<!-- CVS: $RCSfile$ - $Revision: 16056 $ -->
