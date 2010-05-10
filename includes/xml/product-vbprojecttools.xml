@@ -1001,7 +1001,7 @@ $db->query_write("
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools.css" templatetype="template" date="1273524526" username="Pitchoune" version="2.1.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1273524939" username="Pitchoune" version="2.1.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1126,9 +1126,6 @@ $db->query_write("
 
 .pt_overview .blocksubhead .project {
 	margin-{vb:stylevar left}: 53px;
-	clear: both;
-	<vb:if condition="is_browser('ie', '7')">float: {vb:stylevar left};</vb:if>
-	width: auto;
 }
 
 .pt_overview .blocksubhead .activeissues {
@@ -4249,7 +4246,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_overview" templatetype="template" date="1273524195" username="Pitchoune" version="2.1.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_overview" templatetype="template" date="1273526057" username="Pitchoune" version="2.1.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -4983,7 +4980,7 @@ init_project_readmarker_system();
 		{vb:raw typename}
 	</a>
 </li>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1273442083" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postreply" templatetype="template" date="1273526190" username="Pitchoune" version="2.1.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5073,10 +5070,10 @@ init_project_readmarker_system();
 		<div class="group">
 			<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 			<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
-			<input type="hidden" name="do" value="postissue" />
-			<input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
-			<input type="hidden" name="issuetypeid" value="{vb:raw issue.issuetypeid}" />
+			<input type="hidden" name="do" value="postreply" />
 			<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
+			<input type="hidden" name="issuenoteid" value="{vb:raw issuenote.issuenoteid}" />
+			<input type="hidden" name="edit" value="{vb:raw issuenote.isedit}" />
 		</div>
 	</div>
 
