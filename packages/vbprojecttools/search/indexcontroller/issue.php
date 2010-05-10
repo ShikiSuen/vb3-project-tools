@@ -39,9 +39,12 @@ class vBProjectTools_Search_IndexController_Issue extends vB_Search_IndexControl
 	public function get_max_id()
 	{
 		global $vbulletin;
+
 		$row = $vbulletin->db->query_first_slave("
-			SELECT MAX(issueid) AS max FROM " . TABLE_PREFIX . "pt_issue"
+			SELECT MAX(issueid) AS max
+			FROM " . TABLE_PREFIX . "pt_issue"
 		);
+
 		return $row['max'];
 	}
 
@@ -53,12 +56,17 @@ class vBProjectTools_Search_IndexController_Issue extends vB_Search_IndexControl
 	public function index($id)
 	{
 		global $vbulletin;
-		$issue = $vbulletin->db->query_first("SELECT issue.issueid, issue.title,
-		issue.summary, issue.projectid, issue.submituserid, issue.submitusername,
-		issue.submitdate, issue.projectid, note.pagetext FROM "
-		. TABLE_PREFIX . "pt_issue AS issue	left join "
-		. TABLE_PREFIX . "pt_issuenote AS note ON note.issueid = issue.issueid
-		WHERE issue.issueid = $id order by note.issuenoteid asc limit 1;");
+
+		$issue = $vbulletin->db->query_first("
+			SELECT
+				issue.issueid, issue.title, issue.summary, issue.projectid, issue.submituserid, issue.submitusername, issue.submitdate, issue.projectid, note.pagetext
+			FROM " . TABLE_PREFIX . "pt_issue AS issue
+				LEFT JOIN " . TABLE_PREFIX . "pt_issuenote AS note ON note.issueid = issue.issueid
+			WHERE issue.issueid = $id
+			ORDER BY note.issuenoteid ASC
+			LIMIT 1
+		");
+
 		if ($issue)
 		{
 			$indexer = vB_Search_Core::get_instance()->get_core_indexer();
@@ -79,17 +87,19 @@ class vBProjectTools_Search_IndexController_Issue extends vB_Search_IndexControl
 		$indexer = vB_Search_Core::get_instance()->get_core_indexer();
 
 		$set = $vbulletin->db->query("
-			SELECT issue.issueid, issue.title, issue.summary, issue.submituserid,
-			issue.submitusername, issue.submitdate, issue.projectid, note.pagetext
-			FROM " . TABLE_PREFIX . "pt_issue as issue
-			left join " . TABLE_PREFIX . "pt_issuenote AS note ON note.issueid = issue.issueid
-			WHERE issue.issueid >= " . intval($start) . " AND issue.issueid <= " . intval($end)
-			. " order by issue.issueid, note.issuenoteid asc" );
+			SELECT issue.issueid, issue.title, issue.summary, issue.submituserid, issue.submitusername, issue.submitdate, issue.projectid, note.pagetext, note.ipaddress
+			FROM " . TABLE_PREFIX . "pt_issue AS issue
+				LEFT JOIN " . TABLE_PREFIX . "pt_issuenote AS note ON note.issueid = issue.issueid
+			WHERE issue.issueid >= " . intval($start) . "
+				AND issue.issueid <= " . intval($end) . "
+			ORDER BY issue.issueid, note.issuenoteid ASC
+		");
+
 		//The database would allow multiple notes per issue. We only want to index the
 		// first one. We could do a correlated subquery in the sql, but
 		// that is probably more expensive than discarding the duplicateresults here.
 		$processed = array();
-		while ($row = $vbulletin->db->fetch_row($set))
+		while ($row = $vbulletin->db->fetch_array($set))
 		{
 			//The assumption that cached thread lookups were fast enough seems to have been good.
 			//however the memory requirements for long ranges added up fast, so we'll try pulling
@@ -134,9 +144,10 @@ class vBProjectTools_Search_IndexController_Issue extends vB_Search_IndexControl
 		}
 	}
 
-   //We need to set the content types. This is available in a static method as
-   // below
-   public function __construct(){
+	//We need to set the content types. This is available in a static method as
+	// below
+	public function __construct()
+	{
       $this->contenttypeid = vB_Search_Core::get_instance()->get_contenttypeid("vBProjectTools", "Issue");
       $this->groupcontenttypeid = vB_Search_Core::get_instance()->get_contenttypeid("vBProjectTools", "Project");
    }
@@ -186,10 +197,13 @@ class vBProjectTools_Search_IndexController_Issue extends vB_Search_IndexControl
 	public function delete_project($id)
 	{
 		global $vbulletin;
-		$set = $vbulletin->db->query_read(
-			"SELECT issueid FROM " . TABLE_PREFIX . "pt_issue
+
+		$set = $vbulletin->db->query_read("
+			SELECT issueid
+			FROM " . TABLE_PREFIX . "pt_issue
 			WHERE projectid = " . intval($id)
 		);
+
 		while ($row = $vbulletin->db->fetch_array($set))
 		{
 			$this->delete($row ['issueid']);
@@ -208,18 +222,29 @@ class vBProjectTools_Search_IndexController_Issue extends vB_Search_IndexControl
 	 */
 	private function issue_to_indexfields($issue)
 	{
-
 		$fields = array();
+
 		//common fields
 		$fields['contenttypeid'] = $this->contenttypeid;
 		$fields['id'] = $issue['issueid'];
 		$fields['dateline'] = $issue['submitdate'];
-		$fields['keywordtext'] = $issue['summary'] . ' : ' . $issue['pagetext'];
+
+		if ($issue['summary'])
+		{
+			$fields['keywordtext'] = $issue['summary'] . ' : ' . $issue['pagetext'];
+		}
+		else
+		{
+			$fields['keywordtext'] = $issue['pagetext'];
+		}
+
 		$fields['title'] = $issue['title'];
 		$fields['userid'] = $issue['submituserid'];
 		$fields['username'] = $issue['submitusername'];
 		$fields['groupcontenttypeid'] = $this->groupcontenttypeid;
 		$fields['groupid'] = $issue['projectid'];
+		$fields['ipaddress'] = $issue['ipaddress'];
+
 		return $fields;
 	}
 	protected $issue_fields = array('');

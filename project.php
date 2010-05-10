@@ -1445,7 +1445,8 @@ if ($_REQUEST['do'] == 'timeline')
 			$start
 		));
 
-		list($activity_count) = $db->query_first("SELECT FOUND_ROWS()", DBARRAY_NUM);
+		$activity_count = $activity_count[0];
+
 		if ($start >= $activity_count)
 		{
 			$vbulletin->GPC['pagenumber'] = ceil($activity_count / $vbulletin->options['pt_timelineperpage']);
@@ -1560,6 +1561,8 @@ if ($_REQUEST['do'] == 'project')
 	{
 		print_no_permission();
 	}
+
+	$project['description'] = nl2br($project['description']);
 
 	($hook = vBulletinHook::fetch_hook('project_project_start')) ? eval($hook) : false;
 

@@ -84,6 +84,12 @@ if ($_REQUEST['stc'] == 1) // we were called as <img src=> from showthread.php
 	exit;
 }*/
 
+// if $_POST['ajax'] is set, we need to set a $_REQUEST['do'] so we can precache the lightbox template
+if (!empty($_POST['ajax']) AND isset($_POST['uniqueid']))
+{
+	$_REQUEST['do'] = 'lightbox';
+}
+
 // #################### PRE-CACHE TEMPLATES AND DATA ######################
 // get special phrase groups
 $phrasegroups = array();
@@ -128,6 +134,11 @@ $vbulletin->input->clean_array_gpc('r', array(
 	'thumb'        => TYPE_BOOL,
 ));
 
+$vbulletin->input->clean_array_gpc('p', array(
+	'ajax'     => TYPE_BOOL,
+	'uniqueid' => TYPE_UINT
+));
+
 $idname = $vbphrase['attachment'];
 
 $imagetype = !empty($vbulletin->GPC['thumb']) ? 'thumbnail' : 'filedata';
@@ -152,6 +163,67 @@ $issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projecti
 if (!($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachview']))
 {
 	print_no_permission();
+}
+
+// handle lightbox requests
+if ($_REQUEST['do'] == 'lightbox')
+{
+	$vbulletin->input->clean_array_gpc('r', array(
+		'width'      => TYPE_UINT,
+		'height'     => TYPE_UINT,
+		'first'      => TYPE_BOOL,
+	    'last'       => TYPE_BOOL,
+		'current'    => TYPE_UINT,
+	    'total'      => TYPE_UINT
+	));
+	$width = $vbulletin->GPC['width'];
+	$height = $vbulletin->GPC['height'];
+	$first = $vbulletin->GPC['first'];
+	$last = $vbulletin->GPC['last'];
+	$current = $vbulletin->GPC['current'];
+	$total = $vbulletin->GPC['total'];
+
+	require_once(DIR . '/includes/class_xml.php');
+	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+
+	if (in_array(strtolower($attachmentinfo['extension']), array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp')))
+	{
+		$uniqueid = $vbulletin->GPC['uniqueid'];
+		$imagelink = 'projectattachment.php?' . $vbulletin->session->vars['sessionurl'] . 'attachmentid=' . $attachmentinfo['attachmentid'] . '&d=' . $attachmentinfo['dateline'];
+		$attachmentinfo['date_string'] = vbdate($vbulletin->options['dateformat'], $attachmentinfo['dateline']);
+		$attachmentinfo['time_string'] = vbdate($vbulletin->options['timeformat'], $attachmentinfo['dateline']);
+		$show['newwindow'] = ($attachmentinfo['newwindow'] ? true : false);
+
+		($hook = vBulletinHook::fetch_hook('attachment_lightbox')) ? eval($hook) : false;
+
+		$templater = vB_Template::create('lightbox');
+			$templater->register('attachmentinfo', $attachmentinfo);
+			$templater->register('current', $current);
+			$templater->register('first', $first);
+			$templater->register('height', $height);
+			$templater->register('imagelink', $imagelink);
+			$templater->register('last', $last);
+			$templater->register('total', $total);
+			$templater->register('uniqueid', $uniqueid);
+			$templater->register('width', $width);
+		$html = $templater->render(true);
+
+		$xml->add_group('img');
+		$xml->add_tag('html', process_replacement_vars($html));
+		$xml->add_tag('link', $imagelink);
+		$xml->add_tag('name', $attachmentinfo['filename']);
+		$xml->add_tag('date', $attachmentinfo['date_string']);
+		$xml->add_tag('time', $attachmentinfo['time_string']);
+		$xml->close_group();
+	}
+	else
+	{
+		$xml->add_group('errormessage');
+		$xml->add_tag('error', 'notimage');
+		$xml->add_tag('extension', $attachmentinfo['extension']);
+		$xml->close_group();
+	}
+	$xml->print_xml();
 }
 
 if ($vbulletin->options['pt_attachfile'])

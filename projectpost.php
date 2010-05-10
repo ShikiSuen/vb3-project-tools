@@ -566,7 +566,7 @@ if ($_POST['do'] == 'postissue' OR $_REQUEST['do'] == 'addissue' OR $_REQUEST['d
 	$vbulletin->input->clean_array_gpc('r', array(
 		'issueid' => TYPE_UINT,
 		'projectid' => TYPE_UINT,
-		'issuetypeid' => TYPE_NOHTML
+		'issuetypeid' => TYPE_NOHTML,
 	));
 
 	if ($vbulletin->GPC['issueid'])
@@ -576,6 +576,12 @@ if ($_POST['do'] == 'postissue' OR $_REQUEST['do'] == 'addissue' OR $_REQUEST['d
 
 		$project = verify_project($issue['projectid']);
 		verify_issuetypeid($issue['issuetypeid'], $project['projectid']);
+
+		$issuetype_printable = $vbphrase['issuetype_' . $issue['issuetypeid'] . '_singular'];
+		$issuetype_printable_plural = $vbphrase['issuetype_' . $issue['issuetypeid'] . '_plural'];
+		$vbphrase['applies_version_issuetype'] = $vbphrase["applies_version_" . $issue['issuetypeid']];
+
+		$vbphrase['post_new_issue_issuetype'] = $vbphrase["post_new_issue_" . $issue['issuetypeid']];
 
 		$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 		$issueperms = $projectperms["$issue[issuetypeid]"];
@@ -633,6 +639,23 @@ if ($_POST['do'] == 'postissue' OR $_REQUEST['do'] == 'addissue' OR $_REQUEST['d
 				'pagetext' => '',
 				'priority' => 0
 			);
+			
+			if ($vbulletin->GPC['issuetypeid'])
+			{
+				verify_issuetypeid($vbulletin->GPC['issuetypeid'], $project['projectid']);
+				$issuetype_printable = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'];
+				$issuetype_printable_plural = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_plural'];
+				$vbphrase['applies_version_issuetype'] = $vbphrase["applies_version_" . $vbulletin->GPC['issuetypeid']];
+
+				$vbphrase['post_new_issue_issuetype'] = $vbphrase["post_new_issue_" . $vbulletin->GPC['issuetypeid']];
+			}
+			else
+			{
+				$issuetype_printable = '';
+				$vbphrase['applies_version_issuetype'] = '';
+
+				$vbphrase['post_new_issue_issuetype'] = '';
+			}
 
 			$issueperms = $projectperms["$issue[issuetypeid]"];
 			if (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew'])
@@ -1346,6 +1369,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 
 	$templater = vB_Template::create('pt_postissue');
 		$templater->register_page_templates();
+		$templater->register('issuetype_printable', $issuetype_printable);
 		$templater->register('addressed_next_selected', $addressed_next_selected);
 		$templater->register('addressed_unaddressed_selected', $addressed_unaddressed_selected);
 		$templater->register('addressed_versions', $addressed_versions);

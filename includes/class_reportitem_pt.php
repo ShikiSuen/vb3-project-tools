@@ -4,9 +4,10 @@
 || #                  vBulletin Project Tools 2.1.0                   # ||
 || # ---------------------------------------------------------------- # ||
 || # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
-|| #  This is file is subject to the vBulletin Open Source License.   # ||
+|| # This file is part of vBulletin Project Tools and subject to terms# ||
+|| #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
-|| #    http://www.vbulletin.org/open_source_license_agreement.php    # ||
+|| #             http://www.vbulletin.com/oslicense.html              # ||
 || #################################################################### ||
 \*======================================================================*/
 

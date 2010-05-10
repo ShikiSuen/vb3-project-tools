@@ -444,7 +444,7 @@ class vB_Pt_IssueSearchGenerator
 
 		'assigneduser'  => 'add_assigneduser', // int/array
 
-		'text'        => 'add_text',        // string - fulltext search
+		'query'        => 'add_text',        // string - fulltext search
 		'issuetext'   => 'add_issuetext',   // string - issue title/summary only search
 		'firsttext'   => 'add_firsttext',   // string - issue title/summary + first post search
 

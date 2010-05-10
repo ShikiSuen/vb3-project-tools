@@ -35,45 +35,72 @@ require_once (DIR . '/vb/search/type.php');
 class vBProjectTools_Search_Type_Project extends vB_Search_Type
 {
 
-// ###################### Start create_item ######################
-/**
-* This creates the type object
-*
-* @param integer $id
-* @return object vBProjectTools_Search_Result_Project
-*/
+	// ###################### Start create_item ######################
+	/**
+	* This creates the type object
+	*
+	* @param integer $id
+	* @return object vBProjectTools_Search_Result_Project
+	*/
 	public function create_item($id)
 	{
+		global $vbulletin;
+
+		$datastores = $vbulletin->db->query_read("
+			SELECT data, title
+			FROM " . TABLE_PREFIX . "datastore
+			WHERE title IN('pt_bitfields','pt_permissions','pt_issuestatus','pt_issuetype','pt_projects','pt_categories','pt_assignable','pt_versions')
+		");
+
+		while ($datastore = $vbulletin->db->fetch_array($datastores))
+		{
+			$title = $datastore['title'];
+			$data = $datastore['data'];
+			if (!is_array($data))
+			{
+				$data = unserialize($data);
+				if (is_array($data))
+				{
+					$vbulletin->$title = $data;
+				}
+			}
+			else if ($data != '')
+			{
+				$vbulletin->$title = $data;
+			}
+		}
+
 		return vBProjectTools_Search_Result_Project::create($id);
 	}
 
-/**
-* This returns the display name
-*
-* @return string
-*/
+	/**
+	* This returns the display name
+	*
+	* @return string
+	*/
 	public function get_display_name()
 	{
 		return $GLOBALS['vbphrase']['project'];
 	}
 
-/**
-* Each search type has some responsibilities, one of which is to tell
-* whether it is searchable
-*
-* @return true
-*/
+	/**
+	* Each search type has some responsibilities, one of which is to tell
+	* whether it is searchable
+	*
+	* @return true
+	*/
 	public function cansearch()
 	{
 		return true;
 	}
-/**
- * This prepares the HTML for the user to search for forums
- *
- * @return $html: complete html for the search elements
- */
+	/**
+	* This prepares the HTML for the user to search for forums
+	*
+	* @return $html: complete html for the search elements
+	*/
 	public function listUi($prefs = null)
 	{
+		echo $id;
 		global $vbulletin, $show;
 		$template = vB_Template::create('search_input_project');
 		$template->register('securitytoken', $vbulletin->userinfo['securitytoken']);
@@ -87,107 +114,12 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 		return $template->render();
 	}
 
-	public function add_advanced_search_filters($criteria, $registry)
-	{
-		if ($registry->GPC['threadlimit'])
-		{
-			$criteria->add_display_strings('forumthreadlimit',
-				vB_Search_Searchtools::getCompareString($registry->GPC['threadless'])
-				. $registry->GPC['threadlimit'] . ' ' . $vbphrase['threads']);
-			$op = $registry->GPC['threadless'] ? vB_Search_Core::OP_LT : vB_Search_Core::OP_GT;
-			$criteria->add_filter('forumthreadlimit', $op, $registry->GPC['threadlimit'], true);
-		}
-
-		if ($registry->GPC['postlimit'])
-		{
-			$criteria->add_display_strings('forumthreadlimit',
-				vB_Search_Searchtools::getCompareString($registry->GPC['postless'])
-				. $registry->GPC['postlimit'] . ' ' . $vbphrase['posts']);
-
-			$op = $registry->GPC['postless'] ? vB_Search_Core::OP_LT : vB_Search_Core::OP_GT;
-			$criteria->add_filter('forumpostlimit', $op, $registry->GPC['postlimit'], true);
-		}
-
-		if ($registry->GPC['forumdateline'])
-		{
-			if (is_numeric($registry->GPC['forumdateline']))
-			{
-				$dateline = TIMENOW - ($this->forumdateline * 86400);
-			}
-			else
-			{
-				$current_user = new vB_Legacy_CurrentUser();;
-				$dateline = $current_user->get_field('lastvisit');
-			}
-
-			$op = $registry->GPC['beforeafter'] == 'before' ? vB_Search_Core::OP_LT : vB_Search_Core::OP_GT;
-			$criteria->add_filter('forumpostdateline', $op, $dateline, true);
-			$this->set_display_date($criteria, $registry->GPC['forumdateline'], $registry->GPC['beforeafter']);
-
-		}
-	}
-
-	public function get_db_query_info($fieldname)
-	{
-		$result['join']['forum'] = sprintf(self::$forum_join, TABLE_PREFIX,
-			vB_Types::instance()->getContentTypeId("vBProjectTools_Project"));
-		$result['table'] = 'forum';
-
-		if ($fieldname == 'forumthreadlimit')
-		{
-			$result['field'] = 'threadcount';
-		}
-		else if ($fieldname == 'forumpostlimit')
-		{
-			$result['field'] = 'replycount';
-		}
-		else if ($fieldname == 'forumdateline')
-		{
-			$result['field'] = 'lastpost';
-		}
-		else
-		{
-			return false;
-		}
-
-		return $result;
-	}
-
 	/**
-	 * This function sets the display date for the forum search.
-	 * takes no parameters and returns none
-	 *
-	 * @return nothing
-	 */
-	private function set_display_date($criteria, $forumdateline, $beforeafter)
-	{
-		global $vbphrase, $vbulletin;
-		if (isset($beforeafter) AND isset($forumdateline))
-		{
-			if (is_numeric($forumdateline))
-			{
-				$dateline = TIMENOW - ($forumdateline * 86400);
-				$criteria->add_display_strings('forumpostdateline',
-				$vbphrase['last_post'] . ' ' . $vbphrase[$beforeafter] . ' '
-					. date($vbulletin->options['dateformat'], $dateline));
-			}
-			else
-			{
-				$criteria->add_display_strings('forumpostdateline',
-				$vbphrase['last_post'] . ' ' . $vbphrase[$beforeafter] . ' '
-					. $vbphrase['last_visit'] );
-			}
-		}
-
-	}
-
-
-/**
-* Each search type has some responsibilities, one of which is to tell
-* what are its defaults
-*
-* @return array
-*/
+	* Each search type has some responsibilities, one of which is to tell
+	* what are its defaults
+	*
+	* @return array
+	*/
 	public function additional_pref_defaults()
 	{
 		return array(
@@ -201,18 +133,6 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 
 	protected $package = "vBProjectTools";
 	protected $class = "Project";
-
-//	private $threadless;
-//	private $threadlimit;
-//	private $forumdateline;
-//	private $postless;
-//	private $postlimit;
-//	private $beforeafter;
-
-	private static $forum_join =
-		"JOIN %sforum AS forum ON (
-			searchcore.contenttypeid = %u AND searchcore.primaryid = forum.forumid)
-		";
 
 	protected $type_globals = array (
 		'threadless'     => TYPE_UINT,

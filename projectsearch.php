@@ -109,9 +109,10 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 if ($_REQUEST['do'] == 'search')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid'   => TYPE_UINT,
-		'milestoneid' => TYPE_UINT,
-		'issuetypeid' => TYPE_NOHTML
+		'projectid'     => TYPE_UINT,
+		'milestoneid'   => TYPE_UINT,
+		'issuetypeid'   => TYPE_NOHTML,
+		'contenttypeid' => TYPE_UINT,
 	));
 
 	if (!$search_perms = build_issue_permissions_query($vbulletin->userinfo, 'cansearch'))
@@ -321,6 +322,7 @@ if ($_REQUEST['do'] == 'search')
 		$templater->register('appliesversion_options', $appliesversion_options);
 		$templater->register('assignable_users', $assignable_users);
 		$templater->register('category_options', $category_options);
+		$templater->register('contenttypeid', intval($vbulletin->GPC['contenttypeid']));
 		$templater->register('milestone', $milestone);
 		$templater->register('navbar', $navbar);
 		$templater->register('project_options', $project_options);
@@ -341,11 +343,11 @@ if ($_REQUEST['do'] == 'dosearch')
 
 	// directly searchable fields only
 	$search_fields = array(
-		'text'      => TYPE_STR,
+		'query'      => TYPE_STR,
 		'issuetext' => TYPE_STR,
 		'firsttext' => TYPE_STR,
 
-		'user'       => TYPE_NOHTML,
+		'user' => TYPE_NOHTML,
 		'user_issue' => TYPE_NOHTML,
 
 		'priority_gteq' => TYPE_INT,
@@ -601,6 +603,9 @@ if ($_REQUEST['do'] == 'searchresults')
 
 	$replycount_clause = fetch_private_replycount_clause($vbulletin->userinfo);
 
+	$repeat_search_link = generate_repeat_search_link($search['criteria'], $search['sortby'], $search['sortorder'], $search['groupby']);
+	$show['save_report'] = ($vbulletin->userinfo['userid'] AND !$search['issuereportid'] AND $vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['cancreatereport']);
+
 	$show['first_group'] = true;
 	$resultgroupbits = '';
 	foreach ($groups AS $groupid => $group)
@@ -692,6 +697,7 @@ if ($_REQUEST['do'] == 'searchresults')
 			$templater->register('groupid', $groupid);
 			$templater->register('group_header', $group_header);
 			$templater->register('pagenav', $pagenav);
+			$templater->register('repeat_search_link', $repeat_search_link);
 			$templater->register('request_groupid', $request_groupid);
 			$templater->register('resultbits', $resultbits);
 			$templater->register('search', $search);
@@ -705,9 +711,6 @@ if ($_REQUEST['do'] == 'searchresults')
 	{
 		standard_error(fetch_error('searchnoresults', ''));
 	}
-
-	$repeat_search_link = generate_repeat_search_link($search['criteria'], $search['sortby'], $search['sortorder'], $search['groupby']);
-	$show['save_report'] = ($vbulletin->userinfo['userid'] AND !$search['issuereportid'] AND $vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['cancreatereport']);
 
 	// navbar and output
 	$navbits = construct_navbits(array(

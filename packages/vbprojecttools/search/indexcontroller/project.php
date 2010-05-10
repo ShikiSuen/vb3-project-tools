@@ -11,7 +11,6 @@
 || #################################################################### ||
 \*======================================================================*/
 
-
 /**
  * @package vBulletin
  * @subpackage Search
@@ -73,7 +72,7 @@ class vBProjectTools_Search_IndexController_Project extends vB_Search_IndexContr
 		SELECT Project.Projectid, Project.title, Project.summary,
 			Project.description, max(issue.lastpost) as dateline
 			FROM " . TABLE_PREFIX . "pt_project as Project
-			LEFT JOIN " . TABLE_PREFIX . "pt_issue issue on issue.projectid = project.projectid
+			LEFT JOIN " . TABLE_PREFIX . "pt_issue issue on issue.projectid = Project.projectid
 			WHERE $filter
 			GROUP BY Project.Projectid, Project.title, Project.summary,
 			Project.description;
@@ -84,7 +83,7 @@ class vBProjectTools_Search_IndexController_Project extends vB_Search_IndexContr
   // below
   public function __construct()
   {
-     $this->contenttypeid = vB_Search_Core::get_instance()->get_contenttypeid("vBProject", "Project");
+     $this->contenttypeid = vB_Search_Core::get_instance()->get_contenttypeid("vBProjectTools", "Project");
   }
 
   /**

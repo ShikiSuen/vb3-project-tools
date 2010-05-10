@@ -163,9 +163,11 @@ function &fetch_activity_list($criteria, $limit = 50, $offset = 0, $get_row_coun
 */
 function prepare_activity_list(&$results)
 {
-	global $vbulletin, $db, $show, $vbphrase;
+	global $vbulletin, $db, $show, $vbphrase, $activity_count;
 
 	$activity_groups = array();
+
+	$activity_count = $db->query_first("SELECT FOUND_ROWS()", DBARRAY_NUM);
 
 	while ($activity = $db->fetch_array($results))
 	{
