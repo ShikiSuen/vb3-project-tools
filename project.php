@@ -639,6 +639,7 @@ if ($_REQUEST['do'] == 'issue')
 	$show['issue_closed'] = ($issue['state'] == 'closed');
 	$show['reply_issue'] = $posting_perms['can_reply'];
 	$show['quick_reply'] = ($vbulletin->userinfo['userid'] AND $posting_perms['can_reply']);
+	$show['lightbox'] = ($vbulletin->options['lightboxenabled'] AND $vbulletin->options['usepopups']);
 
 	if (!$vbulletin->pt_issuestatus["$issue[issuestatusid]"]['canpetitionfrom'])
 	{

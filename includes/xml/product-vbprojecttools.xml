@@ -1001,7 +1001,7 @@ $db->query_write("
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools.css" templatetype="template" date="1273524939" username="Pitchoune" version="2.1.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1273827451" username="Pitchoune" version="2.1.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1024,6 +1024,8 @@ $db->query_write("
 	-moz-border-radius: {vb:stylevar forummenu_border_radius};
 	-webkit-border-radius: {vb:stylevar forummenu_border_radius};
 	float: {vb:stylevar left};
+	*position: static;
+	*float: none;
 }
 
 .above_project_controls div {
@@ -1040,6 +1042,14 @@ $db->query_write("
 	padding: {vb:math {vb:stylevar padding}/2} 0;
 	float: {vb:stylevar right};
 	margin-{vb:stylevar right}: {vb:stylevar padding};
+}
+
+.above_project_controls .popupgroup.projectpopups .popupmenu {
+	*float: left;
+}
+
+.above_project_controls .popupgroup.projectpopups .popupmenu a.popupctrl {
+	*float: none;
 }
 
 .searchprojects.popupmenu .popupbody {
@@ -1111,17 +1121,24 @@ $db->query_write("
 
 .projectpopups .popupbody li {
 	width: 100%;
+	*width: 200px;
 }
 
-/* Project overview definitions (not only overview page) */
+/* Project overview definitions */
 .pt_overview {
 	margin-top: 5px;
 	display: inline-block;
 	width: 100%;
 }
 
+.pt_overview .blocksubhead {
+	height: 16px;
+}
+
 .pt_overview .blocksubhead div {
 	display: inline-block;
+	zoom: 1;
+	*display: inline;
 }
 
 .pt_overview .blocksubhead .project {
@@ -1131,47 +1148,72 @@ $db->query_write("
 .pt_overview .blocksubhead .activeissues {
 	float: {vb:stylevar right};
 	width: 20%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
 }
 
 .pt_overview .blocksubhead .lastpost {
 	float: {vb:stylevar right};
 	width: 15%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
 }
 
 .pt_overview .blockrow {
-	padding-{vb:stylevar left}: 0;
 	padding-top: 5px;
 	padding-bottom: 5px;
 	border-top: solid 1px {vb:stylevar light_border.borderColor};
+	height: 48px;
 }
 
 .pt_overview .settings_form_border > *:first-child {
 	border-top:none;
 }
 
-.pt_overview .blockrow .projectstatusicon {
-	padding: 0 5px;
-	vertical-align: middle;
+.pt_overview .blockrow div {
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
 }
 
 .pt_overview .blockrow .projecttitle {
-	padding: 0 5px;
-	vertical-align: middle;
-	width: 63%
+	padding: 0 5px 0 0;
 }
 
 .pt_overview .blockrow .projecttitle div {
 	display: block;
 }
 
+.pt_overview .blockrow .projecttitle .statusicon {
+	width: 48px;
+	clear: {vb:stylevar right};
+	position: absolute;
+	*{vb:stylevar left}: 65px! important;
+}
+
+.pt_overview .blockrow .projecttitle .title {
+	clear: {vb:stylevar left};
+	margin-{vb:stylevar left}: 53px;
+}
+
 .pt_overview .blockrow .projecttypecounts {
 	width: 20%;
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_overview .blockrow .projectlastpost {
 	font-size: {vb:stylevar mid_fontSize};
 	padding-top: {vb:math {vb:stylevar padding}/2};
 	width: 15%;
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_overview .projectlastpost {
@@ -1182,45 +1224,174 @@ $db->query_write("
 	font-size: {vb:stylevar small_fontSize};
 }
 
-/* Project reports list definitions */
-.pt_reportlist .blockrow {
-	padding-{vb:stylevar left}: 0;
-	padding-{vb:stylevar right}: 0;
-}
-
-.pt_reportlist .blockbody .ptreportlist {
+/* Project overview definitions */
+.pt_timeline {
+	margin-top: 5px;
+	display: inline-block;
 	width: 100%;
 }
 
-.pt_reportlist .blocksubhead .ptreportlist_subscribebutton, .blocksubhead .ptreportlist_title {
+.pt_timeline .blocksubhead {
+	height: 16px;
+}
+
+.pt_timeline .blocksubhead div {
 	display: inline-block;
+	zoom: 1;
+	*display: inline;
+}
+
+.pt_timeline .blockrow {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: solid 1px {vb:stylevar light_border.borderColor};
+	height: 30px;
+}
+
+.pt_timeline .blockrow div {
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+}
+
+.pt_timeline .blockrow .issuetype_icon {
+	padding: 3px 10px 0 10px;
+	vertical-align: top;
+}
+
+.pt_timeline .blockrow .issuedate {
+	padding: 0 5px;
+	vertical-align: top;
+}
+
+.pt_timeline .blockrow .issuetext {
+	padding: 0 5px;
+}
+
+/* Project informations */
+.pt_project {
+	margin-top: 5px;
+	display: inline-block;
+	width: 100%;
+}
+
+.pt_project .blocksubhead {
+	height: 16px;
+}
+
+.pt_project .blocksubhead div {
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+}
+
+.pt_project .blocksubhead .stats {
+	float: {vb:stylevar right};
+	width: 18%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: 0;
+}
+
+.pt_project .blockrow {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: solid 1px {vb:stylevar light_border.borderColor};
+	height: 90px; /* Thanks IE for your CSS non-support... */
+}
+
+.pt_project .settings_form_border > *:first-child {
+	border-top:none;
+}
+
+.pt_project .blockrow div {
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+}
+
+.pt_project .blockrow .stats {
+	float: {vb:stylevar right};
+	width: 18%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: 0;
+}
+
+.pt_project .blockfoot .pt_milestonelist {
+	float: {vb:stylevar left};
+	padding-{vb:stylevar left}: 10px;
+	margin-top: -4px;
+	*margin-top: 0;
+}
+
+/* Project reports list definitions */
+.pt_reportlist .blocksubhead {
+	height: 16px;
+}
+
+.pt_reportlist .blocksubhead div {
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
 }
 
 .pt_reportlist .blocksubhead .ptreportlist_subscribebutton {
-	width: 65px;
+	width: 75px;
 }
 
 .pt_reportlist .blocksubhead .ptreportlist_submittedby {
 	float: {vb:stylevar right};
 	width: 15%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
 }
 
 .pt_reportlist .blocksubhead .ptreportlist_delete {
 	float: {vb:stylevar right};
 	width: 5%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
+}
+
+.pt_reportlist .blockrow {
+	padding-{vb:stylevar left}: 0;
+	padding-{vb:stylevar right}: 0;
+	height: 42px;
+}
+
+.pt_reportlist .blockrow div {
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
 }
 
 .pt_reportlist .blockrow .ptreportlist_checkbox {
 	text-align: center;
 	width: 80px;
+	position: absolute;
+}
+
+.pt_reportlist .blockrow .ptreportlist_title {
+	margin-left: 90px;
 }
 
 .pt_reportlist .blockrow .ptreportlist_submittedby {
 	width: 15%;
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_reportlist .blockrow .ptreportlist_checkbox_del {
 	width: 5%;
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 /* Project issue list definitions */
@@ -1230,8 +1401,20 @@ $db->query_write("
 	width: 100%;
 }
 
+.pt_issuelist .blocksubhead {
+	height: 16px;
+}
+
+.pt_issuelist .issuelist {
+	*width: 100%;
+	*position: relative;
+	*top: -7px;
+}
+
 .pt_issuelist .blocksubhead div {
 	display: inline-block;
+	zoom: 1;
+	*display: inline;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_title {
@@ -1245,58 +1428,105 @@ $db->query_write("
 .pt_issuelist .blocksubhead .ptissuelist_status {
 	float: {vb:stylevar right};
 	width: 10%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_priority {
 	float: {vb:stylevar right};
 	width: 8%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_replies {
 	float: {vb:stylevar right};
 	width: 10%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_issuetype {
 	float: {vb:stylevar right};
 	width: 15%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_lastpost {
 	float: {vb:stylevar right};
 	width: 15%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_notifications {
 	float: {vb:stylevar right};
-	width: 10%;
+	width: 15%;
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -16px;
 }
 
 .pt_issuelist .blockrow {
-	padding-left: 0;
+	height: 35px;
 }
 
-.pt_issuelist .blockrow .ptissuelist_statusicon {
-	padding: 0 5px;
-	vertical-align: middle;
+.pt_issuelist .blockrow div {
+	padding-left: 0;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
 }
 
 .pt_issuelist .blockrow .ptissuelist_title {
+	padding: 0 5px 0 0;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title div {
+	display: block;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .statusicon {
+	width: 48px;
+	clear: {vb:stylevar right};
+	position: absolute;
+	*{vb:stylevar left}: 65px! important;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .title {
+	clear: {vb:stylevar left};
+	margin-{vb:stylevar left}: 28px;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .titlesub {
+	clear: {vb:stylevar left};
+	margin-{vb:stylevar left}: 28px;
+}
+
+.pt_issuelist .blockrow .ptissuelist_icons {
 	padding: 0 5px;
-	vertical-align: middle;
-	width: 55%;
+	vertical-align: right;
+	width: 15%;
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_project {
 	padding: 0 5px;
 	vertical-align: middle;
 	width: 58%;
-}
-
-.pt_issuelist .blockrow .ptissuelist_titlesub {
-	padding: 0 5px;
-	vertical-align: middle;
-	width: 65%;
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_status {
@@ -1304,6 +1534,10 @@ $db->query_write("
 	vertical-align: middle;
 	width: 10%;
 	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_priority {
@@ -1311,6 +1545,10 @@ $db->query_write("
 	vertical-align: middle;
 	width: 8%;
 	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_replies {
@@ -1318,6 +1556,10 @@ $db->query_write("
 	vertical-align: middle;
 	width: 10%;
 	text-align: center;
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_issuetype {
@@ -1325,13 +1567,33 @@ $db->query_write("
 	vertical-align: middle;
 	width: 15%;
 	text-align: center;
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_lastpost {
 	padding: 0 5px;
 	vertical-align: middle;
 	width: 15%;
-	text-align: {vb:stylevar right};
+	margin-top: -5px;
+	text-align: {vb:stylevar left};
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
+}
+
+.pt_issuelist .blockrow .ptissuelist_emptylastpost {
+	padding: 0 5px;
+	vertical-align: middle;
+	width: 15%;
+	text-align: {vb:stylevar left};
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_notifications {
@@ -1339,6 +1601,10 @@ $db->query_write("
 	vertical-align: middle;
 	width: 10%;
 	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_checkbox {
@@ -1346,6 +1612,10 @@ $db->query_write("
 	vertical-align: middle;
 	width: 5%;
 	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_deleted {
@@ -1353,6 +1623,10 @@ $db->query_write("
 	vertical-align: middle;
 	width: 43%;
 	text-align: {vb:stylevar left};
+	float: {vb:stylevar right};
+	clear: {vb:stylevar left};
+	position: relative;
+	*top: -30px;
 }
 
 .pt_issuelist .deleted {
@@ -1655,6 +1929,10 @@ $db->query_write("
 	min-width: 0;
 }
 
+.popupbody li input.searchbox {
+	width: auto;
+}
+
 /* Needed definitions from vB3 PT to use in vB4 PT */
 /* Patch */
 .chunk_lines
@@ -1758,501 +2036,35 @@ div.checkbox_multiselect
 	width: 100%;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Old vB3 Project Tools CSS definitions */
-.bbcode_container {
-       margin:20px;
-       margin-top:5px
-}
-
-.bbcode_container li, .pt_user_note li, .pt_issue_body li {
-       display: list-item;
-       list-style: inherit;
-}
-
-.bbcode_container ul, .bbcode_container ol,
-.pt_user_note ul, .pt_user_note ol,
-.pt_issue_body ul, .pt_issue_body ol  {
-       padding-{vb:stylevar left}:3em;
-       margin-top:2em;
-       margin-bottom:2em;
-}
-
-.bbcode_container ul,
-.pt_user_note ul,
-.pt_issue_body ul {
-      list-style: disc outside none;
-      list-style-type:disc;
-}
-
-.bbcode_container ol,
-.pt_user_note ol,
-.pt_issue_body ol {
-      list-style: decimal outside none;
-      list-style-type:decimal;
-}
-
-
-.bbcode_description {
-       margin-bottom:2px;
-       font: normal normal normal 11px/normal tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-}
-
-.bbcode_code {
-        margin: 0px;
-        padding: 6px;
-        border: 1px inset;
-        width: 640px;
-        height: 120px;
-        text-align:{vb:stylevar left}; 
-        overflow: auto;
-        background: rgb(225, 228, 242);
-}
-
-
-.bbcode_code > code {
-        white-space:nowrap;
-}
-
-
-.projecttools
-{
-	background: #FFFFFF;
-	color: #000000;
-	font: 10pt tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-	margin: 5px 0px 10px 0px;
-	padding: 0px;
-}
-th#projecttools {
-	padding:6px 4px;
-}
-/*
-.projecttools a:link, body_alink
-{
-	color: #22229C;
-}
-.projecttools a:visited, body_avisited
-{
-	color: #22229C;
-}
-.projecttools a:hover, a:active, body_ahover
-{
-	color: #FF4400;
-}
-*/
-.page
-{
-	background: #FFFFFF;
-	color: #000000;
-}
-td, th, table p, table li
-{
-	font: 10pt tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-}
-.tborder
-{
-	background: #D1D1E1;
-	color: #000000;
-	border: 1px solid #0B198C;
-}
-.tcat
-{
-	background: #869BBF url({vb:stylevar imgdir_gradients}/gradient_tcat.gif) repeat-x top left;
-	color: #FFFFFF;
-	font: bold 10pt tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-}
-.tcat a:link, .tcat_alink
-{
-	color: #ffffff;
-	text-decoration: none;
-}
-.tcat a:visited, .tcat_avisited
-{
-	color: #ffffff;
-	text-decoration: none;
-}
-.tcat a:hover, .tcat a:active, .tcat_ahover
-{
-	color: #FFFF66;
-	text-decoration: underline;
-}
-.theadicon
-{
-	width:30px;
-	background: #5C7099 url({vb:stylevar imgdir_gradients}/gradient_thead.gif) repeat-x top left;
-	color: #FFFFFF;
-	font: bold 11px tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-}
-.thead
-{
-	background: #5C7099 url({vb:stylevar imgdir_gradients}/gradient_thead.gif) repeat-x top left;
-	color: #FFFFFF;
-	font: bold 11px tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-}
-.thead a:link, .thead_alink
-{
-	color: #FFFFFF;
-}
-.thead a:visited, .thead_avisited
-{
-	color: #FFFFFF;
-}
-.thead a:hover, .thead a:active, .thead_ahover
-{
-	color: #FFFF00;
-}
-.tfoot
-{
-	background: #3E5C92;
-	color: #E0E0F6;
-}
-.tfoot a:link, .tfoot_alink
-{
-	color: #E0E0F6;
-}
-.tfoot a:visited, .tfoot_avisited
-{
-	color: #E0E0F6;
-}
-.tfoot a:hover, .tfoot a:active, .tfoot_ahover
-{
-	color: #FFFF66;
-}/*
-td.alt1, td.alt2 {
-padding:4px;
-border: 1px solid #D1D1E1;
-}*/
-.alt1, .alt1Active
-{
-	background: #F5F5FF;
-	color: #000000;
-}
-.alt2, .alt2Active
-{
-	background: #E1E4F2;
-	color: #000000;
-}
-.inlinemod
-{
-	background: #FFFFCC;
-	color: #000000;
-}
-._wysiwyg
-{
-	background: #F5F5FF;
-	color: #000000;
-	font: 10pt tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-	margin: 5px 10px 10px 10px;
-	padding: 0px;
-}
-.wysiwyg a:link, .wysiwyg_alink
-{
-	color: #22229C;
-}
-.wysiwyg a:visited, .wysiwyg_avisited
-{
-	color: #22229C;
-}
-.wysiwyg a:hover, .wysiwyg a:active, .wysiwyg_ahover
-{
-	color: #FF4400;
-}
-textarea, .bginput
-{
-	font: {vb:stylevar font};
-}
-.bginput option, .bginput optgroup
-{
-	font: {vb:stylevar font};
-}
-.button
-{
-	font: {vb:stylevar control_font};
-}
-select
-{
-	font: 11px tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-}
-option, optgroup
-{
-	font-size: 11px;
-	font-family: tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-}
+/* Old vB3 Project Tools CSS definitions - we will keep these definitions only */
 .smallfont
 {
-	font: 11px tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	font: 11px tahoma, calibri, verdana, geneva, sans-serif;
 }
-.time
-{
-	color: #3e3e3e;
+
+.bigusername {
+	font-size: 14pt;
 }
-.navbar
-{
-	font: 11px tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-}
-.highlight
-{
-	color: #FF0000;
-	font-weight: bold;
-}
-.fjsel
-{
-	background: #3E5C92;
-	color: #E0E0F6;
-}
-.fjdpth0
-{
-	background: #F7F7F7;
-	color: #000000;
-}
-.panel
-{
-	background: #E4E7F5 url({vb:stylevar imgdir_gradients}/gradient_panel.gif) repeat-x top left;
-	color: #000000;
-	padding: 10px;
-	border: 2px outset;
-}
-.panel .editor_textbox_container
-{
-	margin-right:0;
-}
-.panel .blockrow
-{
-	background:transparent;
-	display: inline-block;
-	width: 100%;
-}
-.panelsurround
-{
-	background: #D1D4E0 url({vb:stylevar imgdir_gradients}/gradient_panelsurround.gif) repeat-x top left;
-	color: #000000;
-}
-legend
-{
-	color: #3e3e3e;
-	font: 11px tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-}
-.vbmenu_control
-{
-	background: #738FBF;
-	color: #FFFFFF;
-	font: bold 11px tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-	padding: 3px 6px 3px 6px;
-	white-space: nowrap;
-}
-.vbmenu_control a:link, .vbmenu_control_alink
-{
-	color: #FFFFFF;
+
+.shade,
+a.shade:link,
+a.shade:visited {
+	color: #777777;
 	text-decoration: none;
 }
-.vbmenu_control a:visited, .vbmenu_control_avisited
-{
-	color: #FFFFFF;
-	text-decoration: none;
-}
-.vbmenu_control a:hover, .vbmenu_control a:active, .vbmenu_control_ahover
-{
-	color: #FFFFFF;
+
+a.shade:active,
+a.shade:hover {
+	color: #FF4400;
 	text-decoration: underline;
-}
-.vbmenu_popup
-{
-	background: #FFFFFF;
-	color: #000000;
-	border: 1px solid #0B198C;
-}
-.vbmenu_option
-{
-	background: #BBC7CE;
-	color: #000000;
-	font: 11px tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-	white-space: nowrap;
-	cursor: pointer;
-}
-.vbmenu_option a:link, .vbmenu_option_alink
-{
-	color: #22229C;
-	text-decoration: none;
-}
-.vbmenu_option a:visited, .vbmenu_option_avisited
-{
-	color: #22229C;
-	text-decoration: none;
-}
-.vbmenu_option a:hover, .vbmenu_option a:active, .vbmenu_option_ahover
-{
-	color: #FFFFFF;
-	text-decoration: none;
-}
-.vbmenu_hilite
-{
-	background: #8A949E;
-	color: #FFFFFF;
-	font: 11px tahoma, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
-	white-space: nowrap;
-	cursor: pointer;
-}
-.vbmenu_hilite a:link, .vbmenu_hilite_alink
-{
-	color: #FFFFFF;
-	text-decoration: none;
-}
-.vbmenu_hilite a:visited, .vbmenu_hilite_avisited
-{
-	color: #FFFFFF;
-	text-decoration: none;
-}
-.vbmenu_hilite a:hover, .vbmenu_hilite a:active, .vbmenu_hilite_ahover
-{
-	color: #FFFFFF;
-	text-decoration: none;
-}
-/* ***** styling for 'big' usernames on postbit etc. ***** */
-.bigusername { font-size: 14pt; }
- 
-/* ***** small padding on 'thead' elements ***** */
-td.thead, th.thead, div.thead { padding: 4px; }
- 
-/* ***** basic styles for multi-page nav elements */
-.pagenav a { text-decoration: none; }
-.pagenav td { padding: 2px 4px 2px 4px; }
- 
-/* ***** de-emphasized text */
-.shade, a.shade:link, a.shade:visited { color: #777777; text-decoration: none; }
-a.shade:active, a.shade:hover { color: #FF4400; text-decoration: underline; }
-.tcat .shade, .thead .shade, .tfoot .shade { color: #DDDDDD; }
- 
-/* ***** define margin and font-size for elements inside panels ***** */
-.fieldset { margin-bottom: 6px; }
-.fieldset, .fieldset td, .fieldset p, .fieldset li { font-size: 11px; }
-/* OVERRIDE AREA */
-/* Used to over ride new style to maintain old vb3 ui */
-input.button {
-background:;
-color: {vb:stylevar control_color};
-}
-.panel .pt_quickreply {
-text-align:{vb:stylevar left}; 
-width:auto !important; 
-width:100%;
-}
-
-.pt_note_filter {
-margin:5px;
-width:100%; 
-margin-bottom:15px;
-}
-
-.pt_popup {
-margin:10px;
-text-align:{vb:stylevar left};
-width:100%;
-}
-
-.pt_user_note {
-margin-bottom:10px;
-}
-
-.pt_user_note td, .pt_issue_body td{
-padding:5px;
-}
-
-.pt_issue_table {
-border:0; 
-width:100%;
-}
-
-.pt_issue_body {
-width:100%;
-}
-
-.pt_issue_details {
-width:100%;
-/*
-border-bottom:0px;
-*/
-background-color: #d1d1e1;
-}
-.pt_issue_details tr{
-border: 1px solid #000000;
-}
-.pt_issue_details th{
-border: 1px solid #869bbf;
-padding:5px;
-}
-
-.pt_sidebar_issue {
-width:210px;
-padding-{vb:stylevar left}: 20px;
-vertical-align:top;
-}
-
-.pt_sidebar_issue .tborder td{
-padding:0px;
-}
-
-.pt_quick_reply th, .pt_quick_reply td,
-.pt_attachments th, .pt_attachments td{
-padding:5px;
-}
-.pt_attachments, .pt_quick_reply {
-width:100%;
-}
-.pt_stats .td{
-clear:{vb:stylevar right};
-display: block;
-float:{vb:stylevar left};
-width: 49%;
-}
-.tborder {
-width:100%;
-/*
-border-bottom-width:0px;
-*/
-}
-.tborder th, .tborder td{
-padding:5px;
-}
-.pt_stat_display td {
-padding:0px;
-}
-.pt_completeissuelist {
-float:{vb:stylevar right};
-}
-td#ptissuedetailselect {
-padding:5px;
 }]]></template>
-		<template name="pt_attachmentbit" templatetype="template" date="1273001747" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blockrow">
+		<template name="pt_attachmentbit" templatetype="template" date="1273784756" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
 	<div style="display: inline-block; float: {vb:stylevar left}">
 		<vb:if condition="$attachment['thumbnail_filesize']">
 			<a href="projectattachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}"<vb:if condition="$show['lightbox']"> rel="Lightbox_{vb:raw attachment.issueid}" id="attachment{vb:raw attachment.attachmentid}"</vb:if> target="_blank"><img src="projectattachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}&amp;thumb=1" alt="" border="0" /></a>
 		<vb:else />
 			&nbsp;
 		</vb:if>
-	</div>
-	<div style="display: inline-block; float: {vb:stylevar right}; white-space: nowrap;">
-		<vb:if condition="$show['attachment_obsolete']"><div style="text-decoration: line-through"></vb:if>
-		<div><a href="projectattachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}" target="_blank">{vb:rawphrase download}</a></div>
-		<vb:if condition="$attachment['ispatchfile']">
-			<div><a href="project.php?{vb:raw session.sessionurl}do=patch&amp;attachmentid={vb:raw attachment.attachmentid}" target="_blank">{vb:rawphrase view_highlighted_patch}</a></div>
-		</vb:if>
-		<vb:if condition="$show['attachment_obsolete']"></div></vb:if>
-	</div>
-	<div style="float: {vb:stylevar right}; margin-right: 5px;">
-		<div class="smallfont">{vb:raw attachment.attachdate} <span class="time">{vb:raw attachment.attachtime}</span></div>
-		<vb:if condition="$show['manage_attach_link']"><div style="float: {vb:stylevar right}"><a href="projectpost.php?{vb:raw session.sessionurl}do=manageattach&amp;attachmentid={vb:raw attachment.attachmentid}">{vb:rawphrase manage}</a></div></vb:if>
 	</div>
 	<div style="float: {vb:stylevar left}">
 		<div style="padding-{vb:stylevar left}: 5px">
@@ -2269,6 +2081,18 @@ padding:5px;
 				{vb:raw attachment.username}
 			</vb:if>
 		</div>
+	</div>
+	<div style="display: inline-block; float: {vb:stylevar right}; white-space: nowrap;">
+		<vb:if condition="$show['attachment_obsolete']"><div style="text-decoration: line-through"></vb:if>
+		<div><a href="projectattachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}" target="_blank">{vb:rawphrase download}</a></div>
+		<vb:if condition="$attachment['ispatchfile']">
+			<div><a href="project.php?{vb:raw session.sessionurl}do=patch&amp;attachmentid={vb:raw attachment.attachmentid}" target="_blank">{vb:rawphrase view_highlighted_patch}</a></div>
+		</vb:if>
+		<vb:if condition="$show['attachment_obsolete']"></div></vb:if>
+	</div>
+	<div style="float: {vb:stylevar right}; margin-right: 5px;">
+		<div style="float: {vb:stylevar right}" class="smallfont">{vb:raw attachment.attachdate} <span class="time">{vb:raw attachment.attachtime}</span></div>
+		<vb:if condition="$show['manage_attach_link']"><br /><p style="float: {vb:stylevar right}"><a href="projectpost.php?{vb:raw session.sessionurl}do=manageattach&amp;attachmentid={vb:raw attachment.attachmentid}">{vb:rawphrase manage}</a></p></vb:if>
 	</div>
 </div>]]></template>
 		<template name="pt_checkbox_optgroup" templatetype="template" date="1273091075" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li id="{vb:raw optgroup_id}"<vb:if condition="THIS_SCRIPT == 'projectsearch'"> class="smallfont" style="clear:both"</vb:if>>
@@ -2348,7 +2172,7 @@ padding:5px;
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_issue" templatetype="template" date="1273441581" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1273906311" username="Mosh" version="2.1.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -2402,7 +2226,7 @@ padding:5px;
 					</a>
 				</h6>
 				<ul class="popupbody">
-					<li><a href="projectpost.php?{vb:raw session.sessionurl}do=managesubscription&amp;issueid={vb:raw issue.issueid}"><vb:if condition="$issue['subscribetype']">{vb:rawphrase unsubscribe_from_this_issue}<vb:else />{vb:rawphrase subscribe_to_this_issue}</vb:if></a></li>
+					<vb:if condition="$show['member']"><li><a href="projectpost.php?{vb:raw session.sessionurl}do=managesubscription&amp;issueid={vb:raw issue.issueid}"><vb:if condition="$issue['subscribetype']">{vb:rawphrase unsubscribe_from_this_issue}<vb:else />{vb:rawphrase subscribe_to_this_issue}</vb:if></a></li></vb:if>
 
 					<vb:if condition="$selected_filter['changes']">
 						<li><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}#notestart">{vb:rawphrase view_comments}</a></li>
@@ -2677,6 +2501,8 @@ padding:5px;
 	</div>
 </div>
 
+<br /><br />
+
 <!-- notes -->
 <a name="notestart"></a>
 {vb:raw notebits}
@@ -2830,49 +2656,33 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1273006071" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blockrow table">
-	<div class="ptissuelist_statusicon td">
-		<vb:if condition="$issue['typeicon']">
-			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
-		<vb:else />
-			&nbsp;
-		</vb:if>
-	</div>
-	<div class="ptissuelist_title td">
-		<div>
-			<div class="smallfont" style="float: {vb:stylevar right}">
-				<vb:if condition="$issue['isassigned']"><img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" /></vb:if>
-				<vb:if condition="$issue['state'] == 'closed'"><img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="{vb:rawphrase closed}" /></vb:if>
-				<vb:if condition="$issue['visible'] == 'private'"><img src="{vb:stylevar imgdir_misc}/issue_private.png" alt="{vb:rawphrase private}" /></vb:if>
-				<vb:if condition="$issue['subscribetype']"><img src="{vb:stylevar imgdir_misc}/subscribed.gif" alt="{vb:rawphrase you_subscribed_issue}" /></vb:if>
-				<vb:if condition="$issue['pendingpetitions']"><img src="{vb:stylevar imgdir_misc}/issue_petition.png" alt="{vb:rawphrase has_pending_petitions}" /></vb:if>
-			</div>
-			<vb:if condition="$issue['newflag']"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
-		</div>
-		<div class="smallfont">
-			<vb:if condition="$show['issuebit_project_title']">
-				<div class="shade" style="float: {vb:stylevar right}; white-space: nowrap">{vb:raw issue.title_clean}</div>
-			</vb:if>
-			<vb:if condition="$issue['submituserid']">
-				<a href="{vb:link member, {vb:raw issue}, null, 'submituserid', 'submitusername'}">{vb:raw issue.submitusername}</a>
+		<template name="pt_issuebit" templatetype="template" date="1273783578" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
+	<div class="ptissuelist_title">
+		<div class="statusicon">
+			<vb:if condition="$issue['typeicon']">
+				<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
 			<vb:else />
-				{vb:raw issue.submitusername}
+				&nbsp;
 			</vb:if>
 		</div>
+		<div class="title">
+				<vb:if condition="$issue['newflag']"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
+				<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<div class="smallfont">
+				<vb:if condition="$issue['submituserid']">
+					<a href="{vb:link member, {vb:raw issue}, null, 'submituserid', 'submitusername'}">{vb:raw issue.submitusername}</a>
+				<vb:else />
+					{vb:raw issue.submitusername}
+				</vb:if>
+			</div>
+		</div>
 	</div>
-	<div class="ptissuelist_status td">
-		<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
-	</div>
-	<div class="ptissuelist_priority td">
-		<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
-	</div>
-	<div class="ptissuelist_replies td">
-		{vb:raw issue.replycount}
-	</div>
-	<div class="ptissuelist_lastpost td">
-		{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
-		<div>{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
+	<div class="ptissuelist_lastpost smallfont">
+		<div>
+			<p class="lastpostdate">
+				{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
+			</p>
+			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
 			<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
 		</div>
 		<script type="text/javascript">
@@ -2881,6 +2691,32 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<vb:if condition="$show['edit_issue']">vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");</vb:if>
 		//-->
 		</script>
+	</div>
+	<div class="ptissuelist_replies smallfont">
+		{vb:raw issue.replycount}
+	</div>
+	<div class="ptissuelist_priority smallfont">
+		<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
+	</div>
+	<div class="ptissuelist_status smallfont">
+		<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
+	</div>
+
+	<div class="ptissuelist_icons">
+		<div>
+			<div class="smallfont" style="float: {vb:stylevar right}">
+				<vb:if condition="$issue['isassigned']"><img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" /></vb:if>
+				<vb:if condition="$issue['state'] == 'closed'"><img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="{vb:rawphrase closed}" /></vb:if>
+				<vb:if condition="$issue['visible'] == 'private'"><img src="{vb:stylevar imgdir_misc}/issue_private.png" alt="{vb:rawphrase private}" /></vb:if>
+				<vb:if condition="$issue['subscribetype']"><img src="{vb:stylevar imgdir_misc}/subscribed.gif" alt="{vb:rawphrase you_subscribed_issue}" /></vb:if>
+				<vb:if condition="$issue['pendingpetitions']"><img src="{vb:stylevar imgdir_misc}/issue_petition.png" alt="{vb:rawphrase has_pending_petitions}" /></vb:if>
+			</div>
+		</div>
+		<div class="smallfont" style="float: {vb:stylevar right}; white-space: nowrap">
+			<vb:if condition="$show['issuebit_project_title']">
+				<div class="shade" style="float: {vb:stylevar right}; white-space: nowrap">{vb:raw issue.title_clean}</div>
+			</vb:if>
+		</div>
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_deleted" templatetype="template" date="1273009508" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blockrow table deleted">
@@ -2909,7 +2745,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<vb:if condition="$issue['deletionreason']"><div><span class="shade">{vb:rawphrase reason}</span> {vb:raw issue.deletionreason}</div></vb:if>
 	</div>
 </div>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1273441666" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1273782025" username="Pitchoune" version="2.1.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3041,18 +2877,18 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<div class="blockhead">
 		<div class="normal smallfont" style="float:{vb:stylevar right}">
 			<div align="{vb:stylevar right}" style="display: inline-block">
-				<vb:if condition="$issuetype_printable"><span class="shade">{vb:rawphrase issue_type}</span> <a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw input.issuetypeid}">{vb:raw issuetype_printable}</a></vb:if>
-				<span class="shade">{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a>
+				<vb:if condition="$issuetype_printable"><span>{vb:rawphrase issue_type}</span> <a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw input.issuetypeid}">{vb:raw issuetype_printable}</a> - </vb:if>
+				<span>{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a>
 			</div>
 			<div align="{vb:stylevar right}" style="display: inline-block">
-				<vb:if condition="$issuestatus_printable"><span class="shade">{vb:rawphrase status}</span> {vb:raw issuestatus_printable}</vb:if>
-				<vb:if condition="$appliesversion_printable"><span class="shade"><vb:if condition="$input['issuetypeid']">{vb:rawphrase applies_version_issuetype}<vb:else />{vb:rawphrase applicable_version}</vb:if></span> {vb:raw appliesversion_printable}</vb:if>
+				<vb:if condition="$issuestatus_printable"><span> - {vb:rawphrase status}</span> {vb:raw issuestatus_printable}</vb:if>
+				<vb:if condition="$appliesversion_printable"><span> - <vb:if condition="$input['issuetypeid']">{vb:rawphrase applies_version_issuetype}<vb:else />{vb:rawphrase applicable_version}</vb:if></span> {vb:raw appliesversion_printable}</vb:if>
 			</div>
 		</div>
 		{vb:rawphrase issue_list}
 	</div>
 	<div class="blockbody formcontrols">
-		<div class="blocksubhead">
+		<div class="blocksubhead issuelist">
 			<div class="ptissuelist_title">
 				<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw input.issuetypeid}&amp;issuestatusid={vb:raw input.issuestatusid}&amp;appliesversionid={vb:raw input.appliesversionid}&amp;sort=title&amp;order=asc">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
 				<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw input.issuetypeid}&amp;issuestatusid={vb:raw input.issuestatusid}&amp;appliesversionid={vb:raw input.appliesversionid}&amp;sort=submitusername&amp;order=asc">{vb:rawphrase submitted_by}</a> {vb:raw sort_arrow.submitusername}
@@ -4246,7 +4082,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_overview" templatetype="template" date="1273526057" username="Pitchoune" version="2.1.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_overview" templatetype="template" date="1273741098" username="Pitchoune" version="2.1.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -4312,7 +4148,7 @@ init_project_readmarker_system();
 				<form action="projectsearch.php?{vb:raw session.sessionurl}do=dosearch" method="post">
 					<ul class="popupbody">
 						<li>
-							<input type="text" class="searchbox" name="text" size="25" />
+							<input type="text" class="searchbox" name="text" size="20" />
 							<input type="submit" class="button" value="{vb:rawphrase search}" />
 						</li>
 						<li class="formsubmit">
@@ -5203,7 +5039,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1273443382" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1273906114" username="Mosh" version="2.1.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5266,7 +5102,7 @@ init_project_readmarker_system();
 				</h6>
 				<ul class="popupbody">
 					<li><a href="project.php?{vb:raw session.sessionurl}do=markread&amp;projectid={vb:raw project.projectid}">{vb:rawphrase mark_all_issues_read}</a></li>
-					<li><a href="projectpost.php?{vb:raw session.sessionurl}do=manageprojectsubscription&amp;projectid={vb:raw project.projectid}">{vb:rawphrase subscribe_to_this_project}</a></li>
+					<vb:if condition="$show['member']"><li><a href="projectpost.php?{vb:raw session.sessionurl}do=manageprojectsubscription&amp;projectid={vb:raw project.projectid}">{vb:rawphrase subscribe_to_this_project}</a></li></vb:if>
 				</ul>
 			</li>
 			<li id="searchproject" class="popupmenu nohovermenu searchprojects">
@@ -5312,18 +5148,18 @@ init_project_readmarker_system();
 	</div>
 </div>
 
-<div class="pt_overview block">
+<div class="pt_project block">
 	<div class="blockhead">{vb:raw project.title}</div>
 	<div class="blockbody settings_form_border">
 		<div class="blocksubhead">
-			<div style="float: {vb:stylevar right}; width: 18%">
+			<div class="stats">
 				{vb:rawphrase project_statistics}
 			</div>
 			{vb:raw project.summary}&nbsp;
 		</div>
 
-		<div class="blockrow" style="display: inline-block; width: 99%; padding-right: 0px; padding-left: 5px;">
-			<div style="float: {vb:stylevar right}; width: 18%">
+		<div class="blockrow">
+			<div class="stats">
 				<ul>
 					{vb:raw type_counts}
 					<vb:if condition="$show['milestones']">
@@ -5344,15 +5180,15 @@ init_project_readmarker_system();
 					</li>
 				</ul>
 			</div>
-			<div class="restore" style="width: 82%">{vb:raw project.description}</div>
+			<div class="restore">{vb:raw project.description}</div>
 		</div>
 	</div>
 	<div class="blockfoot actionbuttons">
 		<div class="group">
 			<vb:if condition="$show['milestones']">
-				<span style="float: {vb:stylevar left}; padding-{vb:stylevar left}: 10px"><a href="projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="button" style="float: {vb:stylevar left}">{vb:rawphrase view_milestones}</a></span>
+				<span class="pt_milestonelist"><a href="projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="button" style="float: {vb:stylevar left}">{vb:rawphrase view_milestones}</a></span>
 			</vb:if>
-			<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}" class="pt_completeissuelist button">{vb:rawphrase view_complete_issue_list}</a>
+			<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}" class="button">{vb:rawphrase view_complete_issue_list}</a>
 		</div>
 	</div>
 </div>
@@ -5418,20 +5254,17 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_projectbit" templatetype="template" date="1272793707" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blockrow table">
-	<div class="projectstatusicon td">
-		<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
+		<template name="pt_projectbit" templatetype="template" date="1273740926" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
+	<div class="projecttitle">
+		<div class="statusicon">
+			<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
+		</div>
+		<div class="title">
+			<div><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title}</a></div>
+			<div class="smallfont">{vb:raw project.summary}</div>
+		</div>
 	</div>
-	<div class="projecttitle td">
-		<div><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title}</a></div>
-		<div class="smallfont">{vb:raw project.summary}</div>
-	</div>
-	<div class="projecttypecounts td">
-		<ul>
-		{vb:raw type_counts}
-		</ul>
-	</div>
-	<div class="projectlastpost td">
+	<div class="projectlastpost">
 		<vb:if condition="$show['private_lastpost']">
 			{vb:rawphrase private}
 		<vb:elseif condition="$project['lastpostdate']" />
@@ -5446,6 +5279,11 @@ init_project_readmarker_system();
 		<vb:else />
 			{vb:rawphrase n_a}
 		</vb:if>
+	</div>
+	<div class="projecttypecounts">
+		<ul>
+		{vb:raw type_counts}
+		</ul>
 	</div>
 </div>]]></template>
 		<template name="pt_projectbit_typecount" templatetype="template" date="1273443787" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>
@@ -5516,74 +5354,84 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_project_subscriptionbit" templatetype="template" date="1273517678" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blockrow table">
-	<div class="ptissuelist_project td">
+		<template name="pt_project_subscriptionbit" templatetype="template" date="1273827626" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
+	<div class="ptissuelist_title">
 		<div><strong><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projecttype.projectid}">{vb:raw projecttype.title}</a></strong></div>
 		<div class="smallfont">{vb:raw projecttype.summary}</div>
 	</div>
-	<div class="ptissuelist_issuetype td">
-		<vb:if condition="$projecttype['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw projecttype.typeicon}" alt="{vb:raw projecttype.issuetype}" class="inlineimg" border="0" /></vb:if>
-		{vb:raw projecttype.issuetype}
+	<div class="ptissuelist_checkbox">
+		<input type="checkbox" name="projectsubscription[{vb:raw projecttype.projectid}][{vb:raw projecttype.issuetypeid}]" value="1" />
 	</div>
-	<div class="ptissuelist_lastpost td">
-		<vb:if condition="$show['private_lastpost']">
-			{vb:rawphrase private}
-		<vb:elseif condition="$projecttype['lastpostdate']" />
-			<div class="smallfont" align="{vb:stylevar left}">
-				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw projecttype.lastissueid}&amp;goto=firstnew" style="white-space:nowrap" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw projecttype.lastissuetitle}}"><strong>{vb:raw projecttype.lastissuetitle_short}</strong></a>
-				<div style="white-space:nowrap<vb:if condition="is_browser('ie', 6)">; float:{vb:stylevar left}</vb:if>">
-					{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
-				</div>
-				<div align="{vb:stylevar right}" style="white-space:nowrap">
-					{vb:raw projecttype.lastpostdate} <span class="time">{vb:raw projecttype.lastposttime}</span>
-					<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw projecttype.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
-				</div>
-			</div>
-		<vb:else />
-			{vb:rawphrase n_a}
-		</vb:if>
-	</div>
-	<div class="ptissuelist_notifications td">
+	<div class="ptissuelist_notifications">
 		{vb:raw projecttype.notification}
 	</div>
-	<div class="ptissuelist_checkbox td">
-		<input type="checkbox" name="projectsubscription[{vb:raw projecttype.projectid}][{vb:raw projecttype.issuetypeid}]" value="1" />
+
+	<vb:if condition="$show['private_lastpost']">
+	<div class="ptissuelist_emptylastpost">
+		<div class="smallfont" align="{vb:stylevar left}">
+			{vb:rawphrase private}
+		</div>
+	</div>
+	<vb:elseif condition="$projecttype['lastpostdate']" />
+	<div class="ptissuelist_lastpost">
+		<div class="smallfont" align="{vb:stylevar left}">
+			<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw projecttype.lastissueid}&amp;goto=firstnew" style="white-space:nowrap" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw projecttype.lastissuetitle}}"><strong>{vb:raw projecttype.lastissuetitle_short}</strong></a>
+			<div style="white-space:nowrap<vb:if condition="is_browser('ie', 6)">; float:{vb:stylevar left}</vb:if>">
+				{vb:rawphrase by_x, {vb:link member, {vb:raw projecttype}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw projecttype.lastpostusername}}
+			</div>
+			<div align="{vb:stylevar right}" style="white-space:nowrap">
+				{vb:raw projecttype.lastpostdate} <span class="time">{vb:raw projecttype.lastposttime}</span>
+				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw projecttype.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+			</div>
+		</div>
+	</div>
+	<vb:else />
+	<div class="ptissuelist_emptylastpost">
+		<div class="smallfont" align="{vb:stylevar left}">
+			{vb:rawphrase n_a}
+		</div>
+	</div>
+	</vb:if>
+
+	<div class="ptissuelist_issuetype">
+		<vb:if condition="$projecttype['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw projecttype.typeicon}" alt="{vb:raw projecttype.issuetype}" class="inlineimg" border="0" /></vb:if>
+		{vb:raw projecttype.issuetype}
 	</div>
 </div>]]></template>
 		<template name="pt_project_typecountbit" templatetype="template" date="1273444365" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px">
 	<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}" class="shade"><span class="underline">{vb:raw typename}</span></a>
 	<span<vb:if condition="$type['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw type.issuecountactive} / {vb:raw type.issuecount}</span>
 </li>]]></template>
-		<template name="pt_reportbit" templatetype="template" date="1272747641" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blockrow table ptreportlist">
-	<div class="ptreportlist_checkbox td">
+		<template name="pt_reportbit" templatetype="template" date="1273778800" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
+	<div class="ptreportlist_checkbox">
 		<vb:if condition="$bbuserinfo['userid']">
 			<input type="checkbox" name="subscribe[{vb:raw report.issuereportid}]" value="1" <vb:if condition="$report[issubscribed]">checked="checked"</vb:if> />
 		<vb:else />
 			&nbsp;
 		</vb:if>
 	</div>
-	<div class="td">
+	<div class="ptreportlist_title">
 		<div><a href="projectsearch.php?{vb:raw session.sessionurl}do=viewreport&amp;issuereportid={vb:raw report.issuereportid}"><strong>{vb:raw report.title}</strong></a></div>
-		{vb:raw report.description}
+		<p>{vb:raw report.description}</p>
 	</div>
 
-	<vb:if condition="$show['submitted_user']">
-		<div class="ptreportlist_submittedby td">
-			<a href="{vb:link member, {vb:raw report}}">{vb:raw report.username}</a>
-		</div>
-	</vb:if>
-
 	<vb:if condition="$show['delete_option']">
-		<div class="ptreportlist_checkbox_del td">
+		<div class="ptreportlist_checkbox_del">
 			<input type="checkbox" name="delete[{vb:raw report.issuereportid}]" value="1" />
 		</div>
 	<vb:elseif condition="$show['delete_public_column']" />
-		<div class="ptreportlist_checkbox_del td">
+		<div class="ptreportlist_checkbox_del">
 			&nbsp;
 		</div>
 	</vb:if>
+
+	<vb:if condition="$show['submitted_user']">
+		<div class="ptreportlist_submittedby">
+			<a href="{vb:link member, {vb:raw report}}">{vb:raw report.username}</a>
+		</div>
+	</vb:if>
 </div>]]></template>
-		<template name="pt_reportlist" templatetype="template" date="1273444405" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_reportlist" templatetype="template" date="1273778024" username="Pitchoune" version="2.1.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6043,11 +5891,50 @@ init_project_readmarker_system();
 {vb:raw errorbits}
 </ul>]]></template>
 		<template name="pt_searcherrorbit" templatetype="template" date="1273444813" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw error}</li>]]></template>
-		<template name="pt_searchresultbit" templatetype="template" date="1273440597" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blockrow table">
-	<div class="ptissuelist_statusicon td">
-		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
+		<template name="pt_searchresultbit" templatetype="template" date="1273783237" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
+	<div class="ptissuelist_title">
+		<div class="statusicon">
+			<vb:if condition="$issue['typeicon']">
+				<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
+			<vb:else />
+				&nbsp;
+			</vb:if>
+		</div>
+		<div class="title">
+			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<vb:if condition="$issue['newflag']"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
+			<p class="smallfont">
+				<vb:if condition="$issue['submituserid']">
+					<span style="cursor:pointer" onclick="window.open('{vb:link member, {vb:raw issue}}', '_self')">{vb:raw issue.submitusername}</span>
+				<vb:else />
+					{vb:raw issue.submitusername}
+				</vb:if>
+			</p>
+		</div>
 	</div>
-	<div class="ptissuelist_title td">
+	<div class="ptissuelist_lastpost smallfont">
+		{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
+		<p>
+			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
+			<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+		</p>
+		<script type="text/javascript">
+		<!--
+		<vb:if condition="$show['status_edit']">vBulletin.register_control("vB_MagicSelect", "ms_stat_{vb:raw issue.issueid}", "issuestatusid", "{vb:raw issue.issueid}");</vb:if>
+		<vb:if condition="$show['edit_issue']">vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");</vb:if>
+		//-->
+		</script>
+	</div>
+	<div class="ptissuelist_replies smallfont">
+		{vb:raw issue.replycount}
+	</div>
+	<div class="ptissuelist_priority smallfont">
+		<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
+	</div>
+	<div class="ptissuelist_status smallfont">
+		<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
+	</div>
+	<div class="ptissuelist_icons">
 		<div>
 			<div class="smallfont" style="float: {vb:stylevar right}">
 				<vb:if condition="$issue['isassigned']"><img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" /></vb:if>
@@ -6057,39 +5944,10 @@ init_project_readmarker_system();
 				<vb:if condition="$issue['subscribetype']"><img src="{vb:stylevar imgdir_misc}/subscribed.gif" alt="{vb:rawphrase you_subscribed_issue}" /></vb:if>
 				<vb:if condition="$issue['pendingpetitions']"><img src="{vb:stylevar imgdir_misc}/issue_petition.png" alt="{vb:rawphrase has_pending_petitions}" /></vb:if>
 			</div>
-			<vb:if condition="$issue['newflag']"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
 		</div>
-		<div class="smallfont">
-			<div class="shade" style="float: {vb:stylevar right}; white-space: nowrap">{vb:raw project.title_clean}</div>
-			<vb:if condition="$issue['submituserid']">
-				<span style="cursor:pointer" onclick="window.open('{vb:link member, {vb:raw issue}}', '_self')">{vb:raw issue.submitusername}</span>
-			<vb:else />
-				{vb:raw issue.submitusername}
-			</vb:if>
+		<div class="smallfont" style="float: {vb:stylevar right}; white-space: nowrap">
+			<div class="shade">{vb:raw project.title_clean}</div>
 		</div>
-	</div>
-	<div class="ptissuelist_status td">
-		<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
-	</div>
-	<div class="ptissuelist_priority td">
-		<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
-	</div>
-	<div class="ptissuelist_replies td">
-		{vb:raw issue.replycount}
-	</div>
-	<div class="ptissuelist_lastpost td">
-		{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
-		<div>
-			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
-			<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
-		</div>
-		<script type="text/javascript">
-		<!--
-		<vb:if condition="$show['status_edit']">vBulletin.register_control("vB_MagicSelect", "ms_stat_{vb:raw issue.issueid}", "issuestatusid", "{vb:raw issue.issueid}");</vb:if>
-		<vb:if condition="$show['edit_issue']">vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");</vb:if>
-		//-->
-		</script>
 	</div>
 </div>]]></template>
 		<template name="pt_searchresultgroupbit" templatetype="template" date="1273440305" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
@@ -6214,41 +6072,43 @@ init_project_readmarker_system();
 		<span class="shade">{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title}</a>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_subscriptionbit" templatetype="template" date="1273516071" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blockrow table">
-	<div class="ptissuelist_statusicon td">
-		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
-	</div>
-	<div class="ptissuelist_titlesub td">
-		<div>
-			<vb:if condition="$issue['newflag']"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
+		<template name="pt_subscriptionbit" templatetype="template" date="1273792674" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
+	<div class="ptissuelist_title">
+		<div class="statusicon">
+			<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
+		</div>
+		<div class="titlesub">
+			<div>
+				<vb:if condition="$issue['newflag']"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
 			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
-		</div>
-		<div class="smallfont">
-			<vb:if condition="$issue['submituserid']">
-				<span style="cursor:pointer" onclick="window.open('{vb:link member, {vb:raw issue}}', '_self')">{vb:raw issue.submitusername}</span>
-			<vb:else />
-				{vb:raw issue.submitusername}
-			</vb:if>
-		</div>
-	</div>
-	<div class="ptissuelist_replies td">
-		{vb:raw issue.replycount}
-	</div>
-	<div class="ptissuelist_lastpost td">
-		{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
-		<div>
-			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
-			<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+			</div>
+			<div class="smallfont">
+				<vb:if condition="$issue['submituserid']">
+					<span style="cursor:pointer" onclick="window.open('{vb:link member, {vb:raw issue}}', '_self')">{vb:raw issue.submitusername}</span>
+				<vb:else />
+					{vb:raw issue.submitusername}
+				</vb:if>
+			</div>
 		</div>
 	</div>
-	<div class="ptissuelist_notifications td">
-		{vb:raw issue.notification}
-	</div>
-	<div class="ptissuelist_checkbox td">
+	<div class="ptissuelist_checkbox">
 		<input type="checkbox" name="issuesubscription[]" value="{vb:raw issue.issueid}" />
 	</div>
+	<div class="ptissuelist_notifications">
+		{vb:raw issue.notification}
+	</div>
+	<div class="ptissuelist_lastpost smallfont">
+		{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
+		<p>
+			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
+			<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+		</p>
+	</div>
+	<div class="ptissuelist_replies smallfont">
+		{vb:raw issue.replycount}
+	</div>
 </div>]]></template>
-		<template name="pt_timeline" templatetype="template" date="1273001858" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="pt_overview block">
+		<template name="pt_timeline" templatetype="template" date="1273747984" username="Pitchoune" version="2.1.0"><![CDATA[<div class="pt_timeline block">
 	<div class="blockhead<vb:if condition="!$show['disable_timeline_collapse']"> collapse</vb:if>">
 		<div class="smallfont normal" style="float: {vb:stylevar right}<vb:if condition="!$show['disable_timeline_collapse']">; margin-{vb:stylevar right}: 20px</vb:if>">
 			<vb:if condition="$show['timeline_daterange']">{vb:rawphrase dates_x_to_y, {vb:raw startdate_display}, {vb:raw enddate_display}}<vb:else />{vb:rawphrase last_x_actions, {vb:raw timeline_entries}}</vb:if>
@@ -6344,18 +6204,18 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 </div>
 
 {vb:raw groupbits}]]></template>
-		<template name="pt_timeline_item" templatetype="template" date="1273002058" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blockrow table">
-	<div class="td" style="padding: 0 10px">
+		<template name="pt_timeline_item" templatetype="template" date="1273777578" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
+	<div class="issuetype_icon">
 		<vb:if condition="$activity['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw activity.typeicon}" alt="{vb:raw activity.issuetype}" border="0" />
 		<vb:else />
 			&nbsp;
 		</vb:if>
 	</div>
-	<div class="td" style="padding: 0 5px">
+	<div class="issuedate">
 		<span class="time">{vb:raw activity.changetime}</span>&nbsp;
 	</div>
-	<div class="td" style="padding: 0 5px">
+	<div class="issuetext">
 		<vb:if condition="$activity['newflag']">
 			<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw activity.issueid}&amp;goto=firstnew">
 				<img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" />
@@ -6365,11 +6225,11 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		<vb:if condition="$activity['isassigned']"><img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" /></vb:if>
 		<vb:if condition="$activity['visible'] == 'private'"><img src="{vb:stylevar imgdir_misc}/issue_private.png" alt="{vb:rawphrase private}" /></vb:if>
 
-		<div class="smallfont">
+		<p class="smallfont">
 			<vb:if condition="$show['timeline_project_title']">{vb:raw activity.projecttitle_clean}</vb:if>
 			<span class="shade">{vb:rawphrase timeline_entry_phrase, {vb:link member, {vb:raw activity}}, {vb:raw activity.username}, {vb:raw activity.details}}</span>
 			<vb:if condition="$activity['notevisible'] == 'private'"><img src="{vb:stylevar imgdir_misc}/issue_private.png" alt="{vb:rawphrase private}" /></vb:if>
-		</div>
+		</p>
 	</div>
 </div>]]></template>
 		<template name="pt_timeline_page" templatetype="template" date="1273441436" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
@@ -7386,7 +7246,7 @@ else if ($userinfo['activity'] == 'archive_project')
 		<plugin active="1" executionorder="5">
 			<title>Search: Adding PT CSS Template in search / subscriptions forms</title>
 			<hookname>parse_templates</hookname>
-			<phpcode><![CDATA[if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))) OR (THIS_SCRIPT == 'projectpost' AND in_array($_REQUEST['do'], array('managesubscriptions'))))
+			<phpcode><![CDATA[if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))))
 {
 	if ($vbulletin->options['storecssasfile'])
 	{
@@ -8002,7 +7862,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="search_group_projectid" date="1213805718" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Issues in Project <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="search_group_tag" date="1213805725" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Issues with Tag <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="search_only_issues_submitted_by_user" date="1273075066" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[Search only issues submitted by this user]]></phrase>
-			<phrase name="search_results_report_x" date="1213805733" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Search Results for Report <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="search_results_report_x" date="1273782201" username="Pitchoune" version="2.1.0"><![CDATA[Search Results for Report '{1}']]></phrase>
 			<phrase name="search_this_milestone" date="1213705673" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Search this Milestone]]></phrase>
 			<phrase name="search_this_project" date="1174406874" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search this Project]]></phrase>
 			<phrase name="search_tools" date="1182435662" username="Ed Sullivan" version="1.0.0 Release Candidate 2"><![CDATA[Search Tools]]></phrase>

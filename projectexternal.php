@@ -67,6 +67,11 @@ $vbulletin->session->vars['sessionurl_q'] =
 $vbulletin->session->vars['sessionurl_js'] =
 $vbulletin->session->vars['sessionhash'] = '';
 
+if(!$vbulletin->options['externalxml'])
+{
+	exit;
+}
+
 $vbulletin->input->clean_array_gpc('r', array(
 	'projectid' => TYPE_UINT,
 	'issuetypeid' => TYPE_NOHTML,
