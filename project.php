@@ -678,6 +678,7 @@ if ($_REQUEST['do'] == 'issue')
 
 	$show['move_issue'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmoveissue']);
 	$show['edit_issue_private'] = ($posting_perms['issue_edit'] AND $posting_perms['private_edit']);
+	$show['newflag'] = ($issue['newflag'] ? TRUE : FALSE);
 
 	// get voting phrases
 	$vbphrase['vote_question_issuetype'] = $vbphrase["vote_question_$issue[issuetypeid]"];
