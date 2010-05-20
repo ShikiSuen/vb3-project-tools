@@ -50,6 +50,12 @@ if (empty($vbulletin->products['vbprojecttools']))
 	exit;
 }
 
+// check to see if global RSS setting is switched on, if not exit.
+if (!$vbulletin->options['externalrss'])
+{
+	exit;
+}
+
 require_once(DIR . '/includes/functions_projecttools.php');
 
 if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools']))
@@ -66,11 +72,6 @@ $vbulletin->session->vars['sessionurl'] =
 $vbulletin->session->vars['sessionurl_q'] =
 $vbulletin->session->vars['sessionurl_js'] =
 $vbulletin->session->vars['sessionhash'] = '';
-
-if(!$vbulletin->options['externalxml'])
-{
-	exit;
-}
 
 $vbulletin->input->clean_array_gpc('r', array(
 	'projectid' => TYPE_UINT,
