@@ -1,3 +1,4 @@
+<!-- MASTER STYLE FILE -->
 {vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
@@ -43,6 +44,20 @@
 {vb:raw header}
 {vb:raw navbar}
 
+<div class="pt_issuepopup">
+	<div class="navpopupmenu popupmenu nohovermenu">
+		<vb:if condition="$show['direct_post_link']">
+			<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}" rel="nofollow" class="newcontent_textcontrol"><span>+</span> {vb:raw post_new_issue_text}</a>
+		<vb:else />
+			<a class="popupctrl" href="{vb:raw relpath}">
+				<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>
+			</a>
+			<ul class="navpopupbody popupbody">
+				{vb:raw post_issue_options}
+			</ul>
+		</vb:if>
+	</div>
+</div>
 <div id="above_project_controls" class="above_project_controls">
 	<div>
 		<ul id="projectpopups" class="popupgroup projectpopups">
@@ -109,7 +124,7 @@
 
 <div class="pt_project block">
 	<div class="blockhead">{vb:raw project.title}</div>
-	<div class="blockbody settings_form_border">
+	<div class="blockbody formcontrols">
 		<div class="blocksubhead">
 			<div class="stats">
 				{vb:rawphrase project_statistics}
@@ -117,8 +132,9 @@
 			{vb:raw project.summary}&nbsp;
 		</div>
 
-		<div class="blockrow">
-			<div class="stats">
+		<div class="blockrow table">
+			<div class="restore td">{vb:raw project.description}</div>
+			<div class="stats td">
 				<ul>
 					{vb:raw type_counts}
 					<vb:if condition="$show['milestones']">
@@ -139,7 +155,6 @@
 					</li>
 				</ul>
 			</div>
-			<div class="description restore">{vb:raw project.description}</div>
 		</div>
 	</div>
 	<div class="blockfoot actionbuttons">
@@ -153,20 +168,6 @@
 </div>
 
 <div class="clear"></div>
-<div class="pt_issuepopup">
-	<div class="navpopupmenu popupmenu nohovermenu">
-		<vb:if condition="$show['direct_post_link']">
-			<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}" rel="nofollow" class="newcontent_textcontrol"><span>+</span> {vb:raw post_new_issue_text}</a>
-		<vb:else />
-			<a class="popupctrl" href="{vb:raw relpath}">
-				<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>
-			</a>
-			<ul class="navpopupbody popupbody">
-				{vb:raw post_issue_options}
-			</ul>
-		</vb:if>
-	</div>
-</div>
 
 <vb:if condition="$issuebits">
 <div class="pt_issuelist block">
