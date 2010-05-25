@@ -343,7 +343,7 @@ if ($_REQUEST['do'] == 'dosearch')
 
 	// directly searchable fields only
 	$search_fields = array(
-		'query'      => TYPE_STR,
+		'text'      => TYPE_STR,
 		'issuetext' => TYPE_STR,
 		'firsttext' => TYPE_STR,
 
