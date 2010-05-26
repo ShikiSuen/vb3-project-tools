@@ -65,11 +65,11 @@ $actiontemplates = array(
 	'importthread' => array(
 		'optgroup',
 		'pt_import_thread',
-	)
+	),
 	'importthread2' => array(
 		'optgroup',
 		'pt_import_thread_confirm',
-	)
+	),
 	'manageattach' => array(
 		'pt_manageattach'
 	),
