@@ -2522,4 +2522,242 @@ if ($_REQUEST['do'] == 'moveissue')
 	print_output($templater->render());
 
 }
+
+require_once(DIR . '/includes/functions_ptimporter.php');
+
+// #######################################################################
+if ($_POST['do'] == 'processimportthread')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'projectid' => TYPE_UINT,
+		'issuetypeid' => TYPE_NOHTML,
+		'title' => TYPE_NOHTML,
+		'summary' => TYPE_NOHTML,
+		'priority' => TYPE_UINT,
+		'projectcategoryid' => TYPE_UINT,
+		'appliesversionid' => TYPE_UINT,
+		'addressedversionid' => TYPE_INT,
+		'issuestatusid' => TYPE_UINT,
+		'milestoneid' => TYPE_UINT
+	));
+
+	// Doing last checks and required infos
+	$threadinfo = verify_id('thread', $threadid, 1, 1);
+
+	// Do our own checking to make sure we have all permissions needed to create issues
+	$project = ptimporter_verify_issuetypeid($vbulletin->GPC['issuetypeid'], $vbulletin->GPC['projectid']);
+	$posting_perms = ptimporter_prepare_issue_posting_pemissions($project['projectid'], $vbulletin->GPC['issuetypeid']);
+	
+	// Make sure the new issue status is valid
+	ptimporter_verify_issuestatusid($vbulletin->GPC['issuestatusid'], $vbulletin->GPC['issuetypeid']);
+
+	// Finally, run the import
+	require_once(DIR . '/includes/class_ptimporter.php');
+	
+	$importer = new vB_PtImporter($threadinfo, $project, $posting_perms, array(), array());
+	$issueid = $importer->import_all();
+
+	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";
+	eval(print_standard_redirect('pt_issue_inserted'));
+}
+
+// #######################################################################
+if ($_REQUEST['do'] == 'importthread2')
+{
+	$vbulletin->input->clean_array_gpc('r', array(
+		'project-issuetype' => TYPE_NOHTML
+	));
+
+	$threadinfo = verify_id('thread', $threadid, 1, 1);
+
+	list($projectid, $issuetypeid) = explode('-', $vbulletin->GPC['project-issuetype']);
+
+	$project = verify_project($projectid);
+	$posting_perms = ptimporter_prepare_issue_posting_pemissions($project['projectid'], $issuetypeid);
+
+	verify_issuetypeid($issuetypeid, $project['projectid']);
+
+	$issuetype = $vbphrase["issuetype_{$issuetypeid}_singular"];
+
+	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issuetypeid);
+
+	// Check we can both view and post the target issue type
+	if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
+	{
+		print_no_permission();
+	}
+
+	// categories
+	$category_options = '';
+	$optionclass = '';
+	foreach ($vbulletin->pt_categories AS $category)
+	{
+		if ($category['projectid'] != $project['projectid'])
+		{
+			continue;
+		}
+
+		$optionvalue = $category['projectcategoryid'];
+		$optiontitle = $category['title'];
+		$optionselected = '';
+		$category_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+	}
+	$category_unknown_selected = ' selected="selected"';
+
+	// setup versions
+	$version_groups = array();
+	$version_query = $db->query_read("
+		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
+		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
+		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
+			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
+		WHERE projectversion.projectid = $project[projectid]
+		ORDER BY projectversion.effectiveorder DESC
+	");
+	while ($version = $db->fetch_array($version_query))
+	{
+		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
+	}
+
+	$applies_versions = '';
+	$addressed_versions = '';
+	$optionclass = '';
+	foreach ($version_groups AS $optgroup_label => $versions)
+	{
+		$group_applies = '';
+		$group_addressed = '';
+		foreach ($versions AS $optionvalue => $optiontitle)
+		{
+			$optionselected = '';
+			$group_applies .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+
+			$optionselected = '';
+			$group_addressed .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		}
+
+		$optgroup_options = $group_applies;
+		$templater = vB_Template::create('optgroup');
+			$templater->register('optgroup_extra', $optgroup_extra);
+			$templater->register('optgroup_label', $optgroup_label);
+			$templater->register('optgroup_options', $optgroup_options);
+		$applies_versions .= $templater->render();
+
+		$optgroup_options = $group_addressed;
+		$templater = vB_Template::create('optgroup');
+			$templater->register('optgroup_extra', $optgroup_extra);
+			$templater->register('optgroup_label', $optgroup_label);
+			$templater->register('optgroup_options', $optgroup_options);
+		$addressed_versions .= $templater->render();
+	}
+
+	$applies_unknown_selected = '';
+	$addressed_unaddressed_selected = '';
+	$addressed_next_selected = '';
+
+	// status
+	// Select the default status from the corresponding project / issue type
+	$issuestatus = $db->query_first("
+		SELECT startstatusid
+		FROM " . TABLE_PREFIX . "pt_projecttype
+		WHERE projectid = " . intval($project['projectid']) . "
+			AND issuetypeid = '" . $db->escape_string($issuetypeid) . "'
+	");
+
+	$show['status_edit'] = false;
+	
+	if ($posting_perms['status_edit'])
+	{
+		// We can select the status
+		$status_options = build_issuestatus_select($vbulletin->pt_issuetype["$issuetypeid"]['statuses'], $issuestatus['startstatusid']);
+		$show['status_edit'] = true;
+	}
+	else
+	{
+		// We can't select the status - display only the default status
+		$status_options = $vbphrase['issuestatus' . $issuestatus[startstatusid] . ''];
+	}
+
+	// setup milestones
+	$show['milestone'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone']);
+	$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
+	$milestone_options = fetch_milestone_select($project['projectid'], $issue['milestoneid']);
+
+	$navbits = array(
+		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
+		'' => $vbphrase['pt_create_issue']
+	);
+
+	$navbits = construct_navbits($navbits);
+	$navbar = render_navbar_template($navbits);
+
+	$templater = vB_Template::create('pt_import_thread_confirm');
+		$templater->register_page_templates();
+		$templater->register('addressed_next_selected', $addressed_next_selected);
+		$templater->register('addressed_unaddressed_selected', $addressed_unaddressed_selected);
+		$templater->register('addressed_versions', $addressed_versions);
+		$templater->register('applies_unknown_selected', $applies_unknown_selected);
+		$templater->register('applies_versions', $applies_versions);
+		$templater->register('category_options', $category_options);
+		$templater->register('category_unknown_selected', $category_unknown_selected);
+		$templater->register('issuetype', $issuetype);
+		$templater->register('issuetypeid', $issuetypeid);
+		$templater->register('milestone_options', $milestone_options);
+		$templater->register('navbar', $navbar);
+		$templater->register('project', $project);
+		$templater->register('status_options', $status_options);
+		$templater->register('threadinfo', $threadinfo);
+	print_output($templater->render());
+}
+
+// #######################################################################
+if ($_REQUEST['do'] == 'importthread')
+{
+	$project_type_select = '';
+	$optionclass = '';
+	foreach ($vbulletin->pt_projects AS $projectid => $projectinfo)
+	{
+		$project_perms["$projectid"] = fetch_project_permissions($vbulletin->userinfo, $projectid);
+
+		$optgroup_options = '';
+		foreach (array_keys($projectinfo['types']) AS $type)
+		{
+			// Check we can both view and post the target issue type
+			if (!($project_perms["$projectid"]["$type"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($project_perms["$projectid"]["$type"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
+			{
+				continue;
+			}
+			$optionvalue = $projectinfo['projectid'] . '-' . $type;
+			$optiontitle = $vbphrase["issuetype_{$type}_singular"];
+			$optionselected = '';
+			$optgroup_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		}
+
+		if (empty($optgroup_options))
+		{
+			continue;
+		}
+
+		$optgroup_label = $projectinfo['title'];
+		$templater = vB_Template::create('optgroup');
+			$templater->register('optgroup_extra', $optgroup_extra);
+			$templater->register('optgroup_label', $optgroup_label);
+			$templater->register('optgroup_options', $optgroup_options);
+		$project_type_select .= $templater->render();
+	}
+
+	$navbits = array(
+		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
+		'' => $vbphrase['pt_create_issue']
+	);
+
+	$navbits = construct_navbits($navbits);
+	$navbar = render_navbar_template($navbits);
+
+	$templater = vB_Template::create('pt_import_thread');
+		$templater->register_page_templates();
+		$templater->register('navbar', $navbar);
+		$templater->register('project_type_select', $project_type_select);
+		$templater->register('threadid', $threadid);
+	print_output($templater->render());
+}
 ?>
