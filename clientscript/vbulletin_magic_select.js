@@ -214,7 +214,7 @@ vB_MagicSelect.prototype.create_option = function(value, html, selected)
 */
 vB_MagicSelect.prototype.populate_menu = function(ajax, nocreate)
 {
-	vBulletin.console("vB_MagicSelect '%s' :: Populate Menu Starting (%s)", this.fieldname, (nocreate ? "Save" : "Load"));
+	vBulletin.console("vB_MagicSelect (%s) :: Populate Menu Starting (%s)", this.fieldname, (nocreate ? "Save" : "Load"));
 
 	if (!nocreate)
 	{
@@ -239,7 +239,7 @@ vB_MagicSelect.prototype.populate_menu = function(ajax, nocreate)
 		var error = ajax.responseXML.getElementsByTagName("error");
 		if (error[0])
 		{
-			vBulletin.console("vB_MagicSelect '%s' :: Error: %s \nRevert value to %s", this.fieldname, error[0].firstChild.nodeValue, this.menu.options[this.selectedIndex].innerHTML);
+			vBulletin.console("vB_MagicSelect (%s) :: Error: %s \nRevert value to %s", this.fieldname, error[0].firstChild.nodeValue, this.menu.options[this.selectedIndex].innerHTML);
 			alert(error[0].firstChild.nodeValue);
 		}
 	}
@@ -290,7 +290,7 @@ vB_MagicSelect.prototype.populate_menu = function(ajax, nocreate)
 		this.open_menu();
 	}
 
-	vBulletin.console("vB_MagicSelect '%s' :: Populate Menu Completed (%s)", this.fieldname, (nocreate ? "Save" : "Load"));
+	vBulletin.console("vB_MagicSelect (%s) :: Populate Menu Completed (%s)", this.fieldname, (nocreate ? "Save" : "Load"));
 };
 
 /**
@@ -334,7 +334,7 @@ vB_MagicSelect.prototype.fetch_offset = function(obj)
 */
 vB_MagicSelect.prototype.open_menu = function()
 {
-	vBulletin.console("vB_MagicSelect '%s' :: open_menu()", this.fieldname);
+	vBulletin.console("vB_MagicSelect (%s) :: open_menu()", this.fieldname);
 
 	if (this.menu)
 	{
@@ -426,7 +426,7 @@ vB_MagicSelect.prototype.save_value = function(selectedIndex)
 {
 	var option = this.menu.options[selectedIndex];
 
-	vBulletin.console("vB_MagicSelect '%s' :: save_value(%s)", this.fieldname, option.value);
+	vBulletin.console("vB_MagicSelect (%s) :: save_value(%s)", this.fieldname, option.value);
 
 	this.deactivate_control();
 	this.close_menu();
@@ -449,7 +449,7 @@ vB_MagicSelect.prototype.save_value = function(selectedIndex)
 */
 vB_MagicSelect.prototype.save_complete = function(ajax)
 {
-	vBulletin.console("vB_MagicSelect '%s' :: save_complete()", this.fieldname);
+	vBulletin.console("vB_MagicSelect (%s) :: save_complete()", this.fieldname);
 
 	this.populate_menu(ajax, true);
 
@@ -463,7 +463,7 @@ vB_MagicSelect.prototype.set_value = function(selectedIndex)
 {
 	var option = this.menu.options[this.menu.selectedIndex]
 
-	vBulletin.console("vB_MagicSelect '%s' :: set_value(%s) = %s", this.fieldname, selectedIndex, option.innerHTML);
+	vBulletin.console("vB_MagicSelect (%s) :: set_value(%s) = %s", this.fieldname, selectedIndex, option.innerHTML);
 
 	this.selectedIndex = selectedIndex;
 	this.value_container.innerHTML = option.innerHTML;
@@ -476,7 +476,7 @@ vB_MagicSelect.prototype.set_value = function(selectedIndex)
 */
 vB_MagicSelect.prototype.set_temp_value = function(value)
 {
-	vBulletin.console("vB_MagicSelect '%s' :: set_temp_value(%s)", this.fieldname, value);
+	vBulletin.console("vB_MagicSelect (%s) :: set_temp_value(%s)", this.fieldname, value);
 
 	this.button.src = IMGDIR_MISC + "/13x13progress.gif";
 	this.value_container.innerHTML = value;
