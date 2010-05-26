@@ -61,7 +61,7 @@ class vB_Upload_Attachment_PtImporter extends vB_Upload_Attachment_Pt
 	function accept_upload(&$upload)
 	{
 		$this->error = '';
-		
+
 		$this->upload['filename'] = trim($upload['name']);
 		$this->upload['filesize'] = intval($upload['size']);
 		$this->upload['location'] = trim($upload['tmp_name']);
@@ -71,7 +71,7 @@ class vB_Upload_Attachment_PtImporter extends vB_Upload_Attachment_Pt
 
 		return true;
 	}
-	
+
 	/**
 	* Saves the upload using the information from the vB attachment
 	*/
@@ -97,7 +97,7 @@ class vB_Upload_Attachment_PtImporter extends vB_Upload_Attachment_Pt
 				$this->error =& $this->data->errors[0];
 			}
 		}
-		
+
 		// Correct visibility
 		$this->data->condition = sprintf($this->data->condition_construct[0], $result);
 		$this->data->set('visible', $this->attachinfo['visible']);

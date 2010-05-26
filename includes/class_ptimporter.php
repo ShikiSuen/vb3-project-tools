@@ -509,10 +509,7 @@ class vB_PtImporter
 		{
 			$db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
-					ptissueid = $issueid,
-					ptimportid = " . $vbulletin->userinfo['userid'] . ",
-					ptdateline = " . TIMENOW . ",
-					ptforwardmode = 0
+					ptissueid = $issueid
 				WHERE threadid = $threadid
 			");
 		}
@@ -521,9 +518,6 @@ class vB_PtImporter
 			$db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
 					ptissueid = $issueid,
-					ptimportid = " . $vbulletin->userinfo['userid'] . ",
-					ptdateline = " . TIMENOW . ",
-					ptforwardmode = 1,
 					open = 0
 				WHERE threadid = $threadid
 			");
