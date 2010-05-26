@@ -2524,6 +2524,7 @@ if ($_REQUEST['do'] == 'moveissue')
 }
 
 require_once(DIR . '/includes/functions_ptimporter.php');
+$threadinfo = verify_id('thread', $threadid, 1, 1);
 
 // #######################################################################
 if ($_POST['do'] == 'processimportthread')
@@ -2540,9 +2541,6 @@ if ($_POST['do'] == 'processimportthread')
 		'issuestatusid' => TYPE_UINT,
 		'milestoneid' => TYPE_UINT
 	));
-
-	// Doing last checks and required infos
-	$threadinfo = verify_id('thread', $threadid, 1, 1);
 
 	// Do our own checking to make sure we have all permissions needed to create issues
 	$project = ptimporter_verify_issuetypeid($vbulletin->GPC['issuetypeid'], $vbulletin->GPC['projectid']);
@@ -2567,8 +2565,6 @@ if ($_REQUEST['do'] == 'importthread2')
 	$vbulletin->input->clean_array_gpc('r', array(
 		'project-issuetype' => TYPE_NOHTML
 	));
-
-	$threadinfo = verify_id('thread', $threadid, 1, 1);
 
 	list($projectid, $issuetypeid) = explode('-', $vbulletin->GPC['project-issuetype']);
 
@@ -2757,7 +2753,7 @@ if ($_REQUEST['do'] == 'importthread')
 		$templater->register_page_templates();
 		$templater->register('navbar', $navbar);
 		$templater->register('project_type_select', $project_type_select);
-		$templater->register('threadid', $threadid);
+		$templater->register('threadinfo', $threadinfo);
 	print_output($templater->render());
 }
 ?>
