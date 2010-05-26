@@ -62,6 +62,14 @@ $actiontemplates = array(
 		'bbcode_quote',
 		'bbcode_video',
 	),
+	'importthread' => array(
+		'optgroup',
+		'pt_import_thread',
+	)
+	'importthread2' => array(
+		'optgroup',
+		'pt_import_thread_confirm',
+	)
 	'manageattach' => array(
 		'pt_manageattach'
 	),
