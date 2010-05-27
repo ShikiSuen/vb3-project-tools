@@ -510,6 +510,7 @@ class vB_PtImporter
 			$db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
 					ptissueid = $issueid
+					ptforwardmode = 0,
 				WHERE threadid = $threadid
 			");
 		}
@@ -518,6 +519,7 @@ class vB_PtImporter
 			$db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
 					ptissueid = $issueid,
+					ptforwardmode = 1,
 					open = 0
 				WHERE threadid = $threadid
 			");
