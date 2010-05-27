@@ -348,9 +348,9 @@ else if ($do == 'issue')
 		$note['postdate'] = vbdate($vbulletin->options['dateformat'], $note['dateline']);
 		$note['posttime'] = vbdate($vbulletin->options['timeformat'], $note['dateline']);
 
-		if ($vbulletin->options['wordwrap'] != 0)
+		if ($vbulletin->options['pt_wordwrap'] != 0)
 		{
-			$note['pagetext_simp'] = fetch_word_wrapped_string($note['pagetext_simp']);
+			$note['pagetext_simp'] = fetch_word_wrapped_string($note['pagetext_simp'], $vbulletin->options['pt_wordwrap']);
 		}
 
 		$note['pagetext_simp'] = fetch_censored_text($note['pagetext_simp']);
@@ -372,9 +372,9 @@ else if ($do == 'issue')
 	$issue['postdate'] = vbdate($vbulletin->options['dateformat'], $issue['dateline']);
 	$issue['posttime'] = vbdate($vbulletin->options['timeformat'], $issue['dateline']);
 
-	if ($vbulletin->options['wordwrap'] != 0)
+	if ($vbulletin->options['pt_wordwrap'] != 0)
 	{
-		$issue['pagetext_simp'] = fetch_word_wrapped_string($issue['pagetext_simp']);
+		$issue['pagetext_simp'] = fetch_word_wrapped_string($issue['pagetext_simp'], $vbulletin->options['pt_wordwrap']);
 	}
 
 	$issue['pagetext_simp'] = fetch_censored_text($issue['pagetext_simp']);

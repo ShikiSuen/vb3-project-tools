@@ -14,7 +14,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 
 // ##################### DEFINE IMPORTANT CONSTANTS #######################
-define('CVS_REVISION', '$Revision: 32878 $');
+define('CVS_REVISION', '$Revision$');
 
 // #################### PRE-CACHE TEMPLATES AND DATA ######################
 $phrasegroups = array('projecttools', 'cppermission', 'projecttoolsadmin');

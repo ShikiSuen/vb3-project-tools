@@ -23,8 +23,8 @@ require_once (DIR."/vb/search/core.php");
  * @package vBulletin
  * @subpackage Search
  * @author Kevin Sours, vBulletin Development Team
- * @version $Revision: 30444 $
- * @since $Date: 2009-04-23 15:02:08 -0700 (Thu, 23 Apr 2009) $
+ * @version $Revision$
+ * @since $Date$
  * @copyright Jelsoft Enterprises Ltd.
  */
 

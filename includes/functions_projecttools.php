@@ -403,10 +403,10 @@ function prepare_issue($issue)
 {
 	global $vbulletin, $vbphrase;
 
-	if ($vbulletin->options['wordwrap'] != 0)
+	if ($vbulletin->options['pt_wordwrap'] != 0)
 	{
-		$issue['title'] = fetch_word_wrapped_string($issue['title']);
-		$issue['summary'] = fetch_word_wrapped_string($issue['summary']);
+		$issue['title'] = fetch_word_wrapped_string($issue['title'], $vbulletin->options['pt_wordwrap']);
+		$issue['summary'] = fetch_word_wrapped_string($issue['summary'], $vbulletin->options['pt_wordwrap']);
 	}
 
 	$issue['title'] = fetch_censored_text($issue['title']);

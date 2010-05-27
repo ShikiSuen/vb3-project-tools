@@ -255,8 +255,8 @@ if ($_REQUEST['do'] == 'notehistory')
 		print_no_permission();
 	}
 
-	require_once(DIR . '/includes/class_bbcode.php');
-	$bbcode = new vB_BbCodeParser($vbulletin, fetch_tag_list());
+	require_once(DIR . '/includes/class_bbcode_pt.php');
+	$bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
 
 	require_once(DIR . '/includes/functions_pt_notehistory.php');
 
@@ -619,7 +619,7 @@ if ($_REQUEST['do'] == 'lastnote')
 // #######################################################################
 if ($_REQUEST['do'] == 'issue')
 {
-	require_once(DIR . '/includes/class_bbcode.php');
+	require_once(DIR . '/includes/class_bbcode_pt.php');
 	require_once(DIR . '/includes/class_pt_issuenote.php');
 
 	$vbulletin->input->clean_array_gpc('r', array(
@@ -875,7 +875,7 @@ if ($_REQUEST['do'] == 'issue')
 		''
 	);
 
-	$bbcode = new vB_BbCodeParser($vbulletin, fetch_tag_list());
+	$bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
 
 	$factory = new vB_Pt_IssueNoteFactory();
 	$factory->registry =& $vbulletin;

@@ -15,7 +15,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 @set_time_limit(0);
 
 // ##################### DEFINE IMPORTANT CONSTANTS #######################
-define('CVS_REVISION', '$Revision: 32878 $');
+define('CVS_REVISION', '$Revision$');
 @ini_set('display_errors', 'On');
 
 // #################### PRE-CACHE TEMPLATES AND DATA ######################

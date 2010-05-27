@@ -8748,6 +8748,10 @@ A value of 0 will hide the timeline from this page.]]></phrase>
 <br />
 A value of 0 will display all entries in the specified time range on one page.]]></phrase>
 			<phrase name="setting_pt_timelineperpage_title" date="1181652760" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Timeline Entries Per Page]]></phrase>
+			<phrase name="setting_pt_wordwrap_desc" date="1274973656" username="Ryan" version="2.1.1"><![CDATA[Project Tools often needs to wrap long unbroken text strings at a higher value than vBulletin does for posts. If you want the PT to automatically insert spaces into long words to make them wrap after a certain number of characters, set the number of characters in the box above.<br />
+<br />
+To disable word wrap, enter 0.]]></phrase>
+			<phrase name="setting_pt_wordwrap_title" date="1274973656" username="Ryan" version="2.1.1"><![CDATA[Number of Characters Before Wrapping Text]]></phrase>
 			<phrase name="settinggroup_projecttools" date="1169222341" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools Options]]></phrase>
 		</phrasetype>
 		<phrasetype name="Who's Online" fieldname="wol">
@@ -8827,6 +8831,10 @@ diff</defaultvalue>
 				<datatype>boolean</datatype>
 				<optioncode>yesno</optioncode>
 				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="pt_wordwrap" displayorder="150">
+				<datatype>integer</datatype>
+				<defaultvalue>100</defaultvalue>
 			</setting>
 		</settinggroup>
 		<settinggroup name="version" displayorder="0">

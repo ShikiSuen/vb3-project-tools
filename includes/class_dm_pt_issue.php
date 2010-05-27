@@ -153,9 +153,9 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		$clean_text = fetch_no_shouting_text(fetch_censored_text($clean_text));
 
 		// do word wrapping
-		if ($this->registry->options['wordwrap'] != 0)
+		if ($this->registry->options['pt_wordwrap'] != 0)
 		{
-			$clean_text = fetch_word_wrapped_string($clean_text);
+			$clean_text = fetch_word_wrapped_string($clean_text, $this->registry->options['pt_wordwrap']);
 		}
 
 		return true;

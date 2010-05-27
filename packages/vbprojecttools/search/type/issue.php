@@ -15,8 +15,8 @@
  * @package vBForum
  * @subpackage Search
  * @author Kevin Sours, vBulletin Development Team
- * @version $Revision: 30635 $
- * @since $Date: 2009-05-04 17:00:33 -0700 (Mon, 04 May 2009) $
+ * @version $Revision$
+ * @since $Date$
  * @copyright Jelsoft Enterprises Ltd.
  */
 
