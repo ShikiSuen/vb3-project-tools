@@ -24,7 +24,7 @@ require_once ( DIR . '/includes/class_bbcode.php' );
 
 class vB_BbCodeParser_Pt extends vB_BbCodeParser
 {
-	public function vB_BbCodeParser_Pt ( vB_Registry &$registry, &$tag_list = array ( ), $append_custom_tags = TRUE )
+	public function __construct ( vB_Registry &$registry, &$tag_list = array ( ), $append_custom_tags = TRUE )
 	{
 		parent::vB_BbCodeParser ( &$registry, &$tag_list, $append_custom_tags );
 	}
