@@ -82,7 +82,7 @@ class vB_PtImporter
 	* @param	array		Integer array containing the ids of the posts to import.
 	* @param	array		Integer array containing the ids of the attachments to import.
 	*/
-	function vB_PtImporter($threadinfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
+	function __construct($threadinfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
 	{
 		$this->threadinfo = $threadinfo;
 		$this->project = $project;
