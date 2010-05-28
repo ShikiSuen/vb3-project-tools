@@ -327,10 +327,14 @@ class vB_PtImporter
 	{
 		$this->attachmentids = array();
 
+		// Query to select adequate attachments
+		// vB4 switched from postid to contentid to be available in all parts of vB
+		// And added contenttypeid 1 to limit the selection to posts (security)
 		$attach_query = $this->registry->db->query_read("
 			SELECT attachmentid
 			FROM " . TABLE_PREFIX . "attachment AS attachment
-			WHERE postid IN (" . implode(',', $this->postids) . ")
+			WHERE contentid IN (" . implode(',', $this->postids) . ")
+				AND contenttypeid = 1
 			$attachlimit
 			ORDER BY dateline
 		");
