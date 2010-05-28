@@ -1010,16 +1010,6 @@ if ($db_alter->fetch_table_info('thread'))
 		'attributes' => 'unsigned'
 	));
 	$db_alter->add_field(array(
-		'name' => 'ptimportid',
-		'type' => 'int',
-		'attributes' => 'unsigned'
-	));
-	$db_alter->add_field(array(
-		'name' => 'ptdateline',
-		'type' => 'int',
-		'attributes' => 'unsigned'
-	));
-	$db_alter->add_field(array(
 		'name' => 'ptforwardmode',
 		'type' => 'int',
 		'attributes' => 'unsigned'
@@ -1030,14 +1020,12 @@ $db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('thread'))
 {
 	$db_alter->drop_field('ptissueid');
-	$db_alter->drop_field('ptimportid');
-	$db_alter->drop_field('ptdateline');
 	$db_alter->drop_field('ptforwardmode');
 }]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1274396041" username="thincom2000" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1274910225" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1048,11 +1036,11 @@ if ($db_alter->fetch_table_info('thread'))
 
 /* Code for all controls in PT - grey bar above all contents */
 .above_project_controls {
-	_background-image: none;
+	background-image: none;
 }
 
 .above_project_controls .popupgroup.projectpopups .popupmenu {
-	float: left;
+	float: {vb:stylevar left};
 }
 
 .above_project_controls .popupgroup.projectpopups .popupmenu a.popupctrl {
@@ -1060,13 +1048,13 @@ if ($db_alter->fetch_table_info('thread'))
 }
 
 .projectpopups a.popupctrl, .projectpopups.popupgroup .popupmenu a.popupctrl{
-	_display: inline;
+	display: inline;
 }
 
 .projectpopups li {
-	_display: block;
-	_float: {vb:stylevar left};
-	_clear: {vb:stylevar right};
+	display: block;
+	float: {vb:stylevar left};
+	clear: {vb:stylevar right};
 }
 
 .projectpopups .popupbody li {
@@ -1079,27 +1067,39 @@ if ($db_alter->fetch_table_info('thread'))
 }
 
 .pt_overview .blocksubhead .activeissues {
-
 	top: -16px;
+	margin-top: -20px;
 }
 
 .pt_overview .blocksubhead .lastpost {
 	top: -16px;
+	margin-top: -20px;
+}
+
+.pt_overview .blockrow {
+	width: 99.2% !important; /* This should be redone before 2.1.1 - displayed differntly on different resolutions */
 }
 
 .pt_overview .blockrow div {
 	display: inline;
 }
 
-.pt_overview .blockrow .projecttitle .statusicon {
-	{vb:stylevar left}: 65px! important;
+.pt_overview .blockrow .projectstatusicon {
+	float: {vb:stylevar left};
+}
+
+.pt_overview .blockrow .projecttitle {
+	float: {vb:stylevar left};
+	width: 61% !important;
 }
 
 .pt_overview .blockrow .projecttypecounts {
+	float: {vb:stylevar left};
 	top: -30px;
 }
 
 .pt_overview .blockrow .projectlastpost {
+	float: {vb:stylevar left};
 	top: -30px;
 }
 
@@ -1132,6 +1132,10 @@ if ($db_alter->fetch_table_info('thread'))
 	display: inline;
 }
 
+.pt_project .blockrow .projectdescription {
+	float: {vb:stylevar left};
+}
+
 .pt_project .blockrow .stats {
 	top: 0;
 }
@@ -1147,10 +1151,12 @@ if ($db_alter->fetch_table_info('thread'))
 
 .pt_reportlist .blocksubhead .ptreportlist_submittedby {
 	top: -16px;
+	margin-top: -16px;
 }
 
 .pt_reportlist .blocksubhead .ptreportlist_delete {
 	top: -16px;
+	margin-top: -16px;
 }
 
 .pt_reportlist .blockrow div {
@@ -1159,10 +1165,12 @@ if ($db_alter->fetch_table_info('thread'))
 
 .pt_reportlist .blockrow .ptreportlist_submittedby {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_reportlist .blockrow .ptreportlist_checkbox_del {
 	top: -30px;
+	margin-top: -30px;
 }
 
 /* Project issue list definitions */
@@ -1172,95 +1180,142 @@ if ($db_alter->fetch_table_info('thread'))
 	top: -7px;
 }
 
+.pt_issuelist .blocksubhead {
+	height: auto !important;
+	height: 24px;
+}
+
 .pt_issuelist .blocksubhead div {
 	display: inline;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_status {
 	top: -16px;
+	margin-top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_priority {
 	top: -16px;
+	margin-top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_replies {
 	top: -16px;
+	margin-top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_issuetype {
 	top: -16px;
+	margin-top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_lastpost {
 	top: -16px;
+	margin-top: -16px;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_notifications {
 	top: -16px;
+	margin-top: -16px;
 }
 
 .pt_issuelist .blockrow div {
 	display: inline;
 }
 
-.pt_issuelist .blockrow .ptissuelist_title .statusicon {
-	{vb:stylevar left}: 65px! important;
+.pt_issuelist .blockrow {
+	height: auto !important;
+	height: 30px;
 }
+
+.pt_issuelist .blockrow .ptissuelist_statusicon {
+	display: inline;
+	clear: {vb:stylevar right};
+	width: 30px;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title {
+	display: inline;
+	width: 33% !important;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .issuetitle {
+	float: {vb:stylevar left};
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .issueuser {
+	float: {vb:stylevar left};
+	clear: {vb:stylevar left};
+}
+
+/*.pt_issuelist .blockrow .ptissuelist_title .statusicon {
+	{vb:stylevar left}: 65px! important;
+}*/
 
 .pt_issuelist .blockrow .ptissuelist_icons {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_project {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_status {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_priority {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_replies {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_issuetype {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_lastpost {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_emptylastpost {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_notifications {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_checkbox {
 	top: -30px;
+	margin-top: -30px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_deleted {
 	top: -30px;
+	margin-top: -30px;
+}
+
+.pt_issuelist .blockrow .ptissuelist_icons_search, .pt_issuelist .blockrow .ptissuelist_status_search, .pt_issuelist .blockrow .ptissuelist_priority_search, .pt_issuelist .blockrow .ptissuelist_replies_search, .pt_issuelist .blockrow .ptissuelist_lastpost_search {
+	margin-top: -20px;
 }
 
 /* Issue definitions */
-#assignusers_container, #tags_container {
-	padding: 5px;
-}
-
 .bbcode_container {
 	width: auto;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1274686585" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1274908325" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1741,6 +1796,47 @@ a.firstunread, a.firstunread:hover
 	background-color: #E5E5E5;
 }
 
+.pt_issuelist .blockrow .ptissuelist_icons_search {
+	padding: 0 5px;
+	vertical-align: right;
+	width: 15%;
+	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+}
+
+.pt_issuelist .blockrow .ptissuelist_status_search {
+	padding: 0 5px;
+	vertical-align: middle;
+	width: 10%;
+	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+}
+
+.pt_issuelist .blockrow .ptissuelist_priority_search {
+	padding: 0 5px;
+	vertical-align: middle;
+	width: 8%;
+	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+}
+
+.pt_issuelist .blockrow .ptissuelist_replies_search {
+	padding: 0 5px;
+	vertical-align: middle;
+	width: 10%;
+	text-align: center;
+	float: {vb:stylevar right};
+}
+
+.pt_issuelist .blockrow .ptissuelist_lastpost_search {
+	padding: 0 5px;
+	vertical-align: middle;
+	width: 15%;
+	margin-top: -5px;
+	text-align: {vb:stylevar left};
+	float: {vb:stylevar right};
+}
+
 /* Project issue content definitions */
 #pt_issue_details {
 	float: {vb:stylevar right};
@@ -2176,7 +2272,7 @@ a.firstunread, a.firstunread:hover
 
 /* List builder box */
 .pt_listbuilder_box {
-	margin: 0 5px 5px 5px;
+	padding: 5px;
 }
 
 /* Search */
@@ -2374,31 +2470,12 @@ a.shade:active, a.shade:hover {
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_importthread" templatetype="template" date="1274533243" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread" templatetype="template" date="1274874697" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 	<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css" />
-	<title>{vb:var vboptions.bbtitle} - {vb:raw pagetitle}</title>
-	{vb:raw headinclude_bottom}
-</head>
-<body>
-
-{vb:raw header}
-{vb:raw navbar}
-
-{vb:raw HTML}
-
-{vb:raw footer}
-
-</body>
-</html>]]></template>
-		<template name="pt_import_thread" templatetype="template" date="1274618401" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
-<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
-<head>
-	{vb:raw headinclude}
-	<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css" />
-	<title>{vb:var vboptions.bbtitle} - {vb:raw pagetitle}</title>
+	<title>{vb:var vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase pt_create_issue}</title>
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -2407,28 +2484,28 @@ a.shade:active, a.shade:hover {
 {vb:raw navbar}
 
 <div id="pagetitle">
-	<h1>{vb:rawphrase create_pt_issue}</h1>
-	<p class="description">{vb:rawphrase issue_type}: <a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issue.issuetypeid}">{vb:raw issue.issuetype}</a> | {vb:rawphrase project}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a></p>
+	<h1>{vb:rawphrase pt_create_issue}</h1>
 </div>
 
-<form class="vbform block" action="projectpost.php?do=importthread2" method="post" name="vbform">
+<form class="vbform block" action="projectpost.php?do=importthread2&amp;t={vb:raw threadinfo.threadid}" method="post" name="vbform">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
-<input type="hidden" name="t" value="{vb:raw threadid}" />
+<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+<input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
 <input type="hidden" name="do" value="importthread2" />
 
-	<h2 class="blockhead">{vb:rawphrase create_pt_issue}</h2>
+	<h2 class="blockhead">{vb:rawphrase pt_create_issue}</h2>
 
 	<div class="blockbody formcontrols">
 		<div class="blocksubhead">
-			<span class="normal">{vb:rawphrase select_target_project}</span>
+			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw threadinfo.title}</span>
 		</div>
 		<div class="section">
 			<div class="blockrow">
-				<label for="project-issuetype">{vb:phrase select_target_project_description}</label>
+				<label for="project-issuetype">{vb:phrase new_project_and_issue_type}</label>
 				<ul class="group rightcol">
 					<li>
 						<select id="project-issuetype" name="project-issuetype" style="display: block; width: 100%">
-							{vb:raw projectbits}
+							{vb:raw project_type_select}
 						</select>
 					</li>
 				</ul>
@@ -2447,12 +2524,12 @@ a.shade:active, a.shade:hover {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_thread_confirm" templatetype="template" date="1274618410" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread_confirm" templatetype="template" date="1274874680" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 	<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css" />
-	<title>{vb:var vboptions.bbtitle} - {vb:raw pagetitle}</title>
+	<title>{vb:var vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase pt_create_issue}</title>
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -2460,153 +2537,157 @@ a.shade:active, a.shade:hover {
 {vb:raw header}
 {vb:raw navbar}
 
-<form method="post" action="projectpost.php?do=processimportthread">
-<table class="tborder" cellpadding="6" cellspacing="1" border="0" width="100%" align="center">
-<tr align="{vb:stylevar left}">
-	<th class="tcat">
-		<div class="normal smallfont" style="float:{vb:stylevar right}">
-			<span class="shade">{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectinfo.projectid}">{vb:raw project.projectinfo.title_clean}</a>
-			<span class="shade">{vb:rawphrase issue_type}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectinfo.projectid}&amp;issuetypeid={vb:raw issuetype.id}">{vb:raw issuetype.title}</a>
-		</div>
-		{vb:rawphrase create_pt_issue}
-	</th>
-</tr>
-<tr>
-	<td class="thead">{vb:rawphrase post_new_issue}</td>
-</tr>
-<tr>
-	<td class="panelsurround" align="center">
-	<div class="panel">
-		<div style="width:640px" align="{vb:var stylevar.left}">
-		
-			<div style="clear:both"></div>
-			
-			<table border="0" cellspacing="0" cellpadding="0" style="margin-top:3px">
-			<tr>
-				<td class="smallfont"><label for="input_issue_title">{vb:rawphrase title}</label></td>
-			</tr>
-			<tr>
-				<td><input name="title" id="input_issue_title" type="text" class="bginput" value="{vb:raw threadinfo.title}" size="50" tabindex="1" /></td>
-			</tr>
-			<tr>
-				<td class="smallfont" align="{vb:stylevar right}"><a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_how_post" target="_blank">{vb:rawphrase what_makes_good_issue_description}</a></td>
-			</tr>
-			</table>
-			
-			<div style="margin-top:3px">
-				<label class="smallfont">{vb:rawphrase summary}
-					<input name="summary" type="text" class="bginput" style="display:block" value="" size="50" tabindex="1" />
-				</label>
-			</div>
-			
-			<table cellpadding="0" cellspacing="0" border="0">
-			<tr valign="top">
-				<td>		
-					<div style="margin-top:3px">
-						<label class="smallfont">{vb:rawphrase project}
-							<div>{vb:raw project.projectinfo.title_clean}</div>
-						</label>					
-					</div>
-					
-					<!-- priority -->
-					<div style="margin-top:3px">
-						<label class="smallfont">{vb:rawphrase priority}
-							<select name="priority" style="display:block; width:200px" tabindex="2">
-								<option value="0">{vb:rawphrase priority_0}</option>
-								<option value="1">{vb:rawphrase priority_1}</option>
-								<option value="2">{vb:rawphrase priority_2}</option>
-								<option value="3">{vb:rawphrase priority_3}</option>
-								<option value="4">{vb:rawphrase priority_4}</option>
-								<option value="5">{vb:rawphrase priority_5}</option>
-								<option value="6">{vb:rawphrase priority_6}</option>
-								<option value="7">{vb:rawphrase priority_7}</option>
-								<option value="8">{vb:rawphrase priority_8}</option>
-								<option value="9">{vb:rawphrase priority_9}</option>
-								<option value="10">{vb:rawphrase priority_10}</option>
-							</select>
-						</label>
-					</div>
-					
-					<vb:if condition="$category_options">
-					<!-- category -->
-					<div style="margin-top:3px">
-						<label class="smallfont">{vb:rawphrase category}
-							<select name="projectcategoryid" style="display:block; width:200px" tabindex="2">
-								<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
-								{vb:raw category_options}
-							</select>
-						</label>
-					</div>
-					</vb:if>
-					
-				</td>
-				<td width="15">&nbsp;</td>
-				<td>	
-				<div style="margin-top:3px">
-					<label class="smallfont">{vb:rawphrase issue_type}
-						<div>{vb:raw issuetype.title}</div>
-					</label>		
-				</div>
-				
-				<!-- status -->
-				<div style="margin-top:3px">
-					<label class="smallfont">{vb:rawphrase status}
-						<select name="issuestatusid" style="display:block; width:200px" tabindex="2">{vb:raw status_options}</select>
-					</label>
-				</div>
-				
-				<vb:if condition="$version_options">
-				<!-- applies to version -->
-				<div style="margin-top:3px">
-					<label class="smallfont">{vb:rawphrase applies_version_issuetype}
-						<select name="appliesversionid" style="display:block; width:200px" tabindex="2">
-							<option value="0">{vb:phrase unknown}</option>
-							{vb:raw version_options}
-						</select>
-					</label>
-				</div>
-				</vb:if>
-				
-				<!-- addressed in version -->
-				<div style="margin-top:3px">
-					<label class="smallfont">{vb:phrase addressed_version_issuetype}
-						<select name="addressedversionid" style="display:block; width:200px" tabindex="2">
-							<option value="0">{vb:rawphrase none_meta}</option>
-							<option value="-1">{vb:rawphrase next_release}</option>
-							{vb:raw version_options}
-						</select>
-					</label>
-				</div>
-				</td>
-			</tr>
-			</table>
+<div id="pagetitle">
+	<h1>{vb:rawphrase pt_create_issue}</h1>
+	<p class="description">{vb:rawphrase issue_type}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issuetypeid}">{vb:raw issuetype}</a> | {vb:rawphrase project}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a></p>
+</div>
 
-			<vb:if condition="$show['assign_checkbox']">
-				<div style="margin-top:3px" class="smallfont">
-					<label><input type="checkbox" name="assignself" value="1" tabindex="1"{vb:raw assign_checkbox_checked} />{vb:rawphrase assign_yourself_to_issue}</label>
-				</div>
+<form class="vbform block" method="post" action="projectpost.php?do=processimportthread&amp;t={vb:raw threadinfo.threadid}">
+<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+<input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
+<input type="hidden" name="issuetypeid" value="{vb:raw issuetypeid}" />
+<input type="hidden" name="do" value="processimportthread" />
+<input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
+
+	<h2 class="blockhead">{vb:rawphrase post_new_issue}</h2>
+
+	<div class="blockbody formcontrols">
+		<div class="blocksubhead">
+			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw threadinfo.title}</span>
+		</div>
+		<div class="section">
+			<div class="blockrow">
+				<label class="full" for="input_issue_title">{vb:rawphrase title}</label>
+				<input name="title" id="input_issue_title" type="text" class="primary full textbox" value="{vb:raw threadinfo.title}" size="50" tabindex="1" />
+			</div>
+
+			<div class="blockrow">
+				<label class="full" for="input_issue_sumary">{vb:rawphrase summary}</label>
+				<input name="summary" id="input_issue_summary" type="text" class="primary full textbox" value="" size="50" tabindex="1" />
+			</div>
+
+			<fieldset class="blockrow">
+				<legend>{vb:rawphrase project}</legend>
+				<div class="rightcol">{vb:raw project.title_clean}</div>
+			</fieldset>
+
+			<fieldset class="blockrow">
+				<legend>{vb:rawphrase priority}:</legend>
+				<ul class="rightcol">
+					<li>
+						<select class="primary" name="priority" tabindex="1">
+							<option value="0" {vb:raw priority_selected.0}>{vb:rawphrase priority_0}</option>
+							<option value="1" {vb:raw priority_selected.1}>{vb:rawphrase priority_1}</option>
+							<option value="2" {vb:raw priority_selected.2}>{vb:rawphrase priority_2}</option>
+							<option value="3" {vb:raw priority_selected.3}>{vb:rawphrase priority_3}</option>
+							<option value="4" {vb:raw priority_selected.4}>{vb:rawphrase priority_4}</option>
+							<option value="5" {vb:raw priority_selected.5}>{vb:rawphrase priority_5}</option>
+							<option value="6" {vb:raw priority_selected.6}>{vb:rawphrase priority_6}</option>
+							<option value="7" {vb:raw priority_selected.7}>{vb:rawphrase priority_7}</option>
+							<option value="8" {vb:raw priority_selected.8}>{vb:rawphrase priority_8}</option>
+							<option value="9" {vb:raw priority_selected.9}>{vb:rawphrase priority_9}</option>
+							<option value="10" {vb:raw priority_selected.10}>{vb:rawphrase priority_10}</option>
+						</select>
+					</li>
+				</ul>
+			</fieldset>
+
+			<!-- category -->
+			<fieldset class="blockrow">
+				<legend>{vb:rawphrase category}</legend>
+				<ul class="rightcol">
+					<li>
+						<select name="projectcategoryid" style="display:block; width:200px" tabindex="1">
+							<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
+							{vb:raw category_options}
+						</select>
+					</li>
+				</ul>
+			</fieldset>
+
+			<fieldset class="blockrow">
+				<legend>{vb:rawphrase issue_type}</legend>
+				<ul class="rightcol">
+					<li>
+						{vb:raw issuetype}
+					</li>
+				</ul>
+			</fieldset>
+
+			<!-- status -->
+			<fieldset class="blockrow">
+				<legend>{vb:rawphrase status}</legend>
+				<ul class="rightcol">
+					<li>
+						<vb:if condition="$show['status_edit']">
+							<select name="issuestatusid" style="display:block; width:200px" tabindex="1">{vb:raw status_options}</select>
+						<vb:else />
+							{vb:raw status_options}
+						</vb:if>
+					</li>
+				</ul>
+			</fieldset>
+
+			<!-- applies to version -->
+			<fieldset class="blockrow">
+				<legend>{vb:rawphrase applicable_version}</legend>
+				<ul class="rightcol">
+					<li>
+						<select name="appliesversionid" style="display:block; width:200px" tabindex="1">
+							<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
+							{vb:raw applies_versions}
+						</select>
+					</li>
+				</ul>
+			</fieldset>
+
+			<!-- addressed in version -->
+			<fieldset class="blockrow">
+				<legend>{vb:rawphrase addressed_version}</legend>
+				<ul class="rightcol">
+					<li>
+						<select name="addressedversionid" style="display:block; width:200px" tabindex="1">
+							<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
+							<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+							{vb:raw addressed_versions}
+						</select>
+					</li>
+				</ul>
+			</fieldset>
+
+			<vb:if condition="$show['milestone']">
+			<!-- milestone -->
+			<fieldset class="blockrow">
+				<legend>{vb:rawphrase milestone}</legend>
+				<ul class="rightcol">
+					<li>
+						<vb:if condition="$show['milestone_edit']">
+						<select name="milestoneid" style="display:block; width:200px" tabindex="1">
+							{vb:raw milestone_options}
+						</select>
+						<vb:else />
+							{vb:raw issue.milestonetitle}
+						</vb:if>
+					</li>
+				</ul>
+			</fieldset>
 			</vb:if>
 		</div>
 	</div>
-	<div style="margin-top:6px">
-		<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
-		<input type="hidden" name="do" value="processimportthread" />
-		<input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
-		<input type="hidden" name="issuetypeid" value="{vb:raw issuetype.id}" />
-		<input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
-		<input type="submit" class="button" tabindex="1" value="{vb:rawphrase save}" accesskey="s" />
-		<input type="reset" class="button" value="{vb:rawphrase reset_fields}" accesskey="r" />
+	<div class="blockfoot actionbuttons">
+		<div class="group">
+			<input type="submit" class="button" value="{vb:rawphrase save}" accesskey="s" />
+			<input type="reset" class="button" value="{vb:rawphrase reset_fields}" accesskey="r" />
+		</div>
 	</div>
-	</td>
-</tr>
-</table>
 </form>
 
 {vb:raw footer}
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1274820381" username="Jeremy" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1274882359" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3085,11 +3166,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<div class="blockhead">
 		{vb:rawphrase assigned_users}
 	</div>
-	<div class="blockbody settings_form_border" id="assignusers_container">
-		<div class="section">
-			<div class="blockrow">
-				<img src="{vb:stylevar imgdir_misc}/progress.gif" class="inlineimg" alt="{vb:rawphrase loading}" /> {vb:rawphrase please_wait}
-			</div>
+	<div class="blockbody settings_form_border pt_listbuilder_box" id="assignusers_container">
+		<div class="blockrow">
+			<img src="{vb:stylevar imgdir_misc}/progress.gif" class="inlineimg" alt="{vb:rawphrase loading}" /> {vb:rawphrase please_wait}
 		</div>
 	</div>
 </div>
@@ -3100,11 +3179,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<div class="blockhead">
 		{vb:rawphrase tags}
 	</div>
-	<div class="blockbody settings_form_border" id="tags_container">
-		<div class="section">
-			<div class="blockrow">
-				<img src="{vb:stylevar imgdir_misc}/progress.gif" class="inlineimg" alt="{vb:rawphrase loading}" /> {vb:rawphrase please_wait}
-			</div>
+	<div class="blockbody settings_form_border pt_listbuilder_box" id="tags_container">
+		<div class="blockrow">
+			<img src="{vb:stylevar imgdir_misc}/progress.gif" class="inlineimg" alt="{vb:rawphrase loading}" /> {vb:rawphrase please_wait}
 		</div>
 	</div>
 </div>
@@ -3114,7 +3191,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1274618779" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
+		<template name="pt_issuebit" templatetype="template" date="1274908046" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -3123,11 +3200,11 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</vb:if>
 	</div>
 	<div class="ptissuelist_title">
-		<div>
+		<div class="issuetitle">
 			<vb:if condition="$issue['newflag']"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.png" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
 			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
 		</div>
-		<div class="smallfont">
+		<div class="issueuser smallfont">
 			<vb:if condition="$show['issuebit_project_title']">
 				<div class="shade" style="float: {vb:stylevar right}; white-space: nowrap">{vb:raw issue.title_clean}</div>
 			</vb:if>
@@ -3535,7 +3612,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </div>
 
 <br />]]></template>
-		<template name="pt_issuenotebit_system" templatetype="template" date="1273007253" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<!-- note system -->
+		<template name="pt_issuenotebit_system" templatetype="template" date="1274872748" username="Pitchoune" version="2.1.1"><![CDATA[<!-- note system -->
 <div class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
@@ -3544,7 +3621,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<div class="blockrow">
 			<span class="bigusername"><vb:if condition="$note['userid']">{vb:rawphrase issue_changed_by_x, {vb:raw note.username}}<vb:else />{vb:rawphrase issue_changed_by_system}</vb:if></span>
 		</div>
-		<div class="blockrow">
+		<div class="blockrow issuetext">
 			<div class="restore">
 				<ul style="margin-top: 0px;">{vb:raw note.message}</ul>
 			</div>
@@ -4799,7 +4876,7 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1274643126" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1274912206" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -4838,10 +4915,10 @@ init_project_readmarker_system();
 					<dd id="delete_deps">
 						<ul class="group checkradio">
  							<li>
-								<label for="deltype_hard"><input type="radio" id="deltype_hard" class="dep_ctrl" name="deletepost" value="hard" tabindex="1" /> {vb:rawphrase hard_delete}</label>
+								<label for="deltype_hard"><input type="radio" id="deltype_hard" class="dep_ctrl" name="delete" value="hard" tabindex="1" /> {vb:rawphrase hard_delete}</label>
 							</li>
 							<li>
-								<label for="deltype_soft"><input type="radio" id="deltype_soft" class="dep_ctrl" name="deletepost" value="soft" tabindex="1" /> {vb:rawphrase soft_delete}</label>
+								<label for="deltype_soft"><input type="radio" id="deltype_soft" class="dep_ctrl" name="delete" value="soft" tabindex="1" /> {vb:rawphrase soft_delete}</label>
 							</li>
 						</ul>
 					</dd>
@@ -5297,7 +5374,7 @@ init_project_readmarker_system();
 		{vb:raw typename}
 	</a>
 </li>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1274640039" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postreply" templatetype="template" date="1274912226" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5337,8 +5414,8 @@ init_project_readmarker_system();
 					<dt><label for="delete"><input type="checkbox" class="dep_ctrl" id="delete" name="dodelete" value="1" tabindex="1" />&nbsp;{vb:rawphrase delete_post_in_manner}</label></dt>
 					<dd id="delete_deps">
 						<ul class="group checkradio">
- 							<li><label for="deltype_hard"><input type="radio" id="deltype_hard" class="dep_ctrl" name="deletepost" value="hard" tabindex="1" /> {vb:rawphrase hard_delete}</label></li>
-							<li><label for="deltype_soft"><input type="radio" id="deltype_soft" class="dep_ctrl" name="deletepost" value="soft" tabindex="1" /> {vb:rawphrase soft_delete}</label>
+ 							<li><label for="deltype_hard"><input type="radio" id="deltype_hard" class="dep_ctrl" name="delete" value="hard" tabindex="1" /> {vb:rawphrase hard_delete}</label></li>
+							<li><label for="deltype_soft"><input type="radio" id="deltype_soft" class="dep_ctrl" name="delete" value="soft" tabindex="1" /> {vb:rawphrase soft_delete}</label>
 							</li>
 						</ul>
 					</dd>
@@ -5526,7 +5603,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1274650881" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1274909056" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5665,7 +5742,7 @@ init_project_readmarker_system();
 		</div>
 
 		<div class="blockrow table">
-			<div class="restore td">{vb:raw project.description}</div>
+			<div class="projectdescription restore td">{vb:raw project.description}</div>
 			<div class="stats td">
 				<ul>
 					{vb:raw type_counts}
@@ -6379,7 +6456,7 @@ init_project_readmarker_system();
 {vb:raw errorbits}
 </ul>]]></template>
 		<template name="pt_searcherrorbit" templatetype="template" date="1273444813" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw error}</li>]]></template>
-		<template name="pt_searchresultbit" templatetype="template" date="1274619436" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
+		<template name="pt_searchresultbit" templatetype="template" date="1274909023" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
 	</div>
@@ -6389,7 +6466,7 @@ init_project_readmarker_system();
 			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
 		</div>
 	</div>
-	<div class="ptissuelist_lastpost smallfont">
+	<div class="ptissuelist_lastpost_search smallfont">
 		{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
 		<p>
 			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
@@ -6402,16 +6479,16 @@ init_project_readmarker_system();
 		//-->
 		</script>
 	</div>
-	<div class="ptissuelist_replies smallfont">
+	<div class="ptissuelist_replies_search smallfont">
 		{vb:raw issue.replycount}
 	</div>
-	<div class="ptissuelist_priority smallfont">
+	<div class="ptissuelist_priority_search searchiefix smallfont">
 		<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
 	</div>
-	<div class="ptissuelist_status smallfont">
+	<div class="ptissuelist_status_search smallfont">
 		<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
 	</div>
-	<div class="ptissuelist_icons">
+	<div class="ptissuelist_icons_search">
 		<div>
 			<div class="smallfont" style="float: {vb:stylevar right}">
 				<vb:if condition="$issue['isassigned']"><img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" /></vb:if>
@@ -7650,12 +7727,11 @@ foreach($do AS $field)
 	case 'forumdisplay':
 		if ($vbulletin->options['pt_hasprojectforums'])
 		{
-			$GLOBALS['phrasegroups'][] = 'projecttools';
-
 			$datastore_fetch[] = "'pt_bitfields'";
 			$datastore_fetch[] = "'pt_permissions'";
 			$datastore_fetch[] = "'pt_projects'";
 		}
+		$GLOBALS['phrasegroups'][] = 'projecttools';
 		break;
 
 	case 'usercp':
@@ -7667,6 +7743,9 @@ foreach($do AS $field)
 		$datastore_fetch[] = "'pt_issuestatus'";
 		$datastore_fetch[] = "'pt_issuetype'";
 		$datastore_fetch[] = "'pt_permissions'";
+		break;
+	case 'showthread':
+		$GLOBALS['phrasegroups'][] = 'projecttools';
 		break;
 }]]></phpcode>
 		</plugin>
@@ -7770,12 +7849,21 @@ $template_hook['headinclude_bottom_css'] .= $templater->render();]]></phpcode>
 			<phpcode><![CDATA[// TODO: this could have its own permission in moderation for future
 $show['createptissue'] = can_moderate($threadinfo['forumid'], 'canmanagethreads') AND can_moderate($threadinfo['forumid'], 'canremoveposts');
 
-$show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];]]></phpcode>
+$show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];
+
+// Display the link in showthread
+// I hope future vB versions will add a template_hook in this place
+// as this code is not completely useful (can slow a page load)
+
+if ($show['createptissue'])
+{
+	$vbulletin->templatecache['SHOWTHREAD'] = str_replace('<li class="formsubmit">', '<li><label><input type="radio" name="do" value="createptissue" /> ' . $vbphrase['pt_create_issue'] . '&hellip;</label></li><li class="formsubmit">', $vbulletin->templatecache['SHOWTHREAD']);
+}]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
 			<title>Show Thread: Redirect to Project Tools if thread has been moved</title>
 			<hookname>showthread_getinfo</hookname>
-			<phpcode><![CDATA[if (intval($thread['ptissueid']) > 0 AND $thread['ptforwardmode'])
+			<phpcode><![CDATA[if (intval($thread['ptissueid']) > 0 AND $thread['ptforwardmode'] == 1)
 {
 	exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$thread[ptissueid]");
 }]]></phpcode>
@@ -7790,7 +7878,7 @@ $show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];]]></php
 			<hookname>threadbit_display</hookname>
 			<phpcode><![CDATA[if (intval($thread['ptissueid']) > 0 AND $thread['ptforwardmode'] == 1)
 {
-	if ($vbulletin->options['pt_import_extendedthreadprefix'])
+	if ($vbulletin->options['ptimporter_extendedthreadprefix'])
 	{
 		$ptissueinfo = $db->query_first_slave("
 			SELECT
@@ -8169,6 +8257,8 @@ If you wish to continue this action, <a href="{1}">click here to try again</a>.]
 			<phrase name="pt_petition_status_invalid" date="1172239028" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You did not select a valid petition status.]]></phrase>
 			<phrase name="pt_search_field_x_unknown" date="1173175606" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Invalid search field {1} specified.]]></phrase>
 			<phrase name="tags_deleted" date="1168607107" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Tags Deleted]]></phrase>
+			<phrase name="there_is_no_project_you_can_create_issues_in" date="1274871343" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no project you can create issues in.]]></phrase>
+			<phrase name="there_is_no_type_you_can_create_issues_in" date="1274871359" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no issue type in this project you can create issues in.]]></phrase>
 			<phrase name="type_must_have_one_status" date="1176210879" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Each issue type must have at least one status.]]></phrase>
 		</phrasetype>
 		<phrasetype name="FAQ Text" fieldname="faqtext">
@@ -8214,6 +8304,10 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="pt_faq_how_post" date="1176396643" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What makes a good issue description?]]></phrase>
 			<phrase name="pt_faq_private" date="1176396652" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What does it mean to make something private? When should I do this?]]></phrase>
 			<phrase name="pt_faq_report" date="1176812007" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What are reports? How do I use them?]]></phrase>
+		</phrasetype>
+		<phrasetype name="Forum Display" fieldname="forumdisplay">
+			<phrase name="pt_import_threadprefix" date="1274871230" username="Pitchoune" version="2.1.1"><![CDATA[Project Tools:]]></phrase>
+			<phrase name="pt_import_threadprefix_extended" date="1274871219" username="Pitchoune" version="2.1.1"><![CDATA[{2} in project {1}:]]></phrase>
 		</phrasetype>
 		<phrasetype name="Front-End Redirect Messages" fieldname="frontredirect">
 			<phrase name="project_markread" date="1210949080" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[This project or issue type has been marked read successfully.]]></phrase>
@@ -8404,6 +8498,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="project_subscriptions" date="1211555542" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Subscriptions]]></phrase>
 			<phrase name="project_timeline" date="1174484010" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Timeline]]></phrase>
 			<phrase name="project_tools" date="1174388807" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools]]></phrase>
+			<phrase name="pt_create_issue" date="1274869090" username="Pitchoune" version="2.1.1"><![CDATA[Create issue]]></phrase>
 			<phrase name="public_reports" date="1175173202" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Public Reports]]></phrase>
 			<phrase name="quick_reply" date="1175076770" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Quick Reply]]></phrase>
 			<phrase name="reason_for_edit_delete" date="1175078274" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Reason for edit / delete]]></phrase>
@@ -8451,6 +8546,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="system_message_attachment_deleted" date="1171983644" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Attachment </span> <em>{3}</em> <span class="shade">deleted</span>]]></phrase>
 			<phrase name="system_message_attachment_uploaded" date="1171983636" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Attachment </span> <em>{3}</em> <span class="shade">uploaded</span>]]></phrase>
 			<phrase name="system_message_default" date="1169740935" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">{1} changed from</span> <em>{2}</em> <span class="shade">to</span> <em>{3}</em>]]></phrase>
+			<phrase name="system_message_issue_imported" date="1274871283" username="Pitchoune" version="2.1.1"><![CDATA[<span class="shade">Issue imported from thread</span> <em>{3}</em>.]]></phrase>
 			<phrase name="system_message_milestoneid" date="1213093821" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[<span class="shade">Milestone changed</span>]]></phrase>
 			<phrase name="system_message_projectcategoryid" date="1172156916" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Category changed from</span> <em>{2}</em> <span class="shade">to</span> <em>{3}</em>]]></phrase>
 			<phrase name="system_message_tags" date="1171983040" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Tags modified</span>]]></phrase>
@@ -8748,10 +8844,18 @@ A value of 0 will hide the timeline from this page.]]></phrase>
 <br />
 A value of 0 will display all entries in the specified time range on one page.]]></phrase>
 			<phrase name="setting_pt_timelineperpage_title" date="1181652760" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Timeline Entries Per Page]]></phrase>
-			<phrase name="setting_pt_wordwrap_desc" date="1274973656" username="Ryan" version="2.1.1"><![CDATA[Project Tools often needs to wrap long unbroken text strings at a higher value than vBulletin does for posts. If you want the PT to automatically insert spaces into long words to make them wrap after a certain number of characters, set the number of characters in the box above.<br />
-<br />
-To disable word wrap, enter 0.]]></phrase>
-			<phrase name="setting_pt_wordwrap_title" date="1274973656" username="Ryan" version="2.1.1"><![CDATA[Number of Characters Before Wrapping Text]]></phrase>
+			<phrase name="setting_ptimporter_createnotice_desc" date="1274870888" username="Pitchoune" version="2.1.1"><![CDATA[If true, a notice will be created showing the title of the original thread and the user and the date the thread was imported.]]></phrase>
+			<phrase name="setting_ptimporter_createnotice_title" date="1274870888" username="Pitchoune" version="2.1.1"><![CDATA[Import Threads - Create import notice]]></phrase>
+			<phrase name="setting_ptimporter_extendedthreadprefix_desc" date="1274872438" username="Pitchoune" version="2.1.1"><![CDATA[If you enable this option, the thread prefix will be generated using the <strong>pt_importhread_threadprefix_extended</strong> phrase which can contain project title and issue type. This currently requires one additional query per visible redirector.
+<br /><br />
+If disabled, the <strong>pt_importhread_threadprefix</strong> phrase will be used.]]></phrase>
+			<phrase name="setting_ptimporter_extendedthreadprefix_title" date="1274872438" username="Pitchoune" version="2.1.1"><![CDATA[Import Threads - Show dynamic thread prefix]]></phrase>
+			<phrase name="setting_ptimporter_ignoreattachlimits_desc" date="1274870851" username="Pitchoune" version="2.1.1"><![CDATA[If this is set to true, attachments which do not comply to the limits set in the project tools options will be imported.]]></phrase>
+			<phrase name="setting_ptimporter_ignoreattachlimits_title" date="1274870851" username="Pitchoune" version="2.1.1"><![CDATA[Import Threads - Ignore Attachment Limits]]></phrase>
+			<phrase name="setting_ptimporter_keepthreads_desc" date="1274872359" username="Pitchoune" version="2.1.1"><![CDATA[If you set this to yes, the thread will be copied to the project tools, but will not be touched otherwise. If you set this to no, the thread will be closed. The thread will still be shown in forumdisplay, but forward to the project tools issue.
+<br /><br />
+This setting will only affect threads imported in the future.]]></phrase>
+			<phrase name="setting_ptimporter_keepthreads_title" date="1274872359" username="Pitchoune" version="2.1.1"><![CDATA[Import Threads - Keep original threads intact]]></phrase>
 			<phrase name="settinggroup_projecttools" date="1169222341" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools Options]]></phrase>
 		</phrasetype>
 		<phrasetype name="Who's Online" fieldname="wol">
@@ -8832,9 +8936,25 @@ diff</defaultvalue>
 				<optioncode>yesno</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="pt_wordwrap" displayorder="150">
-				<datatype>integer</datatype>
-				<defaultvalue>100</defaultvalue>
+			<setting varname="ptimporter_createnotice" displayorder="150">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>1</defaultvalue>
+			</setting>
+			<setting varname="ptimporter_extendedthreadprefix" displayorder="150">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="ptimporter_ignoreattachlimits" displayorder="150">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="ptimporter_keepthreads" displayorder="150">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
 			</setting>
 		</settinggroup>
 		<settinggroup name="version" displayorder="0">
