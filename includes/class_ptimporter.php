@@ -25,6 +25,13 @@ if (!isset($GLOBALS['vbulletin']->db))
 class vB_PtImporter
 {
 	/**
+	 * The vBulletin Registry
+	 * 
+	 * @var	vB_Registry object
+	 */
+	public $registry = NULL;
+
+	/**
 	* The threadinfo of the source thread
 	*
 	* @var	array
@@ -82,8 +89,9 @@ class vB_PtImporter
 	* @param	array		Integer array containing the ids of the posts to import.
 	* @param	array		Integer array containing the ids of the attachments to import.
 	*/
-	function __construct($threadinfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
+	function __construct(vB_Registry &$registry, $threadinfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
 	{
+		$this->registry = &$registry;
 		$this->threadinfo = $threadinfo;
 		$this->project = $project;
 
@@ -149,20 +157,18 @@ class vB_PtImporter
 	*/
 	function execute_import_issue()
 	{
-		global $vbulletin, $db;
-
 		// prepare issue
-		$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_ARRAY);
+		$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_ARRAY);
 		$issuedata->set_info('project', $this->project);
 
-		$issuedata->set('title', $vbulletin->GPC['title']);
-		$issuedata->set('summary', $vbulletin->GPC['summary']);
-		$issuedata->set('issuestatusid', $vbulletin->GPC['issuestatusid']);
-		$issuedata->set('priority', $vbulletin->GPC['priority']);
-		$issuedata->set('projectcategoryid', $vbulletin->GPC['projectcategoryid']);
-		$issuedata->set('appliesversionid', $vbulletin->GPC['appliesversionid']);
+		$issuedata->set('title', $this->registry->GPC['title']);
+		$issuedata->set('summary', $this->registry->GPC['summary']);
+		$issuedata->set('issuestatusid', $this->registry->GPC['issuestatusid']);
+		$issuedata->set('priority', $this->registry->GPC['priority']);
+		$issuedata->set('projectcategoryid', $this->registry->GPC['projectcategoryid']);
+		$issuedata->set('appliesversionid', $this->registry->GPC['appliesversionid']);
 
-		switch ($vbulletin->GPC['addressedversionid'])
+		switch ($this->registry->GPC['addressedversionid'])
 		{
 			case -1:
 				$issuedata->set('isaddressed', 1);
@@ -174,13 +180,13 @@ class vB_PtImporter
 				break;
 			default:
 				$issuedata->set('isaddressed', 1);
-				$issuedata->set('addressedversionid', $vbulletin->GPC['addressedversionid']);
+				$issuedata->set('addressedversionid', $this->registry->GPC['addressedversionid']);
 				break;
 		}
 
 		$issuedata->set('projectid', $this->project['projectid']);
-		$issuedata->set('issuetypeid', $vbulletin->GPC['issuetypeid']);
-		$issuedata->set('milestoneid', $vbulletin->GPC['milestoneid']);
+		$issuedata->set('issuetypeid', $this->registry->GPC['issuetypeid']);
+		$issuedata->set('milestoneid', $this->registry->GPC['milestoneid']);
 		$issuedata->set('submituserid', $this->threadinfo['postuserid']);
 		$issuedata->set('submitusername', $this->threadinfo['postusername']);
 		$issuedata->set('visible', 'visible');
@@ -199,7 +205,7 @@ class vB_PtImporter
 		$postlimit = count($this->postids) > 0 ? 'AND postid IN (' . implode(',', $this->postids) . ')' : '';
 		$threadid = $this->threadinfo['threadid'];
 
-		$post_query = $db->query_read("
+		$post_query = $this->registry->db->query_read("
 			SELECT postid, userid, username, dateline, pagetext
 			FROM " . TABLE_PREFIX . "post AS post
 			WHERE threadid = $threadid
@@ -207,13 +213,13 @@ class vB_PtImporter
 			ORDER BY dateline
 		");
 
-		if ($db->num_rows($post_query) > 0)
+		if ($this->registry->db->num_rows($post_query) > 0)
 		{
-			while ($post = $db->fetch_array($post_query))
+			while ($post = $this->registry->db->fetch_array($post_query))
 			{
-				$issuenotes[$i] =& datamanager_init('Pt_IssueNote_User', $vbulletin, ERRTYPE_ARRAY, 'pt_issuenote');
+				$issuenotes[$i] =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
 				$issuenotes[$i]->set_info('do_floodcheck', false);
-				$issuenotes[$i]->set_info('parseurl', $vbulletin->options['pt_allowbbcode']);
+				$issuenotes[$i]->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
 				$issuenotes[$i]->set('userid', $post['userid']);
 				$issuenotes[$i]->set('username', $post['username']);
 				$issuenotes[$i]->set('visible', 'visible');
@@ -256,8 +262,6 @@ class vB_PtImporter
 	*/
 	function execute_set_assignment()
 	{
-		global $vbulletin;
-
 		// Note to self:
 		// Can't use process_assignment_changes because it won't use the log_assignment_changes parameter
 		// for self assignments (bug?)
@@ -269,14 +273,14 @@ class vB_PtImporter
 		}
 
 		// Has the checkbox been set?
-		if (!$vbulletin->GPC['assignself'])
+		if (!$this->registry->GPC['assignself'])
 		{
 			return;
 		}
 
-		$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+		$assign =& datamanager_init('Pt_IssueAssign', $this->registry, ERRTYPE_SILENT);
 		$assign->set_info('log_assignment_changes', false);
-		$assign->set('userid', $vbulletin->userinfo['userid']);
+		$assign->set('userid', $this->registry->userinfo['userid']);
 		$assign->set('issueid', $this->issueid);
 		$assign->save();
 	}
@@ -288,8 +292,6 @@ class vB_PtImporter
 	*/
 	function execute_import_attachments()
 	{
-		global $vbulletin;
-
 		if (!$this->threadinfo['attach'])
 		{
 			return;
@@ -297,14 +299,14 @@ class vB_PtImporter
 
 		$attachlimit = count($this->attachmentids) > 0 ? 'AND attachmentid IN (' . implode(',', $this->attachmentids) . ') ' : '';
 
-		if (!$vbulletin->options['ptimporter_ignoreattachlimits'])
+		if (!$this->registry->options['ptimporter_ignoreattachlimits'])
 		{
 			// Make sure only those attachments are selected that comply with the limits
-			$attachlimit .= 'AND LOWER(extension) IN (\'' . implode('\',\'', preg_split('#\s+#', strtolower($vbulletin->options['pt_attachmentextensions']))) . '\') ';
-			$attachlimit .= 'AND filesize <= ' . $vbulletin->options['pt_attachmentsize'] * 1024;
+			$attachlimit .= 'AND LOWER(extension) IN (\'' . implode('\',\'', preg_split('#\s+#', strtolower($this->registry->options['pt_attachmentextensions']))) . '\') ';
+			$attachlimit .= 'AND filesize <= ' . $this->registry->options['pt_attachmentsize'] * 1024;
 		}
 
-		if ($vbulletin->options['pt_attachfile'] || $vbulletin->options['attachfile'] > 0)
+		if ($this->registry->options['pt_attachfile'] || $this->registry->options['attachfile'] > 0)
 		{
 			// There are attachments stored in the file system
 			$this->execute_import_attachments_filesystem($attachlimit);
@@ -323,11 +325,9 @@ class vB_PtImporter
 	*/
 	function execute_import_attachments_database($attachlimit)
 	{
-		global $vbulletin, $db;
-
 		$this->attachmentids = array();
 
-		$attach_query = $db->query_read("
+		$attach_query = $this->registry->db->query_read("
 			SELECT attachmentid
 			FROM " . TABLE_PREFIX . "attachment AS attachment
 			WHERE postid IN (" . implode(',', $this->postids) . ")
@@ -335,7 +335,7 @@ class vB_PtImporter
 			ORDER BY dateline
 		");
 
-		while ($attach = $db->fetch_array($attach_query))
+		while ($attach = $this->registry->db->fetch_array($attach_query))
 		{
 			$this->attachmentids[] = $attach['attachmentid'];
 		}
@@ -345,7 +345,7 @@ class vB_PtImporter
 			return;
 		}
 
-		$db->query_write("
+		$this->registry->db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_issueattach
 				(issueid, userid, filename, extension, dateline, visible, filesize, filehash, filedata, thumbnail, thumbnail_filesize, thumbnail_dateline)
 			SELECT $this->issueid, userid, filename, extension, dateline, visible, filesize, filehash, filedata, thumbnail, thumbnail_filesize, thumbnail_dateline
@@ -361,22 +361,20 @@ class vB_PtImporter
 	*/
 	function execute_import_attachments_filesystem($attachlimit)
 	{
-		global $vbulletin, $db;
-
 		require_once(DIR . '/includes/class_upload_ptimporter.php');
 		require_once(DIR . '/includes/functions_file.php');
 
-		if ($vbulletin->options['attachfile'] > 0)
+		if ($this->registry->options['attachfile'] > 0)
 		{
 			// vBulletin attachments are saved in the filesystem
 			// Should be able to write in that directory
-			$tempdir = $vbulletin->options['attachpath'] . '/ptimporter_temp';
+			$tempdir = $this->registry->options['attachpath'] . '/ptimporter_temp';
 		}
 		else
 		{
 			// Project Tools attachments are saved in the filesystem
 			// Should be able to write in that directory
-			$tempdir = $vbulletin->options['pt_attachpath'] . '/ptimporter_temp';
+			$tempdir = $this->registry->options['pt_attachpath'] . '/ptimporter_temp';
 		}
 
 		// Make sure the directory exists and is writable
@@ -385,7 +383,7 @@ class vB_PtImporter
 			vbmkdir($tempdir);
 		}
 
-		$attach_query = $db->query_read("
+		$attach_query = $this->registry->db->query_read("
 			SELECT attachmentid, dateline, visible, userid, filename, filedata
 			FROM " . TABLE_PREFIX . "attachment AS attachment
 			WHERE postid IN (" . implode(',', $this->postids) . ")
@@ -393,12 +391,12 @@ class vB_PtImporter
 			ORDER BY dateline
 		");
 
-		while ($attach = $db->fetch_array($attach_query))
+		while ($attach = $this->registry->db->fetch_array($attach_query))
 		{
 			// copy attachment to temporary directory
 			$filename_temp = $tempdir . '/' . $attach['attachmentid'] . '.import';
 
-			if ($vbulletin->options['attachfile'] > 0)
+			if ($this->registry->options['attachfile'] > 0)
 			{
 				// Saved in filesystem, copy to temp file
 				$filename_current = fetch_attachment_path($attach['userid'], $attach['attachmentid']);
@@ -413,9 +411,9 @@ class vB_PtImporter
 			}
 
 			// Now we have a "uploaded" temporary file, import it
-			$attachdata =& vB_DataManager_Attachment_Pt::fetch_library($vbulletin, ERRTYPE_STANDARD);
-			$upload = new vB_Upload_Attachment_PtImporter($vbulletin);
-			$image =& vB_Image::fetch_library($vbulletin);
+			$attachdata =& vB_DataManager_Attachment_Pt::fetch_library($this->registry, ERRTYPE_STANDARD);
+			$upload = new vB_Upload_Attachment_PtImporter($this->registry);
+			$image =& vB_Image::fetch_library($this->registry);
 
 			$upload->data =& $attachdata;
 			$upload->image =& $image;
@@ -448,19 +446,17 @@ class vB_PtImporter
 	*/
 	function execute_import_subscriptions()
 	{
-		global $db;
-
 		$threadid = $this->threadinfo['threadid'];
 
 		$subscription_insert = array();
 
-		$subscription_query = $db->query_read("
+		$subscription_query = $this->registry->db->query_read("
 			SELECT userid, emailupdate, folderid, canview
 			FROM " . TABLE_PREFIX . "subscribethread AS subscribethread
 			WHERE threadid = $threadid
 		");
 
-		while ($subscription = $db->fetch_array($subscription_query))
+		while ($subscription = $this->registry->db->fetch_array($subscription_query))
 		{
 			$subscriptiontype = 'none';
 			switch ($subscription['emailupdate'])
@@ -484,7 +480,7 @@ class vB_PtImporter
 
 		if (count($subscription_insert) > 0)
 		{
-			$db->query_write("
+			$this->registry->db->query_write("
 				INSERT INTO " . TABLE_PREFIX . "pt_issuesubscribe
 					(userid, issueid, subscribetype)
 				VALUES
@@ -500,14 +496,12 @@ class vB_PtImporter
 	*/
 	function execute_update_thread()
 	{
-		global $vbulletin, $db;
-
 		$threadid = $this->threadinfo['threadid'];
 		$issueid = $this->issueid;
 
-		if ($vbulletin->options['ptimporter_keepthreads'])
+		if ($this->registry->options['ptimporter_keepthreads'])
 		{
-			$db->query_write("
+			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
 					ptissueid = $issueid
 					ptforwardmode = 0,
@@ -516,7 +510,7 @@ class vB_PtImporter
 		}
 		else
 		{
-			$db->query_write("
+			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
 					ptissueid = $issueid,
 					ptforwardmode = 1,
@@ -533,16 +527,14 @@ class vB_PtImporter
 	*/
 	function execute_insert_import_notice()
 	{
-		global $vbulletin;
-
-		if (!$vbulletin->options['ptimporter_createnotice'])
+		if (!$this->registry->options['ptimporter_createnotice'])
 		{
 			return;
 		}
 
-		$change =& datamanager_init('Pt_IssueChange', $vbulletin, ERRTYPE_STANDARD);
+		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 		$change->set('issueid', $this->issueid);
-		$change->set('userid', $vbulletin->userinfo['userid']);
+		$change->set('userid', $this->registry->userinfo['userid']);
 		$change->set('field', 'issue_imported');
 		$change->set('newvalue', $this->threadinfo['title']);
 		$change->set('oldvalue', $this->threadinfo['threadid']);

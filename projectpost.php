@@ -2560,7 +2560,7 @@ if ($_POST['do'] == 'processimportthread')
 	// Finally, run the import
 	require_once(DIR . '/includes/class_ptimporter.php');
 	
-	$importer = new vB_PtImporter($threadinfo, $project, $posting_perms, array(), array());
+	$importer = new vB_PtImporter($vbulletin, $threadinfo, $project, $posting_perms, array(), array());
 	$issueid = $importer->import_all();
 
 	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";
