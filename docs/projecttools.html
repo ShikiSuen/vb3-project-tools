@@ -17,6 +17,10 @@
 			#bodywrap #projecttools .warning p {text-align:center}
 			#bodywrap #projecttools .notehead {font-size: 28px;font-weight: bold;color: #39F;text-align:center;}
 			#bodywrap #projecttools .note p {text-align:center}
+			#bodywrap .story table tr td .note .notehead {font-size: 28px;font-weight: bold;color: #39F;text-align:center;}
+			#bodywrap .story table tr td .note .warninghead {font-size: 28px;font-weight: bold;color: #F06;text-align:center;}
+			#bodywrap .story table tr td .note p {text-align:center}
+			#bodywrap .story table tr td .warning p {text-align:center}
 		-->
 		</style>
 	</head>
@@ -57,7 +61,7 @@
 			  <p>This License is governed by the laws of the the United States of America and the State of </p>
 				<p>California. Disputes shall be settled in state and federal courts in the Los Angeles County and the Central District of California, respectively.</p>
 			</div>
-			<div class="story">
+		  <div class="story">
 				<p>The vBulletin Project Tools system is an add-on to vBulletin that integrates project management into an existing vBulletin forum installation. The interface and administration are fully integrated with the forum.</p>
 				<p class="bth">Terminology</p>
 			  <p>It is important that you understand some of the basic terms used by Project Tools.</p>
@@ -67,72 +71,98 @@
 		    <p><span class="bt">Issue Type</span> – an issue type is a way of grouping issues within a project. All issues must be assigned to an issue type. An issue type allows use of specific phrases (“Post New Bug”) and specific statuses (“Fixed”) for issues of that type. Additionally, permissions are definable per issue type. </p>
 		    <p><span class="bt">Issue Status</span> – an issue status simply describes the progress of the issue. These are specified per issue type. </p>
 		    <p><span class="bt">Petition</span> – petitions allow users to request that an issue’s status be changed. This is useful to draw attention to an issue with a resolution that may not be correct. A developer may assume a bug is fixed, but it may not fix the issue for a user. This user could submit a petition to change the status back to “Confirmed”. </p>
-				<p>These terms are discussed in more detail in the appropriate sections.</p>
-			</div>
+			  <p>These terms are discussed in more detail in the appropriate sections.			</p>
+		  </div>
 			<div class="warning">
 				<p class="warninghead">Warning</p>
-				<p>The Project Tools require vBulletin 4.0.3 or newer. You will not be able to install them unless you are running this version!</p>
+				<p>The Project Tools require vBulletin 4 or newer. You will not be able to install them unless you are running this version!</p>
 </div>
 			<div class="story">
 				<p class="bth">Control Panel Overview</p>
-			  <p>The Project Tools administration is divided into seven sections:</p>
-				<ul>
-					<li>Project Manager </li>
-					<li>Project Permissions </li>
-					<li>Issue Type Manager </li>
-					<li>Tag Manager </li>
-					<li>Update Counters </li>
-					<li>Edit Issue </li>
-					<li>Attachment Storage Type </li>
-				</ul>
-				<p>More details are provided in each section.</p>
-				<p>A group of Project Tools options are added in vBulletin Options &gt; vBulletin Options &gt; Project Tools Options as well.</p>
-			</div>
-			<div class="image">
-				<img src="images/ptmainmenu_opt.jpeg" alt="ptmainmenu.tif" />
-			</div>
+		      <table width="1631" height="184" border="0">
+			      <tr>
+			        <td width="186"><div class="imagePT"><img src="images/ptmainmenu_opt.jpeg" alt="ptmainmenu.tif" /></div></td>
+			        <td width="1435"><p>The Project Tools administration is divided into seven sections:</p>
+                      <ul>
+                        <li>Project Manager </li>
+                        <li>Project Permissions </li>
+                        <li>Issue Type Manager </li>
+                        <li>Tag Manager </li>
+                        <li>Update Counters </li>
+                        <li>Edit Issue </li>
+                        <li>Attachment Storage Type </li>
+                      </ul>
+                      <p>More details are provided in each section.</p>
+                    <p>A group of Project Tools options are added in vBulletin Options &gt; vBulletin Options &gt; Project Tools Options as well.</p></td>
+		        </tr>
+		      </table>
+		      <p>&nbsp;</p>
+</div>
 			<div class="story">
-				<p class="bth">Installation / Upgrading</p>
+			  <p class="bth">Installation / Upgrading</p>
 			  <p>The Project Tools are quite simple to install or upgrade. The process is the same for each.1 </p>
 				<p><span class="bt">1</span>. Download the latest version of the Project Tools from the Members’ Area. Be sure that you are running vBulletin 4.0.3 or newer!</p>
 <p><span class="bt">2</span>. Unzip the file to your hard drive locally. </p>
-		    <p><span class="bt">3</span>. Upload the contents of the upload/ directory within the zip on top of your existing vBulletin directory. This is the directory with forumdisplay.php and many other files in it.</p>
-<p><span class="bt">4</span>. Log into your vBulletin forum’s control panel. Go to Plugins &amp; Products &gt; Manage Products &gt; Add/Import Product </p>
-		    <p><span class="bt">5</span>. In the Import the XML file from your server field, enter: ./includes/xml/product-vbprojecttools.xml</p>
-		    <p>Change Allow Overwrite to yes.</p>
-				<p><span class="bt">6</span>. Click Import.</p>
-				<p>If all went well, you should see a message saying your install or upgrade was successful! That’s it!</p>
-			</div>
-			<div class="warning">
+<table width="1636" border="0">
+  <tr>
+    <td width="1636"><div class="warning">
 				<p class="warninghead">Warning</p>
 				<p>If you are upgrading, overwrite any files if prompted.</p>
-		  </div>
-			<div class="note">
+		  </div></td>
+  </tr>
+</table>
+<p><span class="bt">3</span>. Upload the contents of the upload/ directory within the zip on top of your existing vBulletin directory. This is the directory with forumdisplay.php and many other files in it.</p>
+<table width="1636" height="55" border="0">
+  <tr>
+    <td><div class="note">
 				<p class="notehead">Note</p>
 <p>If you are upgrading, overwrite any files if prompted.</p>
-</div>
-			<div class="image">
-				<img src="images/Import%20product_opt.jpeg" alt="Import product.tif" />
-			</div>
-			<div class="note">
+</div></td>
+  </tr>
+</table>
+<p><span class="bt">4</span>. Log into your vBulletin forum’s control panel. Go to Plugins &amp; Products &gt; Manage Products &gt; Add/Import Product </p>
+		    <p><span class="bt">5</span>. In the Import the XML file from your server field, enter: ./includes/xml/product-vbprojecttools.xml</p>
+		    <table width="372" height="58" border="0">
+		      <tr>
+		        <td><span class="image"><img src="images/Import%20product_opt.jpeg" alt="Import product.tif" /></span></td>
+	          </tr>
+		      </table>
+		    <p>Change Allow Overwrite to yes.</p>
+			  <p><span class="bt">6</span>. Click Import.</p>
+				<p>If all went well, you should see a message saying your install or upgrade was successful! That’s it!</p>
+				<table width="1636" border="0">
+				  <tr>
+				    <td width="1636">	<div class="note">
 				<p class="notehead">Note</p>
 			  <p>There are more detailed instructions on how to unzip and upload files in the Installing vBulletin section. These may be helpful.<br />
 		      Note that there is no config.php configuration file in the Project Tools. You do not need to perform this step.</p>
-</div>
+</div>&nbsp;</td>
+			      </tr>
+			  </table>
+			</div>
+			</div>
+		
 			<div class="story">
 				<p class="bth">Project Manager </p>
 			  <p>The project manager allows you to create new projects and manage the settings of existing ones. You can also manage the categories and versions for the projects.</p>
 				<p>When you first enter this section, you will see the following:</p>
-				<p>This is a basic overview page. It shows you the list of projects in ascending display order. From here, you may edit or delete a project or manage its categories and versions. You may also add a new project.</p>
+				<table width="1634" height="47" border="0">
+				  <tr>
+				    <td><div class="image"> <img src="images/projectlist_opt.jpeg" alt="projectlist.tif" /> </div></td>
+			      </tr>
+			  </table>
+<p>This is a basic overview page. It shows you the list of projects in ascending display order. From here, you may edit or delete a project or manage its categories and versions. You may also add a new project.</p>
 				<p>A link to the global Project Tools’ options is provided for convenience, though this is available via the vBulletin Options section.</p>
 </div>
-			<div class="image">
-				<img src="images/projectlist_opt.jpeg" alt="projectlist.tif" />
-			</div>
 			<div class="story">
-				<p class="bth"> Add/Edit Project  </p>
+			  <p class="bth"> Add/Edit Project  </p>
 			  <p>When adding or editing a project, you are presented with numerous options. These options are detailed below.</p>
-				<p><span class="bt">Title</span> – the title of the project. This is how the project will be identified throughout the Project Tools. You may use HTML if you wish, though it will often be shown with HTML stripped. This is the only field you must fill out.</p>
+			  <table width="200" border="0">
+			    <tr>
+			      <td><div class="image"> <img src="images/addproject_opt.jpeg" alt="addproject.tif" /> </div></td>
+		        </tr>
+		      </table>
+<p><span class="bt">Title</span> – the title of the project. This is how the project will be identified throughout the Project Tools. You may use HTML if you wish, though it will often be shown with HTML stripped. This is the only field you must fill out.</p>
 		    <p><span class="bt">Summary</span> – this is a one line description of the project. It is shown on the project list page and on the forum list if the project is shown (see below). HTML is allowed. </p>
 		    <p><span class="bt">Description</span> – this is a long description of the project. It will only be shown when viewing this project’s overview page. A fairly large space is dedicated to this, so you can write a fair amount. However, anyone that can see this project will be able to see the description. HTML is allowed. </p>
 		    <p><span class="bt">Display Order</span> – this controls the order in which projects are displayed. Lower numbers are displayed first. A display order of 0 will hide the project from the list, though it will still appear in the forum list (if desired) and be directly accessible if the URL is known. </p>
@@ -143,50 +173,62 @@
 		    <p><span class="bt">Available Issue Types</span> – you may choose which issue types are applicable to this project. A drop down for each issue type is shown, listing all issue statuses for that type. To use an issue type with this project, simply select one of those statuses. This status will be used as the default issue status; issues created by users that don’t have permission to change the status will always start in this status. </p>
 				<p>If you choose not to use a type, it will not be shown with a project and its permissions will not apply.</p>
 			</div>
-			<div class="image">
-				<img src="images/addproject_opt.jpeg" alt="addproject.tif" />
-			</div>
 			<div class="story">
-				<p class="bth">Project Categories </p>
+			  <p class="bth">Project Categories </p>
 			  <p>You may also specify as many categories as you wish for a project. These apply to all issues in the project, regardless of issue type. Categories simply create an additional organizational unit. They are especially useful if you have people with specific areas of expertise. If you do not create any categories for a project, users will not have the option of specifying a category, although Unknown will still be shown when viewing an issue.</p>
 <p>When you click the category link, you will be shown a list of categories for the project:</p>
-				<p>When adding or editing a category you will see the following options:</p>
-				<p><span class="bt">Title</span> – the title of the category. Use of HTML in the title is not recommended. </p>
+<table width="200" border="0">
+  <tr>
+    <td><div class="image"> <img src="images/categoriesfor_opt.jpeg" alt="categoriesfor.tif" /> </div></td>
+  </tr>
+</table>
+<p>When adding or editing a category you will see the following options:</p>
+<table width="200" border="0">
+  <tr>
+    <td><span class="image"><img src="images/addprojectcategory_opt.jpeg" alt="addprojectcategory.tif" /></span></td>
+  </tr>
+</table>
+<p><span class="bt">Title</span> – the title of the category. Use of HTML in the title is not recommended. </p>
 				<p><span class="bt">Display Order</span> – sorting order. There is no way to completely hide a category without removing it. </p>
 			</div>
-			<div class="image">
-				<img src="images/categoriesfor_opt.jpeg" alt="categoriesfor.tif" />
-			</div>
-			<div class="image">
-				<img src="images/addprojectcategory_opt.jpeg" alt="addprojectcategory.tif" />
-			</div>
+			<div class="image"></div>
 			<div class="story">
 				<p class="bth"> Project Versions  </p>
 			  <p>A project may have any number of versions (or revisions) associated with it. This is useful for projects that have multiple iterations like software.</p>
 				<p>Issues may have two versions associated with them: applicable and addressed versions. The exact terminology will vary between issue types. An applicable version will be used to list the version the issue was found in or applies to. Any user that can create an issue can set this value. The addressed version refers to when the issue was fixed or completed. Only users that have permission to change the status of an issue may change the addressed version.</p>
 				<p>In addition to Unknown, the addressed version may also be set to the special value, Next Release. This allows you to tag what version issues are addressed in before that version is explicitly created. When you create this version, you may automatically update all issues that are addressed in the “Next Release” to the version you are creating.</p>
-				<p class="bt">Versions vs Version Groups</p>
+<table width="1636" height="55" border="0">
+				  <tr>
+				    <td><div class="note">
+				<p class="notehead">Note</p>
+				<p>Version display orders work in the opposite order from the display order options in other areas of vBulletin and the Project Tools! Higher numbers will be displayed first. <br />
+			    This allows newer versions to be displayed earlier in the list without renumbering older versions to accommodate this.</p>
+			</div></td>
+			      </tr>
+			  </table>
+<p class="bt">Versions vs Version Groups</p>
 			  <p>Versions should represent individual releases. Version groups allow you to collect a number of versions together. There are certain scenarios where all versions in a group can be searched for, without selecting individual releases. Using vBulletin as an example, “3.6.x” would be a version group, and “3.6.0” through “3.6.7” would be included as individual versions.</p>
 				<p>A version may only be created once a version group is created.</p>
 				<p class="bt">Version List</p>
 			  <p>This list shows you the created version groups and individual versions. You may add a new group and version from here. To create a new version, click the “Add Version” link under a specific group.</p>
-				<p class="bt">Add/Edit Version</p>
+			  <table width="1636" border="0">
+			    <tr>
+			      <td width="1636"><div class="note">
+				<p class="notehead">Note</p>
+				<p>Higher display orders are shown first here.</p>
+			</div></td>
+		        </tr>
+		      </table>
+<p class="bt">Add/Edit Version</p>
 			  <p><span class="bt">Title</span> - title for the version. HTML is not recommended. </p>
 		    <p><span class="bt">Display Order</span> - sort order for the version. Higher numbers will be shown first! </p>
 		    <p><span class="bt">Denote as next version?</span> - this will only be shown when adding a version. If you select this, any issues which are denoted as addressed in the Next Release will be updated to be addressed in this version. </p>
 		    <p><span class="bt">Display Order</span> - sort order for the version. Higher numbers will be shown first! </p>
 				<p><span class="bt">Denote as next version?</span> - this will only be shown when adding a version. If you select this, any issues which are denoted as addressed in the Next Release will be updated to be addressed in this version</p>
 			</div>
-			<div class="note">
-				<p class="notehead">Note</p>
-				<p>Version display orders work in the opposite order from the display order options in other areas of vBulletin and the Project Tools! Higher numbers will be displayed first. <br />
-			    This allows newer versions to be displayed earlier in the list without renumbering older versions to accommodate this.</p>
-			</div>
-			<div class="note">
-				<p class="notehead">Note</p>
-				<p>Higher display orders are shown first here.</p>
-			</div>
-			<div class="story">
+			
+			
+<div class="story">
 				<p class="bth">Project Permissions</p>
 			  <p>The Project Tools include an extensive permission system that ties into vBulletin’s existing usergroup system. Permissions are definable for all usergroups on a per project and per issue type basis.</p>
 				<p>The following standard usergroup permission concepts apply to the Project Tools:</p>
@@ -198,20 +240,26 @@
 			<div class="story">
 				<p class="bth">Permissions Viewer</p>
 			  <p>When viewing the project permission page, you will see a table like this:</p>
-				<p>Each usergroup in your forum is listed, along with each issue type you have defined. The group’s name will be struck-through if access to the project tools is disabled. Any permissions you specify for the group will not apply. A check mark will be shown below each issue type the group has the “Can View” permission for. The Edit link will be highlighted if you have specified a custom set of permissions for the group.</p>
+			  <table width="200" border="0">
+			    <tr>
+			      <td><div class="image"> <img src="images/globalprojectpermissio_opt.jpeg" alt="globalprojectpermissions.tif" /> </div></td>
+		        </tr>
+		      </table>
+<p>Each usergroup in your forum is listed, along with each issue type you have defined. The group’s name will be struck-through if access to the project tools is disabled. Any permissions you specify for the group will not apply. A check mark will be shown below each issue type the group has the “Can View” permission for. The Edit link will be highlighted if you have specified a custom set of permissions for the group.</p>
 				<p>By default, the global permissions will be shown. To view the actual permissions for a specific project, select the project from the table at the bottom of the page:</p>
 			</div>
 			<div class="image">
-				<img src="images/globalprojectpermissio_opt.jpeg" alt="globalprojectpermissions.tif" />
-			</div>
-			<div class="image">
 				<img src="images/projectspecificpermiss_opt.jpeg" alt="projectspecificpermissions.tif" />
-			</div>
+		  </div>
 			<div class="story">
 				<p class="bth">Permission Editing</p>
-			  <p>When you go to edit permissions for a group, you will be presented with a number of options. If you are editing the global permissions for a group, you will be presented with a few additional </p>
-				<p>options at the top of the page:</p>
-				<p><span class="bt">Can View Project Tools</span> - this is a global switch. If you set this to no, this group will not be able to view the project tools regardless of permission settings. </p>
+			  <p>When you go to edit permissions for a group, you will be presented with a number of options. If you are editing the global permissions for a group, you will be presented with a few additional options at the top of the page:</p>
+			  <table width="200" border="0">
+			    <tr>
+			      <td><div class="image"> <img src="images/editpermissionsfor_opt.jpeg" alt="editpermissionsfor.tif" /> </div></td>
+		        </tr>
+		      </table>
+<p><span class="bt">Can View Project Tools</span> - this is a global switch. If you set this to no, this group will not be able to view the project tools regardless of permission settings. </p>
 		    <p><span class="bt">Can Create Report</span> - this is a master switch to control whether users in this group can create reports (saved searches). If you set this to no, they will not be able to create any reports. If you set this to yes, they will be able to create private reports, reports which are only viewable by the creator. Public report permissions are controlled by the next setting. </p>
 <p><span class="bt">Can Create Public Report</span> - provided that the Can Create Report setting is set to yes, this option controls whether users in this group can create reports that are viewable by any users that can search. Public reports may also be used for RSS feeds if permissions allow for it. </p>
 		    <p><span class="bt">Can Delete Own Public Reports</span> - if a user can create a public report, can he or she also delete it? This only applies to their own reports. </p>
@@ -227,64 +275,78 @@
 		    <p>Assignment allows for easy searching and causes some different permissions to be applied (see below). </p>
 				<p><span class="bt">Can Manage Issues/Notes</span> - if this is set to yes, users will be able to see soft-deleted issues and notes and view IP addresses attached to notes. </p>
 		    <p><span class="bt">Can View Others’ Private Issues/Notes</span> - controls whether users in this group can view private issues and notes that have been posted by other users. </p>
-		    <p><span class="bt">Can Edit Assignments</span> - master switch to control whether users can modify the users that are assigned to an issue. </p>
+		    <table width="200" border="0">
+		      <tr>
+		        <td><div class="image"> <img src="images/generaleditingpermissi_opt.jpeg" alt="generaleditingpermissions.tif" /> </div></td>
+	          </tr>
+		      </table>
+<p><span class="bt">Can Edit Assignments</span> - master switch to control whether users can modify the users that are assigned to an issue. </p>
 <p><span class="bt">Can Edit Others’ Assignments</span> - controls whether users in this group can edit the assignments of other users. If this is set to no but Can Edit Assignments is set to yes, then users in this group will only be able to edit their own assignment. </p>
 		    <p><span class="bt">Can Edit Issue Statuses when Assigned</span> - controls whether users in this group can edit the status of an issue when assigned. This will also allow them to changed the “addressed version”. </p>
 		    <p><span class="bt">Can Edit Issue Statuses when Unassigned</span> - controls whether users in this group can edit the status of an issue when unassigned. This will also allow them to changed the “addressed version”. </p>
 		    <p><span class="bt">Can Edit Issue Tags when Assigned</span> - determines if users can modify the tags of an issue when they are assigned to it. </p>
 		    <p><span class="bt">Can Edit Issue Tags when Unassigned</span> - determines if users can modify the tags of an issue when they are not assigned to it. </p>
-		    <p><span class="bt">Can Post New Issues</span> - controls whether users in this group can post new issues at all. The exact fields that are editable are controlled by other permissions implicitly. Users will always have access to priority, category, and applicable version. </p>
+		    <table width="200" border="0">
+		      <tr>
+		        <td><div class="image"> <img src="images/issuepostingpermission_opt.jpeg" alt="issuepostingpermissions.tif" /> </div></td>
+	          </tr>
+		      </table>
+<p><span class="bt">Can Post New Issues</span> - controls whether users in this group can post new issues at all. The exact fields that are editable are controlled by other permissions implicitly. Users will always have access to priority, category, and applicable version. </p>
 		    <p><span class="bt">Can Reply to Issues</span> - the master reply control. If this is set to no, users will not be able to reply to issues. </p>
 		    <p><span class="bt">Can Reply to Others’ Issues</span> - determines whether users can reply to issues posted by other users. If you set this to no but Can Reply to Issues to yes, users will only be able to respond to their own issues. </p>
 <p><span class="bt">Can Petition for Status Changes</span> - controls whether users can submit status change petitions when replying. Users must have reply permissions before this can apply. </p>
 		    <p><span class="bt">Can Make Issues/Notes Private During Creation</span> - determines whether users can make an issue or note private when it is being created. This is useful to allow unprivileged users to post data they think is sensitive. </p>
-		    <p><span class="bt">Can Edit Issue Information</span> - controls whether users can edit the basic information of an issue (other than the text) after it has been posted. This includes things like priority, category, and applicable version. The text of an issue is controlled by the Can Edit Notes permission. </p>
+		    <table width="200" border="0">
+		      <tr>
+		        <td><div class="image"> <img src="images/issueeditingpermission_opt.jpeg" alt="issueeditingpermissions.tif" /> </div></td>
+	          </tr>
+		      </table>
+<p><span class="bt">Can Edit Issue Information</span> - controls whether users can edit the basic information of an issue (other than the text) after it has been posted. This includes things like priority, category, and applicable version. The text of an issue is controlled by the Can Edit Notes permission. </p>
 		    <p><span class="bt">Can Edit Others’ Issue Information</span> - controls whether users can edit issues posted by other users. If this is no but Can Edit Issue Information is yes, users will only be able to edit their own issues. </p>
 		    <p><span class="bt">Can Edit Notes</span> - if this is enabled, users will be able to edit notes after they have been posted. This also includes the initial text of an issue. </p>
 		    <p><span class="bt">Can Edit Others’ Notes</span> - controls whether users can edit notes posted by other users. If this is no but Can Edit Notes is yes, users will only be able to edit their own notes. </p>
 		    <p><span class="bt">Can Edit Private Setting After Creation</span> - determines whether users can change the private setting on an issue or note after is has been created. Care must be taken with this permission, as it will allow a user to take a note that has been marked private by another user and make it public again. The appropriate edit permission (issue or note) must be set before this option is applicable. </p>
+		    <table width="200" border="0">
+		      <tr>
+		        <td><div class="image"> <img src="images/issuedeletingpermissio_opt.jpeg" alt="issuedeletingpermissions.tif" /> </div></td>
+	          </tr>
+		      </table>
 <p><span class="bt">Can Delete Issues</span> - determines whether users in this group can delete issues. This does not differentiate between soft- and hard-deleting. </p>
 		    <p><span class="bt">Can Delete Others’ Issues</span> - determines whether users in this group can delete issues posted by other users. This does not differentiate between soft- and hard-deleting. If this is set to no but Can Delete Issues is set to yes, users will only be able to delete issues posted by them. </p>
 		    <p><span class="bt">Can Delete Notes</span> - determines whether users in this group can delete notes. This does not differentiate between soft- and hard-deleting. </p>
 <p><span class="bt">Can Delete Others’ Notes</span> - determines whether users in this group can delete notes posted by other users. This does not differentiate between soft- and hard-deleting. If this is set to no but Can Delete Notes is set to yes, users will only be able to delete notes posted by them. </p>
-		    <p><span class="bt">Can View Attachments</span> - determines whether users in this group can download attachments. </p>
+<table width="200" border="0">
+  <tr>
+    <td><div class="image"> <img src="images/attachementpermissions_opt.jpeg" alt="attachementpermissions.tif" /> </div></td>
+  </tr>
+</table>
+<p><span class="bt">Can View Attachments</span> - determines whether users in this group can download attachments. </p>
 		    <p><span class="bt">Can Upload Attachments</span> - determines whether users in this group can upload attachments. The exact file types and maximum file size is controlled in the vBulletin Options section. </p>
 		    <p><span class="bt">Can Edit Attachments</span> - controls whether users can edit attachments after they have been uploaded. This includes the ability to delete them and mark them as obsolete. </p>
 <p><span class="bt">Can Edit Others’ Attachments</span> - controls whether users can edit attachments uploaded by other users after they have been uploaded. This includes the ability to delete them and mark them as obsolete. If you set this to no and Can Edit Attachments to yes, users will only be able to edit attachment they have uploaded.</p>
 </div>
-			<div class="image">
-				<img src="images/editpermissionsfor_opt.jpeg" alt="editpermissionsfor.tif" />
-			</div>
-			<div class="image">
-				<img src="images/generaleditingpermissi_opt.jpeg" alt="generaleditingpermissions.tif" />
-			</div>
-			<div class="image">
-				<img src="images/issuepostingpermission_opt.jpeg" alt="issuepostingpermissions.tif" />
-			</div>
-			<div class="image">
-				<img src="images/issueeditingpermission_opt.jpeg" alt="issueeditingpermissions.tif" />
-			</div>
-			<div class="image">
-				<img src="images/issuedeletingpermissio_opt.jpeg" alt="issuedeletingpermissions.tif" />
-			</div>
-			<div class="image">
-				<img src="images/attachementpermissions_opt.jpeg" alt="attachementpermissions.tif" />
-			</div>
 			<div class="story">
-				<p class="bth"> Issue Type Manager</p>
+			  <p class="bth"> Issue Type Manager</p>
 			  <p>The issue type manager allows you to create and edit issue types along with the associated issue statuses. Issue types allow you to change numerous wordings associated with issues (such as how the “Post New” link appears or what to call the “Addressed Version”). Additionally, each issue type may have its own set of permissions for each usergroup and project. This makes them a very flexible organization system.</p>
 				<p>When you enter the manager, you will see a page like this:</p>
-				<p>You can edit the display order of each status here. To edit the display order of the types, you must edit each manually using the appropriate edit link.</p>
+				<table width="200" border="0">
+				  <tr>
+				    <td><div class="image"> <img src="images/issuetypemanager_opt.jpeg" alt="issuetypemanager.tif" /> </div></td>
+			      </tr>
+			  </table>
+<p>You can edit the display order of each status here. To edit the display order of the types, you must edit each manually using the appropriate edit link.</p>
 				<p>Statuses can only be created after the appropriate type is created. Statuses can not be moved between types.</p>
 			</div>
-			<div class="image">
-				<img src="images/issuetypemanager_opt.jpeg" alt="issuetypemanager.tif" />
-			</div>
 			<div class="story">
-				<p class="bth">Add/Edit Issue Type</p>
+			  <p class="bth">Add/Edit Issue Type</p>
 			  <p>When adding or editing an issue type, you will be presented with a range of settings.</p>
 				<p>Note that if you are creating a new issue type, it will not be associated with any projects until you create one or more status and manually select the starting status for each project!</p>
-				<p><span class="bt">Issue Type Key</span> - this is simply a unique identifier for the type that is used internally. It will not be exposed anywhere directly. It may only include letters, numbers, and underscores. </p>
+				<table width="200" border="0">
+				  <tr>
+				    <td><div class="image"> <img src="images/addissuetype_opt.jpeg" alt="addissuetype.tif" /> </div></td>
+			      </tr>
+			  </table>
+<p><span class="bt">Issue Type Key</span> - this is simply a unique identifier for the type that is used internally. It will not be exposed anywhere directly. It may only include letters, numbers, and underscores. </p>
 		    <p><span class="bt">Display Order</span> - sort order for the issue types. Lower numbers will be displayed first. </p>
 		    <p><span class="bt">Filename for Icon</span> - you may enter the path to an image to use as an icon for this type. This path should be relative to your status icon directory, which defaults to images/statusicon. Three issue type icons are included with the Project Tools: pt_type_bug.png, pt_type_feature.png, and pt_type_task.png. </p>
 <p><span class="bt">Base Permissions off of Existing Type</span> - you can choose to copy the permissions from an existing issue type to ease setup. This option will only be available when creating an issue type. If you do not select a type, no users will be able to access this type until you manually setup its permissions. </p>
@@ -307,37 +369,38 @@
 				<p><span class="bt">Post New Issue</span> - text for the issue type-specific version of the “Post New Issue” link.</p>
 				<p>Example: Post New Bug.</p>
 			</div>
-			<div class="image">
-				<img src="images/addissuetype_opt.jpeg" alt="addissuetype.tif" />
-			</div>
 			<div class="story">
-				<p class="bth">Add/Edit Issue Status</p>
+			  <p class="bth">Add/Edit Issue Status</p>
 			  <p>Once you have created an issue type, you need to fill it with statuses. To do this, click the “Add Status” link next to the type you want the status to be part of. You will be presented with a form like this:</p>
-				<p><span class="bt">Title</span> - the title of the status you want to add. HTML is not recommended. </p>
+			  <table width="200" border="0">
+			    <tr>
+			      <td><div class="image"> <img src="images/addissuestatus_opt.jpeg" alt="addissuestatus.tif" /> </div></td>
+		        </tr>
+		      </table>
+<p><span class="bt">Title</span> - the title of the status you want to add. HTML is not recommended. </p>
 		    <p><span class="bt">Issue Type</span> - this simply tells you the issue type the status is going to be in. Statuses cannot be moved to different types. </p>
 <p><span class="bt">Display Order</span> - sorting order for this status. Lower numbers are displayed first. </p>
 		    <p><span class="bt">Can Create Petitions from this Status?</span> - determines whether users can create a petition for an issue when it is in this status. Common cases where you’d want to prevent users from creating petitions is when the issue hasn’t been looked at yet (such as in the starting state) or when the decision is final.</p>
 </div>
-			<div class="image">
-				<img src="images/addissuestatus_opt.jpeg" alt="addissuestatus.tif" />
-			</div>
 			<div class="story">
-				<p class="bth">Tag Manager</p>
+			  <p class="bth">Tag Manager</p>
 			  <p>Tags are a form of meta-data that enables structured searching on data that can’t easily be represented otherwise. You may define any tags you wish. Common tag uses include:</p>
 				<ul>
 			    <li>Topic or keyword </li>
 					<li>Actions required (for example, “requires review”) </li>
 				</ul>
 				<p>Upon entering the tag manager, you will see a list of tags:</p>
-				<p>To delete one or more tags, simply tick the appropriate checkboxes and click delete.</p>
+				<table width="200" border="0">
+				  <tr>
+				    <td><div class="image"> <img src="images/taglist_opt.jpeg" alt="taglist.tif" /> </div></td>
+			      </tr>
+			  </table>
+<p>To delete one or more tags, simply tick the appropriate checkboxes and click delete.</p>
 				<p>To add a tag, use the form at the bottom of the page:</p>
 				<p>Tags may contain any text you wish, though they should be less than 50 characters long. Depending on permission settings, tags may be created via the front-end dynamically. </p>
 </div>
-			<div class="image">
-				<img src="images/taglist_opt.jpeg" alt="taglist.tif" />
-			</div>
 			<div class="story">
-				<p class="bth">Update Counters</p>
+			  <p class="bth">Update Counters</p>
 			  <p>The update counters section lets you ensure that counters such as number of replies in an issue or the number of issues in a project are correct. This is a maintenance section. You do not need to run either of the options here unless you suspect that the counters are incorrect. They should remain correct during day-to-day use.</p>
 				<p>There are two counters that can be rebuilt:</p>
 				<p><span class="bt">Rebuild Issue Counters</span> - this will rebuild the reply, attachment, and petition counters in an issue. In addition, last post times and users will be checked. </p>
@@ -347,28 +410,37 @@
 				<p class="bth"> Edit Issue</p>
 			  <p>The project and issue type settings for an issue are not editable via the front-end of the Project Tools at this time, due to complex permission interactions. This system allows you to arbitrarily change those values without regard for permission concerns.</p>
 				<p>This is a several step process.</p>
-				<p>Here you need to enter the ID for the issue you wish to edit. To find the ID, view the issue in question and look at the URL. You should see something like this: </p>
+				<table width="200" border="0">
+				  <tr>
+				    <td><div class="image"> <img src="images/editissue_opt.jpeg" alt="editissue.tif" /> </div></td>
+			      </tr>
+			  </table>
+<p>Here you need to enter the ID for the issue you wish to edit. To find the ID, view the issue in question and look at the URL. You should see something like this: </p>
 				<p>project.php?issueid=12345</p>
 				<p>The 12345 is the issue’s ID. </p>
-				<p>Once you have entered the issue ID, you can confirm that you have selected the correct issue on this page. If that is correct, you should select the new project and/or issue type. </p>
+				<table width="200" border="0">
+				  <tr>
+				    <td><div class="image"> <img src="images/editissue2_opt.jpeg" alt="editissue2.tif" /> </div></td>
+			      </tr>
+			  </table>
+<p>Once you have entered the issue ID, you can confirm that you have selected the correct issue on this page. If that is correct, you should select the new project and/or issue type. </p>
 				<p>You may also have to select a new category, version, or status as the existing settings may not apply to the new project or type. This is the last step, so once you continue the changes will be saved. </p>
 			</div>
-			<div class="image">
-				<img src="images/editissue_opt.jpeg" alt="editissue.tif" />
-			</div>
-			<div class="image">
-				<img src="images/editissue2_opt.jpeg" alt="editissue2.tif" />
-			</div>
 			<div class="story">
-				<p class="bth">Attachment Storage Type</p>
+			  <p class="bth">Attachment Storage Type</p>
 			  <p>You may choose to store your Project Tools’ attachments in the database or file system, independent of what you have chosen to do with vBulletin’s attachments. By default, they are stored in the database.</p>
 				<p>The process for moving the Project Tools’ attachments from the database to the file system (or vice versa) is identical to vBulletin’s. See this manual entry for more details.</p>
-			</div>
-			<div class="warning">
+				<table width="1636" border="0">
+				  <tr>
+				    <td width="1636"><div class="warning">
 				<p class="warninghead">Warning</p>
 			  <p>If you are intending on putting the Project Tools’ attachments in the file system, they must go into a different directory than vBulletin’s attachments!</p>
 </div> 
-			<!-- warning -->
+			<!-- warning --></td>
+			      </tr>
+			  </table>
+            </div>
+			
 		</div>
     </div> <!-- Close BodyWrap -->
 	</body>
