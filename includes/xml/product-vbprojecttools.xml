@@ -1029,7 +1029,7 @@ if ($db_alter->fetch_table_info('thread'))
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1275152118" username="thincom2000" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1274910225" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2694,7 +2694,7 @@ a.shade:active, a.shade:hover {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1275151795" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1275162016" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8339,9 +8339,7 @@ To create your own report, make a search with the criteria that you want and cli
 		</phrasetype>
 		<phrasetype name="GLOBAL" fieldname="global">
 			<phrase name="doubleclick_project_markread" date="1211381999" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Double-click this icon to mark this project and its contents as read]]></phrase>
-			<phrase name="issue_number" date="1274820396" username="Jeremy" version="2.1.1"><![CDATA[Issue Number]]></phrase>
 			<phrase name="projects" date="1181655523" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Projects]]></phrase>
-			<phrase name="pt_managesubscriptions" date="1272591194" username="Jeremy" version="2.1.0 Alpha 1"><![CDATA[Manage Subscriptions]]></phrase>
 			<phrase name="search_projects" date="1174406531" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search Projects]]></phrase>
 		</phrasetype>
 		<phrasetype name="Project Tools" fieldname="projecttools">
@@ -8429,6 +8427,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="issue_must_have_attachments" date="1175175711" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue must have attachments]]></phrase>
 			<phrase name="issue_must_have_pending_petitions" date="1175175749" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue must have pending petitions]]></phrase>
 			<phrase name="issue_note" date="1174487575" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Note]]></phrase>
+			<phrase name="issue_number" date="1275163444" username="Pitchoune" version="2.1.1"><![CDATA[Issue Number]]></phrase>
 			<phrase name="issue_properties" date="1175175691" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Properties]]></phrase>
 			<phrase name="issue_report" date="1201020662" username="admin" version="1.0.2"><![CDATA[Report]]></phrase>
 			<phrase name="issue_state" date="1213615205" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Issue State]]></phrase>
@@ -8506,6 +8505,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="project_timeline" date="1174484010" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Timeline]]></phrase>
 			<phrase name="project_tools" date="1174388807" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools]]></phrase>
 			<phrase name="pt_create_issue" date="1274869090" username="Pitchoune" version="2.1.1"><![CDATA[Create issue]]></phrase>
+			<phrase name="pt_managesubscriptions" date="1275163644" username="Pitchoune" version="2.1.1"><![CDATA[Manage Subscriptions]]></phrase>
 			<phrase name="public_reports" date="1175173202" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Public Reports]]></phrase>
 			<phrase name="quick_reply" date="1175076770" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Quick Reply]]></phrase>
 			<phrase name="reason_for_edit_delete" date="1175078274" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Reason for edit / delete]]></phrase>
