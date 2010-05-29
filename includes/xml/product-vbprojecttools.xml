@@ -8680,7 +8680,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="negative_vote_count_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Negative Vote Count<dfn>Example: Users unable to reproduce bug</dfn>]]></phrase>
 			<phrase name="no_categories_defined_project" date="1181310525" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[No categories defined for this project!]]></phrase>
 			<phrase name="no_milestones_defined_for_this_project" date="1213799816" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[No milestones defined for this project!]]></phrase>
-			<phrase name="no_projects_defined_click_here_to_add_one" date="1274648624" username="Jeremy" version="2.1.1"><![CDATA[No projects defined. Click <a href="admincp/index.php?loc=project.php?do=projectadd">here</a> to add one!]]></phrase>
+			<phrase name="no_projects_defined_click_here_to_add_one" date="1275171222" username="Pitchoune" version="2.1.1"><![CDATA[No projects defined. Click <a href="project.php?do=projectadd">here</a> to add one!]]></phrase>
 			<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1176736972" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[No statuses of this type defined. This type will not be usable until you add at least one status. <a href="project.php?do=statusadd&amp;type={1}">Click here to add one!</a>]]></phrase>
 			<phrase name="no_tags_defined" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[No tags defined.]]></phrase>
 			<phrase name="no_versions_defined_in_this_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[No versions defined in this group.]]></phrase>
