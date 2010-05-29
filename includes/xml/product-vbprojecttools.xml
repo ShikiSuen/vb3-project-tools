@@ -7,7 +7,7 @@
 	<url />
 	<versioncheckurl />
 	<dependencies>
-		<dependency dependencytype="vbulletin" minversion="4.0.0 Alpha 1" maxversion="" />
+		<dependency dependencytype="vbulletin" minversion="4.0.0" maxversion="" />
 	</dependencies>
 	<codes>
 		<code version="*">
@@ -1991,11 +1991,8 @@ a.firstunread, a.firstunread:hover
 	top: 2px;
 }
 
-#pt_issue_content .issuevote, #pt_issue_content .issueclosed {
+#pt_issue_content .issuevote {
 	background: none repeat scroll 0 0 #FFFFFF;
-	border-top: 1px solid #D1D1E1;
-	margin-top: 3px;
-	padding: 4px;
 	text-align: center;
 }
 
