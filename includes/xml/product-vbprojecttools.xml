@@ -4,14 +4,16 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.1</version>
-	<url>http://www.vbulletin.com/features_project.php</url>
-	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
 	<dependencies>
-		<dependency dependencytype="vbulletin" minversion="4.0.0 Alpha 1" maxversion="" />
+		<dependency dependencytype="vbulletin" minversion="4.0.0" maxversion="" />
 	</dependencies>
 	<codes>
 		<code version="*">
-			<installcode><![CDATA[if (!file_exists(DIR . '/includes/adminfunctions_projecttools.php') OR !file_exists(DIR . '/includes/xml/bitfield_vbprojecttools.xml'))
+			<installcode><![CDATA[// Set Product URLs //
+$info['url'] = 'http://www.vbulletin.org/forum/misc.php?do=producthelp&pid='.$info['productid'];
+$info['versioncheckurl'] = 'http://www.vbulletin.org/forum/misc.php?do=productcheck&pid='.$info['productid'];
+
+if (!file_exists(DIR . '/includes/adminfunctions_projecttools.php') OR !file_exists(DIR . '/includes/xml/bitfield_vbprojecttools.xml'))
 {
 	print_dots_stop();
 	print_cp_message('Please upload the files that came with the vBulletin Project Tools before installing or upgrading!');
