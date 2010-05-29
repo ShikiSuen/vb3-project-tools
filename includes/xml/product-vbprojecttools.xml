@@ -4,8 +4,10 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.1</version>
+	<url />
+	<versioncheckurl />
 	<dependencies>
-		<dependency dependencytype="vbulletin" minversion="4.0.0" maxversion="" />
+		<dependency dependencytype="vbulletin" minversion="4.0.0 Alpha 1" maxversion="" />
 	</dependencies>
 	<codes>
 		<code version="*">
@@ -1317,7 +1319,7 @@ if ($db_alter->fetch_table_info('thread'))
 .bbcode_container {
 	width: auto;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1274908325" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1275152118" username="thincom2000" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1989,8 +1991,11 @@ a.firstunread, a.firstunread:hover
 	top: 2px;
 }
 
-#pt_issue_content .issuevote {
+#pt_issue_content .issuevote, #pt_issue_content .issueclosed {
 	background: none repeat scroll 0 0 #FFFFFF;
+	border-top: 1px solid #D1D1E1;
+	margin-top: 3px;
+	padding: 4px;
 	text-align: center;
 }
 
@@ -2689,7 +2694,7 @@ a.shade:active, a.shade:hover {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1274882359" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1275151795" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -2840,6 +2845,36 @@ a.shade:active, a.shade:hover {
 					<hr style="border:0px; height:1px; color: #D1D1E1; background-color: #D1D1E1" />
 					<div class="restore">{vb:raw issue.message}</div>
 				</div>
+				<vb:if condition="$show['vote_option']">
+				<vb:if condition="$template_hook['issue_vote']">
+					{vb:raw template_hook.issue_vote}
+				<vb:else />
+				<div class="issuevote">
+					<a name="voteform"></a>
+					<vb:if condition="$issue['vote']">
+						{vb:rawphrase vote_question_issuetype} &nbsp; <strong><vb:if condition="$issue['vote'] == 'positive'">{vb:rawphrase yes}<vb:else />{vb:rawphrase no}</vb:if></strong> ({vb:rawphrase you_have_voted_issue})
+					<vb:else />
+						<form action="project.php?do=vote" method="post">
+							{vb:rawphrase vote_question_issuetype}
+							<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+							<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+							<input type="hidden" name="do" value="vote" />
+							<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
+							<input type="submit" class="button" name="vote[positive]" id="votepositive_button" value="{vb:rawphrase yes}" style="width:50px; font-size:10px" tabindex="1" />
+							<input type="submit" class="button" name="vote[negative]" id="votenegative_button" value="{vb:rawphrase no}" style="width:50px; font-size:10px" tabindex="1" />
+						</form>
+					</vb:if>
+				</div>
+				</vb:if>
+				</vb:if>
+
+				<vb:if condition="$show['issue_closed']">
+				<div class="issueclosed">
+					<img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="" class="inlineimg" /> {vb:rawphrase this_issue_is_closed}
+					<vb:if condition="!$posting_perms['issue_close']">{vb:rawphrase no_more_replies_may_be_made}</vb:if>
+				</div>
+				</vb:if>
+
 				<div class="issuefoot">
 					<div class="textcontrols">
 						<span class="issuecontrols">
@@ -2878,36 +2913,6 @@ a.shade:active, a.shade:hover {
 				</div>
 
 				</div>
-
-				<vb:if condition="$show['vote_option']">
-				<vb:if condition="$template_hook['issue_vote']">
-					{vb:raw template_hook.issue_vote}
-				<vb:else />
-				<div class="blockrow issuevote">
-				<a name="voteform"></a>
-				<vb:if condition="$issue['vote']">
-					{vb:rawphrase vote_question_issuetype} &nbsp; <strong><vb:if condition="$issue['vote'] == 'positive'">{vb:rawphrase yes}<vb:else />{vb:rawphrase no}</vb:if></strong> ({vb:rawphrase you_have_voted_issue})
-				<vb:else />
-					<form action="project.php?do=vote" method="post">
-						{vb:rawphrase vote_question_issuetype}
-						<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
-						<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
-						<input type="hidden" name="do" value="vote" />
-						<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
-						<input type="submit" class="button" name="vote[positive]" id="votepositive_button" value="{vb:rawphrase yes}" style="width:50px; font-size:10px" tabindex="1" />
-						<input type="submit" class="button" name="vote[negative]" id="votenegative_button" value="{vb:rawphrase no}" style="width:50px; font-size:10px" tabindex="1" />
-					</form>
-				</vb:if>
-				</div>
-				</vb:if>
-				</vb:if>
-
-				<vb:if condition="$show['issue_closed']">
-				<div class="blockrow" style="text-align: center">
-					<img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="" class="inlineimg" /> {vb:rawphrase this_issue_is_closed}
-					<vb:if condition="!$posting_perms['issue_close']">{vb:rawphrase no_more_replies_may_be_made}</vb:if>
-				</div>
-				</vb:if>
 			</div>
 		</div>
 	</div>
@@ -6621,8 +6626,8 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_subforumbit_project" templatetype="template" date="1272826946" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li class="subforum">
-	<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/subforum_old.gif" alt="" border="0" id="project_statusicon_{vb:raw project.projectid} />
+		<template name="pt_subforumbit_project" templatetype="template" date="1275160619" username="Pitchoune" version="2.1.1"><![CDATA[<li class="subforum">
+	<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/subforum_old.gif" alt="" border="0" id="project_statusicon_{vb:raw project.projectid}" />
 	<vb:if condition="$project['forumtitle']">
 		<a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.forumtitle}</a>
 	<vb:else />
