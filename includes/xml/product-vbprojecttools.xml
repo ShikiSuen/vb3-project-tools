@@ -1319,7 +1319,7 @@ if ($db_alter->fetch_table_info('thread'))
 .bbcode_container {
 	width: auto;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1275162100" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1275175292" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1717,7 +1717,6 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuelist .blockrow .ptissuelist_icons {
 	padding: 0 5px;
-	vertical-align: right;
 	width: 15%;
 	text-align: {vb:stylevar right};
 	float: {vb:stylevar right};
@@ -1802,7 +1801,6 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuelist .blockrow .ptissuelist_icons_search {
 	padding: 0 5px;
-	vertical-align: right;
 	width: 15%;
 	text-align: {vb:stylevar right};
 	float: {vb:stylevar right};
@@ -2217,7 +2215,7 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issuepopup .navpopupbody {
-	overflow-y: visible;
+	overflow: visible;
 }
 
 .pt_issuepopup .navpopupbody.popupbody {
@@ -2302,7 +2300,7 @@ div.checkbox_multiselect {
 	height: 150px;
 	overflow: auto;
 	padding: 6px;
-	background-color: {vb:stylevar page_bgcolor};
+	background-color: #FFFFFF;
 }
 
 /* Subscriptions management */
