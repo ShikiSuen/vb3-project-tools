@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<navgroups product="vbprojecttools" master="true">
+
+	<navgroup phrase="project_tools" permissions="canpt" displayorder="15" hr="true">
+		<navoption displayorder="10">
+			<phrase>project_manager</phrase>
+			<link>project.php?do=projectlist</link>
+		</navoption>
+
+		<navoption displayorder="20">
+			<phrase>project_permissions</phrase>
+			<link>projectpermission.php?do=list</link>
+		</navoption>
+
+		<navoption displayorder="30">
+			<phrase>issue_type_manager</phrase>
+			<link>project.php?do=typelist</link>
+		</navoption>
+
+		<navoption displayorder="40">
+			<phrase>tag_manager</phrase>
+			<link>project.php?do=taglist</link>
+		</navoption>
+
+		<navoption displayorder="50">
+			<phrase>update_counters</phrase>
+			<link>project.php?do=counters</link>
+		</navoption>
+
+		<navoption displayorder="60">
+			<phrase>edit_issue</phrase>
+			<link>project.php?do=issue</link>
+		</navoption>
+
+		<navoption displayorder="70">
+			<phrase>attachment_storage_type</phrase>
+			<link>projectattachment.php?do=storage</link>
+		</navoption>
+	</navgroup>
+
+</navgroups>
