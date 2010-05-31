@@ -25,16 +25,16 @@ require_once ( DIR . '/includes/class_bbcode.php' );
 
 class vB_BbCodeParser_Pt extends vB_BbCodeParser
 {
-	public function __construct ( vB_Registry &$registry, &$tag_list = array ( ), $append_custom_tags = TRUE )
+	public function __construct (&$registry, $tag_list = array (), $append_custom_tags = TRUE)
 	{
-		parent::vB_BbCodeParser ( &$registry, &$tag_list, $append_custom_tags );
+		parent::vB_BbCodeParser ($registry, $tag_list, $append_custom_tags);
 	}
 
-	public function do_word_wrap ( $text )
+	public function do_word_wrap ($text)
 	{
-		if ( $this->registry->options['pt_wordwrap'] != 0 )
+		if ( $this->registry->options['pt_wordwrap'] != 0)
 		{
-			$text = fetch_word_wrapped_string ( $text, $this->registry->options['pt_wordwrap'] );
+			$text = fetch_word_wrapped_string ($text, $this->registry->options['pt_wordwrap']);
 		}
 		return $text;
 	}
