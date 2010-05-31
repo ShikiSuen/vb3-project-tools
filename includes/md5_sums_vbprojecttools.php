@@ -77,7 +77,7 @@ $md5_sums = array(
 		'bitfield_vbprojecttools.xml' => '32165347ac81d1807b5200eaa27ecddf',
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'hooks_vbprojecttools.xml' => 'ab3876ae66973c4d737cd36b5c8b67bb',
-		'product-vbprojecttools.xml' => 'a17b009027f787b0d6dbe21b96bd2237',
+		'product-vbprojecttools.xml' => '802a9a5806942da05c9d83f91c0160ba',
 	),
 	'/packages/vbprojecttools/search/indexcontroller' => array(
 		'issue.php' => '08e675d6c5914b84e5392d058bd6ed76',

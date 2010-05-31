@@ -1029,7 +1029,7 @@ if ($db_alter->fetch_table_info('thread'))
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1274910225" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1275343574" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1108,8 +1108,20 @@ if ($db_alter->fetch_table_info('thread'))
 }
 
 /* Project overview definitions */
+.pt_timeline .blocksubhead {
+	/* min-height hack */
+	height: auto !important;
+	height: 16px;
+}
+
 .pt_timeline .blocksubhead div {
 	display: inline;
+}
+
+.pt_timeline .blockrow {
+	/* min-height hack */
+	height: auto !important;
+	height: 30px;
 }
 
 .pt_timeline .blockrow div {
@@ -1149,6 +1161,12 @@ if ($db_alter->fetch_table_info('thread'))
 }
 
 /* Project reports list definitions */
+.pt_reportlist .blocksubhead {
+	/* min-height hack */
+	height: auto !important;
+	height: 16px;
+}
+
 .pt_reportlist .blocksubhead div {
 	display: inline;
 }
@@ -1319,7 +1337,7 @@ if ($db_alter->fetch_table_info('thread'))
 .bbcode_container {
 	width: auto;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1275175292" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1275343651" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1511,10 +1529,6 @@ a.firstunread, a.firstunread:hover
 	width: 100%;
 }
 
-.pt_timeline .blocksubhead {
-	height: 16px;
-}
-
 .pt_timeline .blocksubhead div {
 	display: inline-block;
 }
@@ -1523,7 +1537,6 @@ a.firstunread, a.firstunread:hover
 	padding-top: 5px;
 	padding-bottom: 5px;
 	border-top: solid 1px {vb:stylevar light_border.borderColor};
-	height: 30px;
 }
 
 .pt_timeline .blockrow div {
@@ -1560,10 +1573,6 @@ a.firstunread, a.firstunread:hover
 	width: 18%;
 }
 
-.pt_project .blockrow {
-	min-height: 90px;
-}
-
 .pt_project .blockrow div {
 	display: inline-block;
 }
@@ -1581,10 +1590,6 @@ a.firstunread, a.firstunread:hover
 }
 
 /* Project reports list definitions */
-.pt_reportlist .blocksubhead {
-	height: 16px;
-}
-
 .pt_reportlist .blocksubhead div {
 	display: inline-block;
 }
