@@ -5864,7 +5864,7 @@ init_project_readmarker_system();
 		{vb:raw type.issuecountactive} / {vb:raw type.issuecount}
 	</span>
 </li>]]></template>
-		<template name="pt_project_milestones" templatetype="template" date="1274640643" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project_milestones" templatetype="template" date="1275307569" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5901,7 +5901,7 @@ init_project_readmarker_system();
 <a name="completed"></a>
 <div class="pt_milestone block">
 	<div class="blockhead">
-		<span class="smallfont normal" style="float:{vb:stylevar right}"><span class="shade">{vb:rawphrase project}</span> {vb:raw project.title}</span>
+		<span class="smallfont normal" style="float:{vb:stylevar right}">{vb:rawphrase project} {vb:raw project.title}</span>
 		{vb:rawphrase completed_milestones}
 	</div>
 	{vb:raw completed_milestones}
@@ -5911,7 +5911,7 @@ init_project_readmarker_system();
 <vb:if condition="$show['completed_placeholder']">
 <div class="pt_milestone block">
 	<div class="blockhead">
-		<span class="smallfont normal" style="float:{vb:stylevar right}"><span class="shade">{vb:rawphrase project}</span> {vb:raw project.title}</span>
+		<span class="smallfont normal" style="float:{vb:stylevar right}">{vb:rawphrase project} {vb:raw project.title}</span>
 		{vb:rawphrase completed_milestones}
 	</div>
 	<div class="blockbody settings_form_border">
