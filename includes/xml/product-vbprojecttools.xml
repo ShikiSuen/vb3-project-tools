@@ -1337,7 +1337,7 @@ if ($db_alter->fetch_table_info('thread'))
 .bbcode_container {
 	width: auto;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1275343651" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1275426510" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1470,14 +1470,16 @@ a.firstunread, a.firstunread:hover
 
 .pt_overview .blocksubhead .lastpost {
 	float: {vb:stylevar right};
-	width: 15%;
+	width: 20%;
 }
 
 .pt_overview .blockrow {
-	padding-{vb:stylevar left}: 0;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	padding: 5px 0;
 	border-top: solid 1px {vb:stylevar light_border.borderColor};
+}
+
+.pt_overview .blockrow div {
+	display: inline-block;
 }
 
 .pt_overview .settings_form_border > *:first-child {
@@ -1487,12 +1489,12 @@ a.firstunread, a.firstunread:hover
 .pt_overview .blockrow .projectstatusicon {
 	padding: 0 5px;
 	vertical-align: middle;
+	width: 48px;
 }
 
 .pt_overview .blockrow .projecttitle {
 	padding: 0 5px;
 	vertical-align: middle;
-	width: 63%;
 }
 
 .pt_overview .blockrow .projecttitle div {
@@ -1501,12 +1503,16 @@ a.firstunread, a.firstunread:hover
 
 .pt_overview .blockrow .projecttypecounts {
 	width: 20%;
+	clear: {vb:stylevar left};
+	float: {vb:stylevar right};
 }
 
 .pt_overview .blockrow .projectlastpost {
 	font-size: {vb:stylevar mid_fontSize};
 	padding-top: {vb:math {vb:stylevar padding}/2};
-	width: 15%;
+	width: 20%;
+	clear: {vb:stylevar right};
+	float: {vb:stylevar right};
 }
 
 .pt_overview .projectlastpost {
@@ -1700,6 +1706,7 @@ a.firstunread, a.firstunread:hover
 	padding: 0 5px;
 	vertical-align: middle;
 	display: inline-block;
+	max-width: 45%;
 }
 
 .pt_issuelist .blockrow .ptissuelist_deleted_title {
@@ -1722,7 +1729,7 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuelist .blockrow .ptissuelist_icons {
 	padding: 0 5px;
-	width: 15%;
+	/*width: 10%;*/
 	text-align: {vb:stylevar right};
 	float: {vb:stylevar right};
 }
@@ -4654,7 +4661,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_overview" templatetype="template" date="1274547965" username="Ryan" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_overview" templatetype="template" date="1275426644" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -4743,7 +4750,7 @@ init_project_readmarker_system();
 
 <div class="pt_overview block">
 	<div class="blockhead">{vb:rawphrase projects}</div>
-	<div class="blockbody settings_form_border">
+	<div class="blockbody formcontrols">
 		<div class="blocksubhead">
 			<div class="project">{vb:rawphrase project}</div>
 			<div class="lastpost">{vb:rawphrase last_post}</div>
@@ -5833,27 +5840,22 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_projectbit" templatetype="template" date="1274386004" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow table">
-	<div class="projectstatusicon td">
+		<template name="pt_projectbit" templatetype="template" date="1275426627" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
+	<div class="projectstatusicon">
 		<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
 	</div>
-	<div class="projecttitle td">
+	<div class="projecttitle">
 		<div><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title}</a></div>
 		<div class="smallfont">{vb:raw project.summary}</div>
 	</div>
-	<div class="projecttypecounts td">
-		<ul>
-		{vb:raw type_counts}
-		</ul>
-	</div>
-	<div class="projectlastpost td">
+	<div class="projectlastpost">
 		<vb:if condition="$show['private_lastpost']">
 			{vb:rawphrase private}
 		<vb:elseif condition="$project['lastpostdate']" />
 			<div>
-				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" style="white-space:nowrap" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}">{vb:raw project.lastissuetitle_short}</a>
-				{vb:rawphrase by_x, {vb:link member, {vb:raw project}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw project.lastpostusername}}
-				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}">{vb:raw project.lastissuetitle_short}</a>
+				<p>{vb:rawphrase by_x, {vb:link member, {vb:raw project}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw project.lastpostusername}}
+				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a></p>
 				<p class="lastpostdate">
 					{vb:raw project.lastpostdate} <span class="time">{vb:raw project.lastposttime}</span>&nbsp;
 				</p>
@@ -5861,6 +5863,11 @@ init_project_readmarker_system();
 		<vb:else />
 			{vb:rawphrase n_a}
 		</vb:if>
+	</div>
+	<div class="projecttypecounts">
+		<ul>
+		{vb:raw type_counts}
+		</ul>
 	</div>
 </div>]]></template>
 		<template name="pt_projectbit_typecount" templatetype="template" date="1274652669" username="Jeremy" version="2.1.1"><![CDATA[<li>
