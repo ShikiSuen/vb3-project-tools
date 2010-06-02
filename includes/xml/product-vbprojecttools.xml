@@ -1029,7 +1029,7 @@ if ($db_alter->fetch_table_info('thread'))
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1275343574" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1275447798" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1080,10 +1080,6 @@ if ($db_alter->fetch_table_info('thread'))
 	margin-top: -20px;
 }
 
-.pt_overview .blockrow {
-	width: 99.2% !important; /* This should be redone before 2.1.1 - displayed differntly on different resolutions */
-}
-
 .pt_overview .blockrow div {
 	display: inline;
 }
@@ -1094,16 +1090,13 @@ if ($db_alter->fetch_table_info('thread'))
 
 .pt_overview .blockrow .projecttitle {
 	float: {vb:stylevar left};
-	width: 61% !important;
 }
 
 .pt_overview .blockrow .projecttypecounts {
-	float: {vb:stylevar left};
 	top: -30px;
 }
 
 .pt_overview .blockrow .projectlastpost {
-	float: {vb:stylevar left};
 	top: -30px;
 }
 
