@@ -1029,7 +1029,7 @@ if ($db_alter->fetch_table_info('thread'))
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1275447798" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1275519797" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1263,10 +1263,6 @@ if ($db_alter->fetch_table_info('thread'))
 	clear: {vb:stylevar left};
 }
 
-/*.pt_issuelist .blockrow .ptissuelist_title .statusicon {
-	{vb:stylevar left}: 65px! important;
-}*/
-
 .pt_issuelist .blockrow .ptissuelist_icons {
 	top: -30px;
 	margin-top: -30px;
@@ -1326,11 +1322,21 @@ if ($db_alter->fetch_table_info('thread'))
 	margin-top: -20px;
 }
 
+/* Project issue content definitions */
+#pt_issue_content .issuefoot .textcontrols a {
+	display: inline;
+}
+
+/* Issue notes */
+.pt_issue_note .issuefoot .textcontrols a {
+	display: inline;
+}
+
 /* Issue definitions */
 .bbcode_container {
 	width: auto;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1275426510" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1275519982" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1623,7 +1629,7 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_reportlist .blockrow .ptreportlist_title {
-	margin-left: 90px;
+	margin-{vb:stylevar left}: 90px;
 }
 
 .pt_reportlist .blockrow .ptreportlist_submittedby {
@@ -1889,7 +1895,7 @@ a.firstunread, a.firstunread:hover
 	float: {vb:stylevar left};
 	font: bold 11px Tahoma,Calibri,Verdana,Geneva,sans-serif;
 	position: relative;
-	right: 0;
+	{vb:stylevar right}: 0;
 	width: 100%;
 	margin-{vb:stylevar left}: -10px;
 	margin-{vb:stylevar right}: -20px;
@@ -1907,40 +1913,39 @@ a.firstunread, a.firstunread:hover
 #pt_issue_content .issuefoot .issuecontrols {
 	margin-{vb:stylevar left}: 1px;
 	position: absolute;
-	right: -10px;
-	top: 7px;
+	{vb:stylevar right}: -10px;
 }
 
 #pt_issue_content .issuefoot .textcontrols span.seperator {
 	background: none repeat scroll 0 0 #D8D8D8;
 	display: inline;
 	height: 14px;
-	left: 3px;
+	{vb:stylevar left}: 3px;
 	margin: 0 5px;
 	position: relative;
 	width: 1px;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.editissue {
-	background: url({vb:stylevar imgdir_button}/edit_40b.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/edit_40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.editissue:hover {
-	background: url({vb:stylevar imgdir_button}/edit_40b-hover.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/edit_40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.replyissue {
-	background: url({vb:stylevar imgdir_button}/reply_40b.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/reply_40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.replyissue:hover {
-	background: url({vb:stylevar imgdir_button}/reply_40b-hover.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/reply_40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
@@ -1948,48 +1953,51 @@ a.firstunread, a.firstunread:hover
 #pt_issue_content .issuefoot .issuelinking {
 	margin-{vb:stylevar left}: 0px;
 	position: absolute;
-	left: 10px;
-	top: 5px;
+	{vb:stylevar left}: 10px;
+}
+
+#pt_issue_content .issuefoot .textcontrols a {
+	display: inline-block;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.issuehistory {
-	background: none no-repeat scroll left center transparent;
+	background: none no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: 0;
 	border: 0 solid #A8A8A8;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.issuehistory:hover {
-	background: none no-repeat scroll left center transparent;
+	background: none no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: 0;
 	border: 0 solid #A8A8A8;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.reportissue {
-	background: url({vb:stylevar imgdir_button}/report-40b.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/report-40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.reportissue:hover {
-	background: url({vb:stylevar imgdir_button}/report-40b-hover.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/report-40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.ipissue {
-	background: url({vb:stylevar imgdir_button}/ip-40b.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/ip-40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.ipissue:hover {
-	background: url({vb:stylevar imgdir_button}/ip-40b-hover.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/ip-40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 #pt_issue_content .issuefoot .textcontrols a img {
-	left: 3px;
+	{vb:stylevar left}: 3px;
 	position: absolute;
 	top: 2px;
 }
@@ -2029,7 +2037,7 @@ a.firstunread, a.firstunread:hover
 	float: {vb:stylevar left};
 	font: bold 11px Tahoma,Calibri,Verdana,Geneva,sans-serif;
 	position: relative;
-	right: 0;
+	{vb:stylevar right}: 0;
 	width: 100%;
 	margin-{vb:stylevar left}: -10px;
 	margin-{vb:stylevar right}: -20px;
@@ -2047,40 +2055,43 @@ a.firstunread, a.firstunread:hover
 .pt_issue_note .issuefoot .issuecontrols {
 	margin-{vb:stylevar left}: 1px;
 	position: absolute;
-	right: -10px;
-	top: 7px;
+	{vb:stylevar right}: -10px;
 }
 
 .pt_issue_note .issuefoot .textcontrols span.seperator {
 	background: none repeat scroll 0 0 #D8D8D8;
 	display: inline;
 	height: 14px;
-	left: 3px;
+	{vb:stylevar left}: 3px;
 	margin: 0 5px;
 	position: relative;
 	width: 1px;
 }
 
+.pt_issue_note .issuefoot .textcontrols a {
+	display: inline-block;
+}
+
 .pt_issue_note .issuefoot .textcontrols a.editissue {
-	background: url({vb:stylevar imgdir_button}/edit_40b.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/edit_40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 .pt_issue_note .issuefoot .textcontrols a.editissue:hover {
-	background: url({vb:stylevar imgdir_button}/edit_40b-hover.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/edit_40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 .pt_issue_note .issuefoot .textcontrols a.replyissue {
-	background: url({vb:stylevar imgdir_button}/reply_40b.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/reply_40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 .pt_issue_note .issuefoot .textcontrols a.replyissue:hover {
-	background: url({vb:stylevar imgdir_button}/reply_40b-hover.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/reply_40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
@@ -2088,48 +2099,47 @@ a.firstunread, a.firstunread:hover
 .pt_issue_note .issuefoot .issuelinking {
 	margin-{vb:stylevar left}: 0px;
 	position: absolute;
-	left: 10px;
-	top: 5px;
+	{vb:stylevar left}: 10px;
 }
 
 .pt_issue_note .issuefoot .textcontrols a.issuehistory {
-	background: none no-repeat scroll left center transparent;
+	background: none no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: 0;
 	border: 0 solid #A8A8A8;
 }
 
 .pt_issue_note .issuefoot .textcontrols a.issuehistory:hover {
-	background: none no-repeat scroll left center transparent;
+	background: none no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: 0;
 	border: 0 solid #A8A8A8;
 }
 
 .pt_issue_note .issuefoot .textcontrols a.reportissue {
-	background: url({vb:stylevar imgdir_button}/report-40b.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/report-40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 .pt_issue_note .issuefoot .textcontrols a.reportissue:hover {
-	background: url({vb:stylevar imgdir_button}/report-40b-hover.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/report-40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 .pt_issue_note .issuefoot .textcontrols a.ipissue {
-	background: url({vb:stylevar imgdir_button}/ip-40b.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/ip-40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 .pt_issue_note .issuefoot .textcontrols a.ipissue:hover {
-	background: url({vb:stylevar imgdir_button}/ip-40b-hover.png) no-repeat scroll left center transparent;
+	background: url({vb:stylevar imgdir_button}/ip-40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
 .pt_issue_note .issuefoot .textcontrols a img {
-	left: 3px;
+	{vb:stylevar left}: 3px;
 	position: absolute;
 	top: 2px;
 }
@@ -7573,8 +7583,7 @@ if ($do == 'index' AND $vbulletin->userinfo['permissions']['ptpermissions'] & $v
 			<title>Cache Templates: Project Tools</title>
 			<hookname>cache_templates</hookname>
 			<phpcode><![CDATA[$pt_templates =  array(
-	'pt_navbar_link',
-	'pt_headinclude_ie'
+	'pt_navbar_link'
 );
 
 switch (THIS_SCRIPT)
