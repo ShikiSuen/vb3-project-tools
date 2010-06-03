@@ -1004,20 +1004,40 @@ $db->query_write("
 			<uninstallcode />
 		</code>
 		<code version="2.1.1">
-			<installcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
+			<installcode><![CDATA[$show['ptimpoter_previous'] = false;
+
+// The pt_importer product is present?
+if ($ptimporter_product = $db->query_first("SELECT productid FROM " . TABLE_PREFIX . "product WHERE productid = 'db_ptimporter'"))
+{
+	// The product is present - deactivate it (even if this is already done) and set $show to true for the next condition
+	$db->query_write("UPDATE " . TABLE_PREFIX . "product SET active = 0 WHERE productid = $ptimporter_product[productid]");
+	$show['ptimporter_previous'] = true;
+}
+
+require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('thread'))
 {
-	$db_alter->add_field(array(
-		'name' => 'ptissueid',
-		'type' => 'int',
-		'attributes' => 'unsigned'
-	));
-	$db_alter->add_field(array(
-		'name' => 'ptforwardmode',
-		'type' => 'int',
-		'attributes' => 'unsigned'
-	));
+	if ($show['ptimporter_previous'])
+	{
+		// Alter table if previous product is found
+		$db_alter->drop_field('ptimporterid');
+		$db_alter->drop_field('ptdateline');
+	}
+	else
+	{
+		// Do the original job
+		$db_alter->add_field(array(
+			'name' => 'ptissueid',
+			'type' => 'int',
+			'attributes' => 'unsigned'
+		));
+		$db_alter->add_field(array(
+			'name' => 'ptforwardmode',
+			'type' => 'int',
+			'attributes' => 'unsigned'
+		));
+	}
 }]]></installcode>
 			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
@@ -1336,7 +1356,7 @@ if ($db_alter->fetch_table_info('thread'))
 .bbcode_container {
 	width: auto;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1275519982" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1275574394" username="thincom2000" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2220,7 +2240,8 @@ a.firstunread, a.firstunread:hover
 .pt_issuepopup .navpopupmenu.popupmenu.nohovermenu {
 	float: {vb:stylevar left};
 	text-align: {vb:stylevar left};
-	margin-top: 7px;
+	margin-top: 12px;
+	margin-bottom: 7px;
 }
 
 .pt_issuepopup .navpopupmenu.popupmenu.nohovermenu a.popupctrl span.ctrlcontainer {
@@ -7583,7 +7604,8 @@ if ($do == 'index' AND $vbulletin->userinfo['permissions']['ptpermissions'] & $v
 			<title>Cache Templates: Project Tools</title>
 			<hookname>cache_templates</hookname>
 			<phpcode><![CDATA[$pt_templates =  array(
-	'pt_navbar_link'
+	'pt_navbar_link',
+	'pt_headinclude_ie'
 );
 
 switch (THIS_SCRIPT)
