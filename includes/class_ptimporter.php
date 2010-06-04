@@ -353,9 +353,10 @@ class vB_PtImporter
 		$this->registry->db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_issueattach
 				(issueid, userid, filename, extension, dateline, visible, filesize, filehash, filedata, thumbnail, thumbnail_filesize, thumbnail_dateline)
-			SELECT $this->issueid, userid, filename, extension, dateline, visible, filesize, filehash, filedata, thumbnail, thumbnail_filesize, thumbnail_dateline
-			FROM " . TABLE_PREFIX . "attachment
-			WHERE attachmentid IN (" . implode(',', $this->attachmentids) . ")
+			SELECT $this->issueid, attachment.userid, attachment.filename, fd.extension, attachment.dateline, IF(attachment.state == 'visible', 1, 0), fd.filesize, fd.filehash, fd.filedata, fd.thumbnail, fd.thumbnail_filesize, fd.thumbnail_dateline
+			FROM " . TABLE_PREFIX . "attachment AS attachment
+				INNER JOIN " . TABLE_PREFIX . "filedata AS fd ON (fd.filedataid = attachment.filedataid)
+			WHERE attachment.attachmentid IN (" . implode(',', $this->attachmentids) . ")
 		");
 	}
 
