@@ -193,7 +193,7 @@ class vB_Upload_Attachment_Pt extends vB_Upload_Attachment
 	{
 		$this->data->set('dateline', TIMENOW);
 		$this->data->set('thumbnail_dateline', TIMENOW);
-		if ($this->data->fetch_field('visible') === null)
+		if ($this->data->fetch_field('state') === null)
 		{
 			$this->data->set('visible', 1);
 		}

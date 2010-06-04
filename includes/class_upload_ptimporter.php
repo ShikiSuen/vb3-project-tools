@@ -100,7 +100,17 @@ class vB_Upload_Attachment_PtImporter extends vB_Upload_Attachment_Pt
 
 		// Correct visibility
 		$this->data->condition = sprintf($this->data->condition_construct[0], $result);
-		$this->data->set('visible', $this->attachinfo['visible']);
+
+		if ($this->attachinfo['state'] == 'visible')
+		{
+			// Visible
+			$this->data->set('visible', 1);
+		}
+		else
+		{
+			// Moderation
+			$this->data->set('visible', 0);
+		}
 		$this->data->save();
 
 		unset($this->upload);

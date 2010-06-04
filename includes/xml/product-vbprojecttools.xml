@@ -1006,11 +1006,9 @@ $db->query_write("
 		<code version="2.1.1">
 			<installcode><![CDATA[$show['ptimpoter_previous'] = false;
 
-// The pt_importer product is present?
+// The pt_importer product is present? Productid = 'db_ptimporter'
 if ($ptimporter_product = $db->query_first("SELECT productid FROM " . TABLE_PREFIX . "product WHERE productid = 'db_ptimporter'"))
 {
-	// The product is present - deactivate it (even if this is already done) and set $show to true for the next condition
-	$db->query_write("UPDATE " . TABLE_PREFIX . "product SET active = 0 WHERE productid = $ptimporter_product[productid]");
 	$show['ptimporter_previous'] = true;
 }
 
@@ -1018,15 +1016,29 @@ require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('thread'))
 {
-	if ($show['ptimporter_previous'])
+	if (!$show['ptimporter_previous'])
 	{
-		// Alter table if previous product is found
-		$db_alter->drop_field('ptimporterid');
-		$db_alter->drop_field('ptdateline');
+		// Product not found - do the original job
+		$db_alter->add_field(array(
+			'name' => 'pt_issueid',
+			'type' => 'int',
+			'attributes' => 'unsigned'
+		));
+		$db_alter->add_field(array(
+			'name' => 'pt_forwardmode',
+			'type' => 'int',
+			'attributes' => 'unsigned'
+		));
 	}
 	else
 	{
-		// Do the original job
+		// Previous product found - do some specific job
+
+		// We need to keep values of ptissueid and ptforwardmode into pt_issueid & pt_forwardmode
+		// And create back the same original two fields to avoid errors on forced uninstall product
+		$db->query_write("ALTER TABLE " . TABLE_PREFIX . "thread CHANGE ptissueid pt_issueid INT(10) UNSIGNED NOT NULL");
+		$db->query_write("ALTER TABLE " . TABLE_PREFIX . "thread CHANGE ptforwardmode pt_forwardmode INT(10) UNSIGNED NOT NULL");
+
 		$db_alter->add_field(array(
 			'name' => 'ptissueid',
 			'type' => 'int',
@@ -1038,6 +1050,104 @@ if ($db_alter->fetch_table_info('thread'))
 			'attributes' => 'unsigned'
 		));
 	}
+}
+
+// Uninstall the previous product
+// There is no one function to do all the work on vB4, look at lines 1500-1600 of admincp/plugin.php
+if ($show['ptimporter_previous'])
+{
+	// run uninstall code first; try to undo things in the opposite order they were done
+	$productcodes = $db->query_read("
+		SELECT version, uninstallcode
+		FROM " . TABLE_PREFIX . "productcode
+		WHERE productid = 'db_ptimporter'
+			AND uninstallcode <> ''
+	");
+
+	$productcodes_grouped = array();
+	$productcodes_versions = array();
+
+	while ($productcode = $db->fetch_array($productcodes))
+	{
+		// have to be careful here, as version numbers are not necessarily unique
+		$productcodes_versions["$productcode[version]"] = 1;
+		$productcodes_grouped["$productcode[version]"][] = $productcode;
+	}
+
+	unset($productcodes_versions['*']);
+	$productcodes_versions = array_keys($productcodes_versions);
+	usort($productcodes_versions, 'version_sort');
+	$productcodes_versions = array_reverse($productcodes_versions);
+
+	if (!empty($productcodes_grouped['*']))
+	{
+		// run * entries first
+		foreach ($productcodes_grouped['*'] AS $productcode)
+		{
+			eval($productcode['uninstallcode']);
+		}
+	}
+
+	foreach ($productcodes_versions AS $version)
+	{
+		foreach ($productcodes_grouped["$version"] AS $productcode)
+		{
+			eval($productcode['uninstallcode']);
+		}
+	}
+
+	//remove some common resources that a product may have registered.
+	//tags
+	$db->query_write("
+		DELETE tagcontent
+		FROM " . TABLE_PREFIX . "package AS package JOIN
+			" . TABLE_PREFIX . "contenttype AS contenttype ON
+				contenttype.packageid = package.packageid JOIN
+			" . TABLE_PREFIX . "tagcontent AS tagcontent ON
+				contenttype.contenttypeid = tagcontent.contenttypeid
+		WHERE productid = 'db_ptimporter'
+	");
+
+	// Packages, routes, actions, contenttypes
+	$db->query_write("
+		DELETE package, route, action, contenttype
+		FROM " . TABLE_PREFIX . "package AS package
+		LEFT JOIN " . TABLE_PREFIX . "route AS route
+			ON route.packageid = package.packageid
+		LEFT JOIN " . TABLE_PREFIX . "action AS action
+			ON action.routeid = route.routeid
+		LEFT JOIN " . TABLE_PREFIX . "contenttype AS contenttype
+			ON contenttype.packageid = package.packageid
+		WHERE productid = 'db_ptimporter'
+	");
+
+	// Clear routes from datastore
+	build_datastore('routes', serialize(array()), 1);
+
+	//clear the type cache.
+	vB_Cache::instance()->purge('vb_types.types');
+
+	if ($db_alter->fetch_table_info('language'))
+	{
+		$phrasetypes = $db->query_read("
+			SELECT fieldname
+			FROM " . TABLE_PREFIX . "phrasetype
+			WHERE product = 'db_ptimporter'
+		");
+		while ($phrasetype = $db->fetch_array($phrasetypes))
+		{
+			$db_alter->drop_field("phrasegroup_$phrasetype[fieldname]");
+		}
+	}
+
+	// Delete latest product informations
+	delete_product('db_ptimporter');
+
+	// Ensure all will be rebuilt
+	$rebuild['templates'] = true;
+	$rebuild['phrases'] = true;
+	$rebuild['options'] = true;
+	$rebuild['cron'] = true;
 }]]></installcode>
 			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
@@ -1049,7 +1159,7 @@ if ($db_alter->fetch_table_info('thread'))
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1275519797" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1275627799" username="thincom2000" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1057,6 +1167,15 @@ if ($db_alter->fetch_table_info('thread'))
  * These definitions are for IE6 & IE7 only. IE6 specific values
  * must be prefixed by a underscore while IE7 are written as normal.
  */
+
+/* general vB fixes */
+.blockhead img {
+	margin-bottom: 0;
+}
+
+.pagination {
+	display: inline;
+}
 
 /* Code for all controls in PT - grey bar above all contents */
 .above_project_controls {
@@ -1079,6 +1198,8 @@ if ($db_alter->fetch_table_info('thread'))
 	display: block;
 	float: {vb:stylevar left};
 	clear: {vb:stylevar right};
+	margin-top: 0;
+	margin-bottom: 0;
 }
 
 .projectpopups .popupbody li {
@@ -1100,6 +1221,10 @@ if ($db_alter->fetch_table_info('thread'))
 	margin-top: -20px;
 }
 
+.pt_overview .blockrow {
+	position: relative;
+}
+
 .pt_overview .blockrow div {
 	display: inline;
 }
@@ -1111,6 +1236,22 @@ if ($db_alter->fetch_table_info('thread'))
 .pt_overview .blockrow .projecttitle {
 	float: {vb:stylevar left};
 }
+
+.pt_overview .blockrow .projecttitle div {
+	display: inline-block;
+}
+
+.pt_overview .blockrow .projecttitle div {
+	display: inline;
+}
+
+.pt_overview .blockrow .projecttitle {
+	position: absolute;
+	top: 0;
+	/* img height + padding * 2 */
+	line-height: 58px;
+}
+	
 
 .pt_overview .blockrow .projecttypecounts {
 	top: -30px;
@@ -1138,6 +1279,18 @@ if ($db_alter->fetch_table_info('thread'))
 }
 
 .pt_timeline .blockrow div {
+	display: inline;
+}
+
+.pt_timeline .blockrow .issuetype_icon {
+	display: inline;
+}
+
+.pt_timeline .blockrow .issuedate {
+	display: inline;
+}
+
+.pt_timeline .blockrow .issuetext {
 	display: inline;
 }
 
@@ -1286,6 +1439,7 @@ if ($db_alter->fetch_table_info('thread'))
 .pt_issuelist .blockrow .ptissuelist_icons {
 	top: -30px;
 	margin-top: -30px;
+	padding: 0;
 }
 
 .pt_issuelist .blockrow .ptissuelist_project {
@@ -1296,36 +1450,45 @@ if ($db_alter->fetch_table_info('thread'))
 .pt_issuelist .blockrow .ptissuelist_status {
 	top: -30px;
 	margin-top: -30px;
+	padding: 1px 0 0;
+	height: 20px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_priority {
 	top: -30px;
 	margin-top: -30px;
+	padding: 1px 0 0;
+	height: 20px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_replies {
 	top: -30px;
 	margin-top: -30px;
+	padding: 0;
 }
 
 .pt_issuelist .blockrow .ptissuelist_issuetype {
 	top: -30px;
 	margin-top: -30px;
+	padding: 0;
 }
 
 .pt_issuelist .blockrow .ptissuelist_lastpost {
 	top: -30px;
 	margin-top: -30px;
+	padding: 0;
 }
 
 .pt_issuelist .blockrow .ptissuelist_emptylastpost {
 	top: -30px;
 	margin-top: -30px;
+	padding: 0;
 }
 
 .pt_issuelist .blockrow .ptissuelist_notifications {
 	top: -30px;
 	margin-top: -30px;
+	padding: 0;
 }
 
 .pt_issuelist .blockrow .ptissuelist_checkbox {
@@ -1336,10 +1499,12 @@ if ($db_alter->fetch_table_info('thread'))
 .pt_issuelist .blockrow .ptissuelist_deleted {
 	top: -30px;
 	margin-top: -30px;
+	padding: 0;
 }
 
 .pt_issuelist .blockrow .ptissuelist_icons_search, .pt_issuelist .blockrow .ptissuelist_status_search, .pt_issuelist .blockrow .ptissuelist_priority_search, .pt_issuelist .blockrow .ptissuelist_replies_search, .pt_issuelist .blockrow .ptissuelist_lastpost_search {
 	margin-top: -20px;
+	padding: 0;
 }
 
 /* Project issue content definitions */
@@ -1355,8 +1520,76 @@ if ($db_alter->fetch_table_info('thread'))
 /* Issue definitions */
 .bbcode_container {
 	width: auto;
+}
+
+/* Magic Select */
+.vB_MagicSelect, .vB_MagicSelect_hover {
+	margin-top: 1px;
+	height: 18px;
+}
+
+.vB_MagicSelect span, .vB_MagicSelect_hover span {
+	display: inline;
+	padding: 1px 2px;
+	width: 99%;
+	height: 13px;
+}
+
+.vB_MagicSelect img, .vB_MagicSelect_hover img {
+	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1275574394" username="thincom2000" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-magicselect.css" templatetype="template" date="1275621978" username="thincom2000" version="2.1.1"><![CDATA[.vB_MagicSelect, .vB_MagicSelect_hover, .vB_MagicSelect_preload {
+	white-space:nowrap;
+}
+
+.vB_MagicSelectCursor {
+	cursor:default;
+}
+
+.vB_MagicSelect {
+	border:none;
+	padding:1px;
+	background-color:transparent;
+}
+
+.vB_MagicSelect_hover {
+	border:1px solid rgb(34,84,177);
+	padding:0px;
+	background-color:white;
+}
+
+.vB_MagicSelect span, .vB_MagicSelect_hover span {
+	display: inline-block;
+	padding: 0 2px;
+}
+
+.vB_MagicSelect img, .vB_MagicSelect_hover img {
+	padding:1px;
+	vertical-align:text-top;
+}
+
+.vB_MagicSelect .vB_MagicSelect_button {
+	background-color:transparent;
+}
+
+.vB_MagicSelect_hover .vB_MagicSelect_button {
+	background-color:rgb(215,231,253);
+}
+
+.vB_MagicSelect_preload {
+	border:none;
+	padding:2px 1px 3px 1px;
+	background-color:transparent;
+}
+
+.vB_MagicSelect_wrappable {
+	white-space:normal;
+}
+
+.vB_MagicSelect_margin {
+	margin:0px 0px 2px 0px;
+}]]></template>
+		<template name="projecttools.css" templatetype="template" date="1275615809" username="thincom2000" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1552,6 +1785,13 @@ a.firstunread, a.firstunread:hover
 	margin-top: 5px;
 	display: inline-block;
 	width: 100%;
+}
+
+.pt_timeline .blockhead div {
+	/* margins on floats are doubled in ie, don't use them */
+	position: absolute;
+	/* margin 20 + padding 10 */
+	{vb:stylevar right}: 30px;
 }
 
 .pt_timeline .blocksubhead div {
@@ -2728,11 +2968,12 @@ a.shade:active, a.shade:hover {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1275162016" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1275619709" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
+	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
 
 	<vb:if condition="$show['lightbox']">
 		<vb:if condition="$vboptions['storecssasfile']">
@@ -2749,7 +2990,6 @@ a.shade:active, a.shade:hover {
 		<script type="text/javascript" src="clientscript/vbulletin_lightbox.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 	<title>{vb:raw issue.title} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
-	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_magic_select.css?v={vb:raw vboptions.simpleversion}" />
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_list_builder.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_pt_issue.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -3323,7 +3563,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<vb:if condition="$issue['deletionreason']"><div><span class="shade">{vb:rawphrase reason}</span> {vb:raw issue.deletionreason}</div></vb:if>
 	</div>
 </div>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1274655611" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1275619790" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3335,11 +3575,12 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</vb:if>
 
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
+	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
+
 	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
 	<!-- End Add -->
-	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_magic_select.css?v={vb:raw vboptions.simpleversion}" />
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
 	<!--
@@ -4293,7 +4534,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1274644379" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1275619834" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4304,11 +4545,12 @@ init_project_readmarker_system();
 		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumbits.css,forumdisplay.css,threadlist.css" />
 	</vb:if>
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
+	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
+
 	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
 	<!-- End Add -->
-	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_magic_select.css?v={vb:raw vboptions.simpleversion}" />
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
 	<!--
@@ -4685,7 +4927,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_overview" templatetype="template" date="1275426644" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_overview" templatetype="template" date="1275619921" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -4696,7 +4938,6 @@ init_project_readmarker_system();
 	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
 	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_date_picker.css?v={vb:raw vboptions.simpleversion}" />
@@ -5644,7 +5885,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1274909056" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1275619984" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5656,13 +5897,14 @@ init_project_readmarker_system();
 	</vb:if>
 
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
+	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
+
 	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
 	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_date_picker.css?v={vb:raw vboptions.simpleversion}" />
 	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
 
-	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_magic_select.css?v={vb:raw vboptions.simpleversion}" />
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
 	<!--
@@ -6619,7 +6861,7 @@ init_project_readmarker_system();
 	<div style="margin-top: 6px">{vb:raw pagenav}</div>
 </vb:if>]]></template>
 		<template name="pt_searchresultgroupbit_arrow" templatetype="template" date="1273440034" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort={vb:raw search.sortby}&amp;order={vb:raw opposite_sort}<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>"><img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" /></a>]]></template>
-		<template name="pt_searchresults" templatetype="template" date="1273445177" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_searchresults" templatetype="template" date="1275620021" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -6629,12 +6871,13 @@ init_project_readmarker_system();
 	{vb:raw headinclude}
 	<!-- Added -->
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
+	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
+
 	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
 	<!-- End Add -->
 
-	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_magic_select.css?v={vb:raw options.simpleversion}" />
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
 	<!--
@@ -6702,9 +6945,9 @@ init_project_readmarker_system();
 		{vb:raw issue.replycount}
 	</div>
 </div>]]></template>
-		<template name="pt_timeline" templatetype="template" date="1273747984" username="Pitchoune" version="2.1.0"><![CDATA[<div class="pt_timeline block">
+		<template name="pt_timeline" templatetype="template" date="1275615870" username="thincom2000" version="2.1.1"><![CDATA[<div class="pt_timeline block">
 	<div class="blockhead<vb:if condition="!$show['disable_timeline_collapse']"> collapse</vb:if>">
-		<div class="smallfont normal" style="float: {vb:stylevar right}<vb:if condition="!$show['disable_timeline_collapse']">; margin-{vb:stylevar right}: 20px</vb:if>">
+		<div class="smallfont normal" style="<vb:if condition="!$show['disable_timeline_collapse']">{vb:stylevar right}: 30px</vb:if>">
 			<vb:if condition="$show['timeline_daterange']">{vb:rawphrase dates_x_to_y, {vb:raw startdate_display}, {vb:raw enddate_display}}<vb:else />{vb:rawphrase last_x_actions, {vb:raw timeline_entries}}</vb:if>
 		</div>
 		<vb:if condition="!$show['disable_timeline_collapse']"><a id="collapse_pt_timeline" class="collapse" style="float: {vb:stylevar right}; top: 5px" href="{vb:raw relpath}#top"><img src="{vb:stylevar imgdir_button}/collapse_40b.png" alt="" /></a></vb:if>
@@ -6826,7 +7069,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		</p>
 	</div>
 </div>]]></template>
-		<template name="pt_timeline_page" templatetype="template" date="1273441436" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_timeline_page" templatetype="template" date="1275628109" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -6854,6 +7097,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 	-->
 	</script>
 	<title>{vb:raw vboptions.bbtitle} - {vb:raw vbphrase.projects} - {vb:raw vbphrase.project_timeline}</title>
+	{vb:raw headinclude_bottom}
 </head>
 <body>
 
@@ -7731,7 +7975,7 @@ foreach($do AS $field)
 		<plugin active="1" executionorder="5">
 			<title>Forum Display: Add ptissueid in query</title>
 			<hookname>forumdisplay_query</hookname>
-			<phpcode><![CDATA[$hook_query_fields .= ', thread.ptissueid, thread.ptforwardmode';]]></phpcode>
+			<phpcode><![CDATA[$hook_query_fields .= ', thread.pt_issueid, thread.pt_forwardmode';]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
 			<title>Forum Display: PT Display Setup</title>
@@ -7904,9 +8148,9 @@ if ($show['createptissue'])
 		<plugin active="1" executionorder="5">
 			<title>Show Thread: Redirect to Project Tools if thread has been moved</title>
 			<hookname>showthread_getinfo</hookname>
-			<phpcode><![CDATA[if (intval($thread['ptissueid']) > 0 AND $thread['ptforwardmode'] == 1)
+			<phpcode><![CDATA[if (intval($thread['pt_issueid']) > 0 AND $thread['pt_forwardmode'] == 1)
 {
-	exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$thread[ptissueid]");
+	exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$thread[pt_issueid]");
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -7917,7 +8161,7 @@ if ($show['createptissue'])
 		<plugin active="1" executionorder="5">
 			<title>Threadbit: Show Prefix for moved threads</title>
 			<hookname>threadbit_display</hookname>
-			<phpcode><![CDATA[if (intval($thread['ptissueid']) > 0 AND $thread['ptforwardmode'] == 1)
+			<phpcode><![CDATA[if (intval($thread['pt_issueid']) > 0 AND $thread['pt_forwardmode'] == 1)
 {
 	if ($vbulletin->options['ptimporter_extendedthreadprefix'])
 	{
@@ -7927,7 +8171,7 @@ if ($show['createptissue'])
 				pt_project.title AS project
 			FROM " . TABLE_PREFIX . "pt_issue AS pt_issue
 				LEFT JOIN " . TABLE_PREFIX . "pt_project AS pt_project ON (pt_issue.projectid = pt_project.projectid)
-			WHERE pt_issue.issueid = " . $thread['ptissueid'] . "
+			WHERE pt_issue.issueid = " . $thread['pt_issueid'] . "
 		");
 
 		$thread['typeprefix'] = construct_phrase($vbphrase['pt_import_threadprefix_extended'], $ptissueinfo['project'], $vbphrase["issuetype_$ptissueinfo[issuetype]_singular"]);

@@ -302,8 +302,8 @@ class vB_PtImporter
 		if (!$this->registry->options['ptimporter_ignoreattachlimits'])
 		{
 			// Make sure only those attachments are selected that comply with the limits
-			$attachlimit .= 'AND LOWER(extension) IN (\'' . implode('\',\'', preg_split('#\s+#', strtolower($this->registry->options['pt_attachmentextensions']))) . '\') ';
-			$attachlimit .= 'AND filesize <= ' . $this->registry->options['pt_attachmentsize'] * 1024;
+			$attachlimit .= 'AND LOWER(fd.extension) IN (\'' . implode('\',\'', preg_split('#\s+#', strtolower($this->registry->options['pt_attachmentextensions']))) . '\') ';
+			$attachlimit .= 'AND fd.filesize <= ' . $this->registry->options['pt_attachmentsize'] * 1024;
 		}
 
 		if ($this->registry->options['pt_attachfile'] || $this->registry->options['attachfile'] > 0)
@@ -331,12 +331,13 @@ class vB_PtImporter
 		// vB4 switched from postid to contentid to be available in all parts of vB
 		// And added contenttypeid 1 to limit the selection to posts (security)
 		$attach_query = $this->registry->db->query_read("
-			SELECT attachmentid
+			SELECT attachment.filedataid AS attachmentid
 			FROM " . TABLE_PREFIX . "attachment AS attachment
-			WHERE contentid IN (" . implode(',', $this->postids) . ")
-				AND contenttypeid = 1
+				INNER JOIN " . TABLE_PREFIX . "filedata AS fd ON (fd.filedataid = attachment.filedataid)
+			WHERE attachment.contentid IN (" . implode(',', $this->postids) . ")
+				AND attachment.contenttypeid = 1
 			$attachlimit
-			ORDER BY dateline
+			ORDER BY attachment.dateline
 		");
 
 		while ($attach = $this->registry->db->fetch_array($attach_query))
@@ -391,12 +392,13 @@ class vB_PtImporter
 		// vB4 switched from postid to contentid to be available in all parts of vB
 		// And added contenttypeid 1 to limit the selection to posts (security)
 		$attach_query = $this->registry->db->query_read("
-			SELECT attachmentid, dateline, visible, userid, filename, filedata
+			SELECT attachment.filedataid AS attachmentid, attachment.dateline, attachment.state, attachment.userid, attachment.filename, fd.filedata
 			FROM " . TABLE_PREFIX . "attachment AS attachment
-			WHERE contentid IN (" . implode(',', $this->postids) . ")
-				AND contenttypeid = 1
+				INNER JOIN " . TABLE_PREFIX . "filedata AS fd ON (fd.filedataid = attachment.filedataid)
+			WHERE attachment.contentid IN (" . implode(',', $this->postids) . ")
+				AND attachment.contenttypeid = 1
 			$attachlimit
-			ORDER BY dateline
+			ORDER BY attachment.dateline
 		");
 
 		while ($attach = $this->registry->db->fetch_array($attach_query))
@@ -511,8 +513,8 @@ class vB_PtImporter
 		{
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
-					ptissueid = $issueid
-					ptforwardmode = 0,
+					pt_issueid = $issueid
+					pt_forwardmode = 0,
 				WHERE threadid = $threadid
 			");
 		}
@@ -520,8 +522,8 @@ class vB_PtImporter
 		{
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
-					ptissueid = $issueid,
-					ptforwardmode = 1,
+					pt_issueid = $issueid,
+					pt_forwardmode = 1,
 					open = 0
 				WHERE threadid = $threadid
 			");
