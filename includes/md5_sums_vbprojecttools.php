@@ -29,7 +29,7 @@ $md5_sums = array(
 	),
 	'/includes' => array(
 		'adminfunctions_projecttools.php' => '3a1aa7e93f3a03b21fca4dcf553107b9',
-		'class_bbcode_pt.php' => '852b5fa7a43f7a721652371121323924',
+		'class_bbcode_pt.php' => '73c6c4e724a87e6a612440f81c497173',
 		'class_dm_attachment_pt.php' => 'c041b7ef6c5054e6c5d90c654d07ec54',
 		'class_dm_pt_issue.php' => 'aef8e942d199adcc41d7d4b57939694c',
 		'class_dm_pt_issueassign.php' => '9e9b000542d4578f042d76730c3ed761',
@@ -73,7 +73,7 @@ $md5_sums = array(
 		'bitfield_vbprojecttools.xml' => '32165347ac81d1807b5200eaa27ecddf',
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'hooks_vbprojecttools.xml' => 'ab3876ae66973c4d737cd36b5c8b67bb',
-		'product-vbprojecttools.xml' => '4d198cb75ae239e3bba6883bfc48da1e',
+		'product-vbprojecttools.xml' => 'dc7a7b992c76e2ac0ea03106ef31bd9e',
 	),
 	'/packages/vbprojecttools/search/indexcontroller' => array(
 		'issue.php' => '08e675d6c5914b84e5392d058bd6ed76',

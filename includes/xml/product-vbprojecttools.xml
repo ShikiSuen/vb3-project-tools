@@ -5158,7 +5158,7 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1274912206" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1275738150" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -5277,12 +5277,17 @@ init_project_readmarker_system();
 					<li>
 						<label>{vb:rawphrase project}<br />{vb:raw project.title_clean}</label>
 					</li>
+					<vb:if condition="$show['private_edit']">
 					<li>
 						<label for="cb_private"><input type="checkbox" name="private" value="1" id="cb_private" tabindex="1"{vb:raw private_checked} /> {vb:rawphrase private} <a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_private" target="_blank">[?]</a></label>
 					</li>
+					</vb:if>
+					<vb:if condition="$show['close_issue']">
 					<li>
 						<label for="cb_close_issue"><input type="checkbox" name="close_issue" value="1" id="cb_close_issue" tabindex="1"{vb:raw close_issue_checked} /> {vb:rawphrase close_this_issue}</label>
+							<input type="hidden" name="original_state" value="{vb:raw issue.state}" />
 					</li>
+					</vb:if>
 					<vb:if condition="$show['assign_checkbox'] AND !$show['assign_dropdown']">
 					<li>
 						<label for="cb_assign_self"><input type="checkbox" id="cb_assign_self" name="assignself" value="1" tabindex="1"{vb:raw assign_checkbox_checked} />&nbsp;{vb:rawphrase assign_yourself_to_issue}</label>
