@@ -1159,7 +1159,7 @@ if ($db_alter->fetch_table_info('thread'))
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1275627799" username="thincom2000" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1275836637" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1251,7 +1251,16 @@ if ($db_alter->fetch_table_info('thread'))
 	/* img height + padding * 2 */
 	line-height: 58px;
 }
-	
+
+.pt_overview .blockrow .projecttitle.hasdescription {
+	position: relative;
+	line-height: {vb:stylevar line_height};
+	width: 50%;
+}
+
+.pt_overview .blockrow .projecttitle.hasdescription .smallfont {
+	float: {vb:stylevar left};
+}
 
 .pt_overview .blockrow .projecttypecounts {
 	top: -30px;
@@ -2691,7 +2700,7 @@ a.shade:active, a.shade:hover {
 		<input type="checkbox" id="{vb:raw optionid}" name="{vb:raw optionname}" value="{vb:raw optionvalue}" tabindex="1" {vb:raw optionchecked} />&nbsp;{vb:raw optiontitle}
 	</label>
 </li>]]></template>
-		<template name="pt_forumbit_project" templatetype="template" date="1274636075" username="Pitchoune" version="2.1.1"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
+		<template name="pt_forumbit_project" templatetype="template" date="1275833860" username="thincom2000" version="2.1.1"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
 	<div class="forumrow table">
         <div class="foruminfo td">
 		<img id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
@@ -6111,13 +6120,13 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_projectbit" templatetype="template" date="1275426627" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
+		<template name="pt_projectbit" templatetype="template" date="1275833907" username="thincom2000" version="2.1.1"><![CDATA[<div class="blockrow">
 	<div class="projectstatusicon">
 		<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
 	</div>
-	<div class="projecttitle">
+	<div class="projecttitle<vb:if condition="$project['summary']"> hasdescription</vb:if>">
 		<div><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title}</a></div>
-		<div class="smallfont">{vb:raw project.summary}</div>
+		<vb:if condition="$project['summary']"><div class="smallfont">{vb:raw project.summary}</div></vb:if>
 	</div>
 	<div class="projectlastpost">
 		<vb:if condition="$show['private_lastpost']">
