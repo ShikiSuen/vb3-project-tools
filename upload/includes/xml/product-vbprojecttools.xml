@@ -5900,7 +5900,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1275619984" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1275938974" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5998,13 +5998,13 @@ init_project_readmarker_system();
 							<div class="text">{vb:rawphrase posted_by}</div>
 							<input type="text" class="searchbox" name="user_issue" size="25" />
 							<div class="text">{vb:rawphrase status}</div>
-							<select name="issuestatusid[]" style="display: block; width: 200px">
+							<select name="issuestatusid[]" style="display: block; width: 200px; clear: {vb:stylevar left}">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
 								{vb:raw status_options}
 							</select>
 
 							<div class="text">{vb:rawphrase assigned_users}</div>
-							<select name="assigneduser[]" style="display: block; width: 200px">
+							<select name="assigneduser[]" style="display: block; width: 200px; clear: {vb:stylevar left}">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
 								{vb:raw assignable_users}
 							</select>
