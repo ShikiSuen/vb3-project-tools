@@ -4885,13 +4885,14 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_navbar_link" templatetype="template" date="1274747474" username="Mosh" version="2.1.1"><![CDATA[<vb:if condition="$vboptions['selectednavtab'] == 'vbproject'">
+		<template name="pt_navbar_link" templatetype="template" date="1275935637" username="Jeremy" version="2.1.1"><![CDATA[<vb:if condition="$vboptions['selectednavtab'] == 'vbproject'">
 <li class="selected">
 	<a class="navtab" href="project.php{vb:raw session.sessionurl_q}">{vb:rawphrase projects}</a>
 	<ul class="floatcontainer">
 		<vb:if condition="$show['member']"><li><a href="projectsearch.php?{vb:raw session.sessionurl}do=reports">{vb:rawphrase my_reports}</a></li>
 		<li><a href="projectpost.php?{vb:raw session.sessionurl}do=managesubscriptions">{vb:rawphrase pt_managesubscriptions}</a></li></vb:if>
 		<li><a href="project.php?{vb:raw session.sessionurl}do=timeline">{vb:rawphrase project_timeline}</a></li>
+		<li><a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq">{vb:rawphrase faq}</a></li>
 	</ul>
 </li>
 <vb:else />
