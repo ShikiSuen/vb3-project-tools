@@ -78,6 +78,7 @@ $actiontemplates = array(
 		'pt_issuelist_arrow',
 		'pt_postmenubit',
 		'pt_issuebit',
+		'pt_issuebit_pagelink',
 		'pt_issuebit_deleted',
 	),
 	'issue' => array(

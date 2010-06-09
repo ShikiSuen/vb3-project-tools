@@ -1159,7 +1159,7 @@ if ($db_alter->fetch_table_info('thread'))
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1275836637" username="Pitchoune" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1276105002" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1445,6 +1445,34 @@ if ($db_alter->fetch_table_info('thread'))
 	clear: {vb:stylevar left};
 }
 
+<vb:if condition="$stylevar['textdirection'] == 'rtl'">
+.pt_issuelist .blockrow .ptissuelist_title .pagination a {
+	display:inline;
+	direction: rtl;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .pagination span, .pt_issuelist .blockrow .ptissuelist_title .pagination span.separator {
+	display: inline-block;
+	float: none;
+	clear: none;
+	padding-left: 4px;
+	padding-right: 4px;
+	width: 1em;
+	_display: inline;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .pagination span a {
+	display: inline-block;
+	position: relative;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .pagination span a:hover {
+	position: relative;
+}
+</vb:if>
+
 .pt_issuelist .blockrow .ptissuelist_icons {
 	top: -30px;
 	margin-top: -30px;
@@ -1599,7 +1627,7 @@ if ($db_alter->fetch_table_info('thread'))
 .vB_MagicSelect_margin {
 	margin:0px 0px 2px 0px;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1275615809" username="thincom2000" version="2.1.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1276104684" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1976,6 +2004,26 @@ a.firstunread, a.firstunread:hover
 	vertical-align: middle;
 	display: inline-block;
 	max-width: 45%;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .pagination {
+	display: inline-block;
+	position: relative;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .pagination dd span {
+	padding-top: 0
+	padding-bottom: 0;
+}
+
+.pt_issuelist .blockrow .ptissuelist_title .pagination a {
+	padding: 0 4px;
+	-moz-border-radius: 2px;
+	-webkit_border-radius: 2px;
+	color: {vb:stylevar pagination_color};
+	font-size: {vb:stylevar small_fontSize};
+	display: inline;
+	float: none;
 }
 
 .pt_issuelist .blockrow .ptissuelist_deleted_title {
@@ -3482,7 +3530,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1274908046" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
+		<template name="pt_issuebit" templatetype="template" date="1276104024" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -3494,6 +3542,14 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<div class="issuetitle">
 			<vb:if condition="$issue['newflag']"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.png" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
 			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<vb:if condition="$issue['pagenav']">
+			<dl class="pagination" id="pagination_issuebit_{vb:raw issue.issueid}">
+				<dd>
+					{vb:raw issue.pagenav}
+					<vb:if condition="$show['pagenavmore']"> <span class="separator">...</span> <span><a href="{vb:raw issue.lastpagelink}">{vb:raw issue.totalpages}</a></span></vb:if>
+				</dd>
+			</dl>
+			</vb:if>
 		</div>
 		<div class="issueuser smallfont">
 			<vb:if condition="$show['issuebit_project_title']">
@@ -3573,6 +3629,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<vb:if condition="$issue['deletionreason']"><div><span class="shade">{vb:rawphrase reason}</span> {vb:raw issue.deletionreason}</div></vb:if>
 	</div>
 </div>]]></template>
+		<template name="pt_issuebit_pagelink" templatetype="template" date="1276104501" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
 		<template name="pt_issuelist" templatetype="template" date="1275619790" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
