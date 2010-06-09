@@ -5184,7 +5184,7 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1275738150" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1276074948" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -5264,8 +5264,6 @@ init_project_readmarker_system();
 		<div class="section">
 			{vb:raw usernamecode}
 
-			{vb:raw human_verify}
-
 			<div class="blockrow">
 				<div class="smallfont" style="float:{vb:stylevar right}"><a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_how_post" target="_blank">{vb:rawphrase what_makes_good_issue_description}</a></div>
 				<label for="title" class="full">{vb:rawphrase title}:</label>
@@ -5281,6 +5279,8 @@ init_project_readmarker_system();
 				<label for="{vb:raw editorid}_textarea" class="full">{vb:rawphrase description}:</label>
 				{vb:raw messagearea}
 			</div>
+
+			{vb:raw human_verify}
 		</div>
 	</div>
 	<div class="blockfoot actionbuttons">
@@ -5687,7 +5687,7 @@ init_project_readmarker_system();
 		{vb:raw typename}
 	</a>
 </li>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1274912226" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postreply" templatetype="template" date="1276074934" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5771,12 +5771,12 @@ init_project_readmarker_system();
 		<div class="section">
 			{vb:raw usernamecode}
 		
-			{vb:raw human_verify}
-
 			<div class="blockrow">
 				<label for="{vb:raw editorid}_textarea" class="full">{vb:rawphrase description}:</label>
 				{vb:raw messagearea}
 			</div>
+
+			{vb:raw human_verify}
 		</div>
 	</div>
 	<div class="blockfoot actionbuttons">
