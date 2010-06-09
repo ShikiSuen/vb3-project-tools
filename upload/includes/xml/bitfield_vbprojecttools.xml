@@ -10,6 +10,7 @@
 				<bitfield name="candeletepublicreportown" group="project_tools_permissions" phrase="can_delete_public_report_own" install="2,5,6,7">4</bitfield>
 				<bitfield name="candeletepublicreportothers" group="project_tools_permissions" phrase="can_delete_public_report_others" install="5,6,7">8</bitfield>
 				<bitfield name="cancustomtag" group="project_tools_permissions" phrase="can_create_custom_tags" install="5,6,7">32</bitfield>
+				<bitfield name="canusehumancheck" group="project_tools_permissions" phrase="can_use_humancheck" install="1,2,3,4,5,6,7">64</bitfield>
 			</group>
 		</group>
 		<group name="pt_permissions">
@@ -62,6 +63,9 @@
 				<bitfield name="requirecategory">2</bitfield>
 				<bitfield name="requirepriority">4</bitfield>
 				<bitfield name="emailonassignment">8</bitfield>
+			</group>
+			<group name="pt_hvcheck">
+				<bitfield name="post">1</bitfield>
 			</group>
 		</group>
 	</bitfielddefs>
