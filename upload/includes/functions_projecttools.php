@@ -455,50 +455,6 @@ function prepare_issue($issue)
 	$issue['lastread'] = issue_lastview($issue);
 	$issue['newflag'] = ($issue['lastpost'] > $issue['lastread']);
 
-	if ($_REQUEST['do'] == 'issuelist')
-	{
-		// multipage nav
-		$issue['totalnotes'] = $issue['replycount'];
-		$total =& $issue['totalnotes'];
-
-		if ($issue['totalnotes'] > $vbulletin->options['pt_notesperpage'] AND $vbulletin->options['linktopages'])
-		{
-			$issue['totalpages'] = ceil($issue['totalnotes'] / $vbulletin->options['pt_notesperpage']);
-
-			$curpage = 0;
-
-			$issue['pagenav'] = '';
-			$show['pagenavmore'] = false;
-
-			while ($curpage++ < $issue['totalpages'])
-			{
-				if ($vbulletin->options['maxmultipage'] AND $curpage > $vbulletin->options['maxmultipage'])
-				{
-					$lastpageinfo = array(
-						'page' => $issue['totalpages']
-					);
-					$issue['lastpagelink'] = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
-					$show['pagenavmore'] = true;
-					break;
-				}
-
-				$pageinfo = array(
-					'page' => $curpage
-				);
-
-				$pagenumbers = fetch_start_end_total_array($curpage, $vbulletin->options['pt_notesperpage'], $issue['totalnotes']);
-				$templater = vB_Template::create('pt_issuebit_pagelink');
-					$templater->register('curpage', $curpage);
-					$templater->register('issue', $issue);
-				$issue['pagenav'] .= ' ' . $templater->render();
-			};
-		}
-		else
-		{
-			$issue['pagenav'] = '';
-		}
-	}
-
 	($hook = vBulletinHook::fetch_hook('project_issue_prepare')) ? eval($hook) : false;
 
 	return $issue;
@@ -1225,6 +1181,43 @@ function build_issue_bit($issue, $project, $issueperms)
 	$show['status_edit'] = $posting_perms['status_edit'];
 
 	$issue = prepare_issue($issue);
+
+	// multipage nav
+	$issue['totalnotes'] = $issue['replycount'];
+	$total =& $issue['totalnotes'];
+
+	if ($issue['totalnotes'] > $vbulletin->options['pt_notesperpage'] AND $vbulletin->options['linktopages'])
+	{
+		$issue['totalpages'] = ceil($issue['totalnotes'] / $vbulletin->options['pt_notesperpage']);
+
+		$curpage = 0;
+
+		$issue['pagenav'] = '';
+		$show['pagenavmore'] = false;
+
+		while ($curpage++ < $issue['totalpages'])
+		{
+			if ($vbulletin->options['maxmultipage'] AND $curpage > $vbulletin->options['maxmultipage'])
+			{
+				$lastpageinfo = array(
+					'page' => $issue['totalpages']
+				);
+				$issue['lastpagelink'] = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+				$show['pagenavmore'] = true;
+				break;
+			}
+
+			$pagenumbers = fetch_start_end_total_array($curpage, $vbulletin->options['pt_notesperpage'], $issue['totalnotes']);
+			$templater = vB_Template::create('pt_issuebit_pagelink');
+				$templater->register('curpage', $curpage);
+				$templater->register('issue', $issue);
+			$issue['pagenav'] .= ' ' . $templater->render();
+		};
+	}
+	else
+	{
+		$issue['pagenav'] = '';
+	}
 
 	$template_name = ($issue['visible'] == 'deleted' ? 'pt_issuebit_deleted' : 'pt_issuebit');
 

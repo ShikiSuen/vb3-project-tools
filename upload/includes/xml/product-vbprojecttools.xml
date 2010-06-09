@@ -1627,7 +1627,7 @@ if ($db_alter->fetch_table_info('thread'))
 .vB_MagicSelect_margin {
 	margin:0px 0px 2px 0px;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1276104684" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1276106558" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2012,8 +2012,9 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issuelist .blockrow .ptissuelist_title .pagination dd span {
-	padding-top: 0
+	padding-top: 0;
 	padding-bottom: 0;
+	margin-top: -3px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_title .pagination a {
@@ -3629,7 +3630,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<vb:if condition="$issue['deletionreason']"><div><span class="shade">{vb:rawphrase reason}</span> {vb:raw issue.deletionreason}</div></vb:if>
 	</div>
 </div>]]></template>
-		<template name="pt_issuebit_pagelink" templatetype="template" date="1276104501" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
+		<template name="pt_issuebit_pagelink" templatetype="template" date="1276105979" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
 		<template name="pt_issuelist" templatetype="template" date="1275619790" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
