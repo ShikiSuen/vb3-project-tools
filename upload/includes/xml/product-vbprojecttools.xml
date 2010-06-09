@@ -9138,8 +9138,10 @@ A value of 0 will display all issues in a group on the first page.]]></phrase>
 			<phrase name="setting_pt_groupsearchissuespergroup_title" date="1181653336" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Grouped Search Issues Per Group]]></phrase>
 			<phrase name="setting_pt_hasprojectforums_desc" date="1180529115" username="Ed Sullivan" version="1.0.0 Beta 2"><![CDATA[Set to yes if projects are set to show up as forums.]]></phrase>
 			<phrase name="setting_pt_hasprojectforums_title" date="1180529115" username="Ed Sullivan" version="1.0.0 Beta 2"><![CDATA[Has Project Forums]]></phrase>
-			<phrase name="setting_pt_hvcheck_desc" date="1276072839" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification will be required for the selected actions where the user's usergroup permission <strong>Require Human Verification for Configured Actions</strong> is selected.]]></phrase>
-			<phrase name="setting_pt_hvcheck_title" date="1276072839" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification Options]]></phrase>
+			<phrase name="setting_pt_humancheck_desc" date="1276077978" username="Pitchoune" version="2.1.2"><![CDATA[Do you want to allow human verification by usergroup only? Set 'Yes' in that case, or 'No' if you prefer to use the next option.]]></phrase>
+			<phrase name="setting_pt_humancheck_title" date="1276077978" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification by usergroup]]></phrase>
+			<phrase name="setting_pt_hvcheck_desc" date="1276077936" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification will be required for the selected actions where the user's usergroup permission <strong>Require Human Verification for Configured Actions</strong> is selected.]]></phrase>
+			<phrase name="setting_pt_hvcheck_title" date="1276077936" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification Options]]></phrase>
 			<phrase name="setting_pt_issuesperpage_desc" date="1181652734" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This is the number of issues to display per page in the issue list.<br />
 <br />
 A value of 0 will display all issues on one page.]]></phrase>
@@ -9284,7 +9286,12 @@ diff</defaultvalue>
 				<optioncode>yesno</optioncode>
 				<defaultvalue>1</defaultvalue>
 			</setting>
-			<setting varname="pt_hvcheck" displayorder="200">
+			<setting varname="pt_humancheck" displayorder="200">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="pt_hvcheck" displayorder="210">
 				<datatype>bitfield</datatype>
 				<optioncode>bitfield:misc|pt_hvcheck</optioncode>
 				<defaultvalue>1</defaultvalue>

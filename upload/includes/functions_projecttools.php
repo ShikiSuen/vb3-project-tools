@@ -1588,7 +1588,7 @@ function fetch_require_pt_hvcheck($action)
 {
 	global $vbulletin;
 
-	if (!$vbulletin->options['pt_hvcheck'])
+	if (!$vbulletin->options['pt_humancheck'])
 	{
 		if (!$vbulletin->options['hv_type'] OR !($vbulletin->options['pt_hvcheck'] & $vbulletin->bf_misc_pt_hvcheck[$action]))
 		{
