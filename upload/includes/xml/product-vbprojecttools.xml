@@ -1547,9 +1547,10 @@ if ($db_alter->fetch_table_info('thread'))
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools-magicselect.css" templatetype="template" date="1275621978" username="thincom2000" version="2.1.1"><![CDATA[.vB_MagicSelect, .vB_MagicSelect_hover, .vB_MagicSelect_preload {
+		<template name="projecttools-magicselect.css" templatetype="template" date="1276070403" username="Pitchoune" version="2.1.2"><![CDATA[/* Issue #106
+.vB_MagicSelect, .vB_MagicSelect_hover, .vB_MagicSelect_preload {
 	white-space:nowrap;
-}
+}*/
 
 .vB_MagicSelectCursor {
 	cursor:default;
