@@ -45,6 +45,7 @@ $globaltemplates = array(
 // pre-cache templates used by specific actions
 $actiontemplates = array(
 	'addissue' => array(
+		'humanverify',
 		'pt_postissue',
 		'pt_postissue_short',
 		'pt_preview',
@@ -52,6 +53,7 @@ $actiontemplates = array(
 		'optgroup'
 	),
 	'addreply' => array(
+		'humanverify',
 		'pt_postreply',
 		'pt_postreply_quote',
 		'pt_preview',
@@ -220,6 +222,7 @@ if ($_POST['do'] == 'postreply')
 		'changestatusid'   => TYPE_UINT,
 		'subscribetype'    => TYPE_NOHTML,
 		'preview'          => TYPE_NOHTML,
+		'humanverify'      => TYPE_ARRAY,
 	));
 
 	if ($vbulletin->GPC['wysiwyg'])
@@ -333,6 +336,16 @@ if ($_POST['do'] == 'postreply')
 		$issuenotedata->set_info('petitionstatusid', $vbulletin->GPC['petitionstatusid']);
 	}
 
+	if (fetch_require_pt_hvcheck('post'))
+	{
+		require_once(DIR . '/includes/class_humanverify.php');
+		$verify =& vB_HumanVerify::fetch_library($vbulletin);
+		if (!$verify->verify_token($vbulletin->GPC['humanverify']))
+		{
+			$issuenotedata->error($verify->fetch_error());
+		}
+	}
+
 	($hook = vBulletinHook::fetch_hook('projectpost_postreply_save')) ? eval($hook) : false;
 
 	$issuenotedata->pre_save();
@@ -402,6 +415,17 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 
 	// determine what they can actually do
 	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
+
+	if (fetch_require_pt_hvcheck('post'))
+	{
+		require_once(DIR . '/includes/class_humanverify.php');
+		$verification =& vB_HumanVerify::fetch_library($vbulletin);
+		$human_verify = $verification->output_token();
+	}
+	else
+	{
+		$human_verify = '';
+	}
 
 	($hook = vBulletinHook::fetch_hook('projectpost_addreply_start')) ? eval($hook) : false;
 
@@ -555,6 +579,7 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 		$templater->register_page_templates();
 		$templater->register('editorid', $editorid);
 		$templater->register('edit_history', $edit_history);
+		$templater->register('human_verify', $human_verify);
 		$templater->register('issue', $issue);
 		$templater->register('issuenote', $issuenote);
 		$templater->register('messagearea', $messagearea);
@@ -723,6 +748,7 @@ if ($_POST['do'] == 'postissue')
 		'reason' => TYPE_NOHTML,
 		'subscribetype' => TYPE_NOHTML,
 		'preview' => TYPE_NOHTML,
+		'humanverify' => TYPE_ARRAY,
 	));
 
 	if ($vbulletin->GPC['wysiwyg'])
@@ -929,6 +955,16 @@ if ($_POST['do'] == 'postissue')
 		$issuenote->set('pagetext', $vbulletin->GPC['message']);
 	}
 
+	if (fetch_require_pt_hvcheck('post'))
+	{
+		require_once(DIR . '/includes/class_humanverify.php');
+		$verify =& vB_HumanVerify::fetch_library($vbulletin);
+		if (!$verify->verify_token($vbulletin->GPC['humanverify']))
+		{
+			$issuedata->error($verify->fetch_error());
+		}
+	}
+
 	($hook = vBulletinHook::fetch_hook('projectpost_postissue_save')) ? eval($hook) : false;
 
 	$issuedata->set_info('perform_activity_updates', $issuedata->have_issue_changes());
@@ -1067,6 +1103,17 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	else
 	{
 		$navbits[''] = $vbphrase['post_new_issue'];
+	}
+
+	if (fetch_require_pt_hvcheck('post'))
+	{
+		require_once(DIR . '/includes/class_humanverify.php');
+		$verification =& vB_HumanVerify::fetch_library($vbulletin);
+		$human_verify = $verification->output_token();
+	}
+	else
+	{
+		$human_verify = '';
 	}
 
 	($hook = vBulletinHook::fetch_hook('projectpost_addissue_start')) ? eval($hook) : false;
@@ -1396,6 +1443,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$templater->register('category_unknown_selected', $category_unknown_selected);
 		$templater->register('close_issue_checked', $close_issue_checked);
 		$templater->register('editorid', $editorid);
+		$templater->register('human_verify', $human_verify);
 		$templater->register('issue', $issue);
 		$templater->register('messagearea', $messagearea);
 		$templater->register('milestone_options', $milestone_options);

@@ -8406,6 +8406,8 @@ There are also several permissions that are not definable per project or issue t
 <dfn>If you set this to no, users will not be able to create any reports.</dfn>]]></phrase>
 			<phrase name="can_delete_public_report_others" date="1176812058" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Delete Others' Public Reports]]></phrase>
 			<phrase name="can_delete_public_report_own" date="1176812062" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Delete Own Public Reports]]></phrase>
+			<phrase name="can_use_humancheck" date="1276072756" username="Pitchoune" version="2.1.2"><![CDATA[Use the Human Verification in Project Tools
+<dfn>This option will work if you set correctly the option <strong>Human Verification by usergroup</strong> in the vBulletin Options <a href="options.php?dogroup=projecttools"><strong>Project Tools Options</strong></a> group.</dfn>]]></phrase>
 			<phrase name="can_view_project_tools" date="1183130974" username="Ed Sullivan" version="1.0.0"><![CDATA[Can View Project Tools
 <dfn>If this is set to no, users will not have any access to the Project Tools regardless of other permission settings.</dfn>]]></phrase>
 			<phrase name="project_tools_permissions" date="1171623937" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools Permissions]]></phrase>
@@ -9136,6 +9138,8 @@ A value of 0 will display all issues in a group on the first page.]]></phrase>
 			<phrase name="setting_pt_groupsearchissuespergroup_title" date="1181653336" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Grouped Search Issues Per Group]]></phrase>
 			<phrase name="setting_pt_hasprojectforums_desc" date="1180529115" username="Ed Sullivan" version="1.0.0 Beta 2"><![CDATA[Set to yes if projects are set to show up as forums.]]></phrase>
 			<phrase name="setting_pt_hasprojectforums_title" date="1180529115" username="Ed Sullivan" version="1.0.0 Beta 2"><![CDATA[Has Project Forums]]></phrase>
+			<phrase name="setting_pt_hvcheck_desc" date="1276072839" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification will be required for the selected actions where the user's usergroup permission <strong>Require Human Verification for Configured Actions</strong> is selected.]]></phrase>
+			<phrase name="setting_pt_hvcheck_title" date="1276072839" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification Options]]></phrase>
 			<phrase name="setting_pt_issuesperpage_desc" date="1181652734" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This is the number of issues to display per page in the issue list.<br />
 <br />
 A value of 0 will display all issues on one page.]]></phrase>
@@ -9278,6 +9282,11 @@ diff</defaultvalue>
 			<setting varname="ptimporter_createnotice" displayorder="190">
 				<datatype>boolean</datatype>
 				<optioncode>yesno</optioncode>
+				<defaultvalue>1</defaultvalue>
+			</setting>
+			<setting varname="pt_hvcheck" displayorder="200">
+				<datatype>bitfield</datatype>
+				<optioncode>bitfield:misc|pt_hvcheck</optioncode>
 				<defaultvalue>1</defaultvalue>
 			</setting>
 		</settinggroup>

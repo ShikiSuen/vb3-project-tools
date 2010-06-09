@@ -1576,3 +1576,29 @@ function fetch_issue_status_search_select($projectperms)
 
 	return $status_options;
 }
+
+/**
+* Human Verification
+*
+* @param	array	Action defined for the Human Verification
+*
+* @return	strgin	Boolean
+*/
+function fetch_require_pt_hvcheck($action)
+{
+	global $vbulletin;
+
+	if (!$vbulletin->options['pt_hvcheck'])
+	{
+		if (!$vbulletin->options['hv_type'] OR !($vbulletin->options['pt_hvcheck'] & $vbulletin->bf_misc_pt_hvcheck[$action]))
+		{
+			return false;
+		}
+
+		return ($vbulletin->userinfo['permissions']['genericoptions'] & $vbulletin->bf_ugp_genericoptions['requirehvcheck']);
+	}
+	else
+	{
+		return ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canusehumancheck']);
+	}
+}
