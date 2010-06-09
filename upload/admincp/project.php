@@ -1030,7 +1030,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 
 	if ($projectsets)
 	{
-		print_label_row($vbphrase['use_selected_project_sets'], $projectsets, '', 'top', 'projectset');
+		print_label_row($vbphrase['use_selected_project_sets'], $projectsets, 'alt1', 'top', 'projectset');
 	}
 
 	construct_hidden_code('issuestatusid', $issuestatus['issuestatusid']);

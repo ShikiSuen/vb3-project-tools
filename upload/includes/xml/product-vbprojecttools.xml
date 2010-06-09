@@ -1157,6 +1157,21 @@ if ($db_alter->fetch_table_info('thread'))
 	$db_alter->drop_field('ptforwardmode');
 }]]></uninstallcode>
 		</code>
+		<code version="2.1.2">
+			<installcode><![CDATA[if ($installed_version !== null)
+{
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_issuestatus ADD statuscolor VARCHAR(20) NOT NULL");
+
+	$db->query_write("
+		CREATE TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset (
+			issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
+			projectid INT UNSIGNED NOT NULL DEFAULT 0,
+			PRIMARY KEY (issuestatusid, projectid),
+		)
+	");
+}]]></installcode>
+			<uninstallcode><![CDATA[$db->query_write("DROP TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset");]]></uninstallcode>
+		</code>
 	</codes>
 	<templates>
 		<template name="projecttools-ie.css" templatetype="template" date="1276105002" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
@@ -1627,7 +1642,7 @@ if ($db_alter->fetch_table_info('thread'))
 .vB_MagicSelect_margin {
 	margin:0px 0px 2px 0px;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1276106558" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1276106750" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2015,6 +2030,7 @@ a.firstunread, a.firstunread:hover
 	padding-top: 0;
 	padding-bottom: 0;
 	margin-top: -3px;
+	margin-bottom: -3px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_title .pagination a {
@@ -3531,7 +3547,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1276104024" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow">
+		<template name="pt_issuebit" templatetype="template" date="1276119875" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -3631,7 +3647,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1276105979" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1275619790" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1276116835" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3791,7 +3807,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			{vb:raw issuebits}
 		<vb:else />
 			<div class="blockrow">
-				{vb:rawphrase no_issues_matching_criteria}
+				<div align="center">{vb:rawphrase no_issues_matching_criteria}</div>
 			</div>
 		</vb:if>
 	</div>
@@ -6834,7 +6850,7 @@ init_project_readmarker_system();
 {vb:raw errorbits}
 </ul>]]></template>
 		<template name="pt_searcherrorbit" templatetype="template" date="1273444813" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw error}</li>]]></template>
-		<template name="pt_searchresultbit" templatetype="template" date="1274909023" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
+		<template name="pt_searchresultbit" templatetype="template" date="1276119884" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
 	</div>
@@ -9090,6 +9106,7 @@ To create your own report, make a search with the criteria that you want and cli
 </ul>]]></phrase>
 			<phrase name="project_tools_upgraded_successfully" date="1179502428" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[vBulletin Project Tools Upgraded Successfully!]]></phrase>
 			<phrase name="project_versions_for_x" date="1213805622" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Versions for <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="pt_status_color" date="1276120806" username="Pitchoune" version="2.1.2"><![CDATA[Status Color]]></phrase>
 			<phrase name="ptperm_can_assign_edit" date="1176211762" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Assignments]]></phrase>
 			<phrase name="ptperm_can_assign_edit_others" date="1176211771" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Others' Assignments]]></phrase>
 			<phrase name="ptperm_can_assigned" date="1176211751" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can be Assigned]]></phrase>
@@ -9150,6 +9167,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="target_date_desc" date="1216726428" username="Ed Sullivan" version="2.0.0 Beta 2"><![CDATA[Use this option to specify the target (or deadline) for this milestone.]]></phrase>
 			<phrase name="title_in_forum_list" date="1180531471" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Title in Forum List
 <dfn>If you display this project in the forum list, you can use this to override the project's name in the list.</dfn>]]></phrase>
+			<phrase name="use_selected_project_sets" date="1276120817" username="Pitchoune" version="2.1.2"><![CDATA[Use Selected Project Sets]]></phrase>
 			<phrase name="usergroups_access_globally_disabled" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This usergroup's access to the Project Tools is globally disabled. The changes you make here will not be applied until that is changed.]]></phrase>
 			<phrase name="version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Version Group]]></phrase>
 			<phrase name="versions" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Versions]]></phrase>
@@ -9226,6 +9244,10 @@ A value of 0 will hide the recent issues from this page.]]></phrase>
 <br />
 A value of 0 will hide the timeline from this page.]]></phrase>
 			<phrase name="setting_pt_project_timelineentries_title" date="1181652861" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Project View: Timeline Entries]]></phrase>
+			<phrase name="setting_pt_statuscolor_desc" date="1276119927" username="Pitchoune" version="2.1.2"><![CDATA[Do you want to use the 'Status Color' feature?<br />
+<br />
+<b>Note:</b> You can define only one color per status for all styles. If you want to use it, choose colors wisely.]]></phrase>
+			<phrase name="setting_pt_statuscolor_title" date="1276119927" username="Pitchoune" version="2.1.2"><![CDATA[Status Color]]></phrase>
 			<phrase name="setting_pt_timelineperpage_desc" date="1181652760" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[When viewing the timeline page, this controls the number of entries shown on each page.<br />
 <br />
 A value of 0 will display all entries in the specified time range on one page.]]></phrase>
@@ -9359,6 +9381,11 @@ diff</defaultvalue>
 				<datatype>bitfield</datatype>
 				<optioncode>bitfield:misc|pt_hvcheck</optioncode>
 				<defaultvalue>1</defaultvalue>
+			</setting>
+			<setting varname="pt_statuscolor" displayorder="220">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
 			</setting>
 		</settinggroup>
 		<settinggroup name="version" displayorder="0">
