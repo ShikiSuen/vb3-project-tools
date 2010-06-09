@@ -40,6 +40,7 @@ $specialtemplates = array(
 // pre-cache templates used by all actions
 $globaltemplates = array(
 	'pt_navbar_search',
+	'pt_headinclude',
 );
 
 // pre-cache templates used by specific actions
