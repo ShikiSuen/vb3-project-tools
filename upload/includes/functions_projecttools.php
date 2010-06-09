@@ -455,6 +455,11 @@ function prepare_issue($issue)
 	$issue['lastread'] = issue_lastview($issue);
 	$issue['newflag'] = ($issue['lastpost'] > $issue['lastread']);
 
+	if ($vbulletin->options['pt_statuscolor'] AND $statuscolor = $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor'])
+	{
+		$issue['statuscolor'] = $statuscolor;
+	}
+
 	($hook = vBulletinHook::fetch_hook('project_issue_prepare')) ? eval($hook) : false;
 
 	return $issue;
@@ -1220,6 +1225,20 @@ function build_issue_bit($issue, $project, $issueperms)
 	}
 
 	$template_name = ($issue['visible'] == 'deleted' ? 'pt_issuebit_deleted' : 'pt_issuebit');
+
+	$show['statuscolor'] = false;
+
+	$projectstatusset = $vbulletin->db->query_first("
+		SELECT issuestatusid, projectid
+		FROM " . TABLE_PREFIX . "pt_issuestatusprojectset
+		WHERE projectid = " . $project['projectid'] . "
+			AND issuestatusid = " . $issue['issuestatusid'] . "
+	");
+
+	if ($issue['statuscolor'] AND $vbulletin->options['pt_statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
+	{
+		$show['statuscolor'] = true;
+	}
 
 	($hook = vBulletinHook::fetch_hook('project_issuebit')) ? eval($hook) : false;
 

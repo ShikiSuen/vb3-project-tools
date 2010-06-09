@@ -741,6 +741,20 @@ function build_pt_search_resultbit($issue)
 
 	$issue = prepare_issue($issue);
 
+	$show['statuscolor'] = false;
+
+	$projectstatusset = $vbulletin->db->query_first("
+		SELECT issuestatusid, projectid
+		FROM " . TABLE_PREFIX . "pt_issuestatusprojectset
+		WHERE projectid = " . $project['projectid'] . "
+			AND issuestatusid = " . $issue['issuestatusid'] . "
+	");
+
+	if ($issue['statuscolor'] AND $vbulletin->options['pt_statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
+	{
+		$show['statuscolor'] = true;
+	}
+
 	($hook = vBulletinHook::fetch_hook('projectsearch_results_bit')) ? eval($hook) : false;
 
 	$templater = vB_Template::create('pt_searchresultbit');

@@ -59,7 +59,7 @@ log_admin_action(
 // ######################### START MAIN SCRIPT ############################
 // ########################################################################
 
-print_cp_header($vbphrase['project_tools']);
+print_cp_header($vbphrase['project_tools'], iif($_REQUEST['do'] == 'statusedit' OR $_REQUEST['do'] == 'statusadd', 'init_color_preview()'));
 
 if (empty($_REQUEST['do']))
 {
@@ -861,7 +861,9 @@ if ($_POST['do'] == 'statusupdate')
 		'issuetypeid' => TYPE_STR,
 		'displayorder' => TYPE_UINT,
 		'canpetitionfrom' => TYPE_UINT,
-		'issuecompleted' => TYPE_UINT
+		'issuecompleted' => TYPE_UINT,
+		'statuscolor' => TYPE_STR,
+		'projectset' => TYPE_ARRAY_UINT
 	));
 
 	if (empty($vbulletin->GPC['title']) OR empty($vbulletin->GPC['issuetypeid']))
@@ -893,8 +895,30 @@ if ($_POST['do'] == 'statusupdate')
 	$statusdata->set('displayorder', $vbulletin->GPC['displayorder']);
 	$statusdata->set('canpetitionfrom', $vbulletin->GPC['canpetitionfrom']);
 	$statusdata->set('issuecompleted', $vbulletin->GPC['issuecompleted']);
+	$statusdata->set('statuscolor', $vbulletin->GPC['statuscolor']);
 	$statusdata->set_info('title', $vbulletin->GPC['title']);
-	$statusdata->save();
+	$issuestatusid = $statusdata->save();
+
+	if (!$vbulletin->GPC['issuestatusid'])
+	{
+		$vbulletin->GPC['issuestatusid'] = $issuestatusid;
+	}
+
+	$add_projectsets = array();
+	foreach ($vbulletin->GPC['projectset'] AS $projectsetid)
+	{
+		$add_projectsets[] = "(" . intval($vbulletin->GPC['issuestatusid']) . ", " . intval($projectsetid) . ")";
+	}
+
+	if ($add_projectsets)
+	{
+		$db->query_write("
+			INSERT IGNORE INTO " . TABLE_PREFIX . "pt_issuestatusprojectset
+				(issuestatusid, projectid)
+			VALUES
+				" . implode(',', $add_projectsets)
+		);
+	}
 
 	define('CP_REDIRECT', 'project.php?do=typelist');
 	print_stop_message('issue_status_saved');
@@ -934,9 +958,13 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 			'displayorder' => $maxorder['maxorder'] + 10,
 			'canpetitionfrom' => 1,
 			'issuecompleted' => 0,
-			'title' => ''
+			'title' => '',
+			'statuscolor' => '',
+			'projectset' => ''
 		);
 	}
+
+	echo '<script type="text/javascript" src="../clientscript/vbulletin_cpcolorpicker.js"></script>';
 
 	print_form_header('project', 'statusupdate');
 	if ($issuestatus['issuestatusid'])
@@ -969,9 +997,60 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 	print_yes_no_row($vbphrase['status_represents_completed_issue'], 'issuecompleted', $issuestatus['issuecompleted']);
 	print_yes_no_row($vbphrase['can_create_petitions_from_this_status'], 'canpetitionfrom', $issuestatus['canpetitionfrom']);
 
+	require_once(DIR . '/includes/adminfunctions_template.php');
+	$colorPicker = construct_color_picker(11);
+
+	// Construct_color_row reworked just for here
+	echo "<tr>
+		<td class=\"alt2\">" . $vbphrase['pt_status_color'] . "</td>
+		<td class=\"alt2\">
+			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
+			<tr>
+				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$issuestatus['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
+				<td><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
+			</tr>
+			</table>
+		</td>
+	</tr>\n";
+
+	$projectsets = '';
+	$projectsets_sql = $vbulletin->db->query_read("
+		SELECT pt.projectid, pt.title_clean, IF(ptset.projectid IS NULL, 0, 1) AS selected
+		FROM " . TABLE_PREFIX . "pt_project AS pt
+		LEFT JOIN " . TABLE_PREFIX . "pt_issuestatusprojectset AS ptset ON
+			(ptset.projectid = pt.projectid AND ptset.issuestatusid = " . intval($issuestatus['issuestatusid']) . ")
+		ORDER BY pt.displayorder
+	");
+	while ($projectset = $vbulletin->db->fetch_array($projectsets_sql))
+	{
+		$projectsets .= "<div class=\"smallfont\"><label>"
+			. "<input type=\"checkbox\" name=\"projectset[]\" value=\"$projectset[projectid]\" tabindex=\"1\"" . ($projectset['selected'] ? ' checked="checked"' : '') . " />"
+			. htmlspecialchars_uni($projectset['title_clean']) . "</label></div>";
+	}
+
+	if ($projectsets)
+	{
+		print_label_row($vbphrase['use_selected_project_sets'], $projectsets, '', 'top', 'projectset');
+	}
+
 	construct_hidden_code('issuestatusid', $issuestatus['issuestatusid']);
 	print_submit_row();
 
+	echo $colorPicker;
+
+	?>
+	<script type="text/javascript">
+	<!--
+
+	var bburl = "<?php echo $vbulletin->options['bburl']; ?>/";
+	var cpstylefolder = "<?php echo $vbulletin->options['cpstylefolder']; ?>";
+	var numColors = 1;
+	var colorPickerWidth = 253;
+	var colorPickerType = 0;
+
+	//-->
+	</script>
+	<?php
 }
 
 // ########################################################################
