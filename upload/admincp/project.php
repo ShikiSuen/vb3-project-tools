@@ -905,11 +905,19 @@ if ($_POST['do'] == 'statusupdate')
 	}
 
 	$add_projectsets = array();
+
+	// Delete all projects for this issue status
+	$db->query_write("
+		DELETE FROM " . TABLE_PREFIX . "pt_issuestatusprojectset
+		WHERE issuestatusid = " . intval($vbulletin->GPC['issuestatusid']) . "
+	");
+
 	foreach ($vbulletin->GPC['projectset'] AS $projectsetid)
 	{
 		$add_projectsets[] = "(" . intval($vbulletin->GPC['issuestatusid']) . ", " . intval($projectsetid) . ")";
 	}
 
+	// Now add all checked projects
 	if ($add_projectsets)
 	{
 		$db->query_write("
@@ -960,7 +968,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 			'issuecompleted' => 0,
 			'title' => '',
 			'statuscolor' => '',
-			'projectset' => ''
+			'projectset' => '',
 		);
 	}
 
@@ -1014,6 +1022,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 	</tr>\n";
 
 	$projectsets = '';
+	$projectsetarray = '0,';
 	$projectsets_sql = $vbulletin->db->query_read("
 		SELECT pt.projectid, pt.title_clean, IF(ptset.projectid IS NULL, 0, 1) AS selected
 		FROM " . TABLE_PREFIX . "pt_project AS pt
@@ -1026,11 +1035,20 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 		$projectsets .= "<div class=\"smallfont\"><label>"
 			. "<input type=\"checkbox\" name=\"projectset[]\" value=\"$projectset[projectid]\" tabindex=\"1\"" . ($projectset['selected'] ? ' checked="checked"' : '') . " />"
 			. htmlspecialchars_uni($projectset['title_clean']) . "</label></div>";
+
+			$projectsetarray .= $projectset['projectid'] . ',';
 	}
 
 	if ($projectsets)
 	{
 		print_label_row($vbphrase['use_selected_project_sets'], $projectsets, 'alt1', 'top', 'projectset');
+
+		if (!empty($projectsetarray) AND strlen($projectsetarray) > 2)
+		{
+			$projectsetarray = substr($projectsetarray, 2, -1);
+		}
+
+		construct_hidden_code('original_projectset', $projectsetarray);
 	}
 
 	construct_hidden_code('issuestatusid', $issuestatus['issuestatusid']);
