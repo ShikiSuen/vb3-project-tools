@@ -4191,13 +4191,16 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_managesubscriptions" templatetype="template" date="1273517226" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<form action="projectpost.php?do=updatesubscriptions" method="post">
+		<template name="pt_managesubscriptions" templatetype="template" date="1276099167" username="Pitchoune" version="2.1.2"><![CDATA[<form action="projectpost.php?do=updatesubscriptions" method="post">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 <input type="hidden" name="do" value="updatesubscriptions" />
 
 <div class="pt_issuelist block">
 	<div class="blockhead">
+		<div style="float: {vb:stylevar right}">
+			<input type="checkbox" name="allbox" value="{vb:rawphrase check_uncheck_all}" title="{vb:rawphrase check_uncheck_all}" onclick="checkall(this.form)" tabindex="1" />
+		</div>
 		{vb:rawphrase issue_subscriptions}
 	</div>
 	<div class="blockbody formcontrols">
@@ -4260,6 +4263,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 	<div class="pt_issuelist block">
 		<div class="blockhead">
+			<div style="float: {vb:stylevar right}">
+				<input type="checkbox" name="allbox" value="{vb:rawphrase check_uncheck_all}" title="{vb:rawphrase check_uncheck_all}" onclick="checkall(this.form)" tabindex="1" />
+			</div>
 			{vb:rawphrase project_subscriptions}
 		</div>
 		<div class="blockbody formcontrols">
