@@ -27,7 +27,7 @@ class vB_BbCodeParser_Pt extends vB_BbCodeParser
 	/**
 	 * vB_BbCodeParser_Pt::__construct()
 	 * 
-	 * Class Constructer. Initializes the core vBulletin BB Code Parser.
+	 * Class Constructor. Initializes the core vBulletin BB Code Parser.
 	 * 
 	 * @param	vB_Registry	The vBulletin Registry.
 	 * @param	array		List of tags for use within the parser.
