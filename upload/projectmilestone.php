@@ -255,6 +255,60 @@ if ($_REQUEST['do'] == 'milestone')
 	{
 		print_no_permission();
 	}
+	
+	// status options / posting options drop down
+	$postable_types = array();
+	$status_options = '';
+	$post_issue_options = '';
+	$urlinclude['milestoneid'] = true;
+	foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
+	{
+		if (($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) AND ($projectperms["$issuetypeid"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
+		{
+			$postable_types[] = $issuetypeid;
+			$type = $typeinfo;
+			$typename = $vbphrase["issuetype_{$issuetypeid}_singular"];
+			$templater = vB_Template::create('pt_postmenubit');
+				$templater->register('project', $project);
+				$templater->register('urlinclude', $urlinclude);
+				$templater->register('milestoneid', $vbulletin->GPC['milestoneid']);
+				$templater->register('type', $type);
+				$templater->register('typename', $typename);
+				$templater->register('contenttypeid', $issue_contenttypeid);
+			$post_issue_options .= $templater->render();
+		}
+
+
+		if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
+		{
+			continue;
+		}
+
+		$optgroup_options = build_issuestatus_select($typeinfo['statuses'], $vbulletin->GPC['issuestatusid']);
+		$status_options .= "<optgroup label=\"" . $vbphrase["issuetype_{$issuetypeid}_singular"] . "\">$optgroup_options</optgroup>";
+	}
+
+	if (sizeof($postable_types) == 1)
+	{
+		$vbphrase['post_new_issue_issuetype'] = $vbphrase["post_new_issue_$postable_types[0]"];
+	}
+
+	$anystatus_selected = '';
+	$activestatus_selected = '';
+	if ($vbulletin->GPC['issuestatusid'] == -1)
+	{
+		$issuestatus_printable = $vbphrase['any_active_meta'];
+		$activestatus_selected = ' selected="selected"';
+	}
+	else if ($vbulletin->GPC['issuestatusid'] > 0)
+	{
+		$issuestatus_printable = $vbphrase["issuestatus" . $vbulletin->GPC['issuestatusid']];
+	}
+	else
+	{
+		$issuestatus_printable = '';
+		$anystatus_selected = ' selected="selected"';
+	}
 
 	$milestone_types = fetch_viewable_milestone_types($projectperms);
 	if (!$milestone_types)
@@ -316,6 +370,7 @@ if ($_REQUEST['do'] == 'milestone')
 	$templater = vB_Template::create('pt_milestone');
 		$templater->register_page_templates();
 		$templater->register('assignable_users', $assignable_users);
+		$templater->register('post_issue_options', $post_issue_options);
 		$templater->register('issuebits', $issuebits);
 		$templater->register('milestone', $milestone);
 		$templater->register('navbar', $navbar);

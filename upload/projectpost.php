@@ -576,6 +576,7 @@ if ($_POST['do'] == 'postissue' OR $_REQUEST['do'] == 'addissue' OR $_REQUEST['d
 		'issueid' => TYPE_UINT,
 		'projectid' => TYPE_UINT,
 		'issuetypeid' => TYPE_NOHTML,
+		'milestoneid' => TYPE_UINT
 	));
 
 	if ($vbulletin->GPC['issueid'])
@@ -1192,6 +1193,10 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	// setup milestones
 	$show['milestone'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $project['milestonecount']);
 	$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
+	if(!empty($vbulletin->GPC['milestoneid']) AND empty($issue['milestoneid']))
+	{
+		$issue['milestoneid'] = $vbulletin->GPC['milestoneid'];
+	}
 	$milestone_options = fetch_milestone_select($project['projectid'], $issue['milestoneid']);
 
 	// figure out viable status/type options

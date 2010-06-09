@@ -3,7 +3,7 @@
 <product productid="vbprojecttools" active="1">
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
-	<version>2.1.1</version>
+	<version>2.1.2</version>
 	<url />
 	<versioncheckurl />
 	<dependencies>
@@ -4311,7 +4311,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1274644346" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1276056086" username="Jeremy" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4338,6 +4338,18 @@ init_project_readmarker_system();
 
 {vb:raw header}
 {vb:raw navbar}
+
+<vb:if condition="$post_issue_options">
+	<div class="pt_issuepopup">
+		<div class="navpopupmenu popupmenu nohovermenu">
+			<a class="popupctrl" href="{vb:raw relpath}">
+				<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>					</a>
+			<ul class="navpopupbody popupbody">
+				{vb:raw post_issue_options}
+			</ul>
+		</div>
+	</div>
+</vb:if>
 
 <vb:if condition="$show['search_options']">
 <div id="above_project_controls" class="above_project_controls">
@@ -5663,8 +5675,8 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postmenubit" templatetype="template" date="1272822085" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>
-	<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}">
+		<template name="pt_postmenubit" templatetype="template" date="1276056195" username="Jeremy" version="2.1.1"><![CDATA[<li>
+	<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}<vb:if condition="$urlinclude['milestoneid']">&amp;milestoneid={vb:var milestoneid}</vb:if>">
 		<vb:if condition="$type['iconfile']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw type.iconfile}" alt="{vb:raw typename}" border="0" class="inlineimg" />
 		</vb:if>
