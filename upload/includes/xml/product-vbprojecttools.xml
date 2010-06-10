@@ -4392,7 +4392,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1276058044" username="Jeremy" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1276145027" username="Jeremy" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4478,20 +4478,24 @@ init_project_readmarker_system();
 </vb:if>
 
 <div class="pt_overview pt_milestone block">
-	<div class="blockhead">{vb:rawphrase milestone_x_html, {vb:raw milestone.title}}</div>
+	<div class="blockhead">
+		<div style="float: {vb:stylevar right};">
+			<vb:if condition="$milestone['completeddate']">
+				{vb:rawphrase completed_date} {vb:raw stats.completed_date}
+			<vb:elseif condition="$milestone['targetdate']" />
+				{vb:rawphrase target_date}: {vb:raw stats.target_date}
+					<vb:if condition="$stats['milestone_overdue']">
+						<span class="boldtext">({vb:rawphrase overdue})
+					</vb:if>
+			<vb:else />
+					{vb:rawphrase no_target_date}
+			</vb:if>
+	</div>
+		{vb:rawphrase milestone_x_html, {vb:raw milestone.title}}
+	</div>
 	<div class="blockbody formcontrols">
 		<div class="section">
 			<div class="blockrow">
-				<vb:if condition="$milestone['completeddate']">
-					<span class="shade">{vb:rawphrase completed_date}</span> {vb:raw stats.completed_date}
-				<vb:elseif condition="$milestone['targetdate']" />
-					<span class="shade">{vb:rawphrase target_date}</span> {vb:raw stats.target_date}
-					<vb:if condition="$stats['milestone_overdue']">
-						<span class="boldtext">({vb:rawphrase overdue})</span>
-					</vb:if>
-				<vb:else />
-					<span class="shade">{vb:rawphrase no_target_date}</span>
-				</vb:if>
 
 				<vb:if condition="$milestone['description']">
 					<div>{vb:raw milestone.description}</div>
