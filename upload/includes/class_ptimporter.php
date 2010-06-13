@@ -514,7 +514,7 @@ class vB_PtImporter
 		{
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
-					pt_issueid = $issueid
+					pt_issueid = $issueid,
 					pt_forwardmode = 0,
 				WHERE threadid = $threadid
 			");
