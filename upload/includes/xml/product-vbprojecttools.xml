@@ -1642,7 +1642,7 @@ if ($db_alter->fetch_table_info('thread'))
 .vB_MagicSelect_margin {
 	margin:0px 0px 2px 0px;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1276106750" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1276539244" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2668,6 +2668,58 @@ div.checkbox_multiselect {
 	width: 100%;
 }
 
+/* Projects listings in a dropdown */
+.pt_listprojects {
+	clear: both;
+	display: block;
+	float: {vb:stylevar left};
+	{vb:stylevar left}: 0;
+	margin-bottom: 5px;
+	position: relative;
+	width: 100%;
+}
+
+.pt_listprojects .menu {
+	float: {vb:stylevar right};
+	width: 300px;
+}
+
+.pt_listprojects .margin43 {
+	margin-top: -43px;
+}
+
+.pt_listprojects .margin38 {
+	margin-top: -38px;
+}
+
+.pt_listprojects .margin33 {
+	margin-top: -33px;
+}
+
+.pt_listprojects .margin15 {
+	margin-top: -15px;
+}
+
+.pt_listprojects .margin10 {
+	margin-top: -10px;
+}
+
+.pt_listprojects .marginmore10 {
+	margin-top: 10px;
+}
+
+.pt_listprojects .marginright {
+	margin-{vb:stylevar right}: 10px;
+}
+
+.pt_listprojects .marginbottom5 {
+	margin-bottom: -5px;
+}
+
+.pt_listprojects .marginbottomadd5 {
+	margin-bottom: 5px;
+}
+
 /* Overwrite some values */
 .above_threadlist .threadpagenav {
 	bottom: 5px;
@@ -3043,7 +3095,7 @@ a.shade:active, a.shade:hover {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1276070118" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1276539599" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3393,6 +3445,10 @@ a.shade:active, a.shade:hover {
 
 <br /><br />
 
+<vb:if condition="$vbulletin->options['pt_listprojects_position_issue'] == 0">
+	{vb:raw pt_ptlist}
+</vb:if>
+
 <!-- notes -->
 <a name="notestart"></a>
 {vb:raw notebits}
@@ -3411,6 +3467,10 @@ a.shade:active, a.shade:hover {
 	</div>
 <br />
 </div>
+
+<vb:if condition="$vbulletin->options['pt_listprojects_position_issue'] == 1">
+	{vb:raw pt_ptlist}
+</vb:if>
 
 <vb:if condition="$show['quick_reply']">
 <br />
@@ -3543,6 +3603,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </div>
 </div>
 
+<vb:if condition="$vbulletin->options['pt_listprojects_position_issue'] == 2">
+	{vb:raw pt_ptlist}
+</vb:if>
+
 {vb:raw footer}
 
 </body>
@@ -3647,7 +3711,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1276105979" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1276116835" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1276539686" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3714,6 +3778,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</vb:if>
 	</div>
 </div>
+
+<vb:if condition="$vbulletin->options['pt_listprojects_position_issuelist'] == 1">
+	{vb:raw pt_ptlist}
+</vb:if>
 
 <div id="above_project_controls" class="above_project_controls">
 	<div>
@@ -3848,7 +3916,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw input.issuetypeid}" rel="nofollow" class="newcontent_textcontrol" id="newthreadlink_top"><span>+</span> {vb:rawphrase post_new_issue_issuetype}</a>
 		<vb:else />
 			<vb:if condition="$post_issue_options">
-				<div class="navpopupmenu popupmenu nohovermenu">
+				<div class="navpopupmenu popupmenu nohovermenu" style="margin-top: 7px">
 					<a class="popupctrl" href="{vb:raw relpath}">
 						<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>
 					</a>
@@ -3865,6 +3933,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</vb:if>
 	</div>
 </div>
+
+<vb:if condition="$vbulletin->options['pt_listprojects_position_issuelist'] == 0">
+	{vb:raw pt_ptlist}
+</vb:if>
 
 {vb:raw footer}
 
@@ -4101,6 +4173,21 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</td>
 </tr>
 </table>]]></template>
+		<template name="pt_listprojects" templatetype="template" date="1276536285" username="Pitchoune" version="2.1.2"><![CDATA[<div class="pt_listprojects">
+	<div class="menu {vb:raw navpopup.css}">
+		<div class="clear"></div>
+		<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
+			<span class="shade">{vb:rawphrase projects}</span>
+			<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw navpopup.title}</span></a>
+			<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
+			<ul class="navpopupbody popupbody popuphover">
+				<li class="optionlabel">{vb:rawphrase projects}</li>
+				{vb:raw ptdropdown}
+			</ul>
+		</div>
+	</div>
+</div>]]></template>
+		<template name="pt_listprojects_link" templatetype="template" date="1276536470" username="Pitchoune" version="2.1.2"><![CDATA[<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectlist.projectid}<vb:if condition="$issuetypeid">&amp;issuetypeid={vb:raw issuetypeid}</vb:if>">{vb:raw projectlist.title}</a></li>]]></template>
 		<template name="pt_manageattach" templatetype="template" date="1273447517" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
@@ -6000,7 +6087,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1275938974" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1276540058" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6176,6 +6263,10 @@ init_project_readmarker_system();
 
 <div class="clear"></div>
 
+<vb:if condition="($timeline AND $vbulletin->options['pt_listprojects_position_projects'] == 2) OR empty($timeline)">
+	{vb:raw pt_ptlist}
+</vb:if>
+
 <vb:if condition="$issuebits">
 <div class="pt_issuelist block">
 	<div class="blockhead collapse">
@@ -6200,6 +6291,11 @@ init_project_readmarker_system();
 
 <vb:if condition="$timeline">
 <br />
+
+<vb:if condition="$vbulletin->options['pt_listprojects_position_projects'] == 0">
+	{vb:raw pt_ptlist}
+</vb:if>
+
 {vb:raw timeline}
 </vb:if>
 
@@ -6215,6 +6311,10 @@ init_project_readmarker_system();
 		{vb:raw petitionbits}
 	</div>
 </div>
+</vb:if>
+
+<vb:if condition="$vbulletin->options['pt_listprojects_position_projects'] == 1 AND !empty($timeline)">
+	{vb:raw pt_ptlist}
 </vb:if>
 
 {vb:raw footer}

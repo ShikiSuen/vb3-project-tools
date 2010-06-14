@@ -68,6 +68,13 @@
 				<bitfield name="post">1</bitfield>
 			</group>
 		</group>
+		<group name="nocache">
+			<group name="pt_dropdownmenu">
+				<bitfield name="pt_listprojects_overview">1</bitfield>
+				<bitfield name="pt_listprojects_issuelist">2</bitfield>
+				<bitfield name="pt_listprojects_issue">4</bitfield>
+			</group>
+		</group>
 	</bitfielddefs>
 </bitfields>
 
