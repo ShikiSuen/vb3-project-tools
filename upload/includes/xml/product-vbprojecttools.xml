@@ -8357,7 +8357,10 @@ $show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];
 
 if ($show['createptissue'])
 {
-	$vbulletin->templatecache['SHOWTHREAD'] = str_replace('<li class="formsubmit">', '<li><label><input type="radio" name="do" value="createptissue" /> ' . $vbphrase['pt_create_issue'] . '&hellip;</label></li><li class="formsubmit">', $vbulletin->templatecache['SHOWTHREAD']);
+	$vbulletin->templatecache['SHOWTHREAD'] = str_replace('<form action="postings.php" method="post">
+						<ul class="popupbody popuphover">', '<form action="postings.php" method="post">
+						<ul class="popupbody popuphover">
+<li><label><input type="radio" name="do" value="createptissue" /> ' . $vbphrase['pt_create_issue'] . '&hellip;</label></li>', $vbulletin->templatecache['SHOWTHREAD']);
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
