@@ -2819,4 +2819,57 @@ if ($_REQUEST['do'] == 'importthread')
 		$templater->register('threadinfo', $threadinfo);
 	print_output($templater->render());
 }
+
+if($_REQUEST['do'] == 'assignself')
+{
+	$vbulletin->input->clean_array_gpc('r', array('issueid' => TYPE_UINT));
+
+	$existing_assignments = array();
+	$userid = $vbulletin->userinfo['userid'];
+	
+	$issue = verify_issue($vbulletin->GPC['issueid']);
+	$project = verify_project($issue['projectid']);
+	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
+	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
+	
+	if(!isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"]))
+	{
+		print_no_permission();
+	}
+	else
+	{
+		$assignment_data = $db->query_read("SELECT user.userid FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid) WHERE issueassign.issueid = $issue[issueid] ORDER BY user.username");
+
+		while ($assignment = $db->fetch_array($assignment_data))
+		{
+			$existing_assignments["$assignment[userid]"] = $assignment['userid'];
+		}
+		
+		if(in_array($vbulletin->userinfo['userid'], $existing_assignments))
+		{
+			// Already assigned, an error occured somewhere to show the "Assign to Me" link. Just perform a return to previous issue.
+			header("Location: " . $vbulletin->options['bburl'] ."/project.php?issueid=" . $issue['issueid']);
+		}
+		else
+		{
+			// Not already in the assigned users, add them now.
+			if (!isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"]))
+			{
+				// user cannot be assigned
+				header("Location: " . $vbulletin->options['bburl'] ."/project.php?issueid=" . $issue['issueid']);
+			}
+			else
+			{
+				$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+				$assign->set_info('project', $project);
+				$assign->set('userid', $userid);
+				$assign->set('issueid', $issue['issueid']);
+				$assign->save();	
+			}
+		}
+	}
+}
+
+	
+}
 ?>
