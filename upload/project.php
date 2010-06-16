@@ -626,6 +626,7 @@ if ($_REQUEST['do'] == 'lastnote')
 // #######################################################################
 if ($_REQUEST['do'] == 'issue')
 {
+	$userid = $vbulletin->userinfo['userid'];
 	require_once(DIR . '/includes/class_bbcode_pt.php');
 	require_once(DIR . '/includes/class_pt_issuenote.php');
 
@@ -686,7 +687,8 @@ if ($_REQUEST['do'] == 'issue')
 	$show['move_issue'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmoveissue']);
 	$show['edit_issue_private'] = ($posting_perms['issue_edit'] AND $posting_perms['private_edit']);
 	$show['newflag'] = ($issue['newflag'] ? TRUE : FALSE);
-
+	$show['assigntoself'] = (($show['assign_dropdown'] AND isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"])) ? TRUE : FALSE);
+		
 	// get voting phrases
 	$vbphrase['vote_question_issuetype'] = $vbphrase["vote_question_$issue[issuetypeid]"];
 	$vbphrase['vote_count_positive_issuetype'] = $vbphrase["vote_count_positive_$issue[issuetypeid]"];
@@ -726,6 +728,10 @@ if ($_REQUEST['do'] == 'issue')
 	while ($assignment = $db->fetch_array($assignment_data))
 	{
 		$assignments[] = "$assignment[username]";
+		if($assignment['userid'] == $vbulletin->userinfo['userid'])
+		{
+			$show['assigntoself'] = FALSE;
+		}
 	}
 	$assignments = implode(', ', $assignments);
 

@@ -2820,14 +2820,16 @@ if ($_REQUEST['do'] == 'importthread')
 	print_output($templater->render());
 }
 
-if($_REQUEST['do'] == 'assignself')
+if($_REQUEST['do'] == 'assigntoself')
 {
-	$vbulletin->input->clean_array_gpc('r', array('issueid' => TYPE_UINT));
-
+	$vbulletin->input->clean_array_gpc('r', array('id' => TYPE_UINT));
+	
+	print $vbulletin->GPC['id'];	
+	
 	$existing_assignments = array();
 	$userid = $vbulletin->userinfo['userid'];
 	
-	$issue = verify_issue($vbulletin->GPC['issueid']);
+	$issue = verify_issue($vbulletin->GPC['id']);
 	$project = verify_project($issue['projectid']);
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
 	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
@@ -2868,8 +2870,5 @@ if($_REQUEST['do'] == 'assignself')
 			}
 		}
 	}
-}
-
-	
 }
 ?>
