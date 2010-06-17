@@ -2590,9 +2590,7 @@ if ($_REQUEST['do'] == 'moveissue')
 if($_REQUEST['do'] == 'assigntoself')
 {
 	$vbulletin->input->clean_array_gpc('r', array('id' => TYPE_UINT));
-	
-	print $vbulletin->GPC['id'];	
-	
+		
 	$existing_assignments = array();
 	$userid = $vbulletin->userinfo['userid'];
 	
@@ -2617,7 +2615,7 @@ if($_REQUEST['do'] == 'assigntoself')
 		if(in_array($vbulletin->userinfo['userid'], $existing_assignments))
 		{
 			// Already assigned, an error occured somewhere to show the "Assign to Me" link. Just perform a return to previous issue.
-			header("Location: " . $vbulletin->options['bburl'] ."/project.php?issueid=" . $issue['issueid']);
+			eval(print_standard_redirect($vbulletin->phrase['pt_already_assigned']));
 		}
 		else
 		{
@@ -2625,7 +2623,7 @@ if($_REQUEST['do'] == 'assigntoself')
 			if (!isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"]))
 			{
 				// user cannot be assigned
-				header("Location: " . $vbulletin->options['bburl'] ."/project.php?issueid=" . $issue['issueid']);
+				eval(print_standard_redirect($vbulletin->phrase['pt_cannont_be_assigned']));
 			}
 			else
 			{
@@ -2633,7 +2631,9 @@ if($_REQUEST['do'] == 'assigntoself')
 				$assign->set_info('project', $project);
 				$assign->set('userid', $userid);
 				$assign->set('issueid', $issue['issueid']);
-				$assign->save();	
+				$assign->save();
+				
+				eval(print_standard_redirect($vbulletin->phrase['pt_assigned']));
 			}
 		}
 	}

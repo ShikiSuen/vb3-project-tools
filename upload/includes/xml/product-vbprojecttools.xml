@@ -8865,9 +8865,12 @@ To create your own report, make a search with the criteria that you want and cli
 		</phrasetype>
 		<phrasetype name="Front-End Redirect Messages" fieldname="frontredirect">
 			<phrase name="project_markread" date="1210949080" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[This project or issue type has been marked read successfully.]]></phrase>
+			<phrase name="pt_already_assigned" date="1276801109" username="Jeremy" version="2.1.2"><![CDATA[Sorry, but you are already assigned to this issue, and cannot reassign yourself.]]></phrase>
+			<phrase name="pt_assigned" date="1276801177" username="Jeremy" version="2.1.2"><![CDATA[You have been assigned to this issue.]]></phrase>
 			<phrase name="pt_attachment_deleted" date="1171030098" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Attachment deleted.]]></phrase>
 			<phrase name="pt_attachment_edited" date="1171030126" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Attachment updated.]]></phrase>
 			<phrase name="pt_attachment_uploaded" date="1171030058" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Attachment uploaded.]]></phrase>
+			<phrase name="pt_cannont_be_assigned" date="1276801151" username="Jeremy" version="2.1.2"><![CDATA[You cannot be assigned to issues in the project and status type.]]></phrase>
 			<phrase name="pt_issue_deleted" date="1171029781" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue deleted.]]></phrase>
 			<phrase name="pt_issue_edited" date="1171029827" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue updated.]]></phrase>
 			<phrase name="pt_issue_inserted" date="1171029834" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue created.]]></phrase>
