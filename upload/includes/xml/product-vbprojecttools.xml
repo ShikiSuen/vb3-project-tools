@@ -7021,9 +7021,17 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_searchresultgroupbit" templatetype="template" date="1273440305" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
+		<template name="pt_searchresultgroupbit" templatetype="template" date="1276796181" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
 
-<vb:if condition="$pagenav">{vb:raw pagenav}</vb:if>
+<vb:if condition="$pagenav">
+<div class="pt_issuepopup">
+	<div id="above_threadlist" class="above_threadlist">
+		<div class="threadpagenav">
+			{vb:raw pagenav}
+		</div>
+	</div>
+</div>
+</vb:if>
 
 <vb:if condition="$show['first_group']">
 <div id="above_project_controls" class="above_project_controls">
@@ -7091,12 +7099,25 @@ init_project_readmarker_system();
 </div>
 
 <vb:if condition="$pagenav">
-	<div style="margin-top: 6px">{vb:raw pagenav}</div>
+<div class="pt_issuepopup">
+	<div id="below_threadlist" class="below_threadlist">
+		<div class="threadpagenav pagenav">
+			<div style="margin-top: 6px">
+				{vb:raw pagenav}
+			</div>
+		</div>
+	</div>
+</div>
 </vb:if>]]></template>
 		<template name="pt_searchresultgroupbit_arrow" templatetype="template" date="1273440034" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort={vb:raw search.sortby}&amp;order={vb:raw opposite_sort}<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>"><img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" /></a>]]></template>
-		<template name="pt_searchresults" templatetype="template" date="1275620021" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_searchresults" templatetype="template" date="1276796115" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
+	<vb:if condition="$vboptions['storecssasfile']">
+		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumdisplay-rollup.css" />
+	<vb:else />
+		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumbits.css,forumdisplay.css,threadlist.css" />
+	</vb:if>
 	<vb:if condition="!defined('YUI_VERSION')">
 		<script type="text/javascript" src="clientscript/yui/yahoo-dom-event.js?v={vb:raw options.simpleversion}"></script>
 		<script type="text/javascript" src="clientscript/yui/connection.js?v={vb:raw options.simpleversion}"></script>
