@@ -1166,7 +1166,7 @@ if ($db_alter->fetch_table_info('thread'))
 		CREATE TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset (
 			issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
 			projectid INT UNSIGNED NOT NULL DEFAULT 0,
-			PRIMARY KEY (issuestatusid, projectid),
+			PRIMARY KEY (issuestatusid, projectid)
 		)
 	");
 }]]></installcode>
