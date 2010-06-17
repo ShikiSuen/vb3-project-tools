@@ -1642,7 +1642,7 @@ if ($db_alter->fetch_table_info('thread'))
 .vB_MagicSelect_margin {
 	margin:0px 0px 2px 0px;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1276539244" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1276722480" username="Jeremy" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1680,6 +1680,17 @@ if ($db_alter->fetch_table_info('thread'))
 	padding: {vb:math {vb:stylevar padding}/2} 0;
 	float: {vb:stylevar right};
 }
+
+a.toolbar_text{
+	font: {vb:stylevar forummenu_font};
+	color: {vb:stylevar forummenu_color};
+	padding: 0;
+	border: 0;
+	display:block;
+	float: {vb:stylevar left};
+	clear: {vb:stylevar right};
+}
+
 
 .searchprojects.popupmenu .popupbody {
 	min-width:240px;
@@ -3095,7 +3106,7 @@ a.shade:active, a.shade:hover {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1276539599" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1276749407" username="Jeremy" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3142,6 +3153,13 @@ a.shade:active, a.shade:hover {
 <div id="above_project_controls" class="above_project_controls">
 	<div>
 		<ul id="projectpopups" class="popupgroup projectpopups">
+			<vb:if condition="$show['assigntoself']">
+			<li class="popupmenu">
+				<h6>
+					<a class="toolbar_text" rel="nofollow" href="projectpost.php?{vb:raw session.sessionurl}do=assigntoself&amp;id={vb:raw issue.issueid}">{vb:phrase assign_to_self}</a>
+				</h6>
+			</li>
+			</vb:if>
 			<vb:if condition="$show['newflag']">
 			<li class="popupmenu">
 				<h6>
@@ -8868,6 +8886,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="applicable_version" date="1175090917" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Applicable Version]]></phrase>
 			<phrase name="applied_tags" date="1175174543" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Applied Tags]]></phrase>
 			<phrase name="ascending" date="1175174082" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Ascending]]></phrase>
+			<phrase name="assign_to_self" date="1276749368" username="Jeremy" version="2.1.2"><![CDATA[Assign to Self]]></phrase>
 			<phrase name="assign_yourself_to_issue" date="1175174519" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Assign yourself to this issue]]></phrase>
 			<phrase name="assigned_users" date="1174492340" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Assigned Users]]></phrase>
 			<phrase name="available_items" date="1175167097" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Available Items]]></phrase>
