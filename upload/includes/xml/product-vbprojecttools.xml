@@ -1158,19 +1158,32 @@ if ($db_alter->fetch_table_info('thread'))
 }]]></uninstallcode>
 		</code>
 		<code version="2.1.2">
-			<installcode><![CDATA[if ($installed_version !== null)
+			<installcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
+$db_alter = new vB_Database_Alter_MySQL($db);
+if ($db_alter->fetch_table_info('pt_issuestatus'))
 {
-	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_issuestatus ADD statuscolor VARCHAR(20) NOT NULL");
+	$db_alter->add_field(array(
+		'name' => 'statuscolor',
+		'type' => 'varchar',
+		'length' => '20',
+		'null' => false
+	));
 
 	$db->query_write("
-		CREATE TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset (
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
 			issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
 			projectid INT UNSIGNED NOT NULL DEFAULT 0,
 			PRIMARY KEY (issuestatusid, projectid)
 		)
 	");
 }]]></installcode>
-			<uninstallcode><![CDATA[$db->query_write("DROP TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset");]]></uninstallcode>
+			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
+$db_alter = new vB_Database_Alter_MySQL($db);
+if ($db_alter->fetch_table_info('pt_issuestatus'))
+{
+	$db_alter->drop_field('statuscolor');
+}
+$db->query_write("DROP TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset");]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
