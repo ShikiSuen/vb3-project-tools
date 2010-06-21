@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+	<helptopics>
+		<helpscript name="project">
+			<helptopic disp="10" act="projectadd,projectedit" opt="options" />
+			<helptopic disp="20" act="projectadd,projectedit" opt="afterforumids" />
+			<helptopic disp="30" act="projectadd,projectedit" opt="forumtitle" />
+			<helptopic disp="40" act="projectadd,projectedit" opt="available_issue_types" />
+			<helptopic disp="1" act="projectcategory" />
+			<helptopic disp="1" act="projectlist" />
+			<helptopic disp="1" act="projectversion" />
+			<helptopic disp="1" act="statusadd,statusedit" opt="canpetitionfrom" />
+			<helptopic disp="1" act="taglist" />
+			<helptopic disp="1" act="typeadd,typeedit" opt="iconfile" />
+			<helptopic disp="1" act="typelist" />
+		</helpscript>
+		<helpscript name="projectpermission">
+			<helptopic disp="10" act="edit" opt="about_reports" />
+			<helptopic disp="1" act="edit,list" />
+		</helpscript>
+	</helptopics>
