@@ -222,60 +222,61 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 		");
 
 		// MySQL 4 needs to use the non-aliased tables in multi-table deletes (#23024)
-		$mysqlversion = $db->query_first("SELECT version() AS version");
-		$include_prefix = version_compare($mysqlversion['version'], '4.1.0', '<');
+		// No longer needed as of PT 2.1.x/vB 4.0.x. (#100)
+		// $mysqlversion = $db->query_first("SELECT version() AS version");
+		// $include_prefix = version_compare($mysqlversion['version'], '4.1.0', '<');
 
 		// clear out all the issue data
 		$db->query_write("
-			DELETE " . ($include_prefix ? TABLE_PREFIX . 'pt_' : '') . "issueassign
+			DELETE issueassign
 			FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
 			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issueassign.issueid)
 			WHERE issue.projectid = $projectid
 		");
 		$db->query_write("
-			DELETE " . ($include_prefix ? TABLE_PREFIX . 'pt_'  : '') . "issueattach
+			DELETE issueattach
 			FROM " . TABLE_PREFIX . "pt_issueattach AS issueattach
 			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issueattach.issueid)
 			WHERE issue.projectid = $projectid
 		");
 		$db->query_write("
-			DELETE " . ($include_prefix ? TABLE_PREFIX . 'pt_'  : '') . "issuechange
+			DELETE issuechange
 			FROM " . TABLE_PREFIX . "pt_issuechange AS issuechange
 			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuechange.issueid)
 			WHERE issue.projectid = $projectid
 		");
 		$db->query_write("
-			DELETE " . ($include_prefix ? TABLE_PREFIX . 'pt_'  : '') . "issuesubscribe
+			DELETE issuesubscribe
 			FROM " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe
 			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuesubscribe.issueid)
 			WHERE issue.projectid = $projectid
 		");
 		$db->query_write("
-			DELETE " . ($include_prefix ? TABLE_PREFIX . 'pt_'  : '') . "issuetag
+			DELETE issuetag
 			FROM " . TABLE_PREFIX . "pt_issuetag AS issuetag
 			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuetag.issueid)
 			WHERE issue.projectid = $projectid
 		");
 		$db->query_write("
-			DELETE " . ($include_prefix ? TABLE_PREFIX . 'pt_'  : '') . "issuevote
+			DELETE issuevote
 			FROM " . TABLE_PREFIX . "pt_issuevote AS issuevote
 			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuevote.issueid)
 			WHERE issue.projectid = $projectid
 		");
 		$db->query_write("
-			DELETE " . ($include_prefix ? TABLE_PREFIX . 'pt_'  : '') . "issuedeletionlog
+			DELETE issuedeletionlog
 			FROM " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog
 			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuedeletionlog.primaryid AND issuedeletionlog.type = 'issue')
 			WHERE issue.projectid = $projectid
 		");
 		$db->query_write("
-			DELETE " . ($include_prefix ? TABLE_PREFIX . 'pt_'  : '') . "issuenote
+			DELETE issuenote
 			FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
 			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuenote.issueid)
 			WHERE issue.projectid = $projectid
 		");
 		$db->query_write("
-			DELETE " . ($include_prefix ? TABLE_PREFIX . 'pt_'  : '') . "issueprivatelastpost
+			DELETE issueprivatelastpost
 			FROM " . TABLE_PREFIX . "pt_issueprivatelastpost AS issueprivatelastpost
 			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issueprivatelastpost.issueid)
 			WHERE issue.projectid = $projectid

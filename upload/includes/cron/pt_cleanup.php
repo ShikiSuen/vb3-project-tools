@@ -24,28 +24,17 @@ $vbulletin->db->query_write("
 	WHERE dateline < " . (TIMENOW - 300)
 );
 
-$mysqlversion = $vbulletin->db->query_first("SELECT version() AS version");
-define('MYSQL_VERSION', $mysqlversion['version']);
+// No longer needed as of PT 2.1.x (#100)
+// $mysqlversion = $vbulletin->db->query_first("SELECT version() AS version");
+// define('MYSQL_VERSION', $mysqlversion['version']);
 
 //searches expire after one hour
-if (version_compare(MYSQL_VERSION, '4.1.0', '>='))
-{
-	$vbulletin->db->query_write("
-		DELETE issuesearch, issuesearchresult
-		FROM " . TABLE_PREFIX . "pt_issuesearch AS issuesearch
-		LEFT JOIN " . TABLE_PREFIX . "pt_issuesearchresult AS issuesearchresult ON (issuesearchresult.issuesearchid = issuesearch.issuesearchid)
-		WHERE issuesearch.dateline < " . (TIMENOW - 3600)
-	);
-}
-else
-{
-	$vbulletin->db->query_write("
-		DELETE " . TABLE_PREFIX . "pt_issuesearch, " . TABLE_PREFIX . "pt_issuesearchresult
-		FROM " . TABLE_PREFIX . "pt_issuesearch AS issuesearch
-		LEFT JOIN " . TABLE_PREFIX . "pt_issuesearchresult AS issuesearchresult ON (issuesearchresult.issuesearchid = issuesearch.issuesearchid)
-		WHERE issuesearch.dateline < " . (TIMENOW - 3600)
-	);
-}
+$vbulletin->db->query_write("
+	DELETE issuesearch, issuesearchresult
+	FROM " . TABLE_PREFIX . "pt_issuesearch AS issuesearch
+	LEFT JOIN " . TABLE_PREFIX . "pt_issuesearchresult AS issuesearchresult ON (issuesearchresult.issuesearchid = issuesearch.issuesearchid)
+	WHERE issuesearch.dateline < " . (TIMENOW - 3600)
+);
 
 // remove old issue read marking data
 $vbulletin->db->query_write("

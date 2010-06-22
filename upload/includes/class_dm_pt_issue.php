@@ -438,7 +438,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	*/
 	function post_save_each($doquery = true)
 	{
-		require_once DIR . '/vb/search/indexcontroller/queue.php';
+		require_once (DIR . '/vb/search/indexcontroller/queue.php');
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_postsave')) ? eval($hook) : false;
 
 		if ($this->condition AND !empty($this->pt_issue) AND $this->info['insert_change_log'])
