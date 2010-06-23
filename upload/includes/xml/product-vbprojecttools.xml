@@ -1603,59 +1603,7 @@ $db->query_write("DROP TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset");]]><
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools-magicselect.css" templatetype="template" date="1276070403" username="Pitchoune" version="2.1.2"><![CDATA[/* Issue #106
-.vB_MagicSelect, .vB_MagicSelect_hover, .vB_MagicSelect_preload {
-	white-space:nowrap;
-}*/
-
-.vB_MagicSelectCursor {
-	cursor:default;
-}
-
-.vB_MagicSelect {
-	border:none;
-	padding:1px;
-	background-color:transparent;
-}
-
-.vB_MagicSelect_hover {
-	border:1px solid rgb(34,84,177);
-	padding:0px;
-	background-color:white;
-}
-
-.vB_MagicSelect span, .vB_MagicSelect_hover span {
-	display: inline-block;
-	padding: 0 2px;
-}
-
-.vB_MagicSelect img, .vB_MagicSelect_hover img {
-	padding:1px;
-	vertical-align:text-top;
-}
-
-.vB_MagicSelect .vB_MagicSelect_button {
-	background-color:transparent;
-}
-
-.vB_MagicSelect_hover .vB_MagicSelect_button {
-	background-color:rgb(215,231,253);
-}
-
-.vB_MagicSelect_preload {
-	border:none;
-	padding:2px 1px 3px 1px;
-	background-color:transparent;
-}
-
-.vB_MagicSelect_wrappable {
-	white-space:normal;
-}
-
-.vB_MagicSelect_margin {
-	margin:0px 0px 2px 0px;
-}]]></template>
-		<template name="projecttools.css" templatetype="template" date="1276722480" username="Jeremy" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1277315223" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2744,6 +2692,60 @@ div.checkbox_multiselect {
 	margin-bottom: 5px;
 }
 
+/* Magic Selects */
+/* Issue #106
+.vB_MagicSelect, .vB_MagicSelect_hover, .vB_MagicSelect_preload {
+	white-space: nowrap;
+}*/
+
+.vB_MagicSelectCursor {
+	cursor: default;
+}
+
+.vB_MagicSelect {
+	border: none;
+	padding: 1px;
+	background-color: transparent;
+}
+
+.vB_MagicSelect_hover {
+	border: 1px solid rgb(34, 84, 177);
+	padding: 0px;
+	background-color: white;
+}
+
+.vB_MagicSelect span, .vB_MagicSelect_hover span {
+	display: inline-block;
+	padding: 0 2px;
+}
+
+.vB_MagicSelect img, .vB_MagicSelect_hover img {
+	padding: 1px;
+	vertical-align: text-top;
+}
+
+.vB_MagicSelect .vB_MagicSelect_button {
+	background-color: transparent;
+}
+
+.vB_MagicSelect_hover .vB_MagicSelect_button {
+	background-color: rgb(215, 231, 253);
+}
+
+.vB_MagicSelect_preload {
+	border: none;
+	padding: 2px 1px 3px 1px;
+	background-color: transparent;
+}
+
+.vB_MagicSelect_wrappable {
+	white-space: normal;
+}
+
+.vB_MagicSelect_margin {
+	margin: 0px 0px 2px 0px;
+}
+
 /* Overwrite some values */
 .above_threadlist .threadpagenav {
 	bottom: 5px;
@@ -3119,12 +3121,11 @@ a.shade:active, a.shade:hover {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1276749407" username="Jeremy" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1277315258" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
-	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
 
 	<vb:if condition="$show['lightbox']">
 		<vb:if condition="$vboptions['storecssasfile']">
@@ -3742,7 +3743,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1276105979" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1276539686" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1277315268" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3754,7 +3755,6 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</vb:if>
 
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
-	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
 
 	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -4761,7 +4761,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1275619834" username="thincom2000" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1277315275" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4772,7 +4772,6 @@ init_project_readmarker_system();
 		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumbits.css,forumdisplay.css,threadlist.css" />
 	</vb:if>
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
-	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
 
 	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -6118,7 +6117,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1276540058" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1277315281" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6130,7 +6129,6 @@ init_project_readmarker_system();
 	</vb:if>
 
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
-	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
 
 	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -7123,7 +7121,7 @@ init_project_readmarker_system();
 </div>
 </vb:if>]]></template>
 		<template name="pt_searchresultgroupbit_arrow" templatetype="template" date="1273440034" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort={vb:raw search.sortby}&amp;order={vb:raw opposite_sort}<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>"><img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" /></a>]]></template>
-		<template name="pt_searchresults" templatetype="template" date="1276796115" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_searchresults" templatetype="template" date="1277315291" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="$vboptions['storecssasfile']">
@@ -7138,7 +7136,6 @@ init_project_readmarker_system();
 	{vb:raw headinclude}
 	<!-- Added -->
 	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools.css" />
-	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-magicselect.css" />
 
 	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
