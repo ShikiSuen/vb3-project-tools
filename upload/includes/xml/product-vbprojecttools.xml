@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.2</version>
-	<url />
-	<versioncheckurl />
+	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
+	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.0.0" maxversion="" />
 	</dependencies>
@@ -8313,6 +8313,65 @@ foreach($do AS $field)
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
+			<title>Notices: Check Notice Conditions</title>
+			<hookname>notices_check_criteria</hookname>
+			<phpcode><![CDATA[if ($criteriaid == 'is_browsing_project_tools')
+{
+   $project_scripts = array('project', 'projectsearch');
+   if (!in_array(THIS_SCRIPT, $project_scripts))
+    {
+        $abort = true;
+    }
+}
+
+if ($criteriaid == 'is_browsing_project_x')
+{
+	$vbulletin->input->clean_array_gpc('r', array(
+		'projectid' => TYPE_UINT,
+		'issueid' => TYPE_UINT
+	));
+	
+	if ($vbulletin->GPC['issueid'] > 0)
+	{
+		$project_issue = $vbulletin->db->query_first("SELECT projectid FROM " . TABLE_PREFIX . "pt_issue WHERE issueid = " . $vbulletin->GPC['issueid']);
+	}
+	if ($vbulletin->GPC['projectid'] == intval($conditions[0]))
+    {
+        $abort = false;
+    }
+	elseif (intval($project_issue['projectid']) == intval($conditions[0]))
+    {
+        $abort = false;
+    }
+    else
+    {
+        $abort = true;
+    }
+}]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
+			<title>Notices: Add To Notice Options</title>
+			<hookname>notices_list_criteria</hookname>
+			<phpcode><![CDATA[$project_list = $db->query_read("
+	SELECT *
+	FROM " . TABLE_PREFIX . "pt_project
+	ORDER BY displayorder
+");
+
+$project_options = array();
+while ($project = $db->fetch_array($project_list))
+{
+	$project_options["$project[projectid]"] = $project['title'];
+}
+
+$criteria_options = array_merge($criteria_options, array(
+	'is_browsing_project_tools'=> array(),
+	'is_browsing_project_x' => array(
+		'<select name="criteria[is_browsing_project_x][condition1]" tabindex="1">' . construct_select_options($project_options, $criteria_cache['is_browsing_project_x']['condition1']) . '</select>'
+	),
+));]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
 			<title>Online: Location Preprocessing</title>
 			<hookname>online_location_preprocess</hookname>
 			<phpcode><![CDATA[if (strpos($loc, '/archive/project.php') !== false)
@@ -8901,6 +8960,10 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="doubleclick_project_markread" date="1211381999" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Double-click this icon to mark this project and its contents as read]]></phrase>
 			<phrase name="projects" date="1181655523" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Projects]]></phrase>
 			<phrase name="search_projects" date="1174406531" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search Projects]]></phrase>
+		</phrasetype>
+		<phrasetype name="Notices" fieldname="notice">
+			<phrase name="is_browsing_project_tools_criteria" date="1277854663" username="Mosh" version="2.1.2"><![CDATA[User is browsing vBulletin Project Tools]]></phrase>
+			<phrase name="is_browsing_project_x_criteria" date="1277854692" username="Mosh" version="2.1.2"><![CDATA[User is browsing the {1} vBulletin Project]]></phrase>
 		</phrasetype>
 		<phrasetype name="Project Tools" fieldname="projecttools">
 			<phrase name="accept_petition_change_status_x" date="1175092309" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Accept petition and change status to</span> {1}<span class="shade">?</span>]]></phrase>
