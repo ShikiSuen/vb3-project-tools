@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.2</version>
-	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
-	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
+	<url />
+	<versioncheckurl />
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.0.0" maxversion="" />
 	</dependencies>
@@ -8556,7 +8556,7 @@ $template_hook['usercp_main_pos3'] .= process_new_subscribed_issues();]]></phpco
 			<hookname>usercp_nav_complete</hookname>
 			<phpcode><![CDATA[if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
 {
-	if (THIS_SCRIPT != 'usercp')
+	if (!in_array(THIS_SCRIPT, array('usercp', 'profile')))
 	{
 		$vbulletin->options['selectednavtab'] = 'projecttools';
 	}
