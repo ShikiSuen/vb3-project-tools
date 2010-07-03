@@ -118,6 +118,7 @@ if(!is_dir(BASE . 'product/cronentries'))
 // ############# Passed Tests. Init XML functions. ###############
 
 $xml = new vB_XML_Builder($vbulletin);
+$productfile = BASE . 'includes/xml/product-vbprojecttools.xml';
 
 // ############# Start Build Script ##############################
 
