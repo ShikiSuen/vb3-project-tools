@@ -769,7 +769,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_tag");
 $db->query_write("DELETE FROM " . TABLE_PREFIX . "datastore WHERE title LIKE 'pt\_%'");
 
 require_once(DIR . '/includes/class_dbalter.php');
-$db_alter =& new vB_Database_Alter_MySQL($db);
+$db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('administrator'))
 {
 	$db_alter->drop_field('ptpermissions');
