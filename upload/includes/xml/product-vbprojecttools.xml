@@ -769,7 +769,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_tag");
 $db->query_write("DELETE FROM " . TABLE_PREFIX . "datastore WHERE title LIKE 'pt\_%'");
 
 require_once(DIR . '/includes/class_dbalter.php');
-$db_alter = new vB_Database_Alter_MySQL($db);
+$db_alter =& new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('administrator'))
 {
 	$db_alter->drop_field('ptpermissions');
@@ -1153,8 +1153,26 @@ if ($db_alter->fetch_table_info('thread'))
 }]]></uninstallcode>
 		</code>
 		<code version="2.1.2">
-			<installcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
+			<installcode><![CDATA[$db->query_write("
+	CREATE TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset (
+		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
+		projectid INT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (issuestatusid, projectid)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE " . TABLE_PREFIX . "pt_user (
+		userid INT UNSIGNED NOT NULL,
+		totalissues INT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (userid)
+	) ENGINE=MyISAM
+");
+
+require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
+
+// Add field for 'PT color titles by status' feature
 if ($db_alter->fetch_table_info('pt_issuestatus'))
 {
 	$db_alter->add_field(array(
@@ -1165,13 +1183,7 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 	));
 }
 
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
-		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
-		projectid INT UNSIGNED NOT NULL DEFAULT 0,
-		PRIMARY KEY (issuestatusid, projectid)
-	)
-");
+// Add fields for 'Create issue from post' feature
 if ($db_alter->fetch_table_info('post'))
 {
 	$db_alter->add_field(array(
@@ -1185,7 +1197,22 @@ if ($db_alter->fetch_table_info('post'))
 		'attributes' => 'unsigned'
 	));
 }
-]]></installcode>
+
+// Add every user into pt_user table
+$usercounts = $db->query_read("
+	SELECT userid
+	FROM " . TABLE_PREFIX . "user
+	ORDER BY userid ASC
+");
+
+while ($usercount = $db->fetch_array($usercounts))
+{
+	$db->query_write("INSERT INTO " . TABLE_PREFIX . "pt_user (userid) VALUES (" . intval($usercount['userid']) . ")");
+}
+
+// Rebuild profile issue counters for every user
+require_once(DIR . '/includes/adminfunctions_projecttools.php');
+rebuild_profile_issue_counters();]]></installcode>
 			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('pt_issuestatus'))
@@ -1199,7 +1226,9 @@ if ($db_alter->fetch_table_info('post'))
 	$db_alter->drop_field('ptforwardmode');
 }
 
-$db->query_write("DROP TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset");]]></uninstallcode>
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset");
+
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
@@ -1619,7 +1648,7 @@ $db->query_write("DROP TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset");]]><
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1278236688" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1278236693" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2936,7 +2965,7 @@ a.shade:active, a.shade:hover {
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_import_thread" templatetype="template" date="1274874697" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread" templatetype="template" date="1278150705" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -2953,17 +2982,18 @@ a.shade:active, a.shade:hover {
 	<h1>{vb:rawphrase pt_create_issue}</h1>
 </div>
 
-<form class="vbform block" action="projectpost.php?do=importthread2&amp;t={vb:raw threadinfo.threadid}" method="post" name="vbform">
+<form class="vbform block" action="projectpost.php?do=importthread2&amp;t={vb:raw threadinfo.threadid}<vb:if condition="$postinfo['postid']">&amp;p={vb:raw postinfo.postid}</vb:if>" method="post" name="vbform">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 <input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
+<input type="hidden" name="p" value="{vb:raw postinfo.postid}" />
 <input type="hidden" name="do" value="importthread2" />
 
 	<h2 class="blockhead">{vb:rawphrase pt_create_issue}</h2>
 
 	<div class="blockbody formcontrols">
 		<div class="blocksubhead">
-			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw threadinfo.title}</span>
+			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw title}</span>
 		</div>
 		<div class="section">
 			<div class="blockrow">
@@ -2990,7 +3020,7 @@ a.shade:active, a.shade:hover {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_thread_confirm" templatetype="template" date="1274874680" username="Pitchoune" version="2.1.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread_confirm" templatetype="template" date="1278150868" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3008,19 +3038,20 @@ a.shade:active, a.shade:hover {
 	<p class="description">{vb:rawphrase issue_type}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issuetypeid}">{vb:raw issuetype}</a> | {vb:rawphrase project}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a></p>
 </div>
 
-<form class="vbform block" method="post" action="projectpost.php?do=processimportthread&amp;t={vb:raw threadinfo.threadid}">
+<form class="vbform block" method="post" action="projectpost.php?do=processimportthread&amp;t={vb:raw threadinfo.threadid}<vb:if condition="$postinfo['title']">&amp;p={vb:raw postinfo.postid}</vb:if>">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 <input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
 <input type="hidden" name="issuetypeid" value="{vb:raw issuetypeid}" />
 <input type="hidden" name="do" value="processimportthread" />
 <input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
+<input type="hidden" name="p" value="{vb:raw postinfo.postid}" />
 
 	<h2 class="blockhead">{vb:rawphrase post_new_issue}</h2>
 
 	<div class="blockbody formcontrols">
 		<div class="blocksubhead">
-			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw threadinfo.title}</span>
+			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw title}</span>
 		</div>
 		<div class="section">
 			<div class="blockrow">
@@ -4535,9 +4566,15 @@ vbphrase['doubleclick_project_markread'] = "{vb:rawphrase doubleclick_project_ma
 init_project_readmarker_system();
 //-->
 </script>]]></template>
-		<template name="pt_member_findissues_37" templatetype="template" date="1273438387" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<h5 class="subsubsectionhead">
+		<template name="pt_member_findissues_37" templatetype="template" date="1278280262" username="Pitchoune" version="2.1.2"><![CDATA[<h5 class="subsubsectionhead">
 	{vb:rawphrase projects}
 </h5>
+<vb:if condition="$vbulletin->options['pt_profile_issue_counters']">
+<dl class="stats">
+	<dt>{vb:rawphrase total_issues}</dt>
+	<dd>{vb:raw userinfo.totalissues}</dd>
+</dl>
+</vb:if>
 <ul class="group">
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
@@ -5417,9 +5454,9 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postbit_create_issue" templatetype="template" date="1278236778" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&p={vb:raw post.postid}" class="promotecms">{vb:rawphrase promote_as_issue}</a>
+		<template name="pt_postbit_create_issue" templatetype="template" date="1278150179" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&p={vb:raw post.postid}" class="promotecms">Promouvoir en tant que rapport</a>
 <span class="seperator">&nbsp;</span>]]></template>
-		<template name="pt_postbit_link_issue" templatetype="template" date="1278236797" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$show['pt_separator']">
+		<template name="pt_postbit_link_issue" templatetype="template" date="1278236238" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$show['pt_separator']">
 	<div class="ptseparator">-</div>
 </vb:if>
 <a class="ptlink" href="project.php?{vb:raw session.sessionurl}issueid={vb:raw post.pt_issueid}">
@@ -8257,6 +8294,12 @@ foreach($do AS $field)
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
+			<title>fetch_userinfo(): Add PT Fields/Joins</title>
+			<hookname>fetch_userinfo_query</hookname>
+			<phpcode><![CDATA[$hook_query_fields .= ", ptuser.*";
+$hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_user AS ptuser ON (user.userid = ptuser.userid)";]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
 			<title>Forumbit: PT Display</title>
 			<hookname>forumbit_display</hookname>
 			<phpcode><![CDATA[if (function_exists('pt_forumbit_display'))
@@ -8348,8 +8391,7 @@ foreach($do AS $field)
 )
 {
 	$templater = vB_Template::create('pt_member_findissues_37');
-	$templater->register('userinfo', $userinfo);
-
+		$templater->register('userinfo', $userinfo);
 	$template_hook['profile_stats_pregeneral'] .= $templater->render();
 }]]></phpcode>
 		</plugin>
@@ -8483,16 +8525,10 @@ $template_hook['headinclude_bottom_css'] .= $templater->render();]]></phpcode>
 		<plugin active="1" executionorder="5">
 			<title>Postbit: Misc data for postbits</title>
 			<hookname>postbit_display_complete</hookname>
-			<phpcode><![CDATA[// TODO: this could have its own permission in moderation for future
-$show['promote_pt_issue'] = can_moderate($threadinfo['forumid'], 'canmanagethreads') AND can_moderate($threadinfo['forumid'], 'canremoveposts');
-
-// Add link to promote the post as an issue
-if ($show['promote_pt_issue'])
-{
-	$templater = vB_Template::create('pt_postbit_create_issue');
-		$templater->register('post', $post);
-	$template_hook['postbit_controls'] .= $templater->render();
-}
+			<phpcode><![CDATA[// Add link to promote the post as an issue
+$templater = vB_Template::create('pt_postbit_create_issue');
+	$templater->register('post', $post);
+$template_hook['postbit_controls'] .= $templater->render();
 
 // Add a little text next to the post title saying the thread has been moved
 if ($post['pt_issueid'] > 0 AND $post['pt_forwardmode'] == 1)
@@ -8648,11 +8684,23 @@ process_pt_user_delete($this);]]></phpcode>
 		<plugin active="1" executionorder="5">
 			<title>User DM: Rebuild PT Assignable</title>
 			<hookname>userdata_postsave</hookname>
-			<phpcode><![CDATA[if ($usergroups_changed OR (isset($this->user['username']) AND $this->user['username'] != $this->existing['username']))
+			<phpcode><![CDATA[// Rebuild PT Assignable
+if ($usergroups_changed OR (isset($this->user['username']) AND $this->user['username'] != $this->existing['username']))
 {
 	require_once(DIR . '/includes/adminfunctions_projecttools.php');
 	build_assignable_users();
 	build_pt_user_list('pt_report_users', 'pt_report_user_cache');
+}
+
+// Insert the new user into pt_user table
+if (!$this->condition)
+{
+	$this->registry->db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "pt_user
+			(userid)
+		VALUES
+			($userid)
+	");
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -9034,9 +9082,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="is_browsing_project_x_criteria" date="1277854692" username="Mosh" version="2.1.2"><![CDATA[User is browsing the {1} vBulletin Project]]></phrase>
 		</phrasetype>
 		<phrasetype name="Postbit" fieldname="postbit">
-			<phrase name="promote_as_issue" date="1278236891" username="Pitchoune" version="2.1.2"><![CDATA[Promote as issue]]></phrase>
-			<phrase name="pt_create_issue" date="1278236846" username="Pitchoune" version="2.1.2"><![CDATA[Create issue]]></phrase>
-			<phrase name="pt_post_made_as_issue" date="1278236866" username="Pitchoune" version="2.1.2"><![CDATA[This post was made as an issue]]></phrase>
+			<phrase name="pt_create_issue" date="1278235873" username="Pitchoune" version="2.1.2"><![CDATA[Create issue]]></phrase>
+			<phrase name="pt_post_made_as_issue" date="1278235794" username="Pitchoune" version="2.1.2"><![CDATA[This post was made as an issue]]></phrase>
 		</phrasetype>
 		<phrasetype name="Project Tools" fieldname="projecttools">
 			<phrase name="accept_petition_change_status_x" date="1175092309" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Accept petition and change status to</span> {1}<span class="shade">?</span>]]></phrase>
@@ -9047,6 +9094,9 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="activity_voting" date="1175173769" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Activity / Voting]]></phrase>
 			<phrase name="added" date="1175093573" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Added]]></phrase>
 			<phrase name="addressed_version" date="1175090907" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Addressed Version]]></phrase>
+			<phrase name="addressed_version_bug" date="1278149443" username="Pitchoune" version=""><![CDATA[Fixed Version]]></phrase>
+			<phrase name="addressed_version_feature" date="1278149443" username="Pitchoune" version=""><![CDATA[Implemented Version]]></phrase>
+			<phrase name="addressed_version_task" date="1278149443" username="Pitchoune" version=""><![CDATA[Completed Version]]></phrase>
 			<phrase name="all" date="1175077250" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[All]]></phrase>
 			<phrase name="allow_report_viewable_to_all" date="1175175426" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow this report to be viewable to all users? If not, only you will be able to see it.]]></phrase>
 			<phrase name="any" date="1213615163" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Any]]></phrase>
@@ -9055,6 +9105,9 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="anywhere_meta" date="1175173658" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[(anywhere)]]></phrase>
 			<phrase name="applicable_version" date="1175090917" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Applicable Version]]></phrase>
 			<phrase name="applied_tags" date="1175174543" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Applied Tags]]></phrase>
+			<phrase name="applies_version_bug" date="1278149443" username="Pitchoune" version=""><![CDATA[Affected Version]]></phrase>
+			<phrase name="applies_version_feature" date="1278149443" username="Pitchoune" version=""><![CDATA[Suggested Version]]></phrase>
+			<phrase name="applies_version_task" date="1278149443" username="Pitchoune" version=""><![CDATA[Target Version]]></phrase>
 			<phrase name="ascending" date="1175174082" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Ascending]]></phrase>
 			<phrase name="assign_to_self" date="1276749368" username="Jeremy" version="2.1.2"><![CDATA[Assign to Self]]></phrase>
 			<phrase name="assign_yourself_to_issue" date="1175174519" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Assign yourself to this issue]]></phrase>
@@ -9134,6 +9187,31 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="issue_type" date="1174490994" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Type]]></phrase>
 			<phrase name="issues_in_milestone_x_html" date="1274643485" username="Pitchoune" version="2.1.1"><![CDATA[Issues in Milestone '{1}']]></phrase>
 			<phrase name="issues_with_recent_replies" date="1174490403" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issues with Recent Replies]]></phrase>
+			<phrase name="issuestatus1" date="1278149443" username="Pitchoune" version=""><![CDATA[Unconfirmed]]></phrase>
+			<phrase name="issuestatus10" date="1278149443" username="Pitchoune" version=""><![CDATA[Accepted]]></phrase>
+			<phrase name="issuestatus11" date="1278149443" username="Pitchoune" version=""><![CDATA[In Progress]]></phrase>
+			<phrase name="issuestatus12" date="1278149443" username="Pitchoune" version=""><![CDATA[Implemented]]></phrase>
+			<phrase name="issuestatus13" date="1278149443" username="Pitchoune" version=""><![CDATA[Rejected]]></phrase>
+			<phrase name="issuestatus14" date="1278149443" username="Pitchoune" version=""><![CDATA[On Hold]]></phrase>
+			<phrase name="issuestatus15" date="1278149443" username="Pitchoune" version=""><![CDATA[Requested]]></phrase>
+			<phrase name="issuestatus16" date="1278149443" username="Pitchoune" version=""><![CDATA[Accepted]]></phrase>
+			<phrase name="issuestatus17" date="1278149443" username="Pitchoune" version=""><![CDATA[In Progress]]></phrase>
+			<phrase name="issuestatus18" date="1278149443" username="Pitchoune" version=""><![CDATA[Completed]]></phrase>
+			<phrase name="issuestatus19" date="1278149443" username="Pitchoune" version=""><![CDATA[Rejected]]></phrase>
+			<phrase name="issuestatus2" date="1278149443" username="Pitchoune" version=""><![CDATA[Awaiting Feedback]]></phrase>
+			<phrase name="issuestatus3" date="1278149443" username="Pitchoune" version=""><![CDATA[Cannot Reproduce]]></phrase>
+			<phrase name="issuestatus4" date="1278149443" username="Pitchoune" version=""><![CDATA[Confirmed]]></phrase>
+			<phrase name="issuestatus5" date="1278149443" username="Pitchoune" version=""><![CDATA[Duplicate]]></phrase>
+			<phrase name="issuestatus6" date="1278149443" username="Pitchoune" version=""><![CDATA[Not a Bug]]></phrase>
+			<phrase name="issuestatus7" date="1278149443" username="Pitchoune" version=""><![CDATA[Fixed]]></phrase>
+			<phrase name="issuestatus8" date="1278149443" username="Pitchoune" version=""><![CDATA[No Response]]></phrase>
+			<phrase name="issuestatus9" date="1278149443" username="Pitchoune" version=""><![CDATA[Suggested]]></phrase>
+			<phrase name="issuetype_bug_plural" date="1278149443" username="Pitchoune" version=""><![CDATA[Bugs]]></phrase>
+			<phrase name="issuetype_bug_singular" date="1278149443" username="Pitchoune" version=""><![CDATA[Bug]]></phrase>
+			<phrase name="issuetype_feature_plural" date="1278149443" username="Pitchoune" version=""><![CDATA[Features]]></phrase>
+			<phrase name="issuetype_feature_singular" date="1278149443" username="Pitchoune" version=""><![CDATA[Feature]]></phrase>
+			<phrase name="issuetype_task_plural" date="1278149443" username="Pitchoune" version=""><![CDATA[Tasks]]></phrase>
+			<phrase name="issuetype_task_singular" date="1278149443" username="Pitchoune" version=""><![CDATA[Task]]></phrase>
 			<phrase name="last_updated_x_at_y" date="1175166978" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Last updated {1} at {2}]]></phrase>
 			<phrase name="last_x_actions" date="1174485776" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Last {1} Actions]]></phrase>
 			<phrase name="latest_issues_in_this_milestone" date="1213619394" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Latest Issues in This Milestone]]></phrase>
@@ -9180,6 +9258,9 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="please_wait" date="1175077467" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Please Wait]]></phrase>
 			<phrase name="positive_votes" date="1175173954" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Positive Votes]]></phrase>
 			<phrase name="post_new_issue" date="1174401738" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Post New Issue]]></phrase>
+			<phrase name="post_new_issue_bug" date="1278149443" username="Pitchoune" version=""><![CDATA[Post New Bug]]></phrase>
+			<phrase name="post_new_issue_feature" date="1278149443" username="Pitchoune" version=""><![CDATA[Post New Feature]]></phrase>
+			<phrase name="post_new_issue_task" date="1278149443" username="Pitchoune" version=""><![CDATA[Post New Task]]></phrase>
 			<phrase name="post_reply" date="1174401490" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Post Reply]]></phrase>
 			<phrase name="priority" date="1174483439" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Priority]]></phrase>
 			<phrase name="priority_0" date="1171535401" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Unknown]]></phrase>
@@ -9291,6 +9372,15 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="view_milestones" date="1213614630" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[View Milestones]]></phrase>
 			<phrase name="view_more_results" date="1175171269" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[View More Results]]></phrase>
 			<phrase name="view_patch" date="1174491510" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[View Patch]]></phrase>
+			<phrase name="vote_count_negative_bug" date="1278149443" username="Pitchoune" version=""><![CDATA[Users unable to reproduce bug]]></phrase>
+			<phrase name="vote_count_negative_feature" date="1278149443" username="Pitchoune" version=""><![CDATA[Votes against this feature]]></phrase>
+			<phrase name="vote_count_negative_task" date="1278149443" username="Pitchoune" version=""><![CDATA[Votes not to perform]]></phrase>
+			<phrase name="vote_count_positive_bug" date="1278149443" username="Pitchoune" version=""><![CDATA[Users able to reproduce bug]]></phrase>
+			<phrase name="vote_count_positive_feature" date="1278149443" username="Pitchoune" version=""><![CDATA[Votes for this feature]]></phrase>
+			<phrase name="vote_count_positive_task" date="1278149443" username="Pitchoune" version=""><![CDATA[Votes to perform]]></phrase>
+			<phrase name="vote_question_bug" date="1278149443" username="Pitchoune" version=""><![CDATA[Are you able to reproduce this bug?]]></phrase>
+			<phrase name="vote_question_feature" date="1278149443" username="Pitchoune" version=""><![CDATA[Would you like to see this feature implemented?]]></phrase>
+			<phrase name="vote_question_task" date="1278149443" username="Pitchoune" version=""><![CDATA[Would you like to see this task performed?]]></phrase>
 			<phrase name="what_makes_good_issue_description" date="1176394238" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What makes a good issue description?]]></phrase>
 			<phrase name="what_want_do_issue" date="1175174440" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What do you want to do with this issue?]]></phrase>
 			<phrase name="what_want_do_message" date="1175174640" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What do you want to do with this message?]]></phrase>
@@ -9452,9 +9542,11 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="ptperm_can_vote" date="1176211742" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Vote on Issues]]></phrase>
 			<phrase name="rebuild_issue_counters" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Rebuild Issue Counters]]></phrase>
 			<phrase name="rebuild_milestone_counters" date="1213799598" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Rebuild Milestone Counters]]></phrase>
+			<phrase name="rebuild_profile_issue_counters" date="1278280035" username="Pitchoune" version="2.1.2"><![CDATA[Rebuild Profile Issue Counters]]></phrase>
 			<phrase name="rebuild_project_counters" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Rebuild Project Counters]]></phrase>
 			<phrase name="rebuilding_issue_counters_will_update_various_fields" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Rebuilding issue counters will update various fields related to an issue that might become out of date but can be rebuilt.]]></phrase>
 			<phrase name="rebuilding_milestone_counters_will_update_various_fields" date="1213799620" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Rebuilding milestone counters will update various fields related to a milestone that might become out of date but can be rebuilt.]]></phrase>
+			<phrase name="rebuilding_profile_issue_counters_will_update_various_fields" date="1278280116" username="Pitchoune" version="2.1.2"><![CDATA[Rebuilding profile issue counters will update the number of issues every user have made.]]></phrase>
 			<phrase name="rebuilding_project_counters_will_update_various_fields" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Rebuilding project counters will update various fields related to an project that might become out of date but can be rebuilt. Run this once you know your issue counters are up to date.]]></phrase>
 			<phrase name="required_fields_issue_submit" date="1178899261" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Required Fields<dfn>When submitting an issue, the following fields must be populated.</dfn>]]></phrase>
 			<phrase name="required_requireappliesversion" date="1178899315" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Applicable Version]]></phrase>
@@ -9556,6 +9648,8 @@ A value of 0 will display all notes on one page.]]></phrase>
 <br />
 A value of 0 will hide the timeline from this page.]]></phrase>
 			<phrase name="setting_pt_overview_timelineentries_title" date="1181652874" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Overview: Timeline Entries]]></phrase>
+			<phrase name="setting_pt_profile_issue_counters_desc" date="1278280222" username="Pitchoune" version="2.1.2"><![CDATA[Do you want to display in various locations the number of issue each user have made?]]></phrase>
+			<phrase name="setting_pt_profile_issue_counters_title" date="1278280222" username="Pitchoune" version="2.1.2"><![CDATA[Display profile issue counters]]></phrase>
 			<phrase name="setting_pt_project_recentissues_desc" date="1181652895" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[When viewing a project's information, the most recent issues are displayed. This controls the maximum number of issues to display on this page.<br />
 <br />
 A value of 0 will hide the recent issues from this page.]]></phrase>
@@ -9738,6 +9832,11 @@ diff</defaultvalue>
 0|pt_listprojects_before_notes
 1|pt_listprojects_before_qr
 2|pt_listprojects_before_footer</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="pt_profile_issue_counters" displayorder="280">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
 		</settinggroup>
