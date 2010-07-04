@@ -403,6 +403,40 @@ function rebuild_milestone_counters($echo = false)
 }
 
 /**
+* Rebuilds all profile issue counters.
+*
+* @return	mixed	Up to date counters
+*/
+function rebuild_profile_issue_counters()
+{
+	global $vbulletin, $db;
+
+	$userarray = array();
+
+	$users = $db->query_read("
+		SELECT submituserid AS userid
+		FROM " . TABLE_PREFIX . "pt_issue
+		ORDER BY issueid ASC
+	");
+
+	while ($user = $db->fetch_array($users))
+	{
+		// Create an array with userid and counter for each
+		++$userarray["$user[userid]"];
+	}
+
+	// Save the counter for each user
+	foreach ($userarray AS $userid => $counter)
+	{
+		$db->query_write("
+			UPDATE " . TABLE_PREFIX . "pt_user SET
+				totalissues = $counter
+			WHERE userid = $userid
+		");
+	}
+}
+
+/**
 * Callback to verify if a usergroup would be assignable to an issue
 *
 * @param	Integer	Usergroup ID

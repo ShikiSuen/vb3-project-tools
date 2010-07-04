@@ -132,6 +132,11 @@ if ($_REQUEST['do'] == 'counters')
 	print_table_header($vbphrase['rebuild_milestone_counters']);
 	print_description_row($vbphrase['rebuilding_milestone_counters_will_update_various_fields']);
 	print_submit_row($vbphrase['go'], '');
+
+	print_form_header('project', 'profileissuecounters');
+	print_table_header($vbphrase['rebuild_profile_issue_counters']);
+	print_description_row($vbphrase['rebuilding_profile_issue_counters_will_update_various_fields']);
+	print_submit_row($vbphrase['go'], '');
 }
 
 // ########################################################################
@@ -193,6 +198,15 @@ if ($_REQUEST['do'] == 'milestonecounters')
 	ignore_user_abort(1);
 
 	rebuild_milestone_counters(true);
+
+	define('CP_REDIRECT', 'project.php?do=counters');
+	print_stop_message('counters_rebuilt');
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'profileissuecounters')
+{
+	rebuild_profile_issue_counters();
 
 	define('CP_REDIRECT', 'project.php?do=counters');
 	print_stop_message('counters_rebuilt');

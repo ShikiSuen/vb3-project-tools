@@ -571,6 +571,16 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
+		if (!$this->condition)
+		{
+			// Insert new issue - increase 'totalissues' counter in pt_user table
+			$this->registry->db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_user SET
+					totalissues = totalissues + 1
+				WHERE userid = " . $this->registry->userinfo['userid'] . "
+			");
+		}
+
 		if (!$rebuild_project)
 		{
 			$this->update_project_counters(
@@ -623,6 +633,12 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 			if ($this->info['hard_delete'])
 			{
+				// Decrement totalissues counter
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "pt_user SET
+						totalissues = totalissues - 1
+					WHERE userid = " . $this->fetch_field('userid') . "
+				");
 				$return = $this->db_delete(TABLE_PREFIX, $this->table, $this->condition, true);
 			}
 			else

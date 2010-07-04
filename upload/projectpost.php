@@ -2587,9 +2587,9 @@ if ($_REQUEST['do'] == 'moveissue')
 }
 
 // ##################################################################################
-if($_REQUEST['do'] == 'assigntoself')
+if ($_REQUEST['do'] == 'assigntoself')
 {
-	$vbulletin->input->clean_array_gpc('r', array('id' => TYPE_UINT));
+	$vbulletin->input->clean_gpc('r', 'id', TYPE_UINT);
 		
 	$existing_assignments = array();
 	$userid = $vbulletin->userinfo['userid'];
@@ -2605,14 +2605,20 @@ if($_REQUEST['do'] == 'assigntoself')
 	}
 	else
 	{
-		$assignment_data = $db->query_read("SELECT user.userid FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid) WHERE issueassign.issueid = $issue[issueid] ORDER BY user.username");
+		$assignment_data = $db->query_read("
+			SELECT user.userid
+			FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
+				INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid)
+			WHERE issueassign.issueid = $issue[issueid]
+			ORDER BY user.username
+		");
 
 		while ($assignment = $db->fetch_array($assignment_data))
 		{
 			$existing_assignments["$assignment[userid]"] = $assignment['userid'];
 		}
 		
-		if(in_array($vbulletin->userinfo['userid'], $existing_assignments))
+		if (in_array($vbulletin->userinfo['userid'], $existing_assignments))
 		{
 			// Already assigned, an error occured somewhere to show the "Assign to Me" link. Just perform a return to previous issue.
 			eval(print_standard_redirect($vbulletin->phrase['pt_already_assigned']));
