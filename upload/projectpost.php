@@ -2641,8 +2641,17 @@ if($_REQUEST['do'] == 'assigntoself')
 
 if (in_array($_REQUEST['do'], array('processimportthread', 'importthread', 'importthread2')))
 {
-	require_once(DIR . '/includes/functions_ptimporter.php');
-	$threadinfo = verify_id('thread', $threadid, 1, 1);
+	if ($threadid)
+	{
+		require_once(DIR . '/includes/functions_ptimporter.php');
+		$threadinfo = verify_id('thread', $threadid, 1, 1);
+	}
+
+	if ($postid)
+	{
+		require_once(DIR . '/includes/functions_ptimporter.php');
+		$postinfo = verify_id('post', $postid, 1, 1);
+	}
 }
 
 // #######################################################################
@@ -2670,8 +2679,17 @@ if ($_POST['do'] == 'processimportthread')
 
 	// Finally, run the import
 	require_once(DIR . '/includes/class_ptimporter.php');
-	
-	$importer = new vB_PtImporter($vbulletin, $threadinfo, $project, $posting_perms, array(), array());
+
+	if ($vbulletin->GPC['postid'])
+	{
+		$datatype = 'post';
+	}
+	else if ($vbulletin->GPC['threadid'])
+	{
+		$datatype = 'thread';
+	}
+
+	$importer = new vB_PtImporter($vbulletin, $datatype, ($vbulletin->GPC['postid'] ? $postinfo : $threadinfo), $project, $posting_perms, array(), array());
 	$issueid = $importer->import_all();
 
 	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";
@@ -2797,6 +2815,8 @@ if ($_REQUEST['do'] == 'importthread2')
 	$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
 	$milestone_options = fetch_milestone_select($project['projectid'], $issue['milestoneid']);
 
+	$title = $postinfo['title'] ? $postinfo['title'] : $threadinfo['title'];
+
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
 		'' => $vbphrase['pt_create_issue']
@@ -2818,8 +2838,10 @@ if ($_REQUEST['do'] == 'importthread2')
 		$templater->register('issuetypeid', $issuetypeid);
 		$templater->register('milestone_options', $milestone_options);
 		$templater->register('navbar', $navbar);
+		$templater->register('postinfo', $postinfo);
 		$templater->register('project', $project);
 		$templater->register('status_options', $status_options);
+		$templater->register('title', $title);
 		$templater->register('threadinfo', $threadinfo);
 	print_output($templater->render());
 }
@@ -2860,6 +2882,9 @@ if ($_REQUEST['do'] == 'importthread')
 		$project_type_select .= $templater->render();
 	}
 
+	// Select the title to display - no post title? Display thread title
+	$title = $postinfo['title'] ? $postinfo['title'] : $threadinfo['title'];
+
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
 		'' => $vbphrase['pt_create_issue']
@@ -2871,8 +2896,10 @@ if ($_REQUEST['do'] == 'importthread')
 	$templater = vB_Template::create('pt_import_thread');
 		$templater->register_page_templates();
 		$templater->register('navbar', $navbar);
+		$templater->register('postinfo', $postinfo);
 		$templater->register('project_type_select', $project_type_select);
 		$templater->register('threadinfo', $threadinfo);
+		$templater->register('title', $title);
 	print_output($templater->render());
 }
 

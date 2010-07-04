@@ -32,11 +32,18 @@ class vB_PtImporter
 	public $registry = NULL;
 
 	/**
-	* The threadinfo of the source thread
+	* The type of data from the source
+	*
+	* @var	string
+	*/
+	var $datatype = '';
+
+	/**
+	* The info of the source - this could be post or thread
 	*
 	* @var	array
 	*/
-	var $threadinfo = array();
+	var $datainfo = array();
 
 	/**
 	* The id of the newly created issue
@@ -89,10 +96,11 @@ class vB_PtImporter
 	* @param	array		Integer array containing the ids of the posts to import.
 	* @param	array		Integer array containing the ids of the attachments to import.
 	*/
-	function __construct(vB_Registry &$registry, $threadinfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
+	function __construct(vB_Registry &$registry, $datatype, $datainfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
 	{
 		$this->registry = &$registry;
-		$this->threadinfo = $threadinfo;
+		$this->datatype = $datatype;
+		$this->datainfo = $datainfo;
 		$this->project = $project;
 
 		$this->postids = $this->validate_array($postids);
@@ -140,8 +148,18 @@ class vB_PtImporter
 		// Import subscriptions
 		$this->execute_import_subscriptions();
 
-		// Update the original thread
-		$this->execute_update_thread();
+		switch ($this->datatype)
+		{
+			case 'thread':
+				// Update the original thread
+				$this->execute_update_thread();
+				break;
+
+			case 'post':
+				// Update the original post
+				$this->execute_update_post();
+				break;
+		}
 
 		// Create import notice
 		$this->execute_insert_import_notice();
@@ -187,72 +205,112 @@ class vB_PtImporter
 		$issuedata->set('projectid', $this->project['projectid']);
 		$issuedata->set('issuetypeid', $this->registry->GPC['issuetypeid']);
 		$issuedata->set('milestoneid', $this->registry->GPC['milestoneid']);
-		$issuedata->set('submituserid', $this->threadinfo['postuserid']);
-		$issuedata->set('submitusername', $this->threadinfo['postusername']);
+		$issuedata->set('submituserid', ($this->datainfo['userid'] ? $this->datainfo['userid'] : $this->datainfo['postuserid']));
+		$issuedata->set('submitusername', ($this->datainfo['username'] ? $this->datainfo['username'] : $this->datainfo['postusername']));
 		$issuedata->set('visible', 'visible');
-		$issuedata->set('submitdate', $this->threadinfo['dateline']);
-		$issuedata->set('lastpost', $this->threadinfo['lastpost']);
+		$issuedata->set('submitdate', $this->datainfo['dateline']);
+		$issuedata->set('lastpost', $this->datainfo['lastpost']);
 
 		$issuedata->pre_save();
 		$errors = $issuedata->errors;
 
-		// prepare issue notes
-		$issuenotes = array();
-
-		$i = 0;
-		$postids = array();
-
-		$postlimit = count($this->postids) > 0 ? 'AND postid IN (' . implode(',', $this->postids) . ')' : '';
-		$threadid = $this->threadinfo['threadid'];
-
-		$post_query = $this->registry->db->query_read("
-			SELECT postid, userid, username, dateline, pagetext
-			FROM " . TABLE_PREFIX . "post AS post
-			WHERE threadid = $threadid
-			$postlimit
-			ORDER BY dateline
-		");
-
-		if ($this->registry->db->num_rows($post_query) > 0)
+		if ($this->datatype == 'thread')
 		{
-			while ($post = $this->registry->db->fetch_array($post_query))
+			// prepare issue notes
+			$issuenotes = array();
+
+			$i = 0;
+			$postids = array();
+
+			$postlimit = count($this->postids) > 0 ? 'AND postid IN (' . implode(',', $this->postids) . ')' : '';
+			$threadid = $this->datainfo['threadid'];
+
+			$post_query = $this->registry->db->query_read("
+				SELECT postid, userid, username, dateline, pagetext
+				FROM " . TABLE_PREFIX . "post AS post
+				WHERE threadid = $threadid
+				$postlimit
+				ORDER BY dateline
+				");
+
+			if ($this->registry->db->num_rows($post_query) > 0)
 			{
-				$issuenotes[$i] =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
-				$issuenotes[$i]->set_info('do_floodcheck', false);
-				$issuenotes[$i]->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
-				$issuenotes[$i]->set('userid', $post['userid']);
-				$issuenotes[$i]->set('username', $post['username']);
-				$issuenotes[$i]->set('visible', 'visible');
-				$issuenotes[$i]->set('isfirstnote', 0);
-				$issuenotes[$i]->set('pagetext', $post['pagetext']);
-				$issuenotes[$i]->set('dateline', $post['dateline']);
+				while ($post = $this->registry->db->fetch_array($post_query))
+				{
+					$issuenotes[$i] =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
+					$issuenotes[$i]->set_info('do_floodcheck', false);
+					$issuenotes[$i]->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
+					$issuenotes[$i]->set('userid', $post['userid']);
+					$issuenotes[$i]->set('username', $post['username']);
+					$issuenotes[$i]->set('visible', 'visible');
+					$issuenotes[$i]->set('isfirstnote', 0);
+					$issuenotes[$i]->set('pagetext', $post['pagetext']);
+					$issuenotes[$i]->set('dateline', $post['dateline']);
 
-				$issuenotes[$i]->pre_save();
-				$errors = array_merge($errors, $issuenotes[$i]->errors);
+					$issuenotes[$i]->pre_save();
+					$errors = array_merge($errors, $issuenotes[$i]->errors);
 
-				$postids[] = $post['postid'];
+					$postids[] = $post['postid'];
 
-				$i++;
+					$i++;
+				}
+
+				$this->postids = $postids;
 			}
 
-			$this->postids = $postids;
-		}
+			if ($errors)
+			{
+				require_once(DIR . '/includes/functions_newpost.php');
+				standard_error(construct_errors($errors));
+			}
 
-		if ($errors)
+			$this->issueid = $issuedata->save();
+
+			for ($i = 0; $i < count($issuenotes); $i++)
+			{
+				$issuenotes[$i]->set('issueid', $this->issueid);
+				$issuenotes[$i]->save();
+			}
+		}
+		else if ($this->datatype == 'post')
 		{
-			require_once(DIR . '/includes/functions_newpost.php');
-			standard_error(construct_errors($errors));
+			// prepare issue notes
+			$postid = $this->datainfo['postid'];
+
+			$post = $this->registry->db->query_first("
+				SELECT postid, userid, username, dateline, pagetext
+				FROM " . TABLE_PREFIX . "post
+				WHERE postid = $postid
+			");
+
+
+			$issuenotes =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
+			$issuenotes->set_info('do_floodcheck', false);
+			$issuenotes->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
+			$issuenotes->set('userid', $post['userid']);
+			$issuenotes->set('username', $post['username']);
+			$issuenotes->set('visible', 'visible');
+			$issuenotes->set('isfirstnote', 0);
+			$issuenotes->set('pagetext', $post['pagetext']);
+			$issuenotes->set('dateline', $post['dateline']);
+
+			$issuenotes->pre_save();
+
+			$this->postids = $post['postid'];
+
+			if ($issuenotes->errors)
+			{
+				require_once(DIR . '/includes/functions_newpost.php');
+				standard_error(construct_errors($issuenotes->errors));
+			}
+
+			$this->issueid = $issuedata->save();
+
+			$issuenotes->set('issueid', $this->issueid);
+			$issuenotes->save();
+
+			return $this->issueid;
 		}
-
-		$this->issueid = $issuedata->save();
-
-		for ($i = 0; $i < count($issuenotes); $i++)
-		{
-			$issuenotes[$i]->set('issueid', $this->issueid);
-			$issuenotes[$i]->save();
-		}
-
-		return $this->issueid;
 	}
 
 	/**
@@ -292,21 +350,31 @@ class vB_PtImporter
 	*/
 	function execute_import_attachments()
 	{
-		if (!$this->threadinfo['attach'])
+		if (!$this->datainfo['attach'])
 		{
 			return;
+			
 		}
 
 		$attachlimit = count($this->attachmentids) > 0 ? 'AND attachmentid IN (' . implode(',', $this->attachmentids) . ') ' : '';
 
 		if (!$this->registry->options['ptimporter_ignoreattachlimits'])
 		{
+			if ($this->datatype == 'thread')
+			{
+				$attachlimit .= "AND attachment.contentid IN (" . implode(',', $this->postids) . ")";
+			}
+			else if ($this->datatype == 'post')
+			{
+				$attachlimit .= "AND attachment.contentid = " . $this->postids . " ";
+			}
+
 			// Make sure only those attachments are selected that comply with the limits
 			$attachlimit .= 'AND LOWER(fd.extension) IN (\'' . implode('\',\'', preg_split('#\s+#', strtolower($this->registry->options['pt_attachmentextensions']))) . '\') ';
 			$attachlimit .= 'AND fd.filesize <= ' . $this->registry->options['pt_attachmentsize'] * 1024;
 		}
 
-		if ($this->registry->options['pt_attachfile'] || $this->registry->options['attachfile'] > 0)
+		if ($this->registry->options['pt_attachfile'] OR $this->registry->options['attachfile'] > 0)
 		{
 			// There are attachments stored in the file system
 			$this->execute_import_attachments_filesystem($attachlimit);
@@ -334,9 +402,8 @@ class vB_PtImporter
 			SELECT attachment.filedataid AS attachmentid
 			FROM " . TABLE_PREFIX . "attachment AS attachment
 				INNER JOIN " . TABLE_PREFIX . "filedata AS fd ON (fd.filedataid = attachment.filedataid)
-			WHERE attachment.contentid IN (" . implode(',', $this->postids) . ")
-				AND attachment.contenttypeid = 1
-			$attachlimit
+			WHERE attachment.contenttypeid = 1
+				$attachlimit
 			ORDER BY attachment.dateline
 		");
 
@@ -396,9 +463,8 @@ class vB_PtImporter
 			SELECT attachment.filedataid AS attachmentid, attachment.dateline, attachment.state, attachment.userid, attachment.filename, fd.filedata
 			FROM " . TABLE_PREFIX . "attachment AS attachment
 				INNER JOIN " . TABLE_PREFIX . "filedata AS fd ON (fd.filedataid = attachment.filedataid)
-			WHERE attachment.contentid IN (" . implode(',', $this->postids) . ")
-				AND attachment.contenttypeid = 1
-			$attachlimit
+			WHERE attachment.contenttypeid = 1
+				$attachlimit
 			ORDER BY attachment.dateline
 		");
 
@@ -457,7 +523,7 @@ class vB_PtImporter
 	*/
 	function execute_import_subscriptions()
 	{
-		$threadid = $this->threadinfo['threadid'];
+		$threadid = $this->datainfo['threadid'];
 
 		$subscription_insert = array();
 
@@ -507,7 +573,7 @@ class vB_PtImporter
 	*/
 	function execute_update_thread()
 	{
-		$threadid = $this->threadinfo['threadid'];
+		$threadid = $this->datainfo['threadid'];
 		$issueid = $this->issueid;
 
 		if ($this->registry->options['ptimporter_keepthreads'])
@@ -532,6 +598,36 @@ class vB_PtImporter
 	}
 
 	/**
+	* Update the original post
+	*
+	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
+	*/
+	function execute_update_post()
+	{
+		$postid = $this->datainfo['postid'];
+		$issueid = $this->issueid;
+
+		if ($this->registry->options['pt_importer_keepthreads'])
+		{
+			$this->registry->db->query_write("
+				UPDATE " . TABLE_PREFIX . "post SET
+					pt_issueid = $issueid,
+					pt_forwardmode = 0
+				WHERE postid = $postid
+			");
+		}
+		else
+		{
+			$this->registry->db->query_write("
+				UPDATE " . TABLE_PREFIX . "post SET
+					pt_issueid = $issueid,
+					pt_forwardmode = 1
+				WHERE postid = $postid
+			");
+		}
+	}
+
+	/**
 	* Insert a notice stating the import date and the importer
 	* 
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
@@ -546,9 +642,19 @@ class vB_PtImporter
 		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 		$change->set('issueid', $this->issueid);
 		$change->set('userid', $this->registry->userinfo['userid']);
-		$change->set('field', 'issue_imported');
-		$change->set('newvalue', $this->threadinfo['title']);
-		$change->set('oldvalue', $this->threadinfo['threadid']);
+
+		if ($this->datatype == 'thread')
+		{
+			$change->set('field', 'issue_imported');
+		}
+
+		if ($this->datatype == 'post')
+		{
+			$change->set('field', 'issue_imported_post');
+		}
+
+		$change->set('newvalue', $this->datainfo['title']);
+		$change->set('oldvalue', $this->datainfo['threadid']);
 		$change->save();
 	}
 }
