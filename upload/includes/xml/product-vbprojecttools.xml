@@ -26,12 +26,7 @@ define('CP_REDIRECT', 'index.php?loc=' . urlencode('project.php?do=install&insta
 			<uninstallcode />
 		</code>
 		<code version="1.0.0 Alpha 1">
-			<installcode><![CDATA[$mysqlversion = $vbulletin->db->query_first("SELECT version() AS version");
-define('MYSQL_VERSION', $mysqlversion['version']);
-
-$enginetype = (version_compare(MYSQL_VERSION, '4.0.18', '<')) ? 'TYPE' : 'ENGINE';
-
-$db->query_write("
+			<installcode><![CDATA[$db->query_write("
 	CREATE TABLE " . TABLE_PREFIX . "pt_issue (
 		issueid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
@@ -67,7 +62,7 @@ $db->query_write("
 		KEY finder (projectid, visible, issuetypeid, lastpost),
 		KEY issuestatusid (issuestatusid),
 		FULLTEXT KEY textsearch (title, summary)
-	) $enginetype=MYISAM
+	) ENGINE=MYISAM
 ");
 
 $db->query_write("
@@ -148,7 +143,7 @@ $db->query_write("
 		PRIMARY KEY (issuenoteid),
 		KEY finder (issueid, visible, dateline),
 		FULLTEXT KEY textsearch (pagetext)
-	) $enginetype=MYISAM
+	) ENGINE=MYISAM
 ");
 
 $db->query_write("
