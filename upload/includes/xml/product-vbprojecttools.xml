@@ -1168,21 +1168,42 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 		'length' => '20',
 		'null' => false
 	));
+}
 
-	$db->query_write("
-		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
-			issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
-			projectid INT UNSIGNED NOT NULL DEFAULT 0,
-			PRIMARY KEY (issuestatusid, projectid)
-		)
-	");
-}]]></installcode>
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
+		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
+		projectid INT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (issuestatusid, projectid)
+	)
+");
+if ($db_alter->fetch_table_info('post'))
+{
+	$db_alter->add_field(array(
+		'name' => 'pt_issueid',
+		'type' => 'int',
+		'attributes' => 'unsigned'
+	));
+	$db_alter->add_field(array(
+		'name' => 'pt_forwardmode',
+		'type' => 'int',
+		'attributes' => 'unsigned'
+	));
+}
+]]></installcode>
 			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('pt_issuestatus'))
 {
 	$db_alter->drop_field('statuscolor');
 }
+
+if ($db_alter->fetch_table_info('post'))
+{
+	$db_alter->drop_field('ptissueid');
+	$db_alter->drop_field('ptforwardmode');
+}
+
 $db->query_write("DROP TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset");]]></uninstallcode>
 		</code>
 	</codes>
@@ -1603,7 +1624,7 @@ $db->query_write("DROP TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset");]]><
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1277315223" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1278236688" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2690,6 +2711,22 @@ div.checkbox_multiselect {
 
 .pt_listprojects .marginbottomadd5 {
 	margin-bottom: 5px;
+}
+
+/* Post made as issue */
+.postbitlegacy .title .ptlink, .postbit .posttitle .ptlink {
+	color: grey;
+	font-style: italic;
+	font-weight: normal;
+	font-size: 11px;
+}
+
+.postbitlegacy .title .ptseparator, .postbit .posttitle .ptseparator {
+	display: inline-block;
+	color: grey;
+	font-style: italic;
+	font-weight: normal;
+	font-size: 11px;
 }
 
 /* Magic Selects */
@@ -5385,6 +5422,14 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
+		<template name="pt_postbit_create_issue" templatetype="template" date="1278236778" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&p={vb:raw post.postid}" class="promotecms">{vb:rawphrase promote_as_issue}</a>
+<span class="seperator">&nbsp;</span>]]></template>
+		<template name="pt_postbit_link_issue" templatetype="template" date="1278236797" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$show['pt_separator']">
+	<div class="ptseparator">-</div>
+</vb:if>
+<a class="ptlink" href="project.php?{vb:raw session.sessionurl}issueid={vb:raw post.pt_issueid}">
+	{vb:rawphrase pt_post_made_as_issue}
+</a>]]></template>
 		<template name="pt_postissue" templatetype="template" date="1276074948" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
@@ -8144,6 +8189,10 @@ switch (THIS_SCRIPT)
 		$pt_templates[] = 'search_input_ptissue';
 		$pt_templates[] = 'search_input_ptproject';
 		break;
+	case 'showthread':
+		$pt_templates[] = 'pt_postbit_create_issue';
+		$pt_templates[] = 'pt_postbit_link_issue';
+		break;
 }
 
 if (in_array('usercp_nav_folderbit', $cache))
@@ -8293,9 +8342,6 @@ foreach($do AS $field)
 		$datastore_fetch[] = "'pt_issuetype'";
 		$datastore_fetch[] = "'pt_permissions'";
 		break;
-	case 'showthread':
-		$GLOBALS['phrasegroups'][] = 'projecttools';
-		break;
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -8413,7 +8459,7 @@ else if ($userinfo['activity'] == 'archive_project')
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
-			<title>Search: Adding PT CSS Template in search / subscriptions forms</title>
+			<title>Search: Adding PT CSS Template in search / subscriptions / showthread forms</title>
 			<hookname>parse_templates</hookname>
 			<phpcode><![CDATA[// We need vbcsspath for called templates
 if ($vbulletin->options['storecssasfile'])
@@ -8427,7 +8473,7 @@ else
 }
 
 // In search.php & projectpost.php?do=managesubscriptions, projecttools.css is not automatically added - do it here
-if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))) OR (THIS_SCRIPT == 'projectpost' AND in_array($_REQUEST['do'], array('managesubscriptions'))))
+if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))) OR (THIS_SCRIPT == 'projectpost' AND in_array($_REQUEST['do'], array('managesubscriptions'))) OR (THIS_SCRIPT == 'showthread'))
 {
 	$templater = vB_Template::create('pt_headinclude');
 		$templater->register('vbcsspath', $vbcsspath);
@@ -8438,6 +8484,33 @@ if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'proce
 $templater = vB_Template::create('pt_headinclude_ie');
 	$templater->register('vbcsspath', $vbcsspath);
 $template_hook['headinclude_bottom_css'] .= $templater->render();]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
+			<title>Postbit: Misc data for postbits</title>
+			<hookname>postbit_display_complete</hookname>
+			<phpcode><![CDATA[// TODO: this could have its own permission in moderation for future
+$show['promote_pt_issue'] = can_moderate($threadinfo['forumid'], 'canmanagethreads') AND can_moderate($threadinfo['forumid'], 'canremoveposts');
+
+// Add link to promote the post as an issue
+if ($show['promote_pt_issue'])
+{
+	$templater = vB_Template::create('pt_postbit_create_issue');
+		$templater->register('post', $post);
+	$template_hook['postbit_controls'] .= $templater->render();
+}
+
+// Add a little text next to the post title saying the thread has been moved
+if ($post['pt_issueid'] > 0 AND $post['pt_forwardmode'] == 1)
+{
+	if (!empty($post['title']))
+	{
+		$show['pt_separator'] = true;
+	}
+
+	$templater = vB_Template::create('pt_postbit_link_issue');
+		$templater->register('post', $post);
+	$post['title'] .= $templater->render();
+}]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
 			<title>Process PT Global Templates</title>
@@ -8964,6 +9037,11 @@ To create your own report, make a search with the criteria that you want and cli
 		<phrasetype name="Notices" fieldname="notice">
 			<phrase name="is_browsing_project_tools_criteria" date="1277854663" username="Mosh" version="2.1.2"><![CDATA[User is browsing vBulletin Project Tools]]></phrase>
 			<phrase name="is_browsing_project_x_criteria" date="1277854692" username="Mosh" version="2.1.2"><![CDATA[User is browsing the {1} vBulletin Project]]></phrase>
+		</phrasetype>
+		<phrasetype name="Postbit" fieldname="postbit">
+			<phrase name="promote_as_issue" date="1278236891" username="Pitchoune" version="2.1.2"><![CDATA[Promote as issue]]></phrase>
+			<phrase name="pt_create_issue" date="1278236846" username="Pitchoune" version="2.1.2"><![CDATA[Create issue]]></phrase>
+			<phrase name="pt_post_made_as_issue" date="1278236866" username="Pitchoune" version="2.1.2"><![CDATA[This post was made as an issue]]></phrase>
 		</phrasetype>
 		<phrasetype name="Project Tools" fieldname="projecttools">
 			<phrase name="accept_petition_change_status_x" date="1175092309" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Accept petition and change status to</span> {1}<span class="shade">?</span>]]></phrase>
