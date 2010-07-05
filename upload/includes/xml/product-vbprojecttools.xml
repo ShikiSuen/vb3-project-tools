@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.2</version>
-	<url />
-	<versioncheckurl />
+	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
+	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.0.0" maxversion="" />
 	</dependencies>
@@ -5454,7 +5454,7 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postbit_create_issue" templatetype="template" date="1278150179" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&p={vb:raw post.postid}" class="promotecms">Promouvoir en tant que rapport</a>
+		<template name="pt_postbit_create_issue" templatetype="template" date="1278372154" username="Mosh" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&p={vb:raw post.postid}"><img src="{vb:stylevar imgdir_siteicons}/project.png" alt="{vb:rawphrase promote_to_ptissue}" /> {vb:rawphrase promote_to_ptissue}</a>
 <span class="seperator">&nbsp;</span>]]></template>
 		<template name="pt_postbit_link_issue" templatetype="template" date="1278236238" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$show['pt_separator']">
 	<div class="ptseparator">-</div>
@@ -7459,8 +7459,8 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 
 </body>
 </html>]]></template>
-		<template name="pt_usercp_navbit" templatetype="template" date="1272738044" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>
-	<h4 class="blocksubhead">{vb:rawphrase projects}</h4>
+		<template name="pt_usercp_navbit" templatetype="template" date="1278312491" username="Mosh" version="2.1.2"><![CDATA[<li>
+	<h3 class="blocksubhead"><img class="usercpimage" src="{vb:stylevar imgdir_siteicons}/project.png" alt="{vb:rawphrase projects}" border="0" /> {vb:rawphrase projects}</h3>
 <ul class="blockrow">
 	<li><a href="projectpost.php?{vb:raw session.sessionurl}do=managesubscriptions" class="{vb:raw navclass.ptsubscriptions}">{vb:rawphrase list_subscriptions}</a></li>
 	<li><a href="project.php{vb:raw session.sessionurl_q}">{vb:rawphrase projects}</a></li>
@@ -8543,7 +8543,7 @@ if ($post['pt_issueid'] > 0 AND $post['pt_forwardmode'] == 1)
 	$post['title'] .= $templater->render();
 }]]></phpcode>
 		</plugin>
-		<plugin active="1" executionorder="5">
+		<plugin active="0" executionorder="5">
 			<title>Process PT Global Templates</title>
 			<hookname>process_templates_complete</hookname>
 			<phpcode><![CDATA[if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
@@ -9082,6 +9082,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="is_browsing_project_x_criteria" date="1277854692" username="Mosh" version="2.1.2"><![CDATA[User is browsing the {1} vBulletin Project]]></phrase>
 		</phrasetype>
 		<phrasetype name="Postbit" fieldname="postbit">
+			<phrase name="promote_to_ptissue" date="1278372040" username="Mosh" version="2.1.2"><![CDATA[Promote to Issue]]></phrase>
 			<phrase name="pt_create_issue" date="1278235873" username="Pitchoune" version="2.1.2"><![CDATA[Create issue]]></phrase>
 			<phrase name="pt_post_made_as_issue" date="1278235794" username="Pitchoune" version="2.1.2"><![CDATA[This post was made as an issue]]></phrase>
 		</phrasetype>
