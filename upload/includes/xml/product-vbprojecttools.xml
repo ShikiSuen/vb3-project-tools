@@ -8595,7 +8595,7 @@ if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 	$post['title'] .= $templater->render();
 }]]></phpcode>
 		</plugin>
-		<plugin active="0" executionorder="5">
+		<plugin active="1" executionorder="5">
 			<title>Process PT Global Templates</title>
 			<hookname>process_templates_complete</hookname>
 			<phpcode><![CDATA[if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
@@ -8738,7 +8738,7 @@ $template_hook['usercp_main_pos3'] .= process_new_subscribed_issues();]]></phpco
 			<hookname>usercp_nav_complete</hookname>
 			<phpcode><![CDATA[if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
 {
-	if (!in_array(THIS_SCRIPT, array('usercp', 'profile')))
+	if (!in_array(THIS_SCRIPT, array('usercp', 'profile', 'private', 'subscription', 'calendar', 'moderation')))
 	{
 		$vbulletin->options['selectednavtab'] = 'projecttools';
 	}
