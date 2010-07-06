@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.2</version>
-	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
-	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
+	<url />
+	<versioncheckurl />
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.0.0" maxversion="" />
 	</dependencies>
@@ -1144,13 +1144,7 @@ if ($show['ptimporter_previous'])
 	$rebuild['options'] = true;
 	$rebuild['cron'] = true;
 }]]></installcode>
-			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
-$db_alter = new vB_Database_Alter_MySQL($db);
-if ($db_alter->fetch_table_info('thread'))
-{
-	$db_alter->drop_field('ptissueid');
-	$db_alter->drop_field('ptforwardmode');
-}]]></uninstallcode>
+			<uninstallcode />
 		</code>
 		<code version="2.1.2">
 			<installcode><![CDATA[$db->query_write("
@@ -1169,6 +1163,15 @@ $db->query_write("
 	) ENGINE=MyISAM
 ");
 
+$db->query_write("
+	CREATE TABLE " . TABLE_PREFIX . "pt_issueimport (
+		contenttypeid INT UNSIGNED NOT NULL,
+		contentid INT UNSIGNED NOT NULL,
+		data MEDIUMTEXT,
+		UNIQUE KEY contenttypeid (contenttypeid, contentid)
+	) ENGINE=MyISAM
+");
+
 require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
 
@@ -1183,19 +1186,46 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 	));
 }
 
-// Add fields for 'Create issue from post' feature
-if ($db_alter->fetch_table_info('post'))
+// ############################################################
+// Drop fields for 'Create issue from thread' feature - moved into a new table
+// ############################################################
+
+// Get the contenttypeid of threads
+require_once(DIR . '/includes/class_bootstrap_framework.php');
+vB_Bootstrap_Framework::init();
+$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+// Move any existing data into the new table before removing useless fields
+$movedthreads = $db->query_read("
+	SELECT threadid, pt_issueid, pt_forwardmode
+	FROM " . TABLE_PREFIX . "thread
+	WHERE pt_issueid > 0
+");
+
+if ($db->num_rows($movedthreads) > 0)
 {
-	$db_alter->add_field(array(
-		'name' => 'pt_issueid',
-		'type' => 'int',
-		'attributes' => 'unsigned'
-	));
-	$db_alter->add_field(array(
-		'name' => 'pt_forwardmode',
-		'type' => 'int',
-		'attributes' => 'unsigned'
-	));
+	while ($movedthread = $db->fetch_array($movedthreads))
+	{
+		$data = array();
+		$data['pt_issueid'] = $movedthread['pt_issueid'];
+		$data['pt_forwardmode'] = $movedthread['pt_forwardmode'];
+
+		$importdata = serialize($data);
+
+		$db->query_write("
+			INSERT INTO " . TABLE_PREFIX . "pt_issueimport
+				(contenttypeid, contentid, data)
+		VALUES
+				($contenttypeid, " . $movedthread['threadid'] . ", '" . $importdata . "')
+			");
+	}
+}
+
+// Now remove useless fields
+if ($db_alter->fetch_table_info('thread'))
+{
+	$db_alter->drop_field('pt_issueid');
+	$db_alter->drop_field('pt_forwardmode');
 }
 
 // Add every user into pt_user table
@@ -1220,15 +1250,11 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 	$db_alter->drop_field('statuscolor');
 }
 
-if ($db_alter->fetch_table_info('post'))
-{
-	$db_alter->drop_field('ptissueid');
-	$db_alter->drop_field('ptforwardmode');
-}
-
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset");
 
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");]]></uninstallcode>
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");
+
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
@@ -1648,7 +1674,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");]]></uninst
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1278236693" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1278454327" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2751,6 +2777,21 @@ div.checkbox_multiselect {
 	font-style: italic;
 	font-weight: normal;
 	font-size: 11px;
+}
+
+.postbitlegacy .postfoot .textcontrols a.promoteissue,
+.postbit .postfoot .textcontrols a.promoteissue {
+	background: url(images/site_icons/project.png) no-repeat {vb:stylevar postbit_control_background} {vb:stylevar left};
+	padding: {vb:stylevar postbit_control_padding};
+	padding-{vb:stylevar left}: {vb:math {vb:stylevar postbit_control_padding}+20};
+	border: {vb:stylevar postbit_control_border};
+}
+
+.postbitlegacy .postfoot .textcontrols a.promoteissue:hover, .postbit .postfoot .textcontrols a.promoteissue:hover  {
+	background: url(images/site_icons/project-hover.png) no-repeat {vb:stylevar postbit_control_hover_background} {vb:stylevar left};
+	padding: {vb:stylevar postbit_control_padding};
+	padding-{vb:stylevar left}: {vb:math {vb:stylevar postbit_control_padding}+20};
+	border: {vb:stylevar postbit_control_hover_border};
 }
 
 /* Magic Selects */
@@ -5454,12 +5495,12 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postbit_create_issue" templatetype="template" date="1278372154" username="Mosh" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&p={vb:raw post.postid}"><img src="{vb:stylevar imgdir_siteicons}/project.png" alt="{vb:rawphrase promote_to_ptissue}" /> {vb:rawphrase promote_to_ptissue}</a>
+		<template name="pt_postbit_create_issue" templatetype="template" date="1278454416" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&p={vb:raw post.postid}" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
 <span class="seperator">&nbsp;</span>]]></template>
-		<template name="pt_postbit_link_issue" templatetype="template" date="1278236238" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$show['pt_separator']">
+		<template name="pt_postbit_link_issue" templatetype="template" date="1278454430" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$show['pt_separator']">
 	<div class="ptseparator">-</div>
 </vb:if>
-<a class="ptlink" href="project.php?{vb:raw session.sessionurl}issueid={vb:raw post.pt_issueid}">
+<a class="ptlink" href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issueinfos.pt_issueid}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
 		<template name="pt_postissue" templatetype="template" date="1276074948" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
@@ -8531,7 +8572,22 @@ $templater = vB_Template::create('pt_postbit_create_issue');
 $template_hook['postbit_controls'] .= $templater->render();
 
 // Add a little text next to the post title saying the thread has been moved
-if ($post['pt_issueid'] > 0 AND $post['pt_forwardmode'] == 1)
+
+// Get the contenttypeid
+require_once(DIR . '/includes/class_bootstrap_framework.php');
+vB_Bootstrap_Framework::init();
+$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Post');
+
+$issuedata = $this->registry->db->query_first("
+	SELECT data
+	FROM " . TABLE_PREFIX . "pt_issueimport
+	WHERE contenttypeid = $contenttypeid
+		AND contentid = $post[postid]
+");
+
+$issueinfos = unserialize($issuedata['data']);
+
+if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 {
 	if (!empty($post['title']))
 	{
@@ -8540,6 +8596,7 @@ if ($post['pt_issueid'] > 0 AND $post['pt_forwardmode'] == 1)
 
 	$templater = vB_Template::create('pt_postbit_link_issue');
 		$templater->register('post', $post);
+		$templater->register('issueinfos', $issueinfos);
 	$post['title'] .= $templater->render();
 }]]></phpcode>
 		</plugin>
@@ -8578,9 +8635,21 @@ if ($show['createptissue'])
 		<plugin active="1" executionorder="5">
 			<title>Show Thread: Redirect to Project Tools if thread has been moved</title>
 			<hookname>showthread_getinfo</hookname>
-			<phpcode><![CDATA[if (intval($thread['pt_issueid']) > 0 AND $thread['pt_forwardmode'] == 1)
+			<phpcode><![CDATA[// Get the contenttypeid
+$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+$issuedata = $db->query_first("
+	SELECT data
+	FROM " . TABLE_PREFIX . "pt_issueimport
+	WHERE contenttypeid = $contenttypeid
+		AND contentid = $thread[threadid]
+");
+
+$issueinfos = unserialize($issuedata['data']);
+
+if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1)
 {
-	exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$thread[pt_issueid]");
+	exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issueinfos[pt_issueid]");
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -8591,7 +8660,21 @@ if ($show['createptissue'])
 		<plugin active="1" executionorder="5">
 			<title>Threadbit: Show Prefix for moved threads</title>
 			<hookname>threadbit_display</hookname>
-			<phpcode><![CDATA[if (intval($thread['pt_issueid']) > 0 AND $thread['pt_forwardmode'] == 1)
+			<phpcode><![CDATA[// Get the contenttypeid
+require_once(DIR . '/includes/class_bootstrap_framework.php');
+vB_Bootstrap_Framework::init();
+$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+$issuedata = $db->query_first("
+	SELECT data
+	FROM " . TABLE_PREFIX . "pt_issueimport
+	WHERE contenttypeid = $contenttypeid
+		AND contentid = $thread[threadid]
+");
+
+$issueinfos = unserialize($issuedata['data']);
+
+if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1)
 {
 	if ($vbulletin->options['ptimporter_extendedthreadprefix'])
 	{
@@ -8601,7 +8684,7 @@ if ($show['createptissue'])
 				pt_project.title AS project
 			FROM " . TABLE_PREFIX . "pt_issue AS pt_issue
 				LEFT JOIN " . TABLE_PREFIX . "pt_project AS pt_project ON (pt_issue.projectid = pt_project.projectid)
-			WHERE pt_issue.issueid = " . $thread['pt_issueid'] . "
+			WHERE pt_issue.issueid = " . $issueinfos['pt_issueid'] . "
 		");
 
 		$thread['typeprefix'] = construct_phrase($vbphrase['pt_import_threadprefix_extended'], $ptissueinfo['project'], $vbphrase["issuetype_$ptissueinfo[issuetype]_singular"]);
