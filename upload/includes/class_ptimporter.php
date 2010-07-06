@@ -96,7 +96,7 @@ class vB_PtImporter
 	* @param	array		Integer array containing the ids of the posts to import.
 	* @param	array		Integer array containing the ids of the attachments to import.
 	*/
-	function __construct(vB_Registry &$registry, $datatype, $datainfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
+	public function __construct(vB_Registry &$registry, $datatype, $datainfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
 	{
 		$this->registry = &$registry;
 		$this->datatype = $datatype;
@@ -105,6 +105,10 @@ class vB_PtImporter
 
 		$this->postids = $this->validate_array($postids);
 		$this->attachmentids = $this->validate_array($attachmentids);
+
+		// Require to get the contenttypeid
+		require_once(DIR . '/includes/class_bootstrap_framework.php');
+		vB_Bootstrap_Framework::init();
 	}
 
 	/**
@@ -114,7 +118,7 @@ class vB_PtImporter
 	*
 	* @return 	array		The input in array form
 	*/
-	function validate_array($source = array())
+	private function validate_array($source = array())
 	{
 		if ($source == null)
 		{
@@ -134,7 +138,7 @@ class vB_PtImporter
 	*
 	* @return	integer		The id of the new issue
 	*/
-	function import_all()
+	public function import_all()
 	{
 		//Import issue and notes
 		$this->execute_import_issue();
@@ -173,7 +177,7 @@ class vB_PtImporter
 	*
 	* @return	integer		The id of the new issue
 	*/
-	function execute_import_issue()
+	private function execute_import_issue()
 	{
 		// prepare issue
 		$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_ARRAY);
@@ -318,7 +322,7 @@ class vB_PtImporter
 	* 
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
 	*/
-	function execute_set_assignment()
+	private function execute_set_assignment()
 	{
 		// Note to self:
 		// Can't use process_assignment_changes because it won't use the log_assignment_changes parameter
@@ -348,7 +352,7 @@ class vB_PtImporter
 	* 
 	* Make sure to set $this->issueid and $this->postids if you have not called execute_import_issue() before!
 	*/
-	function execute_import_attachments()
+	private function execute_import_attachments()
 	{
 		if (!$this->datainfo['attach'])
 		{
@@ -391,7 +395,7 @@ class vB_PtImporter
 	* 
 	* This function is to be used if both vBulletin and PT uses the database as attachment datastore.
 	*/
-	function execute_import_attachments_database($attachlimit)
+	private function execute_import_attachments_database($attachlimit)
 	{
 		$this->attachmentids = array();
 
@@ -432,7 +436,7 @@ class vB_PtImporter
 	* 
 	* This function is to be used if either vBulletin or PT uses the filesystem as attachment datastore.
 	*/
-	function execute_import_attachments_filesystem($attachlimit)
+	private function execute_import_attachments_filesystem($attachlimit)
 	{
 		require_once(DIR . '/includes/class_upload_ptimporter.php');
 		require_once(DIR . '/includes/functions_file.php');
@@ -521,7 +525,7 @@ class vB_PtImporter
 	* 
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
 	*/
-	function execute_import_subscriptions()
+	private function execute_import_subscriptions()
 	{
 		$threadid = $this->datainfo['threadid'];
 
@@ -571,30 +575,44 @@ class vB_PtImporter
 	* 
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
 	*/
-	function execute_update_thread()
+	private function execute_update_thread()
 	{
-		$threadid = $this->datainfo['threadid'];
-		$issueid = $this->issueid;
+		// We need to get the content type id of threads
+		$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+		// Define $importdata as an array of values to serialize
+		$importdata = array();
+
+		// Adding the issue id
+		$importdata['pt_issueid'] = $this->issueid;
 
 		if ($this->registry->options['ptimporter_keepthreads'])
 		{
-			$this->registry->db->query_write("
-				UPDATE " . TABLE_PREFIX . "thread SET
-					pt_issueid = $issueid,
-					pt_forwardmode = 0
-				WHERE threadid = $threadid
-			");
+			// Adding the forward mode
+			$importdata['pt_forwardmode'] = 0;
 		}
 		else
 		{
+			// Adding the forward mode
+			$importdata['pt_forwardmode'] = 1;
+
+			// Close the original thread - this is rules by the vb option 'ptimporter_keepthreads'
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "thread SET
-					pt_issueid = $issueid,
-					pt_forwardmode = 1,
 					open = 0
-				WHERE threadid = $threadid
+				WHERE threadid = " . $this->datainfo['threadid'] . "
 			");
 		}
+
+		// Serialize the data
+		$data = serialize($importdata);
+
+		$this->registry->db->query_write("
+			INSERT INTO " . TABLE_PREFIX . "pt_issueimport
+				(contenttypeid, contentid, data)
+			VALUES
+				($contenttypeid, " . $this->datainfo['threadid'] . ", '" . $data . "')
+		");
 	}
 
 	/**
@@ -602,29 +620,37 @@ class vB_PtImporter
 	*
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
 	*/
-	function execute_update_post()
+	private function execute_update_post()
 	{
-		$postid = $this->datainfo['postid'];
-		$issueid = $this->issueid;
+		// We need to get the content type id of threads
+		$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Post');
 
-		if ($this->registry->options['pt_importer_keepthreads'])
+		// Define $importdata as an array of values to serialize
+		$importdata = array();
+
+		// Adding the issue id
+		$importdata['pt_issueid'] = $this->issueid;
+
+		if ($this->registry->options['ptimporter_keepthreads'])
 		{
-			$this->registry->db->query_write("
-				UPDATE " . TABLE_PREFIX . "post SET
-					pt_issueid = $issueid,
-					pt_forwardmode = 0
-				WHERE postid = $postid
-			");
+			// Adding the forward mode
+			$importdata['pt_forwardmode'] = 0;
 		}
 		else
 		{
-			$this->registry->db->query_write("
-				UPDATE " . TABLE_PREFIX . "post SET
-					pt_issueid = $issueid,
-					pt_forwardmode = 1
-				WHERE postid = $postid
-			");
+			// Adding the forward mode
+			$importdata['pt_forwardmode'] = 1;
 		}
+
+		// Serialize the data
+		$data = serialize($importdata);
+
+		$this->registry->db->query_write("
+			INSERT INTO " . TABLE_PREFIX . "pt_issueimport
+				(contenttypeid, contentid, data)
+			VALUES
+				($contenttypeid, " . $this->datainfo['postid'] . ", '" . $data . "')
+		");
 	}
 
 	/**
@@ -632,7 +658,7 @@ class vB_PtImporter
 	* 
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
 	*/
-	function execute_insert_import_notice()
+	private function execute_insert_import_notice()
 	{
 		if (!$this->registry->options['ptimporter_createnotice'])
 		{
