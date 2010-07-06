@@ -1674,7 +1674,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1278454327" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1278456252" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2781,14 +2781,14 @@ div.checkbox_multiselect {
 
 .postbitlegacy .postfoot .textcontrols a.promoteissue,
 .postbit .postfoot .textcontrols a.promoteissue {
-	background: url(images/site_icons/project.png) no-repeat {vb:stylevar postbit_control_background} {vb:stylevar left};
+	background: url({vb:stylevar imgdir_siteicons}/project.png) no-repeat {vb:stylevar postbit_control_background} {vb:stylevar left};
 	padding: {vb:stylevar postbit_control_padding};
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar postbit_control_padding}+20};
 	border: {vb:stylevar postbit_control_border};
 }
 
 .postbitlegacy .postfoot .textcontrols a.promoteissue:hover, .postbit .postfoot .textcontrols a.promoteissue:hover  {
-	background: url(images/site_icons/project-hover.png) no-repeat {vb:stylevar postbit_control_hover_background} {vb:stylevar left};
+	background: url({vb:stylevar imgdir_siteicons}/project-hover.png) no-repeat {vb:stylevar postbit_control_hover_background} {vb:stylevar left};
 	padding: {vb:stylevar postbit_control_padding};
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar postbit_control_padding}+20};
 	border: {vb:stylevar postbit_control_hover_border};
@@ -8363,11 +8363,6 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_user AS ptuser ON (user.u
 {
 	$forumhome_markread_script .= vB_Template::create('pt_markread_script')->render();
 }]]></phpcode>
-		</plugin>
-		<plugin active="1" executionorder="5">
-			<title>Forum Display: Add ptissueid in query</title>
-			<hookname>forumdisplay_query</hookname>
-			<phpcode><![CDATA[$hook_query_fields .= ', thread.pt_issueid, thread.pt_forwardmode';]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
 			<title>Forum Display: PT Display Setup</title>
