@@ -8365,6 +8365,17 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_user AS ptuser ON (user.u
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
+			<title>Forum Display: Add ptissueid in query</title>
+			<hookname>forumdisplay_query</hookname>
+			<phpcode><![CDATA[// Get the contenttypeid
+require_once(DIR . '/includes/class_bootstrap_framework.php');
+vB_Bootstrap_Framework::init();
+$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+$hook_query_fields .= ', pt_issueimport.data AS pt_issueimport';
+$hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueimport ON (pt_issueimport.contentid = thread.threadid AND pt_issueimport.contenttypeid = $contenttypeid)";]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
 			<title>Forum Display: PT Display Setup</title>
 			<hookname>forumdisplay_start</hookname>
 			<phpcode><![CDATA[if ($vbulletin->options['pt_hasprojectforums'])
@@ -8567,20 +8578,7 @@ $templater = vB_Template::create('pt_postbit_create_issue');
 $template_hook['postbit_controls'] .= $templater->render();
 
 // Add a little text next to the post title saying the thread has been moved
-
-// Get the contenttypeid
-require_once(DIR . '/includes/class_bootstrap_framework.php');
-vB_Bootstrap_Framework::init();
-$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Post');
-
-$issuedata = $this->registry->db->query_first("
-	SELECT data
-	FROM " . TABLE_PREFIX . "pt_issueimport
-	WHERE contenttypeid = $contenttypeid
-		AND contentid = $post[postid]
-");
-
-$issueinfos = unserialize($issuedata['data']);
+$issueinfos = unserialize($post['issueimportdata']);
 
 if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 {
@@ -8648,6 +8646,15 @@ if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
+			<title>Show Thread: Add ptissueid in query</title>
+			<hookname>showthread_query</hookname>
+			<phpcode><![CDATA[// Get the contenttypeid
+$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Post');
+
+$hook_query_fields .= ', pt_issueimport.data AS issueimportdata';
+$hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueimport ON (pt_issueimport.contentid = post.postid AND pt_issueimport.contenttypeid = $contenttypeid)";]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
 			<title>Template Grouping</title>
 			<hookname>template_groups</hookname>
 			<phpcode><![CDATA[$only['pt_'] = $vbphrase['group_project_tools'];]]></phpcode>
@@ -8655,19 +8662,7 @@ if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1
 		<plugin active="1" executionorder="5">
 			<title>Threadbit: Show Prefix for moved threads</title>
 			<hookname>threadbit_display</hookname>
-			<phpcode><![CDATA[// Get the contenttypeid
-require_once(DIR . '/includes/class_bootstrap_framework.php');
-vB_Bootstrap_Framework::init();
-$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
-
-$issuedata = $db->query_first("
-	SELECT data
-	FROM " . TABLE_PREFIX . "pt_issueimport
-	WHERE contenttypeid = $contenttypeid
-		AND contentid = $thread[threadid]
-");
-
-$issueinfos = unserialize($issuedata['data']);
+			<phpcode><![CDATA[$issueinfos = unserialize($thread['ptissueimport']);
 
 if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1)
 {
