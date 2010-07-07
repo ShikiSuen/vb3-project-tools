@@ -8578,7 +8578,7 @@ $templater = vB_Template::create('pt_postbit_create_issue');
 $template_hook['postbit_controls'] .= $templater->render();
 
 // Add a little text next to the post title saying the thread has been moved
-$issueinfos = unserialize($post['issueimportdata']);
+$issueinfos = unserialize($post['pt_issueimport']);
 
 if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 {
@@ -8651,7 +8651,7 @@ if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1
 			<phpcode><![CDATA[// Get the contenttypeid
 $contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Post');
 
-$hook_query_fields .= ', pt_issueimport.data AS issueimportdata';
+$hook_query_fields .= ', pt_issueimport.data AS pt_issueimport';
 $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueimport ON (pt_issueimport.contentid = post.postid AND pt_issueimport.contenttypeid = $contenttypeid)";]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -8662,7 +8662,7 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 		<plugin active="1" executionorder="5">
 			<title>Threadbit: Show Prefix for moved threads</title>
 			<hookname>threadbit_display</hookname>
-			<phpcode><![CDATA[$issueinfos = unserialize($thread['ptissueimport']);
+			<phpcode><![CDATA[$issueinfos = unserialize($thread['pt_issueimport']);
 
 if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1)
 {
