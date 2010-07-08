@@ -1674,7 +1674,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1278456252" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1278596304" username="Mosh" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2781,14 +2781,14 @@ div.checkbox_multiselect {
 
 .postbitlegacy .postfoot .textcontrols a.promoteissue,
 .postbit .postfoot .textcontrols a.promoteissue {
-	background: url({vb:stylevar imgdir_siteicons}/project.png) no-repeat {vb:stylevar postbit_control_background} {vb:stylevar left};
+	background: url({vb:stylevar imgdir_button}/project.png) no-repeat {vb:stylevar postbit_control_background} {vb:stylevar left};
 	padding: {vb:stylevar postbit_control_padding};
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar postbit_control_padding}+20};
 	border: {vb:stylevar postbit_control_border};
 }
 
 .postbitlegacy .postfoot .textcontrols a.promoteissue:hover, .postbit .postfoot .textcontrols a.promoteissue:hover  {
-	background: url({vb:stylevar imgdir_siteicons}/project-hover.png) no-repeat {vb:stylevar postbit_control_hover_background} {vb:stylevar left};
+	background: url({vb:stylevar imgdir_button}/project-hover.png) no-repeat {vb:stylevar postbit_control_hover_background} {vb:stylevar left};
 	padding: {vb:stylevar postbit_control_padding};
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar postbit_control_padding}+20};
 	border: {vb:stylevar postbit_control_hover_border};
