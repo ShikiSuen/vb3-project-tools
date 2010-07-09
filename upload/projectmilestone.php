@@ -51,6 +51,7 @@ $actiontemplates = array(
 	'milestone' => array(
 		'pt_issuebit',
 		'pt_milestone',
+		'pt_postmenubit',
 	),
 	'project' => array(
 		'pt_milestonebit',

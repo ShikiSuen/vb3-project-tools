@@ -4681,7 +4681,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1276145027" username="Jeremy" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1278636877" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4711,7 +4711,7 @@ init_project_readmarker_system();
 
 <vb:if condition="$post_issue_options">
 	<div class="pt_issuepopup">
-		<div class="navpopupmenu popupmenu nohovermenu">
+		<div class="navpopupmenu popupmenu nohovermenu" style="margin-bottom: -2px">
 			<a class="popupctrl" href="{vb:raw relpath}">
 				<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>					</a>
 			<ul class="navpopupbody popupbody">
@@ -4766,7 +4766,7 @@ init_project_readmarker_system();
 </div>
 </vb:if>
 
-<div class="pt_overview pt_milestone block">
+<div class="pt_milestone block" style="padding-top: 5px">
 	<div class="blockhead">
 		<div style="float: {vb:stylevar right};">
 			<vb:if condition="$milestone['completeddate']">
