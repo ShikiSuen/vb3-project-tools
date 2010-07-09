@@ -633,12 +633,6 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 			if ($this->info['hard_delete'])
 			{
-				// Decrement totalissues counter
-				$this->registry->db->query_write("
-					UPDATE " . TABLE_PREFIX . "pt_user SET
-						totalissues = totalissues - 1
-					WHERE userid = " . $this->fetch_field('userid') . "
-				");
 				$return = $this->db_delete(TABLE_PREFIX, $this->table, $this->condition, true);
 			}
 			else
@@ -649,6 +643,13 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					WHERE " . $this->condition
 				);
 			}
+
+			// Decrement totalissues counter
+			$this->registry->db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_user SET
+					totalissues = totalissues - 1
+				WHERE userid = " . $this->fetch_field('userid') . "
+			");
 
 			$this->post_delete($doquery);
 			return $return;

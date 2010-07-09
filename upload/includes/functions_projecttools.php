@@ -211,7 +211,7 @@ function fetch_issue_info($issueid, $extra_info = array())
 			" . ($version_join ? "appliesversion.versionname AS appliesversion, addressedversion.versionname AS addressedversion," : '') . "
 			" . ($category_join ? "projectcategory.title AS categorytitle," : '') . "
 			" . ($avatar_join ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
-			user.*, userfield.*, usertextfield.*,
+			user.*, userfield.*, usertextfield.*, pt_user.*,
 			IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
 			" . ($browsing_user_joins ? "issuesubscribe.subscribetype, IF(issueassign.issueid IS NULL, 0, 1) AS isassigned," : '') . "
 			" . ($vote_join ? "issuevote.vote," : '') . "
@@ -236,6 +236,7 @@ function fetch_issue_info($issueid, $extra_info = array())
 		LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
 		LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
 		LEFT JOIN " . TABLE_PREFIX . "usertextfield AS usertextfield ON (usertextfield.userid = user.userid)
+		LEFT JOIN " . TABLE_PREFIX . "pt_user AS pt_user ON (pt_user.userid = user.userid)
 		" . ($avatar_join ? "
 			LEFT JOIN " . TABLE_PREFIX . "avatar AS avatar ON(avatar.avatarid = user.avatarid)
 			LEFT JOIN " . TABLE_PREFIX . "customavatar AS customavatar ON(customavatar.userid = user.userid)" : '') . "
