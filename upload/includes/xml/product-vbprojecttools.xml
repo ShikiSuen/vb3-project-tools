@@ -4681,7 +4681,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1278636877" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1278637754" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4782,44 +4782,38 @@ init_project_readmarker_system();
 	</div>
 		{vb:rawphrase milestone_x_html, {vb:raw milestone.title}}
 	</div>
-	<div class="blockbody formcontrols">
-		<div class="section">
-			<div class="blockrow">
+	<div class="blockbody settings_form_border">
+		<div class="blockrow">
+			<vb:if condition="$milestone['description']">
+				{vb:raw milestone.description}
+				<hr />
+			</vb:if>
 
-				<vb:if condition="$milestone['description']">
-					<div>{vb:raw milestone.description}</div>
+			<div class="milestone_total">
+				<span class="milestone_total_content">
+					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=completed" class="shade">{vb:rawphrase total_completed}</a>
+					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=completed">{vb:raw stats.total_completed}</a>
+				</span>
+
+				<span class="milestone_total_content">
+					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=active" class="shade">{vb:rawphrase total_active}</a>
+					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=active">{vb:raw stats.total_active}</a>
+				</span>
+
+				<span>
+					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}" class="shade">{vb:rawphrase total_issues}</a>
+					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}">{vb:raw stats.total_issues}</a>
+				</span>
+			</div>
+
+			<div class="milestone_table">
+				<vb:if condition="$raw_counts['percent_completed']">
+					<div class="milestone_color" style="width: {vb:raw raw_counts.percent_completed}%"></div>
 				</vb:if>
 			</div>
 
-			<div class="blockrow">
-				<div class="milestone_total">
-					<span class="milestone_total_content">
-						<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=completed" class="shade">{vb:rawphrase total_completed}</a>
-						<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=completed">{vb:raw stats.total_completed}</a>
-					</span>
-
-					<span class="milestone_total_content">
-						<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=active" class="shade">{vb:rawphrase total_active}</a>
-						<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=active">{vb:raw stats.total_active}</a>
-					</span>
-
-					<span>
-						<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}" class="shade">{vb:rawphrase total_issues}</a>
-						<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}">{vb:raw stats.total_issues}</a>
-					</span>
-				</div>
-				
-				<br />
-				
-				<div class="milestone_table">
-					<vb:if condition="$raw_counts['percent_completed']">
-						<div class="milestone_color" style="width: {vb:raw raw_counts.percent_completed}%"></div>
-					</vb:if>
-				</div>
-				<br />
-				<div class="milestone_percent">
-					{vb:rawphrase x_percent_completed, {vb:raw stats.percent_completed}}
-				</div>
+			<div class="milestone_percent">
+				{vb:rawphrase x_percent_completed, {vb:raw stats.percent_completed}}
 			</div>
 		</div>
 	</div>
