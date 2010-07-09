@@ -1258,7 +1258,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1276105002" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1278634398" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1279,6 +1279,8 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 /* Code for all controls in PT - grey bar above all contents */
 .above_project_controls {
 	background-image: none;
+	/* IE6 workaround */
+	_position: static;
 }
 
 .above_project_controls .popupgroup.projectpopups .popupmenu {
@@ -1303,6 +1305,9 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 
 .projectpopups .popupbody li {
 	width: 200px;
+	/* IE6 workarounds */
+	_width: 100%;
+	_clear: none;
 }
 
 /* Project overview definitions */
@@ -1476,9 +1481,17 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 	top: -7px;
 }
 
+.pt_issuelist .blockhead div {
+	/* IE6 workarounds */
+	_text-align: {vb:stylevar right};
+	_width: 50% !important;
+}
+
 .pt_issuelist .blocksubhead {
 	height: auto !important;
 	height: 24px;
+	/* IE6 workaround */
+	_height: 18px;
 }
 
 .pt_issuelist .blocksubhead div {
@@ -1528,6 +1541,8 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 	display: inline;
 	clear: {vb:stylevar right};
 	width: 30px;
+	/* IE6 workaround */
+	_margin-left: 8px;
 }
 
 .pt_issuelist .blockrow .ptissuelist_title {
@@ -1557,6 +1572,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 	padding-left: 4px;
 	padding-right: 4px;
 	width: 1em;
+	/* IE6 workaround */
 	_display: inline;
 }
 
@@ -1644,8 +1660,44 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 }
 
 /* Project issue content definitions */
+#pt_issue_content {
+	/* IE6 workaround */
+	_margin-left: -210px !important;
+}
+
+#pt_issue_content .issuefoot {
+	/* IE6 workaround */
+	_margin-left: -5px;
+}
+
 #pt_issue_content .issuefoot .textcontrols a {
 	display: inline;
+}
+
+#pt_issue_content .issuefoot .issuecontrols {
+	/* IE6 workaround */
+	_margin-right: 10px;
+}
+
+#pt_issue_details .vB_MagicSelect {
+	/* IE6 workaround */
+	_height: 15px;
+}
+
+#pt_issue_details .vB_MagicSelect_hover {
+	/* IE6 workaround */
+	_height: 15px;
+}
+
+#pt_issue_details .vB_MagicSelect span {
+	/* IE6 workaround */
+	_width: auto !important;
+}
+
+#pt_issue_details .vB_MagicSelect_hover span {
+	/* IE6 workarounds */
+	_width: auto !important;
+	_text-align: {vb:stylevar left};
 }
 
 /* Issue notes */
@@ -1658,6 +1710,11 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 	width: auto;
 }
 
+/* Search */
+.pt_search .blockbody .collapse {
+	margin-{vb:stylevar right}: 20px !important;
+}
+
 /* Magic Select */
 .vB_MagicSelect, .vB_MagicSelect_hover {
 	margin-top: 1px;
@@ -1668,6 +1725,8 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 	display: inline;
 	padding: 1px 2px;
 	width: 99%;
+	/* IE6 workaround */
+	_width: 75% !important;
 	height: 13px;
 }
 
@@ -6789,7 +6848,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_search" templatetype="template" date="1273444935" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_search" templatetype="template" date="1278633716" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -6816,7 +6875,7 @@ init_project_readmarker_system();
 
 <form action="projectsearch.php?{vb:raw session.sessionurl}do=dosearch" method="post">
 
-<div class="block">
+<div class="pt_search block">
 	<div class="blockhead">
 		{vb:rawphrase search_projects}
 	</div>
