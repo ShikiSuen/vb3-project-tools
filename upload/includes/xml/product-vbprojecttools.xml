@@ -3808,7 +3808,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1276119875" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
+		<template name="pt_issuebit" templatetype="template" date="1278750291" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -3830,9 +3830,6 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			</vb:if>
 		</div>
 		<div class="issueuser smallfont">
-			<vb:if condition="$show['issuebit_project_title']">
-				<div class="shade" style="float: {vb:stylevar right}; white-space: nowrap">{vb:raw issue.title_clean}</div>
-			</vb:if>
 			<vb:if condition="$issue['submituserid']">
 				<a href="{vb:link member, {vb:raw issue}, null, 'submituserid', 'submitusername'}">{vb:raw issue.submitusername}</a>
 			<vb:else />
@@ -7563,7 +7560,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 </ul>
 </li>
 ]]></template>
-		<template name="pt_usercp_subscriptions" templatetype="template" date="1273518107" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="block">
+		<template name="pt_usercp_subscriptions" templatetype="template" date="1278750348" username="Pitchoune" version="2.1.2"><![CDATA[<div class="pt_issuelist block">
 	<div class="blockhead collapse">
 		<a id="collapse_usercp_pt_issues" class="collapse" style="float: {vb:stylevar right}; top: 5px" href="{vb:raw relpath}#top"><img src="{vb:stylevar imgdir_button}/collapse_40b.png" alt="" /></a>
 		{vb:rawphrase new_subscribed_issues}
@@ -7588,10 +7585,8 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		</div>
 		{vb:raw subscriptionbits}
 	</div>
-	<div class="blockfoot actionbuttons">
-		<div class="group">
-			<a href="projectpost.php?{vb:raw session.sessionurl}do=managesubscriptions">{vb:rawphrase issue_subscriptions}</a>
-		</div>
+	<div class="blockfoot controlbar textpad">
+		<a class="textcontrol" href="projectpost.php?{vb:raw session.sessionurl}do=managesubscriptions">{vb:rawphrase issue_subscriptions}</a>
 	</div>
 </div>]]></template>
 		<template name="pt_viewip" templatetype="template" date="1273447776" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[{vb:stylevar htmldoctype}
@@ -8598,7 +8593,7 @@ else if ($userinfo['activity'] == 'archive_project')
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
-			<title>Search: Adding PT CSS Template in search / subscriptions / showthread forms</title>
+			<title>Search: Adding PT CSS Template in various places</title>
 			<hookname>parse_templates</hookname>
 			<phpcode><![CDATA[// We need vbcsspath for called templates
 if ($vbulletin->options['storecssasfile'])
@@ -8612,7 +8607,7 @@ else
 }
 
 // In search.php & projectpost.php?do=managesubscriptions, projecttools.css is not automatically added - do it here
-if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))) OR (THIS_SCRIPT == 'projectpost' AND in_array($_REQUEST['do'], array('managesubscriptions'))) OR (THIS_SCRIPT == 'showthread'))
+if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))) OR (THIS_SCRIPT == 'projectpost' AND in_array($_REQUEST['do'], array('managesubscriptions'))) OR (THIS_SCRIPT == 'showthread') OR (THIS_SCRIPT == 'usercp'))
 {
 	$templater = vB_Template::create('pt_headinclude');
 		$templater->register('vbcsspath', $vbcsspath);
