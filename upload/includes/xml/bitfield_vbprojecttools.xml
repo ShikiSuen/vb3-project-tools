@@ -63,6 +63,7 @@
 				<bitfield name="requirecategory">2</bitfield>
 				<bitfield name="requirepriority">4</bitfield>
 				<bitfield name="emailonassignment">8</bitfield>
+				<bitfield name="pmonassignment">16</bitfield>
 			</group>
 			<group name="pt_hvcheck">
 				<bitfield name="post">1</bitfield>
