@@ -112,6 +112,8 @@ function send_issue_reply_notification($issue, $issuenote)
 
 		eval(empty($evalemail["$notification[languageid]"]) ? $evalemail["-1"] : $evalemail["$notification[languageid]"]);
 		vbmail($notification['email'], $subject, $message);
+		
+		
 	}
 
 	unset($plaintext_parser, $pagetext_cache);
@@ -379,13 +381,13 @@ function process_assignment_changes($input, $posting_perms, $existing_assignment
 }
 
 /**
-* Sends assignment notification when a user is assigned
+* Sends email assignment notification when a user is assigned
 *
 * @param	integer	Issueid to send notification for
 * @param	integer	User who is being assigned this issue
 * @param	integer	User who assigned this issue
 */
-function send_issue_assignment_notification($issueid, $assignee, $assigner)
+function send_issue_assignment_notification_email($issueid, $assignee, $assigner)
 {
 	global $vbulletin, $vbphrase;
 
@@ -420,6 +422,60 @@ function send_issue_assignment_notification($issueid, $assignee, $assigner)
 
 	eval(fetch_email_phrases('pt_issueassignment', $assignee_userinfo['languageid']));
 	vbmail($assignee_userinfo['email'], $subject, $message, true);
+}
+
+/**
+* Sends PM assignment notification when a user is assigned
+*
+* @param	integer	Issueid to send notification for
+* @param	integer	User who is being assigned this issue
+* @param	integer	User who assigned this issue
+*/
+function send_issue_assignment_notification_pm($issueid, $assignee, $assigner)
+{
+	global $vbulletin, $vbphrase;
+
+	$issue = fetch_issue_info($issueid);
+
+	// invalid issue
+	if (!$issue)
+	{
+		return;
+	}
+
+	// no need for notification to yourself
+	if ($assignee == $assigner)
+	{
+		return;
+	}
+
+	$project = fetch_project_info($issue['projectid']);
+	$assignee_userinfo = fetch_userinfo($assignee);
+
+	if (verify_issue_perms($issue, $assignee_userinfo) === false)
+	{
+		return;
+	}
+
+	$assigner_userinfo = fetch_userinfo($assigner);
+
+	$issue['title'] = unhtmlspecialchars($issue['title']);
+	$project['title'] = unhtmlspecialchars($project['title']);
+	$assignee_userinfo['username'] = unhtmlspecialchars($assignee_userinfo['username']);
+	$assigner_userinfo['username'] = unhtmlspecialchars($assigner_userinfo['username']);
+
+	eval(fetch_email_phrases('pt_issueassignment', $assignee_userinfo['languageid']));
+	
+	// Init vB_PM datamanager.
+	$pm =& datamanager_init('PM', $vbulletin, ERRTYPE_SILENT);
+	$pm->set('fromuserid', $assigner_userinfo['userid']);
+	$pm->set('fromusername', $assigner_userinfo['username']);
+	$pm->set('title', $subject);
+	$pm->set('message', $message);
+	$pm->set('dateline', TIMENOW);
+	$pm->set_recipients($assignee_userinfo['username'], $permissions);
+	$pm->pre_save();
+	$pm->save(); 
 }
 
 /**

@@ -146,9 +146,19 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 			if ($this->fetch_field('userid'))
 			{
 				require_once(DIR . '/includes/functions_pt_posting.php');
-				send_issue_assignment_notification($this->fetch_field('issueid'), $this->fetch_field('userid'), $this->registry->userinfo['userid']);
+				send_issue_assignment_notification_email($this->fetch_field('issueid'), $this->fetch_field('userid'), $this->registry->userinfo['userid']);
 			}
 		}
+		
+		if ($this->info['project'] AND (intval($this->info['project']['options']) & $this->registry->bf_misc['pt_projectoptions']['pmonassignment']))
+		{
+			if ($this->fetch_field('userid'))
+			{
+				require_once(DIR . '/includes/functions_pt_posting.php');
+				send_issue_assignment_notification_pm($this->fetch_field('issueid'), $this->fetch_field('userid'), $this->registry->userinfo['userid']);
+			}
+		}
+
 
 		($hook = vBulletinHook::fetch_hook('pt_issueassigndata_postsave')) ? eval($hook) : false;
 

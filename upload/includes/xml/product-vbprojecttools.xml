@@ -9682,6 +9682,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="select_start_status_for_types_available" date="1176208980" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Select the start status for the issue types you wish to be available for this project.]]></phrase>
 			<phrase name="send_email_on_issueassignment" date="1213893639" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Send Email on Issue Assignment
 <dfn>Choose this option if you want users to receive an email when they are assigned to an issue by another user.</dfn>]]></phrase>
+			<phrase name="send_pm_on_issueassignment" date="1278776794" username="Jeremy" version="2.1.2"><![CDATA[Send PM on Issue Assignment
+<dfn>Choose this option if you want users to receive a PM when they are assigned to an issue by another user.</dfn>]]></phrase>
 			<phrase name="show_globally_disabled_groups" date="1176819233" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Show Globally-Disabled User Groups]]></phrase>
 			<phrase name="singular_form_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Singular Form<dfn>Example: Bug</dfn>]]></phrase>
 			<phrase name="some_issue_fields_not_editable_frontend" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Some issue fields, such as project and issue type, are not editable via the front-end. This system allows you edit those fields.]]></phrase>

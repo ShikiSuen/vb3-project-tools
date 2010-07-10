@@ -2931,6 +2931,8 @@ if ($_REQUEST['do'] == 'projectadd' OR $_REQUEST['do'] == 'projectedit')
 	print_input_row("$vbphrase[summary]<dfn>$vbphrase[html_is_allowed]</dfn>", 'summary', $project['summary']);
 	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>", 'description', $project['description'], 6, 60);
 	print_yes_no_row($vbphrase['send_email_on_issueassignment'], 'options[emailonassignment]', (intval($project['options']) & $vbulletin->bf_misc['pt_projectoptions']['emailonassignment'] ? 1 : 0));
+	print_yes_no_row($vbphrase['send_pm_on_issueassignment'], 'options[pmonassignment]', (intval($project['options']) & $vbulletin->bf_misc['pt_projectoptions']['pmonassignment'] ? 1 : 0));
+
 
 	print_input_row($vbphrase['display_order'], 'displayorder', $project['displayorder'], true, 5);
 
