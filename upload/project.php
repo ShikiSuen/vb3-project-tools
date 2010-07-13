@@ -131,12 +131,14 @@ if (empty($_REQUEST['do']))
 {
 	if (!empty($_REQUEST['issueid']))
 	{
+		// Friendly URL
 		define('FRIENDLY_URL_LINK', 'issue');
 		$_REQUEST['do'] = 'issue';
 		$actiontemplates['none'] =& $actiontemplates['issue'];
 	}
 	else if (!empty($_REQUEST['projectid']))
 	{
+		// Friendly URL
 		define('FRIENDLY_URL_LINK', 'project');
 		$_REQUEST['do'] = 'project';
 		$actiontemplates['none'] =& $actiontemplates['project'];
@@ -173,6 +175,10 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 {
 	print_no_permission();
 }
+
+// Friendly URL
+$filter = array();
+$filter_changes = array();
 
 ($hook = vBulletinHook::fetch_hook('project_start')) ? eval($hook) : false;
 
@@ -1049,6 +1055,7 @@ if ($_REQUEST['do'] == 'issue')
 		}
 	}
 
+	// Friendly URL
 	$filter['issuetypeid'] = $issue['issuetypeid'];
 	$filter_changes['filter'] = 'changes';
 
@@ -1478,6 +1485,7 @@ if ($_REQUEST['do'] == 'issuelist')
 		}
 	}
 
+	// Friendly URL
 	$filter['issuetypeid'] = $input['issuetypeid'];
 
 	// navbar and output
@@ -1877,7 +1885,6 @@ if ($_REQUEST['do'] == 'project')
 			}
 
 			// Friendly URL
-			$filter = array();
 			$filter['issuetypeid'] = $type['issuetypeid'];
 
 			$templater = vB_Template::create('pt_project_typecountbit');

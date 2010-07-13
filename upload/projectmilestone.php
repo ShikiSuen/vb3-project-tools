@@ -63,14 +63,18 @@ if (empty($_REQUEST['do']))
 {
 	if (!empty($_REQUEST['milestoneid']))
 	{
-		$_REQUEST['do'] = 'milestone';
+		// Friendly URL
 		define('FRIENDLY_URL_LINK', 'milestone');
+
+		$_REQUEST['do'] = 'milestone';
 		$actiontemplates['none'] =& $actiontemplates['milestone'];
 	}
 	else if (!empty($_REQUEST['projectid']))
 	{
-		$_REQUEST['do'] = 'project';
+		// Friendly URL
 		define('FRIENDLY_URL_LINK', 'milestoneproject');
+
+		$_REQUEST['do'] = 'project';
 		$actiontemplates['none'] =& $actiontemplates['project'];
 	}
 }
@@ -78,6 +82,7 @@ else
 {
 	if ($_REQUEST['do'] == 'issuelist')
 	{
+		// Friendly URL
 		define('FRIENDLY_URL_LINK', 'milestoneissuelist');
 	}
 }
@@ -96,6 +101,10 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 {
 	print_no_permission();
 }
+
+// Friendly URL
+$filter_active = array();
+$filter_completed = array();
 
 ($hook = vBulletinHook::fetch_hook('projectmilestone_start')) ? eval($hook) : false;
 
