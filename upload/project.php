@@ -131,11 +131,13 @@ if (empty($_REQUEST['do']))
 {
 	if (!empty($_REQUEST['issueid']))
 	{
+		define('FRIENDLY_URL_LINK', 'issue');
 		$_REQUEST['do'] = 'issue';
 		$actiontemplates['none'] =& $actiontemplates['issue'];
 	}
 	else if (!empty($_REQUEST['projectid']))
 	{
+		define('FRIENDLY_URL_LINK', 'project');
 		$_REQUEST['do'] = 'project';
 		$actiontemplates['none'] =& $actiontemplates['project'];
 	}
@@ -284,8 +286,8 @@ if ($_REQUEST['do'] == 'notehistory')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['edit_history']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -334,8 +336,8 @@ if ($_REQUEST['do'] == 'viewip')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['ip_address']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -401,8 +403,8 @@ if ($_REQUEST['do'] == 'patch')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['view_patch']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -641,6 +643,10 @@ if ($_REQUEST['do'] == 'issue')
 
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
 	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
+
+	// verify that we are at the canonical SEO url
+	// and redirect to this if not
+	verify_seo_url('issue', $issue);
 
 	($hook = vBulletinHook::fetch_hook('project_issue_start')) ? eval($hook) : false;
 
@@ -1043,11 +1049,14 @@ if ($_REQUEST['do'] == 'issue')
 		}
 	}
 
+	$filter['issuetypeid'] = $issue['issuetypeid'];
+	$filter_changes['filter'] = 'changes';
+
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "do=issuelist&amp;projectid=$project[projectid]&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('projectissuelist', $project, array('issuetypeid' => $issue['issuetypeid'])) => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
 		'' => $issue['title']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -1060,6 +1069,8 @@ if ($_REQUEST['do'] == 'issue')
 		$templater->register('attachmentbits', $attachmentbits);
 		$templater->register('display_type_counts', $display_type_counts);
 		$templater->register('editorid', $editorid);
+		$templater->register('filter', $filter);
+		$templater->register('filter_changes', $filter_changes);
 		$templater->register('issue', $issue);
 		$templater->register('messagearea', $messagearea);
 		$templater->register('navbar', $navbar);
@@ -1106,6 +1117,10 @@ if ($_REQUEST['do'] == 'issuelist')
 
 		$vbphrase['post_new_issue_issuetype'] = '';
 	}
+
+	// verify that we are at the canonical SEO url
+	// and redirect to this if not
+	verify_seo_url('projectissuelist', $project);
 
 	($hook = vBulletinHook::fetch_hook('project_issuelist_start')) ? eval($hook) : false;
 
@@ -1463,14 +1478,16 @@ if ($_REQUEST['do'] == 'issuelist')
 		}
 	}
 
+	$filter['issuetypeid'] = $input['issuetypeid'];
+
 	// navbar and output
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean']
+		fetch_seo_url('project', $project) => $project['title_clean']
 	);
 	if ($vbulletin->GPC['issuetypeid'])
 	{
-		$navbits["project.php?" . $vbulletin->session->vars['sessionurl'] . "do=issuelist&amp;projectid=$project[projectid]&amp;issuetypeid=" . $vbulletin->GPC['issuetypeid']] = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'];
+		$navbits[fetch_seo_url('projectissuelist', $project, array('issuetypeid' => $vbulletin->GPC['issuetypeid']))] = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'];
 	}
 	$navbits[''] = $vbphrase['issue_list'];
 	$navbits = construct_navbits($navbits);
@@ -1488,6 +1505,7 @@ if ($_REQUEST['do'] == 'issuelist')
 		$templater->register('appliesversion_options', $appliesversion_options);
 		$templater->register('appliesversion_printable', $appliesversion_printable);
 		$templater->register('assignable_users', $assignable_users);
+		$templater->register('filter', $filter);
 		$templater->register('input', $input);
 		$templater->register('issuebits', $issuebits);
 		$templater->register('issuestatus_printable', $issuestatus_printable);
@@ -1664,7 +1682,7 @@ if ($_REQUEST['do'] == 'timeline')
 	$navbits = array('project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects']);
 	if ($project)
 	{
-		$navbits["project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]"] = $project['title_clean'];
+		$navbits[fetch_seo_url('project', $project)] = $project['title_clean'];
 	}
 	$navbits[''] = $vbphrase['project_timeline'];
 
@@ -1699,6 +1717,10 @@ if ($_REQUEST['do'] == 'project')
 	}
 
 	$project['description'] = nl2br($project['description']);
+
+	// verify that we are at the canonical SEO url
+	// and redirect to this if not
+	verify_seo_url('project', $project);
 
 	($hook = vBulletinHook::fetch_hook('project_project_start')) ? eval($hook) : false;
 
@@ -1854,7 +1876,12 @@ if ($_REQUEST['do'] == 'project')
 				$type['newflag'] = true;
 			}
 
+			// Friendly URL
+			$filter = array();
+			$filter['issuetypeid'] = $type['issuetypeid'];
+
 			$templater = vB_Template::create('pt_project_typecountbit');
+				$templater->register('filter', $filter);
 				$templater->register('project', $project);
 				$templater->register('type', $type);
 				$templater->register('typename', $typename);
@@ -2180,7 +2207,11 @@ if ($_REQUEST['do'] == 'overview')
 
 			$type['countid'] = "project_typecount_$project[projectid]_$type[issuetypeid]";
 
+			// Friendly URL
+			$filter['issuetypeid'] = $type['issuetypeid'];
+
 			$templater = vB_Template::create('pt_projectbit_typecount');
+				$templater->register('filter', $filter);
 				$templater->register('project', $project);
 				$templater->register('type', $type);
 				$templater->register('typename', $typename);
