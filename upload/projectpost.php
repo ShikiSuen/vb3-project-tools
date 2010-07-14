@@ -568,8 +568,8 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
-		fetch_seo_url('issue', $issue) => $issue['title'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
 		'' => ($issuenote['issuenoteid'] ? $vbphrase['edit_reply'] : $vbphrase['post_reply'])
 	));
 	$navbar = render_navbar_template($navbits);
@@ -1094,11 +1094,11 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	// navbar - do this up here because of pt_postissue_short
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean']
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean']
 	);
 	if ($issue['issueid'])
 	{
-		$navbits[fetch_seo_url('issue', $issue)] = $issue['title'];
+		$navbits["project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]"] = $issue['title'];
 		$navbits[''] = $vbphrase['edit_issue'];
 	}
 	else
@@ -1606,8 +1606,8 @@ if ($_REQUEST['do'] == 'manageattach')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
-		fetch_seo_url('issue', $issue) => $issue['title'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
 		'' => $vbphrase['manage_attachment']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -1718,7 +1718,7 @@ if ($_REQUEST['do'] == 'manageprojectsubscription')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
 		'' => $vbphrase['manage_project_subscription']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -1808,8 +1808,8 @@ if ($_REQUEST['do'] == 'managesubscription')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
-		fetch_seo_url('issue', $issue) => $issue['title'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
 		'' => $vbphrase['manage_subscription']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -2487,8 +2487,8 @@ if ($_POST['do'] == 'moveissue2')
 
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
-		fetch_seo_url('issue', $issue) => $issue['title'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
 		'' => $vbphrase['edit_issue']
 	);
 
@@ -2568,8 +2568,8 @@ if ($_REQUEST['do'] == 'moveissue')
 
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
-		fetch_seo_url('issue', $issue) => $issue['title'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
 		'' => $vbphrase['edit_issue']
 	);
 
@@ -2825,7 +2825,6 @@ if ($_REQUEST['do'] == 'importthread2')
 
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
 		'' => $vbphrase['pt_create_issue']
 	);
 

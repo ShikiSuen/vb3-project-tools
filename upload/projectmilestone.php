@@ -15,7 +15,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 
 // #################### DEFINE IMPORTANT CONSTANTS #######################
-define('THIS_SCRIPT', 'projectmilestone');
+define('THIS_SCRIPT', 'project');
 define('CSRF_PROTECTION', true);
 define('PROJECT_SCRIPT', true);
 
@@ -63,27 +63,13 @@ if (empty($_REQUEST['do']))
 {
 	if (!empty($_REQUEST['milestoneid']))
 	{
-		// Friendly URL
-		define('FRIENDLY_URL_LINK', 'milestone');
-
 		$_REQUEST['do'] = 'milestone';
 		$actiontemplates['none'] =& $actiontemplates['milestone'];
 	}
 	else if (!empty($_REQUEST['projectid']))
 	{
-		// Friendly URL
-		define('FRIENDLY_URL_LINK', 'milestoneproject');
-
 		$_REQUEST['do'] = 'project';
 		$actiontemplates['none'] =& $actiontemplates['project'];
-	}
-}
-else
-{
-	if ($_REQUEST['do'] == 'issuelist')
-	{
-		// Friendly URL
-		define('FRIENDLY_URL_LINK', 'milestoneissuelist');
 	}
 }
 
@@ -101,10 +87,6 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 {
 	print_no_permission();
 }
-
-// Friendly URL
-$filter_active = array();
-$filter_completed = array();
 
 ($hook = vBulletinHook::fetch_hook('projectmilestone_start')) ? eval($hook) : false;
 
@@ -125,10 +107,6 @@ if ($_REQUEST['do'] == 'issuelist')
 	$milestone = verify_milestone($vbulletin->GPC['milestoneid']);
 	$project = verify_project($milestone['projectid']);
 	$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
-
-	// verify that we are at the canonical SEO url
-	// and redirect to this if not
-	verify_seo_url('milestoneissuelist', $milestone);
 
 	$perms_query = build_issue_permissions_query($vbulletin->userinfo);
 	if (empty($perms_query["$project[projectid]"]))
@@ -241,8 +219,8 @@ if ($_REQUEST['do'] == 'issuelist')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
-		fetch_seo_url('milestone', $milestone) => $milestone['title_clean'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		"projectmilestone.php?" . $vbulletin->session->vars['sessionurl'] . "milestoneid=$milestone[milestoneid]" => $milestone['title_clean'],
 		'' => $vbphrase['issue_list']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -272,10 +250,6 @@ if ($_REQUEST['do'] == 'milestone')
 	$milestone = verify_milestone($vbulletin->GPC['milestoneid']);
 	$project = verify_project($milestone['projectid']);
 	$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
-
-	// verify that we are at the canonical SEO url
-	// and redirect to this if not
-	verify_seo_url('milestone', $milestone);
 
 	$perms_query = build_issue_permissions_query($vbulletin->userinfo);
 	if (empty($perms_query["$project[projectid]"]))
@@ -385,15 +359,11 @@ if ($_REQUEST['do'] == 'milestone')
 		$search_status_options = fetch_issue_status_search_select($projectperms);
 	}
 
-	// Friendly URL
-	$filter_active['filter'] = 'active';
-	$filter_completed['filter'] = 'completed';
-
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
-		fetch_seo_url('milestoneproject', $project) => $vbphrase['milestones'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		"projectmilestone.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $vbphrase['milestones'],
 		'' => $milestone['title_clean']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -401,12 +371,10 @@ if ($_REQUEST['do'] == 'milestone')
 	$templater = vB_Template::create('pt_milestone');
 		$templater->register_page_templates();
 		$templater->register('assignable_users', $assignable_users);
-		$templater->register('filter_active', $filter_active);
-		$templater->register('filter_completed', $filter_completed);
+		$templater->register('post_issue_options', $post_issue_options);
 		$templater->register('issuebits', $issuebits);
 		$templater->register('milestone', $milestone);
 		$templater->register('navbar', $navbar);
-		$templater->register('post_issue_options', $post_issue_options);
 		$templater->register('raw_counts', $raw_counts);
 		$templater->register('search_status_options', $search_status_options);
 		$templater->register('stats', $stats);
@@ -423,10 +391,6 @@ if ($_REQUEST['do'] == 'project')
 
 	$project = verify_project($vbulletin->GPC['projectid']);
 	$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
-
-	// verify that we are at the canonical SEO url
-	// and redirect to this if not
-	verify_seo_url('milestoneproject', $project);
 
 	$milestone_types = fetch_viewable_milestone_types($projectperms);
 	if (!$milestone_types)
@@ -455,10 +419,6 @@ if ($_REQUEST['do'] == 'project')
 	$completed_milestones = '';
 	$count_completed = 0;
 
-	// Friendly URL
-	$pageinfo_active['filter'] = 'active';
-	$pageinfo_completed['filter'] = 'completed';
-
 	while ($milestone = $db->fetch_array($milestone_data))
 	{
 		if ($milestone['completeddate'] AND !$vbulletin->GPC['viewall'])
@@ -474,8 +434,6 @@ if ($_REQUEST['do'] == 'project')
 		{
 			$templater = vB_Template::create('pt_milestonebit');
 				$templater->register('milestone', $milestone);
-				$templater->register('pageinfo_active', $pageinfo_active);
-				$templater->register('pageinfo_completed', $pageinfo_completed);
 				$templater->register('raw_counts', $raw_counts);
 				$templater->register('stats', $stats);
 			$completed_milestones .= $templater->render();
@@ -484,8 +442,6 @@ if ($_REQUEST['do'] == 'project')
 		{
 			$templater = vB_Template::create('pt_milestonebit');
 				$templater->register('milestone', $milestone);
-				$templater->register('pageinfo_active', $pageinfo_active);
-				$templater->register('pageinfo_completed', $pageinfo_completed);
 				$templater->register('raw_counts', $raw_counts);
 				$templater->register('stats', $stats);
 			$active_milestones .= $templater->render();
@@ -494,8 +450,6 @@ if ($_REQUEST['do'] == 'project')
 		{
 			$templater = vB_Template::create('pt_milestonebit');
 				$templater->register('milestone', $milestone);
-				$templater->register('pageinfo_active', $pageinfo_active);
-				$templater->register('pageinfo_completed', $pageinfo_completed);
 				$templater->register('raw_counts', $raw_counts);
 				$templater->register('stats', $stats);
 			$no_target_milestones .= $templater->render();
@@ -509,7 +463,7 @@ if ($_REQUEST['do'] == 'project')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		fetch_seo_url('project', $project) => $project['title_clean'],
+		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
 		'' => $vbphrase['milestones']
 	));
 	$navbar = render_navbar_template($navbits);
