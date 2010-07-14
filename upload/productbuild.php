@@ -119,7 +119,16 @@ if(!is_dir(BASE . 'product/cronentries'))
 
 $xml = new vB_XML_Builder($vbulletin);
 $productfile = BASE . 'includes/xml/product-vbprojecttools.xml';
+$productfile_content = '';
 
 // ############# Start Build Script ##############################
+
+$product_file = fopen(BASE . 'product/product.xml', 'r');
+while (!feof($product_file))
+{
+	$line = fgets($file_handle);
+	$productfile_contnt = $productfile_content . $line;
+}
+fclose($product_file);
 
 ?>
