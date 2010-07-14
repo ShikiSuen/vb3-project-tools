@@ -1733,7 +1733,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1278596304" username="Mosh" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1278801909" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1945,8 +1945,7 @@ a.firstunread, a.firstunread:hover
 .pt_timeline .blockhead div {
 	/* margins on floats are doubled in ie, don't use them */
 	position: absolute;
-	/* margin 20 + padding 10 */
-	{vb:stylevar right}: 30px;
+	{vb:stylevar right}: 65px;
 }
 
 .pt_timeline .blocksubhead div {
@@ -6520,7 +6519,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_projectbit" templatetype="template" date="1275833907" username="thincom2000" version="2.1.1"><![CDATA[<div class="blockrow">
+		<template name="pt_projectbit" templatetype="template" date="1278986275" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow">
 	<div class="projectstatusicon">
 		<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
 	</div>
@@ -6550,7 +6549,7 @@ init_project_readmarker_system();
 		</ul>
 	</div>
 </div>]]></template>
-		<template name="pt_projectbit_typecount" templatetype="template" date="1274652669" username="Jeremy" version="2.1.1"><![CDATA[<li>
+		<template name="pt_projectbit_typecount" templatetype="template" date="1278986222" username="Pitchoune" version="2.1.2"><![CDATA[<li>
 	<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}">{vb:raw typename}</a>: 
 	<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
 		{vb:raw type.issuecountactive} / {vb:raw type.issuecount}
