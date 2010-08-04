@@ -1258,7 +1258,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 		</code>
 	</codes>
 	<templates>
-		<template name="projecttools-ie.css" templatetype="template" date="1278634398" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1280960305" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1724,7 +1724,8 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");]]><
 .vB_MagicSelect span, .vB_MagicSelect_hover span {
 	display: inline;
 	padding: 1px 2px;
-	width: 99%;
+	/* The width line is causing issue #137 - line commented */
+	/* width: 99%; */
 	/* IE6 workaround */
 	_width: 75% !important;
 	height: 13px;
