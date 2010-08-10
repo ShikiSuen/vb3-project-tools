@@ -1197,9 +1197,9 @@ $contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
 
 // Move any existing data into the new table before removing useless fields
 $movedthreads = $db->query_read("
-	SELECT threadid, pt_issueid, pt_forwardmode
+	SELECT threadid, ptissueid, ptforwardmode
 	FROM " . TABLE_PREFIX . "thread
-	WHERE pt_issueid > 0
+	WHERE ptissueid > 0
 ");
 
 if ($db->num_rows($movedthreads) > 0)
@@ -1207,8 +1207,8 @@ if ($db->num_rows($movedthreads) > 0)
 	while ($movedthread = $db->fetch_array($movedthreads))
 	{
 		$data = array();
-		$data['pt_issueid'] = $movedthread['pt_issueid'];
-		$data['pt_forwardmode'] = $movedthread['pt_forwardmode'];
+		$data['ptissueid'] = $movedthread['ptissueid'];
+		$data['ptforwardmode'] = $movedthread['ptforwardmode'];
 
 		$importdata = serialize($data);
 
@@ -1224,8 +1224,8 @@ if ($db->num_rows($movedthreads) > 0)
 // Now remove useless fields
 if ($db_alter->fetch_table_info('thread'))
 {
-	$db_alter->drop_field('pt_issueid');
-	$db_alter->drop_field('pt_forwardmode');
+	$db_alter->drop_field('ptissueid');
+	$db_alter->drop_field('ptforwardmode');
 }
 
 // Add every user into pt_user table
