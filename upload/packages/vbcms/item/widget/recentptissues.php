@@ -12,14 +12,14 @@
 \*======================================================================*/
 
 /**
- * Test Widget Item
- *
- * @package vBulletin
- * @author $Author$, vBulletin Project Tools Development Team
- * @version $Revision$
- * @since $Date$
- * @copyright vBulletin Solutions Inc.
- */
+* Test Widget Item
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
 class vBCms_Item_Widget_RecentPTIssues extends vBCms_Item_Widget
 {
 	/*Properties====================================================================*/
@@ -53,12 +53,5 @@ class vBCms_Item_Widget_RecentPTIssues extends vBCms_Item_Widget
 	);
 
 }
-
-/*======================================================================*\
-|| ####################################################################
-|| # Downloaded: 17:08, Fri Aug 6th 2010
-|| # SVN: $Revision$
-|| ####################################################################
-\*======================================================================*/
 
 ?>

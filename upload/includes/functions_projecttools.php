@@ -1659,3 +1659,5 @@ function fetch_require_pt_hvcheck($action)
 		return ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canusehumancheck']);
 	}
 }
+
+?>

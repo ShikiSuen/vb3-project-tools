@@ -15,7 +15,10 @@
 * Issue note factory. Create/call this when you need to create a number of issue note objects.
 *
 * @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNoteFactory
 {

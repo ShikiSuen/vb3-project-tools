@@ -19,7 +19,11 @@ define('SESSION_BYPASS', 1);
 define('THIS_SCRIPT', 'archiveproject');
 
 // ################### PRE-CACHE TEMPLATES AND DATA ######################
-$phrasegroups = array('forum', 'projecttools');
+$phrasegroups = array(
+	'forum',
+	'projecttools'
+);
+
 $specialtemplates = array(
 	'pt_bitfields',
 	'pt_permissions',
@@ -407,4 +411,5 @@ if (defined('NOSHUTDOWNFUNC'))
 }
 
 echo $output;
+
 ?>

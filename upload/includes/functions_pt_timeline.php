@@ -217,4 +217,5 @@ function make_group_date($groupid)
 	// use yesterday/today option if they chose to use that (otherwise just show dates)
 	return vbdate($vbulletin->options['dateformat'], vbmktime(0, 0, 0, $match[2], $match[3], $match[1]), $vbulletin->options['yestoday'] == 1);
 }
+
 ?>

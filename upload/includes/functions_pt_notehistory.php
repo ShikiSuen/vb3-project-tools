@@ -58,4 +58,5 @@ function build_history_bit($history, &$bbcode)
 	$edit_history = $templater->render();
 	return $edit_history;
 }
+
 ?>

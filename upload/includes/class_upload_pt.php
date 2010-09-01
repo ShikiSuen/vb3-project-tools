@@ -22,7 +22,10 @@ require_once(DIR . '/includes/class_upload.php');
 * Abstracted class that handles uploading attachments to the project tools
 *
 * @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Upload_Attachment_Pt extends vB_Upload_Attachment
 {

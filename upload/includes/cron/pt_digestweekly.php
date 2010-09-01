@@ -29,4 +29,5 @@ require_once(DIR . '/includes/functions_pt_digest.php');
 exec_pt_digest('weekly');
 
 log_cron_action('', $nextitem, 1);
+
 ?>

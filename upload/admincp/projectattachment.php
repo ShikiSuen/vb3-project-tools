@@ -20,7 +20,12 @@ define('CVS_REVISION', '$Revision$');
 @ini_set('display_errors', 'On');
 
 // #################### PRE-CACHE TEMPLATES AND DATA ######################
-$phrasegroups = array('attachment_image', 'projecttools', 'projecttoolsadmin');
+$phrasegroups = array(
+	'attachment_image',
+	'projecttools',
+	'projecttoolsadmin'
+);
+
 $specialtemplates = array();
 
 // ########################## REQUIRE BACK-END ############################
@@ -620,4 +625,5 @@ if ($_REQUEST['do'] == 'confirmattachmentremove')
 }
 
 print_cp_footer();
+
 ?>

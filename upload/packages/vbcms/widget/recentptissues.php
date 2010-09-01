@@ -12,14 +12,14 @@
 \*======================================================================*/
 
 /**
- * Test Widget Controller
- *
- * @package vBulletin
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright vBulletin Solutions Inc.
- */
+* Test Widget Controller
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
 class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 {
 	/*Properties====================================================================*/
@@ -442,3 +442,5 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 		return strval($context);
 	}
 }
+
+?>

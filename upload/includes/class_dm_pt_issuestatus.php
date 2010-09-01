@@ -19,7 +19,11 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT issue statuses.
 *
-* @package	vBulletin Project Tools
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueStatus extends vB_DataManager
 {

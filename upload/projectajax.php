@@ -597,4 +597,5 @@ if ($_POST['do'] == 'fetch')
 	$xml->close_group();
 	$xml->print_xml();
 }
+
 ?>

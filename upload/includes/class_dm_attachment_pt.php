@@ -24,8 +24,11 @@ require_once(DIR . '/includes/functions_file.php');
 * You should call the fetch_library() function to instantiate the correct
 * object based on how attachments are being stored.
 *
-* @package	vBulletin Project Tools
-* @version	$Revision: 32878 $
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Attachment_Pt extends vB_DataManager
 {
@@ -378,7 +381,7 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 * Class to do data save/delete operations for PT ATTACHMENTS in the DATABASE.
 *
 * @package	vBulletin Project Tools
-* @version	$Revision: 32878 $
+* @version	$Revision$
 */
 
 class vB_DataManager_Attachment_Pt_Database extends vB_DataManager_Attachment_Pt
@@ -424,7 +427,7 @@ class vB_DataManager_Attachment_Pt_Database extends vB_DataManager_Attachment_Pt
 * Class to do data save/delete operations for PT ATTACHMENTS in the FILE SYSTEM.
 *
 * @package	vBulletin Project Tools
-* @version	$Revision: 32878 $
+* @version	$Revision$
 */
 class vB_DataManager_Attachment_Pt_Filesystem extends vB_DataManager_Attachment_Pt
 {

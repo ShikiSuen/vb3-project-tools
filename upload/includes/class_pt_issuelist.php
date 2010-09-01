@@ -16,7 +16,10 @@
 * Currently, this can only display of a list of issues within one project.
 *
 * @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueList
 {

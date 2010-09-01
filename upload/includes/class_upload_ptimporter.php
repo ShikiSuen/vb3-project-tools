@@ -25,6 +25,12 @@ require_once(DIR . '/includes/class_dm_attachment_pt.php');
 * This class imports attachments from the forum into the project tools
 * 
 * The file extension and the filesize are not checked in this class - you have to do it before!
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Upload_Attachment_PtImporter extends vB_Upload_Attachment_Pt
 {

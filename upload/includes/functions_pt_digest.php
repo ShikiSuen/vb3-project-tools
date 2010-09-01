@@ -233,4 +233,5 @@ function exec_pt_digest($type = 'daily')
 
 	vbmail_end();
 }
+
 ?>

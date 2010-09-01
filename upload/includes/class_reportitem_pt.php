@@ -19,14 +19,14 @@ if (!isset($GLOBALS['vbulletin']->db))
 require_once(DIR . '/includes/class_reportitem.php');
 
 /**
- * Report Issue Note Message Class
- *
- * @package 	vBulletin
- * @copyright 	http://www.vbulletin.com/license.html
- *
- * @final
- *
- */
+* Report Issue Note Message Class
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
 class vB_ReportItem_Pt_IssueNote extends vB_ReportItem
 {
 	/**

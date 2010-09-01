@@ -101,4 +101,5 @@ function process_new_subscribed_issues()
 	$return = $templater->render();
 	return $return;
 }
+
 ?>

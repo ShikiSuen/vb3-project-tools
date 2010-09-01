@@ -123,4 +123,5 @@ function build_colored_patch(&$patch_parser)
 
 	return $patchbits;
 }
+
 ?>

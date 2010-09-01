@@ -248,4 +248,5 @@ function pt_subforumbit_display(&$forum)
 
 	return $projectbits;
 }
+
 ?>

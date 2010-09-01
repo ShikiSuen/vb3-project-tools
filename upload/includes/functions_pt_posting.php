@@ -581,4 +581,5 @@ function fetch_milestone_select($projectid, $selected_milestone = 0, $skip_ids =
 
 	return $milestone_options;
 }
+
 ?>

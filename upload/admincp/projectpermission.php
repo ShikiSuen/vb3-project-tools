@@ -18,7 +18,12 @@ error_reporting(E_ALL & ~E_NOTICE);
 define('CVS_REVISION', '$Revision$');
 
 // #################### PRE-CACHE TEMPLATES AND DATA ######################
-$phrasegroups = array('projecttools', 'cppermission', 'projecttoolsadmin');
+$phrasegroups = array(
+	'projecttools',
+	'cppermission',
+	'projecttoolsadmin'
+);
+
 $specialtemplates = array(
 	'pt_bitfields',
 	'pt_permissions',
@@ -807,7 +812,6 @@ if ($_REQUEST['do'] == 'list')
 
 }
 
-// ########################################################################
-
 print_cp_footer();
+
 ?>

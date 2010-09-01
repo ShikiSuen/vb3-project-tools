@@ -19,8 +19,11 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT issue assignments.
 *
-* @package	vBulletin Project Tools
-* @date		$Date: 2008-06-24 08:27:24 -0500 (Tue, 24 Jun 2008) $
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_Project extends vB_DataManager
 {

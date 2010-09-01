@@ -19,8 +19,11 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT milestones.
 *
-* @package	vBulletin Project Tools
-* @date		$Date: 2007-08-06 12:44:36 +0100 (Mon, 06 Aug 2007) $
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_Milestone extends vB_DataManager
 {

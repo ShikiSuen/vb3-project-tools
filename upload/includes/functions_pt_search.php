@@ -872,4 +872,5 @@ function generate_repeat_search_field($crit_name, $crit_value)
 		return '&amp;' . $crit_name . '=' . urlencode($crit_value);
 	}
 }
+
 ?>

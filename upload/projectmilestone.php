@@ -478,4 +478,5 @@ if ($_REQUEST['do'] == 'project')
 		$templater->register('project', $project);
 	print_output($templater->render());
 }
+
 ?>

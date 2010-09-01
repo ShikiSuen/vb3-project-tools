@@ -1045,4 +1045,5 @@ if ($_REQUEST['do'] == 'reports')
 		$templater->register('publicreportbits', $publicreportbits);
 	print_output($templater->render());
 }
+
 ?>

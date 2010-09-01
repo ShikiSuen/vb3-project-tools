@@ -175,4 +175,5 @@ function verify_milestone($milestoneid)
 
 	return $milestone;
 }
+
 ?>

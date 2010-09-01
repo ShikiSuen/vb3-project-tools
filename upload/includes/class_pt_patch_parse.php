@@ -17,7 +17,10 @@
 * This class will take a patch in unified diff form and parse into a more user friendly format
 *
 * @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 *
 */
 class vB_PatchParser

@@ -19,7 +19,10 @@ define('PT_SEARCHGEN_CRITERIA_UNNECESSARY', 3);
 * Performs issue searches
 *
 * @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueSearch
 {

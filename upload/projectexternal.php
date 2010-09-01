@@ -396,4 +396,5 @@ foreach ($headers AS $header)
 echo $output;
 
 ($hook = vBulletinHook::fetch_hook('projectexternal_complete')) ? eval($hook) : false;
+
 ?>

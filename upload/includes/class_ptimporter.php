@@ -21,6 +21,12 @@ if (!isset($GLOBALS['vbulletin']->db))
 * 
 * Note that NO PERMISSION CHECKING is done here. You have to do it beforehand.
 * Requires most of the data available in $vbulletin->GPC.
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_PtImporter
 {
