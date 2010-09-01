@@ -15,9 +15,9 @@
  * Test Widget Controller
  *
  * @package vBulletin
- * @author vBulletin Development Team
- * @version $Revision: 37934 $
- * @since $Date: 2010-07-16 13:34:18 -0700 (Fri, 16 Jul 2010) $
+ * @author $Author$
+ * @version $Revision$
+ * @since $Date$
  * @copyright vBulletin Solutions Inc.
  */
 class vBCms_Widget_RecentPTIssues extends vBCms_Widget

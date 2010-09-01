@@ -15,9 +15,9 @@
  * Test Widget Item
  *
  * @package vBulletin
- * @author Edwin Brown, vBulletin Development Team
- * @version $Revision: 35393 $
- * @since $Date: 2010-02-11 14:43:34 -0800 (Thu, 11 Feb 2010) $
+ * @author $Author$, vBulletin Project Tools Development Team
+ * @version $Revision$
+ * @since $Date$
  * @copyright vBulletin Solutions Inc.
  */
 class vBCms_Item_Widget_RecentPTIssues extends vBCms_Item_Widget
@@ -57,7 +57,7 @@ class vBCms_Item_Widget_RecentPTIssues extends vBCms_Item_Widget
 /*======================================================================*\
 || ####################################################################
 || # Downloaded: 17:08, Fri Aug 6th 2010
-|| # SVN: $Revision: 35393 $
+|| # SVN: $Revision$
 || ####################################################################
 \*======================================================================*/
 
