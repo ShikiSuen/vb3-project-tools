@@ -1270,13 +1270,25 @@ if (is_suite('vbcms'))
 		WHERE productid = 'vbcms'
 	");
 
-	// 'Latest PT Issues' widget
+	// Add widgets
 	$db->query_write("
 		INSERT INTO " . TABLE_PREFIX . "cms_widgettype
 			(class, packageid)
 		VALUES
-			('RecentPTIssues', " . $packageid['packageid'] . ")
+			('RecentPTIssues', " . $packageid['packageid'] . ",
+                        'RecentPTComments', " . $packageid['packageid'] . ")
 	");
+
+	// Clear CMS cache to add these widgets directly in the widget type list
+
+	// This is needed? Don't know. Added to be sure.
+	require_once(DIR . '/includes/class_bootstrap_framework.php');
+	vB_Bootstrap_Framework::init();
+
+	if (method_exists(vB_Cache::instance(), 'clean'))
+	{
+		vB_Cache::instance()->clean(false);
+	}
 }]]></installcode>
 			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
@@ -1308,6 +1320,22 @@ if (is_suite('vbcms'))
 		DELETE FROM " . TABLE_PREFIX . "cms_widgettype
 		WHERE class = 'RecentPTIssues'
 	");
+
+	$db->query_write("
+		DELETE FROM " . TABLE_PREFIX . "cms_widgettype
+		WHERE class = 'RecentPTComments'
+	");
+
+	// Clear CMS cache
+
+	// This is needed? Don't know. Added to be sure.
+	require_once(DIR . '/includes/class_bootstrap_framework.php');
+	vB_Bootstrap_Framework::init();
+
+	if (method_exists(vB_Cache::instance(), 'clean'))
+	{
+		vB_Cache::instance()->clean(false);
+	}
 }]]></uninstallcode>
 		</code>
 	</codes>
@@ -8221,22 +8249,10 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		</div>
 	</div>
 </li>]]></template>
-		<template name="vbcms_widget_recentptissues_config" templatetype="template" date="1281874515" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget_recentcomments_config cms_widget_config_400">
+		<template name="vbcms_widget_recentptcomments_config" templatetype="template" date="1283371278" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget_recentcomments_config cms_widget_config_400">
 	<div class="fullwidth">
 		<label for="template_name" class="label">{vb:rawphrase template_name}</label>
 		<input name="template" id="template" name="template" size="40" value="{vb:raw template_name}" tabindex="1" />
-	</div>
-	<div class="fullwidth">
-		<label for="count" class="longlabel">{vb:rawphrase max_items}</label>
-		<input type="text" name="count" id="count" value="{vb:raw count}" size="5" tabindex="1" />
-	</div>
-	<div class="fullwidth">
-		<label for="days" class="longlabel">{vb:rawphrase oldest_info_days}</label>
-		<input type="text" name="days" id="days" value="{vb:raw days}" size="5" tabindex="1" />
-	</div>
-	<div class="fullwidth">
-		<label for="cache_ttl" class="longlabel">{vb:rawphrase cache_life_minutes}</label>
-		<input type="text" name="cache_ttl" id="cache_ttl" value="{vb:raw cache_ttl}" size="10" tabindex="1" />
 	</div>
 	<div class="fullwidth">
 		<label for="cache_ttl" class="longlabel">{vb:rawphrase projects_list}</label>
@@ -8245,6 +8261,83 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 	<div class="fullwidth">
 		<label for="cache_ttl" class="longlabel">{vb:rawphrase setting_ptissues_messagemaxchars_title}</label>
 		<input type="text" name="messagemaxchars" id="messagemaxchars" value="{vb:raw messagemaxchars}" size="10" tabindex="1" />
+	</div>
+	<div class="fullwidth">
+		<label for="cache_ttl" class="longlabel">{vb:rawphrase cache_life_minutes}</label>
+		<input type="text" name="cache_ttl" id="cache_ttl" value="{vb:raw cache_ttl}" size="10" tabindex="1" />
+	</div>
+	<div class="fullwidth">
+		<label for="days" class="longlabel">{vb:rawphrase oldest_info_days}</label>
+		<input type="text" name="days" id="days" value="{vb:raw days}" size="5" tabindex="1" />
+	</div>
+	<div class="fullwidth">
+		<label for="count" class="longlabel">{vb:rawphrase max_items}</label>
+		<input type="text" name="count" id="count" value="{vb:raw count}" size="5" tabindex="1" />
+	</div>
+	<input type="hidden" name="do" value="config" />
+	<input type="hidden" name="item_type" value="{vb:raw item_type}" />
+	<input type="hidden" name="item_class" value="{vb:raw item_class}" />
+	<input type="hidden" name="item_id" value="{vb:raw item_id}" />
+	<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+	<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+	<input type="hidden" name="adminhash" value="{vb:raw adminhash}" />
+</div>]]></template>
+		<template name="vbcms_widget_recentptcomments_page" templatetype="template" date="1283452398" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget">
+<div class="block">
+	<div class="cms_widget_header">
+		<h3><img src="{vb:stylevar imgdir_cms}/widget-comment.png" alt="" /> {vb:raw title}</h3>
+	</div>
+	<div class="cms_widget_content">
+		<vb:each from="results_html" key="issuenoteid" value="issuenote">
+			<div class="cms_widget_post_bit">
+				<div class="cms_widget_post_userinfo">
+					<vb:if condition="$avatarenabled">
+						<div class="cms_widget_post_useravatar">
+							<vb:if condition="$issuenote['avatar']">
+								<a class="comments_member_avatar_link" href="{vb:link member, {vb:raw comment}, null, 'noteuserid', 'noteusername'}">
+								<img alt="{vb:raw issuenote.noteusername}" src="{vb:raw vboptions.bburl}/{vb:raw issuenote.avatar.0}" {vb:raw issuenote.avatar.1} />
+								</a>
+							<vb:else />
+								<img alt="{vb:raw issuenote.noteusername}" src="{vb:stylevar imgdir_misc}/unknown.gif" />
+							</vb:if>
+						</div>
+					</vb:if>
+				</div>
+				<div class="cms_widget_post_comment">
+					<h4 class="cms_widget_post_header"><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issuenote.issueid}">{vb:raw issuenote.title}</a></h4>
+					<p class="cms_widget_post_content">{vb:raw issuenote.pagetext}</p>
+					<a href="{vb:link member, {vb:raw issuenote}, null, 'noteuserid', 'noteusername'}">{vb:raw issuenote.noteusername}</a>
+					{vb:date {vb:raw issuenote.dateline}, {vb:raw vboptions.dateformat}}<vb:if condition="!$show['detailedtime']"> <span class="time">{vb:date {vb:raw issuenote.dateline}, {vb:raw vboptions.timeformat}}</span></vb:if>
+				</div>
+			</div>
+		</vb:each>
+	</div>
+</div>
+</div>]]></template>
+		<template name="vbcms_widget_recentptissues_config" templatetype="template" date="1282161735" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget_recentcomments_config cms_widget_config_400">
+	<div class="fullwidth">
+		<label for="template_name" class="label">{vb:rawphrase template_name}</label>
+		<input name="template" id="template" name="template" size="40" value="{vb:raw template_name}" tabindex="1" />
+	</div>
+	<div class="fullwidth">
+		<label for="cache_ttl" class="longlabel">{vb:rawphrase projects_list}</label>
+		<input type="text" name="projectid" id="projectid" value="{vb:raw projectid}" size="10" tabindex="1" />
+	</div>
+	<div class="fullwidth">
+		<label for="cache_ttl" class="longlabel">{vb:rawphrase setting_ptissues_messagemaxchars_title}</label>
+		<input type="text" name="messagemaxchars" id="messagemaxchars" value="{vb:raw messagemaxchars}" size="10" tabindex="1" />
+	</div>
+	<div class="fullwidth">
+		<label for="cache_ttl" class="longlabel">{vb:rawphrase cache_life_minutes}</label>
+		<input type="text" name="cache_ttl" id="cache_ttl" value="{vb:raw cache_ttl}" size="10" tabindex="1" />
+	</div>
+	<div class="fullwidth">
+		<label for="days" class="longlabel">{vb:rawphrase oldest_info_days}</label>
+		<input type="text" name="days" id="days" value="{vb:raw days}" size="5" tabindex="1" />
+	</div>
+	<div class="fullwidth">
+		<label for="count" class="longlabel">{vb:rawphrase max_items}</label>
+		<input type="text" name="count" id="count" value="{vb:raw count}" size="5" tabindex="1" />
 	</div>
 	<input type="hidden" name="do" value="config" />
 	<input type="hidden" name="item_type" value="{vb:raw item_type}" />
@@ -8902,7 +8995,7 @@ $template_hook['usercp_main_pos3'] .= process_new_subscribed_issues();]]></phpco
 			<hookname>usercp_nav_complete</hookname>
 			<phpcode><![CDATA[if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
 {
-	if (!in_array(THIS_SCRIPT, array('usercp', 'profile', 'private', 'subscription', 'calendar', 'moderation')))
+	if (in_array(THIS_SCRIPT, array('projectpost')))
 	{
 		$vbulletin->options['selectednavtab'] = 'projecttools';
 	}
@@ -9894,6 +9987,7 @@ This setting will only affect contents imported in the future.<br />
 			<phrase name="settinggroup_projecttools" date="1169222341" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools Options]]></phrase>
 		</phrasetype>
 		<phrasetype name="CMS Widget Types" fieldname="widgettypes">
+			<phrase name="widgettype_vbcms_recentptcomments" date="1283371360" username="Pitchoune" version="2.1.2"><![CDATA[Recent PT Comments]]></phrase>
 			<phrase name="widgettype_vbcms_recentptissues" date="1281875119" username="Pitchoune" version="2.1.2"><![CDATA[Recent PT Issues]]></phrase>
 		</phrasetype>
 		<phrasetype name="Who's Online" fieldname="wol">

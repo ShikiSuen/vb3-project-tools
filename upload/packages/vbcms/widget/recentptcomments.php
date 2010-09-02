@@ -323,9 +323,8 @@ class vBCms_Widget_RecentPTComments extends vBCms_Widget
 			}
 		}
 
-		$issuebits = '';
-		$criteria = array();
 		$array = array();
+		$issuelist = array();
 
 		$projectids = explode(',', $this->config['projectid']);
 
@@ -334,74 +333,69 @@ class vBCms_Widget_RecentPTComments extends vBCms_Widget
 		{
 			$project = verify_project($projectid);
 
-			// activity list
-			$perms_query = build_issue_permissions_query(vB::$vbulletin->userinfo);
+			// Select all issues from the actual project
+			$issueids = vB::$vbulletin->db->query_read("
+				SELECT issueid
+				FROM " . TABLE_PREFIX . "pt_issue
+				WHERE projectid = " . intval($project['projectid']) . "
+			");
 
-			if (empty($perms_query["$project[projectid]"]))
+			while ($issueresult = vB::$db->fetch_array($issueids))
 			{
-				return;
+				$issueid = verify_issue($issueresult['issueid'], true, array('avatar', 'vote', 'milestone'));
+
+				$issueperms = fetch_project_permissions(vB::$vbulletin->userinfo, $project['projectid'], $issueid['issuetypeid']);
+
+				$viewable_note_types = fetch_viewable_note_types($issueperms, $private_text);
+
+				// Create code for permissions settings of the query
+				$issuelist[] = "issuenote.issueid = $issueid[issueid]
+					AND issuenote.issuenoteid <> $issueid[firstnoteid]
+					AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)";
 			}
-
-			$criteria[] = "(" . $perms_query["$project[projectid]"] . ")";
-
-			build_issue_private_lastpost_sql_project(vB::$vbulletin->userinfo, $project['projectid'], $private_lastpost_join, $private_lastpost_fields);
-
-			$replycount_clause = fetch_private_replycount_clause(vB::$vbulletin->userinfo, $project['projectid']);
-
-			$marking = (vB::$vbulletin->options['threadmarking'] AND vB::$vbulletin->userinfo['userid']);
 		}
 
 		// issue list
-		$this->result = vB::$vbulletin->db->query_read("
+		$this->result = vB::$db->query_read("
 			SELECT
-				issue.*, issuedeletionlog.reason AS deletionreason, issuenote.pagetext, user.*
+				issuenote.*, issuenote.userid AS noteuserid, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress, issue.title AS title
 				" . (vB::$vbulletin->options['avatarenabled'] ? ",avatar.avatarpath, NOT ISNULL(customavatar.userid)
 				AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,
-				customavatar.height AS avheight" : "") . "
-				" . (vB::$vbulletin->userinfo['userid'] ? ", issuesubscribe.subscribetype, IF(issueassign.issueid IS NULL, 0, 1) AS isassigned" : '') . "
-				" . ($marking ? ", issueread.readtime AS issueread, projectread.readtime AS projectread" : '') . "
-				" . ($private_lastpost_fields ? ", $private_lastpost_fields" : '') . "
-				" . ($replycount_clause ? ", $replycount_clause AS replycount" : '') . "
-			FROM " . TABLE_PREFIX . "pt_issue AS issue
-				LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON (issuedeletionlog.primaryid = issue.issueid AND issuedeletionlog.type = 'issue')
-				LEFT JOIN " . TABLE_PREFIX . "pt_issuenote AS issuenote ON (issuenote.issuenoteid = issue.firstnoteid)
-				LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issue.submituserid)
+				customavatar.height AS avheight," : "") . "
+				user.*, userfield.*, usertextfield.*,
+				IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid
+			FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
+				LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuenote.issueid)
+				LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
+				LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
+				LEFT JOIN " . TABLE_PREFIX . "usertextfield AS usertextfield ON (usertextfield.userid = user.userid)
 				" . (vB::$vbulletin->options['avatarenabled'] ? "
 					LEFT JOIN " . TABLE_PREFIX . "avatar AS avatar ON (avatar.avatarid = user.avatarid)
 					LEFT JOIN " . TABLE_PREFIX . "customavatar AS customavatar ON(customavatar.userid = user.userid)
 				" : "") . "
-				LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS projectversion ON (projectversion.projectversionid = issue.appliesversionid)
-				" . (vB::$vbulletin->userinfo['userid'] ? "
-					LEFT JOIN " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe ON (issuesubscribe.issueid = issue.issueid AND issuesubscribe.userid = " . vB::$vbulletin->userinfo['userid'] . ")
-					LEFT JOIN " . TABLE_PREFIX . "pt_issueassign AS issueassign ON (issueassign.issueid = issue.issueid AND issueassign.userid = " . vB::$vbulletin->userinfo['userid'] . ")
-				" : '') . "
-				" . ($marking ? "
-					LEFT JOIN " . TABLE_PREFIX . "pt_issueread AS issueread ON (issueread.issueid = issue.issueid AND issueread.userid = " . vB::$vbulletin->userinfo['userid'] . ")
-					LEFT JOIN " . TABLE_PREFIX . "pt_projectread as projectread ON (projectread.projectid = issue.projectid AND projectread.userid = " . vB::$vbulletin->userinfo['userid'] . " AND projectread.issuetypeid = issue.issuetypeid)
-				" : '') . "
-				$private_lastpost_join
-			WHERE " . implode(' OR ', $criteria) . "
-				AND (issue.submitdate > " . (TIMENOW - (86400 * $this->config['days'])) .  ")
-			ORDER BY issue.lastpost DESC
+			WHERE (" . implode(' OR ', $issuelist) . ")
+				AND issuenote.type = 'user'
+				AND (issuenote.dateline > " . (TIMENOW - (86400 * $this->config['days'])) .  ")
+			ORDER BY issuenote.dateline DESC
 			LIMIT 0, " . $this->config['count'] . "
 		");
 
-		while ($issue = vB::$db->fetch_array($this->result))
+		while ($issuenote = vB::$db->fetch_array($this->result))
 		{
 			//get the avatar
 			if (vB::$vbulletin->options['avatarenabled'])
 			{
 				require_once(DIR . "/includes/functions_user.php");
-				$issue['avatar'] = fetch_avatar_from_record($issue);
+				$issuenote['avatar'] = fetch_avatar_from_record($issuenote);
 			}
 			else
 			{
-				$issue['avatar'] = 0;
+				$issuenote['avatar'] = 0;
 			}
 
-			$issue['pagetext'] = $this->getSummary($issue['pagetext'], $this->config['messagemaxchars']);
+			$issuenote['pagetext'] = $this->getSummary($issuenote['pagetext'], $this->config['messagemaxchars']);
 
-			$array[$issue['issueid']] = $issue;
+			$array[$issuenote['issuenoteid']] = $issuenote;
 		}
 
 		return $array;
