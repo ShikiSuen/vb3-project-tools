@@ -13,30 +13,39 @@
 \*======================================================================*/
 
 /**
- * @package vBulletin
+ * @package vBulletin Project Tools
  * @subpackage Search
- * @author Kevin Sours, vBulletin Development Team
+ * @author $Author$
  * @version $Revision$
  * @since $Date$
- * @copyright Jelsoft Enterprises Ltd.
+ * @copyright http://www.vbulletin.org/open_source_license_agreement.php
  */
 
-require_once (DIR . "/vb/legacy/forum.php");
-require_once (DIR."/vb/search/core.php");
+require_once(DIR . '/vb/legacy/forum.php');
+require_once(DIR . '/vb/search/core.php');
 /**
- * Index Controller for group Messages
+ * Index Controller
  *
- * @package vBulletin
+ * @package vBulletin Project Tools
  * @subpackage Search
  */
 class vBProjectTools_Search_IndexController_Project extends vB_Search_IndexController
 {
+	// We need to set the content types. This is available in a static method as below
+	public function __construct()
+	{
+		$this->contenttypeid = vB_Search_Core::get_instance()->get_contenttypeid("vBProjectTools", "Project");
+	}
+
 	public function get_max_id()
 	{
 		global $vbulletin;
+
 		$row = $vbulletin->db->query_first_slave("
-			SELECT MAX(projectid) AS max FROM " . TABLE_PREFIX . "pt_project"
-		);
+			SELECT MAX(projectid) AS max
+			FROM " . TABLE_PREFIX . "pt_project
+		");
+
 		return $row['max'];
 	}
 
@@ -44,7 +53,9 @@ class vBProjectTools_Search_IndexController_Project extends vB_Search_IndexContr
 	public function index($id)
 	{
 		global $vbulletin;
-		$row = $vbulletin->db->query_first_slave($this->make_query("Project.Projectid = " . intval($id)));
+
+		$row = $vbulletin->db->query_first_slave($this->make_query("project.projectid = " . intval($id)));
+
 		if ($row)
 		{
 			$indexer = vB_Search_Core::get_instance()->get_core_indexer();
@@ -56,9 +67,9 @@ class vBProjectTools_Search_IndexController_Project extends vB_Search_IndexContr
 	public function index_id_range($start, $finish)
 	{
 		global $vbulletin;
+
 		$indexer = vB_Search_Core::get_instance()->get_core_indexer();
-		$row = $vbulletin->db->query_read_slave($this->make_query("Project.Projectid BETWEEN " .
-			intval($start) . " AND " . intval($finish)));
+		$set = $vbulletin->db->query_read_slave($this->make_query("project.projectid BETWEEN " . intval($start) . " AND " . intval($finish)));
 
 		while ($row = $vbulletin->db->fetch_row($set))
 		{
@@ -70,29 +81,21 @@ class vBProjectTools_Search_IndexController_Project extends vB_Search_IndexContr
 	private function make_query($filter)
 	{
 		return "
-		SELECT Project.Projectid, Project.title, Project.summary,
-			Project.description, max(issue.lastpost) as dateline
-			FROM " . TABLE_PREFIX . "pt_project as Project
-			LEFT JOIN " . TABLE_PREFIX . "pt_issue issue on issue.projectid = Project.projectid
+			SELECT
+				project.projectid, project.title, project.summary, project.description, MAX(issue.lastpost) AS dateline
+			FROM " . TABLE_PREFIX . "pt_project AS project
+				LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.projectid = project.projectid)
 			WHERE $filter
-			GROUP BY Project.Projectid, Project.title, Project.summary,
-			Project.description;
+			GROUP BY project.projectid, project.title, project.summary, project.description;
 		";
 	}
 
-	//We need to set the content types. This is available in a static method as
-  // below
-  public function __construct()
-  {
-     $this->contenttypeid = vB_Search_Core::get_instance()->get_contenttypeid("vBProjectTools", "Project");
-  }
-
-  /**
-	 * Convert the basic table row to the index fieldset
-	 *
-	 * @param array $record
-	 * @return return index fields
-	 */
+	/**
+	* Convert the basic table row to the index fieldset
+	*
+	* @param array $record
+	* @return return index fields
+	*/
 	private function record_to_indexfields($project)
 	{
 		//make it easy to switch default fields
@@ -100,10 +103,9 @@ class vBProjectTools_Search_IndexController_Project extends vB_Search_IndexContr
 
 		//common fields
 		$fields['contenttypeid'] = $this->get_contenttypeid();
-		$fields['id'] = $project['Projectid'];
+		$fields['id'] = $project['projectid'];
 		$fields['groupid'] = 0;
-		$fields['dateline'] = intval($project['dateline']) ?
-			 $project['dateline'] : TIMENOW;
+		$fields['dateline'] = intval($project['dateline']) ? $project['dateline'] : TIMENOW;
 		$fields['userid'] = 0;
 		$fields['username'] = '';
 		$fields['ipaddress'] = '';
@@ -115,4 +117,4 @@ class vBProjectTools_Search_IndexController_Project extends vB_Search_IndexContr
 	protected $contenttypeid;
 }
 
-
+?>

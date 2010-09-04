@@ -13,12 +13,12 @@
 \*======================================================================*/
 
 /**
- * @package vBulletin
+ * @package vBulletin Project Tools
  * @subpackage Search
- * @author Kevin Sours, vBulletin Development Team
+ * @author $Author$
  * @version $Revision$
  * @since $Date$
- * @copyright Jelsoft Enterprises Ltd.
+ * @copyright http://www.vbulletin.org/open_source_license_agreement.php
  */
 
 require_once(DIR . '/vb/search/result.php');
@@ -27,7 +27,7 @@ require_once(DIR . '/includes/functions_projecttools.php');
 /**
  * Enter description here...
  *
- * @package vBulletin
+ * @package vBulletin Project Tools
  * @subpackage Search
  */
 class vBProjectTools_Search_Result_Project extends vB_Search_Result
@@ -167,3 +167,5 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 
 	}
 }
+
+?>
