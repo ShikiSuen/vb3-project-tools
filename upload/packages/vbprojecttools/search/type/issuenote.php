@@ -21,23 +21,25 @@
  * @copyright http://www.vbulletin.org/open_source_license_agreement.php
  */
 
-require_once(DIR . '/vb/search/types.php')
-require_once(DIR . '/packages/vbprojecttools/search/result/issue.php');
+require_once(DIR . '/vb/search/type.php');
 require_once(DIR . '/includes/functions_projecttools.php');
+require_once(DIR . '/packages/vbprojecttools/search/result/issuenote.php');
+require_once(DIR . '/packages/vbprojecttools/search/result/issue.php');
 
 /**
-* There is a type file for each search type. This is the one for issues
+* There is a type file for each search type. This is the one for issue notes
 *
 * @package vBulletin Project Tools
 * @subpackage Search
 */
-class vBProjectTools_Search_Type_Issue extends vB_Search_Type
+class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 {
-	/***
-	* This checks to see if we can view this project. It
+	/**
+	* This checks to see if we can view this project.
 	*
-	* @param integer $projectid
-	* @return  boolean
+	* @param	integer		$projectid
+	*
+	* @return	boolean
 	**/
 	private function verify_project_canread($projectid)
 	{
@@ -52,27 +54,28 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 		while ($datastore = $vbulletin->db->fetch_array($datastores))
 		{
 			$title = $datastore['title'];
-			$data = $datastore['data'];
-			if (!is_array($data))
+
+			if (!is_array($datastore['data']))
 			{
-				$data = unserialize($data);
+				$data = unserialize($datastore['data']);
+
 				if (is_array($data))
 				{
 					$vbulletin->$title = $data;
 				}
 			}
-			else if ($data != '')
+			else if ($datastore['data'] != '')
 			{
-				$vbulletin->$title = $data;
+				$vbulletin->$title = $datastore['data'];
 			}
 		}
 
 		$permissions = fetch_project_permissions($vbulletin->userinfo, $projectid);
 
-		//We get an array, like 'type=>array('perm_type' => 65555,...), ...
+		// We get an array, like 'type=>array('perm_type' => 65555,...), ...
 		// the types are the three (currently at least) issue types. perm_types
 		// are currently generalpermissions, postpermissions, attachpermissions
-		//I would say that if we have rights to one of the three issue types we
+		// I would say that if we have rights to one of the three issue types we
 		// can view the project.
 
 		if ($vbulletin->userinfo['projectpermissions'])
@@ -107,10 +110,11 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 	* When displaying results we get passed a list of id's. This
 	* function determines which are viewable by the user.
 	*
-	* @param	object	User infos
+	* @param	object	ID of the user
 	* @param	array	Issue id's returned from a search
 	* @param	array	Project id's for the issues
-	* @return	array	(array of viewable issues, array of rejected projects)
+	*
+	* @return	array	Array of viewable issues, array of rejected projects
 	*/
 	public function fetch_validated_list($user, $ids, $gids)
 	{
@@ -125,7 +129,8 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 
 		$projects = array_unique($gids);
 		$rejected_projects = array();
-		foreach ($projects as $projectid)
+
+		foreach ($projects AS $projectid)
 		{
 			if (!$this->verify_project_canread($projectid))
 			{
@@ -139,14 +144,13 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 			{
 				if ($issue = verify_issue($issueid, false))
 				{
-					$list[$issueid] = vBProjectTools_Search_Result_Issue::create($issueid);
+					$list[$issueid] = vBProjectTools_Search_Result_IssueNote::create($issueid);
 				}
 			}
 		}
 
 		return array('list' => $list, 'groups_rejected' => $rejected_groups);
 	}
-
 
 	/**
 	* Each search type has some responsibilities, one of which is to give
@@ -156,18 +160,19 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 	*/
 	public function get_display_name()
 	{
-		return new vB_Phrase('search', 'searchtype_issues');
+		return new vB_Phrase('search', 'searchtype_issuenotes');
 	}
 
 	/**
 	* This is how the type objects are created
 	*
-	* @param integer $id
-	* @return vBProjectTools_Search_Type_Issue object
+	* @param	integer		$id
+	*
+	* @return 	vBProjectTools_Search_Type_IssueNote	object
 	*/
 	public function create_item($id)
 	{
-		return vBProjectTools_Search_Result_Issue::create($id);
+		return vBProjectTools_Search_Result_IssueNote::create($id);
 	}
 
 	/**
@@ -180,17 +185,18 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 	{
 		
 		return array(
-			'type'        => 0,
-			'status'   => 0,
-			'priority'  => 0,
-			'query'       => '',
-			'searchuser'  => '',
-			'exactname'   => '',
-			'searchdate'  => 0,
-			'beforeafter' => 0,
-			'sortby'      => 'dateline',
-			'order' 	     => 'descending',
-			'tag'         => '');
+			'type'			=> 0,
+			'status'		=> 0,
+			'priority'		=> 0,
+			'query'			=> '',
+			'searchuser'	=> '',
+			'exactname'		=> '',
+			'searchdate'	=> 0,
+			'beforeafter'	=> 0,
+			'sortby'		=> 'dateline',
+			'order'			=> 'descending',
+			'tag'			=> ''
+		);
 		
 //		query, replycount, votecount, needsattachments, needspendingpetitions,
 //			milestoneid, projectcategoryid, appliesversion, addressedversion,
@@ -201,10 +207,9 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 			
 	}
 
-	// ###################### Start can_group ######################
 	/**
 	* Each search type has some responsibilities, one of which is to tell
-	* whether it is groupable- Forums, for example are not, but posts are.
+	* whether it is groupable - Forums, for example are not, but posts are.
 	* They are naturally grouped by thread.
 	*
 	* @return
@@ -214,7 +219,6 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 		return true;
 	}
 
-	// ###################### Start group_by_default ######################
 	/**
 	* Each search type has some responsibilities, one of which is to tell
 	* whether it is grouped by default
@@ -226,17 +230,24 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 		return true;
 	}
 
-	// ###################### Start listUi ######################
 	/**
-	* This function generates the search elements for the user to search for posts
+	* This function generates the search elements for the user to search for issue notes
 	*
-	* @param mixed $prefs : the array of user preferences
+	* @param	mixed		Array of user preferences
+	* @param	mixed		Content type for which we are going to search
+	* @param	array		Any additional elements to be registered. These are just passed to the template
+	* @param	string		Name of the template to use for display. We have a default template.
 	*
-	* @return $html: complete html for the search elements
+	* @return 	mixed		Complete html for the search elements
 	*/
-	public function listUi($prefs = null)
+	public function listUi($prefs = null, $contenttypeid = null, $registers = null, $template_name = null)
 	{
 		global $vbulletin, $vbphrase, $show;
+
+		if (!isset($contenttypeid))
+		{
+			$contenttypeid = $this->get_contenttypeid();
+		}
 
 		$phrase = new vB_Legacy_Phrase();
 		$phrase->add_phrase_groups(array('projecttools'));
@@ -259,18 +270,19 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 		while ($datastore = $vbulletin->db->fetch_array($datastores))
 		{
 			$title = $datastore['title'];
-			$data = $datastore['data'];
-			if (!is_array($data))
+
+			if (!is_array($datastore['data']))
 			{
-				$data = unserialize($data);
+				$data = unserialize($datastore['data']);
+
 				if (is_array($data))
 				{
 					$vbulletin->$title = $data;
 				}
 			}
-			else if ($data != '')
+			else if ($datastore['data'] != '')
 			{
-				$vbulletin->$title = $data;
+				$vbulletin->$title = $datastore['data'];
 			}
 		}
 
@@ -471,16 +483,21 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 		// setup categories
 		$category_options = fetch_pt_search_categories($project_names);
 
+		// Default template name
+		if (!isset($template_name))
+		{
+			$template_name = 'search_input_ptissuenote';
+		}
+
 		// output
 		($hook = vBulletinHook::fetch_hook('projectsearch_form_complete')) ? eval($hook) : false;
 
-		$template = vB_Template::create('search_input_ptissue');
+		$template = vB_Template::create($template_name);
 			$template->register('addressedversion_options', $addressedversion_options);
 			$template->register('appliesversion_options', $appliesversion_options);
 			$template->register('assignable_users', $assignable_users);
 			$template->register('category_options', $category_options);
-			$template->register('class', 'Issue');
-			$template->register('contenttypeid', vB_Search_Core::get_instance()->get_contenttypeid('vBProjectTools', 'Issue'));
+			$template->register('contenttypeid', $contenttypeid);
 			$template->register('issue_type', $status_options);
 			$template->register('milestone', $milestone);
 			$template->register('navbar', $navbar);
@@ -525,11 +542,23 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 						'searchuser',
 						'replycount',
 						'votecount'
+					),
+					'rb' => array(
+						'showissuenotes'
 					)
 				)
 			);
 
-			vB_Search_Searchtools::searchIntroRegisterHumanVerify($template);
+		vB_Search_Searchtools::searchIntroRegisterHumanVerify($template);
+
+		if (isset($registers) AND is_array($registers))
+		{
+			foreach ($registers AS $key => $value)
+			{
+				$template->register($key, htmlspecialchars_uni($value));
+			}
+		}
+
 		return $template->render();
 	}
 
@@ -634,9 +663,9 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 	}
 
 	protected $package = "vBProjectTools";
-	protected $class = "Issue";
+	protected $class = "IssueNote";
 	protected $group_package = "vBProjectTools";
-	protected $group_class = "Project";
+	protected $group_class = "Issue";
 
 	protected $type_globals = array (
 		'text'      => TYPE_STR,
@@ -705,7 +734,9 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 
 		'sort'      => TYPE_NOHTML,
 		'sortorder' => TYPE_NOHTML,
-		'groupby'   => TYPE_NOHTML
+		'groupby'   => TYPE_NOHTML,
+
+		'showissuenotes'	=> TYPE_INT
 	);
 
 	private static $tag_join = " INNER JOIN %spt_issuetag AS pt_issuetag ON (pt_issuetag.issueid = issue.issueid)";
