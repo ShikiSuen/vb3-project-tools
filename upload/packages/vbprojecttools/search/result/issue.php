@@ -23,7 +23,6 @@
 
 require_once(DIR . '/includes/functions_projecttools.php');
 require_once(DIR . '/vb/search/result.php');
-require_once(DIR . '/packages/vbprojecttools/search/result/project.php');
 
 /**
  * Enter description here...
@@ -35,29 +34,48 @@ class vBProjectTools_Search_Result_Issue extends vB_Search_Result
 {
 	public static function create($id)
 	{
-		$newIssue = new vBProjectTools_Search_Result_Issue();
-		$newIssue->issueid = $id;
-		return $newIssue;
+		require_once(DIR . '/vb/legacy/issue.php');
+
+		if ($issue = vB_Legacy_Issue::create_from_id($id))
+		{
+			$item = new vBProjectTools_Search_Result_Issue();
+			$item->issue = $issue;
+			return $item;
+		}
+
+		// If we get here, the id must be invalid
+		require_once(DIR . '/vb/search/result/null.php');
+		return new vB_Search_Result_Null();
 	}
 
-	protected function __construct()
+	public static function create_from_issue($issue)
 	{
-		$this->contenttypeid = vB_Types::instance()->getContentTypeId("vBProjectTools_Issue");
+		if ($issue)
+		{
+			$item = new vBProjectTools_Search_Result_Issue();
+
+			// If we just have an id, we need to create the
+			// object
+			$item->issue = $issue;
+			return $item;
+		}
+		else
+		{
+			require_once(DIR . '/vb/search/result/null.php');
+			return new vB_Search_Result_Null();
+		}
 	}
+
+	protected function __construct() {}
 
 	public function get_contenttype()
 	{
-		return $this->issueid;
+		return vB_Search_Core::get_instance()->get_contenttypeid('vBProjectTools', 'Issue');
 	}
 
 	public function can_search($user)
 	{
-		return verify_issue_perms($this->issueid, $userinfo);
-	}
-
-	public function get_group_item()
-	{
-		return vBProjectTools_Search_Result_Project::create($this->get_projectid());
+		return $this->issue->can_search($user);
 	}
 
 	public function render($current_user, $criteria, $template_name = '')
@@ -66,6 +84,36 @@ class vBProjectTools_Search_Result_Issue extends vB_Search_Result
 
 		$phrase = new vB_Legacy_Phrase();
 		$phrase->add_phrase_groups(array('projecttools'));
+
+		if (!strlen($template_name))
+		{
+			$template_name = 'search_results_ptissue';
+		}
+
+		$datastores = $vbulletin->db->query_read("
+			SELECT data, title
+			FROM " . TABLE_PREFIX . "datastore
+			WHERE title IN('pt_bitfields', 'pt_permissions', 'pt_issuestatus', 'pt_issuetype', 'pt_projects', 'pt_categories', 'pt_assignable', 'pt_versions')
+		");
+
+		while ($datastore = $vbulletin->db->fetch_array($datastores))
+		{
+			$title = $datastore['title'];
+
+			if (!is_array($datastore['data']))
+			{
+				$data = unserialize($datastore['data']);
+
+				if (is_array($data))
+				{
+					$vbulletin->$title = $data;
+				}
+			}
+			else if ($datastore['data'] != '')
+			{
+				$vbulletin->$title = $datastore['data'];
+			}
+		}
 
 		if (!$search_perms = build_issue_permissions_query($vbulletin->userinfo, 'cansearch'))
 		{
@@ -107,10 +155,8 @@ class vBProjectTools_Search_Result_Issue extends vB_Search_Result
 				$hook_query_fields
 			FROM " . TABLE_PREFIX . "pt_issue AS issue
 			" . ($vbulletin->userinfo['userid'] ? "
-				LEFT JOIN " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe ON
-					(issuesubscribe.issueid = issue.issueid AND issuesubscribe.userid = " . $vbulletin->userinfo['userid'] . ")
-				LEFT JOIN " . TABLE_PREFIX . "pt_issueassign AS issueassign ON
-					(issueassign.issueid = issue.issueid AND issueassign.userid = " . $vbulletin->userinfo['userid'] . ")
+				LEFT JOIN " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe ON (issuesubscribe.issueid = issue.issueid AND issuesubscribe.userid = " . $vbulletin->userinfo['userid'] . ")
+				LEFT JOIN " . TABLE_PREFIX . "pt_issueassign AS issueassign ON (issueassign.issueid = issue.issueid AND issueassign.userid = " . $vbulletin->userinfo['userid'] . ")
 			" : '') . "
 			" . ($marking ? "
 				LEFT JOIN " . TABLE_PREFIX . "pt_issueread AS issueread ON (issueread.issueid = issue.issueid AND issueread.userid = " . $vbulletin->userinfo['userid'] . ")
@@ -118,7 +164,7 @@ class vBProjectTools_Search_Result_Issue extends vB_Search_Result
 			" : '') . "
 			$private_lastpost_join
 			$hook_query_joins
-			WHERE issue.issueid = $this->issueid
+			WHERE issue.issueid = " . $this->issue['issueid'] . "
 				AND ((" . implode(') OR (', $search_perms) . "))
 				$hook_query_where
 			LIMIT $perpage
@@ -126,7 +172,7 @@ class vBProjectTools_Search_Result_Issue extends vB_Search_Result
 
 		static $projectperms = array();
 
-		$issue = $this->get_issue();
+		$issue = $this->get_issue($results['issueid']);
 
 		if (!isset($projectperms["$issue[projectid]"]))
 		{
@@ -144,36 +190,26 @@ class vBProjectTools_Search_Result_Issue extends vB_Search_Result
 
 		($hook = vBulletinHook::fetch_hook('projectsearch_results_bit')) ? eval($hook) : false;
 
-		$template = vB_Template::create('search_results_ptissue');
+		$template = vB_Template::create($template_name);
 			$template->register('issue', $issue);
 			$template->register('project', $project);
 		return $template->render();
 	}
 
-	public function get_issue()
+	private function get_issue($id)
 	{
 		global $vbulletin;
 
-		if (!isset($this->issue))
-		{
-			$this->issue = $vbulletin->db->query_first("
-				SELECT issue.*
-				FROM " . TABLE_PREFIX . "pt_issue AS issue
-				WHERE issueid = " . $this->issueid
-			);
-		}
-		return $this->issue;
-	}
+		$issue = $vbulletin->db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_issue
+			WHERE issueid = $id
+		");
 
-	public function get_projectid()
-	{
-		$issue = $this->get_issue();
-		return $issue['projectid'];
+		return $issue;
 	}
 
 	private $issue;
-	protected $contenttypeid;
-	protected $issueid;
 }
 
 ?>

@@ -53,6 +53,21 @@ class vB_Legacy_Issue extends vB_Legacy_DataObject
 	}
 
 	/**
+	 * Create object from and existing record
+	 *
+	 * @param int $foruminfo
+	 * @return vB_Legacy_Thread
+	 */
+	public static function create_from_record($issueinfo)
+	{
+		$issue = new vB_Legacy_Issue();
+		$current_user = new vB_Legacy_CurrentUser();
+
+		$issue->set_record($issueinfo);
+		return $issue;
+	}
+
+	/**
 	* Load object from an id
 	*
 	* @param	integer		Id of the issue
@@ -90,7 +105,7 @@ class vB_Legacy_Issue extends vB_Legacy_DataObject
 
 		$select[] = "issue.*, note.pagetext";
 		$joins[] = "LEFT JOIN " . TABLE_PREFIX . "pt_issuenote AS note ON (note.issueid = issue.issueid)";
-		$where[] = "issue.issueid IN (" . implode(',', array_map('intval', $ids) . ")";
+		$where[] = "issue.issueid IN (" . implode(',', array_map('intval', $ids)) . ")";
 
 		$set = $vbulletin->db->query("
 			SELECT " . implode(",", $select) . "
@@ -107,6 +122,41 @@ class vB_Legacy_Issue extends vB_Legacy_DataObject
 
 		return $issues;
 	}
+
+	/**
+	 * constructor -- protectd to force use of factory methods.
+	 */
+	protected function __construct() {}
+
+	//*********************************************************************************
+	// Related data
+
+	/**
+	 * Returns the project containing the issue
+	 *
+	 * @return vB_Legacy_Poject
+	 */
+	public function get_project()
+	{
+		if (is_null($this->project))
+		{
+			$this->project = vB_Legacy_Project::create_from_id($this->record['projectid']);
+		}
+		return $this->project;
+	}
+
+	//*********************************************************************************
+	// High level permissions
+
+	public function can_search($user)
+	{
+		return true;
+	}
+
+	/**
+	* @var array
+	*/
+	protected $project = null;
 }
 
 ?>

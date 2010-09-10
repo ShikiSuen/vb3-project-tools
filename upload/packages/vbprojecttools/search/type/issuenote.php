@@ -48,7 +48,7 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 		$datastores = $vbulletin->db->query_read("
 			SELECT data, title
 			FROM " . TABLE_PREFIX . "datastore
-			WHERE title IN('pt_bitfields','pt_permissions','pt_issuestatus','pt_issuetype','pt_projects','pt_categories','pt_assignable','pt_versions')
+			WHERE title IN ('pt_bitfields', 'pt_permissions', 'pt_issuestatus', 'pt_issuetype', 'pt_projects', 'pt_categories', 'pt_assignable', 'pt_versions')
 		");
 
 		while ($datastore = $vbulletin->db->fetch_array($datastores))
@@ -185,17 +185,18 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	{
 		
 		return array(
-			'type'			=> 0,
-			'status'		=> 0,
-			'priority'		=> 0,
-			'query'			=> '',
-			'searchuser'	=> '',
-			'exactname'		=> '',
-			'searchdate'	=> 0,
-			'beforeafter'	=> 0,
-			'sortby'		=> 'dateline',
-			'order'			=> 'descending',
-			'tag'			=> ''
+			'type'				=> 0,
+			'status'			=> 0,
+			'priority'			=> 0,
+			'query'				=> '',
+			'searchuser'		=> '',
+			'exactname'			=> '',
+			'searchdate'		=> 0,
+			'beforeafter'		=> 0,
+			'sortby'			=> 'dateline',
+			'order'				=> 'descending',
+			'tag'				=> '',
+			'showposts'	 		=> 0
 		);
 		
 //		query, replycount, votecount, needsattachments, needspendingpetitions,
@@ -264,7 +265,7 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 		$datastores = $vbulletin->db->query_read("
 			SELECT data, title
 			FROM " . TABLE_PREFIX . "datastore
-			WHERE title IN('pt_bitfields','pt_permissions','pt_issuestatus','pt_issuetype','pt_projects','pt_categories','pt_assignable','pt_versions')
+			WHERE title IN('pt_bitfields', 'pt_permissions', 'pt_issuestatus', 'pt_issuetype', 'pt_projects', 'pt_categories', 'pt_assignable', 'pt_versions')
 		");
 
 		while ($datastore = $vbulletin->db->fetch_array($datastores))
@@ -544,7 +545,7 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 						'votecount'
 					),
 					'rb' => array(
-						'showissuenotes'
+						'showposts'
 					)
 				)
 			);
@@ -668,62 +669,13 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	protected $group_class = "Issue";
 
 	protected $type_globals = array (
-		'text'      => TYPE_STR,
-		'issuetext' => TYPE_STR,
-		'firsttext' => TYPE_STR,
+		'starteronly' => TYPE_INT,
 
-		'user'       => TYPE_NOHTML,
-		'user_issue' => TYPE_NOHTML,
-
-		'priority_gteq' => TYPE_INT,
-		'priority_lteq' => TYPE_INT,
-
-		'searchdate_gteq' => TYPE_INT,
-		'searchdate_lteq' => TYPE_INT,
-
-		'replycount_gteq' => TYPE_UINT,
-		'replycount_lteq' => TYPE_UINT,
-
-		'votecount_pos_gteq' => TYPE_UINT,
-		'votecount_pos_lteq' => TYPE_UINT,
-		'votecount_neg_gteq' => TYPE_UINT,
-		'votecount_neg_lteq' => TYPE_UINT,
-
-		'projectid'     => TYPE_ARRAY_UINT,
-		'milestoneid'   => TYPE_UINT,
-
-		'assigneduser'  => TYPE_ARRAY_UINT,
-		'tag'           => TYPE_ARRAY_STR,
-
-		'issuetypeid'   => TYPE_ARRAY_STR,
-		'issuestatusid' => TYPE_ARRAY_UINT,
-		'typestatusmix' => TYPE_ARRAY,
-
-		'appliesversion'   => TYPE_ARRAY_INT,
-		'appliesgroup'     => TYPE_ARRAY_INT,
-		'appliesmix'       => TYPE_ARRAY,
-
-		'addressedversion' => TYPE_ARRAY_INT,
-		'addressedgroup'   => TYPE_ARRAY_INT,
-		'addressedmix'     => TYPE_ARRAY,
-
-		'projectcategoryid' => TYPE_ARRAY_INT,
-
-		'needsattachments'      => TYPE_UINT,
-		'needspendingpetitions' => TYPE_UINT,
-
-		'newonly' => TYPE_BOOL,
-
-		'gotoissueinteger' => TYPE_BOOL,
-
-		'textlocation'    => TYPE_STR,
-		'userissuesonly'  => TYPE_NOHTML,
+		'issuetypeid' => TYPE_ARRAY_NOHTML,
+		'issuestatusid'	=> TYPE_ARRAY_UINT,
 
 		'priority'        => TYPE_INT,
 		'priority_type'   => TYPE_STR,
-
-		'searchdate'      => TYPE_INT,
-		'searchdate_type' => TYPE_STR,
 
 		'replycount'      => TYPE_INT,
 		'replycount_type' => TYPE_STR,
@@ -732,14 +684,23 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 		'votecount_type'   => TYPE_STR,
 		'votecount_posneg' => TYPE_STR,
 
-		'sort'      => TYPE_NOHTML,
-		'sortorder' => TYPE_NOHTML,
+		'needsattachments'      => TYPE_UINT,
+		'needspendingpetitions' => TYPE_UINT,
+
+		'addressedversion' => TYPE_ARRAY_INT,
+		'appliesversion'   => TYPE_ARRAY_INT,
+
+		'projectid'     => TYPE_ARRAY_UINT,
+		'milestoneid'   => TYPE_UINT,
+
+		'assigneduser'  => TYPE_ARRAY_UINT,
+		'tag'           => TYPE_ARRAY_STR,
+
 		'groupby'   => TYPE_NOHTML,
 
-		'showissuenotes'	=> TYPE_INT
+		'showposts'	=> TYPE_INT
 	);
 
 	private static $tag_join = " INNER JOIN %spt_issuetag AS pt_issuetag ON (pt_issuetag.issueid = issue.issueid)";
-	private static $issue_join = " INNER JOIN %sissue AS issue ON (searchcore.contenttypeid =%u  AND searchcore.primaryid = issue.issueid)";
-	private static $forum_thread_join = " INNER JOIN %sforum AS forum ON (thread.forumid = forum.forumid)";
+	private static $issue_join = " INNER JOIN %spt_issue AS pt_issue ON (searchcore.contenttypeid =%u  AND searchcore.primaryid = issue.issueid)";
 }

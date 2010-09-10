@@ -35,12 +35,12 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 {
 	public static function create($id)
 	{
-		return vBProjectTools_Search_Result_IssueNote::create_from_object(vBProjectTools_Search_IndexController_IssueNote::create_from_issuenote_id($id, true));
+		return vBProjectTools_Search_Result_IssueNote::create_from_object(vB_Legacy_IssueNote::create_from_id($id, true));
 	}
 
 	public static function create_from_object($issuenote)
 	{
-		if ($post)
+		if ($issuenote)
 		{
 			$item = new vBProjectTools_Search_Result_IssueNote($issuenote);
 			return $item;
@@ -66,8 +66,7 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 
 	public function can_search($user)
 	{
-		// return $this->issuenote->can_search($user);
-		return verify_issue_perms($this->issuenoteid, $userinfo);
+		return $this->issuenote->can_search($user);
 	}
 
 	public function get_group_item()
@@ -119,18 +118,17 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 		($hook = vBulletinHook::fetch_hook('projectsearch_results_query')) ? eval($hook) : false;
 
 		$results = $vbulletin->db->query_first("
-			SELECT issue.*
+			SELECT issue.*, issuenote.pagetext AS pagetext
 				" . ($vbulletin->userinfo['userid'] ? ", issuesubscribe.subscribetype, IF(issueassign.issueid IS NULL, 0, 1) AS isassigned" : '') . "
 				" . ($marking ? ", issueread.readtime AS issueread, projectread.readtime AS projectread" : '') . "
 				" . ($private_lastpost_fields ? ", $private_lastpost_fields" : '') . "
 				" . ($replycount_clause ? ", $replycount_clause AS replycount" : '') . "
 				$hook_query_fields
 			FROM " . TABLE_PREFIX . "pt_issue AS issue
+				LEFT JOIN " . TABLE_PREFIX . "pt_issuenote AS issuenote ON (issuenote.issueid = issue.issueid)
 			" . ($vbulletin->userinfo['userid'] ? "
-				LEFT JOIN " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe ON
-					(issuesubscribe.issueid = issue.issueid AND issuesubscribe.userid = " . $vbulletin->userinfo['userid'] . ")
-				LEFT JOIN " . TABLE_PREFIX . "pt_issueassign AS issueassign ON
-					(issueassign.issueid = issue.issueid AND issueassign.userid = " . $vbulletin->userinfo['userid'] . ")
+				LEFT JOIN " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe ON (issuesubscribe.issueid = issue.issueid AND issuesubscribe.userid = " . $vbulletin->userinfo['userid'] . ")
+				LEFT JOIN " . TABLE_PREFIX . "pt_issueassign AS issueassign ON (issueassign.issueid = issue.issueid AND issueassign.userid = " . $vbulletin->userinfo['userid'] . ")
 			" : '') . "
 			" . ($marking ? "
 				LEFT JOIN " . TABLE_PREFIX . "pt_issueread AS issueread ON (issueread.issueid = issue.issueid AND issueread.userid = " . $vbulletin->userinfo['userid'] . ")
@@ -138,7 +136,7 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 			" : '') . "
 			$private_lastpost_join
 			$hook_query_joins
-			WHERE issue.issueid = $this->issueid
+			WHERE issue.issueid = " . $this->issuenote['issueid'] . "
 				AND ((" . implode(') OR (', $search_perms) . "))
 				$hook_query_where
 			LIMIT $perpage
@@ -146,21 +144,21 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 
 		static $projectperms = array();
 
-		$issue = $this->get_issue();
-
-		if (!isset($projectperms["$issue[projectid]"]))
+		if (!isset($projectperms["$results[projectid]"]))
 		{
-			$projectperms["$issue[projectid]"] = fetch_project_permissions($vbulletin->userinfo, $issue['projectid']);
+			$projectperms["$results[projectid]"] = fetch_project_permissions($vbulletin->userinfo, $results['projectid']);
 		}
 
-		$project = $vbulletin->pt_projects["$issue[projectid]"];
-		$issueperms = $projectperms["$issue[projectid]"]["$issue[issuetypeid]"];
-		$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
+		$project = $vbulletin->pt_projects["$results[projectid]"];
+		$issueperms = $projectperms["$results[projectid]"]["$results[issuetypeid]"];
+		$posting_perms = prepare_issue_posting_pemissions($results, $issueperms);
 
 		$show['edit_issue'] = $posting_perms['issue_edit'];
 		$show['status_edit'] = $posting_perms['status_edit'];
 
-		$issue = prepare_issue($issue);
+		$issue = prepare_issue($results);
+
+		$issue['issuenoteid'] = $this->issuenote['issuenoteid'];
 
 		($hook = vBulletinHook::fetch_hook('projectsearch_results_bit')) ? eval($hook) : false;
 
@@ -170,51 +168,6 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 		return $template->render();
 	}
 
-	public function get_issuenote()
-	{
-		return $this->issuenote;
-	}
-
-	/**
-	* Returns the primary id. Allows us to cache a result item.
-	*
-	* @result	integer
-	*/
-	public function get_id()
-	{
-		if (isset($this->issuenote) AND ($issuenoteid = $this->issuenote->get_field('issuenoteid')))
-		{
-			return $issuenoteid;
-		}
-		return false;
-	}
-
-
-
-
-
-/*
-	public function get_issue()
-	{
-		global $vbulletin;
-
-		if (!isset($this->issue))
-		{
-			$this->issue = $vbulletin->db->query_first("
-				SELECT issue.*
-				FROM " . TABLE_PREFIX . "pt_issue AS issue
-				WHERE issueid = " . $this->issueid
-			);
-		}
-		return $this->issue;
-	}
-
-	public function get_projectid()
-	{
-		$issue = $this->get_issue();
-		return $issue['projectid'];
-	}
-*/
 	private $issuenote;
 }
 

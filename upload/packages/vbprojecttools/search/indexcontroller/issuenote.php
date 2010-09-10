@@ -69,18 +69,18 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 	/**
 	* Index the Issue
 	*
-	* @param	int		Id of the issue to index
+	* @param	int		Id of the issue note to index
 	*/
 	public function index($id)
 	{
 		global $vbulletin;
 
-		$issue = vB_Legacy_IssueNote::create_from_id($id, true);
+		$issuenote = vB_Legacy_IssueNote::create_from_id($id, true);
 
-		if ($issue)
+		if ($issuenote)
 		{
 			$indexer = vB_Search_Core::get_instance()->get_core_indexer();
-			$fields = $this->issuenote_to_indexfields($issue);
+			$fields = $this->issuenote_to_indexfields($issuenote);
 			$indexer->index($fields);
 		}
 	}
@@ -97,8 +97,8 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 
 		$indexer = vB_Search_Core::get_instance()->get_core_indexer();
 
-		$issuenote_fields = vB_Legacy_IssueNote::get_fields_names();
-		$issue_fields = vB_Legacy_Issue::get_fields_names();
+		$issuenote_fields = vB_Legacy_IssueNote::get_field_names();
+		$issue_fields = vB_Legacy_Issue::get_field_names();
 
 		$select = array();
 
@@ -115,10 +115,10 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		$set = $vbulletin->db->query("
 			SELECT " . implode(', ', $select) . "
 			FROM " . TABLE_PREFIX . "pt_issue AS issue
-				LEFT JOIN " . TABLE_PREFIX . "pt_issuenote AS issuenote ON (issuenote.issueid = issue.issueid)
-			WHERE issue.issueid >= " . intval($start) . "
-				AND issue.issueid <= " . intval($end) . "
-			ORDER BY issue.issueid, issuenote.issuenoteid ASC
+				JOIN " . TABLE_PREFIX . "pt_issuenote AS issuenote ON (issue.issueid = issuenote.issueid)
+			WHERE issuenote.issuenoteid >= " . intval($start) . "
+				AND issuenote.issuenoteid <= " . intval($end) . "
+			ORDER BY issuenote.issueid, issuenote.issuenoteid ASC
 		");
 
 		while ($row = $vbulletin->db->fetch_array($set))
@@ -126,7 +126,13 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 			// The assumption that cached thread lookups were fast enough seems to have been good.
 			// however the memory requirements for long ranges added up fast, so we'll try pulling
 			// the appropriate fields in one step.
-			$fields = $this->issue_to_indexfields($row);
+echo '<div><pre>';print_r(array_slice($row, 0, count($issuenote_fields)));echo '</pre></div>';exit;
+			$issuenote_data = array_combine($issuenote_fields, array_slice($row, 0, count($issuenote_fields)));
+			$issue_data = array_combine($issue_fields, array_slice($row, count($issuenote_fields)));
+
+			$issuenote = vB_Legacy_IssueNote::create_from_record($issuenote_data, $issue_data);
+
+			$fields = $this->issuenote_to_indexfields($row);
 
 			if ($fields)
 			{
@@ -165,6 +171,8 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		throw new Exception ('should not be here');
 		global $vbulletin;
 
+		$issue = vB_Legacy_Issue::create_from_record($id);
+
 		$set = $vbulletin->db->query_read("
 			SELECT issuenote.*
 			FROM " . TABLE_PREFIX . "issuenote AS issuenote
@@ -175,7 +183,8 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 
 		while ($row = $vbulletin->db->fetch_array($set))
 		{
-			$fields = $this->issuenote_to_indexfields($row);
+			$issuenote = vB_Legacy_IssueNote::create_from_record($row, $issue);
+			$fields = $this->issuenote_to_indexfields($issuenote);
 
 			if ($fields)
 			{
@@ -313,12 +322,34 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 	*/
 	private function issuenote_to_indexfields($issuenote)
 	{
-		$fields = array();
+		// Don't try to index inconsistent records
+		$issue = $issuenote->get_issue();
+		if (!$issue)
+		{
+			return false;
+		}
+
+		$project = $issuenote->get_project();
+		if (!$project)
+		{
+			return false;
+		}
 
 		//common fields
 		$fields['contenttypeid'] = $this->contenttypeid;
 		$fields['id'] = $issuenote['issuenoteid'];
 		$fields['dateline'] = $issuenote['submitdate'];
+		$fields['groupdateline'] = $thread->get_field('lastpost');
+		$fields['defaultdateline'] = $fields['groupdateline'];
+		$fields['grouptitle'] = $thread->get_field('title');
+		$fields['userid'] = $post->get_field('userid');
+		$fields['groupuserid'] = $thread->get_field('submituserid');
+		$fields['defaultuserid'] = 	$fields['user'];
+		$fields['username'] = $post->get_field('username');
+		$fields['groupusername'] = $thread->get_field('submitusername');
+		$fields['defaultusername'] = 	$fields['username'];
+		$fields['ipaddress'] = $post->get_iplong();
+		$fields['keywordtext'] = $post->get_field('title') . " " . $post->get_field('pagetext');
 
 		if ($issue['summary'])
 		{
@@ -329,12 +360,8 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 			$fields['keywordtext'] = $issuenote['pagetext'];
 		}
 
-		$fields['title'] = $issuenote['title'];
-		$fields['userid'] = $issuenote['submituserid'];
-		$fields['username'] = $issuenote['submitusername'];
 		$fields['groupcontenttypeid'] = $this->groupcontenttypeid;
-		$fields['groupid'] = $issuenote['projectid'];
-		$fields['ipaddress'] = $issuenote['ipaddress'];
+		$fields['groupid'] = $issuenote->get_field('issueid');
 
 		return $fields;
 	}
