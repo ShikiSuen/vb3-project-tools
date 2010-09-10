@@ -23,9 +23,9 @@ require_once(DIR . '/vb/legacy/project.php');
 /**
  * @package vBulletin Project Tools
  * @subpackage Legacy
- * @author $author$
- * @version $revision$
- * @since $date$
+ * @author $Author$
+ * @version $Revision$
+ * @since $Date$
  * @copyright http://www.vbulletin.org/open_source_license_agreement.php
  */
 

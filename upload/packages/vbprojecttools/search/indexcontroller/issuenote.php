@@ -18,7 +18,6 @@ if (!class_exists('vB_Search_Core', false))
 }
 
 require_once(DIR . '/vb/search/indexcontroller.php');
-require_once(DIR . '/vb/legacy/issue.php');
 require_once(DIR . '/vb/legacy/issuenote.php');
 require_once(DIR . '/vb/search/core.php');
 
@@ -59,8 +58,8 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		global $vbulletin;
 
 		$row = $vbulletin->db->query_first_slave("
-			SELECT MAX(issueid) AS max
-			FROM " . TABLE_PREFIX . "pt_issue"
+			SELECT MAX(issuenoteid) AS max
+			FROM " . TABLE_PREFIX . "pt_issuenote"
 		);
 
 		return $row['max'];
@@ -114,25 +113,25 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 
 		$set = $vbulletin->db->query("
 			SELECT " . implode(', ', $select) . "
-			FROM " . TABLE_PREFIX . "pt_issue AS issue
-				JOIN " . TABLE_PREFIX . "pt_issuenote AS issuenote ON (issue.issueid = issuenote.issueid)
+			FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
+				JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issuenote.issueid = issue.issueid)
 			WHERE issuenote.issuenoteid >= " . intval($start) . "
 				AND issuenote.issuenoteid <= " . intval($end) . "
 			ORDER BY issuenote.issueid, issuenote.issuenoteid ASC
 		");
 
-		while ($row = $vbulletin->db->fetch_array($set))
+		while ($row = $vbulletin->db->fetch_row($set))
 		{
 			// The assumption that cached thread lookups were fast enough seems to have been good.
 			// however the memory requirements for long ranges added up fast, so we'll try pulling
 			// the appropriate fields in one step.
-echo '<div><pre>';print_r(array_slice($row, 0, count($issuenote_fields)));echo '</pre></div>';exit;
+
 			$issuenote_data = array_combine($issuenote_fields, array_slice($row, 0, count($issuenote_fields)));
 			$issue_data = array_combine($issue_fields, array_slice($row, count($issuenote_fields)));
 
 			$issuenote = vB_Legacy_IssueNote::create_from_record($issuenote_data, $issue_data);
 
-			$fields = $this->issuenote_to_indexfields($row);
+			$fields = $this->issuenote_to_indexfields($issuenote);
 
 			if ($fields)
 			{
@@ -329,7 +328,7 @@ echo '<div><pre>';print_r(array_slice($row, 0, count($issuenote_fields)));echo '
 			return false;
 		}
 
-		$project = $issuenote->get_project();
+		$project = $issue->get_project();
 		if (!$project)
 		{
 			return false;
@@ -337,31 +336,51 @@ echo '<div><pre>';print_r(array_slice($row, 0, count($issuenote_fields)));echo '
 
 		//common fields
 		$fields['contenttypeid'] = $this->contenttypeid;
-		$fields['id'] = $issuenote['issuenoteid'];
-		$fields['dateline'] = $issuenote['submitdate'];
-		$fields['groupdateline'] = $thread->get_field('lastpost');
-		$fields['defaultdateline'] = $fields['groupdateline'];
-		$fields['grouptitle'] = $thread->get_field('title');
-		$fields['userid'] = $post->get_field('userid');
-		$fields['groupuserid'] = $thread->get_field('submituserid');
-		$fields['defaultuserid'] = 	$fields['user'];
-		$fields['username'] = $post->get_field('username');
-		$fields['groupusername'] = $thread->get_field('submitusername');
-		$fields['defaultusername'] = 	$fields['username'];
-		$fields['ipaddress'] = $post->get_iplong();
-		$fields['keywordtext'] = $post->get_field('title') . " " . $post->get_field('pagetext');
 
-		if ($issue['summary'])
+		$fields['id'] = $issuenote->get_field('issuenoteid');
+		$fields['dateline'] = $issuenote->get_field('dateline');
+		$fields['groupdateline'] = $issue->get_field('lastpost');
+		$fields['defaultdateline'] = $fields['groupdateline'];
+		$fields['grouptitle'] = $issue->get_field('title');
+		$fields['userid'] = $issuenote->get_field('userid');
+		$fields['groupuserid'] = $issue->get_field('submituserid');
+		$fields['defaultuserid'] = $fields['user'];
+		$fields['username'] = $issuenote->get_field('username');
+		$fields['groupusername'] = $issue->get_field('submitusername');
+		$fields['defaultusername'] = $fields['username'];
+		$fields['ipaddress'] = $issuenote->get_ipstring();
+
+		if ($issue->get_field('summary'))
 		{
-			$fields['keywordtext'] = $issuenote['summary'] . ' : ' . $issuenote['pagetext'];
+			$fields['keywordtext'] = $issue->get_field('title') . " " . $issue->get_field('summary') . ' : ' . $issuenote->get_field('pagetext');
 		}
 		else
 		{
-			$fields['keywordtext'] = $issuenote['pagetext'];
+			$fields['keywordtext'] = $issue->get_field('title') . " " . $issuenote->get_field('pagetext');
 		}
 
 		$fields['groupcontenttypeid'] = $this->groupcontenttypeid;
+
 		$fields['groupid'] = $issuenote->get_field('issueid');
+
+		// additional issue note fields
+		$fields['visible'] = $issuenote->get_field('visible');
+
+		// issue fields
+		$fields['issueid'] = $issue->get_field('issueid');
+		$fields['replycount'] = $issue->get_field('replycount');
+		$fields['lastpost'] = $issue->get_field('lastpost');
+		$fields['issuevisible'] = $issue->get_field('visible');
+		$fields['open'] = $issue->get_field('state');
+		$fields['appliesversionid'] = $issue->get_field('appliesversionid');
+		$fields['addressedversionid'] = $issue->get_field('addressedversionid');
+		$fields['priority'] = $issue->get_field('priority');
+		$fields['assignedusers'] = $issue->get_field('assignedusers');
+		$fields['milestoneid'] = $issue->get_field('milestoneid');
+
+		// project fields
+		$fields['projectid'] = $project->get_field('projectid');
+		$fields['projecttitle'] = $project->get_field('title');
 
 		return $fields;
 	}

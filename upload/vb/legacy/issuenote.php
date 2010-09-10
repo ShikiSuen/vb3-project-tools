@@ -23,9 +23,9 @@ require_once(DIR . '/vb/legacy/issue.php');
 /**
  * @package vBulletin Project Tools
  * @subpackage Legacy
- * @author $author$
- * @version $revision$
- * @since $date$
+ * @author $Author$
+ * @version $Revision$
+ * @since $Date$
  * @copyright http://www.vbulletin.org/open_source_license_agreement.php
  */
 
@@ -120,6 +120,7 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 		");
 
 		$issuenotes = array();
+
 		while ($issuenote = $vbulletin->db->fetch_array($set))
 		{
 			$issuenotes[$issuenote['issuenoteid']] = $issuenote;

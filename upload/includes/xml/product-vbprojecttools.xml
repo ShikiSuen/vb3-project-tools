@@ -987,16 +987,30 @@ $db->query_write("
 	REPLACE INTO " . TABLE_PREFIX . "contenttype
 		(class, packageid, canplace, cansearch, cantag, canattach)
 	VALUES
-		('Project', $packageid, '0', '0', '0', '0');
+		('Project', $packageid, '0', '0', '0', '0')
 ");
 
 $db->query_write("
 	REPLACE INTO " . TABLE_PREFIX . "contenttype
 		(class, packageid, canplace, cansearch, cantag, canattach)
 	VALUES
-		('Issue', $packageid, '0', '0', '0', '0');
+		('Issue', $packageid, '0', '0', '0', '0')
 ");]]></installcode>
-			<uninstallcode />
+			<uninstallcode><![CDATA[// Delete content types if the product is fully removed
+$db->query_write("
+	DELETE FROM " . TABLE_PREFIX . "contenttype
+	WHERE class = 'Project'
+");
+
+$db->query_write("
+	DELETE FROM " . TABLE_PREFIX . "contenttype
+	WHERE class = 'Issue'
+");
+
+$db->query_write("
+	DELETE FROM " . TABLE_PREFIX . "package
+	WHERE class = 'vBProjectTools'
+");]]></uninstallcode>
 		</code>
 		<code version="2.1.1">
 			<installcode><![CDATA[$show['ptimpoter_previous'] = false;
@@ -1197,9 +1211,9 @@ $contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
 
 // Move any existing data into the new table before removing useless fields
 $movedthreads = $db->query_read("
-	SELECT threadid, ptissueid, ptforwardmode
+	SELECT threadid, pt_issueid, pt_forwardmode
 	FROM " . TABLE_PREFIX . "thread
-	WHERE ptissueid > 0
+	WHERE pt_issueid > 0
 ");
 
 if ($db->num_rows($movedthreads) > 0)
@@ -1207,8 +1221,8 @@ if ($db->num_rows($movedthreads) > 0)
 	while ($movedthread = $db->fetch_array($movedthreads))
 	{
 		$data = array();
-		$data['pt_issueid'] = $movedthread['ptissueid'];
-		$data['pt_forwardmode'] = $movedthread['ptforwardmode'];
+		$data['pt_issueid'] = $movedthread['pt_issueid'];
+		$data['pt_forwardmode'] = $movedthread['pt_forwardmode'];
 
 		$importdata = serialize($data);
 
@@ -1224,10 +1238,6 @@ if ($db->num_rows($movedthreads) > 0)
 // Now remove useless fields
 if ($db_alter->fetch_table_info('thread'))
 {
-	$db_alter->drop_field('ptissueid');
-	$db_alter->drop_field('ptforwardmode');
-
-	// These fields could be present even if the code is ran correctly - only a workaround here
 	$db_alter->drop_field('pt_issueid');
 	$db_alter->drop_field('pt_forwardmode');
 }
@@ -1275,8 +1285,8 @@ if (is_suite('vbcms'))
 		INSERT INTO " . TABLE_PREFIX . "cms_widgettype
 			(class, packageid)
 		VALUES
-			('RecentPTIssues', " . $packageid['packageid'] . ",
-                        'RecentPTComments', " . $packageid['packageid'] . ")
+			('RecentPTIssues', " . $packageid['packageid'] . "),
+			('RecentPTComments', " . $packageid['packageid'] . ")
 	");
 
 	// Clear CMS cache to add these widgets directly in the widget type list
@@ -1289,7 +1299,23 @@ if (is_suite('vbcms'))
 	{
 		vB_Cache::instance()->clean(false);
 	}
-}]]></installcode>
+}
+
+// Adding some content type for PT search via search.php
+$package = $db->query_first("
+	SELECT packageid
+	FROM " . TABLE_PREFIX . "package
+	WHERE productid = 'vbprojecttools'
+		AND class = 'vBProjectTools'
+");
+
+// Actually deactivated - change cansearch from 0 to 1 to activate it
+$db->query_write("
+	INSERT INTO " . TABLE_PREFIX . "contenttype
+		(class, packageid, canplace, cansearch, cantag, canattach)
+	VALUES
+		('IssueNote', $package['packageid'], '0', '0', '0', '0')
+");]]></installcode>
 			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('pt_issuestatus'))
@@ -1318,12 +1344,7 @@ if (is_suite('vbcms'))
 {
 	$db->query_write("
 		DELETE FROM " . TABLE_PREFIX . "cms_widgettype
-		WHERE class = 'RecentPTIssues'
-	");
-
-	$db->query_write("
-		DELETE FROM " . TABLE_PREFIX . "cms_widgettype
-		WHERE class = 'RecentPTComments'
+		WHERE class IN ('RecentPTIssues', 'RecentPTComments')
 	");
 
 	// Clear CMS cache
@@ -1336,7 +1357,13 @@ if (is_suite('vbcms'))
 	{
 		vB_Cache::instance()->clean(false);
 	}
-}]]></uninstallcode>
+}
+
+// Delete content types if the product is fully removed
+$db->query_write("
+	DELETE FROM " . TABLE_PREFIX . "contenttype
+	WHERE class = 'IssueNote'
+");]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
@@ -7712,14 +7739,13 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 
 </body>
 </html>]]></template>
-		<template name="search_input_ptissue" templatetype="template" date="1273278721" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<form action="search.php?do=process" method="post" name="vbform" id="searchform" class="">
+		<template name="search_input_ptissuenote" templatetype="template" date="1284156144" username="Pitchoune" version="2.1.2"><![CDATA[<form action="search.php?do=process" method="post" name="vbform" id="searchform" class="">
 
 <input type="hidden" name="s" value="{vb:raw sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw securitytoken}"/>
 <input type="hidden" name="do" value="process" />
 <input type="hidden" name="searchfromtype" value="vBProjectTools:Issue" />
 <input type="hidden" name="contenttypeid" value="{vb:raw contenttypeid}" />
-<input type="hidden" name="showposts" value="1" />
 
 	<h3 class="blocksubhead">
 		{vb:rawphrase search_for_issues}
@@ -7754,8 +7780,8 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 					</div>
 				</li>
 				<li>
-					<label for="cb_userissueonly">
-						<input type="checkbox" id="cb_userissueonly" name="userissuesonly" value="1" tabindex="1" {vb:raw userissueonlychecked} /> {vb:rawphrase search_only_issues_submitted_by_user}
+					<label for="cb_starteronly">
+						<input type="checkbox" id="cb_starteronly" name="starteronly" value="1" tabindex="1" {vb:raw starteronlychecked} /> {vb:rawphrase search_only_issues_submitted_by_user}
 					</label>
 				</li>
 			</ul>
@@ -7997,7 +8023,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 				<li>
 					<ul id="ptsearch_addressedversionid" class="primary textbox pt_search_checkboxes">
 						<li><label for="cb_addressed_version_-2"><input type="checkbox" id="cb_addressed_version_-2" name="addressedversion[]" value="-2" tabindex="1" />&nbsp;{vb:rawphrase none_meta}</label></li>
-						<li><label for="cb_applies_version_-1"><input type="checkbox" id="cb_applies_version_-1" name="appliesversion[]" value="-1" tabindex="1" />&nbsp;{vb:rawphrase unknown}</label></li>
+						<li><label for="cb_addressed_version_-1"><input type="checkbox" id="cb_addressed_version_-1" name="addressedversion[]" value="-1" tabindex="1" />&nbsp;{vb:rawphrase unknown}</label></li>
 						{vb:raw addressedversion_options}
 					</ul>
 				</li>
@@ -8012,15 +8038,20 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 	</div>
 
 	<h3 class="blocksubhead">
-		{vb:rawphrase assigned_users} <a class="collapse" id="collapse_versioninfos" href="{vb:raw relpath}#top"><img src="{vb:stylevar imgdir_button}/collapse_40b.png" alt="" /></a></h3>
-	<div id="versioninfos" class="section">
+		{vb:rawphrase assigned_users} <a class="collapse" id="collapse_assigninfos" href="{vb:raw relpath}#top"><img src="{vb:stylevar imgdir_button}/collapse_40b.png" alt="" /></a></h3>
+	<div id="assigninfos" class="section">
 		<div class="blockrow">
 			<label for="cb_assignedusers">{vb:rawphrase assigned_users}</label>
 			<ul id="cb_assignedusers" class="multifield stacked group">
 				<li>
+
 					<ul class="primary textbox pt_search_checkboxes">
-						{vb:raw assignable_users.col1}
-						{vb:raw assignable_users.col2}
+						<vb:if condition="$assignable_users['col1'] OR $assignable_users['col2']">
+							{vb:raw assignable_users.col1}
+							{vb:raw assignable_users.col2}
+						<vb:else />
+							<li>&nbsp;</li>
+						</vb:if>
 					</ul>
 				</li>
 			</ul>
@@ -8038,7 +8069,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 
 	<div id="additionaloptions" class="section">
 		<div class="blockrow">
-			<label for="cb_sortby"><vb:if condition="!$sort_results_by==''">{vb:rawphrase sort_results_by}<vb:else />{vb:rawphrase sort_results_by}</vb:if></label>
+			<label for="cb_sortby"><vb:if condition="!$sort_results_by == ''">{vb:rawphrase sort_results_by}<vb:else />{vb:rawphrase sort_results_by}</vb:if></label>
 			<ul class="multifield group">
 				<li>
 					<select id="cb_sortby" name="sortby" tabindex="1">
@@ -8074,6 +8105,15 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 				</li>
 			</ul>
 		</div>
+
+		<div class="blockrow">
+			<label>{vb:rawphrase show_results_as}:</label>
+			<ul class="checkradio group rightcol">
+			<li><label for="rb_showposts_0"><input type="radio" name="showposts" value="0" id="rb_showposts_0" tabindex="1" {vb:raw showpostschecked.0}<vb:if condition="!$showpostschecked[0] AND !$showpostschecked[1]"> checked="checked"</vb:if> /> {vb:rawphrase searchtype_issues}</label></li>
+			<li><label for="rb_showposts_1"><input type="radio" name="showposts" value="1" id="rb_showposts_1" tabindex="1" {vb:raw showpostschecked.1} /> {vb:rawphrase searchtype_issuenotes}</label></li>
+			</ul>
+		</div>
+
 		{vb:raw human_verify}
 	</div>
 	<div class="blockfoot actionbuttons">
@@ -8083,7 +8123,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 				<option value="1" selected="selected">{vb:rawphrase save_search_preferences}</option>
 				<option value="0">{vb:rawphrase clear_search_preferences}</option>
 			</select>
-			<input type="submit" class="button" name="doprefs" value="{vb:rawphrase go}" id="save_searchprefs" tabindex="1"  onclick="vB_AJAX_SearchPrefs.prototype.form_click"/>
+			<input type="submit" class="button" name="doprefs" value="{vb:rawphrase go}" id="save_searchprefs" tabindex="1"	 onclick="vB_AJAX_SearchPrefs.prototype.form_click"/>
 			<input type="image" src="{vb:raw vboptions.cleargifurl}"/>
 			<script type="text/javascript">
 			<!--
@@ -8153,7 +8193,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 </div>
 </form>
 ]]></template>
-		<template name="search_results_ptissue" templatetype="template" date="1273321371" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li class="threadbit" id="issue_{vb:raw issue.issueid}">
+		<template name="search_results_ptissue" templatetype="template" date="1284156169" username="Pitchoune" version="2.1.2"><![CDATA[<li class="threadbit" id="issue_{vb:raw issue.issueid}">
 	<div class="nonsticky">
 		<div class="threadinfo thread">
 			<!--  status icon block -->
@@ -8162,39 +8202,36 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 			<!-- title / author block -->
 			<div class="inner">
 				<h3 class="searchtitle">
-					<a class="title threadtitle_unread" href="project.php?issueid={vb:raw issue.issueid}" id="issue_title_{vb:raw issue.issueid}" title="{vb:raw issue.summary}">{vb:raw issue.title}</a>
+					<a class="title" href="project.php?issueid={vb:raw issue.issueid}" id="issue_title_{vb:raw issue.issueid}" title="{vb:raw issue.summary}">{vb:raw issue.title}</a>
 				</h3>
 
 				<div class="threadmeta">				
 					<div class="author">
-						{vb:rawphrase started_by_x_y_z_a, {vb:link member, {vb:raw issue}, null, 'postuserid', 'postusername'}, {vb:raw issue.submitusername}, {vb:raw issue.submitdate}, {vb:raw issue.submittime}}
-						<vb:comment><vb:if condition="$show['unsubscribe']">
-							 &nbsp; <a href="subscription.php?{vb:raw session.sessionurl}do=removesubscription&amp;return=ucp&amp;t={vb:raw thread.threadid}" rel="nofollow">{vb:rawphrase unsubscribe}</a>
-						</vb:if></vb:comment>
-						<vb:comment>
-						The pagenav here could be a real great feature!
-						<vb:if condition="$thread['pagenav']">
-							<dl class="pagination" id="pagination_threadbit_{vb:raw thread.realthreadid}">
-								<dt class="label">{vb:raw thread.totalpages} {vb:rawphrase pages} <span class="separator">&bull;</span></dt>
-								<dd>
-										{vb:raw thread.pagenav}
-										<vb:if condition="$show['pagenavmore']"> ... <a href="{vb:link thread, {vb:raw thread}, {vb:raw pageinfo_lastpage}, threadid, threadtitle}">{vb:raw thread.totalpages}</a></vb:if>
-								</dd>
-							</dl>
-						</vb:if>
-						</vb:comment>
+						{vb:rawphrase started_by_x_y_z_a, {vb:link member, {vb:raw issue}, null, 'postuserid', 'postusername'}, {vb:raw issue.submitusername}, {vb:raw issue.submitdate}, {vb:raw issue.submittime}, {vb:stylevar dirmark}}
 					</div>
 				</div>
 			</div>
 			<!-- iconinfo -->
 			<div class="threaddetails td">
 				<div class="threaddetailicons">
-					<vb:if condition="$issue['isassigned']"><img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" /></vb:if>
-					<vb:if condition="$issue['state'] == 'closed'"><img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="{vb:rawphrase closed}" /></vb:if>
-					<vb:if condition="$issue['visible'] == 'private'"><img src="{vb:stylevar imgdir_misc}/issue_private.png" alt="{vb:rawphrase private}" /></vb:if>
-					<vb:if condition="$issue['visible'] == 'deleted'"><img src="{vb:stylevar imgdir_misc}/trashcan_small.gif" alt="{vb:rawphrase issue_deleted}" /></vb:if>
-					<vb:if condition="$issue['subscribetype']"><img src="{vb:stylevar imgdir_misc}/subscribed.gif" alt="{vb:rawphrase you_subscribed_issue}" /></vb:if>
-					<vb:if condition="$issue['pendingpetitions']"><img src="{vb:stylevar imgdir_misc}/issue_petition.png" alt="{vb:rawphrase has_pending_petitions}" /></vb:if>
+					<vb:if condition="$issue['isassigned']">
+                                            <img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" />
+                                        </vb:if>
+					<vb:if condition="$issue['state'] == 'closed'">
+                                            <img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="{vb:rawphrase closed}" />
+                                        </vb:if>
+					<vb:if condition="$issue['visible'] == 'private'">
+                                            <img src="{vb:stylevar imgdir_misc}/issue_private.png" alt="{vb:rawphrase private}" />
+                                        </vb:if>
+					<vb:if condition="$issue['visible'] == 'deleted'">
+                                            <img src="{vb:stylevar imgdir_misc}/trashcan_small.gif" alt="{vb:rawphrase issue_deleted}" />
+                                        </vb:if>
+					<vb:if condition="$issue['subscribetype']">
+                                            <img src="{vb:stylevar imgdir_misc}/subscribed.gif" alt="{vb:rawphrase you_subscribed_issue}" />
+                                        </vb:if>
+					<vb:if condition="$issue['pendingpetitions']">
+                                            <img src="{vb:stylevar imgdir_misc}/issue_petition.png" alt="{vb:rawphrase has_pending_petitions}" />
+                                        </vb:if>
 				</div>
 			</div>
 		</div>
@@ -8218,6 +8255,47 @@ vbphrase["december"]  = "{vb:rawphrase december}";
  &nbsp;<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" /></a>
 			</dd>
 		</dl>
+	</div>
+</li>]]></template>
+		<template name="search_results_ptissuenote" templatetype="template" date="1284156214" username="Pitchoune" version="2.1.2"><![CDATA[<li class="postbit postbitcontainer" id="issue_{vb:raw issue.issueid}">
+	<div class="postbitdetails_noavatar">
+		<div class="posthead">
+	            <span class="postdate">
+	                <span class="date">{vb:raw issue.submitdate}&nbsp;<span class="time">{vb:raw issue.submittime}</span></span>
+	            </span>
+	        </div>
+		<div class="userinfo_noavatar">
+			<div class="contact">
+				<div class="username_container">
+					<h2>{vb:rawphrase issue}: <a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.title}">{vb:raw issue.title}</a></h2>
+					<vb:if condition="$issue['submituserid']">
+						{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'submituserid', 'submitusername'}, {vb:raw issue.submitusername}}
+					<vb:else />
+						{vb:rawphrase by_x_guest, {vb:raw issue.submitusername}}
+					</vb:if>
+				</div>
+			</div>
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt>{vb:rawphrase replies}</dt><dd>{vb:raw issue.replycount}</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div class="postbody">
+		<h3 class="posttitle">
+			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$issue['firstnoteid'] != $issue['issuenoteid']">#note{vb:raw issue.issuenoteid}</vb:if>">{vb:raw issue.title}</a>
+		</h3>
+
+		<div class="postrow">
+			<div class="content">
+				<div id="post_message_{vb:raw issue.issuenoteid}">
+					<blockquote class="postcontent restore">
+						{vb:raw issue.pagetext}
+					</blockquote>
+				</div>
+			</div>
+		</div>
 	</div>
 </li>]]></template>
 		<template name="search_results_ptproject" templatetype="template" date="1273322127" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li class="threadbit" id="project_{vb:raw project.projectid}">
@@ -8493,6 +8571,7 @@ if ($do == 'index' AND $vbulletin->userinfo['permissions']['ptpermissions'] & $v
 			<hookname>cache_templates</hookname>
 			<phpcode><![CDATA[$pt_templates =  array(
 	'pt_navbar_link',
+	'pt_headinclude',
 	'pt_headinclude_ie'
 );
 
@@ -8522,7 +8601,9 @@ switch (THIS_SCRIPT)
 		$pt_templates[] = 'pt_checkbox_optgroup';
 		$pt_templates[] = 'pt_checkbox_option';
 		$pt_templates[] = 'search_input_ptissue';
-		$pt_templates[] = 'search_input_ptproject';
+		$pt_templates[] = 'search_input_ptissuenote';
+        $pt_templates[] = 'search_results_ptissue';
+        $pt_templates[] = 'search_results_ptissuenote';
 		break;
 	case 'showthread':
 		$pt_templates[] = 'pt_postbit_create_issue';
@@ -9877,6 +9958,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="search_entire_project" date="1242323852" username="admin" version="2.1.0 Alpha 1"><![CDATA[Search entire project]]></phrase>
 			<phrase name="search_for_issues" date="1273092619" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[Search for Issues]]></phrase>
 			<phrase name="search_for_projects" date="1273092628" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[Search for Projects]]></phrase>
+			<phrase name="searchtype_issuenotes" date="1284156359" username="Pitchoune" version="2.1.2"><![CDATA[Issue Notes]]></phrase>
 			<phrase name="searchtype_issues" date="1273092490" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[Issues]]></phrase>
 			<phrase name="searchtype_projects" date="1273092500" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[Projects]]></phrase>
 		</phrasetype>
