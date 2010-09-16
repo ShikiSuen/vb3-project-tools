@@ -1200,9 +1200,11 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 	));
 }
 
-// ############################################################
-// Drop fields for 'Create issue from thread' feature - moved into a new table
-// ############################################################
+// #############################################################################
+/**
+* 'Create issue from thread' edited to be expandable
+* Moved into a new table
+*/
 
 // Get the contenttypeid of threads
 require_once(DIR . '/includes/class_bootstrap_framework.php');
@@ -1258,20 +1260,13 @@ while ($usercount = $db->fetch_array($usercounts))
 require_once(DIR . '/includes/adminfunctions_projecttools.php');
 rebuild_profile_issue_counters();
 
+// #############################################################################
+/**
+* CMS Widgets
+*/
+
 // Adding some infos for CMS widgets
-
-// Define if we are using Suite Publishing
-function is_suite($productid)
-{
-	if (file_exists(DIR . "/includes/xml/product-$productid.xml"))
-	{
-		return true;
-	}
-
-	return false;
-}
-
-if (is_suite('vbcms'))
+if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
 {
 	// We need to have the packageid of vbcms
 	$packageid = $db->query_first("
@@ -1314,8 +1309,38 @@ $db->query_write("
 	INSERT INTO " . TABLE_PREFIX . "contenttype
 		(class, packageid, canplace, cansearch, cantag, canattach)
 	VALUES
-		('IssueNote', $package['packageid'], '0', '0', '0', '0')
-");]]></installcode>
+		('IssueNote', " . $package['packageid'] . ", '0', '0', '0', '0')
+");
+
+// #############################################################################
+/**
+* Forum Block
+*/
+
+// Adding forum block
+$db->query_write("
+	INSERT INTO " . TABLE_PREFIX . "block
+		(productid, name, title, allowcache)
+	VALUES
+		('vbprojecttools', 'ptissues', 'blocktype_ptissues', 1)
+");
+
+// Purge block cache and reload all block types to add the new block
+
+// Required
+require_once(DIR . '/includes/class_block.php');
+$blockmanager = vB_BlockManager::create($vbulletin);
+
+// Purge block cache
+$blockmanager->purgeBlockCache();
+
+// Purge activeblocks datastore
+$db->query_write("
+	DELETE FROM " . TABLE_PREFIX . "datastore WHERE title = 'activeblocks'
+");
+
+// Reload
+$blockmanager->reloadBlockTypes(true);]]></installcode>
 			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('pt_issuestatus'))
@@ -1329,18 +1354,13 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");
 
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");
 
-// Define if we are using Suite Publishing
-function is_suite($productid)
-{
-	if (file_exists(DIR . "/includes/xml/product-$productid.xml"))
-	{
-		return true;
-	}
+// #############################################################################
+/**
+* CMS Widgets
+*/
 
-	return false;
-}
-
-if (is_suite('vbcms'))
+// Removing some infos for CMS widgets
+if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
 {
 	$db->query_write("
 		DELETE FROM " . TABLE_PREFIX . "cms_widgettype
@@ -1363,10 +1383,76 @@ if (is_suite('vbcms'))
 $db->query_write("
 	DELETE FROM " . TABLE_PREFIX . "contenttype
 	WHERE class = 'IssueNote'
-");]]></uninstallcode>
+");
+
+// #############################################################################
+/**
+* Forum Block
+*/
+
+// Removing forum block
+$db->query_write("
+	DELETE FROM " . TABLE_PREFIX . "block WHERE name = 'ptissues'
+");
+
+// Purge block cache and reload all block types to remove the new block
+
+// Required
+require_once(DIR . '/includes/class_block.php');
+$blockmanager = vB_BlockManager::create($vbulletin);
+
+// Purge block cache
+$blockmanager->purgeBlockCache();
+
+// Purge activeblocks datastore
+$db->query_write("
+	DELETE FROM " . TABLE_PREFIX . "datastore WHERE title = 'activeblocks'
+");
+
+// Reload
+$blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
+		<template name="block_issues" templatetype="template" date="1284669027" username="Pitchoune" version="2.1.2"><![CDATA[<li>
+	<div class="block smaller">
+		<div class="blocksubhead">
+			<a class="collapse" id="collapse_block_newthreads_{vb:raw blockinfo.blockid}" href="{vb:raw relpath}#top"><img alt="" src="{vb:stylevar imgdir_button}/collapse_40b.png" id="collapseimg_newthreads_{vb:raw blockinfo.blockid}"/></a>
+			<img src="{vb:stylevar imgdir_siteicons}/project.png" alt="" />
+			<span class="blocktitle">{vb:raw blockinfo.title}</span>
+		</div>
+		<div id="block_newissues_{vb:raw blockinfo.blockid}" class="blockbody floatcontainer">
+			<ul class="blockrow">
+				<vb:each from="issues" key="issueid" value="issue">
+				<li class="<vb:if condition="!$vboptions['avatarenabled']">no</vb:if>avatarcontent floatcontainer">
+					<vb:if condition="$vboptions['avatarenabled']"><a class="smallavatar">
+						<vb:if condition="$issue['showavatar']">
+						<img width="30" title="" src="{vb:raw issue.avatarurl}" alt=""/>
+						<vb:else />
+						<img width="30" title="" src="{vb:stylevar imgdir_misc}/unknown.gif" alt=""/>
+						</vb:if>
+					</a></vb:if>
+					<div class="smallavatartext">
+						<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" class="title">{vb:raw issue.title}</a>
+						<br/>
+						<div class="meta">
+							<vb:if condition="$issuestype == 0">
+							{vb:rawphrase posted_by} <a href="{vb:link member, {vb:raw issue}}">{vb:raw issue.submitusername}</a> {vb:stylevar dirmark}({vb:rawphrase x_replies, {vb:raw issue.replycount}})
+							<br />{vb:raw issue.date} <span class="time">{vb:raw issue.time}</span> {vb:rawphrase in_x, {vb:raw issue.url}, {vb:raw issue.projecttitle}}
+							<vb:else />
+							{vb:rawphrase last_post_by} <a href="{vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}">{vb:raw thread.lastpostuser}</a> {vb:stylevar dirmark}({vb:rawphrase x_replies, {vb:raw issue.replycount}})
+							<br />
+							{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span> {vb:rawphrase in_x, {vb:raw issue.url}, {vb:raw issue.projecttitle}}
+							</vb:if>
+						</div>
+					</div>
+				</li>
+				</vb:each>
+			</ul>
+		</div>
+	</div>
+	<div class="underblock"></div>
+</li>]]></template>
 		<template name="projecttools-ie.css" templatetype="template" date="1280960305" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
@@ -9968,6 +10054,24 @@ To create your own report, make a search with the criteria that you want and cli
 		<phrasetype name="User Tools (global)" fieldname="user">
 			<phrase name="find_all_issues_started_by_x" date="1175175355" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Find all issues started by {1}]]></phrase>
 			<phrase name="find_all_issues_with_posts_by_x" date="1175682679" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Find all issues with posts by {1}]]></phrase>
+		</phrasetype>
+		<phrasetype name="Forum Blocks" fieldname="vbblock">
+			<phrase name="all_projects" date="1284668956" username="Pitchoune" version="2.1.2"><![CDATA[All Projects]]></phrase>
+			<phrase name="blocktype_ptissues" date="1284668906" username="Pitchoune" version="2.1.2"><![CDATA[Latest Issues]]></phrase>
+		</phrasetype>
+		<phrasetype name="Forum Blocks Settings" fieldname="vbblocksettings">
+			<phrase name="setting_issues_limit_desc" date="1284669477" username="Pitchoune" version="2.1.2"><![CDATA[This is the maximum number of issues that will display in the block.]]></phrase>
+			<phrase name="setting_issues_limit_title" date="1284669498" username="Pitchoune" version="2.1.2"><![CDATA[Maximum Issues]]></phrase>
+			<phrase name="setting_issues_projectids_desc" date="1284669335" username="Pitchoune" version="2.1.2"><![CDATA[You can choose to display issues in specific projects.]]></phrase>
+			<phrase name="setting_issues_projectids_title" date="1284669424" username="Pitchoune" version="2.1.2"><![CDATA[Projects Limit]]></phrase>
+			<phrase name="setting_issues_titlemaxchars_desc" date="1284669573" username="Pitchoune" version="2.1.2"><![CDATA[This setting allows you to specify how many characters of the issue title to display in the block.]]></phrase>
+			<phrase name="setting_issues_titlemaxchars_title" date="1284669609" username="Pitchoune" version="2.1.2"><![CDATA[Length of Issue Title]]></phrase>
+			<phrase name="setting_issues_type_desc" date="1284669734" username="Pitchoune" version="2.1.2"><![CDATA[Choose which issue type do you want to display:
+<br />
+<strong>New Started</strong> - Newly started issues will display first<br />
+<strong>New Replied</strong> - Newly replied issues will displayed first<br />
+<strong>Most Replied</strong> - Issues with most replies will display first]]></phrase>
+			<phrase name="setting_issues_type_title" date="1284669686" username="Pitchoune" version="2.1.2"><![CDATA[Issue Type]]></phrase>
 		</phrasetype>
 		<phrasetype name="vBulletin Settings" fieldname="vbsettings">
 			<phrase name="setting_pt_allowbbcode_desc" date="1176811910" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow users to include BB Code in issues? (Such as [b], [i] etc.)]]></phrase>

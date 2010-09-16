@@ -31,7 +31,7 @@ $md5_sums = array(
 		'vbulletin_ptsearch_form.js' => 'd84e84770b72a3c9fac93ed7c5dbc47f',
 	),
 	'/includes' => array(
-		'adminfunctions_projecttools.php' => 'f0df09f2283de4245c9302a7905d25a1',
+		'adminfunctions_projecttools.php' => '13ce7007951545cdc16d2c97c23f7c7f',
 		'class_bbcode_pt.php' => '2bfe1e89b944d1bdf2ac2d1654848e88',
 		'class_dm_attachment_pt.php' => '1486ae1535424df296464eef4968adef',
 		'class_dm_pt_issue.php' => '98c33b3a9cbc05ef3666a15f5a17247f',
@@ -66,6 +66,9 @@ $md5_sums = array(
 		'functions_pt_usercp.php' => '00a5adad40cee34aef310e1505b153c2',
 		'functions_pt_usertools.php' => '633af292a0d285de6e7c78a1b5abd33e',
 		'functions_ptimporter.php' => '4cfdee1c8cf1909f058ea3c6ad681594',
+	),
+	'/includes/block' => array(
+		'ptissues.php' => '07e096317033dc17187b7e56063a7531',
 	),
 	'/includes/cron' => array(
 		'pt_cleanup.php' => '5b62b023dc0da834e2adaf89d14d0c14',
