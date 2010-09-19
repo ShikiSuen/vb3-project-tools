@@ -1319,7 +1319,7 @@ $db->query_write("
 
 // Adding forum block
 $db->query_write("
-	INSERT INTO " . TABLE_PREFIX . "block
+	INSERT INTO " . TABLE_PREFIX . "blocktype
 		(productid, name, title, allowcache)
 	VALUES
 		('vbprojecttools', 'ptissues', 'blocktype_ptissues', 1)
@@ -1392,7 +1392,7 @@ $db->query_write("
 
 // Removing forum block
 $db->query_write("
-	DELETE FROM " . TABLE_PREFIX . "block WHERE name = 'ptissues'
+	DELETE FROM " . TABLE_PREFIX . "blocktype WHERE name = 'ptissues'
 ");
 
 // Purge block cache and reload all block types to remove the new block
@@ -1929,7 +1929,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1278801909" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1284889669" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3072,7 +3072,6 @@ div.checkbox_multiselect {
 
 .vB_MagicSelect span, .vB_MagicSelect_hover span {
 	display: inline-block;
-	padding: 0 2px;
 }
 
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
@@ -3090,7 +3089,7 @@ div.checkbox_multiselect {
 
 .vB_MagicSelect_preload {
 	border: none;
-	padding: 2px 1px 3px 1px;
+	padding: 1px;
 	background-color: transparent;
 }
 
@@ -5742,7 +5741,7 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postbit_create_issue" templatetype="template" date="1278454416" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&p={vb:raw post.postid}" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
+		<template name="pt_postbit_create_issue" templatetype="template" date="1284847021" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&amp;p={vb:raw post.postid}" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
 <span class="seperator">&nbsp;</span>]]></template>
 		<template name="pt_postbit_link_issue" templatetype="template" date="1278454430" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$show['pt_separator']">
 	<div class="ptseparator">-</div>
@@ -7825,7 +7824,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 
 </body>
 </html>]]></template>
-		<template name="search_input_ptissuenote" templatetype="template" date="1284156144" username="Pitchoune" version="2.1.2"><![CDATA[<form action="search.php?do=process" method="post" name="vbform" id="searchform" class="">
+		<template name="search_input_ptissuenote" templatetype="template" date="1284852054" username="Pitchoune" version="2.1.2"><![CDATA[<form action="search.php?do=process" method="post" name="vbform" id="searchform" class="">
 
 <input type="hidden" name="s" value="{vb:raw sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw securitytoken}"/>
@@ -8200,7 +8199,9 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 			</ul>
 		</div>
 
-		{vb:raw human_verify}
+		<vb:if condition="$human_verify">
+			{vb:raw human_verify}
+		</vb:if>
 	</div>
 	<div class="blockfoot actionbuttons">
 	<vb:if condition="$show['member']">
@@ -9001,10 +9002,16 @@ $template_hook['headinclude_bottom_css'] .= $templater->render();]]></phpcode>
 		<plugin active="1" executionorder="5">
 			<title>Postbit: Misc data for postbits</title>
 			<hookname>postbit_display_complete</hookname>
-			<phpcode><![CDATA[// Add link to promote the post as an issue
-$templater = vB_Template::create('pt_postbit_create_issue');
-	$templater->register('post', $post);
-$template_hook['postbit_controls'] .= $templater->render();
+			<phpcode><![CDATA[// TODO: this could have its own permission in moderation for future
+$show['createptissue'] = can_moderate($thread['forumid'], 'canmanagethreads') AND can_moderate($thread['forumid'], 'canremoveposts');
+
+// Add link to promote the post as an issue
+if ($show['createptissue'] AND (!$post['forwardlink'] AND THIS_SCRIPT != 'usernote' AND THIS_SCRIPT != 'announcement'))
+{
+	$templater = vB_Template::create('pt_postbit_create_issue');
+		$templater->register('post', $post);
+	$template_hook['postbit_controls'] .= $templater->render();
+}
 
 // Add a little text next to the post title saying the thread has been moved
 $issueinfos = unserialize($post['pt_issueimport']);
