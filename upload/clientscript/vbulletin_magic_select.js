@@ -173,8 +173,8 @@ function vB_MagicSelect(htmlelement, fieldname, itemid, fetchurl, saveurl, facto
 vB_MagicSelect.prototype.create_button = function()
 {
 	var button = document.createElement("img");
-		button.src = IMGDIR_MISC + "/13x13arrowdown.gif";
-		button.className = "inlineimg vB_MagicSelect_button";
+		button.src = IMGDIR_MISC + "/black_downward_arrow.png";
+		button.className = "vB_MagicSelect_button";
 	return button;
 }
 
