@@ -467,7 +467,7 @@ vB_MagicSelect.prototype.set_value = function(selectedIndex)
 
 	this.selectedIndex = selectedIndex;
 	this.value_container.innerHTML = option.innerHTML;
-	this.button.src = IMGDIR_MISC + "/13x13arrowdown.gif";
+	this.button.src = IMGDIR_MISC + "/black_downward_arrow.png";
 	YAHOO.util.Dom.removeClass(this.value_container, "shade");
 };
 
@@ -478,7 +478,8 @@ vB_MagicSelect.prototype.set_temp_value = function(value)
 {
 	vBulletin.console("vB_MagicSelect (%s) :: set_temp_value(%s)", this.fieldname, value);
 
-	this.button.src = IMGDIR_MISC + "/13x13progress.gif";
+	this.button.src = IMGDIR_MISC + "/progress.gif";
+	this.button.setAttribute('style', 'height: 21px')
 	this.value_container.innerHTML = value;
 	YAHOO.util.Dom.addClass(this.value_container, "shade");
 };

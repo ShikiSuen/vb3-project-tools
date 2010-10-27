@@ -20,7 +20,7 @@ $md5_sums = array(
 	),
 	'/clientscript' => array(
 		'vbulletin_list_builder.js' => 'a6f6e4c9174fb16eeb2ffb163590f622',
-		'vbulletin_magic_select.js' => '064da2c23c26fd9085670042e57b48a0',
+		'vbulletin_magic_select.js' => '5a071c41c3c0eaee504a34b28e72c866',
 		'vbulletin_pt_issue.js' => '357ba0abece7d67dbaf725ab0ad9f4ae',
 		'vbulletin_pt_read_marker.js' => '9923b22e8c315613760f5ac3491573e5',
 		'vbulletin_ptsearch_form.js' => 'd84e84770b72a3c9fac93ed7c5dbc47f',
@@ -73,8 +73,9 @@ $md5_sums = array(
 	'/includes/xml' => array(
 		'bitfield_vbprojecttools.xml' => '293cc0eb3f6fbd2d9aad308710cf7871',
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
+		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'ab3876ae66973c4d737cd36b5c8b67bb',
-		'product-vbprojecttools.xml' => 'dc7713994e8ec5ba8e310ee135036723',
+		'product-vbprojecttools.xml' => '5672db9f3c663b0d698ecfd9506ee183',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'c184eac2d54ea4f8295a2a9f229d007e',
