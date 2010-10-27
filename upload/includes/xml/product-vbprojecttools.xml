@@ -1929,7 +1929,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1284889669" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1285848822" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3075,7 +3075,7 @@ div.checkbox_multiselect {
 }
 
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
-	padding: 1px;
+	/* padding: 1px; */
 	vertical-align: text-top;
 }
 
@@ -3089,12 +3089,13 @@ div.checkbox_multiselect {
 
 .vB_MagicSelect_preload {
 	border: none;
-	padding: 1px;
+	padding: 4px 0px; /* 1px */
 	background-color: transparent;
 }
 
 .vB_MagicSelect_wrappable {
 	white-space: normal;
+	padding: 2px 0px;
 }
 
 .vB_MagicSelect_margin {
@@ -3199,7 +3200,7 @@ a.shade:active, a.shade:hover {
 		<input type="checkbox" id="{vb:raw optionid}" name="{vb:raw optionname}" value="{vb:raw optionvalue}" tabindex="1" {vb:raw optionchecked} />&nbsp;{vb:raw optiontitle}
 	</label>
 </li>]]></template>
-		<template name="pt_forumbit_project" templatetype="template" date="1275833860" username="thincom2000" version="2.1.1"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
+		<template name="pt_forumbit_project" templatetype="template" date="1288086500" username="Pitchoune" version="2.1.2"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
 	<div class="forumrow table">
         <div class="foruminfo td">
 		<img id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
@@ -3231,9 +3232,9 @@ a.shade:active, a.shade:hover {
 			<div>{vb:rawphrase private}</div>
 		<vb:else />
 			<vb:if condition="$project['lastpostdate']">
-				<div><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" class="threadtitle" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}"><strong>{vb:raw project.lastissuetitle_short}</strong></a>
-				{vb:rawphrase by_x, {vb:link member, {vb:raw project}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw project.lastpostusername}}
-				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}" class="lastpostlink"><img src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" /></a>
+				<div><p class=""lastposttitle><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" class="threadtitle" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}"><strong>{vb:raw project.lastissuetitle_short}</strong></a></p>
+				<div class="lastpostby">{vb:rawphrase by_x, {vb:link member, {vb:raw project}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw project.lastpostusername}}
+				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}" class="lastpostlink"><img src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" /></a></div>
 				<p class="lastpostdate">{vb:raw project.lastpostdate} <vb:if condition="!$show['detailedtime']"><em class="time">{vb:raw project.lastposttime}</em></vb:if></p></div>
 			<vb:else />
 				<div>{vb:rawphrase n_a}</div>

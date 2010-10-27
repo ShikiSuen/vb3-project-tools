@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<css product="vbprojecttools">
+	<rollup name="projecttools-rollup.css">
+		<template>projecttools.css</template>
+		<template>toolsmenu.css</template>
+	</rollup>
+</css>
