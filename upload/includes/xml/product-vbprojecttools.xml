@@ -1453,7 +1453,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 	</div>
 	<div class="underblock"></div>
 </li>]]></template>
-		<template name="projecttools-ie.css" templatetype="template" date="1280960305" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools-ie.css" templatetype="template" date="1288450759" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1469,40 +1469,6 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 
 .pagination {
 	display: inline;
-}
-
-/* Code for all controls in PT - grey bar above all contents */
-.above_project_controls {
-	background-image: none;
-	/* IE6 workaround */
-	_position: static;
-}
-
-.above_project_controls .popupgroup.projectpopups .popupmenu {
-	float: {vb:stylevar left};
-}
-
-.above_project_controls .popupgroup.projectpopups .popupmenu a.popupctrl {
-	float: none;
-}
-
-.projectpopups a.popupctrl, .projectpopups.popupgroup .popupmenu a.popupctrl{
-	display: inline;
-}
-
-.projectpopups li {
-	display: block;
-	float: {vb:stylevar left};
-	clear: {vb:stylevar right};
-	margin-top: 0;
-	margin-bottom: 0;
-}
-
-.projectpopups .popupbody li {
-	width: 200px;
-	/* IE6 workarounds */
-	_width: 100%;
-	_clear: none;
 }
 
 /* Project overview definitions */
@@ -1929,7 +1895,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1288174267" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1288450535" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -1939,81 +1905,21 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
  */
 
 /* Code for all controls in PT - grey bar above all contents */
-.above_project_controls {
-	clear: both;
-	display: block;
-	width: 100%;
-	border: {vb:stylevar forummenu_border};
-	background: {vb:stylevar forummenu_background};
-	margin-top: {vb:math {vb:stylevar padding}/2};
-	margin-bottom: 0;
-	position: relative;
-	-moz-border-radius: {vb:stylevar forummenu_border_radius};
-	-webkit-border-radius: {vb:stylevar forummenu_border_radius};
-	float: {vb:stylevar left};
-}
-
-.above_project_controls div {
-	color: {vb:stylevar forummenu_color};
-	-moz-border-radius: {vb:stylevar forummenu_border_radius};
-	-webkit-border-radius: {vb:stylevar forummenu_border_radius};
-	text-align: {vb:stylevar right};
-	width: 100%;
-	clear: both;
-	float: {vb:stylevar left};
-}
-
-.above_project_controls ul {
-	padding: {vb:math {vb:stylevar padding}/2} 0;
-	float: {vb:stylevar right};
-}
-
 a.toolbar_text{
-	font: {vb:stylevar forummenu_font};
-	color: {vb:stylevar forummenu_color};
-	padding: 0;
+	font-size: {vb:stylevar toolsmenu_fontSize};
+	color: {vb:stylevar toolsmenu_color};
+	padding: 0.2em 0.4em;
 	border: 0;
-	display:block;
+	display: block;
 	float: {vb:stylevar left};
 	clear: {vb:stylevar right};
 }
-
 
 .searchprojects.popupmenu .popupbody {
-	min-width:240px;
-	max-width:240px;
+	min-width: 240px;
+	max-width: 240px;
 	font: {vb:stylevar forummenu_font};
 	{vb:stylevar left}: -100px;
-}
-
-.projectpopups a.popupctrl, .projectpopups.popupgroup .popupmenu a.popupctrl{
-	font: {vb:stylevar forummenu_font};
-	color: {vb:stylevar forummenu_color};
-	background: transparent url({vb:stylevar imgdir_misc}/black_downward_arrow.png) no-repeat center {vb:stylevar right};
-	padding: 0;
-	border: 0;
-	padding-{vb:stylevar right}: 15px; /* based on icon size */
-	display:block;
-	float: {vb:stylevar left};
-	clear: {vb:stylevar right};
-}
-
-.projectpopups .popupmenu:hover a.popupctrl, .projectpopups .popupmenu:hover .popupctrl a.popupctrl.active {
-	border: 0;
-	color: {vb:stylevar forummenu_color};
-}
-
-.projectpopups li {
-	position: relative;
-}
-
-.projectpopups ul {
-	text-align: {vb:stylevar left};
-	float: {vb:stylevar left};
-}
-
-.projectpopups .popupbody {
-	padding: 3px;
 }
 
 .projectpopups .popupbody .text {
@@ -2038,17 +1944,9 @@ a.toolbar_text{
 	width: 48%;
 }
 
-.projectpopups .popupbody a {
-	color: {vb:stylevar body_color};
-}
-
-.projectpopups .popupbody li {
-	width: 100%;
-}
-
 a.firstunread, a.firstunread:hover
 {
-	color: {vb:stylevar forummenu_color};
+	color: {vb:stylevar body_color};
 }
 
 /* Project overview definitions */
@@ -2508,12 +2406,12 @@ a.firstunread, a.firstunread:hover
 }
 
 #pt_issue_content .blockrow {
-	background: none repeat scroll 0 0 #F2F6F8;
+	background: {vb:stylevar issue_userinfo_background};
 }
 
 #pt_issue_content .issuetext {
 	padding-bottom: 26px;
-	background: none repeat scroll 0 0 #FFFFFF;
+	background: {vb:stylevar issue_background};
 }
 
 #pt_issue_content .blockrow .issue_message {
@@ -2534,7 +2432,7 @@ a.firstunread, a.firstunread:hover
 }
 
 #pt_issue_content .issuefoot .textcontrols {
-	background: none repeat scroll 0 0 #E9E9E9;
+	background: {vb:stylevar issue_foot_background};
 	display: block;
 	font: bold 11px Tahoma,Calibri,Verdana,Geneva,sans-serif;
 	height: 16px;
@@ -2650,12 +2548,12 @@ a.firstunread, a.firstunread:hover
 
 /* Issue notes */
 .pt_issue_note .blockrow {
-	background: none repeat scroll 0 0 #F2F6F8;
+	background: {vb:stylevar issue_userinfo_background};
 }
 
 .pt_issue_note .issuetext {
 	padding-bottom: 26px;
-	background: none repeat scroll 0 0 #FFFFFF;
+	background: {vb:stylevar issue_background};
 }
 
 .pt_issue_note .blockrow .issue_message {
@@ -2663,7 +2561,7 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issue_note .issuefoot {
-	background: none repeat scroll 0 0 transparent;
+	background: {vb:stylevar issue_foot_background};
 	clear: both;
 	display: block;
 	float: {vb:stylevar left};
@@ -8664,8 +8562,16 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 </div>]]></template>
 	</templates>
 	<stylevardfns>
+		<stylevargroup name="ProjectTools">
+			<stylevar name="issue_background" datatype="background" validation="" failsafe="" />
+			<stylevar name="issue_foot_background" datatype="background" validation="" failsafe="" />
+			<stylevar name="issue_userinfo_background" datatype="background" validation="" failsafe="" />
+		</stylevargroup>
 	</stylevardfns>
 	<stylevars>
+		<stylevar name="issue_background" value="YTo2OntzOjU6InVuaXRzIjtzOjA6IiI7czo1OiJjb2xvciI7czo3OiIjRkFGQUZBIjtzOjU6ImltYWdlIjtzOjA6IiI7czo2OiJyZXBlYXQiO3M6MDoiIjtzOjE6IngiO3M6MDoiIjtzOjE6InkiO3M6MDoiIjt9" />
+		<stylevar name="issue_foot_background" value="YTo2OntzOjU6InVuaXRzIjtzOjA6IiI7czo1OiJjb2xvciI7czo3OiIjRTlFOUU5IjtzOjU6ImltYWdlIjtzOjA6IiI7czo2OiJyZXBlYXQiO3M6MDoiIjtzOjE6IngiO3M6MDoiIjtzOjE6InkiO3M6MDoiIjt9" />
+		<stylevar name="issue_userinfo_background" value="YTo2OntzOjU6InVuaXRzIjtzOjA6IiI7czo1OiJjb2xvciI7czo3OiIjRjJGNkY4IjtzOjU6ImltYWdlIjtzOjA6IiI7czo2OiJyZXBlYXQiO3M6MDoiIjtzOjE6IngiO3M6MDoiIjtzOjE6InkiO3M6MDoiIjt9" />
 	</stylevars>
 	<plugins>
 		<plugin active="1" executionorder="5">
@@ -10175,6 +10081,18 @@ To create your own report, make a search with the criteria that you want and cli
 		</phrasetype>
 		<phrasetype name="Style Tools" fieldname="style">
 			<phrase name="group_project_tools" date="1171635494" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools]]></phrase>
+			<phrase name="stylevar_issue_background_description" date="1288449690" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_issue_background_name" date="1288449690" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_issue_foot_background_description" date="1288449667" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_issue_foot_background_name" date="1288449667" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_issue_userinfo_background_description" date="1288449652" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_issue_userinfo_background_name" date="1288449652" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_project_background_description" date="1288449004" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_project_background_name" date="1288449004" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_project_foot_background_description" date="1288449134" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_project_foot_background_name" date="1288449134" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_project_userinfo_background_description" date="1288448636" username="Pitchoune" version="4.0.8" />
+			<phrase name="stylevar_project_userinfo_background_name" date="1288448636" username="Pitchoune" version="4.0.8" />
 		</phrasetype>
 		<phrasetype name="User Tools (global)" fieldname="user">
 			<phrase name="find_all_issues_started_by_x" date="1175175355" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Find all issues started by {1}]]></phrase>
