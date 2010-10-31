@@ -11,7 +11,6 @@
 || #################################################################### ||
 \*======================================================================*/
 
-require_once(DIR . '/includes/adminfunctions_projecttools.php');
 require_once(DIR . '/includes/functions_projecttools.php');
 
 /**
@@ -213,7 +212,7 @@ $options = construct_project_chooser_options(0, fetch_phrase("all_projects", "vb
 
 			while ($issue = $this->registry->db->fetch_array($issues))
 			{
-				// $issue['url'] = fetch_seo_url('issue', $issue);
+				$issue['url'] = 'project.php?'. $vbulletin->session->vars['sessionurl'] . 'issueid=' . $issue['issueid'] . ''; //fetch_seo_url('issue', $issue);
 				// $issue['newposturl'] = fetch_seo_url('issue', $issue, array('goto' => 'newpost'));
 				// $issue['lastposturl'] = fetch_seo_url('issue', $issue, array('p' => $issue['lastpostid'])) . '#note' . $issue['lastpostid'];
 

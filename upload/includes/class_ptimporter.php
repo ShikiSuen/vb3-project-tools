@@ -678,15 +678,16 @@ class vB_PtImporter
 		if ($this->datatype == 'thread')
 		{
 			$change->set('field', 'issue_imported');
+			$change->set('oldvalue', $this->datainfo['threadid']);
 		}
 
 		if ($this->datatype == 'post')
 		{
 			$change->set('field', 'issue_imported_post');
+			$change->set('oldvalue', $this->datainfo['threadid']); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
 		}
 
 		$change->set('newvalue', $this->datainfo['title']);
-		$change->set('oldvalue', $this->datainfo['threadid']);
 		$change->save();
 	}
 }

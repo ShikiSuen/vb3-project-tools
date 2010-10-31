@@ -266,7 +266,7 @@ class vBCms_Widget_RecentPTComments extends vBCms_Widget
 			$view->setDisplayView(false);
 		}
 		$view->results_html = $results;
-		//echo '<div><pre>';print_r($view);echo '</pre></div>';exit;
+
 		return $view;
 	}
 

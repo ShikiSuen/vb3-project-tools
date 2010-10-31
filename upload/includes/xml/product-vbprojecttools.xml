@@ -1427,7 +1427,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
-		<template name="block_issues" templatetype="template" date="1284669027" username="Pitchoune" version="2.1.2"><![CDATA[<li>
+		<template name="block_issues" templatetype="template" date="1288561867" username="Pitchoune" version="2.1.2"><![CDATA[<li>
 	<div class="block smaller">
 		<div class="blocksubhead">
 			<a class="collapse" id="collapse_block_newthreads_{vb:raw blockinfo.blockid}" href="{vb:raw relpath}#top"><img alt="" src="{vb:stylevar imgdir_button}/collapse_40b.png" id="collapseimg_newthreads_{vb:raw blockinfo.blockid}"/></a>
@@ -1437,17 +1437,22 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		<div id="block_newissues_{vb:raw blockinfo.blockid}" class="blockbody floatcontainer">
 			<ul class="blockrow">
 				<vb:each from="issues" key="issueid" value="issue">
-				<li class="<vb:if condition="!$vboptions['avatarenabled']">no</vb:if>avatarcontent floatcontainer">
-					<vb:if condition="$vboptions['avatarenabled']"><a class="smallavatar">
+				<li class="<vb:if condition="!$vboptions['avatarenabled']">no</vb:if>avatarcontent floatcontainer widget_post_bit">
+					<div class="widget_post_userinfo">
+					<vb:if condition="$vboptions['avatarenabled']">
+						<div class="cms_widget_post_useravatar widget_post_useravatar">
+						<a class="smallavatar comments_member_avatar_link" href="{vb:link member, {vb:raw issue}}">
 						<vb:if condition="$issue['showavatar']">
 						<img width="30" title="" src="{vb:raw issue.avatarurl}" alt=""/>
 						<vb:else />
 						<img width="30" title="" src="{vb:stylevar imgdir_misc}/unknown.gif" alt=""/>
 						</vb:if>
-					</a></vb:if>
-					<div class="smallavatartext">
-						<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" class="title">{vb:raw issue.title}</a>
-						<br/>
+						</a>
+						</div>
+					</vb:if>
+					</div>
+					<div class="smallavatartext widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if>">
+						<h5 class="widget_post_header"><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" class="title">{vb:raw issue.title}</a></h5>
 						<div class="meta">
 							<vb:if condition="$issuestype == 0">
 							{vb:rawphrase posted_by} <a href="{vb:link member, {vb:raw issue}}">{vb:raw issue.submitusername}</a> {vb:stylevar dirmark}({vb:rawphrase x_replies, {vb:raw issue.replycount}})
@@ -1908,7 +1913,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1288547952" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1288560370" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2588,7 +2593,7 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issue_note .issuefoot .textcontrols {
-	background: none repeat scroll 0 0 #E9E9E9;
+	background: {vb:stylevar postbit_foot_background};
 	display: block;
 	font: bold 11px Tahoma,Calibri,Verdana,Geneva,sans-serif;
 	height: 16px;
@@ -8465,17 +8470,17 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 	<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 	<input type="hidden" name="adminhash" value="{vb:raw adminhash}" />
 </div>]]></template>
-		<template name="vbcms_widget_recentptcomments_page" templatetype="template" date="1283452398" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget">
+		<template name="vbcms_widget_recentptcomments_page" templatetype="template" date="1288563817" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget">
 <div class="block">
 	<div class="cms_widget_header">
 		<h3><img src="{vb:stylevar imgdir_cms}/widget-comment.png" alt="" /> {vb:raw title}</h3>
 	</div>
-	<div class="cms_widget_content">
+	<div class="cms_widget_content widget_content">
 		<vb:each from="results_html" key="issuenoteid" value="issuenote">
-			<div class="cms_widget_post_bit">
-				<div class="cms_widget_post_userinfo">
+			<div class="cms_widget_post_bit widget_post_bit">
+				<div class="cms_widget_post_userinfo widget_post_userinfo">
 					<vb:if condition="$avatarenabled">
-						<div class="cms_widget_post_useravatar">
+						<div class="cms_widget_post_useravatar widget_post_useravatar">
 							<vb:if condition="$issuenote['avatar']">
 								<a class="comments_member_avatar_link" href="{vb:link member, {vb:raw comment}, null, 'noteuserid', 'noteusername'}">
 								<img alt="{vb:raw issuenote.noteusername}" src="{vb:raw vboptions.bburl}/{vb:raw issuenote.avatar.0}" {vb:raw issuenote.avatar.1} />
@@ -8486,11 +8491,16 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 						</div>
 					</vb:if>
 				</div>
-				<div class="cms_widget_post_comment">
-					<h4 class="cms_widget_post_header"><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issuenote.issueid}">{vb:raw issuenote.title}</a></h4>
-					<p class="cms_widget_post_content">{vb:raw issuenote.pagetext}</p>
-					<a href="{vb:link member, {vb:raw issuenote}, null, 'noteuserid', 'noteusername'}">{vb:raw issuenote.noteusername}</a>
-					{vb:date {vb:raw issuenote.dateline}, {vb:raw vboptions.dateformat}}<vb:if condition="!$show['detailedtime']"> <span class="time">{vb:date {vb:raw issuenote.dateline}, {vb:raw vboptions.timeformat}}</span></vb:if>
+				<div class="cms_widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if> widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if>">
+					<h4 class="cms_widget_post_header widget_post_header"><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issuenote.issueid}">{vb:raw issuenote.title}</a></h4>
+					<p class="cms_widget_post_content widget_post_content">{vb:raw issuenote.pagetext}</p>
+					{vb:date {vb:raw issuenote.dateline}, {vb:raw vboptions.dateformat}}<vb:if condition="!$show['detailedtime']">, <span class="time">{vb:date {vb:raw issuenote.dateline}, {vb:raw vboptions.timeformat}}</span></vb:if>
+					<vb:if condition="$issuenote['noteuserid']" >
+						{vb:rawphrase by_x, {vb:link member, {vb:raw issuenote}, null, 'noteuserid', 'noteusername'}, {vb:raw issuenote.noteusername}}
+					<vb:else />
+						{vb:rawphrase by_x_guest, {vb:raw issuenote.noteusername}}
+					</vb:if>
+					<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issuenote.issueid}#note{vb:raw issuenote.issuenoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
 				</div>
 			</div>
 		</vb:each>
@@ -8530,17 +8540,17 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 	<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 	<input type="hidden" name="adminhash" value="{vb:raw adminhash}" />
 </div>]]></template>
-		<template name="vbcms_widget_recentptissues_page" templatetype="template" date="1281874540" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget">
+		<template name="vbcms_widget_recentptissues_page" templatetype="template" date="1288563277" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget">
 <div class="block">
 	<div class="cms_widget_header">
 		<h3><img src="{vb:stylevar imgdir_cms}/widget-comment.png" alt="" /> {vb:raw title}</h3>
 	</div>
-	<div class="cms_widget_content">
+	<div class="cms_widget_content widget_content">
 		<vb:each from="results_html" key="issueid" value="issue">
-			<div class="cms_widget_post_bit">
-				<div class="cms_widget_post_userinfo">
-					<vb:if condition="$avatarenabled">
-						<div class="cms_widget_post_useravatar">
+			<div class="cms_widget_post_bit widget_post_bit">
+				<div class="cms_widget_post_userinfo widget_post_userinfo">
+					<vb:if condition="$vboptions['avatarenabled']">
+						<div class="cms_widget_post_useravatar widget_post_useravatar">
 							<vb:if condition="$issue['avatar']">
 								<a class="comments_member_avatar_link" href="{vb:link member, {vb:raw comment}, null, 'submituserid', 'submitusername'}">
 								<img alt="{vb:raw issue.submitusername}" src="{vb:raw vboptions.bburl}/{vb:raw issue.avatar.0}" {vb:raw issue.avatar.1} />
@@ -8551,11 +8561,16 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 						</div>
 					</vb:if>
 				</div>
-				<div class="cms_widget_post_comment">
-					<h4 class="cms_widget_post_header"><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}">{vb:raw issue.title}</a></h4>
-					<p class="cms_widget_post_content">{vb:raw issue.pagetext}</p>
-					<a href="{vb:link member, {vb:raw issue}, null, 'submituserid', 'submitusername'}">{vb:raw issue.submitusername}</a>
-					{vb:date {vb:raw issue.submitdate}, {vb:raw vboptions.dateformat}}<vb:if condition="!$show['detailedtime']"> <span class="time">{vb:date {vb:raw issue.submitdate}, {vb:raw vboptions.timeformat}}</span></vb:if>
+				<div class="cms_widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if> widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if>">
+					<h4 class="cms_widget_post_header widget_post_header"><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}">{vb:raw issue.title}</a></h4>
+					<p class="cms_widget_post_content widget_post_content">{vb:raw issue.pagetext}</p>
+					{vb:date {vb:raw issue.submitdate}, {vb:raw vboptions.dateformat}}<vb:if condition="!$show['detailedtime']">, <span class="time">{vb:date {vb:raw issue.submitdate}, {vb:raw vboptions.timeformat}}</span></vb:if>
+					<vb:if condition="$issue['lastpostuserid']" >
+						{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'submituserid', 'submitusername'}, {vb:raw issue.submitusername}}
+					<vb:else />
+						{vb:rawphrase by_x_guest, {vb:raw issue.lastposter}}
+					</vb:if>
+					<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}#note{vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
 				</div>
 			</div>
 		</vb:each>
@@ -9828,7 +9843,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="system_message_attachment_deleted" date="1171983644" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Attachment </span> <em>{3}</em> <span class="shade">deleted</span>]]></phrase>
 			<phrase name="system_message_attachment_uploaded" date="1171983636" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Attachment </span> <em>{3}</em> <span class="shade">uploaded</span>]]></phrase>
 			<phrase name="system_message_default" date="1169740935" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">{1} changed from</span> <em>{2}</em> <span class="shade">to</span> <em>{3}</em>]]></phrase>
-			<phrase name="system_message_issue_imported" date="1274871283" username="Pitchoune" version="2.1.1"><![CDATA[<span class="shade">Issue imported from thread</span> <em>{3}</em>.]]></phrase>
+			<phrase name="system_message_issue_imported" date="1288565383" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Issue imported from thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+			<phrase name="system_message_issue_imported_post" date="1288565854" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Issue imported from a post in the thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
 			<phrase name="system_message_milestoneid" date="1213093821" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[<span class="shade">Milestone changed</span>]]></phrase>
 			<phrase name="system_message_projectcategoryid" date="1172156916" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Category changed from</span> <em>{2}</em> <span class="shade">to</span> <em>{3}</em>]]></phrase>
 			<phrase name="system_message_tags" date="1171983040" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Tags modified</span>]]></phrase>

@@ -609,10 +609,17 @@ function translate_system_note($data)
 				// note: if this is changed to show more information, permission data must be available
 				break;
 
+			case 'issue_imported':
+				$entry['oldvalue'] = fetch_seo_url('thread', $entry, null, 'oldvalue', 'newvalue');
+				break;
+
+			case 'issue_imported_post':
+				$entry['oldvalue'] = fetch_seo_url('thread', $entry, null, 'oldvalue', 'newvalue');
+				break;
+
 			default:
 				($hook = vBulletinHook::fetch_hook('project_system_note_translate')) ? eval($hook) : false;
 		}
-
 		$output[] = construct_phrase($vbphrase["$phrase"], $fieldname, $entry['oldvalue'], $entry['newvalue']);
 	}
 
@@ -1658,6 +1665,52 @@ function fetch_require_pt_hvcheck($action)
 	{
 		return ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canusehumancheck']);
 	}
+}
+
+// #############################################################################
+/**
+* Returns a list of <option> tags representing the list of projects
+*
+* @param	boolean	Whether or not to display the 'Select Project' option
+* @param	string	If specified, name for the optional top element - no name, no display
+*
+* @return	string	List of <option> tags
+*/
+function construct_project_chooser_options($displayselectproject = false, $topname = null)
+{
+	global $vbulletin, $vbphrase;
+
+	$selectoptions = array();
+
+	if ($displayselectproject)
+	{
+		$selectoptions[0] = $vbphrase['select_project'];
+	}
+
+	if ($topname)
+	{
+		$selectoptions['-1'] = $topname;
+		$startdepth = '--';
+	}
+	else
+	{
+		$startdepth = '';
+	}
+
+	$data = $vbulletin->db->query_first("
+		SELECT data
+		FROM " . TABLE_PREFIX . "datastore
+		WHERE title = 'pt_projects';
+	");
+
+	$vbulletin->pt_projects = unserialize($data['data']);
+
+	foreach ($vbulletin->pt_projects AS $projectid => $project)
+	{
+		$selectoptions["$projectid"] = $project['title'];
+	}
+
+	return $selectoptions;
 }
 
 ?>
