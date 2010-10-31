@@ -1895,7 +1895,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1288450535" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1288528335" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2406,16 +2406,20 @@ a.firstunread, a.firstunread:hover
 }
 
 #pt_issue_content .blockrow {
-	background: {vb:stylevar issue_userinfo_background};
+	background: {vb:stylevar postbit_userinfo_background};
 }
 
 #pt_issue_content .issuetext {
 	padding-bottom: 26px;
-	background: {vb:stylevar issue_background};
+	background: {vb:stylevar postbit_background};
 }
 
 #pt_issue_content .blockrow .issue_message {
 	padding-bottom: 1em;
+}
+
+#pt_issue_content .blockrow .issue_message .shade {
+	font-size: {vb:stylevar small_fontSize};
 }
 
 #pt_issue_content .issuefoot {
@@ -2423,7 +2427,7 @@ a.firstunread, a.firstunread:hover
 	clear: both;
 	display: block;
 	float: {vb:stylevar left};
-	font: bold 11px Tahoma,Calibri,Verdana,Geneva,sans-serif;
+	font: {vb:stylevar postbit_control_font};
 	position: relative;
 	{vb:stylevar right}: 0;
 	width: 100%;
@@ -2432,9 +2436,9 @@ a.firstunread, a.firstunread:hover
 }
 
 #pt_issue_content .issuefoot .textcontrols {
-	background: {vb:stylevar issue_foot_background};
+	background: {vb:stylevar postbit_foot_background};
 	display: block;
-	font: bold 11px Tahoma,Calibri,Verdana,Geneva,sans-serif;
+	font: {vb:stylevar postbit_control_font};
 	height: 16px;
 	padding: 3px 20px 7px 0;
 	width: 100%;
@@ -2446,14 +2450,11 @@ a.firstunread, a.firstunread:hover
 	{vb:stylevar right}: -10px;
 }
 
-#pt_issue_content .issuefoot .textcontrols span.seperator {
-	background: none repeat scroll 0 0 #D8D8D8;
+#pt_issue_content .issuefoot .textcontrols span.separator {
+	border-right: {vb:stylevar postfoot_separator_width} solid {vb:stylevar postfoot_separator_color};
 	display: inline;
-	height: 14px;
-	{vb:stylevar left}: 3px;
+	width: {vb:stylevar postfoot_separator_width};
 	margin: 0 5px;
-	position: relative;
-	width: 1px;
 }
 
 #pt_issue_content .issuefoot .textcontrols a.editissue {
@@ -2548,12 +2549,12 @@ a.firstunread, a.firstunread:hover
 
 /* Issue notes */
 .pt_issue_note .blockrow {
-	background: {vb:stylevar issue_userinfo_background};
+	background: {vb:stylevar postbit_userinfo_background};
 }
 
 .pt_issue_note .issuetext {
 	padding-bottom: 26px;
-	background: {vb:stylevar issue_background};
+	background: {vb:stylevar postbit_background};
 }
 
 .pt_issue_note .blockrow .issue_message {
@@ -2561,7 +2562,7 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issue_note .issuefoot {
-	background: {vb:stylevar issue_foot_background};
+	background: {vb:stylevar postbit_foot_background};
 	clear: both;
 	display: block;
 	float: {vb:stylevar left};
@@ -2588,14 +2589,11 @@ a.firstunread, a.firstunread:hover
 	{vb:stylevar right}: -10px;
 }
 
-.pt_issue_note .issuefoot .textcontrols span.seperator {
-	background: none repeat scroll 0 0 #D8D8D8;
+.pt_issue_note .issuefoot .textcontrols span.separator {
+	border-right: {vb:stylevar postfoot_separator_width} solid {vb:stylevar postfoot_separator_color};
 	display: inline;
-	height: 14px;
-	{vb:stylevar left}: 3px;
+	width: {vb:stylevar postfoot_separator_width};
 	margin: 0 5px;
-	position: relative;
-	width: 1px;
 }
 
 .pt_issue_note .issuefoot .textcontrols a {
@@ -2917,7 +2915,7 @@ div.checkbox_multiselect {
 
 /* Post made as issue */
 .postbitlegacy .title .ptlink, .postbit .posttitle .ptlink {
-	color: grey;
+	color: {vb:stylevar postbit_control_color};
 	font-style: italic;
 	font-weight: normal;
 	font-size: 11px;
@@ -2925,7 +2923,7 @@ div.checkbox_multiselect {
 
 .postbitlegacy .title .ptseparator, .postbit .posttitle .ptseparator {
 	display: inline-block;
-	color: grey;
+	color: {vb:stylevar postbit_control_color};
 	font-style: italic;
 	font-weight: normal;
 	font-size: 11px;
@@ -3017,7 +3015,7 @@ div.checkbox_multiselect {
 
 /* Old vB3 Project Tools CSS definitions - we will keep these definitions only */
 .smallfont {
-	font: 11px tahoma, calibri, verdana, geneva, sans-serif;
+	font-size: {vb:stylevar small_fontSize};
 }
 
 .bigusername {
@@ -3032,14 +3030,9 @@ div.checkbox_multiselect {
 	font-weight: bold;
 }
 
-.shade, a.shade:link, a.shade:visited {
-	color: #777777;
-	text-decoration: none;
-}
-
-a.shade:active, a.shade:hover {
-	color: #FF4400;
-	text-decoration: underline;
+/* Fix for http://www.vbulletin.org/forum/showthread.php?t=249025 */
+.footer_copyright, .footer_morecopyright, .footer_time {
+	color: {vb:stylevar footer_copyright_color};
 }]]></template>
 		<template name="pt_attachmentbit" templatetype="template" date="1273784756" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
 	<div style="display: inline-block; float: {vb:stylevar left}">
@@ -3382,7 +3375,7 @@ a.shade:active, a.shade:hover {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1288172431" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1288528077" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3578,7 +3571,7 @@ a.shade:active, a.shade:hover {
 						</vb:if>
 
 						<vb:if condition="($show['reply_issue'] AND !$show['issue_closed']) AND ($show['edit_issue'] OR $show['edit_note'])">
-							<span class="seperator">&nbsp;</span>
+							<span class="separator">&nbsp;</span>
 						</vb:if>
 
 						<vb:if condition="$show['reply_issue'] AND !$show['issue_closed']">
@@ -3592,7 +3585,7 @@ a.shade:active, a.shade:hover {
 						</vb:if>
 
 						<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'])">
-							<span class="seperator">&nbsp;</span>
+							<span class="separator">&nbsp;</span>
 						</vb:if>
 
 						<vb:if condition="$show['reportlink']">
@@ -4242,7 +4235,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </body>
 </html>]]></template>
 		<template name="pt_issuelist_arrow" templatetype="template" date="1272813018" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<a href="{vb:raw sort_url}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" /></a>]]></template>
-		<template name="pt_issuenotebit_petition" templatetype="template" date="1273341027" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_petition" templatetype="template" date="1288528109" username="Pitchoune" version="2.1.2"><![CDATA[<!-- user note -->
 <div class="block pt_issue_note">
 	<div class="blockhead">
 		<div style="float:{vb:stylevar right}" class="smallfont">
@@ -4318,7 +4311,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					</vb:if>
 
 					<vb:if condition="($show['reply_issue'] AND !$show['issue_closed']) AND ($show['edit_issue'] OR $show['edit_note'])">
-						<span class="seperator">&nbsp;</span>
+						<span class="separator">&nbsp;</span>
 					</vb:if>
 
 					<vb:if condition="$show['reply_issue'] AND !$show['issue_closed']">
@@ -4332,7 +4325,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					</vb:if>
 
 					<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'])">
-						<span class="seperator">&nbsp;</span>
+						<span class="separator">&nbsp;</span>
 					</vb:if>
 
 					<vb:if condition="$show['reportlink']">
@@ -4368,7 +4361,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 <br />]]></template>
 		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1274553517" username="Pitchoune" version="2.1.1"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1288528123" username="Pitchoune" version="2.1.2"><![CDATA[<!-- user note -->
 <div class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
@@ -4425,7 +4418,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					</vb:if>
 
 					<vb:if condition="$show['reply_note'] AND $show['edit_note']">
-						<span class="seperator">&nbsp;</span>
+						<span class="separator">&nbsp;</span>
 					</vb:if>
 
 					<vb:if condition="$show['reply_note']">
@@ -4439,7 +4432,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					</vb:if>
 
 					<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'])">
-						<span class="seperator">&nbsp;</span>
+						<span class="separator">&nbsp;</span>
 					</vb:if>
 
 					<vb:if condition="$show['reportlink']">
@@ -5698,7 +5691,7 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postbit_create_issue" templatetype="template" date="1284847021" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&amp;p={vb:raw post.postid}" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
+		<template name="pt_postbit_create_issue" templatetype="template" date="1288528218" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&amp;p={vb:raw post.postid}" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
 <span class="seperator">&nbsp;</span>]]></template>
 		<template name="pt_postbit_link_issue" templatetype="template" date="1278454430" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$show['pt_separator']">
 	<div class="ptseparator">-</div>
@@ -8562,16 +8555,8 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 </div>]]></template>
 	</templates>
 	<stylevardfns>
-		<stylevargroup name="ProjectTools">
-			<stylevar name="issue_background" datatype="background" validation="" failsafe="" />
-			<stylevar name="issue_foot_background" datatype="background" validation="" failsafe="" />
-			<stylevar name="issue_userinfo_background" datatype="background" validation="" failsafe="" />
-		</stylevargroup>
 	</stylevardfns>
 	<stylevars>
-		<stylevar name="issue_background" value="YTo2OntzOjU6InVuaXRzIjtzOjA6IiI7czo1OiJjb2xvciI7czo3OiIjRkFGQUZBIjtzOjU6ImltYWdlIjtzOjA6IiI7czo2OiJyZXBlYXQiO3M6MDoiIjtzOjE6IngiO3M6MDoiIjtzOjE6InkiO3M6MDoiIjt9" />
-		<stylevar name="issue_foot_background" value="YTo2OntzOjU6InVuaXRzIjtzOjA6IiI7czo1OiJjb2xvciI7czo3OiIjRTlFOUU5IjtzOjU6ImltYWdlIjtzOjA6IiI7czo2OiJyZXBlYXQiO3M6MDoiIjtzOjE6IngiO3M6MDoiIjtzOjE6InkiO3M6MDoiIjt9" />
-		<stylevar name="issue_userinfo_background" value="YTo2OntzOjU6InVuaXRzIjtzOjA6IiI7czo1OiJjb2xvciI7czo3OiIjRjJGNkY4IjtzOjU6ImltYWdlIjtzOjA6IiI7czo2OiJyZXBlYXQiO3M6MDoiIjtzOjE6IngiO3M6MDoiIjtzOjE6InkiO3M6MDoiIjt9" />
 	</stylevars>
 	<plugins>
 		<plugin active="1" executionorder="5">
@@ -10081,12 +10066,6 @@ To create your own report, make a search with the criteria that you want and cli
 		</phrasetype>
 		<phrasetype name="Style Tools" fieldname="style">
 			<phrase name="group_project_tools" date="1171635494" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools]]></phrase>
-			<phrase name="stylevar_issue_background_description" date="1288449690" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_issue_background_name" date="1288449690" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_issue_foot_background_description" date="1288449667" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_issue_foot_background_name" date="1288449667" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_issue_userinfo_background_description" date="1288449652" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_issue_userinfo_background_name" date="1288449652" username="Pitchoune" version="4.0.8" />
 			<phrase name="stylevar_project_background_description" date="1288449004" username="Pitchoune" version="4.0.8" />
 			<phrase name="stylevar_project_background_name" date="1288449004" username="Pitchoune" version="4.0.8" />
 			<phrase name="stylevar_project_foot_background_description" date="1288449134" username="Pitchoune" version="4.0.8" />
