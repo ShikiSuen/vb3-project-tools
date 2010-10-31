@@ -10091,12 +10091,6 @@ To create your own report, make a search with the criteria that you want and cli
 		</phrasetype>
 		<phrasetype name="Style Tools" fieldname="style">
 			<phrase name="group_project_tools" date="1171635494" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools]]></phrase>
-			<phrase name="stylevar_project_background_description" date="1288449004" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_project_background_name" date="1288449004" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_project_foot_background_description" date="1288449134" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_project_foot_background_name" date="1288449134" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_project_userinfo_background_description" date="1288448636" username="Pitchoune" version="4.0.8" />
-			<phrase name="stylevar_project_userinfo_background_name" date="1288448636" username="Pitchoune" version="4.0.8" />
 		</phrasetype>
 		<phrasetype name="User Tools (global)" fieldname="user">
 			<phrase name="find_all_issues_started_by_x" date="1175175355" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Find all issues started by {1}]]></phrase>

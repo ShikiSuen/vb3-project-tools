@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Français" vbversion="4.0.7" product="vbprojecttools" type="phrases">
+<language name="Français ANSI (#26+)" vbversion="4.0.8" product="vbprojecttools" type="phrases">
 	<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 		<phrase name="project_projectadd_projectedit_afterforumids_text" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Cette option vous permet d'afficher les informations du projet dans la liste des forums sur la page d'accueil de vBulletin.<br />
 <br />
@@ -585,7 +585,8 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="system_message_attachment_deleted" date="1179935554" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Pièce jointe </span> <em>{3}</em> <span class="shade">supprimée</span>]]></phrase>
 		<phrase name="system_message_attachment_uploaded" date="1260993437" username="Pitchoune" version="2.0.1"><![CDATA[<span class="shade">Pièce jointe </span> <em>{3}</em> <span class="shade">ajoutée</span>]]></phrase>
 		<phrase name="system_message_default" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">{1} modifié(e) de </span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
-		<phrase name="system_message_issue_imported" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Demande importée de la discussion</span> <em>{3}</em>.]]></phrase>
+		<phrase name="system_message_issue_imported" date="1288568174" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Demande importée de la discussion</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_imported_post" date="1288568174" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Demande importée d'un message de la discussion</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
 		<phrase name="system_message_milestoneid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Étape modifiée</span>]]></phrase>
 		<phrase name="system_message_projectcategoryid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Catégorie modifiée de</span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
 		<phrase name="system_message_tags" date="1179934545" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Tags modifiés</span>]]></phrase>
@@ -836,6 +837,24 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 	<phrasetype name="User Tools (global)" fieldname="user">
 		<phrase name="find_all_issues_started_by_x" date="1284853299" username="Pitchoune" version="2.1.2"><![CDATA[Trouver toutes les demandes ouvertes par {1}]]></phrase>
 		<phrase name="find_all_issues_with_posts_by_x" date="1284853299" username="Pitchoune" version="2.1.2"><![CDATA[Trouver toutes les demandes avec des messages de {1}]]></phrase>
+	</phrasetype>
+	<phrasetype name="Forum Blocks" fieldname="vbblock">
+		<phrase name="all_projects" date="1288568411" username="Pitchoune" version="2.1.2"><![CDATA[Tous les projets]]></phrase>
+		<phrase name="blocktype_ptissues" date="1288568423" username="Pitchoune" version="2.1.2"><![CDATA[Dernières demandes]]></phrase>
+	</phrasetype>
+	<phrasetype name="Forum Blocks Settings" fieldname="vbblocksettings">
+		<phrase name="setting_issues_limit_desc" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Ceci est le nombre maximum de demandes qui sera affichée dans le bloc.]]></phrase>
+		<phrase name="setting_issues_limit_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Nombre de demandes maximum]]></phrase>
+		<phrase name="setting_issues_projectids_desc" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Vous pouvez choisir d'afficher les demandes de certains projets.]]></phrase>
+		<phrase name="setting_issues_projectids_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Projets d'où viennent les demandes]]></phrase>
+		<phrase name="setting_issues_titlemaxchars_desc" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Ce paramètre vous permet de spécifier le nombre de caractères de chaque intitulé à afficher dans le bloc.]]></phrase>
+		<phrase name="setting_issues_titlemaxchars_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Longueur de l'intitulé des demandes]]></phrase>
+		<phrase name="setting_issues_type_desc" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Choisissez quels type de demandes vous souhaitez afficher :
+<br />
+<strong>Nouvelles créations</strong> - Les nouvelles demandes seront affichées en premier
+<strong>Nouvelles réponses</strong> - Les demandes avec les nouvelles réponses seront affichées en premier
+<strong>Plus de réponses</strong> - Les demandes avec les dernières réponses seront affichées en premier]]></phrase>
+		<phrase name="setting_issues_type_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Type de demande]]></phrase>
 	</phrasetype>
 	<phrasetype name="vBulletin Settings" fieldname="vbsettings">
 		<phrase name="setting_pt_allowbbcode_desc" date="1284853391" username="Pitchoune" version="2.1.2"><![CDATA[Permettre aux utilisateurs d'inclure des balises BB dans les demandes (comme [b], [i] etc...) ?]]></phrase>

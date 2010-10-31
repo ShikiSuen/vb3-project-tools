@@ -45,7 +45,7 @@ $md5_sums = array(
 		'class_pt_issuenote.php' => '030e3104b75316f193cc52ee7aef23f9',
 		'class_pt_issuesearch.php' => 'e3400c5a2674cff68b37a38c8c33ad2d',
 		'class_pt_patch_parse.php' => '42320688682f8d6df89450faa3493a3b',
-		'class_ptimporter.php' => 'fa6639fbd66a3b8b739b46fde374d230',
+		'class_ptimporter.php' => 'b841ce9662fc673261a9789348ef2420',
 		'class_reportitem_pt.php' => '74214ded73a9e45de79458517895bfad',
 		'class_upload_pt.php' => 'd9a9fb27f78fdaccdbe32992fbfad64c',
 		'class_upload_ptimporter.php' => 'e87d6e94a44ba1b825f1b6e7c25170bc',
@@ -75,14 +75,14 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'ab3876ae66973c4d737cd36b5c8b67bb',
-		'product-vbprojecttools.xml' => 'ca16d6ae24d7b0fd65feae626d1f71f9',
+		'product-vbprojecttools.xml' => 'e41ee594207de08211982816de89fd0a',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'c184eac2d54ea4f8295a2a9f229d007e',
 		'recentptissues.php' => '5a6fc67f171657305b3ac0d7db9baaa0',
 	),
 	'/packages/vbcms/widget' => array(
-		'recentptcomments.php' => 'f0370f5bb6abd1c6c47a5aca1f79c23f',
+		'recentptcomments.php' => 'c945cd9d5a2719ac9050bbea19b4e1c4',
 		'recentptissues.php' => '548f0cb98668ef3d37af8231035e3257',
 	),
 	'/packages/vbprojecttools/search/indexcontroller' => array(
