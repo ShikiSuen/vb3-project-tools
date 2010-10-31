@@ -7,7 +7,7 @@
 	<url />
 	<versioncheckurl />
 	<dependencies>
-		<dependency dependencytype="vbulletin" minversion="4.0.0" maxversion="" />
+		<dependency dependencytype="vbulletin" minversion="4.0.8" maxversion="" />
 	</dependencies>
 	<codes>
 		<code version="*">
@@ -1317,30 +1317,43 @@ $db->query_write("
 * Forum Block
 */
 
-// Adding forum block
-$db->query_write("
-	INSERT INTO " . TABLE_PREFIX . "blocktype
-		(productid, name, title, allowcache)
-	VALUES
-		('vbprojecttools', 'ptissues', 'blocktype_ptissues', 1)
-");
+// There is an issue if the PT files are uploaded in the vBulletin install before vBulletin is installed
+// vB installer is listing all files in includes/block and add them directly into the database
+// vB product or not.
+// This check must to avoid to insert it twice
+if ($page != $db->query_read("SELECT * FROM " . TABLE_PREFIX . "blocktype WHERE productid = 'vbprojecttools' and name = 'ptissues'"))
+{
+	// Adding forum block
+	$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "blocktype
+			(productid, name, title, allowcache)
+		VALUES
+			('vbprojecttools', 'ptissues', 'blocktype_ptissues', 1)
+	");
 
-// Purge block cache and reload all block types to add the new block
+	// Purge block cache and reload all block types to add the new block
 
-// Required
-require_once(DIR . '/includes/class_block.php');
-$blockmanager = vB_BlockManager::create($vbulletin);
+	// Required
+	require_once(DIR . '/includes/class_block.php');
+	$blockmanager = vB_BlockManager::create($vbulletin);
 
-// Purge block cache
-$blockmanager->purgeBlockCache();
+	// Purge block cache
+	$blockmanager->purgeBlockCache();
 
-// Purge activeblocks datastore
-$db->query_write("
-	DELETE FROM " . TABLE_PREFIX . "datastore WHERE title = 'activeblocks'
-");
+	// Purge activeblocks datastore
+	$db->query_write("
+		DELETE FROM " . TABLE_PREFIX . "datastore WHERE title = 'activeblocks'
+	");
 
-// Reload
-$blockmanager->reloadBlockTypes(true);]]></installcode>
+	// Reload
+	$blockmanager->reloadBlockTypes(true);
+}
+else
+{
+	// The block is already in the database
+	// Appropriate the block to the corresponding product
+	$db->query_write("UPDATE " . TABLE_PREFIX . "blocktype SET productid = 'vbprojecttools' WHERE name = 'ptissues'");
+}]]></installcode>
 			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('pt_issuestatus'))
@@ -1895,7 +1908,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1288528335" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1288547952" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2337,7 +2350,7 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issuelist .deleted {
-	background-color: #E5E5E5;
+	background-color: {vb:stylevar threadbit_deleted_background.backgroundColor};
 }
 
 .pt_issuelist .blockrow .ptissuelist_icons_search {
@@ -3004,7 +3017,7 @@ div.checkbox_multiselect {
 	bottom: 5px;
 }
 
-.actionbuttons .group {
+.pt_project .actionbuttons .group {
 	padding-top: 10px;
 	padding-bottom: 5px;
 }
@@ -3018,12 +3031,8 @@ div.checkbox_multiselect {
 	font-size: {vb:stylevar small_fontSize};
 }
 
-.bigusername {
-	font-size: 14pt;
-}
-
 .bigtext {
-	font-size: 14px;
+	font-size: {vb:stylevar big_fontSize};
 }
 
 .boldtext {
@@ -3375,7 +3384,7 @@ div.checkbox_multiselect {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1288528077" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1288548001" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3506,11 +3515,11 @@ div.checkbox_multiselect {
 
 						<div id="notemenu_{vb:raw issue.issuenoteid}">
 						<vb:if condition="$show['profile']">
-							<a class="bigusername" href="{vb:link member, {vb:raw issue}, null, 'userid', 'musername'}">{vb:raw issue.musername}</a>
+							<a class="bigtext" href="{vb:link member, {vb:raw issue}, null, 'userid', 'musername'}">{vb:raw issue.musername}</a>
 							<vb:if condition="$show['onlinestatus']">
-								<vb:if condition="$issue['onlinestatus'] == 0"><img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw issue.username}}" border="0" />
-								<vb:elseif condition="$issue['onlinestatus'] == 1" /><img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw issue.username}}" border="0" />
-								<vb:elseif condition="$issue['onlinestatus'] == 2" /><img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw issue.username}}" border="0" /></vb:if>
+								<vb:if condition="$issue['onlinestatus'] == 0"><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw issue.username}}" border="0" />
+								<vb:elseif condition="$issue['onlinestatus'] == 1" /><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw issue.username}}" border="0" />
+								<vb:elseif condition="$issue['onlinestatus'] == 2" /><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw issue.username}}" border="0" /></vb:if>
 							</vb:if>
 						<vb:else />
 							{vb:raw issue.musername}
@@ -4235,7 +4244,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </body>
 </html>]]></template>
 		<template name="pt_issuelist_arrow" templatetype="template" date="1272813018" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<a href="{vb:raw sort_url}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" /></a>]]></template>
-		<template name="pt_issuenotebit_petition" templatetype="template" date="1288528109" username="Pitchoune" version="2.1.2"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_petition" templatetype="template" date="1288547852" username="Pitchoune" version="2.1.2"><![CDATA[<!-- user note -->
 <div class="block pt_issue_note">
 	<div class="blockhead">
 		<div style="float:{vb:stylevar right}" class="smallfont">
@@ -4249,7 +4258,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 			<div id="notemenu_{vb:raw note.issuenoteid}">
 				<vb:if condition="$show['profile']">
-					<a class="bigusername" href="{vb:link member, {vb:raw note}}">{vb:raw note.musername}</a>
+					<a class="bigtext" href="{vb:link member, {vb:raw note}}">{vb:raw note.musername}</a>
 					<vb:if condition="$show['onlinestatus']">
 						<vb:if condition="$note['onlinestatus'] == 0">
 							<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user_offline.gif" alt="{vb:rawphrase x_is_offline, {vb:raw note.username}}" border="0" />
@@ -4342,14 +4351,14 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </div>
 
 <br />]]></template>
-		<template name="pt_issuenotebit_system" templatetype="template" date="1274872748" username="Pitchoune" version="2.1.1"><![CDATA[<!-- note system -->
+		<template name="pt_issuenotebit_system" templatetype="template" date="1288547863" username="Pitchoune" version="2.1.2"><![CDATA[<!-- note system -->
 <div class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
 	</div>
 	<div class="blockbody settings_form_border">
 		<div class="blockrow">
-			<span class="bigusername"><vb:if condition="$note['userid']">{vb:rawphrase issue_changed_by_x, {vb:raw note.username}}<vb:else />{vb:rawphrase issue_changed_by_system}</vb:if></span>
+			<span class="bigtext"><vb:if condition="$note['userid']">{vb:rawphrase issue_changed_by_x, {vb:raw note.username}}<vb:else />{vb:rawphrase issue_changed_by_system}</vb:if></span>
 		</div>
 		<div class="blockrow issuetext">
 			<div class="restore">
@@ -4361,7 +4370,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 <br />]]></template>
 		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1288528123" username="Pitchoune" version="2.1.2"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1288548092" username="Pitchoune" version="2.1.2"><![CDATA[<!-- user note -->
 <div class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
@@ -4373,14 +4382,14 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 				<div id="notemenu_{vb:raw note.issuenoteid}">
 					<vb:if condition="$show['profile']">
-						<a class="bigusername" href="{vb:link member, {vb:raw note}}">{vb:raw note.musername}</a>
+						<a class="bigtext" href="{vb:link member, {vb:raw note}}">{vb:raw note.musername}</a>
 						<vb:if condition="$show['onlinestatus']">
 							<vb:if condition="$note['onlinestatus'] == 0">
-								<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw note.username}}" border="0" />
+								<img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw note.username}}" border="0" />
 							<vb:elseif condition="$note['onlinestatus'] == 1" />
-								<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw note.username}}" border="0" />
+								<img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw note.username}}" border="0" />
 							<vb:elseif condition="$note['onlinestatus'] == 2" />
-								<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw note.username}}" border="0" />
+								<img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw note.username}}" border="0" />
 							</vb:if>
 						</vb:if>
 					<vb:else />
@@ -7020,7 +7029,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_search" templatetype="template" date="1288172903" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_search" templatetype="template" date="1288547529" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	<vb:if condition="!defined('YUI_VERSION')">
@@ -7203,7 +7212,7 @@ init_project_readmarker_system();
 						<div style="margin-top:6px">{vb:rawphrase category}</div>
 						<div class="textbox checkbox_multiselect">
 							<ul id="ptsearch_projectcategoryid">
-								<li><label for="cb_project_category_-1"><input type="checkbox" id="cb_project_category_-1" name="projectcategoryid[]" value="-1" tabindex="1" />&nbsp;{vb:rawphrase unknown}</label></li>
+								<li class="smallfont"><label for="cb_project_category_-1"><input type="checkbox" id="cb_project_category_-1" name="projectcategoryid[]" value="-1" tabindex="1" />&nbsp;{vb:rawphrase unknown}</label></li>
 								{vb:raw category_options}
 							</ul>
 						</div>
@@ -7222,7 +7231,7 @@ init_project_readmarker_system();
 							<div>{vb:rawphrase applicable_version}</div>
 							<div class="textbox checkbox_multiselect">
 								<ul id="ptsearch_appliesversionid">
-									<li><label for="cb_applies_version_-1"><input type="checkbox" id="cb_applies_version_-1" name="appliesversion[]" value="-1" tabindex="1" />&nbsp;{vb:rawphrase unknown}</label></li>
+									<li class="smallfont"><label for="cb_applies_version_-1"><input type="checkbox" id="cb_applies_version_-1" name="appliesversion[]" value="-1" tabindex="1" />&nbsp;{vb:rawphrase unknown}</label></li>
 									{vb:raw appliesversion_options}
 								</ul>
 							</div>
@@ -7232,8 +7241,8 @@ init_project_readmarker_system();
 							<div>{vb:rawphrase addressed_version}</div>
 							<div class="textbox checkbox_multiselect">
 								<ul id="ptsearch_addressedversionid">
-									<li><label for="cb_addressed_version_-2"><input type="checkbox" id="cb_addressed_version_-2" name="addressedversion[]" value="-2" tabindex="1" />&nbsp;{vb:rawphrase none_meta}</label></li>
-									<li><label for="cb_addressed_version_-1"><input type="checkbox" id="cb_addressed_version_-1" name="addressedversion[]" value="-1" tabindex="1" />&nbsp;{vb:rawphrase next_release}</label></li>
+									<li class="smallfont"><label for="cb_addressed_version_-2"><input type="checkbox" id="cb_addressed_version_-2" name="addressedversion[]" value="-2" tabindex="1" />&nbsp;{vb:rawphrase none_meta}</label></li>
+									<li class="smallfont"><label for="cb_addressed_version_-1"><input type="checkbox" id="cb_addressed_version_-1" name="addressedversion[]" value="-1" tabindex="1" />&nbsp;{vb:rawphrase next_release}</label></li>
 									{vb:raw addressedversion_options}
 								</ul>
 							</div>
