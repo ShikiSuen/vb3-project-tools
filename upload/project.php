@@ -1496,6 +1496,7 @@ if ($_REQUEST['do'] == 'issuelist')
 		$templater->register('issuetype_printable_plural', $issuetype_printable_plural);
 		$templater->register('navbar', $navbar);
 		$templater->register('pagenav', $pagenav);
+		$templater->register('postable_types', $postable_types);
 		$templater->register('post_issue_options', $post_issue_options);
 		$templater->register('project', $project);
 		$templater->register('pt_ptlist', $pt_ptlist);
@@ -1685,9 +1686,7 @@ if ($_REQUEST['do'] == 'timeline')
 // #######################################################################
 if ($_REQUEST['do'] == 'project')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
 
 	$project = verify_project($vbulletin->GPC['projectid']);
 	$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
@@ -2000,6 +1999,7 @@ if ($_REQUEST['do'] == 'project')
 		$templater->register('issuebits', $issuebits);
 		$templater->register('navbar', $navbar);
 		$templater->register('petitionbits', $petitionbits);
+		$templater->register('postable_types', $postable_types);
 		$templater->register('post_issue_options', $post_issue_options);
 		$templater->register('post_new_issue_text', $post_new_issue_text);
 		$templater->register('project', $project);

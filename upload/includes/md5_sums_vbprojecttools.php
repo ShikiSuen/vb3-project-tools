@@ -2,11 +2,11 @@
 // vbprojecttools 2.1.2
 $md5_sums = array(
 	'/' => array(
-		'project.php' => '53ca058c74f31aa35c467ce89ee8923e',
+		'project.php' => '1bf09e9daaed7bc4c449d3831c4a00e8',
 		'projectajax.php' => 'd23f99014bc25c958af27f59a7baa768',
 		'projectattachment.php' => '04d600f686b4da85c1ff487a2cf0187b',
 		'projectexternal.php' => '447a7f2c65fe764913b9239386fdd633',
-		'projectmilestone.php' => '93f8309e0adbd13309b028e251b489ca',
+		'projectmilestone.php' => '1c0b10361326c7f5dbe45e12d2ac7e34',
 		'projectpost.php' => '4a05196c654734a1b0a706c333bd76aa',
 		'projectsearch.php' => '4ced26af853f560c22afdfe61d2f3218',
 	),
@@ -75,7 +75,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'ab3876ae66973c4d737cd36b5c8b67bb',
-		'product-vbprojecttools.xml' => 'd7852a1d31e72943ca5d63a3083f0104',
+		'product-vbprojecttools.xml' => '9ff87a5ccf8867885c4e564ddfefb95b',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'c184eac2d54ea4f8295a2a9f229d007e',

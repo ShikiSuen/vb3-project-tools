@@ -372,6 +372,7 @@ if ($_REQUEST['do'] == 'milestone')
 		$templater->register_page_templates();
 		$templater->register('assignable_users', $assignable_users);
 		$templater->register('post_issue_options', $post_issue_options);
+		$templater->register('postable_types', $postable_types);
 		$templater->register('issuebits', $issuebits);
 		$templater->register('milestone', $milestone);
 		$templater->register('navbar', $navbar);
