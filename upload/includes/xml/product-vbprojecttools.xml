@@ -768,7 +768,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_tag");
 $db->query_write("DELETE FROM " . TABLE_PREFIX . "datastore WHERE title LIKE 'pt\_%'");
 
 require_once(DIR . '/includes/class_dbalter.php');
-$db_alter =& new vB_Database_Alter_MySQL($db);
+$db_alter = new vB_Database_Alter_MySQL($db);
 if ($db_alter->fetch_table_info('administrator'))
 {
 	$db_alter->drop_field('ptpermissions');
@@ -1320,7 +1320,11 @@ $db->query_write("
 // vB installer is listing all files in includes/block and add them directly into the database
 // vB product or not.
 // This check must to avoid to insert it twice
-if ($page != $db->query_read("SELECT * FROM " . TABLE_PREFIX . "blocktype WHERE productid = 'vbprojecttools' and name = 'ptissues'"))
+$db->hide_errors();
+$blocktemp = $db->query_read("SELECT * FROM " . TABLE_PREFIX . "blocktype WHERE name = 'ptissues'");
+$db->show_errors();
+
+if (!$blocktemp)
 {
 	// Adding forum block
 	$db->query_write("
@@ -1374,10 +1378,56 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");
 // Removing some infos for CMS widgets
 if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
 {
-	$db->query_write("
-		DELETE FROM " . TABLE_PREFIX . "cms_widgettype
+	$widgetid = array();
+
+	// Select widgets IDS
+	$widgettypes = $db->query_read("
+		SELECT widgettypeid
+		FROM " . TABLE_PREFIX . "cms_widgettype
 		WHERE class IN ('RecentPTIssues', 'RecentPTComments')
 	");
+
+	while ($widgettype = $db->fetch_array($widgettypes))
+	{
+		$widgetid[] = $widgettype['widgettypeid'];
+	}
+
+	// Now we have an array of corresponding values, uninstall them on an one-by-one basis
+	foreach ($widgetid AS $id)
+	{
+		// First we need for later the widgetid corresponding of the widgettype for deletion in cms_widgetconfig table
+		$widgets = $db->query_read("
+			SELECT widgetid
+			FROM " . TABLE_PREFIX . "cms_widget
+			WHERE widgettypeid = $id
+		");
+
+		while ($widget = $db->fetch_array($widgets))
+		{
+			// Table cms_layoutwidget
+			$db->query_write("
+				DELETE FROM " . TABLE_PREFIX . "cms_layoutwidget
+				WHERE widgetid = " . $widget['widgetid'] . "
+			");
+
+			// Table cms_widgetconfig
+			$db->query_write("
+				DELETE FROM " . TABLE_PREFIX . "cms_widgetconfig
+				WHERE widgetid = " . $widget['widgetid'] . "
+			");
+		}
+
+		// Table cms_widget
+		$db->query_write("
+			DELETE FROM " . TABLE_PREFIX . "cms_widget
+			WHERE widgettypeid = $id
+		");
+
+		$db->query_write("
+			DELETE FROM " . TABLE_PREFIX . "cms_widgettype
+			WHERE widgettypeid = $id
+		");
+	}
 
 	// Clear CMS cache
 
