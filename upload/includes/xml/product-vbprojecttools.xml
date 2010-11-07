@@ -27,7 +27,7 @@ define('CP_REDIRECT', 'index.php?loc=' . urlencode('project.php?do=install&insta
 		</code>
 		<code version="1.0.0 Alpha 1">
 			<installcode><![CDATA[$db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issue (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issue (
 		issueid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
@@ -66,7 +66,7 @@ define('CP_REDIRECT', 'index.php?loc=' . urlencode('project.php?do=install&insta
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issueassign (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueassign (
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
 		dateline INT UNSIGNED NOT NULL DEFAULT 0,
@@ -76,7 +76,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issueattach (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueattach (
 		attachmentid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
@@ -98,7 +98,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuechange (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuechange (
 		issuechangeid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
@@ -113,7 +113,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuedeletionlog (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuedeletionlog (
 		primaryid INT UNSIGNED NOT NULL DEFAULT 0,
 		type ENUM('issue', 'issuenote') NOT NULL DEFAULT 'issue',
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
@@ -126,7 +126,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuenote (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuenote (
 		issuenoteid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
 		dateline INT UNSIGNED NOT NULL DEFAULT 0,
@@ -147,7 +147,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuenotehash (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuenotehash (
 		issuenoteid INT UNSIGNED NOT NULL,
 		userid INT UNSIGNED NOT NULL,
 		issueid INT UNSIGNED NOT NULL,
@@ -158,9 +158,8 @@ $db->query_write("
 	)
 ");
 
-
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuenotehistory (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuenotehistory (
 		issuenotehistoryid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		issuenoteid INT UNSIGNED NOT NULL DEFAULT 0,
 		reason VARCHAR(250) NOT NULL,
@@ -174,7 +173,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuepetition (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuepetition (
 		issuenoteid INT UNSIGNED NOT NULL,
 		petitionstatusid INT UNSIGNED NOT NULL DEFAULT 0,
 		resolution ENUM('pending', 'accepted', 'rejected', 'cancelled') NOT NULL DEFAULT 'pending',
@@ -185,7 +184,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issueprivatelastpost (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueprivatelastpost (
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
 		lastnoteid INT UNSIGNED NOT NULL DEFAULT 0,
 		lastpostuserid VARCHAR(100) NOT NULL,
@@ -196,7 +195,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issueread (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueread (
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
 		readtime INT UNSIGNED NOT NULL DEFAULT 0,
@@ -206,7 +205,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuereport (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuereport (
 		issuereportid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		title VARCHAR(100) NOT NULL DEFAULT '',
 		description TEXT NOT NULL,
@@ -224,7 +223,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuereportsubscribe (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuereportsubscribe (
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
 		issuereportid INT UNSIGNED NOT NULL DEFAULT 0,
 		issuesearchid INT UNSIGNED NOT NULL DEFAULT 0,
@@ -233,7 +232,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuesearch (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuesearch (
 		issuesearchid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
 		ipaddress VARCHAR(15) NOT NULL DEFAULT '',
@@ -253,7 +252,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuesearchresult (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuesearchresult (
 		issuesearchid INT UNSIGNED NOT NULL DEFAULT 0,
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
 		offset INT UNSIGNED NOT NULL DEFAULT 0,
@@ -263,7 +262,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuestatus (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatus (
 		issuestatusid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
 		displayorder INT UNSIGNED NOT NULL DEFAULT 0,
@@ -275,7 +274,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuesubscribe (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuesubscribe (
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
 		subscribetype ENUM('instant', 'daily', 'weekly', 'none') NOT NULL DEFAULT 'none',
@@ -285,7 +284,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuetag (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuetag (
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
 		tagid INT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (issueid, tagid),
@@ -294,7 +293,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuetype (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuetype (
 		issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
 		displayorder INT UNSIGNED NOT NULL DEFAULT 0,
 		iconfile VARCHAR(250) NOT NULL DEFAULT '',
@@ -303,7 +302,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuevote (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuevote (
 		issuevoteid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
 		ipaddress VARCHAR(15) NOT NULL DEFAULT '',
@@ -316,7 +315,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_milestone (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_milestone (
 		milestoneid INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		title VARCHAR(100) NOT NULL DEFAULT '',
 		title_clean VARCHAR(100) NOT NULL DEFAULT '',
@@ -330,7 +329,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_milestonetypecount (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_milestonetypecount (
 		milestoneid INT UNSIGNED NOT NULL DEFAULT 0,
 		issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
 		activepublic INT UNSIGNED NOT NULL DEFAULT 0,
@@ -342,7 +341,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_project (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_project (
 		projectid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		displayorder INT UNSIGNED NOT NULL DEFAULT 0,
 		title VARCHAR(250) NOT NULL DEFAULT '',
@@ -359,7 +358,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_projectcategory (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectcategory (
 		projectcategoryid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		title VARCHAR(250) NOT NULL DEFAULT '',
@@ -370,7 +369,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_projectpermission (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectpermission (
 		usergroupid INT UNSIGNED NOT NULL DEFAULT 0,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
@@ -383,7 +382,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_projectread (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectread (
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
@@ -394,7 +393,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_projecttype (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projecttype (
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
 		startstatusid INT UNSIGNED NOT NULL DEFAULT 0,
@@ -412,7 +411,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_projecttypeprivatelastpost (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projecttypeprivatelastpost (
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
 		lastpost INT UNSIGNED NOT NULL DEFAULT 0,
@@ -426,7 +425,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_projecttypesubscribe (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projecttypesubscribe (
 		userid INT UNSIGNED NOT NULL DEFAULT 0,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
@@ -437,7 +436,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_projectversion (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectversion (
 		projectversionid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		versionname VARCHAR(50) NOT NULL DEFAULT '',
@@ -450,7 +449,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_projectversiongroup (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectversiongroup (
 		projectversiongroupid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		groupname VARCHAR(50) NOT NULL DEFAULT '',
@@ -461,7 +460,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_tag (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_tag (
 		tagid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		tagtext VARCHAR(50) NOT NULL DEFAULT '',
 		PRIMARY KEY (tagid),
@@ -821,7 +820,7 @@ $db->query_write("
 	");
 
 	$db->query_write("
-		CREATE TABLE " . TABLE_PREFIX . "pt_issueread (
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueread (
 			userid INT UNSIGNED NOT NULL DEFAULT 0,
 			issueid INT UNSIGNED NOT NULL DEFAULT 0,
 			readtime INT UNSIGNED NOT NULL DEFAULT 0,
@@ -831,7 +830,7 @@ $db->query_write("
 	");
 
 	$db->query_write("
-		CREATE TABLE " . TABLE_PREFIX . "pt_issueprivatelastpost (
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueprivatelastpost (
 			issueid INT UNSIGNED NOT NULL DEFAULT 0,
 			lastnoteid INT UNSIGNED NOT NULL DEFAULT 0,
 			lastpostuserid VARCHAR(100) NOT NULL,
@@ -842,7 +841,7 @@ $db->query_write("
 	");
 
 	$db->query_write("
-		CREATE TABLE " . TABLE_PREFIX . "pt_milestone (
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_milestone (
 			milestoneid INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			title VARCHAR(100) NOT NULL DEFAULT '',
 			title_clean VARCHAR(100) NOT NULL DEFAULT '',
@@ -856,7 +855,7 @@ $db->query_write("
 	");
 
 	$db->query_write("
-		CREATE TABLE " . TABLE_PREFIX . "pt_milestonetypecount (
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_milestonetypecount (
 			milestoneid INT UNSIGNED NOT NULL DEFAULT 0,
 			issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
 			activepublic INT UNSIGNED NOT NULL DEFAULT 0,
@@ -868,7 +867,7 @@ $db->query_write("
 	");
 
 	$db->query_write("
-		CREATE TABLE " . TABLE_PREFIX . "pt_projectread (
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectread (
 			userid INT UNSIGNED NOT NULL DEFAULT 0,
 			projectid INT UNSIGNED NOT NULL DEFAULT 0,
 			issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
@@ -879,7 +878,7 @@ $db->query_write("
 	");
 
 	$db->query_write("
-		CREATE TABLE " . TABLE_PREFIX . "pt_projecttypeprivatelastpost (
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projecttypeprivatelastpost (
 			projectid INT UNSIGNED NOT NULL DEFAULT 0,
 			issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
 			lastpost INT UNSIGNED NOT NULL DEFAULT 0,
@@ -893,7 +892,7 @@ $db->query_write("
 	");
 
 	$db->query_write("
-		CREATE TABLE " . TABLE_PREFIX . "pt_projecttypesubscribe (
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projecttypesubscribe (
 			userid INT UNSIGNED NOT NULL DEFAULT 0,
 			projectid INT UNSIGNED NOT NULL DEFAULT 0,
 			issuetypeid VARCHAR(25) NOT NULL DEFAULT '',
@@ -1170,7 +1169,7 @@ if ($show['ptimporter_previous'])
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_user (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_user (
 		userid INT UNSIGNED NOT NULL,
 		totalissues INT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (userid)
@@ -1178,7 +1177,7 @@ $db->query_write("
 ");
 
 $db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issueimport (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueimport (
 		contenttypeid INT UNSIGNED NOT NULL,
 		contentid INT UNSIGNED NOT NULL,
 		data MEDIUMTEXT,
@@ -7572,8 +7571,8 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_subforumbit_project" templatetype="template" date="1275161683" username="Pitchoune" version="2.1.1"><![CDATA[<li class="subforum">
-	<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/subforum_old.gif" alt="" border="0" id="project_statusicon_{vb:raw project.projectid}" />
+		<template name="pt_subforumbit_project" templatetype="template" date="1289121263" username="Pitchoune" version="2.1.2"><![CDATA[<li class="subforum">
+	<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/subforum_old-48.png" alt="" border="0" id="project_statusicon_{vb:raw project.projectid}" />
 	<vb:if condition="$project['forumtitle']">
 		<a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.forumtitle}</a>
 	<vb:else />
