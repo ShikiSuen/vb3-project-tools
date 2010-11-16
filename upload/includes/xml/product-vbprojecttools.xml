@@ -1962,7 +1962,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1289035989" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1289928534" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3012,8 +3012,8 @@ div.checkbox_multiselect {
 }
 
 /* Magic Selects */
-/* Issue #106
-.vB_MagicSelect, .vB_MagicSelect_hover, .vB_MagicSelect_preload {
+/* Issue #106 */
+/*.vB_MagicSelect, .vB_MagicSelect_hover, .vB_MagicSelect_preload {
 	white-space: nowrap;
 }*/
 
@@ -3043,8 +3043,7 @@ div.checkbox_multiselect {
 }
 
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
-	/* padding: 1px; */
-	vertical-align: text-top;
+	vertical-align: middle;
 }
 
 .vB_MagicSelect .vB_MagicSelect_button {
@@ -3057,7 +3056,7 @@ div.checkbox_multiselect {
 
 .vB_MagicSelect_preload {
 	border: none;
-	padding: 4px 0px; /* 1px */
+	padding: 4px 0px;
 	background-color: transparent;
 }
 
@@ -3198,14 +3197,14 @@ div.checkbox_multiselect {
 	</div>
 	</div>
 </li>]]></template>
-		<template name="pt_headinclude" templatetype="template" date="1288172058" username="Pitchoune" version="2.1.2"><![CDATA[<script type="text/javascript" src="clientscript/vbulletin_ptsearch_form.js?v={vb:raw vboptions.simpleversion}"></script>
+		<template name="pt_headinclude" templatetype="template" date="1289926131" username="Pitchoune" version="2.1.2"><![CDATA[<script type="text/javascript" src="clientscript/vbulletin_ptsearch_form.js?v={vb:raw vboptions.simpleversion}"></script>
 <vb:if condition="$vboptions['storecssasfile']">
-	<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+	{vb:cssfile projecttools-rollup.css}
 <vb:else />
-	<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+	{vb:cssfile projecttools.css,toolsmenu.css}
 </vb:if>]]></template>
-		<template name="pt_headinclude_ie" templatetype="template" date="1274259505" username="Pitchoune" version="2.1.1"><![CDATA[<!--[if lt IE 8]>
-<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-ie.css" />
+		<template name="pt_headinclude_ie" templatetype="template" date="1289926150" username="Pitchoune" version="2.1.2"><![CDATA[<!--[if lt IE 8]>
+{vb:cssfile projecttools-ie.css}" />
 <![endif]-->]]></template>
 		<template name="pt_historybit" templatetype="template" date="1273347110" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<!-- historical note -->
 <div class="blocksubhead">
@@ -3219,12 +3218,19 @@ div.checkbox_multiselect {
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_import_thread" templatetype="template" date="1278150705" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread" templatetype="template" date="1289928952" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css" />
+
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
+
 	<title>{vb:var vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase pt_create_issue}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -3274,12 +3280,19 @@ div.checkbox_multiselect {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_thread_confirm" templatetype="template" date="1278150868" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread_confirm" templatetype="template" date="1289928960" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css" />
+
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
+
 	<title>{vb:var vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase pt_create_issue}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -3438,31 +3451,26 @@ div.checkbox_multiselect {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1288548001" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1289928870" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
 	<vb:if condition="$show['lightbox']">
 		<vb:if condition="$vboptions['storecssasfile']">
-			<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}showthread-rollup.css" />
+			{vb:cssfile showthread-rollup.css}
 		<vb:else />
-			<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}postlist.css,showthread.css,postbit.css,attachment.css,poll.css,lightbox.css" />
+			{vb:cssfile postlist.css,showthread.css,postbit.css,attachment.css,poll.css,lightbox.css}
 		</vb:if>
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<vb:if condition="$show['lightbox']">
-		<script type="text/javascript" src="clientscript/vbulletin_lightbox.js?v={vb:raw vboptions.simpleversion}"></script>
-	</vb:if>
-	<title>{vb:raw issue.title} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_list_builder.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_pt_issue.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -3475,9 +3483,16 @@ div.checkbox_multiselect {
 	vBulletin.register_ajax_urls("projectajax.php?issueid={vb:raw issue.issueid}&do=fetch&field={1:field}", "projectajax.php?issueid={vb:raw issue.issueid}&do=save&field={1:field}{2:submitstring}", Array("assignusers", "tags"))
 //-->
 	</script>
+	<vb:if condition="$show['lightbox']">
+		<script type="text/javascript" src="clientscript/vbulletin_lightbox.js?v={vb:raw vboptions.simpleversion}"></script>
+	</vb:if>
+
+	<title>{vb:raw issue.title} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
 	<vb:if condition="$vboptions['externalrss']">
 		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="projectexternal.php?projectid={vb:raw project.projectid}" />
 	</vb:if>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -4063,23 +4078,19 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1276105979" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1289037036" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1289928974" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumdisplay-rollup.css" />
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile forumdisplay-rollup.css}
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumbits.css,forumdisplay.css,threadlist.css" />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
 	<!--
@@ -4088,7 +4099,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority"));
 	//-->
 	</script>
+
 	<title>{vb:raw project.title_clean} - {vb:rawphrase issue_list} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
 	<vb:if condition="$vboptions['externalrss']">
 		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="projectexternal.php?projectid={vb:raw project.projectid}" />
 		<vb:if condition="$input['issuetypeid']">
@@ -4098,6 +4111,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean} - {vb:raw issuestatus_printable}" href="projectexternal.php?projectid={vb:raw project.projectid}&amp;issuestatusid={vb:raw input.issuestatusid}" />
 		</vb:if>
 	</vb:if>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -4539,21 +4553,19 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_listprojects_link" templatetype="template" date="1276536470" username="Pitchoune" version="2.1.2"><![CDATA[<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectlist.projectid}<vb:if condition="$issuetypeid">&amp;issuetypeid={vb:raw issuetypeid}</vb:if>">{vb:raw projectlist.title}</a></li>]]></template>
-		<template name="pt_manageattach" templatetype="template" date="1288172619" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_manageattach" templatetype="template" date="1289928987" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase manage_attachment}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -4600,21 +4612,19 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_manageprojectsubscription" templatetype="template" date="1288172590" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_manageprojectsubscription" templatetype="template" date="1289928995" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase manage_project_subscription}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -4659,21 +4669,21 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_managesubscription" templatetype="template" date="1288172631" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_managesubscription" templatetype="template" date="1289926934" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
+
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase manage_subscription}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -4848,24 +4858,19 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1289036993" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1289929027" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
-	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumdisplay-rollup.css" />
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
-	<vb:else />
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumbits.css,forumdisplay.css,threadlist.css" />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
-	</vb:if>
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
 
-	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_magic_select.css?v={vb:raw vboptions.simpleversion}" />
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile forumdisplay-rollup.css}
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
+
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
 	<!--
@@ -4874,7 +4879,9 @@ init_project_readmarker_system();
 	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority"));
 	//-->
 	</script>
+
 	<title>{vb:raw milestone.title_clean} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -5128,27 +5135,19 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1288172658" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1289929049" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
-	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumdisplay-rollup.css" />
-	<vb:else />
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumbits.css,forumdisplay.css,threadlist.css" />
-	</vb:if>
 
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile forumdisplay-rollup.css}
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
 	<!--
@@ -5157,7 +5156,9 @@ init_project_readmarker_system();
 	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority"));
 //-->
 	</script>
+
 	<title>{vb:raw milestone.title_clean} - {vb:rawphrase issue_list} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -5283,21 +5284,19 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue" templatetype="template" date="1288172680" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue" templatetype="template" date="1289929039" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase move_issue}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -5346,21 +5345,19 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1288172690" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1289929058" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase move_issue}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -5495,21 +5492,19 @@ init_project_readmarker_system();
 <vb:else />
 	<li><a class="navtab" href="project.php{vb:raw session.sessionurl_q}">{vb:rawphrase projects}</a></li>
 </vb:if>]]></template>
-		<template name="pt_notehistory" templatetype="template" date="1288172706" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_notehistory" templatetype="template" date="1289929073" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase edit_history}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -5538,27 +5533,19 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_overview" templatetype="template" date="1288172721" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_overview" templatetype="template" date="1289929085" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
-	<vb:if condition="!defined('YUI_VERSION')">
-		<script type="text/javascript" src="clientscript/yui/yahoo-dom-event.js?v={vb:raw vboptions.simpleversion}"></script>
-	</vb:if>
-
 	{vb:raw headinclude}
 
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
-
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
-	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
 	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_date_picker.css?v={vb:raw vboptions.simpleversion}" />
+
+	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
 	<!--
 	vbphrase['sunday']    = '{vb:rawphrase sunday}';
@@ -5570,9 +5557,13 @@ init_project_readmarker_system();
 	vbphrase['saturday']  = '{vb:rawphrase saturday}';
 	-->
 	</script>
+
 	<vb:if condition="$vboptions['externalrss']">
 		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed}" href="projectexternal.php" />
 	</vb:if>
+
+	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -5651,23 +5642,19 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_patch" templatetype="template" date="1288172733" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_patch" templatetype="template" date="1289929092" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
-
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase view_patch} - {vb:raw attachment.filename}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -5789,23 +5776,22 @@ init_project_readmarker_system();
 <a class="ptlink" href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issueinfos.pt_issueid}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1288172753" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1289929113" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
-	<vb:if condition="!defined('YUI_VERSION')">
-		<script type="text/javascript" src="clientscript/yui/yahoo-dom-event.js?v={vb:raw vboptions.simpleversion}"></script>
-	</vb:if>
 	{vb:raw headinclude}
 
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - <vb:if condition="$issue['issueid']">{vb:rawphrase edit_issue}<vb:else />{vb:rawphrase post_new_issue}</vb:if></title>
 	<script type="text/javascript" src="clientscript/vbulletin_list_builder.js"></script>
 	<script type="text/javascript" src="clientscript/vbulletin-editor.js?v={vb:raw vboptions.simpleversion}"></script>
+
+	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - <vb:if condition="$issue['issueid']">{vb:rawphrase edit_issue}<vb:else />{vb:rawphrase post_new_issue}</vb:if></title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -6224,22 +6210,19 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postissue_short" templatetype="template" date="1288172765" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue_short" templatetype="template" date="1289929121" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase post_new_issue}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -6303,23 +6286,21 @@ init_project_readmarker_system();
 		{vb:raw typename}
 	</a>
 </li>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1288172793" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postreply" templatetype="template" date="1289929130" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin-editor.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - <vb:if condition="$show['editnote']">{vb:rawphrase edit_reply}<vb:else />{vb:rawphrase post_reply}</vb:if></title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -6537,25 +6518,21 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1289037056" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1289929149" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumdisplay-rollup.css" />
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile forumdisplay-rollup.css}
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumbits.css,forumdisplay.css,threadlist.css" />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
-
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
 	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_date_picker.css?v={vb:raw vboptions.simpleversion}" />
-	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
 
+	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
 	<!--
@@ -6571,10 +6548,13 @@ init_project_readmarker_system();
 	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority"));
 	//-->
 	</script>
-	<title>{vb:raw project.title_clean} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
 	<vb:if condition="$vboptions['externalrss']">
 		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="projectexternal.php?projectid={vb:raw project.projectid}" />
 	</vb:if>
+
+	<title>{vb:raw project.title_clean} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -6814,25 +6794,23 @@ init_project_readmarker_system();
 		{vb:raw type.issuecountactive} / {vb:raw type.issuecount}
 	</span>
 </li>]]></template>
-		<template name="pt_project_milestones" templatetype="template" date="1288172856" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project_milestones" templatetype="template" date="1289929162" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-
-	<title>{vb:raw project.title_clean} - {vb:rawphrase milestones} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
 	<vb:if condition="$vboptions['externalrss']">
 		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="projectexternal.php?projectid={vb:raw project.projectid}" />
 	</vb:if>
+
+	<title>{vb:raw project.title_clean} - {vb:rawphrase milestones} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -6956,26 +6934,23 @@ init_project_readmarker_system();
 		</div>
 	</vb:if>
 </div>]]></template>
-		<template name="pt_reportlist" templatetype="template" date="1288172867" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_reportlist" templatetype="template" date="1289929172" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
-
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase reports}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
+
 {vb:raw header}
 {vb:raw navbar}
 
@@ -7051,23 +7026,19 @@ init_project_readmarker_system();
 </body>
 </html>]]></template>
 		<template name="pt_reportmenubit" templatetype="template" date="1272736733" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=viewreport&amp;issuereportid={vb:raw report.issuereportid}">{vb:raw report.title}</a></li>]]></template>
-		<template name="pt_savereport" templatetype="template" date="1288172882" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_savereport" templatetype="template" date="1289929180" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-	<!-- Added -->
+
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
-
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase save_report}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -7114,30 +7085,20 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_search" templatetype="template" date="1288547529" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_search" templatetype="template" date="1289929187" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
-	<vb:if condition="!defined('YUI_VERSION')">
-		<script type="text/javascript" src="clientscript/yui/yahoo-dom-event.js?v={vb:raw vboptions.simpleversion}"></script>
-		<script type="text/javascript" src="clientscript/yui/connection.js?v={vb:raw vboptions.simpleversion}"></script>
-	</vb:if>
-
 	{vb:raw headinclude}
 
-	<!-- Added -->
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+	<script type="text/javascript" src="clientscript/vbulletin_ptsearch_form.js?v={vb:raw vboptions.simpleversion}"></script>
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase search}</title>
-	<script type="text/javascript" src="clientscript/vbulletin_ptsearch_form.js?v={vb:raw vboptions.simpleversion}"></script>
 
 	{vb:raw headinclude_bottom}
 </head>
@@ -7571,30 +7532,18 @@ init_project_readmarker_system();
 </div>
 </vb:if>]]></template>
 		<template name="pt_searchresultgroupbit_arrow" templatetype="template" date="1273440034" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort={vb:raw search.sortby}&amp;order={vb:raw opposite_sort}<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>"><img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" /></a>]]></template>
-		<template name="pt_searchresults" templatetype="template" date="1288172933" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_searchresults" templatetype="template" date="1289929197" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
-	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumdisplay-rollup.css" />
-	<vb:else />
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}forumbits.css,forumdisplay.css,threadlist.css" />
-	</vb:if>
-	<vb:if condition="!defined('YUI_VERSION')">
-		<script type="text/javascript" src="clientscript/yui/yahoo-dom-event.js?v={vb:raw options.simpleversion}"></script>
-		<script type="text/javascript" src="clientscript/yui/connection.js?v={vb:raw options.simpleversion}"></script>
-	</vb:if>
 	{vb:raw headinclude}
-	<!-- Added -->
-	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
-	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
-	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile forumdisplay-rollup.css}
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
 
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
@@ -7604,10 +7553,13 @@ init_project_readmarker_system();
 	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority"));
 	//-->
 	</script>
-	<title>{vb:raw vboptions.bbtitle} - {vb:raw vbphrase.projects} - {vb:raw vbphrase.search_results}</title>
+
 	<vb:if condition="$vboptions['externalrss'] AND $search['reportpublic']">
 		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:raw vbphrase.project_rss_feed} - {vb:raw search.reporttitle}" href="projectexternal.php?issuereportid={vb:raw search.issuereportid}" />
 	</vb:if>
+
+	<title>{vb:raw vboptions.bbtitle} - {vb:raw vbphrase.projects} - {vb:raw vbphrase.search_results}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -7787,29 +7739,19 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		</p>
 	</div>
 </div>]]></template>
-		<template name="pt_timeline_page" templatetype="template" date="1288173086" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_timeline_page" templatetype="template" date="1289929214" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
-	<vb:if condition="!defined('YUI_VERSION')">
-		<script type="text/javascript" src="clientscript/yui/yahoo-dom-event.js?v={vb:raw vboptions.simpleversion}"></script>
-	</vb:if>
-
 	{vb:raw headinclude}
 
-	<!-- Added -->
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
-
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
+	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_date_picker.css?v={vb:raw vboptions.simpleversion}" />
 
 	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
-	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_date_picker.css?v={vb:raw vboptions.simpleversion}" />
 	<script type="text/javascript">
 	<!--
 	vbphrase['sunday']    = '{vb:rawphrase sunday}';
@@ -7821,7 +7763,9 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 	vbphrase['saturday']  = '{vb:rawphrase saturday}';
 	-->
 	</script>
+
 	<title>{vb:raw vboptions.bbtitle} - {vb:raw vbphrase.projects} - {vb:raw vbphrase.project_timeline}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -7880,23 +7824,19 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		<a class="textcontrol" href="projectpost.php?{vb:raw session.sessionurl}do=managesubscriptions">{vb:rawphrase issue_subscriptions}</a>
 	</div>
 </div>]]></template>
-		<template name="pt_viewip" templatetype="template" date="1288173101" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_viewip" templatetype="template" date="1289929223" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 
-	<!-- Added -->
 	<vb:if condition="$vboptions['storecssasfile']">
-		<link rel="stylesheet" type="text/css" href="{vb:raw vbcsspath}projecttools-rollup.css" />
+		{vb:cssfile projecttools-rollup.css}
 	<vb:else />
-		<link type="text/css" rel="stylesheet" href="{vb:raw vbcsspath}projecttools.css,toolsmenu.css" />
+		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_md5.js?v={vb:raw vboptions.simpleversion}"></script>
-	<!-- End Add -->
 	<title>{vb:raw vboptions.bbtitle} - {vb:raw vbphrase.projects} - {vb:raw vbphrase.ip_address}</title>
+
 	{vb:raw headinclude_bottom}
 </head>
 <body>
