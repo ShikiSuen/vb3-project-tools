@@ -1962,7 +1962,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1289928534" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1290496846" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2165,7 +2165,6 @@ a.firstunread, a.firstunread:hover
 
 .pt_project .blockfoot .pt_milestonelist {
 	float: {vb:stylevar left};
-	padding-{vb:stylevar left}: 10px;
 	margin-top: -4px;
 }
 
@@ -2817,6 +2816,7 @@ a.firstunread, a.firstunread:hover
 	text-align: {vb:stylevar left};
 	margin-top: 12px;
 	margin-bottom: 7px;
+	margin-{vb:stylevar left}: 0px;
 }
 
 .pt_issuepopup .navpopupmenu.popupmenu.nohovermenu a.popupctrl span.ctrlcontainer {
@@ -3073,6 +3073,7 @@ div.checkbox_multiselect {
 .pt_project .actionbuttons .group {
 	padding-top: 10px;
 	padding-bottom: 5px;
+	padding-{vb:stylevar right}: 0px;
 }
 
 .pagination span.prev_next a, .pagination span.first_last a {
