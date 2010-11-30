@@ -3198,14 +3198,14 @@ div.checkbox_multiselect {
 	</div>
 	</div>
 </li>]]></template>
-		<template name="pt_headinclude" templatetype="template" date="1289926131" username="Pitchoune" version="2.1.2"><![CDATA[<script type="text/javascript" src="clientscript/vbulletin_ptsearch_form.js?v={vb:raw vboptions.simpleversion}"></script>
-<vb:if condition="$vboptions['storecssasfile']">
+		<template name="pt_headinclude" templatetype="template" date="1291148231" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$vboptions['storecssasfile']">
 	{vb:cssfile projecttools-rollup.css}
 <vb:else />
 	{vb:cssfile projecttools.css,toolsmenu.css}
-</vb:if>]]></template>
-		<template name="pt_headinclude_ie" templatetype="template" date="1289926150" username="Pitchoune" version="2.1.2"><![CDATA[<!--[if lt IE 8]>
-{vb:cssfile projecttools-ie.css}" />
+</vb:if>
+
+<!--[if lt IE 8]>
+{vb:cssfile projecttools-ie.css}
 <![endif]-->]]></template>
 		<template name="pt_historybit" templatetype="template" date="1273347110" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<!-- historical note -->
 <div class="blocksubhead">
@@ -3219,7 +3219,7 @@ div.checkbox_multiselect {
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_import_thread" templatetype="template" date="1289928952" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread" templatetype="template" date="1291146688" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3229,6 +3229,10 @@ div.checkbox_multiselect {
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:var vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase pt_create_issue}</title>
 
@@ -3281,7 +3285,7 @@ div.checkbox_multiselect {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_thread_confirm" templatetype="template" date="1289928960" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread_confirm" templatetype="template" date="1291146701" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3291,6 +3295,10 @@ div.checkbox_multiselect {
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:var vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase pt_create_issue}</title>
 
@@ -3452,7 +3460,7 @@ div.checkbox_multiselect {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1289928870" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1291146711" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3462,6 +3470,10 @@ div.checkbox_multiselect {
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<vb:if condition="$show['lightbox']">
 		<vb:if condition="$vboptions['storecssasfile']">
@@ -4079,7 +4091,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1276105979" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1289928974" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1291146723" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4091,6 +4103,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
@@ -4554,7 +4570,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_listprojects_link" templatetype="template" date="1276536470" username="Pitchoune" version="2.1.2"><![CDATA[<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectlist.projectid}<vb:if condition="$issuetypeid">&amp;issuetypeid={vb:raw issuetypeid}</vb:if>">{vb:raw projectlist.title}</a></li>]]></template>
-		<template name="pt_manageattach" templatetype="template" date="1289928987" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_manageattach" templatetype="template" date="1291146733" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4564,6 +4580,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase manage_attachment}</title>
 
@@ -4613,7 +4633,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_manageprojectsubscription" templatetype="template" date="1289928995" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_manageprojectsubscription" templatetype="template" date="1291146762" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4623,6 +4643,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase manage_project_subscription}</title>
 
@@ -4670,7 +4694,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_managesubscription" templatetype="template" date="1289926934" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_managesubscription" templatetype="template" date="1291146771" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4680,6 +4704,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
 
@@ -4859,7 +4887,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1289929027" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1291146781" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4871,6 +4899,10 @@ init_project_readmarker_system();
 		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
@@ -5136,7 +5168,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1289929049" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1291146791" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5148,6 +5180,10 @@ init_project_readmarker_system();
 		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
@@ -5285,7 +5321,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue" templatetype="template" date="1289929039" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue" templatetype="template" date="1291146799" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5295,6 +5331,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase move_issue}</title>
 
@@ -5346,7 +5386,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1289929058" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1291146806" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5356,6 +5396,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase move_issue}</title>
 
@@ -5493,7 +5537,7 @@ init_project_readmarker_system();
 <vb:else />
 	<li><a class="navtab" href="project.php{vb:raw session.sessionurl_q}">{vb:rawphrase projects}</a></li>
 </vb:if>]]></template>
-		<template name="pt_notehistory" templatetype="template" date="1289929073" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_notehistory" templatetype="template" date="1291146822" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5503,6 +5547,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase edit_history}</title>
 
@@ -5534,7 +5582,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_overview" templatetype="template" date="1289929085" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_overview" templatetype="template" date="1291146839" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5545,6 +5593,10 @@ init_project_readmarker_system();
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_date_picker.css?v={vb:raw vboptions.simpleversion}" />
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
@@ -5643,7 +5695,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_patch" templatetype="template" date="1289929092" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_patch" templatetype="template" date="1291146850" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5653,6 +5705,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase view_patch} - {vb:raw attachment.filename}</title>
 
@@ -5777,7 +5833,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issueinfos.pt_issueid}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1289929113" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1291146951" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5787,6 +5843,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin_list_builder.js"></script>
 	<script type="text/javascript" src="clientscript/vbulletin-editor.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -6211,7 +6271,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postissue_short" templatetype="template" date="1289929121" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue_short" templatetype="template" date="1291146959" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6221,6 +6281,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase post_new_issue}</title>
 
@@ -6287,7 +6351,7 @@ init_project_readmarker_system();
 		{vb:raw typename}
 	</a>
 </li>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1289929130" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postreply" templatetype="template" date="1291147011" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6297,6 +6361,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin-editor.js?v={vb:raw vboptions.simpleversion}"></script>
 
@@ -6519,7 +6587,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1289929149" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1291146543" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6531,6 +6599,11 @@ init_project_readmarker_system();
 		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
+
 	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_date_picker.css?v={vb:raw vboptions.simpleversion}" />
 
 	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -6795,7 +6868,7 @@ init_project_readmarker_system();
 		{vb:raw type.issuecountactive} / {vb:raw type.issuecount}
 	</span>
 </li>]]></template>
-		<template name="pt_project_milestones" templatetype="template" date="1289929162" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project_milestones" templatetype="template" date="1291147025" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6805,6 +6878,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<vb:if condition="$vboptions['externalrss']">
 		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="projectexternal.php?projectid={vb:raw project.projectid}" />
@@ -6935,7 +7012,7 @@ init_project_readmarker_system();
 		</div>
 	</vb:if>
 </div>]]></template>
-		<template name="pt_reportlist" templatetype="template" date="1289929172" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_reportlist" templatetype="template" date="1291147036" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6945,6 +7022,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase reports}</title>
 
@@ -7027,7 +7108,7 @@ init_project_readmarker_system();
 </body>
 </html>]]></template>
 		<template name="pt_reportmenubit" templatetype="template" date="1272736733" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=viewreport&amp;issuereportid={vb:raw report.issuereportid}">{vb:raw report.title}</a></li>]]></template>
-		<template name="pt_savereport" templatetype="template" date="1289929180" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_savereport" templatetype="template" date="1291147048" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7037,6 +7118,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase save_report}</title>
 
@@ -7086,7 +7171,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_search" templatetype="template" date="1289929187" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_search" templatetype="template" date="1291147057" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7096,6 +7181,10 @@ init_project_readmarker_system();
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin_ptsearch_form.js?v={vb:raw vboptions.simpleversion}"></script>
 
@@ -7533,7 +7622,7 @@ init_project_readmarker_system();
 </div>
 </vb:if>]]></template>
 		<template name="pt_searchresultgroupbit_arrow" templatetype="template" date="1273440034" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort={vb:raw search.sortby}&amp;order={vb:raw opposite_sort}<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>"><img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" /></a>]]></template>
-		<template name="pt_searchresults" templatetype="template" date="1289929197" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_searchresults" templatetype="template" date="1291147070" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7545,6 +7634,10 @@ init_project_readmarker_system();
 		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
@@ -7740,7 +7833,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		</p>
 	</div>
 </div>]]></template>
-		<template name="pt_timeline_page" templatetype="template" date="1289929214" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_timeline_page" templatetype="template" date="1291147084" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7751,6 +7844,10 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
 	<link rel="stylesheet" type="text/css" href="clientscript/vbulletin_date_picker.css?v={vb:raw vboptions.simpleversion}" />
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<script type="text/javascript" src="clientscript/vbulletin_date_picker.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
@@ -7825,7 +7922,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		<a class="textcontrol" href="projectpost.php?{vb:raw session.sessionurl}do=managesubscriptions">{vb:rawphrase issue_subscriptions}</a>
 	</div>
 </div>]]></template>
-		<template name="pt_viewip" templatetype="template" date="1289929223" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_viewip" templatetype="template" date="1291147094" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7835,6 +7932,10 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 	<vb:else />
 		{vb:cssfile projecttools.css,toolsmenu.css}
 	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
 
 	<title>{vb:raw vboptions.bbtitle} - {vb:raw vbphrase.projects} - {vb:raw vbphrase.ip_address}</title>
 
@@ -8712,8 +8813,7 @@ if ($do == 'index' AND $vbulletin->userinfo['permissions']['ptpermissions'] & $v
 			<hookname>cache_templates</hookname>
 			<phpcode><![CDATA[$pt_templates =  array(
 	'pt_navbar_link',
-	'pt_headinclude',
-	'pt_headinclude_ie'
+	'pt_headinclude'
 );
 
 switch (THIS_SCRIPT)
@@ -9029,29 +9129,11 @@ else if ($userinfo['activity'] == 'archive_project')
 		<plugin active="1" executionorder="5">
 			<title>Search: Adding PT CSS Template in various places</title>
 			<hookname>parse_templates</hookname>
-			<phpcode><![CDATA[// We need vbcsspath for called templates
-if ($vbulletin->options['storecssasfile'])
-{
-	$vbcsspath = 'clientscript/vbulletin_css/style' . str_pad($style['styleid'], 5, '0', STR_PAD_LEFT) . $vbulletin->stylevars['textdirection']['string'][0] . '/';
-}
-else
-{
-	// textdirection var added to prevent cache if admin modified language text_direction. See bug #32640
-	$vbcsspath = 'css.php?styleid=' . $style['styleid'] . '&amp;langid=' . LANGUAGEID . '&amp;d=' . $style['dateline'] . '&amp;td=' . $vbulletin->stylevars['textdirection']['string'] . '&amp;sheet=';
-}
-
-// In search.php & projectpost.php?do=managesubscriptions, projecttools.css is not automatically added - do it here
+			<phpcode><![CDATA[// In search.php & projectpost.php?do=managesubscriptions, projecttools.css is not automatically added - do it here
 if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))) OR (THIS_SCRIPT == 'projectpost' AND in_array($_REQUEST['do'], array('managesubscriptions'))) OR (THIS_SCRIPT == 'showthread') OR (THIS_SCRIPT == 'usercp'))
 {
-	$templater = vB_Template::create('pt_headinclude');
-		$templater->register('vbcsspath', $vbcsspath);
-	$template_hook['headinclude_bottom_css'] .= $templater->render();
-}
-
-// Add specific IE CSS template
-$templater = vB_Template::create('pt_headinclude_ie');
-	$templater->register('vbcsspath', $vbcsspath);
-$template_hook['headinclude_bottom_css'] .= $templater->render();]]></phpcode>
+	$template_hook['headinclude_bottom_css'] .= vB_Template::create('pt_headinclude')->render();
+}]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
 			<title>Postbit: Misc data for postbits</title>
