@@ -3994,7 +3994,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1278750291" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
+		<template name="pt_issuebit" templatetype="template" date="1292447339" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />

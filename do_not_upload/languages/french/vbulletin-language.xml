@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Français ANSI (#26+)" vbversion="4.0.8" product="vbprojecttools" type="phrases">
+<language name="Français" vbversion="4.0.8" product="vbprojecttools" type="phrases">
 	<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 		<phrase name="project_projectadd_projectedit_afterforumids_text" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Cette option vous permet d'afficher les informations du projet dans la liste des forums sur la page d'accueil de vBulletin.<br />
 <br />
