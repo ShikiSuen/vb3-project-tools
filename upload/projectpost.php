@@ -2656,6 +2656,7 @@ if (in_array($_REQUEST['do'], array('processimportthread', 'importthread', 'impo
 	if ($postid)
 	{
 		require_once(DIR . '/includes/functions_ptimporter.php');
+		$threadinfo = verify_id('thread', $threadid, 1, 1);
 		$postinfo = verify_id('post', $postid, 1, 1);
 	}
 }
@@ -2689,13 +2690,21 @@ if ($_POST['do'] == 'processimportthread')
 	if ($vbulletin->GPC['postid'])
 	{
 		$datatype = 'post';
+		$datainfo = $postinfo;
+
+		if (empty($postinfo['title']))
+		{
+			$datainfo['title'] = $threadinfo['title'];
+		}
+
 	}
 	else if ($vbulletin->GPC['threadid'])
 	{
 		$datatype = 'thread';
+		$datainfo = $threadinfo;
 	}
 
-	$importer = new vB_PtImporter($vbulletin, $datatype, ($vbulletin->GPC['postid'] ? $postinfo : $threadinfo), $project, $posting_perms, array(), array());
+	$importer = new vB_PtImporter($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
 	$issueid = $importer->import_all();
 
 	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";

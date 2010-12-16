@@ -253,7 +253,7 @@ class vB_PtImporter
 					$issuenotes[$i]->set('userid', $post['userid']);
 					$issuenotes[$i]->set('username', $post['username']);
 					$issuenotes[$i]->set('visible', 'visible');
-					$issuenotes[$i]->set('isfirstnote', 0);
+					$issuenotes[$i]->set('isfirstnote', 1);
 					$issuenotes[$i]->set('pagetext', $post['pagetext']);
 					$issuenotes[$i]->set('dateline', $post['dateline']);
 
@@ -300,7 +300,7 @@ class vB_PtImporter
 			$issuenotes->set('userid', $post['userid']);
 			$issuenotes->set('username', $post['username']);
 			$issuenotes->set('visible', 'visible');
-			$issuenotes->set('isfirstnote', 0);
+			$issuenotes->set('isfirstnote', 1);
 			$issuenotes->set('pagetext', $post['pagetext']);
 			$issuenotes->set('dateline', $post['dateline']);
 

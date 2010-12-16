@@ -576,11 +576,11 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 		if (!$this->condition)
 		{
-			// Insert new issue - increase 'totalissues' counter in pt_user table
+			// Insert new issue - increase 'totalissues' counter in pt_user table for the original user
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "pt_user SET
 					totalissues = totalissues + 1
-				WHERE userid = " . $this->registry->userinfo['userid'] . "
+				WHERE userid = " . $this->fetch_field('submituserid') . "
 			");
 		}
 

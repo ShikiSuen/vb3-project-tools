@@ -1962,7 +1962,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1290496846" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1292530284" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3093,6 +3093,10 @@ div.checkbox_multiselect {
 	font-weight: bold;
 }
 
+legend {
+	color: {vb:stylevar body_color};
+}
+
 /* Fix for http://www.vbulletin.org/forum/showthread.php?t=249025 */
 .footer_copyright, .footer_morecopyright, .footer_time {
 	color: {vb:stylevar footer_copyright_color};
@@ -3285,7 +3289,7 @@ div.checkbox_multiselect {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_thread_confirm" templatetype="template" date="1291146701" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread_confirm" templatetype="template" date="1292530230" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3332,7 +3336,7 @@ div.checkbox_multiselect {
 		<div class="section">
 			<div class="blockrow">
 				<label class="full" for="input_issue_title">{vb:rawphrase title}</label>
-				<input name="title" id="input_issue_title" type="text" class="primary full textbox" value="{vb:raw threadinfo.title}" size="50" tabindex="1" />
+				<input name="title" id="input_issue_title" type="text" class="primary full textbox" value="{vb:raw title}" size="50" tabindex="1" />
 			</div>
 
 			<div class="blockrow">
@@ -3346,7 +3350,7 @@ div.checkbox_multiselect {
 			</fieldset>
 
 			<fieldset class="blockrow">
-				<legend>{vb:rawphrase priority}:</legend>
+				<legend>{vb:rawphrase priority}</legend>
 				<ul class="rightcol">
 					<li>
 						<select class="primary" name="priority" tabindex="1">
