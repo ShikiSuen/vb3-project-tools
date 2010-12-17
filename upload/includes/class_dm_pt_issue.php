@@ -682,6 +682,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuesubscribe WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuetag WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuevote WHERE issueid = $issueid");
+			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueimport WHERE issueid = $issueid");
 		}
 		else
 		{

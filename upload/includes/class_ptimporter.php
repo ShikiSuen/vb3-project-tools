@@ -221,9 +221,6 @@ class vB_PtImporter
 		$issuedata->set('submitdate', $this->datainfo['dateline']);
 		$issuedata->set('lastpost', $this->datainfo['lastpost']);
 
-		$issuedata->pre_save();
-		$errors = $issuedata->errors;
-
 		if ($this->datatype == 'thread')
 		{
 			// prepare issue notes
@@ -232,16 +229,14 @@ class vB_PtImporter
 			$i = 0;
 			$postids = array();
 
-			$postlimit = count($this->postids) > 0 ? 'AND postid IN (' . implode(',', $this->postids) . ')' : '';
-			$threadid = $this->datainfo['threadid'];
-
 			$post_query = $this->registry->db->query_read("
-				SELECT postid, userid, username, dateline, pagetext
-				FROM " . TABLE_PREFIX . "post AS post
-				WHERE threadid = $threadid
-				$postlimit
-				ORDER BY dateline
-				");
+				SELECT p.postid, p.userid, p.username, p.dateline, p.pagetext, t.firstpostid
+				FROM " . TABLE_PREFIX . "post AS p
+					LEFT JOIN " . TABLE_PREFIX . "thread AS t ON (t.threadid = p.threadid)
+				WHERE p.threadid = " . $this->datainfo['threadid'] . "
+					" . (count($this->postids) > 0 ? 'AND p.postid IN (' . implode(',', $this->postids) . ')' : '') . "
+				ORDER BY p.dateline
+			");
 
 			if ($this->registry->db->num_rows($post_query) > 0)
 			{
@@ -253,12 +248,27 @@ class vB_PtImporter
 					$issuenotes[$i]->set('userid', $post['userid']);
 					$issuenotes[$i]->set('username', $post['username']);
 					$issuenotes[$i]->set('visible', 'visible');
-					$issuenotes[$i]->set('isfirstnote', 1);
+
+					if ($post['postid'] == $post['firstpostid'])
+					{
+						$issuenotes[$i]->set('isfirstnote', 1);
+					}
+					else
+					{
+						$issuenotes[$i]->set('isfirstnote', 0);
+					}
+
 					$issuenotes[$i]->set('pagetext', $post['pagetext']);
 					$issuenotes[$i]->set('dateline', $post['dateline']);
 
-					$issuenotes[$i]->pre_save();
-					$errors = array_merge($errors, $issuenotes[$i]->errors);
+					$issuedata->pre_save();
+
+					if (!$issuedata->errors)
+					{
+						$issuenotes[$i]->pre_save();
+					}
+
+					$errors = array_merge($issuedata->errors, $issuenotes[$i]->errors);
 
 					$postids[] = $post['postid'];
 
@@ -271,28 +281,32 @@ class vB_PtImporter
 			if ($errors)
 			{
 				require_once(DIR . '/includes/functions_newpost.php');
-				standard_error(construct_errors($errors));
+				echo construct_errors($errors);
+				exit; // need to review this on a later release - issue #156
+
+				$_REQUEST['do'] = 'importthread2';
 			}
-
-			$this->issueid = $issuedata->save();
-
-			for ($i = 0; $i < count($issuenotes); $i++)
+			else
 			{
-				$issuenotes[$i]->set('issueid', $this->issueid);
-				$issuenotes[$i]->save();
+				$this->issueid = $issuedata->save();
+
+				for ($i = 0; $i < count($issuenotes); $i++)
+				{
+					$issuenotes[$i]->set('issueid', $this->issueid);
+					$issuenotes[$i]->save();
+				}
+
+				return $this->issueid;
 			}
 		}
 		else if ($this->datatype == 'post')
 		{
 			// prepare issue notes
-			$postid = $this->datainfo['postid'];
-
 			$post = $this->registry->db->query_first("
 				SELECT postid, userid, username, dateline, pagetext
 				FROM " . TABLE_PREFIX . "post
-				WHERE postid = $postid
+				WHERE postid = " . $this->datainfo['postid'] . "
 			");
-
 
 			$issuenotes =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
 			$issuenotes->set_info('do_floodcheck', false);
@@ -304,22 +318,34 @@ class vB_PtImporter
 			$issuenotes->set('pagetext', $post['pagetext']);
 			$issuenotes->set('dateline', $post['dateline']);
 
-			$issuenotes->pre_save();
-
 			$this->postids = $post['postid'];
 
-			if ($issuenotes->errors)
+			$issuedata->pre_save();
+
+			if (!$issuedata->errors)
 			{
-				require_once(DIR . '/includes/functions_newpost.php');
-				standard_error(construct_errors($issuenotes->errors));
+				$issuenotes->pre_save();
 			}
 
-			$this->issueid = $issuedata->save();
+			$errors = array_merge($issuedata->errors, $issuenotes->errors);
 
-			$issuenotes->set('issueid', $this->issueid);
-			$issuenotes->save();
+			if ($errors)
+			{
+				require_once(DIR . '/includes/functions_newpost.php');
+				echo construct_errors($errors);
+				exit; // need to review this on a later release - issue #156
 
-			return $this->issueid;
+				$_REQUEST['do'] = 'importthread2';
+			}
+			else
+			{
+				$this->issueid = $issuedata->save();
+
+				$issuenotes->set('issueid', $this->issueid);
+				$issuenotes->save();
+
+				return $this->issueid;
+			}
 		}
 	}
 
@@ -615,9 +641,9 @@ class vB_PtImporter
 
 		$this->registry->db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_issueimport
-				(contenttypeid, contentid, data)
+				(issueid, contenttypeid, contentid, data)
 			VALUES
-				($contenttypeid, " . $this->datainfo['threadid'] . ", '" . $data . "')
+				(" . $importdata['pt_issueid'] . ", $contenttypeid, " . $this->datainfo['threadid'] . ", '" . $data . "')
 		");
 	}
 
@@ -653,9 +679,9 @@ class vB_PtImporter
 
 		$this->registry->db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_issueimport
-				(contenttypeid, contentid, data)
+				(issueid, contenttypeid, contentid, data)
 			VALUES
-				($contenttypeid, " . $this->datainfo['postid'] . ", '" . $data . "')
+				(" . $importdata['pt_issueid'] . ", $contenttypeid, " . $this->datainfo['postid'] . ", '" . $data . "')
 		");
 	}
 

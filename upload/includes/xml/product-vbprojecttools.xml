@@ -1178,10 +1178,11 @@ $db->query_write("
 
 $db->query_write("
 	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueimport (
+		issueid INT UNSIGNED NOT NULL,
 		contenttypeid INT UNSIGNED NOT NULL,
 		contentid INT UNSIGNED NOT NULL,
 		data MEDIUMTEXT,
-		UNIQUE KEY contenttypeid (contenttypeid, contentid)
+		PRIMARY KEY (issueid)
 	) ENGINE=MyISAM
 ");
 

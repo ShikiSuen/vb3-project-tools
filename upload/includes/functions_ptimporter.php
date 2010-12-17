@@ -112,6 +112,8 @@ function ptimporter_verify_project($projectid)
 	
 	foreach ($projects AS $project)
 	{
+		$project['options'] = $project['projectinfo']['options'];
+
 		if ($project['projectinfo']['projectid'] == $projectid)
 		{
 			return $project;
