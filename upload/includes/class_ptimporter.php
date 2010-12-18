@@ -715,7 +715,7 @@ class vB_PtImporter
 			$change->set('oldvalue', $this->datainfo['threadid']); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
 		}
 
-		$change->set('newvalue', $this->datainfo['title']);
+		$change->set('newvalue', $this->datainfo['threadtitle']);
 		$change->save();
 	}
 }

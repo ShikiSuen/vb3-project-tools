@@ -2674,7 +2674,8 @@ if ($_POST['do'] == 'processimportthread')
 		'appliesversionid' => TYPE_UINT,
 		'addressedversionid' => TYPE_INT,
 		'issuestatusid' => TYPE_UINT,
-		'milestoneid' => TYPE_UINT
+		'milestoneid' => TYPE_UINT,
+		'threadtitle' => TYPE_NOHTML,
 	));
 
 	// Do our own checking to make sure we have all permissions needed to create issues

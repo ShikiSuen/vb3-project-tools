@@ -3290,7 +3290,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_thread_confirm" templatetype="template" date="1292530230" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread_confirm" templatetype="template" date="1292697010" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3327,6 +3327,7 @@ legend {
 <input type="hidden" name="do" value="processimportthread" />
 <input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
 <input type="hidden" name="p" value="{vb:raw postinfo.postid}" />
+<input type="hidden" name="threadtitle" value="{vb:raw threadinfo.title}" />
 
 	<h2 class="blockhead">{vb:rawphrase post_new_issue}</h2>
 
@@ -7805,6 +7806,11 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 // -->
 </script>
 </vb:if>]]></template>
+		<template name="pt_timeline_empty" templatetype="template" date="1292695823" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow">
+	<div class="section">
+		{vb:rawphrase timeline_empty}
+	</div>
+</div>]]></template>
 		<template name="pt_timeline_group" templatetype="template" date="1272751681" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<div class="blocksubhead">
 	{vb:raw group_date}
 </div>
@@ -9962,6 +9968,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="text_location" date="1175173644" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Text Location]]></phrase>
 			<phrase name="this_is_private_issue" date="1175077346" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[This is a private issue]]></phrase>
 			<phrase name="this_issue_is_closed" date="1212158110" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[This issue is closed.]]></phrase>
+			<phrase name="timeline_empty" date="1292695873" username="Pitchoune" version="2.1.2"><![CDATA[The timeline is empty.]]></phrase>
 			<phrase name="timeline_entry_issue" date="1255374089" username="admin" version="2.1.0 Alpha 1"><![CDATA[Issue created by <a href="{1}" class="shade">{2}</a>]]></phrase>
 			<phrase name="timeline_entry_petition" date="1255374063" username="admin" version="2.1.0 Alpha 1"><![CDATA[Status change petition from <a href="{1}" class="shade">{2}</a>]]></phrase>
 			<phrase name="timeline_entry_reply" date="1255374040" username="admin" version="2.1.0 Alpha 1"><![CDATA[Reply to issue from <a href="{1}" class="shade">{2}</a>]]></phrase>
