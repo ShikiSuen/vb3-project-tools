@@ -742,6 +742,13 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				AND type = 'issue'
 		");
 
+		// Increment totalissues counter
+		$this->registry->db->query_write("
+			UPDATE " . TABLE_PREFIX . "pt_user SET
+				totalissues = totalissues + 1
+			WHERE userid = " . $this->fetch_field('userid') . "
+		");
+
 		if ($project = fetch_project_info($this->fetch_field('projectid'), false))
 		{
 			$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);

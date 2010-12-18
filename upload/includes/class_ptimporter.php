@@ -230,7 +230,7 @@ class vB_PtImporter
 			$postids = array();
 
 			$post_query = $this->registry->db->query_read("
-				SELECT p.postid, p.userid, p.username, p.dateline, p.pagetext, t.firstpostid
+				SELECT p.postid, p.userid, p.username, p.dateline, p.pagetext, t.firstpostid, p.ipaddress
 				FROM " . TABLE_PREFIX . "post AS p
 					LEFT JOIN " . TABLE_PREFIX . "thread AS t ON (t.threadid = p.threadid)
 				WHERE p.threadid = " . $this->datainfo['threadid'] . "
@@ -260,6 +260,7 @@ class vB_PtImporter
 
 					$issuenotes[$i]->set('pagetext', $post['pagetext']);
 					$issuenotes[$i]->set('dateline', $post['dateline']);
+					$issuenotes[$i]->set('ipaddress', $post['ipaddress']);
 
 					$issuedata->pre_save();
 
@@ -303,7 +304,7 @@ class vB_PtImporter
 		{
 			// prepare issue notes
 			$post = $this->registry->db->query_first("
-				SELECT postid, userid, username, dateline, pagetext
+				SELECT postid, userid, username, dateline, pagetext, ipaddress
 				FROM " . TABLE_PREFIX . "post
 				WHERE postid = " . $this->datainfo['postid'] . "
 			");
@@ -317,6 +318,7 @@ class vB_PtImporter
 			$issuenotes->set('isfirstnote', 1);
 			$issuenotes->set('pagetext', $post['pagetext']);
 			$issuenotes->set('dateline', $post['dateline']);
+			$issuenotes->set('ipaddress', $post['ipaddress']);
 
 			$this->postids = $post['postid'];
 

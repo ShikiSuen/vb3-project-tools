@@ -1610,17 +1610,25 @@ if ($_REQUEST['do'] == 'timeline')
 	}
 
 	$activitybits = '';
-	foreach ($activity_groups AS $groupid => $groupbits)
+
+	if (!empty($activity_groups))
 	{
-		$group_date = make_group_date($groupid);
+		foreach ($activity_groups AS $groupid => $groupbits)
+		{
+			$group_date = make_group_date($groupid);
 
-		($hook = vBulletinHook::fetch_hook('project_timeline_group')) ? eval($hook) : false;
+			($hook = vBulletinHook::fetch_hook('project_timeline_group')) ? eval($hook) : false;
 
-		$templater = vB_Template::create('pt_timeline_group');
-			$templater->register('groupbits', $groupbits);
-			$templater->register('group_date', $group_date);
-			$templater->register('contenttypeid', $issue_contenttypeid);
-		$activitybits .= $templater->render();
+			$templater = vB_Template::create('pt_timeline_group');
+				$templater->register('groupbits', $groupbits);
+				$templater->register('group_date', $group_date);
+				$templater->register('contenttypeid', $issue_contenttypeid);
+			$activitybits .= $templater->render();
+		}
+	}
+	else
+	{
+		$activitybits = vB_Template::create('pt_timeline_empty')-> render();
 	}
 
 	// activity scope
