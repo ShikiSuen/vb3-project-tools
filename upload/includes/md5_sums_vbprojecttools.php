@@ -7,7 +7,7 @@ $md5_sums = array(
 		'projectattachment.php' => '04d600f686b4da85c1ff487a2cf0187b',
 		'projectexternal.php' => '447a7f2c65fe764913b9239386fdd633',
 		'projectmilestone.php' => '1c0b10361326c7f5dbe45e12d2ac7e34',
-		'projectpost.php' => '7f631a9b9871c8f455facf35c47b408a',
+		'projectpost.php' => 'b460d380f9c4e884f7618cf9382b37c5',
 		'projectsearch.php' => '4ced26af853f560c22afdfe61d2f3218',
 	),
 	'/admincp' => array(

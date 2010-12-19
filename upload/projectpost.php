@@ -2705,6 +2705,8 @@ if ($_POST['do'] == 'processimportthread')
 		$datainfo = $threadinfo;
 	}
 
+	$datainfo['threadtitle'] = $vbulletin->GPC['threadtitle'];
+
 	$importer = new vB_PtImporter($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
 	$issueid = $importer->import_all();
 
