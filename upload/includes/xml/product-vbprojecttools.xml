@@ -3290,7 +3290,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_thread_confirm" templatetype="template" date="1292697010" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread_confirm" templatetype="template" date="1292754859" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3403,6 +3403,7 @@ legend {
 							<select name="issuestatusid" style="display:block; width:200px" tabindex="1">{vb:raw status_options}</select>
 						<vb:else />
 							{vb:raw status_options}
+							<input type="hidden" name="issuestatusid" value="{vb:raw startstatusid}" />
 						</vb:if>
 					</li>
 				</ul>

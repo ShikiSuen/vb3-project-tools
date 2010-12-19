@@ -7,7 +7,7 @@ $md5_sums = array(
 		'projectattachment.php' => '04d600f686b4da85c1ff487a2cf0187b',
 		'projectexternal.php' => '447a7f2c65fe764913b9239386fdd633',
 		'projectmilestone.php' => '1c0b10361326c7f5dbe45e12d2ac7e34',
-		'projectpost.php' => '20c26a4c07e175b6ab7975e0c98db587',
+		'projectpost.php' => '7f631a9b9871c8f455facf35c47b408a',
 		'projectsearch.php' => '4ced26af853f560c22afdfe61d2f3218',
 	),
 	'/admincp' => array(
@@ -75,7 +75,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'ab3876ae66973c4d737cd36b5c8b67bb',
-		'product-vbprojecttools.xml' => 'a7eb7ad0591a12001542cc35d03aa3cb',
+		'product-vbprojecttools.xml' => '86f363bbb005bc6b6a9554f1f931f36c',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'c184eac2d54ea4f8295a2a9f229d007e',

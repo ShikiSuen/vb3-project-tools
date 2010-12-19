@@ -2823,7 +2823,7 @@ if ($_REQUEST['do'] == 'importthread2')
 	else
 	{
 		// We can't select the status - display only the default status
-		$status_options = $vbphrase['issuestatus' . $issuestatus[startstatusid] . ''];
+		$status_options = $vbphrase["issuestatus" . $issuestatus['startstatusid'] . ""];
 	}
 
 	// setup milestones
@@ -2850,6 +2850,7 @@ if ($_REQUEST['do'] == 'importthread2')
 		$templater->register('applies_versions', $applies_versions);
 		$templater->register('category_options', $category_options);
 		$templater->register('category_unknown_selected', $category_unknown_selected);
+		$templater->register('startstatusid', $issuestatus['startstatusid']);
 		$templater->register('issuetype', $issuetype);
 		$templater->register('issuetypeid', $issuetypeid);
 		$templater->register('milestone_options', $milestone_options);
