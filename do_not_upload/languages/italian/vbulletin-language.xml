@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Italiano (IT)" vbversion="4.0.8" product="vbprojecttools" type="custom">
+<language name="Italiano (IT)" vbversion="4.1.0" product="vbprojecttools" type="custom">
 	<phrasetype name="Control Panel Home Pages" fieldname="cphome">
 		<phrase name="edit_issue" date="1272579195" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Modifica Problema]]></phrase>
 		<phrase name="issue_type_manager" date="1272579150" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Gestione Tipi Problemi]]></phrase>
@@ -511,6 +511,7 @@ Per creare le tue segnalazioni, esegui una ricerca con i criteri che desideri e 
 		<phrase name="text_location" date="1272559515" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Posizione Testo]]></phrase>
 		<phrase name="this_is_private_issue" date="1272557268" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Questo è un problema privato]]></phrase>
 		<phrase name="this_issue_is_closed" date="1272557285" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Questo problema è chiuso.]]></phrase>
+		<phrase name="timeline_empty" date="1292709573" username="Darkshenron" version="2.1.2"><![CDATA[La linea temporale è vuota.]]></phrase>
 		<phrase name="timeline_entry_issue" date="1272578151" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Problema creato da <a href="{1}" class="shade">{2}</a>]]></phrase>
 		<phrase name="timeline_entry_petition" date="1272578175" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Petizione per cambio di stato di <a href="{1}" class="shade">{2}</a>]]></phrase>
 		<phrase name="timeline_entry_reply" date="1272578193" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Risposta al problema di <a href="{1}" class="shade">{2}</a>]]></phrase>

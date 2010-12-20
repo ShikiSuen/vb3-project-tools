@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Français" vbversion="4.0.8" product="vbprojecttools" type="phrases">
+<language name="Français" vbversion="4.1.0" product="vbprojecttools" type="phrases">
 	<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 		<phrase name="project_projectadd_projectedit_afterforumids_text" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Cette option vous permet d'afficher les informations du projet dans la liste des forums sur la page d'accueil de vBulletin.<br />
 <br />
@@ -596,6 +596,7 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="text_location" date="1179936112" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Localisation du texte]]></phrase>
 		<phrase name="this_is_private_issue" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Ceci est une demande privée]]></phrase>
 		<phrase name="this_issue_is_closed" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Cette demande est fermée.]]></phrase>
+		<phrase name="timeline_empty" date="1292862650" username="Pitchoune" version="2.1.2"><![CDATA[La ligne temporelle est vide.]]></phrase>
 		<phrase name="timeline_entry_issue" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Demande créée par <a href="{1}" class="shade">{2}</a>]]></phrase>
 		<phrase name="timeline_entry_petition" date="1275171529" username="Pitchoune" version="2.1.1"><![CDATA[Pétition pour modifier l'état par <a href="{1}" class="shade">{2}</a>]]></phrase>
 		<phrase name="timeline_entry_reply" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Réponse à cette demande par <a href="{1}" class="shade">{2}</a>]]></phrase>
