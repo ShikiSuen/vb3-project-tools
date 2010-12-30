@@ -1230,9 +1230,9 @@ if ($db->num_rows($movedthreads) > 0)
 
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_issueimport
-				(contenttypeid, contentid, data)
+				(issueid, contenttypeid, contentid, data)
 		VALUES
-				($contenttypeid, " . $movedthread['threadid'] . ", '" . $importdata . "')
+				(" . $movedthread['pt_issueid'] . ", $contenttypeid, " . $movedthread['threadid'] . ", '" . $importdata . "')
 			");
 	}
 }
