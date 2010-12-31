@@ -1161,7 +1161,7 @@ if ($show['ptimporter_previous'])
 		</code>
 		<code version="2.1.2">
 			<installcode><![CDATA[$db->query_write("
-	CREATE TABLE " . TABLE_PREFIX . "pt_issuestatusprojectset (
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
 		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (issuestatusid, projectid)
