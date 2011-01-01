@@ -3,7 +3,7 @@
 <product productid="vbprojecttools" active="1">
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
-	<version>2.1.2</version>
+	<version>2.2.0</version>
 	<url />
 	<versioncheckurl />
 	<dependencies>
@@ -5531,14 +5531,16 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_navbar_link" templatetype="template" date="1275935637" username="Jeremy" version="2.1.1"><![CDATA[<vb:if condition="$vboptions['selectednavtab'] == 'vbproject'">
+		<template name="pt_navbar_link" templatetype="template" date="1293923179" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="$vboptions['selectednavtab'] == 'vbproject'">
 <li class="selected">
 	<a class="navtab" href="project.php{vb:raw session.sessionurl_q}">{vb:rawphrase projects}</a>
 	<ul class="floatcontainer">
+		{vb:raw template_hook.pt_navbar_start}
 		<vb:if condition="$show['member']"><li><a href="projectsearch.php?{vb:raw session.sessionurl}do=reports">{vb:rawphrase my_reports}</a></li>
 		<li><a href="projectpost.php?{vb:raw session.sessionurl}do=managesubscriptions">{vb:rawphrase pt_managesubscriptions}</a></li></vb:if>
 		<li><a href="project.php?{vb:raw session.sessionurl}do=timeline">{vb:rawphrase project_timeline}</a></li>
 		<li><a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq">{vb:rawphrase faq}</a></li>
+		{vb:raw template_hook.pt_navbar_end}
 	</ul>
 </li>
 <vb:else />
