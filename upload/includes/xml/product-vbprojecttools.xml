@@ -8827,7 +8827,9 @@ if ($do == 'index' AND $vbulletin->userinfo['permissions']['ptpermissions'] & $v
 			<hookname>cache_templates</hookname>
 			<phpcode><![CDATA[$pt_templates =  array(
 	'pt_navbar_link',
-	'pt_headinclude'
+	'pt_headinclude',
+	'vbcms_widget_recentptissues_page',
+	'vbcms_widget_recentptcomments_page',
 );
 
 switch (THIS_SCRIPT)
@@ -8841,6 +8843,7 @@ switch (THIS_SCRIPT)
 			$pt_templates[] = 'pt_subforumbit_project';
 			$pt_templates[] = 'pt_projectbit_typecount';
 		}
+		$pt_templates[] = 'block_issues';
 		break;
 
 	case 'usercp':
