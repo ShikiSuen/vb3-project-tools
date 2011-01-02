@@ -382,7 +382,7 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 				$private_lastpost_join
 			WHERE " . implode(' OR ', $criteria) . "
 				AND (issue.submitdate > " . (TIMENOW - (86400 * $this->config['days'])) .  ")
-			ORDER BY issue.lastpost DESC
+			ORDER BY issue.submitdate DESC
 			LIMIT 0, " . $this->config['count'] . "
 		");
 
