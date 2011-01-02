@@ -91,13 +91,13 @@ if (empty($_REQUEST['do']))
 	{
 		$_REQUEST['do'] = 'issue';
 		$actiontemplates['none'] =& $actiontemplates['issue'];
-		define('FRIENDLY_URL_LINK', 'issue');
 	}
 }
 
 if ($_REQUEST['do'] == 'issue')
 {
 	define('GET_EDIT_TEMPLATES', true);
+	define('FRIENDLY_URL_LINK', 'issue');
 }
 
 // ######################### REQUIRE BACK-END ############################
