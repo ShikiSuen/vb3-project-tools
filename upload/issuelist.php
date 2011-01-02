@@ -214,7 +214,7 @@ if ($_REQUEST['do'] == 'issuelist')
 
 	$issue_list->exec_query($list_criteria, $vbulletin->GPC['pagenumber'], $vbulletin->options['pt_issuesperpage']);
 
-	$nav_url_base = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=issuelist&amp;projectid=$project[projectid]" .
+	$nav_url_base = 'issuelist.php?' . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" .
 			($vbulletin->GPC['issuetypeid'] ? '&amp;issuetypeid=' . $vbulletin->GPC['issuetypeid'] : '') .
 			($vbulletin->GPC['issuestatusid'] ? '&amp;issuestatusid=' . $vbulletin->GPC['issuestatusid'] : '') .
 			($vbulletin->GPC['appliesversionid'] ? '&amp;appliesversionid=' . $vbulletin->GPC['appliesversionid'] : '');
