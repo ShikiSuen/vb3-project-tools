@@ -15,7 +15,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 
 // #################### DEFINE IMPORTANT CONSTANTS #######################
-define('THIS_SCRIPT', 'project');
+define('THIS_SCRIPT', 'issuelist');
 define('CSRF_PROTECTION', true);
 define('PROJECT_SCRIPT', true);
 
@@ -39,9 +39,7 @@ $specialtemplates = array(
 );
 
 // pre-cache templates used by all actions
-$globaltemplates = array(
-	'pt_navbar_search',
-);
+$globaltemplates = array();
 
 // pre-cache templates used by specific actions
 $actiontemplates = array(
@@ -59,26 +57,11 @@ $actiontemplates = array(
 
 if (empty($_REQUEST['do']))
 {
-	if (!empty($_REQUEST['issueid']))
+	if (!empty($_REQUEST['projectid']))
 	{
-		$_REQUEST['do'] = 'issue';
-		$actiontemplates['none'] =& $actiontemplates['issue'];
+		$_REQUEST['do'] = 'issuelist';
+		$actiontemplates['none'] =& $actiontemplates['issuelist'];
 	}
-	else if (!empty($_REQUEST['projectid']))
-	{
-		$_REQUEST['do'] = 'project';
-		$actiontemplates['none'] =& $actiontemplates['project'];
-	}
-	else
-	{
-		$_REQUEST['do'] = 'overview';
-		$actiontemplates['none'] =& $actiontemplates['overview'];
-	}
-}
-
-if ($_REQUEST['do'] == 'issue')
-{
-	define('GET_EDIT_TEMPLATES', true);
 }
 
 // ######################### REQUIRE BACK-END ############################

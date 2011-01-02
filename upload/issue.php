@@ -39,9 +39,7 @@ $specialtemplates = array(
 );
 
 // pre-cache templates used by all actions
-$globaltemplates = array(
-	'pt_navbar_search',
-);
+$globaltemplates = array();
 
 // pre-cache templates used by specific actions
 $actiontemplates = array(

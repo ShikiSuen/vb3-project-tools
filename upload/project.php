@@ -39,9 +39,7 @@ $specialtemplates = array(
 );
 
 // pre-cache templates used by all actions
-$globaltemplates = array(
-	'pt_navbar_search',
-);
+$globaltemplates = array();
 
 // pre-cache templates used by specific actions
 $actiontemplates = array(
@@ -129,12 +127,7 @@ $actiontemplates = array(
 
 if (empty($_REQUEST['do']))
 {
-	if (!empty($_REQUEST['issueid']))
-	{
-		$_REQUEST['do'] = 'issue';
-		$actiontemplates['none'] =& $actiontemplates['issue'];
-	}
-	else if (!empty($_REQUEST['projectid']))
+	if (!empty($_REQUEST['projectid']))
 	{
 		$_REQUEST['do'] = 'project';
 		$actiontemplates['none'] =& $actiontemplates['project'];

@@ -15,7 +15,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 
 // #################### DEFINE IMPORTANT CONSTANTS #######################
-define('THIS_SCRIPT', 'project');
+define('THIS_SCRIPT', 'projecttimeline');
 define('CSRF_PROTECTION', true);
 define('PROJECT_SCRIPT', true);
 
@@ -39,117 +39,17 @@ $specialtemplates = array(
 );
 
 // pre-cache templates used by all actions
-$globaltemplates = array(
-	'pt_navbar_search',
-);
+$globaltemplates = array();
 
 // pre-cache templates used by specific actions
 $actiontemplates = array(
-	'overview' => array(
-		'pt_markread_script',
-		'pt_overview',
-		'pt_projectbit',
-		'pt_projectbit_typecount',
-		'pt_timeline',
-		'pt_timeline_group',
-		'pt_timeline_item',
-		'pt_reportmenubit'
-	),
-	'project' => array(
-		'pt_listprojects',
-		'pt_listprojects_link',
-		'pt_project',
-		'pt_project_typecountbit',
-		'pt_postmenubit',
-		'pt_issuebit',
-		'pt_issuebit_deleted',
-		'pt_timeline',
-		'pt_timeline_group',
-		'pt_timeline_item',
-		'pt_petitionbit',
-		'pt_reportmenubit'
-	),
 	'timeline' => array(
 		'pt_timeline_page',
 		'pt_timeline',
 		'pt_timeline_group',
 		'pt_timeline_item',
 	),
-	'issuelist' => array(
-		'pt_issuelist',
-		'pt_issuelist_arrow',
-		'pt_listprojects',
-		'pt_listprojects_link',
-		'pt_postmenubit',
-		'pt_issuebit',
-		'pt_issuebit_pagelink',
-		'pt_issuebit_deleted',
-	),
-	'issue' => array(
-		'pt_issue',
-		'pt_issuenotebit_user',
-		'pt_issuenotebit_petition',
-		'pt_issuenotebit_system',
-		'pt_issuenotebit_systembit',
-		'pt_listprojects',
-		'pt_listprojects_link',
-		'bbcode_code',
-		'bbcode_html',
-		'bbcode_php',
-		'bbcode_quote',
-		'bbcode_video',
-		'pt_attachmentbit',
-		'showthread_quickreply',
-	),
-	'notehistory' => array(
-		'pt_notehistory',
-		'pt_historybit',
-		'bbcode_code',
-		'bbcode_html',
-		'bbcode_php',
-		'bbcode_quote',
-		'bbcode_video',
-	),
-	'viewip' => array(
-		'pt_viewip'
-	),
-	'patch' => array(
-		'pt_patch',
-		'pt_patchbit_file_header',
-		'pt_patchbit_chunk_header',
-		'pt_patchbit_line_context',
-		'pt_patchbit_line_added',
-		'pt_patchbit_line_removed',
-	),
-	'report' => array(
-		'reportitem',
-		'newpost_usernamecode',
-	),
 );
-
-if (empty($_REQUEST['do']))
-{
-	if (!empty($_REQUEST['issueid']))
-	{
-		$_REQUEST['do'] = 'issue';
-		$actiontemplates['none'] =& $actiontemplates['issue'];
-	}
-	else if (!empty($_REQUEST['projectid']))
-	{
-		$_REQUEST['do'] = 'project';
-		$actiontemplates['none'] =& $actiontemplates['project'];
-	}
-	else
-	{
-		$_REQUEST['do'] = 'overview';
-		$actiontemplates['none'] =& $actiontemplates['overview'];
-	}
-}
-
-if ($_REQUEST['do'] == 'issue')
-{
-	define('GET_EDIT_TEMPLATES', true);
-}
 
 // ######################### REQUIRE BACK-END ############################
 require_once('./global.php');
