@@ -1,5 +1,5 @@
 <?php
-// vbprojecttools 2.1.2
+// vbprojecttools 2.2.0
 $md5_sums = array(
 	'/' => array(
 		'project.php' => 'd0aefadcd86f2fe523e1054a105702c3',
