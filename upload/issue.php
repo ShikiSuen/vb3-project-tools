@@ -939,7 +939,7 @@ if ($_REQUEST['do'] == 'issue')
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
 		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "do=issuelist&amp;projectid=$project[projectid]&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
+		"issuelist.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
 		'' => $issue['title']
 	));
 	$navbar = render_navbar_template($navbits);
