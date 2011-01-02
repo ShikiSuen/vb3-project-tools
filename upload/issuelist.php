@@ -97,9 +97,6 @@ $project_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_
 // ######################## START MAIN SCRIPT ############################
 // #######################################################################
 
-// #######################################################################
-if ($_REQUEST['do'] == 'issuelist')
-{
 	$vbulletin->input->clean_array_gpc('r', array(
 		'projectid' => TYPE_UINT,
 		'issuetypeid' => TYPE_NOHTML,
@@ -528,6 +525,5 @@ if ($_REQUEST['do'] == 'issuelist')
 		$templater->register('unknownversion_selected', $unknownversion_selected);
 		$templater->register('contenttypeid', $issue_contenttypeid);
 	print_output($templater->render());
-}
 
 ?>

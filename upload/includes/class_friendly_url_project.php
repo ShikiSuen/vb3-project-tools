@@ -107,7 +107,6 @@ class vB_Friendly_Url_Issuelist extends vB_Friendly_Url_Paged
 	protected $rewrite_segment = 'issuelist';
 }
 
-
 /**
  * Friendly URL for issue.php
  */
