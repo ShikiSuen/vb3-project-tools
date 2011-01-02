@@ -9003,6 +9003,11 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
+			<title>Friendly URLs</title>
+			<hookname>friendlyurl_resolve_class</hookname>
+			<phpcode><![CDATA[require_once(DIR . '/includes/class_friendly_url_project.php');]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
 			<title>Init: General Project Tools Setup</title>
 			<hookname>init_startup</hookname>
 			<phpcode><![CDATA[switch (THIS_SCRIPT)
