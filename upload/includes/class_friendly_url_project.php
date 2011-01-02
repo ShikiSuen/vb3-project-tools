@@ -157,6 +157,54 @@ class vB_Friendly_Url_Issue extends vB_Friendly_Url_Paged
 }
 
 /**
+* Friendly URL for projecttimeline.php
+*/
+class vB_Friendly_Url_Timeline extends vB_Friendly_Url
+{
+	/**
+	* The request variable for the resource id.
+	*
+	* @var string
+	*/
+	protected $idvar = 'projectid';
+
+	/**
+	* Link into index of the resource id.
+	*
+	* @var string
+	*/
+	protected $idkey = 'projectid';
+
+	/**
+	* Link info index of the title.
+	*
+	* @var string
+	*/
+	protected $titlekey = 'title';
+
+	/**
+	* Array of pageinfo vars to ignore when building the uri.
+	*
+	* @var array
+	*/
+	protected $ignorelist = array('projectid');
+
+	/**
+	* The name of the script that the URL links to.
+	*
+	* @var string
+	*/
+	protected $script = 'projecttimeline.php';
+
+	/**
+	* The segment of the uri that identifies this type.
+	*
+	* @var string
+	*/
+	protected $rewrite_segment = 'timeline';
+}
+
+/**
 * Friendly URL for project.php (milestones)
 */
 class vB_Friendly_Url_Milestone extends vB_Friendly_Url
