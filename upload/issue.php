@@ -16,7 +16,6 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 // #################### DEFINE IMPORTANT CONSTANTS #######################
 define('THIS_SCRIPT', 'issue');
-define('FRIENDLY_URL_LINK', 'issue');
 define('CSRF_PROTECTION', true);
 define('PROJECT_SCRIPT', true);
 
@@ -92,6 +91,7 @@ if (empty($_REQUEST['do']))
 	{
 		$_REQUEST['do'] = 'issue';
 		$actiontemplates['none'] =& $actiontemplates['issue'];
+		define('FRIENDLY_URL_LINK', 'issue');
 	}
 }
 
