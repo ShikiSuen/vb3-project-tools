@@ -516,9 +516,119 @@ if ($_REQUEST['do'] == 'lastnote')
 	exec_header_redirect('issue.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issue[issueid]$filter_url$page_url#note$issuenote[issuenoteid]");
 }
 
-// #######################################################################
-if ($_REQUEST['do'] == 'issue')
+// ############################### start report ###############################
+if ($_REQUEST['do'] == 'report' OR $_POST['do'] == 'sendemail')
 {
+	require_once(DIR . '/includes/class_reportitem_pt.php');
+
+	if (!$vbulletin->userinfo['userid'])
+	{
+		print_no_permission();
+	}
+
+	$vbulletin->input->clean_array_gpc('r', array(
+		'issuenoteid' => TYPE_UINT
+	));
+
+	$issuenote = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_issuenote
+		WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
+	");
+
+	$issue = verify_issue($issuenote['issueid']);
+	$project = verify_project($issue['projectid']);
+	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
+
+	$reportthread = ($rpforumid = $vbulletin->options['rpforumid'] AND $rpforuminfo = fetch_foruminfo($rpforumid));
+	$reportemail = ($vbulletin->options['enableemail'] AND $vbulletin->options['rpemail']);
+
+	if (!$reportthread AND !$reportemail)
+	{
+		eval(standard_error(fetch_error('emaildisabled')));
+	}
+
+	$userinfo = fetch_userinfo($issuenote['userid']);
+
+	$reportobj = new vB_ReportItem_Pt_IssueNote($vbulletin);
+	$reportobj->set_extrainfo('user', $userinfo);
+	$reportobj->set_extrainfo('issue', $issue);
+	$reportobj->set_extrainfo('issue_note', $issuenote);
+	$reportobj->set_extrainfo('project', $project);
+
+	$perform_floodcheck = $reportobj->need_floodcheck();
+
+	if ($perform_floodcheck)
+	{
+		$reportobj->perform_floodcheck_precommit();
+	}
+
+	if (!$issuenote OR ($issuenote['type'] != 'user' AND $issuenote['type'] != 'petition'))
+	{
+		eval(standard_error(fetch_error('invalidid', $vbphrase['message'], $vbulletin->options['contactuslink'])));
+	}
+
+	if (!verify_issue_note_perms($issue, $issuenote, $vbulletin->userinfo))
+	{
+			eval(standard_error(fetch_error('invalidid', $vbphrase['issue_note'], $vbulletin->options['contactuslink'])));
+	}
+
+	($hook = vBulletinHook::fetch_hook('project_report_start')) ? eval($hook) : false;
+
+	if ($_REQUEST['do'] == 'report')
+	{
+		$navbits = array(
+			'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
+			"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+			'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+			'' => $vbphrase['report_issue_note']
+		);
+		$navbits = construct_navbits($navbits);
+
+		$usernamecode = vB_Template::create('newpost_usernamecode')->render();
+
+		$navbar = render_navbar_template($navbits);
+		$url =& $vbulletin->url;
+
+		($hook = vBulletinHook::fetch_hook('project_report_form_start')) ? eval($hook) : false;
+
+		$forminfo = $reportobj->set_forminfo($issuenote);
+		$templater = vB_Template::create('reportitem');
+			$templater->register_page_templates();
+			$templater->register('forminfo', $forminfo);
+			$templater->register('navbar', $navbar);
+			$templater->register('url', $url);
+			$templater->register('usernamecode', $usernamecode);
+			$templater->register('contenttypeid', $issue_contenttypeid);
+		print_output($templater->render());
+	}
+
+	if ($_POST['do'] == 'sendemail')
+	{
+		$vbulletin->input->clean_array_gpc('p', array(
+			'reason' => TYPE_STR,
+		));
+
+		if ($vbulletin->GPC['reason'] == '')
+		{
+			eval(standard_error(fetch_error('noreason')));
+		}
+
+		if ($perform_floodcheck)
+		{
+			$reportobj->perform_floodcheck_commit();
+		}
+
+		$reportobj->do_report($vbulletin->GPC['reason'], $issuenote);
+
+		$url =& $vbulletin->url;
+		eval(print_standard_redirect('redirect_reportthanks'));
+	}
+}
+
+// #######################################################################
+/*if ($_REQUEST['do'] == 'issue')
+{*/
 	$userid = $vbulletin->userinfo['userid'];
 	require_once(DIR . '/includes/class_bbcode_pt.php');
 	require_once(DIR . '/includes/class_pt_issuenote.php');
@@ -967,117 +1077,6 @@ if ($_REQUEST['do'] == 'issue')
 		$templater->register('vBeditTemplate', $vBeditTemplate);
 		$templater->register('contenttypeid', $issue_contenttypeid);
 	print_output($templater->render());
-}
-
-// ############################### start report ###############################
-if ($_REQUEST['do'] == 'report' OR $_POST['do'] == 'sendemail')
-{
-	require_once(DIR . '/includes/class_reportitem_pt.php');
-
-	if (!$vbulletin->userinfo['userid'])
-	{
-		print_no_permission();
-	}
-
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuenoteid' => TYPE_UINT
-	));
-
-	$issuenote = $db->query_first("
-		SELECT *
-		FROM " . TABLE_PREFIX . "pt_issuenote
-		WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
-	");
-
-	$issue = verify_issue($issuenote['issueid']);
-	$project = verify_project($issue['projectid']);
-	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
-
-	$reportthread = ($rpforumid = $vbulletin->options['rpforumid'] AND $rpforuminfo = fetch_foruminfo($rpforumid));
-	$reportemail = ($vbulletin->options['enableemail'] AND $vbulletin->options['rpemail']);
-
-	if (!$reportthread AND !$reportemail)
-	{
-		eval(standard_error(fetch_error('emaildisabled')));
-	}
-
-	$userinfo = fetch_userinfo($issuenote['userid']);
-
-	$reportobj = new vB_ReportItem_Pt_IssueNote($vbulletin);
-	$reportobj->set_extrainfo('user', $userinfo);
-	$reportobj->set_extrainfo('issue', $issue);
-	$reportobj->set_extrainfo('issue_note', $issuenote);
-	$reportobj->set_extrainfo('project', $project);
-
-	$perform_floodcheck = $reportobj->need_floodcheck();
-
-	if ($perform_floodcheck)
-	{
-		$reportobj->perform_floodcheck_precommit();
-	}
-
-	if (!$issuenote OR ($issuenote['type'] != 'user' AND $issuenote['type'] != 'petition'))
-	{
-		eval(standard_error(fetch_error('invalidid', $vbphrase['message'], $vbulletin->options['contactuslink'])));
-	}
-
-	if (!verify_issue_note_perms($issue, $issuenote, $vbulletin->userinfo))
-	{
-			eval(standard_error(fetch_error('invalidid', $vbphrase['issue_note'], $vbulletin->options['contactuslink'])));
-	}
-
-	($hook = vBulletinHook::fetch_hook('project_report_start')) ? eval($hook) : false;
-
-	if ($_REQUEST['do'] == 'report')
-	{
-		$navbits = array(
-			'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-			"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-			'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
-			'' => $vbphrase['report_issue_note']
-		);
-		$navbits = construct_navbits($navbits);
-
-		$usernamecode = vB_Template::create('newpost_usernamecode')->render();
-
-		$navbar = render_navbar_template($navbits);
-		$url =& $vbulletin->url;
-
-		($hook = vBulletinHook::fetch_hook('project_report_form_start')) ? eval($hook) : false;
-
-		$forminfo = $reportobj->set_forminfo($issuenote);
-		$templater = vB_Template::create('reportitem');
-			$templater->register_page_templates();
-			$templater->register('forminfo', $forminfo);
-			$templater->register('navbar', $navbar);
-			$templater->register('url', $url);
-			$templater->register('usernamecode', $usernamecode);
-			$templater->register('contenttypeid', $issue_contenttypeid);
-		print_output($templater->render());
-	}
-
-	if ($_POST['do'] == 'sendemail')
-	{
-		$vbulletin->input->clean_array_gpc('p', array(
-			'reason' => TYPE_STR,
-		));
-
-		if ($vbulletin->GPC['reason'] == '')
-		{
-			eval(standard_error(fetch_error('noreason')));
-		}
-
-		if ($perform_floodcheck)
-		{
-			$reportobj->perform_floodcheck_commit();
-		}
-
-		$reportobj->do_report($vbulletin->GPC['reason'], $issuenote);
-
-		$url =& $vbulletin->url;
-		eval(print_standard_redirect('redirect_reportthanks'));
-	}
-
-}
+//}
 
 ?>
