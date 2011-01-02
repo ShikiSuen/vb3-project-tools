@@ -12,7 +12,7 @@
 \*======================================================================*/
 
 /**
- * Friendly URL for project.php (projects)
+ * Friendly URL for project.php
  */
 class vB_Friendly_Url_Project extends vB_Friendly_Url_Paged
 {
@@ -59,9 +59,57 @@ class vB_Friendly_Url_Project extends vB_Friendly_Url_Paged
 	protected $rewrite_segment = 'project';
 }
 
+/**
+ * Friendly URL for issuelist.php
+ */
+class vB_Friendly_Url_Issuelist extends vB_Friendly_Url_Paged
+{
+	/**
+	 * The request variable for the resource id.
+	 *
+	 * @var string
+	 */
+	protected $idvar = 'projectid';
+
+	/**
+	 * Link info index of the resource id.
+	 *
+	 * @var string
+	 */
+	protected $idkey = 'projectid';
+
+	/**
+	 * Link info index of the title.
+	 *
+	 * @var string
+	 */
+	protected $titlekey = 'title';
+
+	/**
+	 * Array of pageinfo vars to ignore when building the uri.
+	 *
+	 * @var array string
+	 */
+	protected $ignorelist = array('projectid');
+
+	/**
+	 * The name of the script that the URL links to.
+	 *
+	 * @var string
+	 */
+	protected $script = 'issuelist.php';
+
+	/**
+	 * The segment of the uri that identifies this type.
+	 *
+	 * @var string
+	 */
+	protected $rewrite_segment = 'issuelist';
+}
+
 
 /**
- * Friendly URL for project.php (issues)
+ * Friendly URL for issue.php
  */
 class vB_Friendly_Url_Issue extends vB_Friendly_Url_Paged
 {
@@ -98,7 +146,7 @@ class vB_Friendly_Url_Issue extends vB_Friendly_Url_Paged
 	 *
 	 * @var string
 	 */
-	protected $script = 'project.php';
+	protected $script = 'issue.php';
 
 	/**
 	 * The segment of the uri that identifies this type.
@@ -146,7 +194,7 @@ class vB_Friendly_Url_Milestone extends vB_Friendly_Url
 	*
 	* @var string
 	*/
-	protected $script = 'project.php';
+	protected $script = 'projectmilestone.php';
 
 	/**
 	* The segment of the uri that identifies this type.

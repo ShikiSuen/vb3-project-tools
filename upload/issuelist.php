@@ -16,6 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 // #################### DEFINE IMPORTANT CONSTANTS #######################
 define('THIS_SCRIPT', 'issuelist');
+define('FRIENDLY_URL_LINK', 'issuelist');
 define('CSRF_PROTECTION', true);
 define('PROJECT_SCRIPT', true);
 
