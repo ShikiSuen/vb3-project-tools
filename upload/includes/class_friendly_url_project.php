@@ -159,7 +159,7 @@ class vB_Friendly_Url_Issue extends vB_Friendly_Url_Paged
 /**
 * Friendly URL for projecttimeline.php
 */
-class vB_Friendly_Url_Timeline extends vB_Friendly_Url
+class vB_Friendly_Url_ProjectTimeline extends vB_Friendly_Url
 {
 	/**
 	* The request variable for the resource id.
