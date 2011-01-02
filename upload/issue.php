@@ -362,7 +362,7 @@ if ($_POST['do'] == 'vote')
 
 	$votedata->save();
 
-	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 	eval(print_standard_redirect('pt_vote_cast'));
 }
 
@@ -416,7 +416,7 @@ if ($_REQUEST['do'] == 'gotonote')
 
 	if ($issue['firstnoteid'] == $issuenote['issuenoteid'])
 	{
-		exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issue[issueid]");
+		exec_header_redirect('issue.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issue[issueid]");
 		exit;
 	}
 
@@ -458,7 +458,7 @@ if ($_REQUEST['do'] == 'gotonote')
 		$page_url = '';
 	}
 
-	exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issue[issueid]$filter_url$page_url#note$issuenote[issuenoteid]");
+	exec_header_redirect('issue.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issue[issueid]$filter_url$page_url#note$issuenote[issuenoteid]");
 }
 
 // #######################################################################
@@ -486,7 +486,7 @@ if ($_REQUEST['do'] == 'lastnote')
 	");
 	if (!$issuenote)
 	{
-		exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issue[issueid]");
+		exec_header_redirect('issue.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issue[issueid]");
 		exit;
 	}
 
@@ -512,7 +512,7 @@ if ($_REQUEST['do'] == 'lastnote')
 		$page_url = '';
 	}
 
-	exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issue[issueid]$filter_url$page_url#note$issuenote[issuenoteid]");
+	exec_header_redirect('issue.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issue[issueid]$filter_url$page_url#note$issuenote[issuenoteid]");
 }
 
 // #######################################################################
