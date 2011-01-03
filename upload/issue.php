@@ -1055,7 +1055,7 @@ if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_
 $navbits = construct_navbits(array(
 	'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
 	"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-	"issuelist.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
+	fetch_seo_url('issuelist', $project, null, 'projectid', 'title') . "&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],//"issuelist.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
 	'' => $issue['title']
 ));
 
