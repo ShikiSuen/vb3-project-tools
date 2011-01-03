@@ -16,6 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 // #################### DEFINE IMPORTANT CONSTANTS #######################
 define('THIS_SCRIPT', 'issue');
+define('FRIENDLY_URL_LINK', 'issue');
 define('CSRF_PROTECTION', true);
 define('PROJECT_SCRIPT', true);
 
@@ -43,7 +44,7 @@ $globaltemplates = array();
 
 // pre-cache templates used by specific actions
 $actiontemplates = array(
-	'issue' => array(
+	'none' => array(
 		'pt_issue',
 		'pt_issuenotebit_user',
 		'pt_issuenotebit_petition',
@@ -85,19 +86,18 @@ $actiontemplates = array(
 	),
 );
 
-if (empty($_REQUEST['do']))
+/*if (empty($_REQUEST['do']))
 {
 	if (!empty($_REQUEST['issueid']))
 	{
 		$_REQUEST['do'] = 'issue';
 		$actiontemplates['none'] =& $actiontemplates['issue'];
 	}
-}
+}*/
 
-if ($_REQUEST['do'] == 'issue')
+if (empty($_REQUEST['do']))
 {
 	define('GET_EDIT_TEMPLATES', true);
-	define('FRIENDLY_URL_LINK', 'issue');
 }
 
 // ######################### REQUIRE BACK-END ############################
@@ -120,9 +120,6 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 {
 	print_no_permission();
 }
-
-// issue_start if not exists?
-//($hook = vBulletinHook::fetch_hook('project_start')) ? eval($hook) : false;
 
 require_once(DIR . '/includes/class_bootstrap_framework.php');
 vB_Bootstrap_Framework::init();
