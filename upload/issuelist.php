@@ -499,7 +499,7 @@ $navbits = array(
 
 if ($vbulletin->GPC['issuetypeid'])
 {
-	$navbits["project.php?" . $vbulletin->session->vars['sessionurl'] . "do=issuelist&amp;projectid=$project[projectid]&amp;issuetypeid=" . $vbulletin->GPC['issuetypeid']] = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'];
+	$navbits[fetch_seo_url('issuelist', $project, null) . "&amp;issuetypeid=" . $vbulletin->GPC['issuetypeid']] = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'];
 }
 $navbits[''] = $vbphrase['issue_list'];
 $navbits = construct_navbits($navbits);
