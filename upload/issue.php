@@ -623,457 +623,465 @@ if ($_REQUEST['do'] == 'report' OR $_POST['do'] == 'sendemail')
 	}
 }
 
-// #######################################################################
-/*if ($_REQUEST['do'] == 'issue')
-{*/
-	$userid = $vbulletin->userinfo['userid'];
-	require_once(DIR . '/includes/class_bbcode_pt.php');
-	require_once(DIR . '/includes/class_pt_issuenote.php');
+$userid = $vbulletin->userinfo['userid'];
+require_once(DIR . '/includes/class_bbcode_pt.php');
+require_once(DIR . '/includes/class_pt_issuenote.php');
 
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issueid' => TYPE_UINT,
-		'filter' => TYPE_NOHTML,
-		'pagenumber' => TYPE_UINT
-	));
+$vbulletin->input->clean_array_gpc('r', array(
+	'issueid' => TYPE_UINT,
+	'filter' => TYPE_NOHTML,
+	'pagenumber' => TYPE_UINT
+));
 
-	$issue = verify_issue($vbulletin->GPC['issueid'], true, array('avatar', 'vote', 'milestone'));
-	$project = verify_project($issue['projectid']);
+$issue = verify_issue($vbulletin->GPC['issueid'], true, array('avatar', 'vote', 'milestone'));
+$project = verify_project($issue['projectid']);
 
-	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
-	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
+$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
+$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 
-	($hook = vBulletinHook::fetch_hook('project_issue_start')) ? eval($hook) : false;
+($hook = vBulletinHook::fetch_hook('project_issue_start')) ? eval($hook) : false;
 
-	$show['issue_closed'] = ($issue['state'] == 'closed');
-	$show['reply_issue'] = $posting_perms['can_reply'];
-	$show['quick_reply'] = ($vbulletin->userinfo['userid'] AND $posting_perms['can_reply']);
-	$show['lightbox'] = ($vbulletin->options['lightboxenabled'] AND $vbulletin->options['usepopups']);
+$show['issue_closed'] = ($issue['state'] == 'closed');
+$show['reply_issue'] = $posting_perms['can_reply'];
+$show['quick_reply'] = ($vbulletin->userinfo['userid'] AND $posting_perms['can_reply']);
+$show['lightbox'] = ($vbulletin->options['lightboxenabled'] AND $vbulletin->options['usepopups']);
 
-	if (!$vbulletin->pt_issuestatus["$issue[issuestatusid]"]['canpetitionfrom'])
+if (!$vbulletin->pt_issuestatus["$issue[issuestatusid]"]['canpetitionfrom'])
+{
+	$show['status_petition'] = false;
+}
+else
+{
+	$show['status_petition'] = ($show['quick_reply'] AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canpetition']));
+}
+
+$show['attachments'] = ($vbulletin->userinfo['userid'] AND ($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachview']));
+$show['attachment_upload'] = ($show['attachments'] AND ($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattach']) AND !is_issue_closed($issue, $issueperms));
+$show['edit_issue'] = $posting_perms['issue_edit'];
+
+if ($issue['state'] == 'closed')
+{
+	// if the issue is closed, no one can vote at all
+	$show['vote_option'] = false;
+}
+else if ($vbulletin->userinfo['userid'] AND $vbulletin->userinfo['userid'] == $issue['submituserid'] AND !$vbulletin->options['pt_allowstartervote'])
+{
+	// issue starters can't vote
+	$show['vote_option'] = false;
+}
+else
+{
+	$show['vote_option'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canvote']);
+}
+
+$show['private_edit'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancreateprivate']); // for quick reply
+$show['status_edit'] = $posting_perms['status_edit'];
+$show['milestone'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $project['milestonecount']);
+$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
+$show['tags_edit'] = $posting_perms['tags_edit'];
+$show['assign_dropdown'] = $posting_perms['assign_dropdown'];
+
+$show['move_issue'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmoveissue']);
+$show['edit_issue_private'] = ($posting_perms['issue_edit'] AND $posting_perms['private_edit']);
+$show['newflag'] = ($issue['newflag'] ? TRUE : FALSE);
+$show['assigntoself'] = (($show['assign_dropdown'] AND isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"])) ? TRUE : FALSE);
+	
+// get voting phrases
+$vbphrase['vote_question_issuetype'] = $vbphrase["vote_question_$issue[issuetypeid]"];
+$vbphrase['vote_count_positive_issuetype'] = $vbphrase["vote_count_positive_$issue[issuetypeid]"];
+$vbphrase['vote_count_negative_issuetype'] = $vbphrase["vote_count_negative_$issue[issuetypeid]"];
+$vbphrase['applies_version_issuetype'] = $vbphrase["applies_version_$issue[issuetypeid]"];
+$vbphrase['addressed_version_issuetype'] = $vbphrase["addressed_version_$issue[issuetypeid]"];
+
+if (!$vbulletin->options['pt_notesperpage'])
+{
+	$vbulletin->options['pt_notesperpage'] = 999999;
+}
+
+// tags
+$tags = array();
+
+$tag_data = $db->query_read("
+	SELECT tag.tagtext
+	FROM " . TABLE_PREFIX . "pt_issuetag AS issuetag
+	INNER JOIN " . TABLE_PREFIX . "pt_tag AS tag ON (issuetag.tagid = tag.tagid)
+	WHERE issuetag.issueid = $issue[issueid]
+	ORDER BY tag.tagtext
+");
+
+while ($tag = $db->fetch_array($tag_data))
+{
+	$tags[] = $tag['tagtext'];
+}
+
+$tags = implode(', ', $tags);
+
+// assignments
+$assignments = array();
+
+$assignment_data = $db->query_read("
+	SELECT user.userid, user.username, user.usergroupid, user.membergroupids, user.displaygroupid
+	FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
+	INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid)
+	WHERE issueassign.issueid = $issue[issueid]
+	ORDER BY user.username
+");
+
+while ($assignment = $db->fetch_array($assignment_data))
+{
+	$assignments[] = "$assignment[username]";
+
+	if ($assignment['userid'] == $vbulletin->userinfo['userid'])
 	{
-		$show['status_petition'] = false;
+		$show['assigntoself'] = FALSE;
 	}
-	else
-	{
-		$show['status_petition'] = ($show['quick_reply'] AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canpetition']));
-	}
+}
 
-	$show['attachments'] = ($vbulletin->userinfo['userid'] AND ($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachview']));
-	$show['attachment_upload'] = ($show['attachments'] AND ($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattach']) AND !is_issue_closed($issue, $issueperms));
-	$show['edit_issue'] = $posting_perms['issue_edit'];
+$assignments = implode(', ', $assignments);
 
-	if ($issue['state'] == 'closed')
-	{
-		// if the issue is closed, no one can vote at all
-		$show['vote_option'] = false;
-	}
-	else if ($vbulletin->userinfo['userid'] AND $vbulletin->userinfo['userid'] == $issue['submituserid'] AND !$vbulletin->options['pt_allowstartervote'])
-	{
-		// issue starters can't vote
-		$show['vote_option'] = false;
-	}
-	else
-	{
-		$show['vote_option'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canvote']);
-	}
+// determine which note types the browsing user can see
+$viewable_note_types = fetch_viewable_note_types($issueperms, $private_text);
+$can_see_deleted = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmanage']);
 
-	$show['private_edit'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancreateprivate']); // for quick reply
-	$show['status_edit'] = $posting_perms['status_edit'];
-	$show['milestone'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $project['milestonecount']);
-	$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
-	$show['tags_edit'] = $posting_perms['tags_edit'];
-	$show['assign_dropdown'] = $posting_perms['assign_dropdown'];
+// find total results for each type
+$notetype_counts = array(
+	'user' => 0,
+	'petition' => 0,
+	'system' => 0
+);
 
-	$show['move_issue'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmoveissue']);
-	$show['edit_issue_private'] = ($posting_perms['issue_edit'] AND $posting_perms['private_edit']);
-	$show['newflag'] = ($issue['newflag'] ? TRUE : FALSE);
-	$show['assigntoself'] = (($show['assign_dropdown'] AND isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"])) ? TRUE : FALSE);
-		
-	// get voting phrases
-	$vbphrase['vote_question_issuetype'] = $vbphrase["vote_question_$issue[issuetypeid]"];
-	$vbphrase['vote_count_positive_issuetype'] = $vbphrase["vote_count_positive_$issue[issuetypeid]"];
-	$vbphrase['vote_count_negative_issuetype'] = $vbphrase["vote_count_negative_$issue[issuetypeid]"];
-	$vbphrase['applies_version_issuetype'] = $vbphrase["applies_version_$issue[issuetypeid]"];
-	$vbphrase['addressed_version_issuetype'] = $vbphrase["addressed_version_$issue[issuetypeid]"];
+$hook_query_joins = $hook_query_where = '';
+($hook = vBulletinHook::fetch_hook('project_issue_typecount_query')) ? eval($hook) : false;
 
-	if (!$vbulletin->options['pt_notesperpage'])
-	{
-		$vbulletin->options['pt_notesperpage'] = 999999;
-	}
+$notetype_counts_query = $db->query_read("
+	SELECT issuenote.type, COUNT(*) AS total
+	FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
+	$hook_query_joins
+	WHERE issuenote.issueid = $issue[issueid]
+		AND issuenote.issuenoteid <> $issue[firstnoteid]
+		AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
+		$hook_query_where
+	GROUP BY issuenote.type
+");
 
-	// tags
-	$tags = array();
-	$tag_data = $db->query_read("
-		SELECT tag.tagtext
-		FROM " . TABLE_PREFIX . "pt_issuetag AS issuetag
-		INNER JOIN " . TABLE_PREFIX . "pt_tag AS tag ON (issuetag.tagid = tag.tagid)
-		WHERE issuetag.issueid = $issue[issueid]
-		ORDER BY tag.tagtext
-	");
-	while ($tag = $db->fetch_array($tag_data))
-	{
-		$tags[] = $tag['tagtext'];
-	}
-	$tags = implode(', ', $tags);
+while ($notetype_count = $db->fetch_array($notetype_counts_query))
+{
+	$notetype_counts["$notetype_count[type]"] = intval($notetype_count['total']);
+}
 
-	// assignments
-	$assignments = array();
-	$assignment_data = $db->query_read("
-		SELECT user.userid, user.username, user.usergroupid, user.membergroupids, user.displaygroupid
-		FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
-		INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid)
-		WHERE issueassign.issueid = $issue[issueid]
-		ORDER BY user.username
-	");
-	while ($assignment = $db->fetch_array($assignment_data))
-	{
-		$assignments[] = "$assignment[username]";
-		if($assignment['userid'] == $vbulletin->userinfo['userid'])
+// sanitize type filter
+switch ($vbulletin->GPC['filter'])
+{
+	case 'petitions':
+	case 'changes':
+	case 'all':
+	case 'comments':
+		break;
+	default:
+		// we haven't specified a valid filter, so let's pick a default that has something if possible
+		if ($notetype_counts['user'] OR $notetype_counts['petition'])
 		{
-			$show['assigntoself'] = FALSE;
-		}
-	}
-	$assignments = implode(', ', $assignments);
-
-	// determine which note types the browsing user can see
-	$viewable_note_types = fetch_viewable_note_types($issueperms, $private_text);
-	$can_see_deleted = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmanage']);
-
-	// find total results for each type
-	$notetype_counts = array(
-		'user' => 0,
-		'petition' => 0,
-		'system' => 0
-	);
-
-	$hook_query_joins = $hook_query_where = '';
-	($hook = vBulletinHook::fetch_hook('project_issue_typecount_query')) ? eval($hook) : false;
-
-	$notetype_counts_query = $db->query_read("
-		SELECT issuenote.type, COUNT(*) AS total
-		FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
-		$hook_query_joins
-		WHERE issuenote.issueid = $issue[issueid]
-			AND issuenote.issuenoteid <> $issue[firstnoteid]
-			AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
-			$hook_query_where
-		GROUP BY issuenote.type
-	");
-	while ($notetype_count = $db->fetch_array($notetype_counts_query))
-	{
-		$notetype_counts["$notetype_count[type]"] = intval($notetype_count['total']);
-	}
-
-	// sanitize type filter
-	switch ($vbulletin->GPC['filter'])
-	{
-		case 'petitions':
-		case 'changes':
-		case 'all':
-		case 'comments':
-			break;
-		default:
-			// we haven't specified a valid filter, so let's pick a default that has something if possible
-			if ($notetype_counts['user'] OR $notetype_counts['petition'])
-			{
-				// have replies
-				$vbulletin->GPC['filter'] = 'comments';
-			}
-			else if ($notetype_counts['system'])
-			{
-				// changes only
-				$vbulletin->GPC['filter'] = 'changes';
-			}
-			else
-			{
-				// nothing, just show comments
-				$vbulletin->GPC['filter'] = 'comments';
-			}
-	}
-
-	// setup filtering
-	switch ($vbulletin->GPC['filter'])
-	{
-		case 'petitions':
-			$type_filter = "AND issuenote.type = 'petition'";
-			$note_count = $notetype_counts['petition'];
-			break;
-
-		case 'changes':
-			$type_filter = "AND issuenote.type = 'system'";
-			$note_count = $notetype_counts['system'];
-			break;
-
-		case 'all':
-			$type_filter = '';
-			$note_count = array_sum($notetype_counts);
-			break;
-
-		case 'comments':
-		default:
-			$type_filter = "AND issuenote.type IN ('user', 'petition')";
-			$note_count = $notetype_counts['user'] + $notetype_counts['petition'];
+			// have replies
 			$vbulletin->GPC['filter'] = 'comments';
-	}
+		}
+		else if ($notetype_counts['system'])
+		{
+			// changes only
+			$vbulletin->GPC['filter'] = 'changes';
+		}
+		else
+		{
+			// nothing, just show comments
+			$vbulletin->GPC['filter'] = 'comments';
+		}
+}
 
-	$selected_filter = array(
-		'comments'  => ($vbulletin->GPC['filter'] == 'comments'  ? ' selected="selected"' : ''),
-		'petitions' => ($vbulletin->GPC['filter'] == 'petitions' ? ' selected="selected"' : ''),
-		'changes'   => ($vbulletin->GPC['filter'] == 'changes'   ? ' selected="selected"' : ''),
-		'all'       => ($vbulletin->GPC['filter'] == 'all'       ? ' selected="selected"' : ''),
-	);
+// setup filtering
+switch ($vbulletin->GPC['filter'])
+{
+	case 'petitions':
+		$type_filter = "AND issuenote.type = 'petition'";
+		$note_count = $notetype_counts['petition'];
+		break;
 
-	$display_type_counts = array(
-		'comments' => vb_number_format($notetype_counts['user'] + $notetype_counts['petition']),
-		'petitions' => vb_number_format($notetype_counts['petition']),
-		'changes' => vb_number_format($notetype_counts['system']),
-	);
+	case 'changes':
+		$type_filter = "AND issuenote.type = 'system'";
+		$note_count = $notetype_counts['system'];
+		break;
 
-	// prepare counts to be viewable
-	foreach ($notetype_counts AS $notetype => $count)
-	{
-		$notetype_counts["$notetype"] = vb_number_format($count);
-	}
+	case 'all':
+		$type_filter = '';
+		$note_count = array_sum($notetype_counts);
+		break;
 
-	// pagination
-	if (!$vbulletin->GPC['pagenumber'])
-	{
-		$vbulletin->GPC['pagenumber'] = 1;
-	}
+	case 'comments':
+	default:
+		$type_filter = "AND issuenote.type IN ('user', 'petition')";
+		$note_count = $notetype_counts['user'] + $notetype_counts['petition'];
+		$vbulletin->GPC['filter'] = 'comments';
+}
+
+$selected_filter = array(
+	'comments'  => ($vbulletin->GPC['filter'] == 'comments'  ? ' selected="selected"' : ''),
+	'petitions' => ($vbulletin->GPC['filter'] == 'petitions' ? ' selected="selected"' : ''),
+	'changes'   => ($vbulletin->GPC['filter'] == 'changes'   ? ' selected="selected"' : ''),
+	'all'       => ($vbulletin->GPC['filter'] == 'all'       ? ' selected="selected"' : ''),
+);
+
+$display_type_counts = array(
+	'comments' => vb_number_format($notetype_counts['user'] + $notetype_counts['petition']),
+	'petitions' => vb_number_format($notetype_counts['petition']),
+	'changes' => vb_number_format($notetype_counts['system']),
+);
+
+// prepare counts to be viewable
+foreach ($notetype_counts AS $notetype => $count)
+{
+	$notetype_counts["$notetype"] = vb_number_format($count);
+}
+
+// pagination
+if (!$vbulletin->GPC['pagenumber'])
+{
+	$vbulletin->GPC['pagenumber'] = 1;
+}
+
+$start = ($vbulletin->GPC['pagenumber'] - 1) * $vbulletin->options['pt_notesperpage'];
+
+if ($start > $note_count)
+{
+	$vbulletin->GPC['pagenumber'] = ceil($note_count / $vbulletin->options['pt_notesperpage']);
 	$start = ($vbulletin->GPC['pagenumber'] - 1) * $vbulletin->options['pt_notesperpage'];
+}
 
-	if ($start > $note_count)
-	{
-		$vbulletin->GPC['pagenumber'] = ceil($note_count / $vbulletin->options['pt_notesperpage']);
-		$start = ($vbulletin->GPC['pagenumber'] - 1) * $vbulletin->options['pt_notesperpage'];
-	}
+$hook_query_fields = $hook_query_joins = $hook_query_where = '';
+($hook = vBulletinHook::fetch_hook('project_issue_note_query')) ? eval($hook) : false;
 
-	$hook_query_fields = $hook_query_joins = $hook_query_where = '';
-	($hook = vBulletinHook::fetch_hook('project_issue_note_query')) ? eval($hook) : false;
+// notes
+$notes = $db->query_read("
+	SELECT issuenote.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
+		" . ($vbulletin->options['avatarenabled'] ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
+		user.*, userfield.*, usertextfield.*,
+		IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
+		issuepetition.petitionstatusid, issuepetition.resolution AS petitionresolution
+		" . ($can_see_deleted ? ", issuedeletionlog.reason AS deletionreason" : '') . "
+		$hook_query_fields
+	FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
+	LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
+	LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
+	LEFT JOIN " . TABLE_PREFIX . "usertextfield AS usertextfield ON (usertextfield.userid = user.userid)
+	LEFT JOIN " . TABLE_PREFIX . "pt_issuepetition AS issuepetition ON (issuepetition.issuenoteid = issuenote.issuenoteid)
+	" . ($can_see_deleted ? "LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON (issuedeletionlog.primaryid = issuenote.issuenoteid AND issuedeletionlog.type = 'issuenote')" : '') . "
+	" . ($vbulletin->options['avatarenabled'] ? "
+		LEFT JOIN " . TABLE_PREFIX . "avatar AS avatar ON(avatar.avatarid = user.avatarid)
+		LEFT JOIN " . TABLE_PREFIX . "customavatar AS customavatar ON(customavatar.userid = user.userid)" : '') . "
+	$hook_query_joins
+	WHERE issuenote.issueid = $issue[issueid]
+		AND issuenote.issuenoteid <> $issue[firstnoteid]
+		AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
+		$type_filter
+		$hook_query_where
+	ORDER BY issuenote.dateline
+	LIMIT $start, " . $vbulletin->options['pt_notesperpage'] . "
+");
 
-	// notes
-	$notes = $db->query_read("
-		SELECT issuenote.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
-			" . ($vbulletin->options['avatarenabled'] ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
-			user.*, userfield.*, usertextfield.*,
-			IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
-			issuepetition.petitionstatusid, issuepetition.resolution AS petitionresolution
-			" . ($can_see_deleted ? ", issuedeletionlog.reason AS deletionreason" : '') . "
-			$hook_query_fields
-		FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
-		LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
-		LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
-		LEFT JOIN " . TABLE_PREFIX . "usertextfield AS usertextfield ON (usertextfield.userid = user.userid)
-		LEFT JOIN " . TABLE_PREFIX . "pt_issuepetition AS issuepetition ON (issuepetition.issuenoteid = issuenote.issuenoteid)
-		" . ($can_see_deleted ? "LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON (issuedeletionlog.primaryid = issuenote.issuenoteid AND issuedeletionlog.type = 'issuenote')" : '') . "
-		" . ($vbulletin->options['avatarenabled'] ? "
-			LEFT JOIN " . TABLE_PREFIX . "avatar AS avatar ON(avatar.avatarid = user.avatarid)
-			LEFT JOIN " . TABLE_PREFIX . "customavatar AS customavatar ON(customavatar.userid = user.userid)" : '') . "
-		$hook_query_joins
-		WHERE issuenote.issueid = $issue[issueid]
-			AND issuenote.issuenoteid <> $issue[firstnoteid]
-			AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
-			$type_filter
-			$hook_query_where
-		ORDER BY issuenote.dateline
-		LIMIT $start, " . $vbulletin->options['pt_notesperpage'] . "
+$pagenav = construct_page_nav(
+	$vbulletin->GPC['pagenumber'],
+	$vbulletin->options['pt_notesperpage'],
+	$note_count,
+	'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" .
+		($vbulletin->GPC['filter'] != 'comments' ? '&amp;filter=' . $vbulletin->GPC['filter'] : ''),
+	''
+);
+
+$bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
+
+$factory = new vB_Pt_IssueNoteFactory();
+$factory->registry =& $vbulletin;
+$factory->bbcode =& $bbcode;
+$factory->issue =& $issue;
+$factory->project =& $project;
+$factory->browsing_perms = $issueperms;
+
+$notebits = '';
+$displayed_dateline = 0;
+
+while ($note = $db->fetch_array($notes))
+{
+	$displayed_dateline = max($displayed_dateline, $note['dateline']);
+	$note_handler =& $factory->create($note);
+	$notebits .= $note_handler->construct();
+}
+
+// prepare the original issue like a note since it has note text
+$displayed_dateline = max($displayed_dateline, $issue['dateline']);
+$note_handler =& $factory->create($issue);
+$note_handler->construct();
+$issue = $note_handler->note;
+
+if ($show['status_petition'] OR $show['status_edit'])
+{
+	// issue status for petition
+	$petition_options = build_issuestatus_select($vbulletin->pt_issuetype["$issue[issuetypeid]"]['statuses'], 0, array($issue['issuestatusid']));
+}
+
+if ($show['attachments'])
+{
+	// attachments
+	$attachments = $db->query_read("
+		SELECT issueattach.attachmentid, issueattach.userid, issueattach.filename, issueattach.extension,
+			issueattach.dateline, issueattach.visible, issueattach.status, issueattach.filesize,
+			issueattach.thumbnail_filesize, issueattach.thumbnail_dateline, issueattach.ispatchfile,
+			user.username
+		FROM " . TABLE_PREFIX . "pt_issueattach AS issueattach
+		LEFT JOIN " . TABLE_PREFIX . "user AS user ON (issueattach.userid = user.userid)
+		WHERE issueattach.issueid = $issue[issueid]
+			AND visible = 1
+		ORDER BY dateline
 	");
 
-	$pagenav = construct_page_nav(
-		$vbulletin->GPC['pagenumber'],
-		$vbulletin->options['pt_notesperpage'],
-		$note_count,
-		'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" .
-			($vbulletin->GPC['filter'] != 'comments' ? '&amp;filter=' . $vbulletin->GPC['filter'] : ''),
-		''
+	$attachmentbits = '';
+
+	while ($attachment = $db->fetch_array($attachments))
+	{
+		$show['attachment_obsolete'] = ($attachment['status'] == 'obsolete');
+		$show['manage_attach_link'] = (($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachedit']) AND (($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattacheditothers']) OR $vbulletin->userinfo['userid'] == $attachment['userid']));
+
+		if ($attachment['ispatchfile'])
+		{
+			$attachment['link'] = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=patch&amp;attachmentid=$attachment[attachmentid]";
+		}
+		else
+		{
+			$attachment['link'] = 'projectattachment.php?' . $vbulletin->session->vars['sessionurl'] . "attachmentid=$attachment[attachmentid]";
+		}
+
+		$attachment['attachtime'] = vbdate($vbulletin->options['timeformat'], $attachment['dateline']);
+		$attachment['attachdate'] = vbdate($vbulletin->options['dateformat'], $attachment['dateline'], true);
+
+		($hook = vBulletinHook::fetch_hook('project_issue_attachmentbit')) ? eval($hook) : false;
+
+		$templater = vB_Template::create('pt_attachmentbit');
+			$templater->register('attachment', $attachment);
+			$templater->register('contenttypeid', $issue_contenttypeid);
+		$attachmentbits .= $templater->render();
+	}
+}
+
+// mark this issue as read
+if ($displayed_dateline AND $displayed_dateline >= $issue['lastread'])
+{
+	mark_issue_read($issue, $displayed_dateline);
+}
+
+// quick reply
+if ($show['quick_reply'])
+{
+	require_once(DIR . '/includes/functions_editor.php');
+	$editorid = construct_edit_toolbar(
+		'',
+		false,
+		'pt',
+		$vbulletin->options['pt_allowsmilies'],
+		true,
+		false,
+		'qr'
 	);
+}
 
-	$bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
+// Project jump
+if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_listprojects_locations'] & 4)
+{
+	$ptdropdown = '';
+	$perms_query = build_issue_permissions_query($vbulletin->userinfo);
 
-	$factory = new vB_Pt_IssueNoteFactory();
-	$factory->registry =& $vbulletin;
-	$factory->bbcode =& $bbcode;
-	$factory->issue =& $issue;
-	$factory->project =& $project;
-	$factory->browsing_perms = $issueperms;
-
-	$notebits = '';
-	$displayed_dateline = 0;
-
-	while ($note = $db->fetch_array($notes))
+	foreach ($vbulletin->pt_projects AS $projectlist)
 	{
-		$displayed_dateline = max($displayed_dateline, $note['dateline']);
-		$note_handler =& $factory->create($note);
-		$notebits .= $note_handler->construct();
-	}
-
-	// prepare the original issue like a note since it has note text
-	$displayed_dateline = max($displayed_dateline, $issue['dateline']);
-	$note_handler =& $factory->create($issue);
-	$note_handler->construct();
-	$issue = $note_handler->note;
-
-	if ($show['status_petition'] OR $show['status_edit'])
-	{
-		// issue status for petition
-		$petition_options = build_issuestatus_select($vbulletin->pt_issuetype["$issue[issuetypeid]"]['statuses'], 0, array($issue['issuestatusid']));
-	}
-
-	if ($show['attachments'])
-	{
-		// attachments
-		$attachments = $db->query_read("
-			SELECT issueattach.attachmentid, issueattach.userid, issueattach.filename, issueattach.extension,
-				issueattach.dateline, issueattach.visible, issueattach.status, issueattach.filesize,
-				issueattach.thumbnail_filesize, issueattach.thumbnail_dateline, issueattach.ispatchfile,
-				user.username
-			FROM " . TABLE_PREFIX . "pt_issueattach AS issueattach
-			LEFT JOIN " . TABLE_PREFIX . "user AS user ON (issueattach.userid = user.userid)
-			WHERE issueattach.issueid = $issue[issueid]
-				AND visible = 1
-			ORDER BY dateline
-		");
-		$attachmentbits = '';
-		while ($attachment = $db->fetch_array($attachments))
+		if (!isset($perms_query["$projectlist[projectid]"]) OR $projectlist['displayorder'] == 0)
 		{
-			$show['attachment_obsolete'] = ($attachment['status'] == 'obsolete');
-			$show['manage_attach_link'] = (($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachedit'])
-				AND (($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattacheditothers']) OR $vbulletin->userinfo['userid'] == $attachment['userid']));
-
-			if ($attachment['ispatchfile'])
-			{
-				$attachment['link'] = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=patch&amp;attachmentid=$attachment[attachmentid]";
-			}
-			else
-			{
-				$attachment['link'] = 'projectattachment.php?' . $vbulletin->session->vars['sessionurl'] . "attachmentid=$attachment[attachmentid]";
-			}
-			$attachment['attachtime'] = vbdate($vbulletin->options['timeformat'], $attachment['dateline']);
-			$attachment['attachdate'] = vbdate($vbulletin->options['dateformat'], $attachment['dateline'], true);
-
-			($hook = vBulletinHook::fetch_hook('project_issue_attachmentbit')) ? eval($hook) : false;
-
-			$templater = vB_Template::create('pt_attachmentbit');
-				$templater->register('attachment', $attachment);
-				$templater->register('contenttypeid', $issue_contenttypeid);
-			$attachmentbits .= $templater->render();
-		}
-	}
-
-	// mark this issue as read
-	if ($displayed_dateline AND $displayed_dateline >= $issue['lastread'])
-	{
-		mark_issue_read($issue, $displayed_dateline);
-	}
-
-	// quick reply
-	if ($show['quick_reply'])
-	{
-		require_once(DIR . '/includes/functions_editor.php');
-		$editorid = construct_edit_toolbar(
-			'',
-			false,
-			'pt',
-			$vbulletin->options['pt_allowsmilies'],
-			true,
-			false,
-			'qr'
-		);
-	}
-
-	// Project jump
-	if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_listprojects_locations'] & 4)
-	{
-		$ptdropdown = '';
-		$perms_query = build_issue_permissions_query($vbulletin->userinfo);
-
-		foreach ($vbulletin->pt_projects AS $projectlist)
-		{
-			if (!isset($perms_query["$projectlist[projectid]"]) OR $projectlist['displayorder'] == 0)
-			{
-				continue;
-			}
-
-			$templater = vB_Template::create('pt_listprojects_link');
-				$templater->register('projectlist', $projectlist);
-			$ptdropdown .= $templater->render();
+			continue;
 		}
 
-		if ($ptdropdown)
-		{
-			// Define particular conditions for spaces
-			$navpopup = array();
-			$navpopup['css'] = '';
-
-			if (empty($pagenav))
-			{
-				if ($vbulletin->options['pt_listprojects_position_issue'] == 0)
-				{
-					$navpopup['css'] = 'margin38';
-				}
-				else if ($vbulletin->options['pt_listprojects_position_issue'] == 1)
-				{
-					$navpopup['css'] = 'margin33';
-				}
-			}
-			else
-			{
-				if ($vbulletin->options['pt_listprojects_position_issue'] == 0)
-				{
-					$navpopup['css'] = 'margin15 marginbottomadd5';
-				}
-				else if ($vbulletin->options['pt_listprojects_position_issue'] == 1)
-				{
-					$navpopup['css'] = 'marginbottomadd5';
-				}
-			}
-
-			if ($vbulletin->options['pt_listprojects_position_issue'] == 2)
-			{
-				$navpopup['css'] = 'marginmore10 marginbottomadd5';
-			}
-
-			$navpopup['title'] = $project['title'];
-
-			// Evaluate the drop_down menu
-			$templater = vB_Template::create('pt_listprojects');
-				$templater->register('navpopup', $navpopup);
-				$templater->register('ptdropdown', $ptdropdown);
-			$pt_ptlist = $templater->render();
-		}
+		$templater = vB_Template::create('pt_listprojects_link');
+			$templater->register('projectlist', $projectlist);
+		$ptdropdown .= $templater->render();
 	}
 
-	// navbar and output
-	$navbits = construct_navbits(array(
-		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"issuelist.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
-		'' => $issue['title']
-	));
-	$navbar = render_navbar_template($navbits);
+	if ($ptdropdown)
+	{
+		// Define particular conditions for spaces
+		$navpopup = array();
+		$navpopup['css'] = '';
 
-	($hook = vBulletinHook::fetch_hook('project_issue_complete')) ? eval($hook) : false;
+		if (empty($pagenav))
+		{
+			if ($vbulletin->options['pt_listprojects_position_issue'] == 0)
+			{
+				$navpopup['css'] = 'margin38';
+			}
+			else if ($vbulletin->options['pt_listprojects_position_issue'] == 1)
+			{
+				$navpopup['css'] = 'margin33';
+			}
+		}
+		else
+		{
+			if ($vbulletin->options['pt_listprojects_position_issue'] == 0)
+			{
+				$navpopup['css'] = 'margin15 marginbottomadd5';
+			}
+			else if ($vbulletin->options['pt_listprojects_position_issue'] == 1)
+			{
+				$navpopup['css'] = 'marginbottomadd5';
+			}
+		}
 
-	$templater = vB_Template::create('pt_issue');
-		$templater->register_page_templates();
-		$templater->register('assignments', $assignments);
-		$templater->register('attachmentbits', $attachmentbits);
-		$templater->register('display_type_counts', $display_type_counts);
-		$templater->register('editorid', $editorid);
-		$templater->register('issue', $issue);
-		$templater->register('messagearea', $messagearea);
-		$templater->register('navbar', $navbar);
-		$templater->register('notebits', $notebits);
-		$templater->register('pagenav', $pagenav);
-		$templater->register('petition_options', $petition_options);
-		$templater->register('posting_perms', $posting_perms);
-		$templater->register('project', $project);
-		$templater->register('pt_ptlist', $pt_ptlist);
-		$templater->register('selected_filter', $selected_filter);
-		$templater->register('tags', $tags);
-		$templater->register('vBeditTemplate', $vBeditTemplate);
-		$templater->register('contenttypeid', $issue_contenttypeid);
-	print_output($templater->render());
-//}
+		if ($vbulletin->options['pt_listprojects_position_issue'] == 2)
+		{
+			$navpopup['css'] = 'marginmore10 marginbottomadd5';
+		}
+
+		$navpopup['title'] = $project['title'];
+
+		// Evaluate the drop_down menu
+		$templater = vB_Template::create('pt_listprojects');
+			$templater->register('navpopup', $navpopup);
+			$templater->register('ptdropdown', $ptdropdown);
+		$pt_ptlist = $templater->render();
+	}
+}
+
+// navbar and output
+$navbits = construct_navbits(array(
+	'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
+	"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+	"issuelist.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
+	'' => $issue['title']
+));
+
+$navbar = render_navbar_template($navbits);
+
+($hook = vBulletinHook::fetch_hook('project_issue_complete')) ? eval($hook) : false;
+
+$templater = vB_Template::create('pt_issue');
+	$templater->register_page_templates();
+	$templater->register('assignments', $assignments);
+	$templater->register('attachmentbits', $attachmentbits);
+	$templater->register('display_type_counts', $display_type_counts);
+	$templater->register('editorid', $editorid);
+	$templater->register('issue', $issue);
+	$templater->register('messagearea', $messagearea);
+	$templater->register('navbar', $navbar);
+	$templater->register('notebits', $notebits);
+	$templater->register('pagenav', $pagenav);
+	$templater->register('petition_options', $petition_options);
+	$templater->register('posting_perms', $posting_perms);
+	$templater->register('project', $project);
+	$templater->register('pt_ptlist', $pt_ptlist);
+	$templater->register('selected_filter', $selected_filter);
+	$templater->register('tags', $tags);
+	$templater->register('vBeditTemplate', $vBeditTemplate);
+	$templater->register('contenttypeid', $issue_contenttypeid);
+print_output($templater->render());
 
 ?>
