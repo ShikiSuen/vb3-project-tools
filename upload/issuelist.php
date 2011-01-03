@@ -40,21 +40,19 @@ $specialtemplates = array(
 );
 
 // pre-cache templates used by all actions
-$globaltemplates = array();
+$globaltemplates = array(
+	'pt_issuelist',
+	'pt_issuelist_arrow',
+	'pt_listprojects',
+	'pt_listprojects_link',
+	'pt_postmenubit',
+	'pt_issuebit',
+	'pt_issuebit_pagelink',
+	'pt_issuebit_deleted',
+);
 
 // pre-cache templates used by specific actions
-$actiontemplates = array(
-	'issuelist' => array(
-		'pt_issuelist',
-		'pt_issuelist_arrow',
-		'pt_listprojects',
-		'pt_listprojects_link',
-		'pt_postmenubit',
-		'pt_issuebit',
-		'pt_issuebit_pagelink',
-		'pt_issuebit_deleted',
-	),
-);
+$actiontemplates = array();
 
 if (empty($_REQUEST['do']))
 {
