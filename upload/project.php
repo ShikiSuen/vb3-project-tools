@@ -41,41 +41,26 @@ $specialtemplates = array(
 
 // pre-cache templates used by all actions
 $globaltemplates = array(
-	'pt_listprojects',
-	'pt_listprojects_link',
-	'pt_project',
-	'pt_project_typecountbit',
-	'pt_postmenubit',
 	'pt_issuebit',
 	'pt_issuebit_deleted',
+	'pt_listprojects',
+	'pt_listprojects_link',
+	'pt_markread_script',
+	'pt_overview',
+	'pt_petitionbit',
+	'pt_project',
+	'pt_projectbit',
+	'pt_projectbit_typecount',
+	'pt_project_typecountbit',
+	'pt_postmenubit',
+	'pt_reportmenubit',
 	'pt_timeline',
 	'pt_timeline_group',
 	'pt_timeline_item',
-	'pt_petitionbit',
-	'pt_reportmenubit'
 );
 
 // pre-cache templates used by specific actions
-$actiontemplates = array(
-	'overview' => array(
-		'pt_markread_script',
-		'pt_overview',
-		'pt_projectbit',
-		'pt_projectbit_typecount',
-		'pt_timeline',
-		'pt_timeline_group',
-		'pt_timeline_item',
-		'pt_reportmenubit'
-	),
-);
-
-if (empty($_REQUEST['do']))
-{
-	if (empty($_REQUEST['projectid']))
-	{
-		$_REQUEST['do'] = 'overview';
-	}
-}
+$actiontemplates = array();
 
 // ######################### REQUIRE BACK-END ############################
 require_once('./global.php');
@@ -105,6 +90,8 @@ vB_Bootstrap_Framework::init();
 $issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
 $project_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Project');
 
+$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
+
 // #######################################################################
 // ######################## START MAIN SCRIPT ############################
 // #######################################################################
@@ -113,12 +100,12 @@ $project_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_
 if ($_REQUEST['do'] == 'markread')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid'   => TYPE_UINT,
 		'issuetypeid' => TYPE_NOHTML,
 		'ajax'        => TYPE_BOOL,
 	));
 
 	$project = verify_project($vbulletin->GPC['projectid']);
+
 	if ($vbulletin->GPC['issuetypeid'])
 	{
 		verify_issuetypeid($vbulletin->GPC['issuetypeid'], $project['projectid']);
@@ -167,9 +154,11 @@ if ($_REQUEST['do'] == 'markread')
 }
 
 // #######################################################################
-if ($_REQUEST['do'] == 'overview')
+// Previously do=overview branch
+if (empty($vbulletin->GPC['projectid']))
 {
 	$perms_query = build_issue_permissions_query($vbulletin->userinfo);
+
 	if (empty($perms_query))
 	{
 		print_no_permission();
@@ -179,6 +168,7 @@ if ($_REQUEST['do'] == 'overview')
 
 	// activity list
 	$timeline = '';
+
 	if ($vbulletin->options['pt_overview_timelineentries'])
 	{
 		$show['timeline_project_title'] = true;
@@ -186,13 +176,11 @@ if ($_REQUEST['do'] == 'overview')
 		$note_perms = build_issuenote_permissions_query($vbulletin->userinfo);
 
 		require_once(DIR . '/includes/functions_pt_timeline.php');
-		$activity_results = fetch_activity_list(
-			'(' . implode(' OR ', $perms_query) . ') AND (' . implode(' OR ', $note_perms) . ')',
-			$vbulletin->options['pt_overview_timelineentries'], 0, false
-		);
+		$activity_results = fetch_activity_list('(' . implode(' OR ', $perms_query) . ') AND (' . implode(' OR ', $note_perms) . ')', $vbulletin->options['pt_overview_timelineentries'], 0, false);
 		$activity_groups = prepare_activity_list($activity_results);
 
 		$activitybits = '';
+
 		foreach ($activity_groups AS $groupid => $groupbits)
 		{
 			$group_date = make_group_date($groupid);
@@ -200,9 +188,9 @@ if ($_REQUEST['do'] == 'overview')
 			($hook = vBulletinHook::fetch_hook('project_timeline_group')) ? eval($hook) : false;
 
 			$templater = vB_Template::create('pt_timeline_group');
-			$templater->register('groupbits', $groupbits);
-			$templater->register('group_date', $group_date);
-		$activitybits .= $templater->render();
+				$templater->register('groupbits', $groupbits);
+				$templater->register('group_date', $group_date);
+			$activitybits .= $templater->render();
 		}
 
 		// activity scope
@@ -210,6 +198,7 @@ if ($_REQUEST['do'] == 'overview')
 		$startdate['day'] = $startdate[0];
 		$startdate['year'] = $startdate[2];
 		$startdate_selected = array();
+
 		for ($i = 1; $i <= 12; $i++)
 		{
 			$startdate_selected["$i"] = ($i == $startdate[1] ? ' selected="selected"' : '');
@@ -219,6 +208,7 @@ if ($_REQUEST['do'] == 'overview')
 		$enddate['day'] = $enddate[0];
 		$enddate['year'] = $enddate[2];
 		$enddate_selected = array();
+
 		for ($i = 1; $i <= 12; $i++)
 		{
 			$enddate_selected["$i"] = ($i == $enddate[1] ? ' selected="selected"' : '');
@@ -243,12 +233,11 @@ if ($_REQUEST['do'] == 'overview')
 		}
 	}
 
-	build_project_private_lastpost_sql_all($vbulletin->userinfo,
-		$private_lastpost_join, $private_lastpost_fields
-	);
+	build_project_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $private_lastpost_fields);
 
 	$project_types = array();
 	$marking = ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid']);
+
 	$project_types_query = $db->query_read("
 		SELECT projecttype.*
 			" . ($marking ? ", projectread.readtime AS projectread" : '') . "
@@ -263,6 +252,7 @@ if ($_REQUEST['do'] == 'overview')
 		WHERE projecttype.projectid IN (" . implode(',', array_keys($perms_query)) . ")
 		ORDER BY issuetype.displayorder
 	");
+
 	while ($project_type = $db->fetch_array($project_types_query))
 	{
 		$project_types["$project_type[projectid]"][] = $project_type;
@@ -272,6 +262,7 @@ if ($_REQUEST['do'] == 'overview')
 
 	// project list
 	$projectbits = '';
+
 	foreach ($vbulletin->pt_projects AS $project)
 	{
 		if (!isset($perms_query["$project[projectid]"]) OR !is_array($project_types["$project[projectid]"]) OR $project['displayorder'] == 0)
@@ -285,6 +276,7 @@ if ($_REQUEST['do'] == 'overview')
 		$project['newflag'] = false;
 
 		$type_counts = '';
+
 		foreach ($project_types["$project[projectid]"] AS $type)
 		{
 			if (!($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
@@ -325,11 +317,13 @@ if ($_REQUEST['do'] == 'overview')
 					$projettypeview = $vbulletin->userinfo['lastvisit'];
 				}
 			}
+
 			if ($type['lastpost'] > $projettypeview)
 			{
 				$type['newflag'] = true;
 				$project['newflag'] = true;
 			}
+
 			$project['projectread'] = max($project['projectread'], $projettypeview);
 
 			$type['countid'] = "project_typecount_$project[projectid]_$type[issuetypeid]";
@@ -387,8 +381,6 @@ if ($_REQUEST['do'] == 'overview')
 		$templater->register('contenttypeid', $issue_contenttypeid);
 	print_output($templater->render());
 }
-
-$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
 
 $project = verify_project($vbulletin->GPC['projectid']);
 $projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
