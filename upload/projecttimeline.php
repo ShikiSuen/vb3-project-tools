@@ -171,11 +171,17 @@ if ($vbulletin->options['pt_timelineperpage'])
 		$vbulletin->GPC['pagenumber'],
 		$vbulletin->options['pt_timelineperpage'],
 		$activity_count,
-		'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=timeline" .
+		/*'projecttimeline.php?' . $vbulletin->session->vars['sessionurl'] .
 			($vbulletin->GPC['projectid'] ? '&amp;projectid=' . $vbulletin->GPC['projectid'] : '') .
 			($vbulletin->GPC['startdate'] ? '&amp;startdate=' . $vbulletin->GPC['startdate'] : '') .
-			($vbulletin->GPC['enddate'] ? '&amp;enddate=' . $vbulletin->GPC['enddate'] : ''),
+			($vbulletin->GPC['enddate'] ? '&amp;enddate=' . $vbulletin->GPC['enddate'] : '')*/'',
+		'',
 		''
+		'projecttimeline',
+		'',
+		array(($vbulletin->GPC['projectid'] ? '&amp;projectid=' . $vbulletin->GPC['projectid'] : '') .
+		($vbulletin->GPC['startdate'] ? '&amp;startdate=' . $vbulletin->GPC['startdate'] : '') .
+		($vbulletin->GPC['enddate'] ? '&amp;enddate=' . $vbulletin->GPC['enddate'] : ''))
 	);
 }
 else
@@ -210,6 +216,7 @@ $startdate = explode(',', vbdate('j,n,Y', $vbulletin->GPC['startdate'], false, f
 $startdate['day'] = $startdate[0];
 $startdate['year'] = $startdate[2];
 $startdate_selected = array();
+
 for ($i = 1; $i <= 12; $i++)
 {
 	$startdate_selected["$i"] = ($i == $startdate[1] ? ' selected="selected"' : '');
@@ -219,6 +226,7 @@ $enddate = explode(',', vbdate('j,n,Y', $vbulletin->GPC['enddate'], false, false
 $enddate['day'] = $enddate[0];
 $enddate['year'] = $enddate[2];
 $enddate_selected = array();
+
 for ($i = 1; $i <= 12; $i++)
 {
 	$enddate_selected["$i"] = ($i == $enddate[1] ? ' selected="selected"' : '');
@@ -247,7 +255,7 @@ $timeline = $templater->render();
 $navbits = array('project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects']);
 if ($project)
 {
-	$navbits["project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]"] = $project['title_clean'];
+	$navbits[fetch_seo_url('projecttimeline', $project)] = $project['title_clean'];
 }
 $navbits[''] = $vbphrase['project_timeline'];
 
