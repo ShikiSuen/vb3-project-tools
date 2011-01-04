@@ -390,8 +390,8 @@ if ($_REQUEST['do'] == 'overview')
 }
 
 // #######################################################################
-if ($_REQUEST['do'] == 'project')
-{
+/*if ($_REQUEST['do'] == 'project')
+{*/
 	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
 
 	$project = verify_project($vbulletin->GPC['projectid']);
@@ -716,6 +716,6 @@ if ($_REQUEST['do'] == 'project')
 		$templater->register('type_counts', $type_counts);
 		$templater->register('contenttypeid', $issue_contenttypeid);
 	print_output($templater->render());
-}
+//}
 
 ?>
