@@ -120,21 +120,23 @@ else
 	$viewable_query = '(' . implode(' OR ', $perms_query) . ') AND (' . implode(' OR ', $note_perms) . ')';
 }
 
-verify_seo_url('projecttimeline', $project);
-
 ($hook = vBulletinHook::fetch_hook('project_timeline_start')) ? eval($hook) : false;
+
+verify_seo_url('projecttimeline', $project);
 
 // default date limits
 if (!$vbulletin->GPC['startdate'])
 {
 	$vbulletin->GPC['startdate'] = strtotime('-1 month');
 }
+ 
 if (!$vbulletin->GPC['enddate'])
 {
 	$vbulletin->GPC['enddate'] = TIMENOW;
 }
 
 $datelimit = '1=1';
+
 if ($vbulletin->GPC['startdate'] AND $vbulletin->GPC['enddate'])
 {
 	$datelimit = "issuenote.dateline >= " . $vbulletin->GPC['startdate'] . " AND issuenote.dateline <= " . ($vbulletin->GPC['enddate'] + 86399);
@@ -148,13 +150,10 @@ do
 	{
 		$vbulletin->GPC['pagenumber'] = 1;
 	}
+
 	$start = ($vbulletin->GPC['pagenumber'] - 1) * $vbulletin->options['pt_timelineperpage'];
 
-	$activity_groups = prepare_activity_list(fetch_activity_list(
-		"($datelimit) AND ($viewable_query)",
-		$vbulletin->options['pt_timelineperpage'],
-		$start
-	));
+	$activity_groups = prepare_activity_list(fetch_activity_list("($datelimit) AND ($viewable_query)", $vbulletin->options['pt_timelineperpage'], $start));
 
 	$activity_count = $activity_count[0];
 
