@@ -172,8 +172,7 @@ if ($_REQUEST['do'] == 'issuelist')
 
 	$issue_list->exec_query($list_criteria, $vbulletin->GPC['pagenumber'], $vbulletin->options['pt_issuesperpage']);
 
-	$nav_url_base = 'projectmilestone.php?' . $vbulletin->session->vars['sessionurl'] . "do=issuelist&amp;milestoneid=$milestone[milestoneid]" .
-			($vbulletin->GPC['filter'] ? '&amp;filter=' . $vbulletin->GPC['filter'] : '');
+	$nav_url_base = 'projectmilestone.php?' . $vbulletin->session->vars['sessionurl'] . "do=issuelist&amp;milestoneid=$milestone[milestoneid]" . ($vbulletin->GPC['filter'] ? '&amp;filter=' . $vbulletin->GPC['filter'] : '');
 
 	$sort_arrow = $issue_list->fetch_sort_arrow_array($nav_url_base);
 
@@ -202,6 +201,7 @@ if ($_REQUEST['do'] == 'issuelist')
 
 	// search box data
 	$show['search_options'] = false;
+
 	foreach ($milestone_types AS $milestone_typeid)
 	{
 		if ($projectperms["$milestone_typeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch'])
@@ -210,6 +210,7 @@ if ($_REQUEST['do'] == 'issuelist')
 			break;
 		}
 	}
+
 	if ($show['search_options'])
 	{
 		$assignable_users = fetch_assignable_users_select($project['projectid']);
@@ -219,7 +220,7 @@ if ($_REQUEST['do'] == 'issuelist')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
 		"projectmilestone.php?" . $vbulletin->session->vars['sessionurl'] . "milestoneid=$milestone[milestoneid]" => $milestone['title_clean'],
 		'' => $vbphrase['issue_list']
 	));
@@ -243,9 +244,7 @@ if ($_REQUEST['do'] == 'issuelist')
 // #######################################################################
 if ($_REQUEST['do'] == 'milestone')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'milestoneid' => TYPE_UINT,
-	));
+	$vbulletin->input->clean_gpc('r', 'milestoneid', TYPE_UINT);
 
 	$milestone = verify_milestone($vbulletin->GPC['milestoneid']);
 	$project = verify_project($milestone['projectid']);
@@ -262,6 +261,7 @@ if ($_REQUEST['do'] == 'milestone')
 	$status_options = '';
 	$post_issue_options = '';
 	$urlinclude['milestoneid'] = true;
+
 	foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
 	{
 		if (($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) AND ($projectperms["$issuetypeid"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
@@ -279,7 +279,6 @@ if ($_REQUEST['do'] == 'milestone')
 			$post_issue_options .= $templater->render();
 		}
 
-
 		if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
 		{
 			continue;
@@ -296,6 +295,7 @@ if ($_REQUEST['do'] == 'milestone')
 
 	$anystatus_selected = '';
 	$activestatus_selected = '';
+
 	if ($vbulletin->GPC['issuestatusid'] == -1)
 	{
 		$issuestatus_printable = $vbphrase['any_active_meta'];
@@ -312,15 +312,13 @@ if ($_REQUEST['do'] == 'milestone')
 	}
 
 	$milestone_types = fetch_viewable_milestone_types($projectperms);
+
 	if (!$milestone_types)
 	{
 		print_no_permission();
 	}
 
-	$counts = fetch_milestone_count_data("
-		milestonetypecount.milestoneid = $milestone[milestoneid]
-		AND milestonetypecount.issuetypeid IN ('" . implode("','", $milestone_types) . "')
-	");
+	$counts = fetch_milestone_count_data("milestonetypecount.milestoneid = $milestone[milestoneid] AND milestonetypecount.issuetypeid IN ('" . implode("','", $milestone_types) . "')");
 
 	$raw_counts = fetch_milestone_counts($counts["$milestone[milestoneid]"], $projectperms);
 	$stats = prepare_milestone_stats($milestone, $raw_counts);
@@ -329,15 +327,12 @@ if ($_REQUEST['do'] == 'milestone')
 	$issue_list = new vB_Pt_IssueList($project, $vbulletin);
 	$issue_list->calc_total_rows = false;
 
-	$list_criteria = $perms_query["$project[projectid]"] . "
-		AND issue.milestoneid = $milestone[milestoneid]
-		AND issue.issuetypeid IN ('" . implode("','", $milestone_types) . "')
-		AND issue.visible IN ('visible', 'private')
-	";
+	$list_criteria = $perms_query["$project[projectid]"] . "AND issue.milestoneid = $milestone[milestoneid] AND issue.issuetypeid IN ('" . implode("','", $milestone_types) . "') AND issue.visible IN ('visible', 'private')";
 
 	$issue_list->exec_query($list_criteria, 1, $vbulletin->options['pt_project_recentissues']);
 
 	$issuebits = '';
+
 	while ($issue = $db->fetch_array($issue_list->result))
 	{
 		$issuebits .= build_issue_bit($issue, $project, $projectperms["$issue[issuetypeid]"]);
@@ -345,6 +340,7 @@ if ($_REQUEST['do'] == 'milestone')
 
 	// search box data
 	$show['search_options'] = false;
+
 	foreach ($milestone_types AS $milestone_typeid)
 	{
 		if ($projectperms["$milestone_typeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch'])
@@ -353,6 +349,7 @@ if ($_REQUEST['do'] == 'milestone')
 			break;
 		}
 	}
+
 	if ($show['search_options'])
 	{
 		$assignable_users = fetch_assignable_users_select($project['projectid']);
@@ -362,7 +359,7 @@ if ($_REQUEST['do'] == 'milestone')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
 		"projectmilestone.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $vbphrase['milestones'],
 		'' => $milestone['title_clean']
 	));
@@ -394,6 +391,7 @@ if ($_REQUEST['do'] == 'project')
 	$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 
 	$milestone_types = fetch_viewable_milestone_types($projectperms);
+
 	if (!$milestone_types)
 	{
 		print_no_permission();
@@ -405,16 +403,13 @@ if ($_REQUEST['do'] == 'project')
 		WHERE projectid = $project[projectid]
 		ORDER BY completeddate DESC, targetdate
 	");
+
 	if (!$db->num_rows($milestone_data))
 	{
 		standard_error(fetch_error('invalidid', $vbphrase['project'], $vbulletin->options['contactuslink']));
 	}
 
-	$counts = fetch_milestone_count_data("
-		milestone.projectid = $project[projectid]
-		AND milestonetypecount.issuetypeid IN ('" . implode("','", $milestone_types) . "')
-	");
-
+	$counts = fetch_milestone_count_data("milestone.projectid = $project[projectid] AND milestonetypecount.issuetypeid IN ('" . implode("','", $milestone_types) . "')");
 	$active_milestones = '';
 	$no_target_milestones = '';
 	$completed_milestones = '';
@@ -464,7 +459,7 @@ if ($_REQUEST['do'] == 'project')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
 		'' => $vbphrase['milestones']
 	));
 	$navbar = render_navbar_template($navbits);

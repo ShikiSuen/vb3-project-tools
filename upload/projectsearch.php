@@ -541,9 +541,7 @@ if ($_REQUEST['do'] == 'resort')
 		handle_pt_search_errors($search_query->generator->errors);
 	}
 
-	$vbulletin->url = 'projectsearch.php?' . $vbulletin->session->vars['sessionurl'] . "do=searchresults&searchid=$searchid"
-		. ($vbulletin->GPC['groupid'] ? "&groupid=" . urlencode($vbulletin->GPC['groupid']) : '');
-
+	$vbulletin->url = 'projectsearch.php?' . $vbulletin->session->vars['sessionurl'] . "do=searchresults&searchid=$searchid" . ($vbulletin->GPC['groupid'] ? "&groupid=" . urlencode($vbulletin->GPC['groupid']) : '');
 	eval(print_standard_redirect('pt_searchexecuted'));
 }
 
@@ -717,7 +715,7 @@ if ($_REQUEST['do'] == 'searchresults')
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
 		'projectsearch.php?' . $vbulletin->session->var['sessionurl'] . 'do=search' => $vbphrase['search'],
-		'' => ($search['issuereportid'] ? construct_phrase($vbphrase['search_results_report_x'], $search['reporttitle']) : $vbphrase['search_results'])// $vbphrase['search_results']
+		'' => ($search['issuereportid'] ? construct_phrase($vbphrase['search_results_report_x'], $search['reporttitle']) : $vbphrase['search_results'])
 	));
 	$navbar = render_navbar_template($navbits);
 
@@ -743,6 +741,7 @@ if ($_POST['do'] == 'dosavereport' OR $_REQUEST['do'] == 'savereport')
 	{
 		print_no_permission();
 	}
+
 	if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['cancreatereport']))
 	{
 		print_no_permission();
@@ -809,9 +808,7 @@ if ($_REQUEST['do'] == 'savereport')
 // #######################################################################
 if ($_REQUEST['do'] == 'viewreport')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuereportid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'issuereportid', TYPE_UINT);
 
 	if (!$search_perms = build_issue_permissions_query($vbulletin->userinfo, 'cansearch'))
 	{
@@ -829,6 +826,7 @@ if ($_REQUEST['do'] == 'viewreport')
 		WHERE issuereport.issuereportid = " . $vbulletin->GPC['issuereportid'] . "
 			AND (issuereport.public = 1 OR (issuereport.public = 0 AND issuereport.userid = " . $vbulletin->userinfo['userid'] . "))
 	");
+
 	if (!$report)
 	{
 		standard_error(fetch_error('invalidid', $vbphrase['issue_report'], $vbulletin->options['contactuslink']));

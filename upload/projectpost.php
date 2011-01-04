@@ -278,7 +278,7 @@ if ($_POST['do'] == 'postreply')
 
 			$issuenotedata->delete($vbulletin->GPC['delete'] == 'hard');
 
-			$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 			eval(print_standard_redirect('pt_issuenote_deleted'));
 		}
 		else if ($vbulletin->GPC['undelete'])
@@ -290,7 +290,7 @@ if ($_POST['do'] == 'postreply')
 
 			$issuenotedata->undelete();
 
-			$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
+			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
 			eval(print_standard_redirect('pt_issuenote_undeleted'));
 		}
 
@@ -390,7 +390,7 @@ if ($_POST['do'] == 'postreply')
 
 			($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
 
-			$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
+			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
 			eval(print_standard_redirect('pt_issuenote_inserted'));
 		}
 		else
@@ -399,7 +399,7 @@ if ($_POST['do'] == 'postreply')
 
 			($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
 
-			$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
+			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
 			eval(print_standard_redirect('pt_issuenote_edited'));
 		}
 	}
@@ -568,8 +568,8 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => ($issuenote['issuenoteid'] ? $vbphrase['edit_reply'] : $vbphrase['post_reply'])
 	));
 	$navbar = render_navbar_template($navbits);
@@ -813,7 +813,7 @@ if ($_POST['do'] == 'postissue')
 
 			$issuedata->undelete();
 
-			$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 			eval(print_standard_redirect('pt_issue_undeleted'));
 		}
 	}
@@ -1073,7 +1073,7 @@ if ($_POST['do'] == 'postissue')
 		{
 			($hook = vBulletinHook::fetch_hook('projectpost_postissue_complete')) ? eval($hook) : false;
 
-			$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 			eval(print_standard_redirect('pt_issue_edited'));
 		}
 		else
@@ -1082,7 +1082,7 @@ if ($_POST['do'] == 'postissue')
 
 			($hook = vBulletinHook::fetch_hook('projectpost_postissue_complete')) ? eval($hook) : false;
 
-			$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 			eval(print_standard_redirect('pt_issue_inserted'));
 		}
 	}
@@ -1094,11 +1094,12 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	// navbar - do this up here because of pt_postissue_short
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean']
+		fetch_seo_url('project', $project) => $project['title_clean']
 	);
+
 	if ($issue['issueid'])
 	{
-		$navbits["project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]"] = $issue['title'];
+		$navbits[fetch_seo_url('issue', $issue)] = $issue['title'];
 		$navbits[''] = $vbphrase['edit_issue'];
 	}
 	else
@@ -1130,8 +1131,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 		foreach (array_keys($vbulletin->pt_issuetype) AS $issuetypeid)
 		{
-			$show["type_$issuetypeid"] = (($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview'])
-				AND ($projectperms["$issuetypeid"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']));
+			$show["type_$issuetypeid"] = (($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) AND ($projectperms["$issuetypeid"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']));
 		}
 
 		$optionclass = '';
@@ -1464,9 +1464,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 // #######################################################################
 if ($_POST['do'] == 'uploadattachment')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'issueid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('p', 'issueid', TYPE_UINT);
 	$vbulletin->input->clean_gpc('f', 'attachment', TYPE_FILE);
 
 	$issue = verify_issue($vbulletin->GPC['issueid']);
@@ -1510,7 +1508,7 @@ if ($_POST['do'] == 'uploadattachment')
 		}
 	}
 
-	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
+	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
 	eval(print_standard_redirect('pt_attachment_uploaded'));
 }
 
@@ -1553,7 +1551,7 @@ if ($_POST['do'] == 'updateattach')
 	{
 		$attachdata->delete();
 
-		$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
+		$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
 		eval(print_standard_redirect('pt_attachment_deleted'));
 	}
 	else if ($vbulletin->GPC['obsolete'] OR $vbulletin->GPC['unobsolete'])
@@ -1568,13 +1566,13 @@ if ($_POST['do'] == 'updateattach')
 		}
 		$attachdata->save();
 
-		$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
+		$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
 		eval(print_standard_redirect('pt_attachment_edited'));
 	}
 	else
 	{
 		// we did nothing, just make it look like an edit
-		$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
+		$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
 		eval(print_standard_redirect('pt_attachment_edited'));
 	}
 }
@@ -1582,9 +1580,7 @@ if ($_POST['do'] == 'updateattach')
 // #######################################################################
 if ($_REQUEST['do'] == 'manageattach')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'attachmentid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'attachmentid', TYPE_UINT);
 
 	$attachment = $db->query_first("
 		SELECT issueattach.*
@@ -1606,8 +1602,8 @@ if ($_REQUEST['do'] == 'manageattach')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['manage_attachment']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -1676,9 +1672,7 @@ if ($_POST['do'] == 'updateprojectsubscription')
 // #######################################################################
 if ($_REQUEST['do'] == 'manageprojectsubscription')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
 
 	if (!$vbulletin->userinfo['userid'])
 	{
@@ -1718,7 +1712,7 @@ if ($_REQUEST['do'] == 'manageprojectsubscription')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
 		'' => $vbphrase['manage_project_subscription']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -1777,7 +1771,7 @@ if ($_POST['do'] == 'updatesubscription')
 		}
 	}
 
-	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 	eval(print_standard_redirect('pt_subscriptions_updated'));
 }
 
@@ -1808,8 +1802,8 @@ if ($_REQUEST['do'] == 'managesubscription')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['manage_subscription']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -1957,9 +1951,7 @@ if ($_POST['do'] == 'updateprojectsubscriptions')
 // #######################################################################
 if ($_REQUEST['do'] == 'managesubscriptions')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'pagenumber' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'pagenumber', TYPE_UINT);
 
 	if (!$vbulletin->userinfo['userid'])
 	{
@@ -1967,6 +1959,7 @@ if ($_REQUEST['do'] == 'managesubscriptions')
 	}
 
 	$perms_query = build_issue_permissions_query($vbulletin->userinfo);
+
 	if (!$perms_query)
 	{
 		print_no_permission();
@@ -2029,6 +2022,7 @@ if ($_REQUEST['do'] == 'managesubscriptions')
 	);
 
 	$subscriptionbits = '';
+
 	while ($issue = $db->fetch_array($subscriptions))
 	{
 		$issue = prepare_issue($issue);
@@ -2042,9 +2036,7 @@ if ($_REQUEST['do'] == 'managesubscriptions')
 	}
 
 	// project subscriptions
-	build_project_private_lastpost_sql_all($vbulletin->userinfo,
-		$private_lastpost_join, $private_lastpost_fields
-	);
+	build_project_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $private_lastpost_fields);
 
 	$projecttype_subscriptions = $db->query_read("
 		SELECT project.*, projecttype.*
@@ -2060,15 +2052,18 @@ if ($_REQUEST['do'] == 'managesubscriptions')
 		ORDER BY project.displayorder, issuetype.displayorder
 	");
 	$project_subscriptionbits = '';
+
 	while ($projecttype = $db->fetch_array($projecttype_subscriptions))
 	{
 		$issueperms = fetch_project_permissions($vbulletin->userinfo, $projecttype['projectid'], $projecttype['issuetypeid']);
+
 		if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
 		{
 			continue;
 		}
 
 		$projecttype['issuetype'] = $vbphrase["issuetype_$projecttype[issuetypeid]_plural"];
+
 		if ($typeicon = $vbulletin->pt_issuetype["$projecttype[issuetypeid]"]['iconfile'])
 		{
 			$projecttype['typeicon'] = $typeicon;
@@ -2165,7 +2160,7 @@ if ($_POST['do'] == 'processpetition')
 
 	$petitiondata->save();
 
-	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
+	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
 	eval(print_standard_redirect('pt_petition_processed'));
 }
 
@@ -2216,7 +2211,7 @@ if ($_REQUEST['do'] == 'changeissuestate')
 	$issuedata->set('state', $vbulletin->GPC['fromstate'] == 'open' ? 'closed' : 'open');
 	$issuedata->save();
 
-	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 	eval(print_standard_redirect('pt_issue_state_modified'));
 }
 
@@ -2271,7 +2266,7 @@ if ($_REQUEST['do'] == 'changeissueprivacy')
 	$issuedata->set('visible', $vbulletin->GPC['from'] == 'public' ? 'private' : 'public');
 	$issuedata->save();
 
-	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 	eval(print_standard_redirect('pt_issue_state_modified'));
 }
 
@@ -2365,7 +2360,7 @@ if ($_POST['do'] == 'processmoveissue')
 
 	$issuedata->save();
 
-	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 	eval(print_standard_redirect('pt_issue_state_modified'));
 }
 
@@ -2487,8 +2482,8 @@ if ($_POST['do'] == 'moveissue2')
 
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['edit_issue']
 	);
 
@@ -2518,9 +2513,7 @@ if ($_POST['do'] == 'moveissue2')
 // #######################################################################
 if ($_REQUEST['do'] == 'moveissue')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issueid' => TYPE_UINT,
-	));
+	$vbulletin->input->clean_gpc('r', 'issueid', TYPE_UINT);
 
 	$issue = verify_issue($vbulletin->GPC['issueid']);
 	$project = verify_project($issue['projectid']);
@@ -2535,6 +2528,7 @@ if ($_REQUEST['do'] == 'moveissue')
 
 	$project_type_select = '';
 	$optionclass = '';
+
 	foreach ($vbulletin->pt_projects AS $projectid => $projectinfo)
 	{
 		$project_perms["$projectid"] = fetch_project_permissions($vbulletin->userinfo, $projectid);
@@ -2547,6 +2541,7 @@ if ($_REQUEST['do'] == 'moveissue')
 			{
 				continue;
 			}
+
 			$optionvalue = $projectinfo['projectid'] . '-' . $type;
 			$optiontitle = $vbphrase["issuetype_{$type}_singular"];
 			$optionselected = (($issue['issuetypeid'] == $type AND $issue['projectid'] == $projectid) ? ' selected="selected"' : '');
@@ -2568,8 +2563,8 @@ if ($_REQUEST['do'] == 'moveissue')
 
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['edit_issue']
 	);
 
@@ -2583,7 +2578,6 @@ if ($_REQUEST['do'] == 'moveissue')
 		$templater->register('project', $project);
 		$templater->register('project_type_select', $project_type_select);
 	print_output($templater->render());
-
 }
 
 // ##################################################################################
@@ -2710,16 +2704,14 @@ if ($_POST['do'] == 'processimportthread')
 	$importer = new vB_PtImporter($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
 	$issueid = $importer->import_all();
 
-	$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";
+	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";
 	eval(print_standard_redirect('pt_issue_inserted'));
 }
 
 // #######################################################################
 if ($_REQUEST['do'] == 'importthread2')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'project-issuetype' => TYPE_NOHTML
-	));
+	$vbulletin->input->clean_gpc('r', 'project-issuetype', TYPE_NOHTML);
 
 	list($projectid, $issuetypeid) = explode('-', $vbulletin->GPC['project-issuetype']);
 
@@ -2765,6 +2757,7 @@ if ($_REQUEST['do'] == 'importthread2')
 		WHERE projectversion.projectid = $project[projectid]
 		ORDER BY projectversion.effectiveorder DESC
 	");
+
 	while ($version = $db->fetch_array($version_query))
 	{
 		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
@@ -2773,10 +2766,12 @@ if ($_REQUEST['do'] == 'importthread2')
 	$applies_versions = '';
 	$addressed_versions = '';
 	$optionclass = '';
+
 	foreach ($version_groups AS $optgroup_label => $versions)
 	{
 		$group_applies = '';
 		$group_addressed = '';
+
 		foreach ($versions AS $optionvalue => $optiontitle)
 		{
 			$optionselected = '';
@@ -2870,11 +2865,13 @@ if ($_REQUEST['do'] == 'importthread')
 {
 	$project_type_select = '';
 	$optionclass = '';
+
 	foreach ($vbulletin->pt_projects AS $projectid => $projectinfo)
 	{
 		$project_perms["$projectid"] = fetch_project_permissions($vbulletin->userinfo, $projectid);
 
 		$optgroup_options = '';
+
 		foreach (array_keys($projectinfo['types']) AS $type)
 		{
 			// Check we can both view and post the target issue type
@@ -2882,6 +2879,7 @@ if ($_REQUEST['do'] == 'importthread')
 			{
 				continue;
 			}
+
 			$optionvalue = $projectinfo['projectid'] . '-' . $type;
 			$optiontitle = $vbphrase["issuetype_{$type}_singular"];
 			$optionselected = '';
