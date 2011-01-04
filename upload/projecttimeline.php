@@ -167,6 +167,23 @@ while ($start >= $activity_count AND $activity_count);
 
 if ($vbulletin->options['pt_timelineperpage'])
 {
+	$pagenavarray = array();
+
+	if ($vbulletin->GPC['projectid'])
+	{
+		$pagenavarray[] = '&amp;projectid=' . $vbulletin->GPC['projectid'];
+	}
+
+	if ($vbulletin->GPC['startdate'])
+	{
+		$pagenavarray[] = '&amp;startdate=' . $vbulletin->GPC['startdate'];
+	}
+
+	if ($vbulletin->GPC['enddate'])
+	{
+		$pagenavarray[] = '&amp;enddate=' . $vbulletin->GPC['enddate'];
+	}
+
 	$pagenav = construct_page_nav(
 		$vbulletin->GPC['pagenumber'],
 		$vbulletin->options['pt_timelineperpage'],
@@ -179,9 +196,7 @@ if ($vbulletin->options['pt_timelineperpage'])
 		''
 		'projecttimeline',
 		'',
-		array(($vbulletin->GPC['projectid'] ? '&amp;projectid=' . $vbulletin->GPC['projectid'] : '') .
-		($vbulletin->GPC['startdate'] ? '&amp;startdate=' . $vbulletin->GPC['startdate'] : '') .
-		($vbulletin->GPC['enddate'] ? '&amp;enddate=' . $vbulletin->GPC['enddate'] : ''))
+		$pagenavarray
 	);
 }
 else
