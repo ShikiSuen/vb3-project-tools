@@ -383,6 +383,9 @@ if (empty($vbulletin->GPC['projectid']))
 }
 
 $project = verify_project($vbulletin->GPC['projectid']);
+
+verify_seo_url('project', $project);
+
 $projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 $perms_query = build_issue_permissions_query($vbulletin->userinfo);
 

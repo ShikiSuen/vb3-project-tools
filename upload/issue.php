@@ -121,6 +121,8 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 	print_no_permission();
 }
 
+($hook = vBulletinHook::fetch_hook('issue_start')) ? eval($hook) : false;
+
 require_once(DIR . '/includes/class_bootstrap_framework.php');
 vB_Bootstrap_Framework::init();
 $issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
@@ -133,9 +135,7 @@ $project_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_
 // #######################################################################
 if ($_REQUEST['do'] == 'notehistory')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuenoteid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'issuenoteid', TYPE_UINT);
 
 	$issuenote = $db->query_first("
 		SELECT *
@@ -147,6 +147,7 @@ if ($_REQUEST['do'] == 'notehistory')
 	$project = verify_project($issue['projectid']);
 
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
+
 	if (!can_edit_issue_note($issue, $issuenote, $issueperms))
 	{
 		print_no_permission();
@@ -159,6 +160,7 @@ if ($_REQUEST['do'] == 'notehistory')
 
 	$edit_history = '';
 	$previous_edits =& fetch_note_history($issuenote['issuenoteid']);
+
 	while ($history = $db->fetch_array($previous_edits))
 	{
 		$edit_history .= build_history_bit($history, $bbcode);
@@ -174,8 +176,8 @@ if ($_REQUEST['do'] == 'notehistory')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['edit_history']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -194,9 +196,7 @@ if ($_REQUEST['do'] == 'notehistory')
 // #######################################################################
 if ($_REQUEST['do'] == 'viewip')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuenoteid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'issuenoteid', TYPE_UINT);
 
 	$issuenote = $db->query_first("
 		SELECT *
@@ -208,12 +208,14 @@ if ($_REQUEST['do'] == 'viewip')
 	$project = verify_project($issue['projectid']);
 
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
+
 	if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmanage']))
 	{
 		print_no_permission();
 	}
 
 	$ipaddress = ($issuenote['ipaddress'] ? htmlspecialchars_uni(long2ip($issuenote['ipaddress'])) : '');
+
 	if ($ipaddress === '')
 	{
 		exec_header_redirect("project.php?issueid=$issue[issueid]");
@@ -224,8 +226,8 @@ if ($_REQUEST['do'] == 'viewip')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['ip_address']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -246,9 +248,7 @@ if ($_REQUEST['do'] == 'patch')
 {
 	require_once(DIR . '/includes/functions_pt_patch.php');
 
-	$vbulletin->input->clean_array_gpc('r', array(
-		'attachmentid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'attachmentid', TYPE_UINT);
 
 	$attachment = $db->query_first("
 		SELECT *
@@ -260,6 +260,7 @@ if ($_REQUEST['do'] == 'patch')
 	$project = verify_project($issue['projectid']);
 
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
+
 	if (!($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachview']))
 	{
 		print_no_permission();
@@ -279,6 +280,7 @@ if ($_REQUEST['do'] == 'patch')
 	}
 
 	$patch_parser = new vB_PatchParser();
+
 	if (!$patch_parser->parse($attachment['filedata']))
 	{
 		// parsing failed for some reason, just download the attachment
@@ -291,8 +293,8 @@ if ($_REQUEST['do'] == 'patch')
 	// navbar and output
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-		"project.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+		fetch_seo_url('project', $project) => $project['title_clean'],
+		fetch_seo_url('issue', $issue) => $issue['title'],
 		'' => $vbphrase['view_patch']
 	));
 	$navbar = render_navbar_template($navbits);
@@ -322,12 +324,14 @@ if ($_POST['do'] == 'vote')
 		reset($vbulletin->GPC['vote']);
 		$vbulletin->GPC['vote'] = key($vbulletin->GPC['vote']);
 	}
+
 	$vbulletin->GPC['vote'] = htmlspecialchars_uni(strval($vbulletin->GPC['vote']));
 
 	$issue = verify_issue($vbulletin->GPC['issueid']);
 	$project = verify_project($issue['projectid']);
 
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
+
 	if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canvote']) OR $issue['state'] == 'closed')
 	{
 		print_no_permission();
@@ -347,6 +351,7 @@ if ($_POST['do'] == 'vote')
 	$votedata =& datamanager_init('Pt_IssueVote', $vbulletin, ERRTYPE_STANDARD);
 	$votedata->set('issueid', $issue['issueid']);
 	$votedata->set('vote', $vbulletin->GPC['vote']);
+
 	if ($vbulletin->userinfo['userid'])
 	{
 		$votedata->set('userid', $vbulletin->userinfo['userid']);
@@ -636,6 +641,8 @@ $vbulletin->input->clean_array_gpc('r', array(
 $issue = verify_issue($vbulletin->GPC['issueid'], true, array('avatar', 'vote', 'milestone'));
 $project = verify_project($issue['projectid']);
 
+verify_seo_url('issue', $issue);
+
 $issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
 $posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 
@@ -889,7 +896,7 @@ $pagenav = construct_page_nav(
 	$vbulletin->GPC['pagenumber'],
 	$vbulletin->options['pt_notesperpage'],
 	$note_count,
-	'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" .
+	'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" .
 		($vbulletin->GPC['filter'] != 'comments' ? '&amp;filter=' . $vbulletin->GPC['filter'] : ''),
 	''
 );
@@ -1054,8 +1061,8 @@ if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_
 // navbar and output
 $navbits = construct_navbits(array(
 	'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-	"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-	fetch_seo_url('issuelist', $project, null, 'projectid', 'title') . "&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],//"issuelist.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
+	fetch_seo_url('project', $project) => $project['title_clean'],
+	fetch_seo_url('issuelist', $project) . "&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
 	'' => $issue['title']
 ));
 

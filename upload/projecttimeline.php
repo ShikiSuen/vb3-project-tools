@@ -73,7 +73,7 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 	print_no_permission();
 }
 
-($hook = vBulletinHook::fetch_hook('project_start')) ? eval($hook) : false;
+($hook = vBulletinHook::fetch_hook('timeline_start')) ? eval($hook) : false;
 
 require_once(DIR . '/includes/class_bootstrap_framework.php');
 vB_Bootstrap_Framework::init();

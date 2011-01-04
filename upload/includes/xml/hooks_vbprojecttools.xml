@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <hooks>
-
-	<hooktype type="project">
-		<hook>project_start</hook>
-		<hook>project_historybit</hook>
+	<hooktype type="issue">
+		<hook>issue_start</hook>
 		<hook>project_history_complete</hook>
-		<hook>project_issue_fetch</hook>
-		<hook>project_issue_prepare</hook>
-		<hook>project_issue_verify</hook>
-		<hook>project_issue_start</hook>
-		<hook>project_issue_typecount_query</hook>
-		<hook>project_issue_note_query</hook>
-		<hook>project_issue_notebit</hook>
+		<hook>project_historybit</hook>
 		<hook>project_issue_attachmentbit</hook>
 		<hook>project_issue_complete</hook>
+		<hook>project_issue_fetch</hook>
+		<hook>project_issue_note_query</hook>
+		<hook>project_issue_notebit</hook>
+		<hook>project_issue_prepare</hook>
+		<hook>project_issue_start</hook>
+		<hook>project_issue_typecount_query</hook>
+		<hook>project_issue_verify</hook>
+		<hook>project_patch_complete</hook>
+		<hook>project_report_start</hook>
+		<hook>project_report_form_start</hook>
+		<hook>project_viewip_complete</hook>
+		<hook>project_vote</hook>
+	</hooktype>
+
+	<hooktype type="issuelist">
+		<hook>issuelist_start</hook>
 		<hook>project_issuebit</hook>
 		<hook>project_issuelist_start</hook>
 		<hook>project_issuelist_sort</hook>
 		<hook>project_issuelist_query</hook>
 		<hook>project_issuelist_complete</hook>
+	</hooktype>
+
+	<hooktype type="project">
+		<hook>project_start</hook>
 		<hook>project_overview_start</hook>
 		<hook>project_overview_projectbit</hook>
 		<hook>project_overview_complete</hook>
-		<hook>project_patch_complete</hook>
 		<hook>project_project_verify</hook>
 		<hook>project_project_start</hook>
 		<hook>project_project_recent_query</hook>
 		<hook>project_project_petitionbit</hook>
 		<hook>project_project_complete</hook>
-		<hook>project_timeline_start</hook>
-		<hook>project_timeline_prepare</hook>
-		<hook>project_timeline_item</hook>
-		<hook>project_timeline_group</hook>
-		<hook>project_timeline_complete</hook>
-		<hook>project_viewip_complete</hook>
-		<hook>project_vote</hook>
 		<hook>project_system_note_translate</hook>
 		<hook>project_forumbit</hook>
-		<hook>project_report_start</hook>
-		<hook>project_report_form_start</hook>
 	</hooktype>
 
 	<hooktype type="projectajax">
@@ -115,6 +117,15 @@
 		<hook>projectsearch_reportlist_start</hook>
 		<hook>projectsearch_reportlist_bit</hook>
 		<hook>projectsearch_reportlist_complete</hook>
+	</hooktype>
+
+	<hooktype type="projecttimeline">
+		<hook>timeline_start</hook>
+		<hook>project_timeline_start</hook>
+		<hook>project_timeline_prepare</hook>
+		<hook>project_timeline_item</hook>
+		<hook>project_timeline_group</hook>
+		<hook>project_timeline_complete</hook>
 	</hooktype>
 
 	<hooktype type="pt_issuedata">

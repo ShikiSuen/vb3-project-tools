@@ -84,7 +84,7 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 	print_no_permission();
 }
 
-($hook = vBulletinHook::fetch_hook('project_start')) ? eval($hook) : false;
+($hook = vBulletinHook::fetch_hook('issuelist_start')) ? eval($hook) : false;
 
 require_once(DIR . '/includes/class_bootstrap_framework.php');
 vB_Bootstrap_Framework::init();
@@ -106,6 +106,8 @@ $vbulletin->input->clean_array_gpc('r', array(
 ));
 
 $project = verify_project($vbulletin->GPC['projectid']);
+
+verify_seo_url('issuelist', $project);
 
 if ($vbulletin->GPC['issuetypeid'])
 {
@@ -492,13 +494,14 @@ if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_
 // navbar and output
 $navbits = array(
 	'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-	"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean']
+	fetch_seo_url('project', $project) => $project['title_clean']
 );
 
 if ($vbulletin->GPC['issuetypeid'])
 {
-	$navbits[fetch_seo_url('issuelist', $project, null) . "&amp;issuetypeid=" . $vbulletin->GPC['issuetypeid']] = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'];
+	$navbits[fetch_seo_url('issuelist', $project) . "&amp;issuetypeid=" . $vbulletin->GPC['issuetypeid']] = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'];
 }
+
 $navbits[''] = $vbphrase['issue_list'];
 $navbits = construct_navbits($navbits);
 
