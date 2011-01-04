@@ -193,7 +193,7 @@ if ($vbulletin->options['pt_timelineperpage'])
 			($vbulletin->GPC['startdate'] ? '&amp;startdate=' . $vbulletin->GPC['startdate'] : '') .
 			($vbulletin->GPC['enddate'] ? '&amp;enddate=' . $vbulletin->GPC['enddate'] : '')*/'',
 		'',
-		''
+		'',
 		'projecttimeline',
 		'',
 		$pagenavarray
