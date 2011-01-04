@@ -200,7 +200,7 @@ class vB_Friendly_Url_ProjectTimeline extends vB_Friendly_Url
 	*
 	* @var string
 	*/
-	protected $rewrite_segment = 'timeline';
+	protected $rewrite_segment = 'projecttimeline';
 }
 
 /**
