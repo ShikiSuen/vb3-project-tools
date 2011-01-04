@@ -98,6 +98,7 @@ $project = ($vbulletin->GPC['projectid'] ? verify_project($vbulletin->GPC['proje
 $show['timeline_project_title'] = (empty($project) ? true : false);
 
 $perms_query = build_issue_permissions_query($vbulletin->userinfo);
+
 if (empty($perms_query))
 {
 	print_no_permission();
@@ -113,6 +114,8 @@ if ($project)
 	}
 
 	$viewable_query = '(' . $perms_query["$project[projectid]"] . ') AND (' . $note_perms["$project[projectid]"] . ')';
+
+	verify_seo_url('projecttimeline', $project);
 }
 else
 {
