@@ -114,13 +114,13 @@ if ($project)
 	}
 
 	$viewable_query = '(' . $perms_query["$project[projectid]"] . ') AND (' . $note_perms["$project[projectid]"] . ')';
-
-	verify_seo_url('projecttimeline', $project);
 }
 else
 {
 	$viewable_query = '(' . implode(' OR ', $perms_query) . ') AND (' . implode(' OR ', $note_perms) . ')';
 }
+
+verify_seo_url('projecttimeline', $project);
 
 ($hook = vBulletinHook::fetch_hook('project_timeline_start')) ? eval($hook) : false;
 
