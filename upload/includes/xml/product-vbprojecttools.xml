@@ -1963,7 +1963,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1292530284" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1294188354" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2830,9 +2830,12 @@ a.firstunread, a.firstunread:hover
 	overflow: visible;
 }
 
+<vb:comment>
+/* Issue since 4.1.1 */
 .pt_issuepopup .navpopupbody.popupbody {
 	min-width: 0;
 }
+</vb:comment>
 
 .pt_issuepopup .pagenav {
 	margin-bottom: 5px;
@@ -7717,7 +7720,7 @@ init_project_readmarker_system();
 		{vb:raw issue.replycount}
 	</div>
 </div>]]></template>
-		<template name="pt_timeline" templatetype="template" date="1275615870" username="thincom2000" version="2.1.1"><![CDATA[<div class="pt_timeline block">
+		<template name="pt_timeline" templatetype="template" date="1294188250" username="Pitchoune" version="2.2.0"><![CDATA[<div class="pt_timeline block">
 	<div class="blockhead<vb:if condition="!$show['disable_timeline_collapse']"> collapse</vb:if>">
 		<div class="smallfont normal" style="<vb:if condition="!$show['disable_timeline_collapse']">{vb:stylevar right}: 30px</vb:if>">
 			<vb:if condition="$show['timeline_daterange']">{vb:rawphrase dates_x_to_y, {vb:raw startdate_display}, {vb:raw enddate_display}}<vb:else />{vb:rawphrase last_x_actions, {vb:raw timeline_entries}}</vb:if>
@@ -7735,10 +7738,9 @@ init_project_readmarker_system();
 	</div>
 	<div class="blockfoot actionbuttons">
 		<div style="text-align: center">
-			<form action="project.php?{vb:raw session.sessionurl}do=timeline<vb:if condition="$project['projectid']">&amp;projectid={vb:raw project.projectid}</vb:if>" method="post">
+			<form action="projecttimeline.php<vb:if condition="$project['projectid']">?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}<vb:else />{vb:raw session.sessionurl_q}</vb:if>" method="post">
 			<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 			<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
-			<input type="hidden" name="do" value="timeline" />
 			<input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
 
 			{vb:rawphrase start_date}

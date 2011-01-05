@@ -41,10 +41,11 @@ $specialtemplates = array(
 
 // pre-cache templates used by all actions
 $globaltemplates = array(
-	'pt_timeline_page',
 	'pt_timeline',
+	'pt_timeline_empty',
 	'pt_timeline_group',
 	'pt_timeline_item',
+	'pt_timeline_page',
 );
 
 // pre-cache templates used by specific actions
@@ -269,7 +270,7 @@ $timeline = $templater->render();
 $navbits = array('project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects']);
 if ($project)
 {
-	$navbits[fetch_seo_url('projecttimeline', $project)] = $project['title_clean'];
+	$navbits[fetch_seo_url('project', $project)] = $project['title_clean'];
 }
 $navbits[''] = $vbphrase['project_timeline'];
 
