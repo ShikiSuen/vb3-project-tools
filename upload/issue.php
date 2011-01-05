@@ -86,15 +86,6 @@ $actiontemplates = array(
 	),
 );
 
-/*if (empty($_REQUEST['do']))
-{
-	if (!empty($_REQUEST['issueid']))
-	{
-		$_REQUEST['do'] = 'issue';
-		$actiontemplates['none'] =& $actiontemplates['issue'];
-	}
-}*/
-
 if (empty($_REQUEST['do']))
 {
 	define('GET_EDIT_TEMPLATES', true);
@@ -313,7 +304,7 @@ if ($_REQUEST['do'] == 'patch')
 // #######################################################################
 if ($_POST['do'] == 'vote')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
+	$vbulletin->input->clean_array_gpc('p', array(
 		'issueid' => TYPE_UINT,
 		'vote' => TYPE_NOCLEAN
 	));

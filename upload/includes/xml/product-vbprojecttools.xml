@@ -1477,7 +1477,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
-		<template name="block_issues" templatetype="template" date="1288561867" username="Pitchoune" version="2.1.2"><![CDATA[<li>
+		<template name="block_issues" templatetype="template" date="1294257989" username="Pitchoune" version="2.2.0"><![CDATA[<li>
 	<div class="block smaller">
 		<div class="blocksubhead">
 			<a class="collapse" id="collapse_block_newthreads_{vb:raw blockinfo.blockid}" href="{vb:raw relpath}#top"><img alt="" src="{vb:stylevar imgdir_button}/collapse_40b.png" id="collapseimg_newthreads_{vb:raw blockinfo.blockid}"/></a>
@@ -1502,7 +1502,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 					</vb:if>
 					</div>
 					<div class="smallavatartext widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if>">
-						<h5 class="widget_post_header"><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" class="title">{vb:raw issue.title}</a></h5>
+						<h5 class="widget_post_header"><a href="{vb:link issue, {vb:raw issue}}" class="title">{vb:raw issue.title}</a></h5>
 						<div class="meta">
 							<vb:if condition="$issuestype == 0">
 							{vb:rawphrase posted_by} <a href="{vb:link member, {vb:raw issue}}">{vb:raw issue.submitusername}</a> {vb:stylevar dirmark}({vb:rawphrase x_replies, {vb:raw issue.replycount}})
@@ -3163,7 +3163,7 @@ legend {
 		<input type="checkbox" id="{vb:raw optionid}" name="{vb:raw optionname}" value="{vb:raw optionvalue}" tabindex="1" {vb:raw optionchecked} />&nbsp;{vb:raw optiontitle}
 	</label>
 </li>]]></template>
-		<template name="pt_forumbit_project" templatetype="template" date="1289033838" username="Pitchoune" version="2.1.2"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
+		<template name="pt_forumbit_project" templatetype="template" date="1294258002" username="Pitchoune" version="2.2.0"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
 	<div class="forumrow table">
         <div class="foruminfo td">
 		<img id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
@@ -3173,7 +3173,7 @@ legend {
 					<vb:if condition="$project['forumtitle']">
 						<h2 class="forumtitle"><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.forumtitle}</a></h2>
 					<vb:else />
-						<h2 class="forumtitle"><span>{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}"><strong>{vb:raw project.title}</strong></a></h2>
+						<h2 class="forumtitle"><span>{vb:rawphrase project}</span> <a href="{vb:link project, {vb:raw project}}"><strong>{vb:raw project.title}</strong></a></h2>
 					</vb:if>
 				</div>
 				<vb:if condition="$project['summary']"><p class="forumdescription">{vb:raw project.summary}</p></vb:if>
@@ -3195,9 +3195,9 @@ legend {
 			<div>{vb:rawphrase private}</div>
 		<vb:else />
 			<vb:if condition="$project['lastpostdate']">
-				<div><p class="lastposttitle"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" class="threadtitle" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}"><strong>{vb:raw project.lastissuetitle_short}</strong></a></p>
+				<div><p class="lastposttitle"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" class="threadtitle" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}"><strong>{vb:raw project.lastissuetitle_short}</strong></a></p>
 				<div class="lastpostby">{vb:rawphrase by_x, {vb:link member, {vb:raw project}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw project.lastpostusername}}
-				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}" class="lastpostlink"><img src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" /></a></div>
+				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}" class="lastpostlink"><img src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" /></a></div>
 				<p class="lastpostdate">{vb:raw project.lastpostdate} <vb:if condition="!$show['detailedtime']"><em class="time">{vb:raw project.lastposttime}</em></vb:if></p></div>
 			<vb:else />
 				<div>{vb:rawphrase n_a}</div>
@@ -3470,7 +3470,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1294003754" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1294258779" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3550,9 +3550,9 @@ legend {
 					<vb:if condition="$show['member']"><li><a href="projectpost.php?{vb:raw session.sessionurl}do=managesubscription&amp;issueid={vb:raw issue.issueid}"><vb:if condition="$issue['subscribetype']">{vb:rawphrase unsubscribe_from_this_issue}<vb:else />{vb:rawphrase subscribe_to_this_issue}</vb:if></a></li></vb:if>
 
 					<vb:if condition="$selected_filter['changes']">
-						<li><a href="issue.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}#notestart">{vb:rawphrase view_comments}</a></li>
+						<li><a href="{vb:link issue, {vb:raw issue}}#notestart">{vb:rawphrase view_comments}</a></li>
 					<vb:else />
-						<li><a href="issue.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}&amp;filter=changes#notestart">{vb:rawphrase view_changes}</a></li>
+						<li><a href="{vb:link issue, {vb:raw issue}}&amp;filter=changes#notestart">{vb:rawphrase view_changes}</a></li>
 					</vb:if>
 
 					<vb:if condition="$show['attachments']">
@@ -3821,7 +3821,7 @@ legend {
 	</vb:if>
 	<div>
 		<!-- note filter -->
-		<form action="issue.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" method="get">
+		<form action="{vb:link issue, {vb:raw issue}}" method="get">
 		<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 		<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
 		<label class="smallfont">{vb:rawphrase filter_responses_to_show}
@@ -4004,7 +4004,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1294015810" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
+		<template name="pt_issuebit" templatetype="template" date="1294258820" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -4015,7 +4015,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<div class="ptissuelist_title">
 		<div class="issuetitle">
 			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.png" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="{vb:link issue, {vb:raw issue}, null, 'issueid', 'title'}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
 			<vb:if condition="$issue['pagenav']">
 			<dl class="pagination" id="pagination_issuebit_{vb:raw issue.issueid}">
 				<dd>
@@ -4074,7 +4074,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_issuebit_deleted" templatetype="template" date="1294015849" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow table deleted">
+		<template name="pt_issuebit_deleted" templatetype="template" date="1294258843" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow table deleted">
 	<div class="ptissuelist_statusicon td">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -4085,7 +4085,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<div class="ptissuelist_deleted_title td">
 		<div>
 			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="{vb:link issue, {vb:raw issue}, null, 'issueid', 'title'}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
 		</div>
 		<div class="smallfont">
 			<vb:if condition="$issue['submituserid']">
@@ -4100,8 +4100,8 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<vb:if condition="$issue['deletionreason']"><div><span class="shade">{vb:rawphrase reason}</span> {vb:raw issue.deletionreason}</div></vb:if>
 	</div>
 </div>]]></template>
-		<template name="pt_issuebit_pagelink" templatetype="template" date="1276105979" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1294023724" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuebit_pagelink" templatetype="template" date="1294258880" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
+		<template name="pt_issuelist" templatetype="template" date="1294258892" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4334,7 +4334,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </body>
 </html>]]></template>
 		<template name="pt_issuelist_arrow" templatetype="template" date="1272813018" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<a href="{vb:raw sort_url}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" /></a>]]></template>
-		<template name="pt_issuenotebit_petition" templatetype="template" date="1288547852" username="Pitchoune" version="2.1.2"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_petition" templatetype="template" date="1294258984" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <div class="block pt_issue_note">
 	<div class="blockhead">
 		<div style="float:{vb:stylevar right}" class="smallfont">
@@ -4420,7 +4420,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 					<span class="issuelinking">
 					<vb:if condition="$show['edit_history']">
-						<a class="issuehistory" href="project.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw note.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw note.lastedit_date}, {vb:raw note.lastedit_time}}</a>
+						<a class="issuehistory" href="issue.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw note.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw note.lastedit_date}, {vb:raw note.lastedit_time}}</a>
 					</vb:if>
 
 					<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'])">
@@ -4428,10 +4428,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					</vb:if>
 
 					<vb:if condition="$show['reportlink']">
-						<a class="reportissue" href="project.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw note.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
+						<a class="reportissue" href="issue.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw note.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
 					</vb:if>
 					<vb:if condition="$issue['noteipaddress']">
-						<a class="ipissue" href="project.php?do=viewip&amp;issuenoteid={vb:raw note.issuenoteid}" title="{vb:raw note.noteipaddress}">&nbsp;</a>
+						<a class="ipissue" href="issue.php?do=viewip&amp;issuenoteid={vb:raw note.issuenoteid}" title="{vb:raw note.noteipaddress}">&nbsp;</a>
 					</vb:if>
 					</span>
 				</div>
@@ -4460,7 +4460,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 <br />]]></template>
 		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1288548092" username="Pitchoune" version="2.1.2"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1294259016" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <div class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
@@ -4527,7 +4527,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 					<span class="issuelinking">
 					<vb:if condition="$show['edit_history']">
-						<a class="issuehistory" href="project.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw note.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw note.lastedit_date}, {vb:raw note.lastedit_time}}</a>
+						<a class="issuehistory" href="issue.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw note.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw note.lastedit_date}, {vb:raw note.lastedit_time}}</a>
 					</vb:if>
 
 					<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'])">
@@ -4535,10 +4535,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					</vb:if>
 
 					<vb:if condition="$show['reportlink']">
-						<a class="reportissue" href="project.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw note.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
+						<a class="reportissue" href="issue.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw note.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
 					</vb:if>
 					<vb:if condition="$issue['noteipaddress']">
-						<a class="ipissue" href="project.php?do=viewip&amp;issuenoteid={vb:raw note.issuenoteid}" title="{vb:raw note.noteipaddress}">&nbsp;</a>
+						<a class="ipissue" href="issue.php?do=viewip&amp;issuenoteid={vb:raw note.issuenoteid}" title="{vb:raw note.noteipaddress}">&nbsp;</a>
 					</vb:if>
 					</span>
 				</div>
@@ -5838,10 +5838,10 @@ init_project_readmarker_system();
 </div>]]></template>
 		<template name="pt_postbit_create_issue" templatetype="template" date="1288528218" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&amp;p={vb:raw post.postid}" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
 <span class="seperator">&nbsp;</span>]]></template>
-		<template name="pt_postbit_link_issue" templatetype="template" date="1278454430" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$show['pt_separator']">
+		<template name="pt_postbit_link_issue" templatetype="template" date="1294259188" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="$show['pt_separator']">
 	<div class="ptseparator">-</div>
 </vb:if>
-<a class="ptlink" href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issueinfos.pt_issueid}">
+<a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
 		<template name="pt_postissue" templatetype="template" date="1291146951" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
@@ -6362,7 +6362,7 @@ init_project_readmarker_system();
 		{vb:raw typename}
 	</a>
 </li>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1291147011" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postreply" templatetype="template" date="1294259214" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6446,7 +6446,7 @@ init_project_readmarker_system();
 
 	<h2 class="blockhead">
 		<vb:if condition="$show['editnote']">{vb:rawphrase edit_reply_to_issue_x}<vb:else />{vb:rawphrase reply_to_issue_x}</vb:if>
-		<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" class="normal">{vb:raw issue.title}</a>
+		<a href="{vb:link issue, {vb:raw issue}}" class="normal">{vb:raw issue.title}</a>
 	</h2>
 
 	<div class="blockbody formcontrols">
@@ -6598,7 +6598,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1294006778" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1294259312" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6760,7 +6760,7 @@ init_project_readmarker_system();
 						<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px"><a href="{vb:raw relpath}#petitions" class="shade"><span class="underline">{vb:rawphrase pending_petitions}</span></a> {vb:raw project.petitioncount}</li>
 					</vb:if>
 					<li class="smallfont" style="margin-bottom:8px">
-						<a href="projecttimeline.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="shade"><span class="underline">{vb:rawphrase last_activity}</span></a>
+						<a href="{vb:link projecttimeline, {vb:raw project}}" class="shade"><span class="underline">{vb:rawphrase last_activity}</span></a>
 						<vb:if condition="$show['private_lastactivity']">
 							{vb:rawphrase private}
 						<vb:elseif condition="$project[lastactivitydate]" />
@@ -6778,7 +6778,7 @@ init_project_readmarker_system();
 			<vb:if condition="$show['milestones']">
 				<span class="pt_milestonelist"><a href="projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="button" style="float: {vb:stylevar left}">{vb:rawphrase view_milestones}</a></span>
 			</vb:if>
-			<a href="{vb:link issuelist, {vb:raw project}, null, 'projectid', 'title'}<vb:comment>issuelist.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}</vb:comment>" class="button">{vb:rawphrase view_complete_issue_list}</a>
+			<a href="{vb:link issuelist, {vb:raw project}}" class="button">{vb:rawphrase view_complete_issue_list}</a>
 		</div>
 	</div>
 </div>
@@ -6843,12 +6843,12 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_projectbit" templatetype="template" date="1294104369" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
+		<template name="pt_projectbit" templatetype="template" date="1294259352" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
 	<div class="projectstatusicon">
 		<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
 	</div>
 	<div class="projecttitle<vb:if condition="$project['summary']"> hasdescription</vb:if>">
-		<div><a href="{vb:link project, {vb:raw project}, null}<vb:comment>project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}</vb:comment>">{vb:raw project.title}</a></div>
+		<div><a href="{vb:link project, {vb:raw project}}">{vb:raw project.title}</a></div>
 		<vb:if condition="$project['summary']"><div class="smallfont">{vb:raw project.summary}</div></vb:if>
 	</div>
 	<div class="projectlastpost">
@@ -6856,9 +6856,9 @@ init_project_readmarker_system();
 			{vb:rawphrase private}
 		<vb:elseif condition="$project['lastpostdate']" />
 			<div>
-				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}">{vb:raw project.lastissuetitle_short}</a>
+				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}">{vb:raw project.lastissuetitle_short}</a>
 				<p>{vb:rawphrase by_x, {vb:link member, {vb:raw project}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw project.lastpostusername}}
-				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a></p>
+				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a></p>
 				<p class="lastpostdate">
 					{vb:raw project.lastpostdate} <span class="time">{vb:raw project.lastposttime}</span>&nbsp;
 				</p>
@@ -6948,7 +6948,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_project_subscriptionbit" templatetype="template" date="1274619383" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
+		<template name="pt_project_subscriptionbit" templatetype="template" date="1294259383" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
 	<div class="ptissuelist_project">
 		<div><strong><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projecttype.projectid}">{vb:raw projecttype.title}</a></strong></div>
 		<div class="smallfont">{vb:raw projecttype.summary}</div>
@@ -6968,13 +6968,13 @@ init_project_readmarker_system();
 	<vb:elseif condition="$projecttype['lastpostdate']" />
 	<div class="ptissuelist_lastpost">
 		<div class="smallfont" align="{vb:stylevar left}">
-			<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw projecttype.lastissueid}&amp;goto=firstnew" style="white-space:nowrap" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw projecttype.lastissuetitle}}"><strong>{vb:raw projecttype.lastissuetitle_short}</strong></a>
+			<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw projecttype.lastissueid}&amp;goto=firstnew" style="white-space:nowrap" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw projecttype.lastissuetitle}}"><strong>{vb:raw projecttype.lastissuetitle_short}</strong></a>
 			<div style="white-space:nowrap<vb:if condition="is_browser('ie', 6)">; float:{vb:stylevar left}</vb:if>">
 				{vb:rawphrase by_x, {vb:link member, {vb:raw projecttype}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw projecttype.lastpostusername}}
 			</div>
 			<div align="{vb:stylevar right}" style="white-space:nowrap">
 				{vb:raw projecttype.lastpostdate} <span class="time">{vb:raw projecttype.lastposttime}</span>
-				<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw projecttype.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw projecttype.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
 			</div>
 		</div>
 	</div>
@@ -7495,14 +7495,14 @@ init_project_readmarker_system();
 {vb:raw errorbits}
 </ul>]]></template>
 		<template name="pt_searcherrorbit" templatetype="template" date="1273444813" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw error}</li>]]></template>
-		<template name="pt_searchresultbit" templatetype="template" date="1294004163" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
+		<template name="pt_searchresultbit" templatetype="template" date="1294259419" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
 	</div>
 	<div class="ptissuelist_title">
 		<div>
 			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="issue.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
 		</div>
 	</div>
 	<div class="ptissuelist_lastpost_search smallfont">
@@ -7686,14 +7686,14 @@ init_project_readmarker_system();
 		<span class="shade">{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title}</a>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_subscriptionbit" templatetype="template" date="1274619232" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockrow">
+		<template name="pt_subscriptionbit" templatetype="template" date="1294259472" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
 	</div>
 	<div class="ptissuelist_titlesub">
 		<div>
-			<vb:if condition="$issue['newflag']"><a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
+			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
 		</div>
 		<div class="smallfont">
 			<vb:if condition="$issue['submituserid']">
@@ -7713,7 +7713,7 @@ init_project_readmarker_system();
 		{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
 		<p>
 			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
-			<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+			<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
 		</p>
 	</div>
 	<div class="ptissuelist_replies smallfont">
@@ -8440,7 +8440,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 </div>
 </form>
 ]]></template>
-		<template name="search_results_ptissue" templatetype="template" date="1284156169" username="Pitchoune" version="2.1.2"><![CDATA[<li class="threadbit" id="issue_{vb:raw issue.issueid}">
+		<template name="search_results_ptissue" templatetype="template" date="1294259516" username="Pitchoune" version="2.2.0"><![CDATA[<li class="threadbit" id="issue_{vb:raw issue.issueid}">
 	<div class="nonsticky">
 		<div class="threadinfo thread">
 			<!--  status icon block -->
@@ -8449,7 +8449,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 			<!-- title / author block -->
 			<div class="inner">
 				<h3 class="searchtitle">
-					<a class="title" href="project.php?issueid={vb:raw issue.issueid}" id="issue_title_{vb:raw issue.issueid}" title="{vb:raw issue.summary}">{vb:raw issue.title}</a>
+					<a class="title" href="{vb:link issue, {vb:raw issue}}" id="issue_title_{vb:raw issue.issueid}" title="{vb:raw issue.summary}">{vb:raw issue.title}</a>
 				</h3>
 
 				<div class="threadmeta">				
@@ -8499,12 +8499,12 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 			<vb:else />
 				{vb:rawphrase by_x_guest , {vb:raw issue.lastpostusername}}
 			</vb:if>
- &nbsp;<a href="project.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" /></a>
+ &nbsp;<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" /></a>
 			</dd>
 		</dl>
 	</div>
 </li>]]></template>
-		<template name="search_results_ptissuenote" templatetype="template" date="1284156214" username="Pitchoune" version="2.1.2"><![CDATA[<li class="postbit postbitcontainer" id="issue_{vb:raw issue.issueid}">
+		<template name="search_results_ptissuenote" templatetype="template" date="1294259557" username="Pitchoune" version="2.2.0"><![CDATA[<li class="postbit postbitcontainer" id="issue_{vb:raw issue.issueid}">
 	<div class="postbitdetails_noavatar">
 		<div class="posthead">
 	            <span class="postdate">
@@ -8514,7 +8514,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		<div class="userinfo_noavatar">
 			<div class="contact">
 				<div class="username_container">
-					<h2>{vb:rawphrase issue}: <a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" title="{vb:raw issue.title}">{vb:raw issue.title}</a></h2>
+					<h2>{vb:rawphrase issue}: <a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.title}">{vb:raw issue.title}</a></h2>
 					<vb:if condition="$issue['submituserid']">
 						{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'submituserid', 'submitusername'}, {vb:raw issue.submitusername}}
 					<vb:else />
@@ -8524,14 +8524,15 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 			</div>
 			<div class="userinfo_extra">
 				<dl class="userstats">
-					<dt>{vb:rawphrase replies}</dt><dd>{vb:raw issue.replycount}</dd>
+					<dt>{vb:rawphrase replies}</dt>
+					<dd>{vb:raw issue.replycount}</dd>
 				</dl>
 			</div>
 		</div>
 	</div>
 	<div class="postbody">
 		<h3 class="posttitle">
-			<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$issue['firstnoteid'] != $issue['issuenoteid']">#note{vb:raw issue.issuenoteid}</vb:if>">{vb:raw issue.title}</a>
+			<a href="{vb:link issue, {vb:raw issue}}<vb:if condition="$issue['firstnoteid'] != $issue['issuenoteid']">#note{vb:raw issue.issuenoteid}</vb:if>">{vb:raw issue.title}</a>
 		</h3>
 
 		<div class="postrow">
@@ -8607,7 +8608,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 	<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 	<input type="hidden" name="adminhash" value="{vb:raw adminhash}" />
 </div>]]></template>
-		<template name="vbcms_widget_recentptcomments_page" templatetype="template" date="1288563817" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget">
+		<template name="vbcms_widget_recentptcomments_page" templatetype="template" date="1294259668" username="Pitchoune" version="2.2.0"><![CDATA[<div class="cms_widget">
 <div class="block">
 	<div class="cms_widget_header">
 		<h3><img src="{vb:stylevar imgdir_cms}/widget-comment.png" alt="" /> {vb:raw title}</h3>
@@ -8629,7 +8630,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 					</vb:if>
 				</div>
 				<div class="cms_widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if> widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if>">
-					<h4 class="cms_widget_post_header widget_post_header"><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issuenote.issueid}">{vb:raw issuenote.title}</a></h4>
+					<h4 class="cms_widget_post_header widget_post_header"><a href="{vb:link issue, {vb:raw issuenote}}">{vb:raw issuenote.title}</a></h4>
 					<p class="cms_widget_post_content widget_post_content">{vb:raw issuenote.pagetext}</p>
 					{vb:date {vb:raw issuenote.dateline}, {vb:raw vboptions.dateformat}}<vb:if condition="!$show['detailedtime']">, <span class="time">{vb:date {vb:raw issuenote.dateline}, {vb:raw vboptions.timeformat}}</span></vb:if>
 					<vb:if condition="$issuenote['noteuserid']" >
@@ -8637,7 +8638,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 					<vb:else />
 						{vb:rawphrase by_x_guest, {vb:raw issuenote.noteusername}}
 					</vb:if>
-					<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issuenote.issueid}#note{vb:raw issuenote.issuenoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+					<a href="{vb:link issue, {vb:raw issuenote}}#note{vb:raw issuenote.issuenoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
 				</div>
 			</div>
 		</vb:each>
@@ -8677,7 +8678,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 	<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 	<input type="hidden" name="adminhash" value="{vb:raw adminhash}" />
 </div>]]></template>
-		<template name="vbcms_widget_recentptissues_page" templatetype="template" date="1288563277" username="Pitchoune" version="2.1.2"><![CDATA[<div class="cms_widget">
+		<template name="vbcms_widget_recentptissues_page" templatetype="template" date="1294259702" username="Pitchoune" version="2.2.0"><![CDATA[<div class="cms_widget">
 <div class="block">
 	<div class="cms_widget_header">
 		<h3><img src="{vb:stylevar imgdir_cms}/widget-comment.png" alt="" /> {vb:raw title}</h3>
@@ -8699,7 +8700,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 					</vb:if>
 				</div>
 				<div class="cms_widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if> widget_post_comment<vb:if condition="!$vboptions['avatarenabled']">_noavatar</vb:if>">
-					<h4 class="cms_widget_post_header widget_post_header"><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}">{vb:raw issue.title}</a></h4>
+					<h4 class="cms_widget_post_header widget_post_header"><a href="{vb:link issue, {vb:raw issue}}">{vb:raw issue.title}</a></h4>
 					<p class="cms_widget_post_content widget_post_content">{vb:raw issue.pagetext}</p>
 					{vb:date {vb:raw issue.submitdate}, {vb:raw vboptions.dateformat}}<vb:if condition="!$show['detailedtime']">, <span class="time">{vb:date {vb:raw issue.submitdate}, {vb:raw vboptions.timeformat}}</span></vb:if>
 					<vb:if condition="$issue['lastpostuserid']" >
@@ -8707,7 +8708,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 					<vb:else />
 						{vb:rawphrase by_x_guest, {vb:raw issue.lastposter}}
 					</vb:if>
-					<a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}#note{vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+					<a href="{vb:link issue, {vb:raw issue}}#note{vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
 				</div>
 			</div>
 		</vb:each>
@@ -9541,10 +9542,10 @@ $vboptions[bbtitle]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 To manage your issue and project subscriptions, click here:
 $vboptions[bburl]/projectpost.php?do=managesubscriptions]]></phrase>
-			<phrase name="pt_digestissue" date="1211893242" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Dear $issue[username],
+			<phrase name="pt_digestissue" date="1294259739" username="Pitchoune" version="2.2.0"><![CDATA[Dear $issue[username],
 
 You are subscribed to the issue "$issue[title]" by $issue[submitusername], there have been $issue[newposts] post(s) to this issue, the last poster was $issue[lastpostusername].
-$vboptions[bburl]/project.php?issueid=$issue[issueid]
+$vboptions[bburl]/issue.php?issueid=$issue[issueid]
 
 These following replies were made to the issue:
 $notebits
@@ -9555,9 +9556,9 @@ $vboptions[bbtitle]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 To manage your issue and project subscriptions, click here:
 $vboptions[bburl]/projectpost.php?do=managesubscriptions]]></phrase>
-			<phrase name="pt_digestissuebit" date="1211473316" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[************
+			<phrase name="pt_digestissuebit" date="1294259750" username="Pitchoune" version="2.2.0"><![CDATA[************
 $issue[title_clean]
-$vboptions[bburl]/project.php?issueid=$issue[issueid]
+$vboptions[bburl]/issue.php?issueid=$issue[issueid]
 Started by: $issue[submitusername_clean]
 Last post: $issue[lastreplydate] $issue[lastreplytime]
 ]]></phrase>
@@ -9585,18 +9586,17 @@ $vboptions[bbtitle]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 To manage your issue and project subscriptions, click here:
 $vboptions[bburl]/projectpost.php?do=managesubscriptions]]></phrase>
-			<phrase name="pt_issueassignment" date="1212593516" username="Scott" version="2.0.0 Alpha 1"><![CDATA[Dear $assignee_userinfo[username],
+			<phrase name="pt_issueassignment" date="1294259770" username="Pitchoune" version="2.2.0"><![CDATA[Dear $assignee_userinfo[username],
 
 You have been assigned to the issue "$issue[title]" by $assigner_userinfo[username].
 
-$vboptions[bburl]/project.php?issueid=$issue[issueid]
+$vboptions[bburl]/issue.php?issueid=$issue[issueid]
 
 Project: $project[title]
 Issue Type: $issue[issuetype]
 
 All the best,
-$vboptions[bbtitle]
-]]></phrase>
+$vboptions[bbtitle]]]></phrase>
 			<phrase name="reportissuenote" date="1213627808" username="Scott" version="2.0.0 Alpha 1"><![CDATA[$reportinfo[rusername] ( mailto:$reportinfo[remail] ) has reported this issue note:
 
 $vboptions[bburl]/project.php?do=gotonote&issuenoteid=$reportinfo[issuenoteid]

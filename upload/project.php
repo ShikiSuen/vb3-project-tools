@@ -90,11 +90,109 @@ vB_Bootstrap_Framework::init();
 $issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
 $project_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Project');
 
-$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
+$vbulletin->input->clean_array_gpc('r', array(
+	'projectid' => TYPE_UINT,
+	'issueid' => TYPE_UINT,
+	'issuenoteid' => TYPE_UINT,
+));
 
 // #######################################################################
 // ######################## START MAIN SCRIPT ############################
 // #######################################################################
+
+// #######################################################################
+// Redirect to the new place for this 'do' branch
+if ($_REQUEST['do'] == 'timeline')
+{
+	if (!empty($vbulletin->GPC['projectid']))
+	{
+		exec_header_redirect("projecttimeline.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=" . $vbulletin->GPC['projectid'], 301);
+	}
+	else
+	{
+		exec_header_redirect("projecttimeline.php?" . $vbulletin->session->vars['sessionurl_q'], 301);
+	}
+}
+
+// #######################################################################
+// Redirect to the new place for this 'do' branch
+if ($_REQUEST['do'] == 'issue')
+{
+	exec_header_redirect("issue.php?" . $vbulletin->session->vars['sessionurl'] . "issueid=" . $vbulletin->GPC['issueid'], 301);
+}
+
+// #######################################################################
+// Redirect to the new place for this 'do' branch
+if ($_REQUEST['do'] == 'issuelist')
+{
+	$vbulletin->input->clean_array_gpc('r', array(
+		'issuetypeid' => TYPE_NOHTML,
+		'appliesversionid' => TYPE_NOHTML,
+		'issuestatusid' => TYPE_INT,
+		'pagenumber' => TYPE_UINT,
+		'sortfield' => TYPE_NOHTML,
+		'sortorder' => TYPE_NOHTML
+	));
+
+	$issuetypeid_url = (!empty($vbulletin->GPC['issuetypeid']) ? "&issuetypeid=" . $vbulletin->GPC['issuetypeid'] : '');
+	$appliesversionid_url = (!empty($vbulletin->GPC['appliesversionid']) ? "&appliesversionid=" . $vbulletin->GPC['appliesversionid'] : '');
+	$issuestatusid_url = (!empty($vbulletin->GPC['issuestatusid']) ? "&issuestatusid=" . $vbulletin->GPC['issuestatusid'] : '');
+	$pagenumber_url = (!empty($vbulletin->GPC['pagenumber']) ? "&pagenumber=" . $vbulletin->GPC['pagenumber'] : '');
+	$sortfield_url = (!empty($vbulletin->GPC['sortfield']) ? "&sortfield=" . $vbulletin->GPC['sortfield'] : '');
+	$sortorder_url = (!empty($vbulletin->GPC['sortorder']) ? "&sortorder=" . $vbulletin->GPC['sortorder'] : '');
+
+	exec_header_redirect("issuelist.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=" . $vbulletin->GPC['projectid'] ? "$issuetypeid_url$appliesversionid_url$issuestatusid_url$pagenumber_url$sortfield_url$sortorder_url", 301);
+}
+
+// #######################################################################
+// Redirect to the new place for this 'do' branch
+if ($_REQUEST['do'] == 'notehistory')
+{
+	exec_header_redirect("issue.php?" . $vbulletin->session->vars['sessionurl'] . "do=notehistory&issuenoteid=" . $vbulletin->GPC['issuenoteid'], 301);
+}
+
+// #######################################################################
+// Redirect to the new place for this 'do' branch
+if ($_REQUEST['do'] == 'viewip')
+{
+	exec_header_redirect("issue.php?" . $vbulletin->session->vars['sessionurl'] . "do=viewip&issuenoteid=" . $vbulletin->GPC['issuenoteid'], 301);
+}
+
+// #######################################################################
+// Redirect to the new place for this 'do' branch
+if ($_REQUEST['do'] == 'patch')
+{
+	$vbulletin->input->clean_gpc('r', 'attachmentid', TYPE_UINT);
+
+	exec_header_redirect("issue.php?" . $vbulletin->session->vars['sessionurl'] . "do=patch&attachmentid=" . $vbulletin->GPC['attachmentid'], 301);
+}
+
+// #######################################################################
+// Redirect to the new place for this 'do' branch
+if ($_REQUEST['do'] == 'gotonote')
+{
+	$vbulletin->input->clean_gpc('r', 'goto' => TYPE_STR);
+
+	$issueid_url = (!empty($vbulletin->GPC['issueid']) ? "&issueid=" . $vbulletin->GPC['issueid'] : '');
+	$issuenoteid_url = (!empty($vbulletin->GPC['issuenoteid']) ? "&issuenoteid=" . $vbulletin->GPC['issuenoteid'] : '');
+	$goto_url = (!empty($vbulletin->GPC['goto']) ? "&goto=" . $vbulletin->GPC['goto'] : '');
+
+	exec_header_redirect("issue.php?" . $vbulletin->session->vars['sessionurl'] . "do=gotonote$issuenoteid_url$issueid_url$goto_url", 301);
+}
+
+// #######################################################################
+// Redirect to the new place for this 'do' branch
+if ($_REQUEST['do'] == 'lastnote')
+{
+	exec_header_redirect("issue.php?" . $vbulletin->session->vars['sessionurl'] . "do=lastnote&issueid=" . $vbulletin->GPC['issueid'], 301);
+}
+
+// #######################################################################
+// Redirect to the new place for this 'do' branch
+if ($_REQUEST['do'] == 'report')
+{
+	exec_header_redirect("issue.php?" . $vbulletin->session->vars['sessionurl'] . "do=report&issuenoteid=" . $vbulletin->GPC['issuenoteid'], 301);
+}
 
 // #######################################################################
 if ($_REQUEST['do'] == 'markread')
