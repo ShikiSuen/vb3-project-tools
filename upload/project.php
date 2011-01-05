@@ -141,7 +141,7 @@ if ($_REQUEST['do'] == 'issuelist')
 	$sortfield_url = (!empty($vbulletin->GPC['sortfield']) ? "&sortfield=" . $vbulletin->GPC['sortfield'] : '');
 	$sortorder_url = (!empty($vbulletin->GPC['sortorder']) ? "&sortorder=" . $vbulletin->GPC['sortorder'] : '');
 
-	exec_header_redirect("issuelist.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=" . $vbulletin->GPC['projectid'] ? "$issuetypeid_url$appliesversionid_url$issuestatusid_url$pagenumber_url$sortfield_url$sortorder_url", 301);
+	exec_header_redirect("issuelist.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=" . $vbulletin->GPC['projectid'] . "$issuetypeid_url$appliesversionid_url$issuestatusid_url$pagenumber_url$sortfield_url$sortorder_url", 301);
 }
 
 // #######################################################################
