@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ï¿½2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -171,7 +171,7 @@ if ($_REQUEST['do'] == 'patch')
 // Redirect to the new place for this 'do' branch
 if ($_REQUEST['do'] == 'gotonote')
 {
-	$vbulletin->input->clean_gpc('r', 'goto' => TYPE_STR);
+	$vbulletin->input->clean_gpc('r', 'goto', TYPE_STR);
 
 	$issueid_url = (!empty($vbulletin->GPC['issueid']) ? "&issueid=" . $vbulletin->GPC['issueid'] : '');
 	$issuenoteid_url = (!empty($vbulletin->GPC['issuenoteid']) ? "&issuenoteid=" . $vbulletin->GPC['issuenoteid'] : '');
