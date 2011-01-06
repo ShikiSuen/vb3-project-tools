@@ -2583,17 +2583,17 @@ if ($_REQUEST['do'] == 'moveissue')
 // ##################################################################################
 if ($_REQUEST['do'] == 'assigntoself')
 {
-	$vbulletin->input->clean_gpc('r', 'id', TYPE_UINT);
+	$vbulletin->input->clean_gpc('r', 'issueid', TYPE_UINT);
 		
 	$existing_assignments = array();
 	$userid = $vbulletin->userinfo['userid'];
 	
-	$issue = verify_issue($vbulletin->GPC['id']);
+	$issue = verify_issue($vbulletin->GPC['issueid']);
 	$project = verify_project($issue['projectid']);
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
 	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 	
-	if(!isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"]))
+	if (!isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"]))
 	{
 		print_no_permission();
 	}
@@ -2615,6 +2615,7 @@ if ($_REQUEST['do'] == 'assigntoself')
 		if (in_array($vbulletin->userinfo['userid'], $existing_assignments))
 		{
 			// Already assigned, an error occured somewhere to show the "Assign to Me" link. Just perform a return to previous issue.
+			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=" . $issue['issueid'];
 			eval(print_standard_redirect($vbulletin->phrase['pt_already_assigned']));
 		}
 		else
@@ -2623,6 +2624,7 @@ if ($_REQUEST['do'] == 'assigntoself')
 			if (!isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"]))
 			{
 				// user cannot be assigned
+				$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=" . $issue['issueid'];
 				eval(print_standard_redirect($vbulletin->phrase['pt_cannont_be_assigned']));
 			}
 			else
@@ -2632,7 +2634,8 @@ if ($_REQUEST['do'] == 'assigntoself')
 				$assign->set('userid', $userid);
 				$assign->set('issueid', $issue['issueid']);
 				$assign->save();
-				
+
+				$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=" . $issue['issueid'];
 				eval(print_standard_redirect($vbulletin->phrase['pt_assigned']));
 			}
 		}
