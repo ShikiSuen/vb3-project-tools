@@ -3470,7 +3470,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1294258779" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1294308559" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3529,7 +3529,7 @@ legend {
 			<vb:if condition="$show['assigntoself']">
 			<li class="popupmenu">
 				<h6>
-					<a class="toolbar_text" rel="nofollow" href="projectpost.php?{vb:raw session.sessionurl}do=assigntoself&amp;id={vb:raw issue.issueid}">{vb:phrase assign_to_self}</a>
+					<a class="toolbar_text" rel="nofollow" href="projectpost.php?{vb:raw session.sessionurl}do=assigntoself&amp;issueid={vb:raw issue.issueid}">{vb:phrase assign_to_self}</a>
 				</h6>
 			</li>
 			</vb:if>
@@ -6873,8 +6873,8 @@ init_project_readmarker_system();
 		</ul>
 	</div>
 </div>]]></template>
-		<template name="pt_projectbit_typecount" templatetype="template" date="1278986222" username="Pitchoune" version="2.1.2"><![CDATA[<li>
-	<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}">{vb:raw typename}</a>: 
+		<template name="pt_projectbit_typecount" templatetype="template" date="1294284973" username="Pitchoune" version="2.2.0"><![CDATA[<li>
+	<a href="{vb:link issuelist, {vb:raw project}}&amp;issuetypeid={vb:raw type.issuetypeid}">{vb:raw typename}</a>: 
 	<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
 		{vb:raw type.issuecountactive} / {vb:raw type.issuecount}
 	</span>
@@ -6990,8 +6990,8 @@ init_project_readmarker_system();
 		{vb:raw projecttype.issuetype}
 	</div>
 </div>]]></template>
-		<template name="pt_project_typecountbit" templatetype="template" date="1294005782" username="Pitchoune" version="2.2.0"><![CDATA[<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px">
-	<a href="issuelist.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}" class="shade"><span class="underline">{vb:raw typename}</span></a>
+		<template name="pt_project_typecountbit" templatetype="template" date="1294285014" username="Pitchoune" version="2.2.0"><![CDATA[<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px">
+	<a href="{vb:link issuelist, {vb:raw project}}&amp;issuetypeid={vb:raw type.issuetypeid}" class="shade"><span class="underline">{vb:raw typename}</span></a>
 	<span <vb:if condition="$type['newflag']">style="font-weight: bold"</vb:if>>{vb:raw type.issuecountactive} / {vb:raw type.issuecount}</span>
 </li>]]></template>
 		<template name="pt_reportbit" templatetype="template" date="1292872324" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow">
