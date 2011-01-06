@@ -93,7 +93,7 @@ class vB_ReportItem_Pt_IssueNote extends vB_ReportItem
 			'reporttype'   => $vbphrase['issue_note'],
 			'description'  => $vbphrase['only_used_to_report'],
 			'itemname'     => $this->extrainfo['issue']['title'],
-			'itemlink'     => "project.php?" . $this->registry->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$iteminfo[issuenoteid]",
+			'itemlink'     => "issue.php?" . $this->registry->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$iteminfo[issuenoteid]",
 		);
 
 		$this->set_reporting_hidden_value('issuenoteid', $iteminfo['issuenoteid']);
