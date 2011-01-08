@@ -349,6 +349,7 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		$fields['groupusername'] = $issue->get_field('submitusername');
 		$fields['defaultusername'] = $fields['username'];
 		$fields['ipaddress'] = $issuenote->get_ipstring();
+		$fields['title'] = $issue->get_field('title');
 
 		if ($issue->get_field('summary'))
 		{
