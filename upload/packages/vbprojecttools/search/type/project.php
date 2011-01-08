@@ -80,7 +80,7 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 	*/
 	public function get_display_name()
 	{
-		return $GLOBALS['vbphrase']['project'];
+		return new vB_Phrase('search', 'searchtype_projects');
 	}
 
 	/**
