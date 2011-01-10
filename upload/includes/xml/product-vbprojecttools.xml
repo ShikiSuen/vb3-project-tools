@@ -4101,7 +4101,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1294258880" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1294258892" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1294664262" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4253,13 +4253,13 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<div class="blockbody formcontrols">
 		<div class="blocksubhead issuelist">
 			<div class="ptissuelist_title">
-				<a href="{vb:link issuelist, {vb:raw project}, null}&amp;issuetypeid={vb:raw input.issuetypeid}&amp;issuestatusid={vb:raw input.issuestatusid}&amp;appliesversionid={vb:raw input.appliesversionid}&amp;sort=title&amp;order=asc">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
-				<a href="{vb:link issuelist, {vb:raw project}, null}&amp;issuetypeid={vb:raw input.issuetypeid}&amp;issuestatusid={vb:raw input.issuestatusid}&amp;appliesversionid={vb:raw input.appliesversionid}&amp;sort=submitusername&amp;order=asc">{vb:rawphrase submitted_by}</a> {vb:raw sort_arrow.submitusername}
+				<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_title}}">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
+				<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_username}}">{vb:rawphrase submitted_by}</a> {vb:raw sort_arrow.submitusername}
 			</div>
-			<div class="ptissuelist_lastpost"><a href="{vb:link issuelist, {vb:raw project}, null}&amp;issuetypeid={vb:raw input.issuetypeid}&amp;issuestatusid={vb:raw input.issuestatusid}&amp;appliesversionid={vb:raw input.appliesversionid}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
-			<div class="ptissuelist_replies"><a href="{vb:link issuelist, {vb:raw project}, null}&amp;issuetypeid={vb:raw input.issuetypeid}&amp;issuestatusid={vb:raw input.issuestatusid}&amp;appliesversionid={vb:raw input.appliesversionid}&amp;sort=replycount">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
-			<div class="ptissuelist_priority"><a href="{vb:link issuelist, {vb:raw project}, null}&amp;issuetypeid={vb:raw input.issuetypeid}&amp;issuestatusid={vb:raw input.issuestatusid}&amp;appliesversionid={vb:raw input.appliesversionid}&amp;sort=priority&amp;order=asc">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
-			<div class="ptissuelist_status"><a href="{vb:link issuelist, {vb:raw project}, null}&amp;issuetypeid={vb:raw input.issuetypeid}&amp;issuestatusid={vb:raw input.issuestatusid}&amp;appliesversionid={vb:raw input.appliesversionid}&amp;sort=issuestatusid&amp;order=asc">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
+			<div class="ptissuelist_lastpost"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_lastpost}}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
+			<div class="ptissuelist_replies"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_replies}}">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
+			<div class="ptissuelist_priority"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_priority}}">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
+			<div class="ptissuelist_status"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_issuestatus}}">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
 		</div>
 
 		<vb:if condition="$issuebits">
@@ -4333,7 +4333,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuelist_arrow" templatetype="template" date="1272813018" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<a href="{vb:raw sort_url}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" /></a>]]></template>
+		<template name="pt_issuelist_arrow" templatetype="template" date="1294664144" username="Pitchoune" version="2.2.0"><![CDATA[<img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" />]]></template>
 		<template name="pt_issuenotebit_petition" templatetype="template" date="1294258984" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <div class="block pt_issue_note">
 	<div class="blockhead">
