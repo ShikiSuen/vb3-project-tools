@@ -107,8 +107,6 @@ $vbulletin->input->clean_array_gpc('r', array(
 
 $project = verify_project($vbulletin->GPC['projectid']);
 
-verify_seo_url('issuelist', $project);
-
 if ($vbulletin->GPC['issuetypeid'])
 {
 	verify_issuetypeid($vbulletin->GPC['issuetypeid'], $project['projectid']);
@@ -214,21 +212,56 @@ $list_criteria = $perms_query["$project[projectid]"] . "
 
 $issue_list->exec_query($list_criteria, $vbulletin->GPC['pagenumber'], $vbulletin->options['pt_issuesperpage']);
 
-$nav_url_base = 'issuelist.php?' . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" .
-		($vbulletin->GPC['issuetypeid'] ? '&amp;issuetypeid=' . $vbulletin->GPC['issuetypeid'] : '') .
-		($vbulletin->GPC['issuestatusid'] ? '&amp;issuestatusid=' . $vbulletin->GPC['issuestatusid'] : '') .
-		($vbulletin->GPC['appliesversionid'] ? '&amp;appliesversionid=' . $vbulletin->GPC['appliesversionid'] : '');
+$pageinfo = array();
 
-$sort_arrow = $issue_list->fetch_sort_arrow_array($nav_url_base);
+if ($vbulletin->GPC['issuetypeid'])
+{
+	$pageinfo['issuetypeid'] = $vbulletin->GPC['issuetypeid'];
+}
+
+if ($vbulletin->GPC['issuestatusid'])
+{
+	$pageinfo['issuestatusid'] = $vbulletin->GPC['issuestatusid'];
+}
+
+if ($vbulletin->GPC['appliesversionid'])
+{
+	$pageinfo['appliesversionid'] = $vbulletin->GPC['appliesversionid'];
+}
+
+$oppositesort = $vbulletin->GPC['sortorder'] == 'asc' ? 'desc' : 'asc';
+$pageinfo_title = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'title', 'order' => ('title' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_username = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'submitusername', 'order' => ('submitusername' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_issuestatus = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'issuestatusid', 'order' => ('issuestatusid' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_priority = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'priority', 'order' => ('priority' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_replies = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'replycount', 'order' => ('replycount' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_lastpost = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'lastpost', 'order' => ('lastpost' == $issue_list->sort_field) ? $oppositesort : 'asc');
+
+$sort_arrow = $issue_list->fetch_sort_arrow_array();
+
+if ($issue_list->sort_field != 'lastpost')
+{
+	$pageinfo['sort'] = urlencode($issue_list->sort_field);
+}
+
+if ($issue_list->sort_order != 'desc')
+{
+	$pageinfo['order'] = 'asc';
+}
 
 $pagenav = construct_page_nav(
 	$issue_list->real_pagenumber,
 	$vbulletin->options['pt_issuesperpage'],
 	$issue_list->total_rows,
-	$nav_url_base,
-	($issue_list->sort_field != 'lastpost' ? '&amp;sort=' . urlencode($issue_list->sort_field) : '') .
-		($issue_list->sort_order != 'desc' ? '&amp;order=asc' : '')
+	'',
+	'',
+	'',
+	'issuelist',
+	$project,
+	$pageinfo
 );
+
+verify_seo_url('issuelist', $project, $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber']));
 
 $projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 
@@ -499,7 +532,7 @@ $navbits = array(
 
 if ($vbulletin->GPC['issuetypeid'])
 {
-	$navbits[fetch_seo_url('issuelist', $project) . "&amp;issuetypeid=" . $vbulletin->GPC['issuetypeid']] = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'];
+	$navbits[fetch_seo_url('issuelist', $project, array('issuetypeid' => $vbulletin->GPC['issuetypeid']))] = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'];
 }
 
 $navbits[''] = $vbphrase['issue_list'];
@@ -525,6 +558,12 @@ $templater = vB_Template::create('pt_issuelist');
 	$templater->register('issuetype_printable', $issuetype_printable);
 	$templater->register('issuetype_printable_plural', $issuetype_printable_plural);
 	$templater->register('navbar', $navbar);
+	$templater->register('pageinfo_title', $pageinfo_title);
+	$templater->register('pageinfo_username', $pageinfo_username);
+	$templater->register('pageinfo_issuestatus', $pageinfo_issuestatus);
+	$templater->register('pageinfo_priority', $pageinfo_priority);
+	$templater->register('pageinfo_replies', $pageinfo_replies);
+	$templater->register('pageinfo_lastpost', $pageinfo_lastpost);
 	$templater->register('pagenav', $pagenav);
 	$templater->register('postable_types', $postable_types);
 	$templater->register('post_issue_options', $post_issue_options);

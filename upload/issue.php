@@ -572,8 +572,8 @@ if ($_REQUEST['do'] == 'report' OR $_POST['do'] == 'sendemail')
 	{
 		$navbits = array(
 			'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
-			"project.php?" . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]" => $project['title_clean'],
-			'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" => $issue['title'],
+			fetch_seo_url('project', $project) => $project['title_clean'],
+			fetch_seo_url('issue', $issue) => $issue['title'],
 			'' => $vbphrase['report_issue_note']
 		);
 		$navbits = construct_navbits($navbits);
@@ -632,7 +632,7 @@ $vbulletin->input->clean_array_gpc('r', array(
 $issue = verify_issue($vbulletin->GPC['issueid'], true, array('avatar', 'vote', 'milestone'));
 $project = verify_project($issue['projectid']);
 
-verify_seo_url('issue', $issue);
+verify_seo_url('issue', $issue, array('pagenumber' => $vbulletin->GPC['pagenumber']));
 
 $issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
 $posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
@@ -731,7 +731,7 @@ while ($assignment = $db->fetch_array($assignment_data))
 
 	if ($assignment['userid'] == $vbulletin->userinfo['userid'])
 	{
-		$show['assigntoself'] = FALSE;
+		$show['assigntoself'] = false;
 	}
 }
 
@@ -883,13 +883,23 @@ $notes = $db->query_read("
 	LIMIT $start, " . $vbulletin->options['pt_notesperpage'] . "
 ");
 
+$pageinfo = array();
+
+if ($vbulletin->GPC['filter'] != 'comments')
+{
+	$pageinfo['filter'] = $vbulletin->GPC['filter'];
+}
+
 $pagenav = construct_page_nav(
 	$vbulletin->GPC['pagenumber'],
 	$vbulletin->options['pt_notesperpage'],
 	$note_count,
-	'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]" .
-		($vbulletin->GPC['filter'] != 'comments' ? '&amp;filter=' . $vbulletin->GPC['filter'] : ''),
-	''
+	'',
+	'',
+	'',
+	'issue',
+	$issue,
+	$pageinfo
 );
 
 $bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
