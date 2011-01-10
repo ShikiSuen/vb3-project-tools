@@ -213,11 +213,13 @@ class vB_Pt_IssueList
 	*
 	* @return	array	Array of sort arrow info
 	*/
-	function fetch_sort_arrow_array($template_name = 'pt_issuelist_arrow')
+	function fetch_sort_arrow_array($sort_url_base, $template_name = 'pt_issuelist_arrow')
 	{
 		global $vbphrase, $show;
 
 		$opposite_sort = ($this->sort_order == 'asc' ? 'desc' : 'asc');
+
+		$sort_url = $sort_url_base . "&amp;sort={$this->sort_field}&amp;order=$opposite_sort";
 
 		$sort_arrow = array(
 			'title' => '',
@@ -230,6 +232,7 @@ class vB_Pt_IssueList
 
 		$templater = vB_Template::create($template_name);
 			$templater->register('opposite_sort', $opposite_sort);
+			$templater->register('sort_url', $sort_url);
 		$sort_arrow[$this->sort_field] = $templater->render();
 
 		return $sort_arrow;
