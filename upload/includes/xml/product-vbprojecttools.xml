@@ -5177,7 +5177,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1291146791" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1294734788" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5223,7 +5223,7 @@ init_project_readmarker_system();
 </vb:if>
 
 <vb:if condition="$show['search_options']">
-<div id="above_project_controls" class="above_project_controls">
+<div id="above_project_controls" class="above_project_controls toolsmenu">
 	<div>
 		<ul id="projectpopups" class="popupgroup projectpopups">
 			<li id="searchproject" class="popupmenu nohovermenu searchprojects">
@@ -6598,7 +6598,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1294259312" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1294734568" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6776,7 +6776,7 @@ init_project_readmarker_system();
 	<div class="blockfoot actionbuttons">
 		<div class="group">
 			<vb:if condition="$show['milestones']">
-				<span class="pt_milestonelist"><a href="projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="button" style="float: {vb:stylevar left}">{vb:rawphrase view_milestones}</a></span>
+				<span class="pt_milestonelist"><a href="<vb:comment>{vb:link projectmilestone, {vb:raw project}}</vb:comment>projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="button" style="float: {vb:stylevar left}">{vb:rawphrase view_milestones}</a></span>
 			</vb:if>
 			<a href="{vb:link issuelist, {vb:raw project}}" class="button">{vb:rawphrase view_complete_issue_list}</a>
 		</div>
