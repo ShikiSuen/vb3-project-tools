@@ -208,18 +208,15 @@ class vB_Pt_IssueList
 	/**
 	* Fetches an array of info about the sort arrows.
 	*
-	* @param	string	Base sort URL text. Must have a ? in it. Sort and order added automatically.
 	* @param	string	Name of the template to use for the sort arrow.
 	*
 	* @return	array	Array of sort arrow info
 	*/
-	function fetch_sort_arrow_array($sort_url_base, $template_name = 'pt_issuelist_arrow')
+	function fetch_sort_arrow_array($template_name = 'pt_issuelist_arrow')
 	{
 		global $vbphrase, $show;
 
 		$opposite_sort = ($this->sort_order == 'asc' ? 'desc' : 'asc');
-
-		$sort_url = $sort_url_base . "&amp;sort={$this->sort_field}&amp;order=$opposite_sort";
 
 		$sort_arrow = array(
 			'title' => '',
@@ -232,7 +229,6 @@ class vB_Pt_IssueList
 
 		$templater = vB_Template::create($template_name);
 			$templater->register('opposite_sort', $opposite_sort);
-			$templater->register('sort_url', $sort_url);
 		$sort_arrow[$this->sort_field] = $templater->render();
 
 		return $sort_arrow;
@@ -247,9 +243,7 @@ class vB_Pt_IssueList
 	*/
 	function exec_query($criteria, $pagenumber, $perpage)
 	{
-		build_issue_private_lastpost_sql_project($this->registry->userinfo, $this->project['projectid'],
-			$private_lastpost_join, $private_lastpost_fields
-		);
+		build_issue_private_lastpost_sql_project($this->registry->userinfo, $this->project['projectid'], $private_lastpost_join, $private_lastpost_fields);
 
 		$replycount_clause = fetch_private_replycount_clause($this->registry->userinfo, $this->project['projectid']);
 
@@ -262,9 +256,7 @@ class vB_Pt_IssueList
 
 		if ($this->sort_field == 'issuestatusid')
 		{
-			$status_join = "LEFT JOIN " . TABLE_PREFIX . "pt_issuestatus AS issuestatus ON
-				(issuestatus.issuestatusid = issue.issuestatusid)
-			";
+			$status_join = "LEFT JOIN " . TABLE_PREFIX . "pt_issuestatus AS issuestatus ON (issuestatus.issuestatusid = issue.issuestatusid)";
 		}
 		else
 		{
@@ -282,6 +274,7 @@ class vB_Pt_IssueList
 			{
 				$pagenumber = 1;
 			}
+
 			$start = ($pagenumber - 1) * $perpage;
 
 			// issue list
@@ -296,10 +289,10 @@ class vB_Pt_IssueList
 					{$this->extra_fields}
 				FROM " . TABLE_PREFIX . "pt_issue AS issue
 				$status_join
-				LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON
-					(issuedeletionlog.primaryid = issue.issueid AND issuedeletionlog.type = 'issue')
-				LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS projectversion ON
-					(projectversion.projectversionid = issue.appliesversionid)
+					LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON
+						(issuedeletionlog.primaryid = issue.issueid AND issuedeletionlog.type = 'issue')
+					LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS projectversion ON
+						(projectversion.projectversionid = issue.appliesversionid)
 				" . ($this->registry->userinfo['userid'] ? "
 					LEFT JOIN " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe ON
 						(issuesubscribe.issueid = issue.issueid AND issuesubscribe.userid = " . $this->registry->userinfo['userid'] . ")

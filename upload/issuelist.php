@@ -54,15 +54,6 @@ $globaltemplates = array(
 // pre-cache templates used by specific actions
 $actiontemplates = array();
 
-if (empty($_REQUEST['do']))
-{
-	if (!empty($_REQUEST['projectid']))
-	{
-		$_REQUEST['do'] = 'issuelist';
-		$actiontemplates['none'] =& $actiontemplates['issuelist'];
-	}
-}
-
 // ######################### REQUIRE BACK-END ############################
 require_once('./global.php');
 
@@ -230,6 +221,7 @@ if ($vbulletin->GPC['appliesversionid'])
 }
 
 $oppositesort = $vbulletin->GPC['sortorder'] == 'asc' ? 'desc' : 'asc';
+
 $pageinfo_title = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'title', 'order' => ('title' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_username = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'submitusername', 'order' => ('submitusername' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_issuestatus = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'issuestatusid', 'order' => ('issuestatusid' == $issue_list->sort_field) ? $oppositesort : 'asc');

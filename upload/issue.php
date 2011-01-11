@@ -1059,11 +1059,15 @@ if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_
 	}
 }
 
+$pageinfo = array();
+
+$pageinfo['issuetypeid'] = $issue['issuetypeid'];
+
 // navbar and output
 $navbits = construct_navbits(array(
 	'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
 	fetch_seo_url('project', $project) => $project['title_clean'],
-	fetch_seo_url('issuelist', $project) . "&amp;issuetypeid=$issue[issuetypeid]" => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
+	fetch_seo_url('issuelist', $project, $pageinfo) => $vbphrase["issuetype_$issue[issuetypeid]_singular"],
 	'' => $issue['title']
 ));
 
