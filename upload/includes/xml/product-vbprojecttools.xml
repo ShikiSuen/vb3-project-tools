@@ -4100,7 +4100,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<vb:if condition="$issue['deletionreason']"><div><span class="shade">{vb:rawphrase reason}</span> {vb:raw issue.deletionreason}</div></vb:if>
 	</div>
 </div>]]></template>
-		<template name="pt_issuebit_pagelink" templatetype="template" date="1294258880" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
+		<template name="pt_issuebit_pagelink" templatetype="template" date="1294753607" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}, {vb:raw pageinfo_pagelink}}">{vb:raw curpage}</a></span>]]></template>
 		<template name="pt_issuelist" templatetype="template" date="1294664262" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
@@ -5122,7 +5122,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_milestonebit" templatetype="template" date="1274641659" username="Pitchoune" version="2.1.1"><![CDATA[<div class="blockbody settings_form_border">
+		<template name="pt_milestonebit" templatetype="template" date="1294757782" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockbody settings_form_border">
 	<div class="blocksubhead">
 		<img src="{vb:raw vboptions.cleargifurl}" width="1" height="1" alt="" />
 	</div>
@@ -5141,7 +5141,7 @@ init_project_readmarker_system();
 		</span>
 
 		<div class="bigtext">
-			<a href="projectmilestone.php?{vb:raw session.sessionurl}milestoneid={vb:raw milestone.milestoneid}" class="boldtext">{vb:raw milestone.title}</a>
+			<a href="{vb:link milestone, {vb:raw milestone}}" class="boldtext">{vb:raw milestone.title}</a>
 		</div>
 
 		<vb:if condition="$milestone['description']">
@@ -5152,18 +5152,18 @@ init_project_readmarker_system();
 
 		<div class="milestone_total">
 			<span class="milestone_total_content">
-				<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=completed" class="shade">{vb:rawphrase total_completed}</a>
-				<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=completed">{vb:raw stats.total_completed}</a>
+				<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_filtercompleted}}" class="shade">{vb:rawphrase total_completed}</a>
+				<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_filtercompleted}}">{vb:raw stats.total_completed}</a>
 			</span>
 
 			<span class="milestone_total_content">
-				<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=active" class="shade">{vb:rawphrase total_active}</a>
-				<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=active">{vb:raw stats.total_active}</a>
+				<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_filteractive}}" class="shade">{vb:rawphrase total_active}</a>
+				<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_filteractive}}">{vb:raw stats.total_active}</a>
 			</span>
 
 			<span>
-				<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}" class="shade">{vb:rawphrase total_issues}</a>
-				<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}">{vb:raw stats.total_issues}</a>
+				<a href="{vb:link msissuelist, {vb:raw milestone}}" class="shade">{vb:rawphrase total_issues}</a>
+				<a href="{vb:link msissuelist, {vb:raw milestone}}">{vb:raw stats.total_issues}</a>
 			</span>
 		</div>
 
@@ -5177,7 +5177,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1294734788" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1294758638" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5282,13 +5282,13 @@ init_project_readmarker_system();
 	<div class="blockbody formcontrols" id="pt_recent_issues">
 		<div class="blocksubhead">
 			<div class="ptissuelist_title">
-				<a href="{vb:raw nav_url_base}&amp;sort=title&amp;order=asc">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
-				<a href="{vb:raw nav_url_base}&amp;sort=submitusername&amp;order=asc">{vb:rawphrase submitted_by}</a> {vb:raw sort_arrow.submitusername}
+				<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_title}}">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
+				<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_username}}">{vb:rawphrase submitted_by}</a> {vb:raw sort_arrow.submitusername}
 			</div>
-			<div class="ptissuelist_lastpost"><a href="{vb:raw nav_url_base}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
-			<div class="ptissuelist_replies"><a href="{vb:raw nav_url_base}&amp;sort=replycount">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
-			<div class="ptissuelist_priority"><a href="{vb:raw nav_url_base}&amp;sort=priority&amp;order=asc">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
-			<div class="ptissuelist_status"><a href="{vb:raw nav_url_base}&amp;sort=issuestatusid&amp;order=asc">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
+			<div class="ptissuelist_lastpost"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_lastpost}}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
+			<div class="ptissuelist_replies"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_replies}}">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
+			<div class="ptissuelist_priority"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_priority}}">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
+			<div class="ptissuelist_status"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_issuestatus}}">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
 		</div>
 
 		<vb:if condition="$issuebits">
@@ -5299,7 +5299,7 @@ init_project_readmarker_system();
 	</div>
 	<div class="blockfoot actionbuttons">
 		<div style="text-align: center">
-			<form action="projectmilestone.php" method="get">
+			<form action="milestoneissuelist.php" method="get">
 				{vb:rawphrase issue_state}
 				<select name="filter">
 					<option value="active"{vb:raw filter_options.active}>{vb:rawphrase active}</option>
@@ -5309,7 +5309,6 @@ init_project_readmarker_system();
 
 				<input type="submit" class="button" value="{vb:rawphrase go}" />
 				<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
-				<input type="hidden" name="do" value="issuelist" />
 				<input type="hidden" name="milestoneid" value="{vb:raw milestone.milestoneid}" />
 			</form>
 		</div>
@@ -6990,8 +6989,8 @@ init_project_readmarker_system();
 		{vb:raw projecttype.issuetype}
 	</div>
 </div>]]></template>
-		<template name="pt_project_typecountbit" templatetype="template" date="1294285014" username="Pitchoune" version="2.2.0"><![CDATA[<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px">
-	<a href="{vb:link issuelist, {vb:raw project}}&amp;issuetypeid={vb:raw type.issuetypeid}" class="shade"><span class="underline">{vb:raw typename}</span></a>
+		<template name="pt_project_typecountbit" templatetype="template" date="1294758701" username="Pitchoune" version="2.2.0"><![CDATA[<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px">
+	<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_issuetype}}" class="shade"><span class="underline">{vb:raw typename}</span></a>
 	<span <vb:if condition="$type['newflag']">style="font-weight: bold"</vb:if>>{vb:raw type.issuecountactive} / {vb:raw type.issuecount}</span>
 </li>]]></template>
 		<template name="pt_reportbit" templatetype="template" date="1292872324" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow">
