@@ -34,9 +34,7 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	*/
 	var $validfields = array(
 		'milestoneid'   => array(TYPE_UINT,       REQ_INCR),
-		'title'         => array(TYPE_STR,        REQ_YES),
 		'title_clean'   => array(TYPE_NOHTMLCOND, REQ_AUTO),
-		'description'   => array(TYPE_STR,        REQ_NO),
 		'projectid'     => array(TYPE_UINT,       REQ_YES),
 		'targetdate'    => array(TYPE_UNIXTIME,   REQ_NO),
 		'completeddate' => array(TYPE_UNIXTIME,   REQ_NO),
