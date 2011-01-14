@@ -117,6 +117,50 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	*/
 	function post_save_each($doquery = true)
 	{
+		// replace (master) phrase entry
+		require_once(DIR . '/includes/adminfunctions.php');
+		$full_product_info = fetch_product_list(true);
+
+		// Phrase for milestone name
+		$this->registry->db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'milestone_" . intval($this->fetch_field('milestoneid')) . "_name',
+					'" . $this->registry->db->escape_string($this->fetch_field('title') . "',
+					'vbprojecttools',
+					'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $this->registry->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+
+		// Phrase for milestone description
+		$this->registry->db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'milestone_" . intval($this->fetch_field('milestoneid')) . "_description',
+					'" . $this->registry->db->escape_string($this->fetch_field('description') . "',
+					'vbprojecttools',
+					'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $this->registry->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+
+		if ($this->info['rebuild_caches'])
+		{
+			require_once(DIR . '/includes/adminfunctions_language.php');
+			build_language();
+		}
+
 		if (!$this->condition)
 		{
 			$this->rebuild_project_milestone_counters();

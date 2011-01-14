@@ -30,6 +30,7 @@ $specialtemplates = array(
 
 // ########################## REQUIRE BACK-END ############################
 require_once('./global.php');
+
 if (empty($vbulletin->products['vbprojecttools']))
 {
 	print_stop_message('product_not_installed_disabled');
@@ -54,6 +55,7 @@ $vbulletin->input->clean_array_gpc('r', array(
 	'projectid' => TYPE_UINT,
 	'issuestatusid' => TYPE_UINT,
 ));
+
 log_admin_action(
 	(!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') .
 	(!empty($vbulletin->GPC['issuestatusid']) ? ' status id = ' . $vbulletin->GPC['issuestatusid'] : '')
@@ -71,11 +73,13 @@ if (empty($_REQUEST['do']))
 }
 
 $issuetype_options = array();
+
 $types = $db->query_read("
 	SELECT *
 	FROM " . TABLE_PREFIX . "pt_issuetype
 	ORDER BY displayorder
 ");
+
 while ($type = $db->fetch_array($types))
 {
 	$issuetype_options["$type[issuetypeid]"] = $vbphrase["issuetype_$type[issuetypeid]_singular"];
@@ -87,12 +91,9 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 // ########################################################################
 // ######################### GENERAL MANAGEMENT ###########################
 // ########################################################################
-
 if ($_REQUEST['do'] == 'install')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'installed_version' => TYPE_NOHTML
-	));
+	$vbulletin->input->clean_gpc('r', 'installed_version', TYPE_NOHTML);
 
 	$full_product_info = fetch_product_list(true);
 	print_form_header('', '');
@@ -149,9 +150,7 @@ if ($_REQUEST['do'] == 'issuecounters')
 	@set_time_limit(0);
 	ignore_user_abort(1);
 
-	$vbulletin->input->clean_array_gpc('r', array(
-		'start' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'start', TYPE_UINT);
 	$perpage = 250;
 
 	$issues = $db->query_read("
@@ -159,7 +158,9 @@ if ($_REQUEST['do'] == 'issuecounters')
 		FROM " . TABLE_PREFIX . "pt_issue
 		LIMIT " . $vbulletin->GPC['start'] . ", $perpage
 	");
+
 	$haveissues = false;
+
 	while ($issue = $db->fetch_array($issues))
 	{
 		$haveissues = true;
@@ -210,6 +211,9 @@ if ($_REQUEST['do'] == 'milestonecounters')
 // ########################################################################
 if ($_REQUEST['do'] == 'profileissuecounters')
 {
+	@set_time_limit(0);
+	ignore_user_abort(1);
+
 	rebuild_profile_issue_counters();
 
 	define('CP_REDIRECT', 'project.php?do=counters');
@@ -229,26 +233,27 @@ if ($_REQUEST['do'] == 'issue')
 // ########################################################################
 if ($_POST['do'] == 'editissue1')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'issueid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('p', 'issueid', TYPE_UINT);
 
 	$issue = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_issue
 		WHERE issueid = " . $vbulletin->GPC['issueid']
 	);
+
 	if (!$issue)
 	{
 		print_stop_message('invalid_issue_specified');
 	}
 
 	$project_options = array();
+
 	$projects = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_project
 		ORDER BY displayorder
 	");
+
 	while ($project = $db->fetch_array($projects))
 	{
 		$project_options["$project[projectid]"] = $project['title_clean'];
@@ -282,12 +287,14 @@ if ($_POST['do'] == 'editissue2')
 		FROM " . TABLE_PREFIX . "pt_issue
 		WHERE issueid = " . $vbulletin->GPC['issueid']
 	);
+
 	if (!$issue)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
@@ -299,26 +306,30 @@ if ($_POST['do'] == 'editissue2')
 	}
 
 	$categories = array(0 => $vbphrase['unknown']);
+
 	$category_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectcategory
 		WHERE projectid = $project[projectid]
 		ORDER BY displayorder
 	");
+
 	while ($category = $db->fetch_array($category_data))
 	{
 		$categories["$category[projectcategoryid]"] = $category['title'];
 	}
 
 	$version_groups = array();
+
 	$version_query = $db->query_read("
 		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
-		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
+			INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
 			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
 		WHERE projectversion.projectid = $project[projectid]
 		ORDER BY projectversion.effectiveorder DESC
 	");
+
 	while ($version = $db->fetch_array($version_query))
 	{
 		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
@@ -333,12 +344,14 @@ if ($_POST['do'] == 'editissue2')
 	}
 
 	$issuestatuses = array();
+
 	$issuestatus_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_issuestatus
 		WHERE issuetypeid = '" . $db->escape_string($vbulletin->GPC['issuetypeid']) . "'
 		ORDER BY displayorder
 	");
+
 	while ($issuestatus = $db->fetch_array($issuestatus_data))
 	{
 		$issuestatuses["$issuestatus[issuestatusid]"] = $vbphrase["issuestatus$issuestatus[issuestatusid]"];
@@ -387,6 +400,7 @@ if ($_POST['do'] == 'updateissue')
 		FROM " . TABLE_PREFIX . "pt_issue
 		WHERE issueid = " . $vbulletin->GPC['issueid']
 	);
+
 	if (!$issue)
 	{
 		print_stop_message('invalid_action_specified');
@@ -432,12 +446,9 @@ if ($_POST['do'] == 'updateissue')
 // ########################################################################
 // ########################### TAG MANAGEMENT #############################
 // ########################################################################
-
 if ($_POST['do'] == 'taginsert')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'tagtext' => TYPE_STR
-	));
+	$vbulletin->input->clean_gpc('p', 'tagtext', TYPE_STR);
 
 	if ($db->query_first("
 		SELECT tagid
@@ -460,12 +471,9 @@ if ($_POST['do'] == 'taginsert')
 }
 
 // ########################################################################
-
 if ($_POST['do'] == 'tagkill')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'tag' => TYPE_ARRAY_KEYS_INT
-	));
+	$vbulletin->input->clean_gpc('p', 'tag', TYPE_ARRAY_KEYS_INT);
 
 	if ($vbulletin->GPC['tag'])
 	{
@@ -485,12 +493,9 @@ if ($_POST['do'] == 'tagkill')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'taglist')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'pagenumber' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'pagenumber', TYPE_UINT);
 
 	if ($vbulletin->GPC['pagenumber'] < 1)
 	{
@@ -509,10 +514,12 @@ if ($_REQUEST['do'] == 'taglist')
 		ORDER BY tagtext
 		LIMIT $start, $perpage
 	");
+
 	list($tag_count) = $db->query_first("SELECT FOUND_ROWS()", DBARRAY_NUM);
 
 	print_form_header('project', 'tagkill');
 	print_table_header($vbphrase['tag_list'], 3);
+
 	if ($db->num_rows($tags))
 	{
 		$columns = array();
@@ -520,9 +527,11 @@ if ($_REQUEST['do'] == 'taglist')
 
 		// build page navigation
 		$total_pages = ceil($tag_count / $perpage);
+
 		if ($total_pages > 1)
 		{
 			$pagenav = '<strong>' . $vbphrase['go_to_page'] . '</strong>';
+
 			for ($thispage = 1; $thispage <= $total_pages; $thispage++)
 			{
 				if ($thispage == $vbulletin->GPC['pagenumber'])
@@ -547,6 +556,7 @@ if ($_REQUEST['do'] == 'taglist')
 
 		// make column values printable
 		$cells = array();
+
 		for ($i = 0; $i < $column_count; $i++)
 		{
 			if ($columns["$i"])
@@ -581,7 +591,6 @@ if ($_REQUEST['do'] == 'taglist')
 // ########################################################################
 // ######################## MILESTONE MANAGEMENT ##########################
 // ########################################################################
-
 if ($_POST['do'] == 'projectmilestoneupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
@@ -600,6 +609,7 @@ if ($_POST['do'] == 'projectmilestoneupdate')
 			FROM " . TABLE_PREFIX . "pt_milestone
 			WHERE milestoneid = " . $vbulletin->GPC['milestoneid']
 		);
+
 		$vbulletin->GPC['projectid'] = $milestone['projectid'];
 	}
 	else
@@ -608,6 +618,7 @@ if ($_POST['do'] == 'projectmilestoneupdate')
 	}
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
@@ -619,6 +630,7 @@ if ($_POST['do'] == 'projectmilestoneupdate')
 	}
 
 	$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
+
 	if ($milestone['milestoneid'])
 	{
 		$milestonedata->set_existing($milestone);
@@ -627,6 +639,7 @@ if ($_POST['do'] == 'projectmilestoneupdate')
 	{
 		$milestonedata->set('projectid', $project['projectid']);
 	}
+
 	$milestonedata->set('title', $vbulletin->GPC['title']);
 	$milestonedata->set('description', $vbulletin->GPC['description']);
 	$milestonedata->set('targetdate', $vbulletin->GPC['targetdate']);
@@ -638,7 +651,6 @@ if ($_POST['do'] == 'projectmilestoneupdate')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmilestoneedit')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
@@ -667,12 +679,14 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 	}
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
 	print_form_header('project', 'projectmilestoneupdate');
+
 	if ($milestone['milestoneid'])
 	{
 		print_table_header($vbphrase['edit_milestone']);
@@ -682,8 +696,8 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 		print_table_header($vbphrase['add_milestone']);
 	}
 
-	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>", 'title', $milestone['title']);
-	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>", 'description', $milestone['description']);
+	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>", 'title', /*$vbphrase['pt_milestone_' . $milestone['milestoneid'] . '_name']);*/$milestone['title']);
+	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>", 'description', /*$vbphrase['pt_milestone_' . $milestone['milestoneid'] . '_description']);*/$milestone['description']);
 	print_time_row("$vbphrase[target_date]<dfn>$vbphrase[target_date_desc]</dfn>", 'targetdate', $milestone['targetdate'], false);
 	print_time_row("$vbphrase[completed_date]<dfn>$vbphrase[completed_date_desc]</dfn>", 'completeddate', $milestone['completeddate'], false);
 
