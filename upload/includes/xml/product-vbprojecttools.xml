@@ -8812,6 +8812,29 @@ if ($do == 'index' AND $vbulletin->userinfo['permissions']['ptpermissions'] & $v
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
+			<title><![CDATA[[issue] BBCode]]></title>
+			<hookname>bbcode_fetch_tags</hookname>
+			<phpcode><![CDATA[if (($vbulletin->options['allowedbbcodes'] & ALLOW_BBCODE_URL) OR $force_all)
+{
+	// [ISSUE]
+	$tag_list['no_option']['issue'] = array(
+		'html'        => '<a href="' . $forum_path . 'issue.php?' . $vbulletin->session->vars['sessionurl'] . 'issueid=%1$s"' . 
+			($vbulletin->options['friendlyurl'] ? ' rel="nofollow"' : '') . '>' . $forum_path_full . 'issue.php?issueid=%1$s</a>',
+		'data_regex'  => '#^\d+$#',
+		'strip_empty' => true
+	);
+
+	// [ISSUE=XXX]
+	$tag_list['option']['issue'] = array(
+		'html'         => '<a href="' . $forum_path . 'issue.php?' . $vbulletin->session->vars['sessionurl'] . 'issueid=%2$s"' . 
+			($vbulletin->options['friendlyurl'] ? ' rel="nofollow"' : '') . 
+			' title="' . htmlspecialchars_uni($vbulletin->options['bbtitle']) . ' - ' . $vbphrase['issue'] . ' %2$s">%1$s</a>',
+		'option_regex' => '#^\d+$#',
+		'strip_empty'  => true
+	);
+}]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
 			<title>BB Code: Handle PT Forum</title>
 			<hookname>bbcode_parse_start</hookname>
 			<phpcode><![CDATA[if ($forumid == 'pt')
