@@ -640,8 +640,8 @@ if ($_POST['do'] == 'projectmilestoneupdate')
 		$milestonedata->set('projectid', $project['projectid']);
 	}
 
-	$milestonedata->set('title', $vbulletin->GPC['title']);
-	$milestonedata->set('description', $vbulletin->GPC['description']);
+	$milestonedata->set_info('title', $vbulletin->GPC['title']);
+	$milestonedata->set_info('description', $vbulletin->GPC['description']);
 	$milestonedata->set('targetdate', $vbulletin->GPC['targetdate']);
 	$milestonedata->set('completeddate', $vbulletin->GPC['completeddate']);
 	$milestonedata->save();

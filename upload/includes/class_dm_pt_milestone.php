@@ -47,7 +47,24 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	*
 	* @var	array
 	*/
-	var $info = array();
+	var $info = array(
+		'title'			=> null,
+		'description'	=> null,
+
+		'delete_deststatusid' => 0, // if deleting, ID of status to move all affected issues to
+		'rebuild_caches' => true,
+	);
+
+	/**
+	* The relationship between the phrases in $info and their actual names.
+	* Values are passed through sprintf and %s is replaced with the issuetypeid.
+	*
+	* @param	array	Key: $info key, value: phrase name
+	*/
+	var $info_phrase = array(
+		'title' => 'milestone_%s_name',
+		'description' => 'milestone_%s_description'
+	);
 
 	/**
 	* The main table this class deals with
@@ -121,39 +138,30 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 		require_once(DIR . '/includes/adminfunctions.php');
 		$full_product_info = fetch_product_list(true);
 
-		// Phrase for milestone name
-		$this->registry->db->query_write("
-			REPLACE INTO " . TABLE_PREFIX . "phrase
-				(languageid, fieldname, varname, text, product, username, dateline, version)
-			VALUES
-				(
-					0,
-					'projecttools',
-					'milestone_" . intval($this->fetch_field('milestoneid')) . "_name',
-					'" . $this->registry->db->escape_string($this->fetch_field('title')) . "',
-					'vbprojecttools',
-					'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
-					" . TIMENOW . ",
-					'" . $this->registry->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
-				)
-		");
+		foreach ($this->info_phrase AS $info_name => $phrase_name)
+		{
+			if ($this->info["$info_name"] !== null)
+			{
+				$phrase = sprintf($phrase_name, $this->fetch_field('milestoneid'));
 
-		// Phrase for milestone description
-		$this->registry->db->query_write("
-			REPLACE INTO " . TABLE_PREFIX . "phrase
-				(languageid, fieldname, varname, text, product, username, dateline, version)
-			VALUES
-				(
-					0,
-					'projecttools',
-					'milestone_" . intval($this->fetch_field('milestoneid')) . "_description',
-					'" . $this->registry->db->escape_string($this->fetch_field('description')) . "',
-					'vbprojecttools',
-					'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
-					" . TIMENOW . ",
-					'" . $this->registry->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
-				)
-		");
+				// Phrase for milestones
+				$this->registry->db->query_write("
+					REPLACE INTO " . TABLE_PREFIX . "phrase
+						(languageid, fieldname, varname, text, product, username, dateline, version)
+					VALUES
+						(
+							0,
+							'projecttools',
+							'" . $db->escape_string($phrase) . "',
+							'" . $db->escape_string($this->info["$info_name"]) . "',
+							'vbprojecttools',
+							'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
+							" . TIMENOW . ",
+							'" . $this->registry->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+						)
+				");
+			}
+		}
 
 		if ($this->info['rebuild_caches'])
 		{
@@ -178,10 +186,29 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	*/
 	function post_delete($doquery = true)
 	{
+		$del_phrases = array();
+
+		foreach ($this->info_phrase AS $phrase_name)
+		{
+			$del_phrases[] = sprintf($phrase_name, intval($this->fetch_field('milestoneid')));
+		}
+
+		$this->registry->db->query_write("
+			DELETE FROM " . TABLE_PREFIX . "phrase
+			WHERE varname IN ('" . implode('", "', $del_phrases) . "')
+				AND fieldname = 'projecttools'
+		");
+
 		$this->registry->db->query_write("
 			DELETE FROM " . TABLE_PREFIX . "pt_milestonetypecount
 			WHERE milestoneid = " . $this->fetch_field('milestoneid')
 		);
+
+		if ($this->info['rebuild_caches'])
+		{
+			require_once(DIR . '/includes/adminfunctions_language.php');
+			build_language();
+		}
 
 		$this->rebuild_project_milestone_counters();
 
