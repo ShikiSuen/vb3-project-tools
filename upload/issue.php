@@ -619,6 +619,7 @@ if ($_REQUEST['do'] == 'report' OR $_POST['do'] == 'sendemail')
 	}
 }
 
+// #######################################################################
 $userid = $vbulletin->userinfo['userid'];
 require_once(DIR . '/includes/class_bbcode_pt.php');
 require_once(DIR . '/includes/class_pt_issuenote.php');

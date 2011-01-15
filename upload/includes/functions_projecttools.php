@@ -193,7 +193,7 @@ function verify_project($projectid)
 */
 function fetch_issue_info($issueid, $extra_info = array())
 {
-	global $db, $vbulletin;
+	global $db, $vbulletin, $vbphrase;
 
 	$version_join = empty($vbulletin->pt_versions);
 	$category_join = empty($vbulletin->pt_categories);
@@ -273,7 +273,7 @@ function fetch_issue_info($issueid, $extra_info = array())
 
 	if (!$category_join)
 	{
-		$issue['categorytitle'] = ($issue['projectcategoryid'] ? $vbulletin->pt_categories["$issue[projectcategoryid]"]['title'] : '');
+		$issue['categorytitle'] = ($issue['projectcategoryid'] ? $vbphrase['category' . $issue['projectcategoryid'] . ''] : '');
 	}
 
 	if (!$browsing_user_joins)
