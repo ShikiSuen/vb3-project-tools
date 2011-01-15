@@ -2420,7 +2420,7 @@ if ($_POST['do'] == 'projectcategoryupdate')
 	}
 
 	// Phrase the category
-	$this->registry->db->query_write("
+	$vbulletin->db->query_write("
 		REPLACE INTO " . TABLE_PREFIX . "phrase
 			(languageid, fieldname, varname, text, product, username, dateline, version)
 		VALUES
@@ -2428,11 +2428,11 @@ if ($_POST['do'] == 'projectcategoryupdate')
 				0,
 				'projecttools',
 				'category" . intval($vbulletin->GPC['projectcategoryid']) . "',
-				'" . $this->registry->db->escape_string($vbulletin->GPC['title']) . "',
+				'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
 				'vbprojecttools',
-				'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
+				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
 				" . TIMENOW . ",
-				'" . $this->registry->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
 			)
 	");
 
