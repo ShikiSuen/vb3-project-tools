@@ -2361,6 +2361,346 @@ if ($_REQUEST['do'] == 'projectversion')
 }
 
 // ########################################################################
+// ################### PROJECT PRIORITY MANAGEMENT ########################
+// ########################################################################
+if ($_POST['do'] == 'projectpriorityupdate')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'projectpriorityid' => TYPE_UINT,
+		'projectid' => TYPE_UINT,
+		'title' => TYPE_NOHTML,
+		'displayorder' => TYPE_UINT
+	));
+
+	if ($vbulletin->GPC['projectpriorityid'])
+	{
+		$projectpriority = $db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_projectpriority
+			WHERE projectpriorityid = " . $vbulletin->GPC['projectpriorityid']
+		);
+		$vbulletin->GPC['projectid'] = $projectpriority['projectid'];
+	}
+	else
+	{
+		$projectpriority = array();
+	}
+
+	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
+	if (empty($vbulletin->GPC['title']))
+	{
+		print_stop_message('please_complete_required_fields');
+	}
+
+	if ($projectpriority['projectpriorityid'])
+	{
+		$db->query_write("
+			UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
+				displayorder = " . $vbulletin->GPC['displayorder'] . "
+			WHERE projectpriorityid = $projectpriority[projectpriorityid]
+		");
+
+	// Phrase the category
+	$vbulletin->db->query_write("
+		REPLACE INTO " . TABLE_PREFIX . "phrase
+			(languageid, fieldname, varname, text, product, username, dateline, version)
+		VALUES
+			(
+				0,
+				'projecttools',
+				'priority" . intval($vbulletin->GPC['projectpriorityid']) . "',
+				'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
+				'vbprojecttools',
+				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+				" . TIMENOW . ",
+				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+			)
+	");
+	}
+	else
+	{
+		$db->query_write("
+			INSERT INTO " . TABLE_PREFIX . "pt_projectpriority
+				(projectid, displayorder)
+			VALUES
+				($project[projectid],
+				" . $vbulletin->GPC['displayorder'] . ")
+		");
+
+		$priorityid = $db->insert_id();
+
+		// Phrase the category
+		$vbulletin->db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'priority" . intval($priorityid) . "',
+					'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
+					'vbprojecttools',
+					'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+	}
+
+	// Rebuild language
+	require_once(DIR . '/includes/adminfunctions_language.php');
+	build_language();
+
+	//build_project_category_cache();
+
+	define('CP_REDIRECT', 'project.php?do=projectpriority&projectid=' . $project['projectid']);
+	print_stop_message('project_priority_saved');
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriorityedit')
+{
+	$vbulletin->input->clean_array_gpc('r', array(
+		'projectid' => TYPE_UINT,
+		'projectpriorityid' => TYPE_UINT
+	));
+
+	if ($vbulletin->GPC['projectpriorityid'])
+	{
+		$projectpriority = $db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_projectpriority
+			WHERE projectpriorityid = " . $vbulletin->GPC['projectpriorityid']
+		);
+		$vbulletin->GPC['projectid'] = $projectpriority['projectid'];
+	}
+	else
+	{
+		$maxorder = $db->query_first("
+			SELECT MAX(displayorder) AS maxorder
+			FROM " . TABLE_PREFIX . "pt_projectpriority
+			WHERE projectid = " . $vbulletin->GPC['projectid']
+		);
+
+		$projectpriority = array(
+			'projectpriorityid' => 0,
+			'title' => '',
+			'displayorder' => $maxorder['maxorder'] + 10
+		);
+	}
+
+	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
+	print_form_header('project', 'projectpriorityupdate');
+
+	if ($projectcategory['projectpriorityid'])
+	{
+		print_table_header($vbphrase['edit_project_priority']);
+	}
+	else
+	{
+		print_table_header($vbphrase['add_project_priority']);
+	}
+
+	print_input_row($vbphrase['title'], 'title', $vbphrase['priority' . $projectpriority['projectpriorityid'] . ''], false);
+	print_input_row($vbphrase['display_order'], 'displayorder', $projectpriority['displayorder'], true, 5);
+	construct_hidden_code('projectid', $project['projectid']);
+	construct_hidden_code('projectpriorityid', $projectpriority['projectpriorityid']);
+	print_submit_row();
+}
+
+// ########################################################################
+if ($_POST['do'] == 'projectprioritykill')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'projectpriorityid' => TYPE_UINT,
+		'destpriorityid' => TYPE_UINT
+	));
+
+	$projectpriority = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectpriority
+		WHERE projectpriorityid = " . $vbulletin->GPC['projectpriorityid']
+	);
+
+	$project = fetch_project_info($projectpriority['projectid'], false);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
+	$db->query_write("
+		DELETE FROM " . TABLE_PREFIX . "pt_projectpriority
+		WHERE projectpriorityid = $projectpriority[projectpriorityid]
+	");
+
+	$db->query_write("
+		DELETE FROM " . TABLE_PREFIX . "phrase
+		WHERE varname = 'priority" . $projectpriority['projectpriorityid'] . "'
+	");
+
+	$db->query_write("
+		UPDATE " . TABLE_PREFIX . "pt_issue SET
+			projectpriorityid = " . $vbulletin->GPC['destpriorityid'] . "
+		WHERE projectpriorityid = $projectpriority[projectpriorityid]
+	");
+
+	//build_project_category_cache();
+
+	define('CP_REDIRECT', 'project.php?do=projectpriority&projectid=' . $project['projectid']);
+	print_stop_message('project_priority_deleted');
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'projectprioritydelete')
+{
+	$vbulletin->input->clean_gpc('r', 'projectpriorityid', TYPE_UINT);
+
+	$projectpriority = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectpriority
+		WHERE projectpriorityid = " . $vbulletin->GPC['projectpriorityid']
+	);
+
+	$project = fetch_project_info($projectpriority['projectid'], false);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
+	$priorities = array();
+
+	$priority_data = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectpriority
+		WHERE projectid = $project[projectid]
+			AND projectpriorityid <> $projectpriority[projectpriorityid]
+		ORDER BY displayorder
+	");
+
+	while ($priority = $db->fetch_array($priority_data))
+	{
+		$priorities["$priority[projectpriorityid]"] = $vbphrase['priority' . $priority['projectpriorityid'] . ''];
+	}
+
+	$priorities = array(0 => $vbphrase['unknown']) + $priorities;
+
+	print_delete_confirmation(
+		'pt_projectpriority',
+		$projectpriority['projectpriorityid'],
+		'project', 'projectpriorirykill',
+		'',
+		0,
+		$vbphrase['existing_affected_issues_updated_delete_select_priority'] .
+			'&nbsp;<select name="destpriorityid">' . construct_select_options($priorities) . '</select>',
+		'title'
+	);
+}
+
+// ########################################################################
+if ($_POST['do'] == 'projectprioritydisplayorder')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'order' => TYPE_ARRAY_UINT,
+		'projectid' => TYPE_UINT
+	));
+
+	$case = '';
+
+	foreach ($vbulletin->GPC['order'] AS $id => $displayorder)
+	{
+		$case .= "\nWHEN " . intval($id) . " THEN " . $displayorder;
+	}
+
+	if ($case)
+	{
+		$db->query_write("
+			UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
+				displayorder = CASE projectpriorityid $case ELSE displayorder END
+		");
+	}
+
+	build_project_category_cache();
+
+	define('CP_REDIRECT', 'project.php?do=projectpriority&projectid=' . $vbulletin->GPC['projectid']);
+	print_stop_message('saved_display_order_successfully');
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'projectpriority')
+{
+	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
+
+	$project = fetch_project_info($vbulletin->GPC['projectid'], true);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
+	$priorities = array();
+
+	$priority_data = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectpriority
+		WHERE projectid = $project[projectid]
+		ORDER BY displayorder
+	");
+
+	while ($priority = $db->fetch_array($priority_data))
+	{
+		$priorities["$priority[projectpriorityid]"] = $priority;
+	}
+
+	print_form_header('project', 'projectprioritydisplayorder');
+	print_table_header(construct_phrase($vbphrase['priorities_for_x'], $project['title_clean']), 3);
+
+	if ($priorities)
+	{
+		print_cells_row(array(
+			$vbphrase['priority'],
+			$vbphrase['display_order'],
+			'&nbsp;'
+		), true);
+
+		foreach ($priorities AS $priority)
+		{
+			print_cells_row(array(
+				$vbphrase['priority' . $priority['projectpriorityid'] . ''],
+				"<input type=\"text\" class=\"bginput\" name=\"order[$priority[projectpriorityid]]\" value=\"$priority[displayorder]\" tabindex=\"1\" size=\"3\" />",
+				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
+					construct_link_code($vbphrase['edit'], 'project.php?do=projectpriorityedit&amp;projectpriorityid=' . $priority['projectpriorityid']) .
+					construct_link_code($vbphrase['delete'], 'project.php?do=projectprioritydelete&amp;projectpriorityid=' . $priority['projectpriorityid']) .
+				'</div>'
+			));
+		}
+
+		construct_hidden_code('projectid', $project['projectid']);
+		print_submit_row($vbphrase['save_display_order'], '', 3);
+	}
+	else
+	{
+		print_description_row($vbphrase['no_priorities_defined_project'], false, 3, '', 'center');
+		print_table_footer();
+	}
+
+	echo '<p align="center">' . construct_link_code($vbphrase['add_project_priority'], 'project.php?do=projectpriorityadd&amp;projectid=' . $project['projectid']) . '</p>';
+}
+
+// ########################################################################
 // ################### PROJECT CATEGORY MANAGEMENT ########################
 // ########################################################################
 if ($_POST['do'] == 'projectcategoryupdate')
@@ -2405,6 +2745,23 @@ if ($_POST['do'] == 'projectcategoryupdate')
 				displayorder = " . $vbulletin->GPC['displayorder'] . "
 			WHERE projectcategoryid = $projectcategory[projectcategoryid]
 		");
+
+		// Phrase the category
+		$vbulletin->db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'category" . intval($vbulletin->GPC['projectcategoryid']) . "',
+					'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
+					'vbprojecttools',
+					'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
 	}
 	else
 	{
@@ -2415,24 +2772,26 @@ if ($_POST['do'] == 'projectcategoryupdate')
 				($project[projectid],
 				" . $vbulletin->GPC['displayorder'] . ")
 		");
-	}
 
-	// Phrase the category
-	$vbulletin->db->query_write("
-		REPLACE INTO " . TABLE_PREFIX . "phrase
-			(languageid, fieldname, varname, text, product, username, dateline, version)
-		VALUES
-			(
-				0,
-				'projecttools',
-				'category" . intval($vbulletin->GPC['projectcategoryid']) . "',
-				'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
-				'vbprojecttools',
-				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
-				" . TIMENOW . ",
-				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
-			)
-	");
+		$categoryid = $db->insert_id();
+
+		// Phrase the category
+		$vbulletin->db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'category" . intval($categoryid) . "',
+					'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
+					'vbprojecttools',
+					'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+	}
 
 	// Rebuild language
 	require_once(DIR . '/includes/adminfunctions_language.php');
@@ -2574,7 +2933,7 @@ if ($_REQUEST['do'] == 'projectcategorydelete')
 
 	while ($category = $db->fetch_array($category_data))
 	{
-		$categories["$category[projectcategoryid]"] = $category['title'];
+		$categories["$category[projectcategoryid]"] = $vbphrase['category' . $category['projectcategoryid'] . ''];
 	}
 
 	$categories = array(0 => $vbphrase['unknown']) + $categories;
@@ -3197,6 +3556,7 @@ if ($_REQUEST['do'] == 'projectlist')
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
 					construct_link_code($vbphrase['edit'], 'project.php?do=projectedit&amp;projectid=' . $project['projectid']) .
 					construct_link_code($vbphrase['delete'], 'project.php?do=projectdelete&amp;projectid=' . $project['projectid']) .
+					construct_link_code($vbphrase['priorities'], 'project.php?do=projectpriority&amp;projectid=' . $project['projectid']) .
 					construct_link_code($vbphrase['categories'], 'project.php?do=projectcategory&amp;projectid=' . $project['projectid']) .
 					construct_link_code($vbphrase['versions'], 'project.php?do=projectversion&amp;projectid=' . $project['projectid']) .
 					construct_link_code($vbphrase['milestones'], 'project.php?do=projectmilestone&amp;projectid=' . $project['projectid']) .
