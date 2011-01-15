@@ -44,6 +44,8 @@ if (!function_exists('ini_size_to_bytes') OR (($current_memory_limit = ini_size_
 	@ini_set('memory_limit', 128 * 1024 * 1024);
 }
 
+$full_product_info = fetch_product_list(true);
+
 // ######################## CHECK ADMIN PERMISSIONS #######################
 if (!can_administer('canpt'))
 {
@@ -644,7 +646,7 @@ if ($_POST['do'] == 'projectmilestoneupdate')
 	$milestonedata->set_info('description', $vbulletin->GPC['description']);
 	$milestonedata->set('targetdate', $vbulletin->GPC['targetdate']);
 	$milestonedata->set('completeddate', $vbulletin->GPC['completeddate']);
-	$milestonedata->save();
+	$milestonedata->save();	
 
 	define('CP_REDIRECT', 'project.php?do=projectmilestone&projectid=' . $project['projectid']);
 	print_stop_message('project_milestone_saved');
@@ -1127,7 +1129,6 @@ if ($_POST['do'] == 'statuskill')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'statusdelete')
 {
 	$vbulletin->input->clean_gpc('r', 'issuestatusid', TYPE_UINT);
@@ -1719,7 +1720,6 @@ if ($_POST['do'] == 'projectversionupdate')
 	}
 
 	// effective order means that sorting just the version table will return versions ordered by group first
-
 	if ($projectversion['projectversionid'])
 	{
 		$db->query_write("
@@ -2031,6 +2031,7 @@ if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectve
 			FROM " . TABLE_PREFIX . "pt_projectversiongroup
 			WHERE projectversiongroupid = " . $vbulletin->GPC['projectversiongroupid']
 		);
+
 		$vbulletin->GPC['projectid'] = $projectversiongroup['projectid'];
 	}
 	else
@@ -2418,6 +2419,27 @@ if ($_POST['do'] == 'projectcategoryupdate')
 		");
 	}
 
+	// Phrase the category
+	$this->registry->db->query_write("
+		REPLACE INTO " . TABLE_PREFIX . "phrase
+			(languageid, fieldname, varname, text, product, username, dateline, version)
+		VALUES
+			(
+				0,
+				'projecttools',
+				'category_" . intval($vbulletin->GPC['projectcategoryid']) . "',
+				'" . $this->registry->db->escape_string($vbulletin->GPC['title']) . "',
+				'vbprojecttools',
+				'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
+				" . TIMENOW . ",
+				'" . $this->registry->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+			)
+	");
+
+	// Rebuild language
+	require_once(DIR . '/includes/adminfunctions_language.php');
+	build_language();
+
 	build_project_category_cache();
 
 	define('CP_REDIRECT', 'project.php?do=projectcategory&projectid=' . $project['projectid']);
@@ -2425,7 +2447,6 @@ if ($_POST['do'] == 'projectcategoryupdate')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'projectcategoryadd' OR $_REQUEST['do'] == 'projectcategoryedit')
 {
 	$vbulletin->input->clean_array_gpc('r', array(

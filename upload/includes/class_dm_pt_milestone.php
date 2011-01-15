@@ -60,8 +60,8 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	* @param	array	Key: $info key, value: phrase name
 	*/
 	var $info_phrase = array(
-		'title' => 'milestone_%s_name',
-		'description' => 'milestone_%s_description'
+		'title' => 'milestone_%d_name',
+		'description' => 'milestone_%d_description'
 	);
 
 	/**

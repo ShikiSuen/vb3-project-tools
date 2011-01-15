@@ -156,6 +156,9 @@ while ($milestone = $db->fetch_array($milestone_data))
 	}
 }
 
+$filter = array();
+$filter['viewall'] = 1;
+
 $show['active_milestones'] = ($active_milestones OR $no_target_milestones);
 $show['completed_placeholder'] = (!$vbulletin->GPC['viewall'] AND $count_completed);
 $count_completed = vb_number_format($count_completed);
@@ -173,6 +176,7 @@ $templater = vB_Template::create('pt_project_milestones');
 	$templater->register('active_milestones', $active_milestones);
 	$templater->register('completed_milestones', $completed_milestones);
 	$templater->register('count_completed', $count_completed);
+	$templater->register('filter', $filter);
 	$templater->register('navbar', $navbar);
 	$templater->register('no_target_milestones', $no_target_milestones);
 	$templater->register('project', $project);
