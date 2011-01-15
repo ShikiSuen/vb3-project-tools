@@ -150,8 +150,8 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 						(
 							0,
 							'projecttools',
-							'" . $db->escape_string($phrase) . "',
-							'" . $db->escape_string($this->info["$info_name"]) . "',
+							'" . $this->registry->db->escape_string($phrase) . "',
+							'" . $this->registry->db->escape_string($this->info["$info_name"]) . "',
 							'vbprojecttools',
 							'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
 							" . TIMENOW . ",
