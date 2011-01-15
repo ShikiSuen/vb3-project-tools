@@ -141,7 +141,7 @@ while ($milestone = $db->fetch_array($milestone_data))
 			$templater->register('milestone', $milestone);
 			$templater->register('raw_counts', $raw_counts);
 			$templater->register('stats', $stats);
-			$templater->register('stats', $stats);
+			$templater->register('title', $title);
 		$active_milestones .= $templater->render();
 	}
 	else
@@ -151,7 +151,7 @@ while ($milestone = $db->fetch_array($milestone_data))
 			$templater->register('milestone', $milestone);
 			$templater->register('raw_counts', $raw_counts);
 			$templater->register('stats', $stats);
-			$templater->register('stats', $stats);
+			$templater->register('title', $title);
 		$no_target_milestones .= $templater->render();
 	}
 }

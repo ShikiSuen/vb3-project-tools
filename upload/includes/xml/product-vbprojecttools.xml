@@ -5122,7 +5122,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_milestonebit" templatetype="template" date="1294757782" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockbody settings_form_border">
+		<template name="pt_milestonebit" templatetype="template" date="1295080421" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockbody settings_form_border">
 	<div class="blocksubhead">
 		<img src="{vb:raw vboptions.cleargifurl}" width="1" height="1" alt="" />
 	</div>
@@ -5141,11 +5141,11 @@ init_project_readmarker_system();
 		</span>
 
 		<div class="bigtext">
-			<a href="{vb:link milestone, {vb:raw milestone}}" class="boldtext">{vb:raw milestone.title}</a>
+			<a href="{vb:link milestone, {vb:raw milestone}}" class="boldtext">{vb:raw title}</a>
 		</div>
 
 		<vb:if condition="$milestone['description']">
-			{vb:raw milestone.description}
+			{vb:raw description}
 		</vb:if>
 
 		<hr />
@@ -9764,6 +9764,7 @@ To create your own report, make a search with the criteria that you want and cli
 		</phrasetype>
 		<phrasetype name="GLOBAL" fieldname="global">
 			<phrase name="doubleclick_project_markread" date="1211381999" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Double-click this icon to mark this project and its contents as read]]></phrase>
+			<phrase name="issue" date="1295039807" username="Pitchoune" version="2.2.0"><![CDATA[Issue]]></phrase>
 			<phrase name="projects" date="1181655523" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Projects]]></phrase>
 			<phrase name="search_projects" date="1174406531" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search Projects]]></phrase>
 		</phrasetype>
