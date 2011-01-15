@@ -1475,6 +1475,60 @@ $db->query_write("
 // Reload
 $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
+		<code version="2.2.0">
+			<installcode><![CDATA[$full_product_info = fetch_product_list(true);
+
+// Move milestones into phrase system
+$milestone_data = $db->query_read("
+	SELECT milestoneid, projectid, title, description
+	FROM " . TABLE_PREFIX . "pt_milestone
+	ORDER BY milestoneid ASC
+");
+
+while ($milestone = $db->fetch_array($milestone_data))
+{
+	$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
+	$milestonedata->set_existing($milestone);
+	$milestonedata->set_info('title', $milstone['title']);
+	$milestonedata->set_info('description', $milestone['description']);
+	$milestonedata->save();
+}
+
+// Delete useless table fields in pt_milestone table
+$db->query_write("ALTER TABLE" . TABLE_PREFIX . "pt_milestone DROP 'title'");
+$db->query_write("ALTER TABLE" . TABLE_PREFIX . "pt_milestone DROP 'title_clean'");
+$db->query_write("ALTER TABLE" . TABLE_PREFIX . "pt_milestone DROP 'description'");
+
+// Move categories into phrase system
+$category_data = $db->query_read("
+	SELECT projectcategoryid, title
+	FROM " . TABLE_PREFIX . "pt_projectcategory
+	ORDER BY projectcategoryid ASC
+");
+
+while ($category = $db->fetch_array($category_data))
+{
+	$vbulletin->db->query_write("
+		REPLACE INTO " . TABLE_PREFIX . "phrase
+			(languageid, fieldname, varname, text, product, username, dateline, version)
+		VALUES
+			(
+				0,
+				'projecttools',
+				'category" . intval($category['projectcategoryid']) . "',
+				'" . $vbulletin->db->escape_string($category['title']) . "',
+				'vbprojecttools',
+				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+				" . TIMENOW . ",
+				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+			)
+	");
+}
+
+// Delete useless table fields in pt_projectcategory table
+$db->query_write("ALTER TABLE" . TABLE_PREFIX . "pt_projectcategory DROP 'title'");]]></installcode>
+			<uninstallcode />
+		</code>
 	</codes>
 	<templates>
 		<template name="block_issues" templatetype="template" date="1294257989" username="Pitchoune" version="2.2.0"><![CDATA[<li>
@@ -5122,7 +5176,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_milestonebit" templatetype="template" date="1295080421" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockbody settings_form_border">
+		<template name="pt_milestonebit" templatetype="template" date="1295104475" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockbody settings_form_border">
 	<div class="blocksubhead">
 		<img src="{vb:raw vboptions.cleargifurl}" width="1" height="1" alt="" />
 	</div>
@@ -6878,7 +6932,7 @@ init_project_readmarker_system();
 		{vb:raw type.issuecountactive} / {vb:raw type.issuecount}
 	</span>
 </li>]]></template>
-		<template name="pt_project_milestones" templatetype="template" date="1291147025" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project_milestones" templatetype="template" date="1295104706" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6937,7 +6991,7 @@ init_project_readmarker_system();
 	</div>
 	<div class="blockbody settings_form_border">
 		<div class="blockrow">
-			<a href="projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}&amp;viewall=1#completed">{vb:rawphrase click_here_to_view_x_completed_milestones, {vb:raw count_completed}}</a>
+			<a href="{vb:link projectmilestone, {vb:raw project}, {vb:raw filter}}#completed">{vb:rawphrase click_here_to_view_x_completed_milestones, {vb:raw count_completed}}</a>
 		</div>
 	</div>
 </div>
