@@ -108,6 +108,33 @@ function build_project_category_cache()
 }
 
 /**
+* Builds the cache of project priorities into $vbulletin->pt_priorities.
+* Accessed as [projectpriorityid] => <info>
+*
+* @return	array	Priority cache
+*/
+function build_project_priority_cache()
+{
+	global $db, $vbulletin;
+
+	$cache = array();
+	$priority_data = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectpriority
+		ORDER BY projectid, displayorder
+	");
+	while ($priority = $db->fetch_array($priority_data))
+	{
+		$cache["$priority[projectpriorityid]"] = $priority;
+	}
+
+	build_datastore('pt_priorities', serialize($cache), 1);
+	$vbulletin->pt_priorities = $cache;
+
+	return $cache;
+}
+
+/**
 * Builds the cache of project permissions into $vbulletin->pt_permissions.
 * Accessed as [usergroupid][projectid][issuetypeid] => <info>.
 * This handles inheritance, so that only actual projectids will be listed,

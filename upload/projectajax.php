@@ -330,13 +330,26 @@ if ($_POST['do'] == 'fetch')
 			else
 			{
 				$xml->add_group('items');
-					for ($i = 0; $i <= 10; $i++)
+				$xml->add_tag('item', $vbphrase['unknown'], array('itemid' => 0, 'selected' => ($issue['projectcategoryid'] == 0 ? 'yes' : 'no')));
+
+				foreach ($vbulletin->pt_priorities AS $priority)
+				{
+					if ($priority['projectid'] != $issue['projectid'])
+					{
+						continue;
+					}
+					$xml->add_tag('item', $vbphrase['priority' . $priority['projectpriorityid'] . ''], array(
+						'itemid' => $priority['projectpriorityid'],
+						'selected' => ($issue['projectriorityid'] == $priority['projectpriorityid'] ? 'yes' : 'no')
+					));
+				}
+					/*for ($i = 0; $i <= 10; $i++)
 					{
 						$xml->add_tag('item', $vbphrase["priority_$i"], array(
 							'itemid' => $i,
 							'selected' => ($issue['priority'] == $i ? 'yes' : 'no')
 						));
-					}
+					}*/
 				$xml->close_group();
 			}
 			break;
