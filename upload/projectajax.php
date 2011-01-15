@@ -43,11 +43,11 @@ $globaltemplates = array(
 );
 
 // pre-cache templates used by specific actions
-$actiontemplates = array(
-);
+$actiontemplates = array();
 
 // ######################### REQUIRE BACK-END ############################
 require_once('./global.php');
+
 if (empty($vbulletin->products['vbprojecttools']))
 {
 	standard_error(fetch_error('product_not_installed_disabled'));
@@ -90,7 +90,6 @@ $can_edit_issue = $posting_perms['issue_edit'];
 ($hook = vBulletinHook::fetch_hook('projectajax_start')) ? eval($hook) : false;
 
 // #######################################################################
-
 function throw_ajax_error($text = '')
 {
 	global $vbulletin;
@@ -359,7 +358,7 @@ if ($_POST['do'] == 'fetch')
 					{
 						continue;
 					}
-					$xml->add_tag('item', $category['title'], array(
+					$xml->add_tag('item', $vbphrase['category' . $category['projectcategoryid'] . ''], array(
 						'itemid' => $category['projectcategoryid'],
 						'selected' => ($issue['projectcategoryid'] == $category['projectcategoryid'] ? 'yes' : 'no')
 					));
