@@ -32,6 +32,7 @@ $specialtemplates = array(
 	'pt_assignable',
 	'pt_projects',
 	'pt_categories',
+	'pt_priorities',
 	'pt_versions',
 	'smiliecache',
 	'bbcodecache',
@@ -330,7 +331,7 @@ if ($_POST['do'] == 'fetch')
 			else
 			{
 				$xml->add_group('items');
-				$xml->add_tag('item', $vbphrase['unknown'], array('itemid' => 0, 'selected' => ($issue['projectcategoryid'] == 0 ? 'yes' : 'no')));
+				$xml->add_tag('item', $vbphrase['unknown'], array('itemid' => 0, 'selected' => ($issue['projectpriorityid'] == 0 ? 'yes' : 'no')));
 
 				foreach ($vbulletin->pt_priorities AS $priority)
 				{

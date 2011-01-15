@@ -2457,7 +2457,7 @@ if ($_POST['do'] == 'projectpriorityupdate')
 	require_once(DIR . '/includes/adminfunctions_language.php');
 	build_language();
 
-	//build_project_category_cache();
+	build_project_priority_cache();
 
 	define('CP_REDIRECT', 'project.php?do=projectpriority&projectid=' . $project['projectid']);
 	print_stop_message('project_priority_saved');
@@ -2557,7 +2557,7 @@ if ($_POST['do'] == 'projectprioritykill')
 		WHERE projectpriorityid = $projectpriority[projectpriorityid]
 	");
 
-	//build_project_category_cache();
+	build_project_priority_cache();
 
 	define('CP_REDIRECT', 'project.php?do=projectpriority&projectid=' . $project['projectid']);
 	print_stop_message('project_priority_deleted');

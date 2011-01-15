@@ -41,26 +41,25 @@ $specialtemplates = array(
 );
 
 // pre-cache templates used by all actions
-$globaltemplates = array();
+$globaltemplates = array(
+	'pt_issue',
+	'pt_issuenotebit_user',
+	'pt_issuenotebit_petition',
+	'pt_issuenotebit_system',
+	'pt_issuenotebit_systembit',
+	'pt_listprojects',
+	'pt_listprojects_link',
+	'bbcode_code',
+	'bbcode_html',
+	'bbcode_php',
+	'bbcode_quote',
+	'bbcode_video',
+	'pt_attachmentbit',
+	'showthread_quickreply',
+);
 
 // pre-cache templates used by specific actions
 $actiontemplates = array(
-	'none' => array(
-		'pt_issue',
-		'pt_issuenotebit_user',
-		'pt_issuenotebit_petition',
-		'pt_issuenotebit_system',
-		'pt_issuenotebit_systembit',
-		'pt_listprojects',
-		'pt_listprojects_link',
-		'bbcode_code',
-		'bbcode_html',
-		'bbcode_php',
-		'bbcode_quote',
-		'bbcode_video',
-		'pt_attachmentbit',
-		'showthread_quickreply',
-	),
 	'notehistory' => array(
 		'pt_notehistory',
 		'pt_historybit',
