@@ -2427,7 +2427,7 @@ if ($_POST['do'] == 'projectcategoryupdate')
 			(
 				0,
 				'projecttools',
-				'category_" . intval($vbulletin->GPC['projectcategoryid']) . "',
+				'category" . intval($vbulletin->GPC['projectcategoryid']) . "',
 				'" . $this->registry->db->escape_string($vbulletin->GPC['title']) . "',
 				'vbprojecttools',
 				'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
