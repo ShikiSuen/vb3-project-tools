@@ -2402,7 +2402,6 @@ if ($_POST['do'] == 'projectcategoryupdate')
 	{
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectcategory SET
-				title = '" . $db->escape_string($vbulletin->GPC['title']) . "',
 				displayorder = " . $vbulletin->GPC['displayorder'] . "
 			WHERE projectcategoryid = $projectcategory[projectcategoryid]
 		");
@@ -2411,10 +2410,9 @@ if ($_POST['do'] == 'projectcategoryupdate')
 	{
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_projectcategory
-				(projectid, title, displayorder)
+				(projectid, displayorder)
 			VALUES
 				($project[projectid],
-				'" . $db->escape_string($vbulletin->GPC['title']) . "',
 				" . $vbulletin->GPC['displayorder'] . ")
 		");
 	}
