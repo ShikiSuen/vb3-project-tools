@@ -121,28 +121,36 @@ while ($milestone = $db->fetch_array($milestone_data))
 
 	$raw_counts = fetch_milestone_counts($counts["$milestone[milestoneid]"], $projectperms);
 	$stats = prepare_milestone_stats($milestone, $raw_counts);
+	$title = $vbphrase['milestone_' . $milestone['milestoneid'] . '_name'];
+	$description = $vbphrase['milestone_' . $milestone['milestoneid'] . '_description'];
 
 	if ($milestone['completeddate'])
 	{
 		$templater = vB_Template::create('pt_milestonebit');
+			$templater->register('description', $description);
 			$templater->register('milestone', $milestone);
 			$templater->register('raw_counts', $raw_counts);
 			$templater->register('stats', $stats);
+			$templater->register('title', $title);
 		$completed_milestones .= $templater->render();
 	}
 	else if ($milestone['targetdate'])
 	{
 		$templater = vB_Template::create('pt_milestonebit');
+			$templater->register('description', $description);
 			$templater->register('milestone', $milestone);
 			$templater->register('raw_counts', $raw_counts);
+			$templater->register('stats', $stats);
 			$templater->register('stats', $stats);
 		$active_milestones .= $templater->render();
 	}
 	else
 	{
 		$templater = vB_Template::create('pt_milestonebit');
+			$templater->register('description', $description);
 			$templater->register('milestone', $milestone);
 			$templater->register('raw_counts', $raw_counts);
+			$templater->register('stats', $stats);
 			$templater->register('stats', $stats);
 		$no_target_milestones .= $templater->render();
 	}

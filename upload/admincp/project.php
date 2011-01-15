@@ -665,6 +665,7 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 			FROM " . TABLE_PREFIX . "pt_milestone
 			WHERE milestoneid = " . $vbulletin->GPC['milestoneid']
 		);
+
 		$vbulletin->GPC['projectid'] = $milestone['projectid'];
 	}
 	else
@@ -707,7 +708,6 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 }
 
 // ########################################################################
-
 if ($_POST['do'] == 'projectmilestonekill')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
@@ -722,6 +722,7 @@ if ($_POST['do'] == 'projectmilestonekill')
 	);
 
 	$project = fetch_project_info($milestone['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
@@ -743,6 +744,7 @@ if ($_POST['do'] == 'projectmilestonekill')
 		FROM " . TABLE_PREFIX . "pt_milestone
 		WHERE milestoneid = " . $vbulletin->GPC['destmilestoneid']
 	);
+
 	if ($dest_milestone)
 	{
 		$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_SILENT);
@@ -759,9 +761,7 @@ if ($_POST['do'] == 'projectmilestonekill')
 
 if ($_REQUEST['do'] == 'projectmilestonedelete')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'milestoneid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'milestoneid', TYPE_UINT);
 
 	$milestone = $db->query_first("
 		SELECT *
@@ -770,6 +770,7 @@ if ($_REQUEST['do'] == 'projectmilestonedelete')
 	);
 
 	$project = fetch_project_info($milestone['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
@@ -791,26 +792,26 @@ if ($_REQUEST['do'] == 'projectmilestonedelete')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'projectmilestone')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
 	$milestones = array();
+
 	$milestone_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_milestone
 		WHERE projectid = $project[projectid]
 		ORDER BY completeddate, targetdate DESC
 	");
+
 	while ($milestone = $db->fetch_array($milestone_data))
 	{
 		$milestones["$milestone[milestoneid]"] = $milestone;
@@ -820,6 +821,7 @@ if ($_REQUEST['do'] == 'projectmilestone')
 
 	print_form_header();
 	print_table_header(construct_phrase($vbphrase['milestones_for_x_html'], $project['title_clean']), 3);
+
 	if ($milestones)
 	{
 		foreach ($milestones AS $milestone)
@@ -875,6 +877,7 @@ if ($_REQUEST['do'] == 'projectmilestone')
 	{
 		print_description_row($vbphrase['no_milestones_defined_for_this_project'], false, 3, '', 'center');
 	}
+
 	print_table_footer();
 
 	echo '<p align="center">' . construct_link_code($vbphrase['add_milestone'], 'project.php?do=projectmilestoneadd&amp;projectid=' . $project['projectid']) . '</p>';
@@ -884,7 +887,6 @@ if ($_REQUEST['do'] == 'projectmilestone')
 // ########################################################################
 // ##################### ISSUE STATUS MANAGEMENT ##########################
 // ########################################################################
-
 if ($_POST['do'] == 'statusupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
@@ -912,6 +914,7 @@ if ($_POST['do'] == 'statusupdate')
 			FROM " . TABLE_PREFIX . "pt_issuestatus
 			WHERE issuestatusid = " . $vbulletin->GPC['issuestatusid']
 		);
+
 		if (!$issuestatus)
 		{
 			print_stop_message('invalid_action_specified');
@@ -965,7 +968,6 @@ if ($_POST['do'] == 'statusupdate')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
@@ -1007,6 +1009,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 	echo '<script type="text/javascript" src="../clientscript/vbulletin_cpcolorpicker.js"></script>';
 
 	print_form_header('project', 'statusupdate');
+
 	if ($issuestatus['issuestatusid'])
 	{
 		print_table_header(construct_phrase($vbphrase['edit_status_x'], $issuestatus['title']));
@@ -1023,6 +1026,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 		'title',
 		$issuestatus['title']
 	);
+
 	if (isset($issuetype_options["$issuestatus[issuetypeid]"]))
 	{
 		print_label_row($vbphrase['issue_type'], $issuetype_options["$issuestatus[issuetypeid]"]);
@@ -1054,6 +1058,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 	</tr>\n";
 
 	$projectsets = '';
+
 	$projectsets_sql = $vbulletin->db->query_read("
 		SELECT pt.projectid, pt.title_clean, IF(ptset.projectid IS NULL, 0, 1) AS selected
 		FROM " . TABLE_PREFIX . "pt_project AS pt
@@ -1061,6 +1066,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 			(ptset.projectid = pt.projectid AND ptset.issuestatusid = " . intval($issuestatus['issuestatusid']) . ")
 		ORDER BY pt.displayorder
 	");
+
 	while ($projectset = $vbulletin->db->fetch_array($projectsets_sql))
 	{
 		$projectsets .= "<div class=\"smallfont\"><label>"
@@ -1094,7 +1100,6 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 }
 
 // ########################################################################
-
 if ($_POST['do'] == 'statuskill')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
@@ -1107,6 +1112,7 @@ if ($_POST['do'] == 'statuskill')
 		FROM " . TABLE_PREFIX . "pt_issuestatus
 		WHERE issuestatusid = " . $vbulletin->GPC['issuestatusid']
 	);
+
 	if (!$issuestatus)
 	{
 		print_stop_message('invalid_action_specified');
@@ -1125,15 +1131,14 @@ if ($_POST['do'] == 'statuskill')
 
 if ($_REQUEST['do'] == 'statusdelete')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuestatusid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'issuestatusid', TYPE_UINT);
 
 	$issuestatus = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_issuestatus
 		WHERE issuestatusid = " . $vbulletin->GPC['issuestatusid']
 	);
+
 	if (!$issuestatus)
 	{
 		print_stop_message('invalid_action_specified');
@@ -1144,6 +1149,7 @@ if ($_REQUEST['do'] == 'statusdelete')
 	$statusdata->pre_delete();
 
 	$statuses = array();
+
 	$status_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_issuestatus
@@ -1151,6 +1157,7 @@ if ($_REQUEST['do'] == 'statusdelete')
 			AND issuestatusid <> $issuestatus[issuestatusid]
 		ORDER BY displayorder
 	");
+
 	while ($status = $db->fetch_array($status_data))
 	{
 		$statuses["$status[issuestatusid]"] = $vbphrase["issuestatus$status[issuestatusid]"];
@@ -1171,9 +1178,7 @@ if ($_REQUEST['do'] == 'statusdelete')
 // ########################################################################
 /*if ($_POST['do'] == 'statusdisplayorder')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'order' => TYPE_ARRAY_UINT
-	));
+	$vbulletin->input->clean_gpc('p', 'order', TYPE_ARRAY_UINT);
 
 	$case = '';
 
@@ -1197,10 +1202,8 @@ if ($_REQUEST['do'] == 'statusdelete')
 // ########################################################################
 // ##################### ISSUE TYPE/STATUS MANAGEMENT #####################
 // ########################################################################
-
 if ($_POST['do'] == 'typeupdate')
 {
-
 	$vbulletin->input->clean_array_gpc('p', array(
 		'issuetypeid' => TYPE_NOHTML,
 		'exists' => TYPE_BOOL,
@@ -1235,6 +1238,7 @@ if ($_POST['do'] == 'typeupdate')
 			FROM " . TABLE_PREFIX . "pt_issuetype
 			WHERE issuetypeid = '" . $db->escape_string($vbulletin->GPC['issuetypeid']) . "'
 		");
+
 		if (!$issuetype)
 		{
 			print_stop_message('invalid_action_specified');
@@ -1264,11 +1268,13 @@ if ($_POST['do'] == 'typeupdate')
 	if (!$vbulletin->GPC['exists'] AND $vbulletin->GPC['permissionbase'])
 	{
 		$permissions = array();
+
 		$permission_query = $db->query_read("
 			SELECT *
 			FROM " . TABLE_PREFIX . "pt_projectpermission
 			WHERE issuetypeid = '" . $db->escape_string($vbulletin->GPC['permissionbase']) . "'
 		");
+
 		while ($permission = $db->fetch_array($permission_query))
 		{
 			$permissions[] = "
@@ -1296,12 +1302,9 @@ if ($_POST['do'] == 'typeupdate')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuetypeid' => TYPE_NOHTML,
-	));
+	$vbulletin->input->clean_gpc('r', 'issuetypeid', TYPE_NOHTML);
 
 	if ($vbulletin->GPC['issuetypeid'])
 	{
@@ -1312,6 +1315,7 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 		");
 
 		$phrases = array();
+
 		$phrase_data = $db->query_read("
 			SELECT varname, text
 			FROM " . TABLE_PREFIX . "phrase
@@ -1327,10 +1331,12 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 					'post_new_issue_$issuetype[issuetypeid]'
 				)
 		");
+
 		while ($phrase = $db->fetch_array($phrase_data))
 		{
 			$phrases["$phrase[varname]"] = $phrase['text'];
 		}
+
 		$issuetype['title_singular'] = $phrases["issuetype_$issuetype[issuetypeid]_singular"];
 	}
 
@@ -1359,6 +1365,7 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 	}
 
 	print_form_header('project', 'typeupdate');
+
 	if ($issuetype['issuetypeid'])
 	{
 		print_table_header(construct_phrase($vbphrase['edit_type_x'], $issuetype['title_singular']));
@@ -1379,6 +1386,7 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 
 	print_input_row($vbphrase['display_order'], 'displayorder', $issuetype['displayorder'], true, 5);
 	print_input_row($vbphrase['filename_for_icon'], 'iconfile', $issuetype['iconfile'], false);
+
 	if (!$issuetype['issuetypeid'])
 	{
 		$types = array();
@@ -1387,10 +1395,12 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 			FROM " . TABLE_PREFIX . "pt_issuetype
 			ORDER BY displayorder
 		");
+
 		while ($type = $db->fetch_array($type_query))
 		{
 			$types["$type[issuetypeid]"] = $vbphrase["issuetype_$type[issuetypeid]_singular"];
 		}
+
 		print_select_row($vbphrase['bass_permissions_off_existing_type'], 'permissionbase', array('' => $vbphrase['none_meta']) + $types);
 	}
 
@@ -1402,24 +1412,28 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 		'title_singular',
 		$phrases["issuetype_$issuetype[issuetypeid]_singular"]
 	);
+
 	print_input_row(
 		$vbphrase['plural_form_example'] .
 			($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . "issuetype_$issuetype[issuetypeid]_plural", true) . '</dfn>' : ''),
 		'title_plural',
 		$phrases["issuetype_$issuetype[issuetypeid]_plural"]
 	);
+
 	print_input_row(
 		$vbphrase['vote_question_example'] .
 			($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . "vote_question_$issuetype[issuetypeid]", true) . '</dfn>' : ''),
 		'vote_question',
 		$phrases["vote_question_$issuetype[issuetypeid]"]
 	);
+
 	print_input_row(
 		$vbphrase['positive_vote_count_example'] .
 			($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . "vote_count_positive_$issuetype[issuetypeid]", true) . '</dfn>' : ''),
 		'vote_count_positive',
 		$phrases["vote_count_positive_$issuetype[issuetypeid]"]
 	);
+
 	print_input_row(
 		$vbphrase['negative_vote_count_example'] .
 			($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . "vote_count_negative_$issuetype[issuetypeid]", true) . '</dfn>' : ''),
@@ -1458,10 +1472,8 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 }
 
 // ########################################################################
-
 if ($_POST['do'] == 'typekill')
 {
-
 	$vbulletin->input->clean_array_gpc('r', array(
 		'issuetypeid' => TYPE_NOHTML,
 		'deststatusid' => TYPE_UINT
@@ -1472,6 +1484,7 @@ if ($_POST['do'] == 'typekill')
 		FROM " . TABLE_PREFIX . "pt_issuetype
 		WHERE issuetypeid = '" . $db->escape_string($vbulletin->GPC['issuetypeid']) . "'
 	");
+
 	if (!$issuetype)
 	{
 		print_stop_message('invalid_action_specified');
@@ -1487,18 +1500,16 @@ if ($_POST['do'] == 'typekill')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'typedelete')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuetypeid' => TYPE_NOHTML
-	));
+	$vbulletin->input->clean_gpc('r', 'issuetypeid', TYPE_NOHTML);
 
 	$issuetype = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_issuetype
 		WHERE issuetypeid = '" . $db->escape_string($vbulletin->GPC['issuetypeid']) . "'
 	");
+
 	if (!$issuetype)
 	{
 		print_stop_message('invalid_action_specified');
@@ -1509,12 +1520,14 @@ if ($_REQUEST['do'] == 'typedelete')
 	$typedata->pre_delete();
 
 	$statuses = array();
+
 	$status_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_issuestatus
 		WHERE issuetypeid <> '" . $db->escape_string($issuetype['issuetypeid']) . "'
 		ORDER BY displayorder
 	");
+
 	while ($status = $db->fetch_array($status_data))
 	{
 		$statuses[$vbphrase["issuetype_$status[issuetypeid]_singular"]]["$status[issuestatusid]"] = $vbphrase["issuestatus$status[issuestatusid]"];
@@ -1590,11 +1603,13 @@ if ($_REQUEST['do'] == 'typelist')
 	print_table_footer();
 
 	$statuses = array();
+
 	$status_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_issuestatus
 		ORDER BY displayorder
 	");
+
 	while ($status = $db->fetch_array($status_data))
 	{
 		$statuses["$status[issuetypeid]"][] = $status;
@@ -1607,7 +1622,9 @@ if ($_REQUEST['do'] == 'typelist')
 	");
 
 	print_form_header('project', 'typedisplayorder');
+
 	$firstpass = true;
+
 	while ($type = $db->fetch_array($types))
 	{
 		print_cells_row(array(
@@ -1660,7 +1677,6 @@ if ($_REQUEST['do'] == 'typelist')
 // ########################################################################
 // ################### PROJECT VERSION MANAGEMENT #########################
 // ########################################################################
-
 if ($_POST['do'] == 'projectversionupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
@@ -1692,6 +1708,7 @@ if ($_POST['do'] == 'projectversionupdate')
 		INNER JOIN " . TABLE_PREFIX . "pt_project AS pt_project ON (pt_project.projectid = pt_projectversiongroup.projectid)
 		WHERE pt_projectversiongroup.projectversiongroupid = " . $vbulletin->GPC['projectversiongroupid']
 	);
+
 	if (!$projectversiongroup)
 	{
 		print_stop_message('invalid_action_specified');
@@ -1726,6 +1743,7 @@ if ($_POST['do'] == 'projectversionupdate')
 				" . $vbulletin->GPC['displayorder'] . ",
 				" . ($vbulletin->GPC['displayorder'] + $projectversiongroup['displayorder'] * 100000) . ")
 		");
+
 		$projectversionid = $db->insert_id();
 
 		if ($vbulletin->GPC['nextversion'])
@@ -1747,7 +1765,6 @@ if ($_POST['do'] == 'projectversionupdate')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversionedit')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
@@ -1785,12 +1802,14 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 		INNER JOIN " . TABLE_PREFIX . "pt_project AS pt_project ON (pt_project.projectid = pt_projectversiongroup.projectid)
 		WHERE pt_projectversiongroup.projectversiongroupid = " . $vbulletin->GPC['projectversiongroupid']
 	);
+
 	if (!$projectversiongroup)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
 	print_form_header('project', 'projectversionupdate');
+
 	if ($projectversion['projectversionid'])
 	{
 		print_table_header($vbphrase['edit_project_version']);
@@ -1815,7 +1834,6 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 }
 
 // ########################################################################
-
 if ($_POST['do'] == 'projectversionkill')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
@@ -1831,6 +1849,7 @@ if ($_POST['do'] == 'projectversionkill')
 	);
 
 	$project = fetch_project_info($projectversion['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
@@ -1884,12 +1903,9 @@ if ($_POST['do'] == 'projectversionkill')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'projectversiondelete')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectversionid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'projectversionid', TYPE_UINT);
 
 	$projectversion = $db->query_first("
 		SELECT *
@@ -1898,12 +1914,14 @@ if ($_REQUEST['do'] == 'projectversiondelete')
 	);
 
 	$project = fetch_project_info($projectversion['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
 	$version_groups = array();
+
 	$version_query = $db->query_read("
 		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
@@ -1913,6 +1931,7 @@ if ($_REQUEST['do'] == 'projectversiondelete')
 			AND projectversion.projectversionid <> " . $vbulletin->GPC['projectversionid'] . "
 		ORDER BY projectversion.effectiveorder DESC
 	");
+
 	while ($version = $db->fetch_array($version_query))
 	{
 		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
@@ -1936,7 +1955,6 @@ if ($_REQUEST['do'] == 'projectversiondelete')
 }
 
 // ########################################################################
-
 if ($_POST['do'] == 'projectversiongroupupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
@@ -1961,6 +1979,7 @@ if ($_POST['do'] == 'projectversiongroupupdate')
 	}
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
@@ -1999,7 +2018,6 @@ if ($_POST['do'] == 'projectversiongroupupdate')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectversiongroupedit')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
@@ -2031,12 +2049,14 @@ if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectve
 	}
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
 	print_form_header('project', 'projectversiongroupupdate');
+
 	if ($projectversiongroup['projectversiongroupid'])
 	{
 		print_table_header($vbphrase['edit_project_version_group']);
@@ -2045,6 +2065,7 @@ if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectve
 	{
 		print_table_header($vbphrase['add_project_version_group']);
 	}
+
 	print_input_row($vbphrase['title'], 'groupname', $projectversiongroup['groupname'], false);
 	print_input_row($vbphrase['display_order'] . '<dfn>' . $vbphrase['note_a_larger_value_will_be_displayed_first'] . '</dfn>', 'displayorder', $projectversiongroup['displayorder'], true, 5);
 	construct_hidden_code('projectid', $project['projectid']);
@@ -2053,7 +2074,6 @@ if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectve
 }
 
 // ########################################################################
-
 if ($_POST['do'] == 'projectversiongroupkill')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
@@ -2069,17 +2089,20 @@ if ($_POST['do'] == 'projectversiongroupkill')
 	);
 
 	$project = fetch_project_info($projectversiongroup['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
 	$group_versions = array();
+
 	$group_version_data = $db->query_read("
 		SELECT projectversionid
 		FROM " . TABLE_PREFIX . "pt_projectversion
 		WHERE projectversiongroupid = $projectversiongroup[projectversiongroupid]
 	");
+
 	while ($group_version = $db->fetch_array($group_version_data))
 	{
 		$group_versions[] = $group_version['projectversionid'];
@@ -2141,12 +2164,9 @@ if ($_POST['do'] == 'projectversiongroupkill')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'projectversiongroupdelete')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectversiongroupid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'projectversiongroupid', TYPE_UINT);
 
 	$projectversiongroup = $db->query_first("
 		SELECT *
@@ -2155,12 +2175,14 @@ if ($_REQUEST['do'] == 'projectversiongroupdelete')
 	);
 
 	$project = fetch_project_info($projectversiongroup['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
 	$version_groups = array();
+
 	$version_query = $db->query_read("
 		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
@@ -2170,6 +2192,7 @@ if ($_REQUEST['do'] == 'projectversiongroupdelete')
 			AND projectversiongroup.projectversiongroupid <> " . $vbulletin->GPC['projectversiongroupid'] . "
 		ORDER BY projectversion.effectiveorder DESC
 	");
+
 	while ($version = $db->fetch_array($version_query))
 	{
 		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
@@ -2203,6 +2226,7 @@ if ($_POST['do'] == 'projectversiondisplayorder')
 
 	$groupcase = '';
 	$grouporder = array();
+
 	foreach ($vbulletin->GPC['grouporder'] AS $id => $displayorder)
 	{
 		$grouporder[intval($id)] = $displayorder;
@@ -2218,6 +2242,7 @@ if ($_POST['do'] == 'projectversiondisplayorder')
 	}
 
 	$versioncase_display = '';
+
 	foreach ($vbulletin->GPC['versionorder'] AS $id => $displayorder)
 	{
 		$versioncase_display .= "\nWHEN " . intval($id) . " THEN " . $displayorder;
@@ -2240,38 +2265,40 @@ if ($_POST['do'] == 'projectversiondisplayorder')
 }
 
 // ########################################################################
-
 if ($_REQUEST['do'] == 'projectversion')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
 	$groups = array();
+
 	$group_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectversiongroup
 		WHERE projectid = $project[projectid]
 		ORDER BY displayorder DESC
 	");
+
 	while ($group = $db->fetch_array($group_data))
 	{
 		$groups["$group[projectversiongroupid]"] = $group;
 	}
 
 	$versions = array();
+
 	$version_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectversion
 		WHERE projectid = $project[projectid]
 		ORDER BY displayorder DESC
 	");
+
 	while ($version = $db->fetch_array($version_data))
 	{
 		$versions["$version[projectversiongroupid]"][] = $version;
@@ -2336,7 +2363,6 @@ if ($_REQUEST['do'] == 'projectversion')
 // ########################################################################
 // ################### PROJECT CATEGORY MANAGEMENT ########################
 // ########################################################################
-
 if ($_POST['do'] == 'projectcategoryupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
@@ -2361,6 +2387,7 @@ if ($_POST['do'] == 'projectcategoryupdate')
 	}
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
