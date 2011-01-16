@@ -699,8 +699,8 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 		print_table_header($vbphrase['add_milestone']);
 	}
 
-	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>", 'title', $vbphrase['pt_milestone_' . $milestone['milestoneid'] . '_name']);//$milestone['title']);
-	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>", 'description', $vbphrase['pt_milestone_' . $milestone['milestoneid'] . '_description']);//$milestone['description']);
+	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>", 'title', $vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
+	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>", 'description', $vbphrase['milestone_' . $milestone['milestoneid'] . '_description']);
 	print_time_row("$vbphrase[target_date]<dfn>$vbphrase[target_date_desc]</dfn>", 'targetdate', $milestone['targetdate'], false);
 	print_time_row("$vbphrase[completed_date]<dfn>$vbphrase[completed_date_desc]</dfn>", 'completeddate', $milestone['completeddate'], false);
 
@@ -863,7 +863,7 @@ if ($_REQUEST['do'] == 'projectmilestone')
 			}
 
 			print_cells_row(array(
-				$bphrase['milestone_' . $milestone['milestoneid'] . '_name'],
+				$vbphrase['milestone_' . $milestone['milestoneid'] . '_name'],
 				$formatted_date,
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
 					construct_link_code($vbphrase['edit'], 'project.php?do=projectmilestoneedit&amp;milestoneid=' . $milestone['milestoneid']) .
