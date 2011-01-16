@@ -499,7 +499,7 @@ function fetch_milestone_select_list($projectid, $skip_ids = array())
 	$no_targets = array();
 
 	$milestone_data = $vbulletin->db->query_read("
-		SELECT milestoneid, title_clean, completeddate, targetdate
+		SELECT milestoneid, completeddate, targetdate
 		FROM " . TABLE_PREFIX . "pt_milestone
 		WHERE projectid = $projectid
 			" . ($skip_ids ? "AND milestoneid NOT IN (" . implode(',', $skip_ids) . ")" : '') . "
@@ -509,15 +509,15 @@ function fetch_milestone_select_list($projectid, $skip_ids = array())
 	{
 		if ($milestone['completeddate'])
 		{
-			$milestones["$vbphrase[completed_milestones]"]["$milestone[milestoneid]"] = $milestone['title_clean'];
+			$milestones["$vbphrase[completed_milestones]"]["$milestone[milestoneid]"] = htmlspecialchars_uni($vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
 		}
 		else if (!$milestone['targetdate'])
 		{
-			$no_targets["$milestone[milestoneid]"] = $milestone['title_clean'];
+			$no_targets["$milestone[milestoneid]"] = htmlspecialchars_uni($vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
 		}
 		else
 		{
-			$milestones["$vbphrase[active_milestones]"]["$milestone[milestoneid]"] = $milestone['title_clean'];
+			$milestones["$vbphrase[active_milestones]"]["$milestone[milestoneid]"] = htmlspecialchars_uni($vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
 		}
 	}
 
