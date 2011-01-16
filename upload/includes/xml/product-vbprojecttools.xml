@@ -1165,7 +1165,7 @@ if ($show['ptimporter_previous'])
 		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (issuestatusid, projectid)
-	)
+	) ENGINE=MyISAM
 ");
 
 $db->query_write("
@@ -1476,7 +1476,8 @@ $db->query_write("
 $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
 		<code version="2.2.0">
-			<installcode><![CDATA[$full_product_info = fetch_product_list(true);
+			<installcode><![CDATA[require_once(DIR . '/includes/adminfunctions_projecttools.php');
+$full_product_info = fetch_product_list(true);
 
 // Move milestones into phrase system
 $milestone_data = $db->query_read("
@@ -1495,9 +1496,9 @@ while ($milestone = $db->fetch_array($milestone_data))
 }
 
 // Delete useless table fields in pt_milestone table
-$db->query_write("ALTER TABLE" . TABLE_PREFIX . "pt_milestone DROP 'title'");
-$db->query_write("ALTER TABLE" . TABLE_PREFIX . "pt_milestone DROP 'title_clean'");
-$db->query_write("ALTER TABLE" . TABLE_PREFIX . "pt_milestone DROP 'description'");
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title");
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title_clean");
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP description");
 
 // Move categories into phrase system
 $category_data = $db->query_read("
@@ -1526,8 +1527,99 @@ while ($category = $db->fetch_array($category_data))
 }
 
 // Delete useless table fields in pt_projectcategory table
-$db->query_write("ALTER TABLE" . TABLE_PREFIX . "pt_projectcategory DROP 'title'");]]></installcode>
-			<uninstallcode />
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory DROP title");
+
+build_project_category_cache();
+
+// Adding a table for priority
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectpriority (
+		projectpriorityid int(10) unsigned NOT NULL AUTO_INCREMENT,
+		projectid int(10) unsigned NOT NULL,
+		displayorder int(10) unsigned NOT NULL,
+		PRIMARY KEY (projectpriorityid),
+		KEY finder (projectid,displayorder)
+	) ENGINE=MyISAM
+");
+
+$project_array = array();
+
+//Select every project and put them in an array
+$project_data = $db->query_read("
+	SELECT projectid
+	FROM " . TABLE_PREFIX . "pt_project
+	ORDER BY projectid ASC
+");
+
+while ($project = $db->fetch_array($project_data))
+{
+	$project_array[$project['projectid']] = $project;
+}
+
+foreach ($project_array AS $projects)
+{
+	$priority_array = array(
+		'1' => '1 - Highest',
+		'2' => '2',
+		'3' => '3',
+		'4' => '4',
+		'5' => '5 - Medium',
+		'6' => '6',
+		'7' => '7',
+		'8' => '8',
+		'9' => '9',
+		'10' => '10 - Lowest'
+	);
+
+	foreach ($priority_array AS $priority_key => $priority_value)
+	{
+		// Add priority for each priority for each project
+		$db->query_write("
+			INSERT INTO " . TABLE_PREFIX . "pt_projectpriority
+				(projectid, displayorder)
+			VALUES
+				(" . $projects['projectid'] . ", " . $priority_key * 10 . ")
+		");
+
+		$priority_data = $db->insert_id();
+
+		// Add phrase for each priority for each project
+		$db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'priority" . $vbulletin->db->escape_string($priority_data) . "',
+					'" . $vbulletin->db->escape_string($priority_value) . "',
+					'vbprojecttools',
+					'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+
+		// Check every issue in this project with the latest priority checked
+		$issue_data = $db->query_read("
+			SELECT issueid
+			FROM " . TABLE_PREFIX . "pt_issue
+			WHERE priority = '" . intval($priority_key) . "'
+				AND projectid = " . $projects['projectid'] . "
+		");
+
+		while ($issue = $db->fetch_array($issue_data))
+		{
+			// For each corresponding issue, update the priority value
+			$db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_issue SET
+					priority = " . intval($priority_data) . "
+				WHERE issueid = " . intval($issue['issueid']) . "
+			");
+		}
+	}
+}]]></installcode>
+			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
@@ -9724,6 +9816,8 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 			<phrase name="project_milestone_deleted" date="1213800464" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Milestone Deleted]]></phrase>
 			<phrase name="project_milestone_saved" date="1213800472" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Milestone Saved]]></phrase>
 			<phrase name="project_permissions_saved" date="1168607305" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Permissions Saved]]></phrase>
+			<phrase name="project_priority_deleted" date="1295124654" username="Pitchoune" version="2.2.0"><![CDATA[Project Priority Deleted]]></phrase>
+			<phrase name="project_priority_saved" date="1295124666" username="Pitchoune" version="2.2.0"><![CDATA[Project Priority Saved]]></phrase>
 			<phrase name="project_saved" date="1168607273" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Saved]]></phrase>
 			<phrase name="project_version_deleted" date="1168607250" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Version Deleted]]></phrase>
 			<phrase name="project_version_saved" date="1168607150" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Version Saved]]></phrase>
@@ -10107,6 +10201,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="add_milestone" date="1213799689" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Add Milestone]]></phrase>
 			<phrase name="add_project" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project]]></phrase>
 			<phrase name="add_project_category" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Category]]></phrase>
+			<phrase name="add_project_priority" date="1295124315" username="Pitchoune" version="2.2.0"><![CDATA[Add Project Priority]]></phrase>
 			<phrase name="add_project_version" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Version]]></phrase>
 			<phrase name="add_project_version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Version Group]]></phrase>
 			<phrase name="add_status" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Status]]></phrase>
@@ -10119,6 +10214,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="are_you_sure_want_to_delete_milestone_x" date="1213021483" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the milestone called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_project_x" date="1213021416" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectcategory_x" date="1213021424" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project category called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
+			<phrase name="are_you_sure_want_to_delete_projectpriority_x" date="1295124347" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the project priority called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectversion_x" date="1213021442" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project version called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectversiongroup_x" date="1213021452" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project version group called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="available_issue_types" date="1176208980" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Available Issue Types]]></phrase>
@@ -10151,6 +10247,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="edit_type_x" date="1213804823" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Type <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="existing_affected_issues_updated_delete_select_category" date="1176208574" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Existing, affected issues must be updated when this is deleted. Select a new category for these issues:]]></phrase>
 			<phrase name="existing_affected_issues_updated_delete_select_milestone" date="1213800282" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Existing, affected issues must be updated when this is deleted. Select a new milestone for these issues:]]></phrase>
+			<phrase name="existing_affected_issues_updated_delete_select_priority" date="1295124408" username="Pitchoune" version="2.2.0"><![CDATA[Existing, affected issues must be updated when this is deleted. Select a new priority for these issues:]]></phrase>
 			<phrase name="existing_affected_issues_updated_delete_select_status" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Existing, affected issues must be updated when this is deleted. Select a new status for these issues:]]></phrase>
 			<phrase name="existing_affected_issues_updated_delete_select_versions_x_y" date="1181651654" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Existing, affected issues must be updated when this is deleted.<ol style="margin-top: 0px; margin-bottom: 0px;">
 	<li>Select a new applicable version: {1}</li>
@@ -10175,6 +10272,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="negative_vote_count_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Negative Vote Count<dfn>Example: Users unable to reproduce bug</dfn>]]></phrase>
 			<phrase name="no_categories_defined_project" date="1181310525" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[No categories defined for this project!]]></phrase>
 			<phrase name="no_milestones_defined_for_this_project" date="1213799816" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[No milestones defined for this project!]]></phrase>
+			<phrase name="no_priorities_defined_project" date="1295124442" username="Pitchoune" version="2.2.0"><![CDATA[No priorities defined for this project!]]></phrase>
 			<phrase name="no_projects_defined_click_here_to_add_one" date="1275171222" username="Pitchoune" version="2.1.1"><![CDATA[No projects defined. Click <a href="project.php?do=projectadd">here</a> to add one!]]></phrase>
 			<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1176736972" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[No statuses of this type defined. This type will not be usable until you add at least one status. <a href="project.php?do=statusadd&amp;type={1}">Click here to add one!</a>]]></phrase>
 			<phrase name="no_tags_defined" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[No tags defined.]]></phrase>
@@ -10189,6 +10287,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="positive_vote_count_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Positive Vote Count<dfn>Example: Users able to reproduce bug</dfn>]]></phrase>
 			<phrase name="post_new_issue_example" date="1181310382" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Post New Issue
 <dfn>Example: Post New Bug</dfn>]]></phrase>
+			<phrase name="priorities" date="1295124480" username="Pitchoune" version="2.2.0"><![CDATA[Priorities]]></phrase>
+			<phrase name="priorities_for_x" date="1295124492" username="Pitchoune" version="2.2.0"><![CDATA[Priorities for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="project_attachment_manager" date="1274390165" username="Pitchoune" version="2.1.1"><![CDATA[Project Attachment Manager]]></phrase>
 			<phrase name="project_list" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project List]]></phrase>
 			<phrase name="project_permission_values_apply" date="1176738932" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project permission values apply as expected.]]></phrase>
