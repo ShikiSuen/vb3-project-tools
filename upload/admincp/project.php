@@ -693,14 +693,20 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 	if ($milestone['milestoneid'])
 	{
 		print_table_header($vbphrase['edit_milestone']);
+		$trans_link_base = "phrase.php?" . $vbulletin->session->vars['sessionurl'] . "do=edit&fieldname=projecttools&t=1&varname=milestone_"; // has ID appended
+		$trans_link1 = "_name"
+		$trans_link2 = "_description"; // has ID appended
 	}
 	else
 	{
 		print_table_header($vbphrase['add_milestone']);
+		$trans_link_base = '';
+		$trans_link1 = '';
+		$trans_link2 = '';
 	}
 
-	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>", 'title', $vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
-	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>", 'description', $vbphrase['milestone_' . $milestone['milestoneid'] . '_description']);
+	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn> . ($trans_link_base ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_base . $milestone['milestoneid'] . $trans_link_1, true) . '</dfn>' : '')", 'title', $vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
+	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn> . ($trans_link_base ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_base . $milestone['milestoneid'] . $trans_link_2, true) . '</dfn>' : '')", 'description', $vbphrase['milestone_' . $milestone['milestoneid'] . '_description']);
 	print_time_row("$vbphrase[target_date]<dfn>$vbphrase[target_date_desc]</dfn>", 'targetdate', $milestone['targetdate'], false);
 	print_time_row("$vbphrase[completed_date]<dfn>$vbphrase[completed_date_desc]</dfn>", 'completeddate', $milestone['completeddate'], false);
 
@@ -2507,13 +2513,15 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 	if ($projectcategory['projectpriorityid'])
 	{
 		print_table_header($vbphrase['edit_project_priority']);
+		$trans_link = "phrase.php?" . $vbulletin->session->vars['sessionurl'] . "do=edit&fieldname=projecttools&t=1&varname=priority"
 	}
 	else
 	{
 		print_table_header($vbphrase['add_project_priority']);
+		$trans_link = '';
 	}
 
-	print_input_row($vbphrase['title'], 'title', $vbphrase['priority' . $projectpriority['projectpriorityid'] . ''], false);
+	print_input_row($vbphrase['title'] . ($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . $projectpriority['projectpriorityid'], true) . '</dfn>' : ''), 'title', $vbphrase['priority' . $projectpriority['projectpriorityid'] . ''], false);
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectpriority['displayorder'], true, 5);
 	construct_hidden_code('projectid', $project['projectid']);
 	construct_hidden_code('projectpriorityid', $projectpriority['projectpriorityid']);
@@ -2847,13 +2855,15 @@ if ($_REQUEST['do'] == 'projectcategoryadd' OR $_REQUEST['do'] == 'projectcatego
 	if ($projectcategory['projectcategoryid'])
 	{
 		print_table_header($vbphrase['edit_project_category']);
+		$trans_link = "phrase.php?" . $vbulletin->session->vars['sessionurl'] . "do=edit&fieldname=projecttools&t=1&varname=category";
 	}
 	else
 	{
 		print_table_header($vbphrase['add_project_category']);
+		$trans_link = '';
 	}
 
-	print_input_row($vbphrase['title'], 'title', $vbphrase['category' . $projectcategory['projectcategoryid'] . ''], false);
+	print_input_row($vbphrase['title'] . ($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . $projectcategory['projectcategoryid'], true) . '</dfn>' : ''), 'title', $vbphrase['category' . $projectcategory['projectcategoryid'] . ''], false);
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectcategory['displayorder'], true, 5);
 	construct_hidden_code('projectid', $project['projectid']);
 	construct_hidden_code('projectcategoryid', $projectcategory['projectcategoryid']);
