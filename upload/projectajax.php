@@ -67,10 +67,57 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 // #######################################################################
 
 $vbulletin->input->clean_array_gpc('p', array(
+	'projectid' => TYPE_UINT,
 	'issueid' => TYPE_UINT,
 	'field' => TYPE_NOHTML,
 	'value' => TYPE_NOCLEAN // might be an array, might be a scalar
 ));
+
+// #######################################################################
+if ($_REQUEST['do'] == 'markread')
+{
+	$vbulletin->input->clean_gpc('r', 'issuetypeid', TYPE_NOHTML);
+
+	$project = verify_project($vbulletin->GPC['projectid']);
+
+	if ($vbulletin->GPC['issuetypeid'])
+	{
+		verify_issuetypeid($vbulletin->GPC['issuetypeid'], $project['projectid']);
+
+		mark_project_read($project['projectid'], $vbulletin->GPC['issuetypeid'], TIMENOW);
+
+		$issuetypes = array($vbulletin->GPC['issuetypeid']);
+	}
+	else
+	{
+		$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
+
+		$issuetypes = array();
+
+		foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
+		{
+			if ($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview'])
+			{
+				mark_project_read($project['projectid'], $issuetypeid, TIMENOW);
+				$issuetypes[] = $issuetypeid;
+			}
+		}
+	}
+
+	require_once(DIR . '/includes/class_xml.php');
+	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+	$xml->add_group('readmarker');
+
+	$xml->add_group('project', array('projectid' => $project['projectid']));
+	foreach ($issuetypes AS $issuetypeid)
+	{
+		$xml->add_tag('issuetype', $issuetypeid);
+	}
+	$xml->close_group();
+
+	$xml->close_group();
+	$xml->print_xml();
+}
 
 if (is_string($vbulletin->GPC['value']))
 {

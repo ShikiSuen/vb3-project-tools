@@ -35,7 +35,7 @@ function vB_AJAX_PT_ReadMarker(projectid, extended_search)
 */
 vB_AJAX_PT_ReadMarker.prototype.mark_read = function()
 {
-	YAHOO.util.Connect.asyncRequest("POST", 'project.php?do=markread&projectid=' + this.projectid, {
+	YAHOO.util.Connect.asyncRequest("POST", 'projectajax.php?do=markread&projectid=' + this.projectid, {
 		success: this.handle_ajax_request,
 		failure: this.handle_ajax_error,
 		timeout: vB_Default_Timeout,
@@ -157,7 +157,7 @@ function mark_project_read(projectid, extended_search)
 	}
 	else
 	{
-		window.location = 'project.php?' + SESSIONURL + 'do=markread&projectid=' + projectid;
+		window.location = 'projectajax.php?' + SESSIONURL + 'do=markread&projectid=' + projectid;
 	}
 
 	return false;

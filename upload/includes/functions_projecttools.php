@@ -209,7 +209,7 @@ function fetch_issue_info($issueid, $extra_info = array())
 	$issue = $db->query_first("
 		SELECT issuenote.*, issue.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
 			" . ($version_join ? "appliesversion.versionname AS appliesversion, addressedversion.versionname AS addressedversion," : '') . "
-			" . ($category_join ? "projectcategory.title AS categorytitle," : '') . "
+			" . ($category_join ? "projectcategory.projectcategoryid AS categorytitle," : '') . "
 			" . ($avatar_join ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
 			user.*, userfield.*, usertextfield.*, pt_user.*,
 			IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
@@ -218,7 +218,7 @@ function fetch_issue_info($issueid, $extra_info = array())
 			issue.visible, issue.lastactivity, issue.lastpost,
 			user.lastactivity AS user_lastactivity
 			" . ($marking ? ", issueread.readtime AS issueread, projectread.readtime AS projectread" : '') . "
-			" . ($milestone_join ? ", milestone.title_clean AS milestonetitle" : '') . "
+			" . ($milestone_join ? ", milestone.milestoneid AS milestonetitle" : '') . "
 			$hook_query_fields
 		FROM " . TABLE_PREFIX . "pt_issue AS issue
 		INNER JOIN " . TABLE_PREFIX . "pt_issuenote AS issuenote ON

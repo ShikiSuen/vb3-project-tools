@@ -195,63 +195,6 @@ if ($_REQUEST['do'] == 'report')
 }
 
 // #######################################################################
-if ($_REQUEST['do'] == 'markread')
-{
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuetypeid' => TYPE_NOHTML,
-		'ajax'        => TYPE_BOOL,
-	));
-
-	$project = verify_project($vbulletin->GPC['projectid']);
-
-	if ($vbulletin->GPC['issuetypeid'])
-	{
-		verify_issuetypeid($vbulletin->GPC['issuetypeid'], $project['projectid']);
-
-		mark_project_read($project['projectid'], $vbulletin->GPC['issuetypeid'], TIMENOW);
-
-		$issuetypes = array($vbulletin->GPC['issuetypeid']);
-	}
-	else
-	{
-		$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
-
-		$issuetypes = array();
-
-		foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
-		{
-			if ($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview'])
-			{
-				mark_project_read($project['projectid'], $issuetypeid, TIMENOW);
-				$issuetypes[] = $issuetypeid;
-			}
-		}
-	}
-
-	if ($vbulletin->GPC['ajax'])
-	{
-		require_once(DIR . '/includes/class_xml.php');
-		$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
-		$xml->add_group('readmarker');
-
-		$xml->add_group('project', array('projectid' => $project['projectid']));
-		foreach ($issuetypes AS $issuetypeid)
-		{
-			$xml->add_tag('issuetype', $issuetypeid);
-		}
-		$xml->close_group();
-
-		$xml->close_group();
-		$xml->print_xml();
-	}
-	else
-	{
-		$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . 'projectid=' . $project['projectid'];
-		eval(print_standard_redirect('project_markread'));
-	}
-}
-
-// #######################################################################
 // Previously do=overview branch
 if (empty($vbulletin->GPC['projectid']))
 {
