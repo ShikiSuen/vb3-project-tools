@@ -5268,7 +5268,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_milestonebit" templatetype="template" date="1295104475" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockbody settings_form_border">
+		<template name="pt_milestonebit" templatetype="template" date="1295221806" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockbody settings_form_border">
 	<div class="blocksubhead">
 		<img src="{vb:raw vboptions.cleargifurl}" width="1" height="1" alt="" />
 	</div>
@@ -5290,7 +5290,7 @@ init_project_readmarker_system();
 			<a href="{vb:link milestone, {vb:raw milestone}}" class="boldtext">{vb:raw title}</a>
 		</div>
 
-		<vb:if condition="$milestone['description']">
+		<vb:if condition="$description">
 			{vb:raw description}
 		</vb:if>
 
