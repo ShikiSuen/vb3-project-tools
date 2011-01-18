@@ -1623,18 +1623,6 @@ foreach ($project_array AS $projects)
 // Build the new priority cache
 build_project_priority_cache();
 
-// Delete useless phrases
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_1'");
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_2'");
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_3'");
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_4'");
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_5'");
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_6'");
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_7'");
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_8'");
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_9'");
-$db->query_write("DELETE FROM " . TABLE_PREFIX . "phrase WHERE varname = 'priority_10'");
-
 // Ensure phrases will be rebuilt
 $rebuild['phrases'] = true;]]></installcode>
 			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");]]></uninstallcode>
