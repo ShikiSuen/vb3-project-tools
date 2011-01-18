@@ -67,7 +67,7 @@ log_admin_action(
 // ######################### START MAIN SCRIPT ############################
 // ########################################################################
 
-print_cp_header($vbphrase['project_tools'], iif(in_array($_REQUEST['do'], array('statusedit', 'statusadd', 'projectpriorityedit', 'projectprirityadd')) , 'init_color_preview()'));
+print_cp_header($vbphrase['project_tools'], iif(in_array($_REQUEST['do'], array('statusedit', 'statusadd', 'projectpriorityedit', 'projectpriorityadd')) , 'init_color_preview()'));
 
 if (empty($_REQUEST['do']))
 {
@@ -2511,6 +2511,8 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 		print_stop_message('invalid_action_specified');
 	}
 
+	echo '<script type="text/javascript" src="../clientscript/vbulletin_cpcolorpicker.js"></script>';
+
 	print_form_header('project', 'projectpriorityupdate');
 
 	if ($projectcategory['projectpriorityid'])
@@ -2532,8 +2534,8 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 	// Construct_color_row reworked just for here
 	echo "<tr>
-		<td class=\"alt2\">" . $vbphrase['pt_severity_color'] . "</td>
-		<td class=\"alt2\">
+		<td class=\"alt1\">" . $vbphrase['pt_severity_color'] . "</td>
+		<td class=\"alt1\">
 			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
 			<tr>
 				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$projectpriority['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
