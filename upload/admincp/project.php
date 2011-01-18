@@ -2410,8 +2410,8 @@ if ($_POST['do'] == 'projectpriorityupdate')
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
 				displayorder = " . $vbulletin->GPC['displayorder'] . "
-				" . ($vbulletin->GPC['statuscolor'] ? ", statuscolor = " . $db->escape_string($vbulletin->GPC['statuscolor']) : '') . "
-			WHERE projectpriorityid = $projectpriority[projectpriorityid]
+				" . ($vbulletin->GPC['statuscolor'] ? ", statuscolor = '" . $db->escape_string($vbulletin->GPC['statuscolor']) . "'" : '') . "
+			WHERE projectpriorityid = " . $projectpriority['projectpriorityid'] . "
 		");
 
 	// Phrase the category
