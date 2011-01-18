@@ -456,7 +456,14 @@ function prepare_issue($issue)
 	$issue['lastread'] = issue_lastview($issue);
 	$issue['newflag'] = ($issue['lastpost'] > $issue['lastread']);
 
-	if ($vbulletin->options['pt_statuscolor'] AND $statuscolor = $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor'])
+	// Status Color
+	if ($vbulletin->options['pt_statuscolor'] == 1 AND $statuscolor == $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor'])
+	{
+		$issue['statuscolor'] = $statuscolor;
+	}
+
+	// Severity Color
+	if ($vbulletin->options['pt_statuscolor'] == 2 AND $statuscolor == $vbulletin->pt_priority["$issue[priority]"]['statuscolor'])
 	{
 		$issue['statuscolor'] = $statuscolor;
 	}
