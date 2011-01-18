@@ -32,6 +32,7 @@ $specialtemplates = array(
 	'pt_issuetype',
 	'pt_projects',
 	'pt_categories',
+	'pt_priorities',
 	'pt_assignable',
 	'pt_versions',
 	'smiliecache',
