@@ -457,15 +457,15 @@ function prepare_issue($issue)
 	$issue['newflag'] = ($issue['lastpost'] > $issue['lastread']);
 
 	// Status Color
-	if ($vbulletin->options['pt_statuscolor'] == 1 AND $statuscolor == $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor'])
+	if ($vbulletin->options['pt_statuscolor'] == 1)
 	{
-		$issue['statuscolor'] = $statuscolor;
+		$issue['statuscolor'] = $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor'];
 	}
 
 	// Severity Color
-	if ($vbulletin->options['pt_statuscolor'] == 2 AND $statuscolor == $vbulletin->pt_priority["$issue[priority]"]['statuscolor'])
+	if ($vbulletin->options['pt_statuscolor'] == 2)
 	{
-		$issue['statuscolor'] = $statuscolor;
+		$issue['statuscolor'] = $vbulletin->pt_priority["$issue[priority]"]['statuscolor'];
 	}
 
 	($hook = vBulletinHook::fetch_hook('project_issue_prepare')) ? eval($hook) : false;
