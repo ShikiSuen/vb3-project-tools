@@ -1358,17 +1358,8 @@ else
 	// Appropriate the block to the corresponding product
 	$db->query_write("UPDATE " . TABLE_PREFIX . "blocktype SET productid = 'vbprojecttools' WHERE name = 'ptissues'");
 }]]></installcode>
-			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
-$db_alter = new vB_Database_Alter_MySQL($db);
-if ($db_alter->fetch_table_info('pt_issuestatus'))
-{
-	$db_alter->drop_field('statuscolor');
-}
-
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset");
-
+			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");
-
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");
 
 // #############################################################################
@@ -1534,9 +1525,10 @@ build_project_category_cache();
 // Adding a table for priority
 $db->query_write("
 	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectpriority (
-		projectpriorityid int(10) unsigned NOT NULL AUTO_INCREMENT,
-		projectid int(10) unsigned NOT NULL,
-		displayorder int(10) unsigned NOT NULL,
+		projectpriorityid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		projectid INT UNSIGNED NOT NULL,
+		displayorder INT UNSIGNED NOT NULL,
+		statuscolor VARCHAR(20) NOT NULL,
 		PRIMARY KEY (projectpriorityid),
 		KEY finder (projectid,displayorder)
 	) ENGINE=MyISAM
@@ -9659,6 +9651,8 @@ There are also several permissions that are not definable per project or issue t
 			<phrase name="pt_listprojects_issue" date="1276545925" username="Pitchoune" version="2.1.2"><![CDATA[Issue of a project]]></phrase>
 			<phrase name="pt_listprojects_issuelist" date="1276545935" username="Pitchoune" version="2.1.2"><![CDATA[Issue list of a project]]></phrase>
 			<phrase name="pt_listprojects_overview" date="1276545948" username="Pitchoune" version="2.1.2"><![CDATA[Overview page of a project]]></phrase>
+			<phrase name="pt_severity_color" date="1295337615" username="Pitchoune" version="2.2.0"><![CDATA[Severity Color]]></phrase>
+			<phrase name="pt_status_color" date="1295337596" username="Pitchoune" version="2.2.0"><![CDATA[Status Color]]></phrase>
 		</phrasetype>
 		<phrasetype name="Permissions" fieldname="cppermission">
 			<phrase name="can_administer_project_tools" date="1176209170" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Administer Project Tools]]></phrase>
@@ -10316,6 +10310,7 @@ To create your own report, make a search with the criteria that you want and cli
 </ul>]]></phrase>
 			<phrase name="project_tools_upgraded_successfully" date="1179502428" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[vBulletin Project Tools Upgraded Successfully!]]></phrase>
 			<phrase name="project_versions_for_x" date="1213805622" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Versions for <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="pt_severity_color" date="1295361327" username="Pitchoune" version="2.2.0"><![CDATA[Severity Color]]></phrase>
 			<phrase name="pt_status_color" date="1276120806" username="Pitchoune" version="2.1.2"><![CDATA[Status Color]]></phrase>
 			<phrase name="ptperm_can_assign_edit" date="1176211762" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Assignments]]></phrase>
 			<phrase name="ptperm_can_assign_edit_others" date="1176211771" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Others' Assignments]]></phrase>
@@ -10493,10 +10488,8 @@ A value of 0 will hide the recent issues from this page.]]></phrase>
 <br />
 A value of 0 will hide the timeline from this page.]]></phrase>
 			<phrase name="setting_pt_project_timelineentries_title" date="1181652861" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Project View: Timeline Entries]]></phrase>
-			<phrase name="setting_pt_statuscolor_desc" date="1276119927" username="Pitchoune" version="2.1.2"><![CDATA[Do you want to use the 'Status Color' feature?<br />
-<br />
-<b>Note:</b> You can define only one color per status for all styles. If you want to use it, choose colors wisely.]]></phrase>
-			<phrase name="setting_pt_statuscolor_title" date="1276119927" username="Pitchoune" version="2.1.2"><![CDATA[Status Color]]></phrase>
+			<phrase name="setting_pt_statuscolor_desc" date="1295346514" username="Pitchoune" version="2.2.0"><![CDATA[Which color would you like to use in the issue list?]]></phrase>
+			<phrase name="setting_pt_statuscolor_title" date="1295346514" username="Pitchoune" version="2.2.0"><![CDATA[Status Color]]></phrase>
 			<phrase name="setting_pt_timelineperpage_desc" date="1181652760" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[When viewing the timeline page, this controls the number of entries shown on each page.<br />
 <br />
 A value of 0 will display all entries in the specified time range on one page.]]></phrase>
@@ -10640,8 +10633,11 @@ diff</defaultvalue>
 				<defaultvalue>1</defaultvalue>
 			</setting>
 			<setting varname="pt_statuscolor" displayorder="220">
-				<datatype>boolean</datatype>
-				<optioncode>yesno</optioncode>
+				<datatype>posint</datatype>
+				<optioncode>radio:piped
+0|none
+1|pt_status_color
+2|pt_severity_color</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
 			<setting varname="pt_listprojects_activate" displayorder="230">
