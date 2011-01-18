@@ -67,7 +67,7 @@ log_admin_action(
 // ######################### START MAIN SCRIPT ############################
 // ########################################################################
 
-print_cp_header($vbphrase['project_tools'], iif($_REQUEST['do'] == 'statusedit' OR $_REQUEST['do'] == 'statusadd', 'init_color_preview()'));
+print_cp_header($vbphrase['project_tools'], iif(in_array($_REQUEST['do'], array('statusedit', 'statusadd', 'projectpriorityedit', 'projectprirityadd')) , 'init_color_preview()'));
 
 if (empty($_REQUEST['do']))
 {
@@ -2375,7 +2375,8 @@ if ($_POST['do'] == 'projectpriorityupdate')
 		'projectpriorityid' => TYPE_UINT,
 		'projectid' => TYPE_UINT,
 		'title' => TYPE_NOHTML,
-		'displayorder' => TYPE_UINT
+		'displayorder' => TYPE_UINT,
+		'statuscolor' => TYPE_STR,
 	));
 
 	if ($vbulletin->GPC['projectpriorityid'])
@@ -2409,6 +2410,7 @@ if ($_POST['do'] == 'projectpriorityupdate')
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
 				displayorder = " . $vbulletin->GPC['displayorder'] . "
+				" . ($vbulletin->GPC['statuscolor'] ? ", statuscolor = " . $db->escape_string($vbulletin->GPC['statuscolor']) : '') . "
 			WHERE projectpriorityid = $projectpriority[projectpriorityid]
 		");
 
@@ -2497,7 +2499,8 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 		$projectpriority = array(
 			'projectpriorityid' => 0,
 			'title' => '',
-			'displayorder' => $maxorder['maxorder'] + 10
+			'displayorder' => $maxorder['maxorder'] + 10,
+			'statuscolor' => ''
 		);
 	}
 
@@ -2523,9 +2526,40 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 	print_input_row($vbphrase['title'] . ($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . $projectpriority['projectpriorityid'], true) . '</dfn>' : ''), 'title', $vbphrase['priority' . $projectpriority['projectpriorityid'] . ''], false);
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectpriority['displayorder'], true, 5);
+
+	require_once(DIR . '/includes/adminfunctions_template.php');
+	$colorPicker = construct_color_picker(11);
+
+	// Construct_color_row reworked just for here
+	echo "<tr>
+		<td class=\"alt2\">" . $vbphrase['pt_severity_color'] . "</td>
+		<td class=\"alt2\">
+			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
+			<tr>
+				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$projectpriority['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
+				<td><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
+			</tr>
+			</table>
+		</td>
+	</tr>\n";
+
 	construct_hidden_code('projectid', $project['projectid']);
 	construct_hidden_code('projectpriorityid', $projectpriority['projectpriorityid']);
 	print_submit_row();
+
+	?>
+	<script type="text/javascript">
+	<!--
+
+	var bburl = "<?php echo $vbulletin->options['bburl']; ?>/";
+	var cpstylefolder = "<?php echo $vbulletin->options['cpstylefolder']; ?>";
+	var numColors = 1;
+	var colorPickerWidth = 253;
+	var colorPickerType = 0;
+
+	//-->
+	</script>
+	<?php
 }
 
 // ########################################################################

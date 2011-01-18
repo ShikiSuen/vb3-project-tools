@@ -465,7 +465,7 @@ function prepare_issue($issue)
 	// Severity Color
 	if ($vbulletin->options['pt_statuscolor'] == 2)
 	{
-		$issue['statuscolor'] = $vbulletin->pt_priority["$issue[priority]"]['statuscolor'];
+		$issue['statuscolor'] = $vbulletin->pt_priorities["$issue[priority]"]['statuscolor'];
 	}
 
 	($hook = vBulletinHook::fetch_hook('project_issue_prepare')) ? eval($hook) : false;
