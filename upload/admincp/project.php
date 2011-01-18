@@ -2549,6 +2549,8 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 	construct_hidden_code('projectpriorityid', $projectpriority['projectpriorityid']);
 	print_submit_row();
 
+	echo $colorPicker;
+
 	?>
 	<script type="text/javascript">
 	<!--
