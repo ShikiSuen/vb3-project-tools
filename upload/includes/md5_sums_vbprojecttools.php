@@ -3,11 +3,11 @@
 $md5_sums = array(
 	'/' => array(
 		'issue.php' => 'f68e2b492f04924bb07979b51a7ba8cc',
-		'issuelist.php' => '9694ec54093952ada7dead548f76538d',
+		'issuelist.php' => 'c440012ecc1f932b3a07abc882954e50',
 		'milestone.php' => '6aecdcfe69a46b50cb73f247f4c34d79',
-		'milestoneissuelist.php' => 'd9d7595b5aafd5971e8b4fde455460cb',
+		'milestoneissuelist.php' => '478a5fc4ab1f4c2744fc6159f5c7f52c',
 		'project.php' => 'a5b6261e4077a276e92e487553f80339',
-		'projectajax.php' => '93ffd6a8ff77ed0dc659a1c9d3e2d34e',
+		'projectajax.php' => 'ad31ac9049ed7d9dfcdc9648b9460447',
 		'projectattachment.php' => '082bd4253cf4399a5ed58f7e37ca8900',
 		'projectexternal.php' => '7826107f3e6e17dc2145d5f52d74b3b9',
 		'projectmilestone.php' => '081199e35719eecbc1ce9aa4ebc23c75',
@@ -16,7 +16,7 @@ $md5_sums = array(
 		'projecttimeline.php' => '98516262c1363a7182a334a360755360',
 	),
 	'/admincp' => array(
-		'project.php' => 'd742632748f5019b0f52fed41882bcce',
+		'project.php' => 'a0482f0f86360a04a4228f54a0963c72',
 		'projectattachment.php' => '538c493b5fa191f83f939fc25ac884a9',
 		'projectpermission.php' => '15439b068298a038a8f803e62c550656',
 	),
@@ -55,7 +55,7 @@ $md5_sums = array(
 		'class_reportitem_pt.php' => '495bda8f28fbfac1513af5da9d27778e',
 		'class_upload_pt.php' => '8f0bdebdccd046b4bbf766ed1ad823e8',
 		'class_upload_ptimporter.php' => '973c5a881e2cbdb3856554e8d43324e4',
-		'functions_projecttools.php' => 'e74b66ca0d9032463a640a8d55c599e0',
+		'functions_projecttools.php' => 'c84e2e4f83fdad3644aded6eba126509',
 		'functions_pt_digest.php' => 'c7dfa7169a02cac2290a8678ee9251ef',
 		'functions_pt_forumbit.php' => '97183690113d9294692243d33ca64386',
 		'functions_pt_milestone.php' => '03fb66595895ce63390bcbdf0992e664',
@@ -81,7 +81,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => '82fbdab8993354b6805f020ff250a565',
-		'product-vbprojecttools.xml' => 'eeefc8ef179ce9ebb17ac9c5b91e8c77',
+		'product-vbprojecttools.xml' => 'b55d2cd67072f50eb78e9376ece0007a',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'b3b48fe8595c439439a95343f927cae1',
