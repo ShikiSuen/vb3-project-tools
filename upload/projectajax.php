@@ -238,9 +238,7 @@ if ($_POST['do'] == 'save')
 				throw_ajax_error('');
 			}
 
-			$vbulletin->input->clean_array_gpc('p', array(
-				'value' => TYPE_ARRAY_NOHTML
-			));
+			$vbulletin->input->clean_gpc('p', 'value', TYPE_ARRAY_NOHTML);
 
 			foreach ($vbulletin->GPC['value'] AS $key => $value)
 			{
@@ -283,9 +281,7 @@ if ($_POST['do'] == 'save')
 				throw_ajax_error('');
 			}
 
-			$vbulletin->input->clean_array_gpc('p', array(
-				'value' => TYPE_ARRAY_NOHTML
-			));
+			$vbulletin->input->clean_gpc('p', 'value', TYPE_ARRAY_NOHTML);
 
 			$vbulletin->GPC['value'] = array_keys($vbulletin->GPC['value']);
 
@@ -378,7 +374,7 @@ if ($_POST['do'] == 'fetch')
 			else
 			{
 				$xml->add_group('items');
-				$xml->add_tag('item', $vbphrase['unknown'], array('itemid' => 0, 'selected' => ($issue['projectpriorityid'] == 0 ? 'yes' : 'no')));
+				$xml->add_tag('item', $vbphrase['unknown'], array('itemid' => 0, 'selected' => ($issue['priority'] == 0 ? 'yes' : 'no')));
 
 				foreach ($vbulletin->pt_priorities AS $priority)
 				{
@@ -391,13 +387,6 @@ if ($_POST['do'] == 'fetch')
 						'selected' => ($issue['projectriorityid'] == $priority['projectpriorityid'] ? 'yes' : 'no')
 					));
 				}
-					/*for ($i = 0; $i <= 10; $i++)
-					{
-						$xml->add_tag('item', $vbphrase["priority_$i"], array(
-							'itemid' => $i,
-							'selected' => ($issue['priority'] == $i ? 'yes' : 'no')
-						));
-					}*/
 				$xml->close_group();
 			}
 			break;
