@@ -1243,14 +1243,22 @@ function build_issue_bit($issue, $project, $issueperms)
 
 	$show['statuscolor'] = false;
 
-	$projectstatusset = $vbulletin->db->query_first("
-		SELECT issuestatusid, projectid
-		FROM " . TABLE_PREFIX . "pt_issuestatusprojectset
-		WHERE projectid = " . $project['projectid'] . "
-			AND issuestatusid = " . $issue['issuestatusid'] . "
-	");
+	if ($vbulletin->options['pt_statuscolor'] == 1)
+	{
+		$projectstatusset = $vbulletin->db->query_first("
+			SELECT issuestatusid, projectid
+			FROM " . TABLE_PREFIX . "pt_issuestatusprojectset
+			WHERE projectid = " . $project['projectid'] . "
+				AND issuestatusid = " . $issue['issuestatusid'] . "
+		");
 
-	if ($issue['statuscolor'] AND $vbulletin->options['pt_statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
+		if ($issue['statuscolor'] AND $vbulletin->options['pt_statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
+		{
+			$show['statuscolor'] = true;
+		}
+	}
+
+	if ($vbulletin->options['pt_statuscolor'] == 2 AND $issue['statuscolor'])
 	{
 		$show['statuscolor'] = true;
 	}
