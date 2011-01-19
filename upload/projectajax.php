@@ -384,7 +384,7 @@ if ($_POST['do'] == 'fetch')
 					}
 					$xml->add_tag('item', $vbphrase['priority' . $priority['projectpriorityid'] . ''], array(
 						'itemid' => $priority['projectpriorityid'],
-						'selected' => ($issue['projectriorityid'] == $priority['projectpriorityid'] ? 'yes' : 'no')
+						'selected' => ($issue['priority'] == $priority['projectpriorityid'] ? 'yes' : 'no')
 					));
 				}
 				$xml->close_group();
