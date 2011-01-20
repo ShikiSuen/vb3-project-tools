@@ -920,8 +920,6 @@ while ($note = $db->fetch_array($notes))
 	$displayed_dateline = max($displayed_dateline, $note['dateline']);
 	$note_handler =& $factory->create($note);
 	$notebits .= $note_handler->construct();
-
-	$LASTISSUENOTEID = $note['issuenoteid'];
 }
 
 // prepare the original issue like a note since it has note text
@@ -1021,7 +1019,7 @@ if ($show['quick_reply'])
 			var require_click = 0;
 			var is_last_page = $show[allow_ajax_qr]; // leave for people with cached JS files
 			var allow_ajax_qr = $show[allow_ajax_qr];
-			var last_post_id = $LASTISSUENOTEID;
+			var last_post_id = $issue[lastnoteid];
 			var ajax_last_post = " . intval($displayed_dateline) . ";
 		// -->
 		</script>
