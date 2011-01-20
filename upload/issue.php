@@ -920,6 +920,8 @@ while ($note = $db->fetch_array($notes))
 	$displayed_dateline = max($displayed_dateline, $note['dateline']);
 	$note_handler =& $factory->create($note);
 	$notebits .= $note_handler->construct();
+
+	$LASTISSUENOTEID = $note['issuenoteid'];
 }
 
 // prepare the original issue like a note since it has note text
@@ -927,6 +929,17 @@ $displayed_dateline = max($displayed_dateline, $issue['dateline']);
 $note_handler =& $factory->create($issue);
 $note_handler->construct();
 $issue = $note_handler->note;
+
+if ($vbulletin->userinfo['postorder'])
+{
+	// disable ajax qr when displaying linear newest first
+	$show['allow_ajax_qr'] = 0;
+}
+else
+{
+	// only allow ajax on the last page of a thread when viewing oldest first
+	$show['allow_ajax_qr'] = (($vbulletin->GPC['pagenumber'] == ceil($note_count / $vbulletin->options['pt_notesperpage'])) ? 1 : 0);
+}
 
 if ($show['status_petition'] OR $show['status_edit'])
 {
@@ -987,6 +1000,10 @@ if ($displayed_dateline AND $displayed_dateline >= $issue['lastread'])
 if ($show['quick_reply'])
 {
 	require_once(DIR . '/includes/functions_editor.php');
+
+	$qrpostid = $curpostid;
+	$show['qr_require_click'] = 0;
+
 	$editorid = construct_edit_toolbar(
 		'',
 		false,
@@ -996,6 +1013,25 @@ if ($show['quick_reply'])
 		false,
 		'qr'
 	);
+
+	$messagearea = "
+		<script type=\"text/javascript\">
+		<!--
+			var threaded_mode = 1;
+			var require_click = 0;
+			var is_last_page = $show[allow_ajax_qr]; // leave for people with cached JS files
+			var allow_ajax_qr = $show[allow_ajax_qr];
+			var last_post_id = $LASTISSUENOTEID;
+			var ajax_last_post = " . intval($displayed_dateline) . ";
+		// -->
+		</script>
+		$messagearea
+	";
+}
+else if ($show['ajax_js'])
+{
+	$templater = vB_Template::create('editor_clientscript');
+	$vBeditTemplate['clientscript'] = $templater->render();
 }
 
 // Project jump
