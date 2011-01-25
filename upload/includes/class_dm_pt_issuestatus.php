@@ -39,6 +39,7 @@ class vB_DataManager_Pt_IssueStatus extends vB_DataManager
 		'canpetitionfrom'  => array(TYPE_BOOL, REQ_NO),
 		'issuecompleted'   => array(TYPE_BOOL, REQ_NO),
 		'statuscolor'      => array(TYPE_STR, REQ_NO),
+		'statuscolor2'     => array(TYPE_STR, REQ_NO),
 		'projectset'       => array(TYPE_STR, REQ_NO),
 	);
 
@@ -259,4 +260,5 @@ class vB_DataManager_Pt_IssueStatus extends vB_DataManager
 		return true;
 	}
 }
+
 ?>

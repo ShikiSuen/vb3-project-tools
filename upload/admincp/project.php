@@ -904,6 +904,7 @@ if ($_POST['do'] == 'statusupdate')
 		'canpetitionfrom' => TYPE_UINT,
 		'issuecompleted' => TYPE_UINT,
 		'statuscolor' => TYPE_STR,
+		'statuscolor2' => TYPE_STR,
 		'projectset' => TYPE_ARRAY_UINT
 	));
 
@@ -938,6 +939,7 @@ if ($_POST['do'] == 'statusupdate')
 	$statusdata->set('canpetitionfrom', $vbulletin->GPC['canpetitionfrom']);
 	$statusdata->set('issuecompleted', $vbulletin->GPC['issuecompleted']);
 	$statusdata->set('statuscolor', $vbulletin->GPC['statuscolor']);
+	$statusdata->set('statuscolor2', $vbulletin->GPC['statuscolor2']);
 	$statusdata->set_info('title', $vbulletin->GPC['title']);
 	$issuestatusid = $statusdata->save();
 
@@ -1009,6 +1011,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 			'issuecompleted' => 0,
 			'title' => '',
 			'statuscolor' => '',
+			'statuscolor2' => '',
 			'projectset' => '',
 		);
 	}
@@ -1053,11 +1056,24 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 
 	// Construct_color_row reworked just for here
 	echo "<tr>
-		<td class=\"alt2\">" . $vbphrase['pt_status_color'] . "</td>
+		<td class=\"alt2\">" . $vbphrase['status_color_dark_styles'] . "</td>
 		<td class=\"alt2\">
 			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
 			<tr>
 				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$issuestatus['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
+				<td><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
+			</tr>
+			</table>
+		</td>
+	</tr>\n";
+
+	// Construct_color_row reworked just for here
+	echo "<tr>
+		<td class=\"alt2\">" . $vbphrase['status_color_light_styles'] . "</td>
+		<td class=\"alt2\">
+			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
+			<tr>
+				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$issuestatus['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
 				<td><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
 			</tr>
 			</table>
