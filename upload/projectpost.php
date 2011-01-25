@@ -153,7 +153,7 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 // #######################################################################
 
 // #######################################################################
-if ($_REQUEST['do'] == 'postreply' OR $_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
+if ($_POST['do'] == 'postreply' OR $_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
 		'issueid' => TYPE_UINT,
@@ -223,9 +223,9 @@ if ($_REQUEST['do'] == 'postreply' OR $_REQUEST['do'] == 'addreply' OR $_REQUEST
 }
 
 // #######################################################################
-if ($_REQUEST['do'] == 'postreply')
+if ($_POST['do'] == 'postreply')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
+	$vbulletin->input->clean_array_gpc('p', array(
 		'message'            => TYPE_STR,
 		'wysiwyg'            => TYPE_BOOL,
 		'quickreply'         => TYPE_BOOL,
