@@ -19,6 +19,19 @@ define('THIS_SCRIPT', 'projectpost');
 define('CSRF_PROTECTION', true);
 define('PROJECT_SCRIPT', true);
 
+if ($_POST['do'] == 'postreply')
+{
+	if (isset($_POST['ajax']))
+	{
+		define('NOPMPOPUP', 1);
+		define('NOSHUTDOWNFUNC', 1);
+	}
+	if (isset($_POST['fromquickreply']))
+	{	// Don't update Who's Online for Quick Replies since it will get stuck on that until the user goes somewhere else
+		define('LOCATION_BYPASS', 1);
+	}
+}
+
 // ################### PRE-CACHE TEMPLATES AND DATA ######################
 // get special phrase groups
 $phrasegroups = array('projecttools', 'posting');
@@ -145,7 +158,7 @@ if ($_POST['do'] == 'postreply' OR $_REQUEST['do'] == 'addreply' OR $_REQUEST['d
 	$vbulletin->input->clean_array_gpc('r', array(
 		'issueid' => TYPE_UINT,
 		'issuenoteid' => TYPE_UINT,
-		'fromquickreply' => TYPE_UINT,
+		'fromquickreply' => TYPE_BOOL,
 	));
 
 	if ($vbulletin->GPC['issuenoteid'])
@@ -215,6 +228,8 @@ if ($_POST['do'] == 'postreply')
 	$vbulletin->input->clean_array_gpc('p', array(
 		'message'          => TYPE_STR,
 		'wysiwyg'          => TYPE_BOOL,
+		'quickreply'       => TYPE_BOOL,
+		'ajaxqrfailed'     => TYPE_BOOL,
 		'private'          => TYPE_BOOL,
 		'delete'           => TYPE_STR,
 		'undelete'         => TYPE_BOOL,
@@ -224,12 +239,38 @@ if ($_POST['do'] == 'postreply')
 		'subscribetype'    => TYPE_NOHTML,
 		'preview'          => TYPE_NOHTML,
 		'humanverify'      => TYPE_ARRAY,
+		'ajax'             => TYPE_BOOL,
+		'ajax_lastpost'    => TYPE_INT,
+		'loggedinuser'     => TYPE_INT,
+		'specifiedpost'    => TYPE_BOOL,
 	));
+
+	if ($vbulletin->GPC['loggedinuser'] != 0 AND $vbulletin->userinfo['userid'] == 0)
+	{
+		// User was logged in when writing post but isn't now. If we got this
+		// far, guest posts are allowed, but they didn't enter a username so
+		// they'll get an error. Force them to log back in.
+		standard_error(fetch_error('session_timed_out_login'), '', false, 'STANDARD_ERROR_LOGIN');
+	}
 
 	if ($vbulletin->GPC['wysiwyg'])
 	{
 		require_once(DIR . '/includes/functions_wysiwyg.php');
 		$vbulletin->GPC['message'] = convert_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
+	}
+
+	if ($vbulletin->GPC['ajax'])
+	{
+		// posting via ajax so we need to handle those %u0000 entries
+		$vbulletin->GPC['message'] = convert_urlencoded_unicode($vbulletin->GPC['message']);
+	}
+
+	if ($vbulletin->GPC['ajax'] AND $vbulletin->GPC['username'])
+	{
+		if ($vbulletin->GPC['username'])
+		{
+			$vbulletin->GPC['username'] = convert_urlencoded_unicode($vbulletin->GPC['username']);
+		}
 	}
 
 	($hook = vBulletinHook::fetch_hook('projectpost_postreply_start')) ? eval($hook) : false;
@@ -269,8 +310,7 @@ if ($_POST['do'] == 'postreply')
 				print_no_permission();
 			}
 
-			if (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['candeletenote']) OR
-				($issuenote['userid'] != $vbulletin->userinfo['userid'] AND !($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['candeletenoteothers']))
+			if (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['candeletenote']) OR ($issuenote['userid'] != $vbulletin->userinfo['userid'] AND !($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['candeletenoteothers']))
 			)
 			{
 				print_no_permission();
@@ -351,13 +391,38 @@ if ($_POST['do'] == 'postreply')
 
 	$issuenotedata->pre_save();
 
-	if ($issuenotedata->errors OR $vbulletin->GPC['preview'])
+	if ($issuenotedata->errors)
 	{
+		// ### POST HAS ERRORS ###
+		if ($vbulletin->GPC['ajax'])
+		{
+			require_once(DIR . '/includes/class_xml.php');
+			$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+			$xml->add_group('errors');
+			foreach ($issuenotedata->errors AS $error)
+			{
+				$xml->add_tag('error', $error);
+			}
+			$xml->close_group();
+			$xml->print_xml(true);
+		}
+		else
+		{
+			$preview = construct_errors($issuenotedata->errors); //prepare_pt_note_preview($vbulletin->GPC, $issuenotedata, $issuenote, $issue);
+			construct_checkboxes($vbulletin->GPC);
+			define('IS_PREVIEW', true);
+			$_REQUEST['do'] = 'editreply';
+			$vbulletin->GPC['message'] = htmlspecialchars_uni($vbulletin->GPC['message']);
+		}
+
+		($hook = vBulletinHook::fetch_hook('projectpost_postreply_preview')) ? eval($hook) : false;
+	}
+	else if ($vbulletin->GPC['preview'])
+	{
+		// Nothing actually - need to be developed
 		$preview = prepare_pt_note_preview($vbulletin->GPC, $issuenotedata, $issuenote, $issue);
 		define('IS_PREVIEW', true);
 		$_REQUEST['do'] = 'editreply';
-
-		($hook = vBulletinHook::fetch_hook('projectpost_postreply_preview')) ? eval($hook) : false;
 	}
 	else
 	{
@@ -367,40 +432,329 @@ if ($_POST['do'] == 'postreply')
 			$issuenote = $issuenotedata->pt_issuenote;
 			$issuenote['issuenoteid'] = $issuenoteid;
 
-			send_issue_reply_notification($issue, $issuenote);
-			handle_issue_subscription_change($issue['issueid'], $issue['subscribetype'], $vbulletin->GPC['subscribetype']);
-
-			// trying to change the status while replying -- ensure we can actually do that
-			if ($vbulletin->GPC['changestatusid'])
+			if ($vbulletin->GPC['ajax'])
 			{
-				if ($posting_perms['status_edit'])
+				// AJAX return code
+				require_once(DIR . '/includes/class_xml.php');
+
+				$show['quick_reply'] = ($vbulletin->userinfo['userid'] AND $posting_perms['can_reply']);
+
+				// determine which note types the browsing user can see
+				$viewable_note_types = fetch_viewable_note_types($issueperms, $private_text);
+				$can_see_deleted = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmanage']);
+
+				// find total results for each type
+				$notetype_counts = array(
+					'user' => 0,
+					'petition' => 0,
+					'system' => 0
+				);
+
+				$hook_query_fields = $hook_query_joins = $hook_query_where = '';
+				($hook = vBulletinHook::fetch_hook('projectpost_postreply_ajax')) ? eval($hook) : false; // Need to add to hook file for 2.2
+
+				$notetype_counts_query = $db->query_read("
+					SELECT issuenote.type, COUNT(*) AS total
+					FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
+					$hook_query_joins
+					WHERE issuenote.issueid = $issue[issueid]
+						AND issuenote.issuenoteid <> $issue[firstnoteid]
+						AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
+						$hook_query_where
+					GROUP BY issuenote.type
+				");
+
+				while ($notetype_count = $db->fetch_array($notetype_counts_query))
 				{
-					// changing status - make sure the type is right
-					$status = $vbulletin->pt_issuestatus[$vbulletin->GPC['changestatusid']];
-					if ($status AND $issue['issuetypeid'] == $status['issuetypeid'])
+					$notetype_counts["$notetype_count[type]"] = intval($notetype_count['total']);
+				}
+
+				// sanitize type filter
+				switch ($vbulletin->GPC['filter'])
+				{
+					case 'petitions':
+					case 'changes':
+					case 'all':
+					case 'comments':
+						break;
+					default:
+						// we haven't specified a valid filter, so let's pick a default that has something if possible
+						if ($notetype_counts['user'] OR $notetype_counts['petition'])
+						{
+							// have replies
+							$vbulletin->GPC['filter'] = 'comments';
+						}
+						else if ($notetype_counts['system'])
+						{
+							// changes only
+							$vbulletin->GPC['filter'] = 'changes';
+						}
+						else
+						{
+							// nothing, just show comments
+							$vbulletin->GPC['filter'] = 'comments';
+						}
+				}
+
+				// setup filtering
+				switch ($vbulletin->GPC['filter'])
+				{
+					case 'petitions':
+						$type_filter = "AND issuenote.type = 'petition'";
+						$note_count = $notetype_counts['petition'];
+						break;
+
+					case 'changes':
+						$type_filter = "AND issuenote.type = 'system'";
+						$note_count = $notetype_counts['system'];
+						break;
+
+					case 'all':
+						$type_filter = '';
+						$note_count = array_sum($notetype_counts);
+						break;
+
+					case 'comments':
+					default:
+						$type_filter = "AND issuenote.type IN ('user', 'petition')";
+						$note_count = $notetype_counts['user'] + $notetype_counts['petition'];
+						$vbulletin->GPC['filter'] = 'comments';
+				}
+
+				// notes
+				$notes = $db->query_read("
+					SELECT issuenote.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
+						" . ($vbulletin->options['avatarenabled'] ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
+						user.*, userfield.*, usertextfield.*,
+						IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
+						issuepetition.petitionstatusid, issuepetition.resolution AS petitionresolution
+						" . ($can_see_deleted ? ", issuedeletionlog.reason AS deletionreason" : '') . "
+						$hook_query_fields
+					FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
+					LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
+					LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
+					LEFT JOIN " . TABLE_PREFIX . "usertextfield AS usertextfield ON (usertextfield.userid = user.userid)
+					LEFT JOIN " . TABLE_PREFIX . "pt_issuepetition AS issuepetition ON (issuepetition.issuenoteid = issuenote.issuenoteid)
+					" . ($can_see_deleted ? "LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON (issuedeletionlog.primaryid = issuenote.issuenoteid AND issuedeletionlog.type = 'issuenote')" : '') . "
+					" . ($vbulletin->options['avatarenabled'] ? "
+						LEFT JOIN " . TABLE_PREFIX . "avatar AS avatar ON(avatar.avatarid = user.avatarid)
+						LEFT JOIN " . TABLE_PREFIX . "customavatar AS customavatar ON(customavatar.userid = user.userid)" : '') . "
+					$hook_query_joins
+					WHERE issuenote.issueid = $issue[issueid]
+						AND issuenote.issuenoteid = $issuenote[issuenoteid]
+						AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
+						$type_filter
+						$hook_query_where
+					ORDER BY issuenote.dateline
+				");
+
+				require_once(DIR . '/includes/class_bbcode_pt.php');
+				$bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
+
+				require_once(DIR . '/includes/class_pt_issuenote.php');
+				$factory = new vB_Pt_IssueNoteFactory();
+				$factory->registry =& $vbulletin;
+				$factory->bbcode =& $bbcode;
+				$factory->issue =& $issue;
+				$factory->project =& $project;
+				$factory->browsing_perms = $issueperms;
+
+				$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+				$xml->add_group('issuenotes');
+
+				while ($note = $db->fetch_array($notes))
+				{
+					$note_handler =& $factory->create($note);
+					$xml->add_tag('issuenotebit', process_replacement_vars($note_handler->construct($note)), array('issuenoteid' => $note['issuenoteid']));
+				}
+
+				$xml->add_tag('time', TIMENOW);
+				$xml->close_group();
+				$xml->print_xml(true);
+			}
+			else
+			{
+				send_issue_reply_notification($issue, $issuenote);
+				handle_issue_subscription_change($issue['issueid'], $issue['subscribetype'], $vbulletin->GPC['subscribetype']);
+
+				// trying to change the status while replying -- ensure we can actually do that
+				if ($vbulletin->GPC['changestatusid'])
+				{
+					if ($posting_perms['status_edit'])
 					{
-						$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_SILENT);
-						$issuedata->set_info('project', $project);
-						$issuedata->set_existing($issue);
-						$issuedata->set('issuestatusid', $vbulletin->GPC['changestatusid']);
-						$issuedata->save();
+						// changing status - make sure the type is right
+						$status = $vbulletin->pt_issuestatus[$vbulletin->GPC['changestatusid']];
+						if ($status AND $issue['issuetypeid'] == $status['issuetypeid'])
+						{
+							$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_SILENT);
+							$issuedata->set_info('project', $project);
+							$issuedata->set_existing($issue);
+							$issuedata->set('issuestatusid', $vbulletin->GPC['changestatusid']);
+							$issuedata->save();
+						}
 					}
 				}
+
+				($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
+
+				$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
+				eval(print_standard_redirect('pt_issuenote_inserted'));
 			}
-
-			($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
-
-			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
-			eval(print_standard_redirect('pt_issuenote_inserted'));
 		}
 		else
 		{
-			$issuenotedata->save();
+			$issuenoteid = $issuenotedata->save();
+			$issuenote = $issuenotedata->pt_issuenote;
+			$issuenote['issuenoteid'] = $issuenoteid;
 
-			($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
+			if ($vbulletin->GPC['ajax'])
+			{
+				// AJAX return code
+				require_once(DIR . '/includes/class_xml.php');
 
-			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
-			eval(print_standard_redirect('pt_issuenote_edited'));
+				$show['quick_reply'] = ($vbulletin->userinfo['userid'] AND $posting_perms['can_reply']);
+
+				// determine which note types the browsing user can see
+				$viewable_note_types = fetch_viewable_note_types($issueperms, $private_text);
+				$can_see_deleted = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmanage']);
+
+				// find total results for each type
+				$notetype_counts = array(
+					'user' => 0,
+					'petition' => 0,
+					'system' => 0
+				);
+
+				$hook_query_fields = $hook_query_joins = $hook_query_where = '';
+				($hook = vBulletinHook::fetch_hook('projectpost_postreply_ajax')) ? eval($hook) : false; // Need to add to hook file for 2.2
+
+				$notetype_counts_query = $db->query_read("
+					SELECT issuenote.type, COUNT(*) AS total
+					FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
+					$hook_query_joins
+					WHERE issuenote.issueid = $issue[issueid]
+						AND issuenote.issuenoteid <> $issue[firstnoteid]
+						AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
+						$hook_query_where
+					GROUP BY issuenote.type
+				");
+
+				while ($notetype_count = $db->fetch_array($notetype_counts_query))
+				{
+					$notetype_counts["$notetype_count[type]"] = intval($notetype_count['total']);
+				}
+
+				// sanitize type filter
+				switch ($vbulletin->GPC['filter'])
+				{
+					case 'petitions':
+					case 'changes':
+					case 'all':
+					case 'comments':
+						break;
+					default:
+						// we haven't specified a valid filter, so let's pick a default that has something if possible
+						if ($notetype_counts['user'] OR $notetype_counts['petition'])
+						{
+							// have replies
+							$vbulletin->GPC['filter'] = 'comments';
+						}
+						else if ($notetype_counts['system'])
+						{
+							// changes only
+							$vbulletin->GPC['filter'] = 'changes';
+						}
+						else
+						{
+							// nothing, just show comments
+							$vbulletin->GPC['filter'] = 'comments';
+						}
+				}
+
+				// setup filtering
+				switch ($vbulletin->GPC['filter'])
+				{
+					case 'petitions':
+						$type_filter = "AND issuenote.type = 'petition'";
+						$note_count = $notetype_counts['petition'];
+						break;
+
+					case 'changes':
+						$type_filter = "AND issuenote.type = 'system'";
+						$note_count = $notetype_counts['system'];
+						break;
+
+					case 'all':
+						$type_filter = '';
+						$note_count = array_sum($notetype_counts);
+						break;
+
+					case 'comments':
+					default:
+						$type_filter = "AND issuenote.type IN ('user', 'petition')";
+						$note_count = $notetype_counts['user'] + $notetype_counts['petition'];
+						$vbulletin->GPC['filter'] = 'comments';
+				}
+
+				// notes
+				$notes = $db->query_read("
+					SELECT issuenote.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
+						" . ($vbulletin->options['avatarenabled'] ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
+						user.*, userfield.*, usertextfield.*,
+						IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
+						issuepetition.petitionstatusid, issuepetition.resolution AS petitionresolution
+						" . ($can_see_deleted ? ", issuedeletionlog.reason AS deletionreason" : '') . "
+						$hook_query_fields
+					FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
+					LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
+					LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
+					LEFT JOIN " . TABLE_PREFIX . "usertextfield AS usertextfield ON (usertextfield.userid = user.userid)
+					LEFT JOIN " . TABLE_PREFIX . "pt_issuepetition AS issuepetition ON (issuepetition.issuenoteid = issuenote.issuenoteid)
+					" . ($can_see_deleted ? "LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON (issuedeletionlog.primaryid = issuenote.issuenoteid AND issuedeletionlog.type = 'issuenote')" : '') . "
+					" . ($vbulletin->options['avatarenabled'] ? "
+						LEFT JOIN " . TABLE_PREFIX . "avatar AS avatar ON(avatar.avatarid = user.avatarid)
+						LEFT JOIN " . TABLE_PREFIX . "customavatar AS customavatar ON(customavatar.userid = user.userid)" : '') . "
+					$hook_query_joins
+					WHERE issuenote.issueid = $issue[issueid]
+						AND issuenote.issuenoteid = $issuenote[issuenoteid]
+						AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
+						$type_filter
+						$hook_query_where
+					ORDER BY issuenote.dateline
+				");
+
+				require_once(DIR . '/includes/class_bbcode_pt.php');
+				$bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
+
+				require_once(DIR . '/includes/class_pt_issuenote.php');
+				$factory = new vB_Pt_IssueNoteFactory();
+				$factory->registry =& $vbulletin;
+				$factory->bbcode =& $bbcode;
+				$factory->issue =& $issue;
+				$factory->project =& $project;
+				$factory->browsing_perms = $issueperms;
+
+				$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+				$xml->add_group('issuenotes');
+
+				while ($note = $db->fetch_array($notes))
+				{
+					$note_handler =& $factory->create($note);
+					$xml->add_tag('issuenotebit', process_replacement_vars($note_handler->construct($note)), array('issuenoteid' => $note['issuenoteid']));
+				}
+
+				$xml->add_tag('time', TIMENOW);
+				$xml->close_group();
+				$xml->print_xml(true);
+			}
+			else
+			{
+
+				($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
+
+				$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
+				eval(print_standard_redirect('pt_issuenote_edited'));
+			}
 		}
 	}
 }

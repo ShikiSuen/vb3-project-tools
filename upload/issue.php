@@ -999,8 +999,16 @@ if ($show['quick_reply'])
 {
 	require_once(DIR . '/includes/functions_editor.php');
 
-	$qrpostid = $curpostid;
-	$show['qr_require_click'] = 0;
+	if ($vbulletin->options['quickreply'] == 2)
+	{
+		$qrissuenoteid = 0;
+		$show['qr_require_click'] = 1;
+	}
+	else
+	{
+		$qrissuenoteid = 'who cares';
+		$show['qr_require_click'] = 0;
+	}
 
 	$editorid = construct_edit_toolbar(
 		'',
@@ -1125,6 +1133,7 @@ $templater = vB_Template::create('pt_issue');
 	$templater->register('posting_perms', $posting_perms);
 	$templater->register('project', $project);
 	$templater->register('pt_ptlist', $pt_ptlist);
+	$templater->register('qrissuenoteid', $qrissuenoteid);
 	$templater->register('selected_filter', $selected_filter);
 	$templater->register('tags', $tags);
 	$templater->register('vBeditTemplate', $vBeditTemplate);
