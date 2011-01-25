@@ -459,7 +459,17 @@ function prepare_issue($issue)
 	// Status Color
 	if ($vbulletin->options['pt_statuscolor'] == 1)
 	{
-		$issue['statuscolor'] = $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor'];
+		// Dark styles
+		if (in_array($vbulletin->userinfo['styleid'], explode(',', $vbulletin->options['statuscolor_darkstyles'])))
+		{
+			$issue['statuscolor'] = $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor'];
+		}
+
+		// Light styles
+		if (in_array($vbulletin->userinfo['styleid'], explode(',', $vbulletin->options['statuscolor_lightstyles'])))
+		{
+			$issue['statuscolor'] = $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor2'];
+		}
 	}
 
 	// Severity Color
@@ -1122,24 +1132,11 @@ function prepare_issue_posting_pemissions($issue, $issueperms)
 		$return['private_edit'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditprivate']);
 	}
 
-	$return['issue_edit'] = ($vbulletin->userinfo['userid']
-		AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissue'])
-		AND ($issue['submituserid'] == $vbulletin->userinfo['userid']
-			OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissueothers'])
-		)
-	);
-
-	$return['milestone_edit'] = (
-		$issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone']
-		AND $issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canchangemilestone']
-	);
-
+	$return['issue_edit'] = ($vbulletin->userinfo['userid'] AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissue']) AND ($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissueothers'])));
+	$return['milestone_edit'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canchangemilestone']);
 	$return['issue_close'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancloseissue']);
-
 	$return['can_custom_tag'] = ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['cancustomtag']);
-
-	$return['can_reply'] = (($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreply']) AND
-		($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreplyothers'])));
+	$return['can_reply'] = (($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreply']) AND ($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreplyothers'])));
 
 	return $return;
 }
@@ -1162,10 +1159,7 @@ function can_edit_issue_note($issue, $issuenote, $issueperms)
 		return false;
 	}
 
-	return ($vbulletin->userinfo['userid']
-		AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditnote'])
-		AND (($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditnoteothers']) OR $issuenote['userid'] == $vbulletin->userinfo['userid'])
-	);
+	return ($vbulletin->userinfo['userid'] AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditnote']) AND (($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditnoteothers']) OR $issuenote['userid'] == $vbulletin->userinfo['userid']));
 }
 
 /**
@@ -1251,13 +1245,14 @@ function build_issue_bit($issue, $project, $issueperms)
 			WHERE projectid = " . $project['projectid'] . "
 				AND issuestatusid = " . $issue['issuestatusid'] . "
 		");
-
-		if ($issue['statuscolor'] AND $vbulletin->options['pt_statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
+echo $issue['statuscolor'];
+		if ($issue['statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
 		{
 			$show['statuscolor'] = true;
 		}
 	}
 
+	// Corresponding option choosen AND the color is filled in the coresponding priority
 	if ($vbulletin->options['pt_statuscolor'] == 2 AND $issue['statuscolor'])
 	{
 		$show['statuscolor'] = true;

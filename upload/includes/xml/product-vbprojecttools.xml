@@ -10521,8 +10521,6 @@ Making this blank will allow all extensions. To disable attachments in the proje
 			<phrase name="setting_pt_attachmentsize_title" date="1181137707" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Maximum Issue Attachment Size]]></phrase>
 			<phrase name="setting_pt_attachpath_desc" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1" />
 			<phrase name="setting_pt_attachpath_title" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1"><![CDATA[Project Tools Attachment File Path]]></phrase>
-			<phrase name="setting_pt_color_styles_desc" date="1295987532" username="Pitchoune" version="2.2.0"><![CDATA[Define here which styles are considered as dark and as light. Selected styles are dark styles, unselected styles are light styles.]]></phrase>
-			<phrase name="setting_pt_color_styles_title" date="1295987532" username="Pitchoune" version="2.2.0"><![CDATA[Dark / Light Styles]]></phrase>
 			<phrase name="setting_pt_groupsearchissuespergroup_desc" date="1181653336" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[When performing a grouped search, how many issues should be displayed in each group on the first page?<br />
 <br />
 A value of 0 will display all issues in a group on the first page.]]></phrase>
@@ -10537,20 +10535,20 @@ A value of 0 will display all issues in a group on the first page.]]></phrase>
 <br />
 A value of 0 will display all issues on one page.]]></phrase>
 			<phrase name="setting_pt_issuesperpage_title" date="1181652734" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Issues Displayed Per Page]]></phrase>
-			<phrase name="setting_pt_listprojects_activate_desc" date="1295984818" username="Pitchoune" version="2.2.0"><![CDATA[Do you want to activate this system?]]></phrase>
-			<phrase name="setting_pt_listprojects_activate_title" date="1295984818" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Enable]]></phrase>
-			<phrase name="setting_pt_listprojects_locations_desc" date="1295984803" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display this dropdown menu.]]></phrase>
-			<phrase name="setting_pt_listprojects_locations_title" date="1295984803" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Location of the dropdown menu]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issue_desc" date="1295984768" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues pages of Project Tools.]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issue_title" date="1295984768" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Position of Projectjump menu in project issue]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issuelist_desc" date="1295984779" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues list page of Project Tools.<br />
+			<phrase name="setting_pt_listprojects_activate_desc" date="1295991239" username="Pitchoune" version="2.2.0"><![CDATA[Do you want to activate this system?]]></phrase>
+			<phrase name="setting_pt_listprojects_activate_title" date="1295991239" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Enable]]></phrase>
+			<phrase name="setting_pt_listprojects_locations_desc" date="1295991226" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display this dropdown menu.]]></phrase>
+			<phrase name="setting_pt_listprojects_locations_title" date="1295991226" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Location of the dropdown menu]]></phrase>
+			<phrase name="setting_pt_listprojects_position_issue_desc" date="1295991192" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues pages of Project Tools.]]></phrase>
+			<phrase name="setting_pt_listprojects_position_issue_title" date="1295991192" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Position of Projectjump menu in project issue]]></phrase>
+			<phrase name="setting_pt_listprojects_position_issuelist_desc" date="1295991202" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues list page of Project Tools.<br />
 <br />
 <strong>Note:</strong> if you have no issue in some project, this option is not used and will be placed before footer.]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issuelist_title" date="1295984779" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Position of Projectjump menu in project issue list]]></phrase>
-			<phrase name="setting_pt_listprojects_position_projects_desc" date="1295984789" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project overview pages of Project Tools.<br />
+			<phrase name="setting_pt_listprojects_position_issuelist_title" date="1295991202" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Position of Projectjump menu in project issue list]]></phrase>
+			<phrase name="setting_pt_listprojects_position_projects_desc" date="1295991214" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project overview pages of Project Tools.<br />
 <br />
 <strong>Note:</strong> if you have no issue in some project, this option is not used and will be placed before footer.]]></phrase>
-			<phrase name="setting_pt_listprojects_position_projects_title" date="1295984789" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Position of Projectjump menu in project overview]]></phrase>
+			<phrase name="setting_pt_listprojects_position_projects_title" date="1295991214" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Position of Projectjump menu in project overview]]></phrase>
 			<phrase name="setting_pt_notesperpage_desc" date="1181750222" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This is the number of notes that will be displayed per page in an issue. A note can be a comment/petition or information about changes to the issues details.<br />
 <br />
 A value of 0 will display all notes on one page.]]></phrase>
@@ -10569,8 +10567,8 @@ A value of 0 will hide the recent issues from this page.]]></phrase>
 <br />
 A value of 0 will hide the timeline from this page.]]></phrase>
 			<phrase name="setting_pt_project_timelineentries_title" date="1181652861" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Project View: Timeline Entries]]></phrase>
-			<phrase name="setting_pt_statuscolor_desc" date="1295984910" username="Pitchoune" version="2.2.0"><![CDATA[Which color would you like to use in the issue list?]]></phrase>
-			<phrase name="setting_pt_statuscolor_title" date="1295984910" username="Pitchoune" version="2.2.0"><![CDATA[Status Color]]></phrase>
+			<phrase name="setting_pt_statuscolor_desc" date="1295991718" username="Pitchoune" version="2.2.0"><![CDATA[Which color would you like to use in the issue list?]]></phrase>
+			<phrase name="setting_pt_statuscolor_title" date="1295991718" username="Pitchoune" version="2.2.0"><![CDATA[Issue Color]]></phrase>
 			<phrase name="setting_pt_timelineperpage_desc" date="1181652760" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[When viewing the timeline page, this controls the number of entries shown on each page.<br />
 <br />
 A value of 0 will display all entries in the specified time range on one page.]]></phrase>
@@ -10595,6 +10593,18 @@ This setting will only affect contents imported in the future.<br />
 <br />
 <strong>Note:</strong> This setting affect only threads actually.]]></phrase>
 			<phrase name="setting_ptimporter_keepthreads_title" date="1281506236" username="Pitchoune" version="2.1.2"><![CDATA[Import Contents - Keep original content intact]]></phrase>
+			<phrase name="setting_statuscolor_darkstyles_desc" date="1295992015" username="Pitchoune" version="2.2.0"><![CDATA[Insert here all ID of your dark styles.<br />
+<br />
+Separate each style ID with a comma.<br />
+<br />
+<span class="modlasttendays">The style IDs in this list must not be in the list below!</span>]]></phrase>
+			<phrase name="setting_statuscolor_darkstyles_title" date="1295992015" username="Pitchoune" version="2.2.0"><![CDATA[Issue Color - Dark Styles]]></phrase>
+			<phrase name="setting_statuscolor_lightstyles_desc" date="1295992032" username="Pitchoune" version="2.2.0"><![CDATA[Insert here all ID of your light styles.<br />
+<br />
+Separate each style ID with a comma.<br />
+<br />
+<span class="modlasttendays">The style IDs in this list must not be in the list above!</span>]]></phrase>
+			<phrase name="setting_statuscolor_lightstyles_title" date="1295992032" username="Pitchoune" version="2.2.0"><![CDATA[Issue Color - Light Styles]]></phrase>
 			<phrase name="settinggroup_projecttools" date="1169222341" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools Options]]></phrase>
 		</phrasetype>
 		<phrasetype name="CMS Widget Types" fieldname="widgettypes">
@@ -10726,22 +10736,23 @@ diff</defaultvalue>
 2|pt_severity_color</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="pt_color_styles" displayorder="240">
+			<setting varname="statuscolor_darkstyles" displayorder="240">
 				<datatype>free</datatype>
-				<optioncode>selectmulti:eval
-$options = fetch_style_title_options_array();</optioncode>
 			</setting>
-			<setting varname="pt_listprojects_activate" displayorder="250">
+			<setting varname="statuscolor_lightstyles" displayorder="250">
+				<datatype>free</datatype>
+			</setting>
+			<setting varname="pt_listprojects_activate" displayorder="260">
 				<datatype>boolean</datatype>
 				<optioncode>yesno</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="pt_listprojects_locations" displayorder="260">
+			<setting varname="pt_listprojects_locations" displayorder="270">
 				<datatype>bitfield</datatype>
 				<optioncode>bitfield:nocache|pt_dropdownmenu</optioncode>
 				<defaultvalue>7</defaultvalue>
 			</setting>
-			<setting varname="pt_listprojects_position_projects" displayorder="270">
+			<setting varname="pt_listprojects_position_projects" displayorder="280">
 				<datatype>integer</datatype>
 				<optioncode>radio:piped
 0|pt_listprojects_before_timeline
@@ -10749,14 +10760,14 @@ $options = fetch_style_title_options_array();</optioncode>
 2|pt_listprojects_before_recent_issuelist</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="pt_listprojects_position_issuelist" displayorder="280">
+			<setting varname="pt_listprojects_position_issuelist" displayorder="290">
 				<datatype>number</datatype>
 				<optioncode>radio:piped
 0|pt_listprojects_before_footer
 1|pt_listprojects_before_recent_issuelist</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="pt_listprojects_position_issue" displayorder="290">
+			<setting varname="pt_listprojects_position_issue" displayorder="300">
 				<datatype>number</datatype>
 				<optioncode>radio:piped
 0|pt_listprojects_before_notes
