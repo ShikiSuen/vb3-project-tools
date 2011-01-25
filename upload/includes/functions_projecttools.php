@@ -1216,15 +1216,19 @@ function build_issue_bit($issue, $project, $issueperms)
 				$lastpageinfo = array(
 					'page' => $issue['totalpages']
 				);
-				$issue['lastpagelink'] = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+				$issue['lastpagelink'] = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 				$show['pagenavmore'] = true;
 				break;
 			}
 
 			$pagenumbers = fetch_start_end_total_array($curpage, $vbulletin->options['pt_notesperpage'], $issue['totalnotes']);
+
+			$pageinfo_pagelink = array('pagenumber' => $curpage);
+
 			$templater = vB_Template::create('pt_issuebit_pagelink');
 				$templater->register('curpage', $curpage);
 				$templater->register('issue', $issue);
+				$templater->register('pageinfo_pagelink', $pageinfo_pagelink);
 			$issue['pagenav'] .= ' ' . $templater->render();
 		};
 	}
