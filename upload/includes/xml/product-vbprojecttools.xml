@@ -3614,7 +3614,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1295512381" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1295967316" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3639,13 +3639,11 @@ legend {
 
 	<vb:if condition="$show['quickedit'] OR $show['quick_reply']">
 		<script type="text/javascript" src="clientscript/vbulletin_textedit.js?v={vb:raw vboptions.simpleversion}"></script>
-		<vb:if condition="$show['postloader_js']">
-		<script type="text/javascript" src="clientscript/vbulletin_post_loader.js?v={vb:raw vboptions.simpleversion}"></script>
-		</vb:if>
+		<script type="text/javascript" src="clientscript/vbulletin_issuenote_loader.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 
 	<vb:if condition="$show['quick_reply']">
-	<script type="text/javascript" src="clientscript/vbulletin_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
+	<script type="text/javascript" src="clientscript/vbulletin_pt_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>

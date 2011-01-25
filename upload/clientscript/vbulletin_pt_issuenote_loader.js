@@ -99,7 +99,7 @@ vB_AJAX_IssuenoteLoader.prototype.display = function(ajax)
 			this.issuenote.parentNode.replaceChild(newissuenotebit, this.issuenote);
 
 			//this.container.innerHTML = issuenotebit[0].firstChild.nodeValue;
-			PostBit_Init(newissuenotebit, this.issuenoteid);
+			IssueNoteBit_Init(newissuenotebit, this.issuenoteid);
 		}
 		else
 		{	// parsing of XML failed, probably IE

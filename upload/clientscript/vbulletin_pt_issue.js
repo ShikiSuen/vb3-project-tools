@@ -32,3 +32,30 @@ function issueattach_submit()
 
 	return true;
 }
+
+/**
+* This function runs all the necessary Javascript code on a IssueNoteBit
+* after it has been loaded via AJAX. Don't use this method before a
+* complete page load or you'll have problems.
+*
+* @param	object	Object containing postbits
+*/
+function IssueNoteBit_Init(obj, issuenoteid)
+{
+	console.log("IssueNoteBit Init: %d", issuenoteid);
+
+	if (typeof vB_QuickReply != "undefined")
+	{
+		// init quick reply button
+		qr_init_buttons(obj);
+	}
+
+	//do we still need this?
+	child_img_alt_2_title(obj);
+
+	if (typeof YAHOO.vBulletin.vBRestrain != "undefined")
+	{
+		YAHOO.vBulletin.vBRestrain.addcontainer(obj);
+		YAHOO.vBulletin.vBRestrain.resize(obj);
+	}
+}
