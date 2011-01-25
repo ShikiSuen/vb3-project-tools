@@ -2107,7 +2107,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1294188354" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1295973315" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2759,6 +2759,10 @@ a.firstunread, a.firstunread:hover
 }
 
 /* Issue notes */
+.pt_issue_note {
+	margin-bottom: {vb:math {vb:stylevar padding} * 1.5};
+}
+
 .pt_issue_note .blockrow {
 	background: {vb:stylevar postbit_userinfo_background};
 }
@@ -3614,7 +3618,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1295967316" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1295968688" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3997,7 +4001,7 @@ legend {
 
 <!-- notes -->
 <a name="notestart"></a>
-<ol id="posts">
+<ol id="issuenotes">
 {vb:raw notebits}
 </ol>
 <!-- end notes -->
@@ -4047,7 +4051,7 @@ legend {
 
 <vb:if condition="$show['quick_reply']">
 <div id="qr_defaultcontainer" class="blockfoot floatcontainer qrcontainer<vb:if condition="$show['qr_require_click']"> qr_require_click</vb:if>">
-<form class="vbform" name="quick_reply" id="quick_reply" method="post" action="projectpost.php?{vb:raw session.sessionurl}do=postreply" onsubmit="return qr_prepare_submit(this, {vb:raw vboptions.postminchars});">
+<form class="vbform" name="quick_reply" id="quick_reply" method="post" action="projectpost.php?{vb:raw session.sessionurl}do=postreply" onsubmit="return qr_pt_prepare_submit(this, {vb:raw vboptions.postminchars});">
 	<div id="qr_error_tbody" class="block errorblock hidden">
 		<h3 class="blockhead">{vb:rawphrase errors}</h3>
 		<div class="blockbody formcontrols">
@@ -4104,7 +4108,7 @@ legend {
 		<div class="group">
 			<input type="submit" class="button" value="{vb:rawphrase post_reply}" accesskey="s" title="(Alt + S)" name="sbutton" tabindex="1" id="qr_submit" onclick="clickedelm = this.value" />
 			<input type="submit" class="button" value="{vb:rawphrase go_advanced}" accesskey="x" title="(Alt + X)" name="preview" tabindex="1" id="qr_preview" onclick="clickedelm = this.value" style="display: none" />
-			<input type="reset" id="qr_cancelbutton" class="button" style="display:none;" value="{vb:rawphrase cancel}" accesskey="c" title="(Alt + C)" name="cancel" tabindex="4" onclick="qr_reset();" />
+			<input type="reset" id="qr_cancelbutton" class="button" style="display:none;" value="{vb:rawphrase cancel}" accesskey="c" title="(Alt + C)" name="cancel" tabindex="4" onclick="qr_pt_reset();" />
 		</div>
 	</div>
 
@@ -4117,9 +4121,9 @@ legend {
 	<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 	<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 	<input type="hidden" name="do" value="postreply" />
-	<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" id="qr_threadid" />
-	<input type="hidden" name="issuenoteid" value="{vb:raw qrissuenoteid}" id="qr_postid" />
-	<input type="hidden" name="specifiedpost" value="0" id="qr_specifiedpost" />
+	<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" id="qr_issueid" />
+	<input type="hidden" name="issuenoteid" value="{vb:raw qrissuenoteid}" id="qr_issuenoteid" />
+	<input type="hidden" name="specifiedissuenote" value="0" id="qr_specifiedissuenote" />
 	<input type="hidden" name="loggedinuser" value="{vb:raw bbuserinfo.userid}" />
 	<input type="hidden" name="posthash" value="" />
 	<input type="hidden" name="poststarttime" value="" />
@@ -4544,8 +4548,8 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </body>
 </html>]]></template>
 		<template name="pt_issuelist_arrow" templatetype="template" date="1294664144" username="Pitchoune" version="2.2.0"><![CDATA[<img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" />]]></template>
-		<template name="pt_issuenotebit_petition" templatetype="template" date="1295495838" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
-<li id="post_{vb:raw note.issuenoteid}" class="block pt_issue_note">
+		<template name="pt_issuenotebit_petition" templatetype="template" date="1295973376" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+<li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<div style="float:{vb:stylevar right}" class="smallfont">
 			{vb:raw note.petition_text}
@@ -4648,11 +4652,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			</div>
 		</div>
 	</div>
-</li>
-
-<br />]]></template>
-		<template name="pt_issuenotebit_system" templatetype="template" date="1295495825" username="Pitchoune" version="2.2.0"><![CDATA[<!-- note system -->
-<li id="post_{vb:raw note.issuenoteid}" class="block pt_issue_note">
+</li>]]></template>
+		<template name="pt_issuenotebit_system" templatetype="template" date="1295973362" username="Pitchoune" version="2.2.0"><![CDATA[<!-- note system -->
+<li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
 	</div>
@@ -4666,12 +4668,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			</div>
 		</div>
 	</div>
-</li>
-
-<br />]]></template>
+</li>]]></template>
 		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1295495800" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
-<li id="post_{vb:raw note.issuenoteid}" class="block pt_issue_note">
+		<template name="pt_issuenotebit_user" templatetype="template" date="1295973344" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+<li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
 	</div>
@@ -4755,9 +4755,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			</div>
 		</div>
 	</div>
-</li>
-
-<br />]]></template>
+</li>]]></template>
 		<template name="pt_listbuilder_box" templatetype="template" date="1274474523" username="Pitchoune" version="2.1.1"><![CDATA[<table class="pt_listbuilder_box" border="0">
 <tr>
 	<td>

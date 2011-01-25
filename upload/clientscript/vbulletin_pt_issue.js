@@ -47,15 +47,6 @@ function IssueNoteBit_Init(obj, issuenoteid)
 	if (typeof vB_QuickReply != "undefined")
 	{
 		// init quick reply button
-		qr_init_buttons(obj);
-	}
-
-	//do we still need this?
-	child_img_alt_2_title(obj);
-
-	if (typeof YAHOO.vBulletin.vBRestrain != "undefined")
-	{
-		YAHOO.vBulletin.vBRestrain.addcontainer(obj);
-		YAHOO.vBulletin.vBRestrain.resize(obj);
+		qr_pt_init_buttons(obj);
 	}
 }

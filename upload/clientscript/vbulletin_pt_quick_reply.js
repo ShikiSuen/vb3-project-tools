@@ -1,22 +1,22 @@
-/*!======================================================================*\
+/*======================================================================*\
 || #################################################################### ||
-|| # vBulletin 4.1.2
+|| #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
 || # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
-|| # This file may not be redistributed in whole or significant part. # ||
-|| # ---------------- VBULLETIN IS NOT FREE SOFTWARE ---------------- # ||
-|| # http://www.vbulletin.com | http://www.vbulletin.com/license.html # ||
+|| # This file is part of vBulletin Project Tools and subject to terms# ||
+|| #               of the vBulletin Open Source License               # ||
+|| # ---------------------------------------------------------------- # ||
+|| #    http://www.vbulletin.org/open_source_license_agreement.php    # ||
 || #################################################################### ||
 \*======================================================================*/
 
 // This code could really use a restructuring into OOP
 
-var qr_repost = false;
-var qr_errors_shown = false;
-var qr_active = false;
-var qr_ajax = null;
-var qr_postid = null;
-var qr_withquote = null;
+var qr_pt_repost = false;
+var qr_pt_errors_shown = false;
+var qr_pt_active = false;
+var qr_pt_ajax = null;
+//var qr_issuenoteid = null;
 var qr_imgsrc = '';
 var clickedelm = false;
 var qr_require_click = false;
@@ -26,10 +26,10 @@ var qr_require_click = false;
 */
 if (typeof(vB_XHTML_Ready) != "undefined")
 {
-	vB_XHTML_Ready.subscribe(qr_init);
+	vB_XHTML_Ready.subscribe(qr_pt_init);
 }
 
-function qr_init()
+function qr_pt_init()
 {
 	if (typeof(vBulletin.attachinfo) == "undefined")
 	{
@@ -42,8 +42,8 @@ function qr_init()
 	// make sure quick reply form is there before attempting initializaion
 	if (fetch_object('quick_reply'))
 	{
-		qr_disable_controls();
-		qr_init_buttons(fetch_object('posts'));
+		qr_pt_disable_controls();
+		qr_pt_init_buttons(fetch_object('issuenotes'));
 	}
 }
 
@@ -52,7 +52,7 @@ function qr_init()
 *
 * @param	object	HTML object to search
 */
-function qr_init_buttons(obj)
+function qr_pt_init_buttons(obj)
 {
 	// intercept post button clicks to use inline form
 	var anchors = fetch_tags(obj, 'a');
@@ -61,41 +61,30 @@ function qr_init_buttons(obj)
 		// reply button
 		if (anchors[i].id && (anchors[i].id.substr(0, 3) == 'qr_' || anchors[i].id.substr(0, 5) == 'qrwq_'))
 		{
-			YAHOO.util.Event.on(anchors[i], "click", qr_newreply_activate, this);
-			//anchors[i].onclick = function(e) { return qr_newreply_activate(this.id.substr(3), false); };
+			YAHOO.util.Event.on(anchors[i], "click", qr_pt_newreply_activate, this);
+			//anchors[i].onclick = function(e) { return qr_pt_newreply_activate(this.id.substr(3), false); };
 		}
 	}
-
-	// set the "+Reply to Thread" buttons onlclick events
-	var replytothreadids = ["newreplylink_top", "newreplylink_bottom"];
-	YAHOO.util.Event.on(replytothreadids, "click", qr_replytothread_activate, this);
-	YAHOO.util.Event.on(replytothreadids, "dblclick", function(e) { window.location = this.href; }, this);
 }
 
 /**
 * Disables the controls in the quick reply system
 */
-function qr_disable_controls()
+function qr_pt_disable_controls()
 {
 	if (require_click)
 	{
-		fetch_object('qr_postid').value = 0;
+		//fetch_object('qr_issuenoteid').value = 0;
 
 		vB_Editor[QR_EditorID].disable_editor(vbphrase['click_quick_reply_icon']);
 
-		var qr_sig = fetch_object('cb_signature');
-		if (qr_sig != null)
-		{
-			qr_sig.disabled = true;
-		}
-
 		active = false;
-		qr_active = false;
+		qr_pt_active = false;
 	}
 	else
 	{
 		vB_Editor[QR_EditorID].write_editor_contents('');
-		qr_active = true;
+		qr_pt_active = true;
 	}
 }
 
@@ -106,29 +95,23 @@ function qr_disable_controls()
 *
 * @return	boolean	false
 */
-function qr_activate(postid, initialtext)
+function qr_pt_activate(issuenoteid, initialtext)
 {
 	var qr_collapse = fetch_object('collapseobj_quickreply');
+
 	if (qr_collapse && qr_collapse.style.display == "none")
 	{
 		toggle_collapse('quickreply');
 	}
 
-	fetch_object('qr_postid').value = postid;
-	if (fetch_object('qr_specifiedpost'))
+	//fetch_object('qr_issuenoteid').value = issuenoteid;
+
+	if (fetch_object('qr_specifiedissuenote'))
 	{
-		fetch_object('qr_specifiedpost').value = 1;
+		fetch_object('qr_specifiedissuenote').value = 1;
 	}
 
 	//fetch_object('qr_preview').select();
-
-	var qr_sig = fetch_object("cb_signature");
-	if (qr_sig)
-	{
-		qr_sig.disabled = false;
-		// Workaround for 3.5 Bug # 1618: Set checked as Firefox < 1.5 "forgets" that when checkbox is disabled via JS
-		qr_sig.checked = true;
-	}
 
 	// prepare the initial text
 	initialtext = (initialtext ? initialtext : '');
@@ -142,147 +125,8 @@ function qr_activate(postid, initialtext)
 
 	vB_Editor[QR_EditorID].check_focus();
 
-	qr_active = true;
+	qr_pt_active = true;
 	return false;
-}
-
-/**
-* Activates the controls for "+Reply to Thread" buttons
-*
-* @param	integer	Post ID of the post to which we are replying
-*
-* @return	boolean	false
-*/
-function qr_replytothread_activate(e)
-{
-	var href = this.href;
-	if (qr_postid == last_post_id && qr_withquote == true)
-	{
-		window.location = href;
-		return true;
-	}
-
-	YAHOO.util.Event.preventDefault(e);
-	qr_postid = last_post_id;
-	qr_withquote = true;
-
-	YAHOO.util.Dom.setStyle("progress_newreplylink_top", "display", "");
-	YAHOO.util.Dom.setStyle("progress_newreplylink_bottom", "display", "");
-	document.body.style.cursor = 'wait';
-
-	var qr_threadid = YAHOO.util.Dom.get("qr_threadid").value;
-
-	qr_ajax = YAHOO.util.Connect.asyncRequest("POST", "ajax.php", {
-		success: qr_replytothread_handle_activate,
-		failure: function(ajax) {window.location = href;},
-		timeout: vB_Default_Timeout
-	}, SESSIONURL + "securitytoken=" + SECURITYTOKEN + '&do=getquotes&t=' + qr_threadid);
-}
-
-/**
-* Handles quick reply activations for "+Reply to Thread" buttons when AJAX comes back with quote bb codes
-*
-* @param	object	YUI AJAX
-*/
-function qr_replytothread_handle_activate(ajax)
-{
-	// put the qr form back to its initial state just to avoid any weirdness
-	qr_reset();
-	qr_disable_controls();
-	qr_hide_errors();
-
-	// if coming from an ajax response,
-	// extract the quoted text from the XML
-	var quote_text = '';
-	if (ajax)
-	{
-		var quotes = ajax.responseXML.getElementsByTagName('quotes');
-		if (quotes.length && quotes[0].firstChild)
-		{
-			var quote_text = quotes[0].firstChild.nodeValue;
-			if (vB_Editor[QR_EditorID].wysiwyg_mode)
-			{
-				quote_text = quote_text.replace(/\r?\n/g, "<br />");
-			}
-		}
-	}
-
-	// if we are in require click mode, we need to unhide the editor for reply to thread
-	if (YAHOO.util.Dom.hasClass('qr_defaultcontainer','qr_require_click'))
-	{
-		YAHOO.util.Dom.removeClass('qr_defaultcontainer', 'qr_require_click');
-		qr_require_click = true;
-	}
-
-	// now we activate the quick reply form
-	qr_activate(last_post_id, quote_text);
-
-	fetch_object('progress_newreplylink_top').style.display="none";
-	fetch_object('progress_newreplylink_bottom').style.display="none";
-	document.body.style.cursor = 'auto';
-
-}
-
-/**
-* Activates the controls in the quick new reply system
-*
-* @param	integer	Post ID of the post to which we are replying
-*
-* @return	boolean	false
-*/
-function qr_newreply_activate(e)
-{
-	var withquote = false;
-	if (this.id.substr(0, 3) == 'qr_')
-	{
-		var postid = this.id.substr(3);
-	}
-	else if (this.id.substr(0, 5) == 'qrwq_')
-	{
-		var postid = this.id.substr(5);
-		withquote = true;
-	}
-	else
-	{
-		return true;
-	}
-
-	// if we are already editing this post inline with the same quote functionality,
-	// take them to the advanced editor for clicking the same button again
-	if (qr_postid == postid && qr_withquote == withquote)
-	{
-		return true;
-	}
-
-	YAHOO.util.Event.stopEvent(e);
-
-	// otherwise, store postid id globally
-	qr_postid = postid;
-	qr_withquote = withquote;
-
-	// displaying progress spinner instead of reply icon, setting cursor to hourglass
-	if (YAHOO.util.Dom.get("progress_" + postid))
-	{
-		var replyimgid = (withquote ? 'quoteimg_' : 'replyimg_') + postid;
-		qr_imgsrc = YAHOO.util.Dom.get(replyimgid).getAttribute("src");
-		YAHOO.util.Dom.get(replyimgid).setAttribute("src", YAHOO.util.Dom.get("progress_" + postid).getAttribute("src"));
-	}
-	document.body.style.cursor = 'wait';
-
-	// if we are quoting, grab proper bb codes from server, otherwise simply display quickreply form
-	if (withquote)
-	{
-		qr_ajax = YAHOO.util.Connect.asyncRequest("POST", "ajax.php?do=getquotes&p=" + postid, {
-			success: qr_handle_activate,
-			failure: vBulletin_AJAX_Error_Handler,
-			timeout: vB_Default_Timeout
-		}, SESSIONURL + "securitytoken=" + SECURITYTOKEN + '&do=getquotes&p=' + postid);
-	}
-	else
-	{
-		// display quickreply form with no quotes
-		qr_handle_activate(false);
-	}
 }
 
 /**
@@ -290,34 +134,18 @@ function qr_newreply_activate(e)
 *
 * @param	object	YUI AJAX
 */
-function qr_handle_activate(ajax)
+function qr_pt_handle_activate(ajax)
 {
-	// grab the poast id set globally before ajax call
-	var postid = qr_postid;
+	// grab the issue note id set globally before ajax call
+	//var issuenoteid = qr_issuenoteid;
 
 	// put the qr form back to its initial state just to avoid any weirdness
-	qr_reset();
-	qr_disable_controls();
-	qr_hide_errors();
+	qr_pt_reset();
+	qr_pt_disable_controls();
+	qr_pt_hide_errors();
 
-	// reset the global id, since we are sill currently editing this postid
-	qr_postid = postid;
-
-	// if coming from an ajax response,
-	// extract the quoted text from the XML
-	var quote_text = '';
-	if (ajax)
-	{
-		var quotes = ajax.responseXML.getElementsByTagName('quotes');
-		if (quotes)
-		{
-			var quote_text = quotes[0].firstChild.nodeValue;
-			if (vB_Editor[QR_EditorID].wysiwyg_mode)
-			{
-				quote_text = quote_text.replace(/\r?\n/g, "<br />");
-			}
-		}
-	}
+	// reset the global id, since we are sill currently editing this issuenoteid
+	//qr_issuenoteid = issuenoteid;
 
 	// make the cancel button visible
 	var cancelbtn = fetch_object('qr_cancelbutton');
@@ -325,17 +153,17 @@ function qr_handle_activate(ajax)
 
 	// add form into container below the post we are replying to
 	var qrobj = document.createElement("li");
-	qrobj.id = "qr_" + postid;
-	var post = YAHOO.util.Dom.get("post_" + postid);
-	var qr_container = post.parentNode.insertBefore(qrobj, post.nextSibling);
+	qrobj.id = "qr_" + issuenoteid;
+	var issuenote = YAHOO.util.Dom.get("issuenote_" + issuenoteid);
+	var qr_container = issuenote.parentNode.insertBefore(qrobj, issuenote.nextSibling);
 	var qr_form = fetch_object('quick_reply');
 	qr_container.appendChild(qr_form);
 
 	// now we activate the quick reply form
-	qr_activate(postid, quote_text);
+	qr_pt_activate(issuenoteid);
 
 	// hide the progress spinner and set hourglass back to default
-	if (YAHOO.util.Dom.get("progress_" + postid))
+	if (YAHOO.util.Dom.get("progress_" + issuenoteid))
 	{
 		var replyimgid = (qr_withquote ? 'quoteimg_' : 'replyimg_') + postid;
 		YAHOO.util.Dom.get(replyimgid).setAttribute("src", qr_imgsrc);
@@ -348,13 +176,13 @@ function qr_handle_activate(ajax)
 *
 * @return	boolean	false
 */
-function qr_reset()
+function qr_pt_reset()
 {
-	// set the current postid back to null
-	qr_postid = null;
+	// set the current issuenoteid back to null
+	qr_issuenoteid = null;
 
-	// reset the post id to last post id
-	fetch_object('qr_postid').value = last_post_id;
+	// reset the issue note id to last issue note id
+	//fetch_object('qr_issuenoteid').value = last_issuenote_id;
 
 	// remove the quick form element from the DOM
 	var qr_form = fetch_object('quick_reply');
@@ -386,8 +214,6 @@ function qr_reset()
 	return false;
 }
 
-
-
 /**
 * Checks the contents of the new reply and decides whether or not to allow it through
 *
@@ -396,9 +222,9 @@ function qr_reset()
 *
 * @return	boolean
 */
-function qr_prepare_submit(formobj, minchars)
+function qr_pt_prepare_submit(formobj, minchars)
 {
-	if (qr_repost == true)
+	if (qr_pt_repost == true)
 	{
 		return true;
 	}
@@ -411,9 +237,9 @@ function qr_prepare_submit(formobj, minchars)
 		formobj.posthash.value = vBulletin.attachinfo.posthash;
 		formobj.poststarttime.value = vBulletin.attachinfo.poststarttime;
 
-		return qr_check_data(formobj, minchars);
+		return qr_pt_check_data(formobj, minchars);
 	}
-	else if (qr_check_data(formobj, minchars))
+	else if (qr_pt_check_data(formobj, minchars))
 	{
 		if (typeof vb_disable_ajax != 'undefined' && vb_disable_ajax > 0)
 		{
@@ -431,18 +257,8 @@ function qr_prepare_submit(formobj, minchars)
 				return true;
 			}
 		}
-		
-		// check if we need to update the page to reflect the thread 
-		/// being open or closed or stickied or unstickied
-		// if so don't run the new post through ajax
-		var cb_openclose = fetch_object('cb_openclose');
-		var cb_stickunstick = fetch_object('cb_stickunstick');
-		if ((cb_openclose && cb_openclose.checked) || (cb_stickunstick && cb_stickunstick.checked))
-		{
-			return true;
-		}
 
-		if (YAHOO.util.Connect.isCallInProgress(qr_ajax))
+		if (YAHOO.util.Connect.isCallInProgress(qr_pt_ajax))
 		{
 			return false;
 		}
@@ -458,9 +274,9 @@ function qr_prepare_submit(formobj, minchars)
 		{
 
 			var submitstring = 'ajax=1';
-			if (typeof ajax_last_post != 'undefined')
+			if (typeof ajax_last_issuenote != 'undefined')
 			{
-				submitstring += '&ajax_lastpost=' + PHP.urlencode(ajax_last_post);
+				submitstring += '&ajax_lastissuenote=' + PHP.urlencode(ajax_last_issuenote);
 			}
 
 			for (var i = 0; i < formobj.elements.length; i++)
@@ -496,7 +312,7 @@ function qr_prepare_submit(formobj, minchars)
 			fetch_object('qr_posting_msg').style.display = '';
 			document.body.style.cursor = 'wait';
 
-			qr_ajax_post(formobj.action, submitstring);
+			qr_pt_ajax_post(formobj.action, submitstring);
 			return false;
 		}
 	}
@@ -510,9 +326,9 @@ function qr_prepare_submit(formobj, minchars)
 * Submit handler for resubmit after a failed AJAX attempt.
 * Adds an extra input to note the failure on the PHP side.
 */
-function qr_resubmit()
+function qr_pt_resubmit()
 {
-	qr_repost = true;
+	qr_pt_repost = true;
 
 	var extra_input = document.createElement('input');
 	extra_input.type = 'hidden';
@@ -538,15 +354,15 @@ function qr_resubmit()
 *
 * @return	boolean
 */
-function qr_check_data(formobj, minchars)
+function qr_pt_check_data(formobj, minchars)
 {
-	switch (fetch_object('qr_postid').value)
+	/*switch (fetch_object('qr_issuenoteid').value)
 	{
 		case '0':
 		{
 			// quick reply form will now default to replying to
-			// last post on the current page
-			fetch_object('qr_postid').value = last_post_id;
+			// last issuen ote on the current page
+			fetch_object('qr_issuenoteid').value = last_issuenote_id;
 		}
 
 		case 'who cares':
@@ -557,7 +373,7 @@ function qr_check_data(formobj, minchars)
 			}
 			break;
 		}
-	}
+	}*/
 
 	if (clickedelm == formobj.preview.value)
 	{
@@ -568,23 +384,23 @@ function qr_check_data(formobj, minchars)
 }
 
 /**
-* Sends quick reply data to newreply.php via AJAX
+* Sends quick reply data to projectpost.php via AJAX
 *
-* @param	string	GET string for action (newreply.php)
+* @param	string	GET string for action (projectpost.php)
 * @param	string	String representing form data ('x=1&y=2&z=3' etc.)
 */
-function qr_ajax_post(submitaction, submitstring)
+function qr_pt_ajax_post(submitaction, submitstring)
 {
-	if (YAHOO.util.Connect.isCallInProgress(qr_ajax))
+	if (YAHOO.util.Connect.isCallInProgress(qr_pt_ajax))
 	{
-		YAHOO.util.Connect.abort(qr_ajax);
+		YAHOO.util.Connect.abort(qr_pt_ajax);
 	}
 
-	qr_repost = false;
+	qr_pt_repost = false;
 
-	qr_ajax = YAHOO.util.Connect.asyncRequest("POST", submitaction, {
-		success: qr_do_ajax_post,
-		failure: qr_handle_error,
+	qr_pt_ajax = YAHOO.util.Connect.asyncRequest("POST", submitaction, {
+		success: qr_pt_do_ajax_post,
+		failure: qr_pt_handle_error,
 		//scope: this,
 		timeout: vB_Default_Timeout
 	}, SESSIONURL + "securitytoken=" + SECURITYTOKEN + '&' + submitstring);
@@ -595,22 +411,22 @@ function qr_ajax_post(submitaction, submitstring)
 *
 * @param	object	YUI AJAX
 */
-function qr_handle_error(ajax)
+function qr_pt_handle_error(ajax)
 {
 	vBulletin_AJAX_Error_Handler(ajax);
 
 	fetch_object('qr_posting_msg').style.display = 'none';
 	document.body.style.cursor = 'default';
 
-	qr_resubmit();
+	qr_pt_resubmit();
 }
 
 /**
-* Handles quick reply data when AJAX says qr_ajax_post() is complete
+* Handles quick reply data when AJAX says qr_pt_ajax_post() is complete
 *
 * @param	object	YUI AJAX
 */
-function qr_do_ajax_post(ajax)
+function qr_pt_do_ajax_post(ajax)
 {
 	if (ajax.responseXML)
 	{
@@ -618,38 +434,31 @@ function qr_do_ajax_post(ajax)
 		fetch_object('qr_posting_msg').style.display = 'none';
 		var i;
 
-		if (fetch_tag_count(ajax.responseXML, 'postbit'))
+		if (fetch_tag_count(ajax.responseXML, 'issuenotebit'))
 		{
 			// put the qr form back to its initial state
-			qr_reset();
+			qr_pt_reset();
 
-			ajax_last_post = ajax.responseXML.getElementsByTagName('time')[0].firstChild.nodeValue;
-			qr_disable_controls();
-			qr_hide_errors();
+			ajax_last_issuenote = ajax.responseXML.getElementsByTagName('time')[0].firstChild.nodeValue;
+			qr_pt_disable_controls();
+			qr_pt_hide_errors();
 
-			var postbits = ajax.responseXML.getElementsByTagName('postbit');
-			for (i = 0; i < postbits.length; i++)
+			var issuenotebits = ajax.responseXML.getElementsByTagName('issuenotebit');
+			for (i = 0; i < issuenotebits.length; i++)
 			{
 				var newdiv = document.createElement('div');
-				newdiv.innerHTML = postbits[i].firstChild.nodeValue;
-				var newpost = newdiv.getElementsByTagName('li')[0];
+				newdiv.innerHTML = issuenotebits[i].firstChild.nodeValue;
+				var newissuenote = newdiv.getElementsByTagName('li')[0];
 
-				var posts = YAHOO.util.Dom.get('posts');
+				var issuenotes = YAHOO.util.Dom.get('issuenotes');
 
-				if (newpost)
+				if (newissuenote)
 				{
-					var postbit = posts.appendChild(newpost);
-					PostBit_Init(postbit, postbits[i].getAttribute('postid'));
-					// scroll to the area where the newest post appeared
-					newpost.scrollIntoView(false);
+					var issuenotebit = issuenotes.appendChild(newissuenote);
+					IssueNoteBit_Init(issuenotebit, issuenotebits[i].getAttribute('issuenoteid'));
+					// scroll to the area where the newest issue note appeared
+					newissuenote.scrollIntoView(false);
 				}
-			}
-
-			// unselect all multiquoted posts on the page
-			// because the server already killed those cookies
-			if (typeof mq_unhighlight_all == 'function')
-			{
-				mq_unhighlight_all();
 			}
 
 			// unfocus the qr_submit button to prevent a space from resubmitting
@@ -673,18 +482,18 @@ function qr_do_ajax_post(ajax)
 					}
 					error_html += '</ol>';
 
-					qr_show_errors(error_html);
+					qr_pt_show_errors(error_html);
 
 					return false;
 				}
 			}
 
-			qr_resubmit();
+			qr_pt_resubmit();
 		}
 	}
 	else
 	{
-		qr_resubmit();
+		qr_pt_resubmit();
 	}
 }
 
@@ -695,9 +504,9 @@ function qr_do_ajax_post(ajax)
 *
 * @return	boolean	false
 */
-function qr_show_errors(errortext)
+function qr_pt_show_errors(errortext)
 {
-	qr_errors_shown = true;
+	qr_pt_errors_shown = true;
 	fetch_object('qr_error_td').innerHTML = errortext;
 	YAHOO.util.Dom.removeClass("qr_error_tbody", "hidden");
 	vB_Editor[QR_EditorID].check_focus();
@@ -709,11 +518,11 @@ function qr_show_errors(errortext)
 *
 * @return	boolean	false
 */
-function qr_hide_errors()
+function qr_pt_hide_errors()
 {
-	if (qr_errors_shown)
+	if (qr_pt_errors_shown)
 	{
-		qr_errors_shown = true;
+		qr_pt_errors_shown = true;
 		YAHOO.util.Dom.addClass("qr_error_tbody", "hidden");
 		return false;
 	}

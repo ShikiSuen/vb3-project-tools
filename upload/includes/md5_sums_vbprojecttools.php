@@ -2,7 +2,7 @@
 // vbprojecttools 2.2.0
 $md5_sums = array(
 	'/' => array(
-		'issue.php' => 'f68e2b492f04924bb07979b51a7ba8cc',
+		'issue.php' => 'c6952e9d5cbe76204767192bbe147220',
 		'issuelist.php' => 'c440012ecc1f932b3a07abc882954e50',
 		'milestone.php' => '6aecdcfe69a46b50cb73f247f4c34d79',
 		'milestoneissuelist.php' => '478a5fc4ab1f4c2744fc6159f5c7f52c',
@@ -11,7 +11,7 @@ $md5_sums = array(
 		'projectattachment.php' => '082bd4253cf4399a5ed58f7e37ca8900',
 		'projectexternal.php' => '7826107f3e6e17dc2145d5f52d74b3b9',
 		'projectmilestone.php' => '081199e35719eecbc1ce9aa4ebc23c75',
-		'projectpost.php' => '97cc5380a46c1f632d4eb9f43e333fed',
+		'projectpost.php' => 'd3dfb00420fb050934c8df07c733f096',
 		'projectsearch.php' => 'a83fe1a62ffc42a2c59e2e9a7e3cef4f',
 		'projecttimeline.php' => '98516262c1363a7182a334a360755360',
 	),
@@ -26,7 +26,9 @@ $md5_sums = array(
 	'/clientscript' => array(
 		'vbulletin_list_builder.js' => '772a80ab7fb38d300f14b90386eac993',
 		'vbulletin_magic_select.js' => 'eb79a44674736638f333ba349d5fedbc',
-		'vbulletin_pt_issue.js' => 'f327d5646d603e96f6d605a01a155298',
+		'vbulletin_pt_issue.js' => '239e1509bf86c296255d81eced7c61af',
+		'vbulletin_pt_issuenote_loader.js' => 'a7576948cabe2f2847ed75b5d39be5c7',
+		'vbulletin_pt_quick_reply.js' => '60cce5118dd922b89c87a18486a8e219',
 		'vbulletin_pt_read_marker.js' => '607236ed69a7ec7b10c9d0cf52bcfe30',
 		'vbulletin_ptsearch_form.js' => 'fd82c7c2ab2a3e347ae7a9dcf5915135',
 	),
@@ -37,7 +39,7 @@ $md5_sums = array(
 		'class_dm_pt_issue.php' => '4af4b6d36af882919110052609cefbbc',
 		'class_dm_pt_issueassign.php' => '4578af4a8dfc573bfe1666e2bb8c36e0',
 		'class_dm_pt_issuechange.php' => '9c80954f809343eaa3f138ecf02e950d',
-		'class_dm_pt_issuenote.php' => 'd9b82b5a815b4c2fbfeb8df1f51a1f97',
+		'class_dm_pt_issuenote.php' => '46b01f1c5ff3e363edef0253eb715149',
 		'class_dm_pt_issuepetition.php' => '9692b3400ec0541a38968ed8aaf8caaa',
 		'class_dm_pt_issuereport.php' => 'd4526e3492f6c55a01a09a6fb0c7f865',
 		'class_dm_pt_issuestatus.php' => '06e136664fcc3e84f7df8dc20a30c182',
@@ -81,7 +83,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => '82fbdab8993354b6805f020ff250a565',
-		'product-vbprojecttools.xml' => 'b55d2cd67072f50eb78e9376ece0007a',
+		'product-vbprojecttools.xml' => 'da3669f26400c2455a4587dfac04e30b',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'b3b48fe8595c439439a95343f927cae1',

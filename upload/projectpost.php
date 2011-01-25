@@ -153,7 +153,7 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 // #######################################################################
 
 // #######################################################################
-if ($_POST['do'] == 'postreply' OR $_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
+if ($_REQUEST['do'] == 'postreply' OR $_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
 		'issueid' => TYPE_UINT,
@@ -223,26 +223,26 @@ if ($_POST['do'] == 'postreply' OR $_REQUEST['do'] == 'addreply' OR $_REQUEST['d
 }
 
 // #######################################################################
-if ($_POST['do'] == 'postreply')
+if ($_REQUEST['do'] == 'postreply')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'message'          => TYPE_STR,
-		'wysiwyg'          => TYPE_BOOL,
-		'quickreply'       => TYPE_BOOL,
-		'ajaxqrfailed'     => TYPE_BOOL,
-		'private'          => TYPE_BOOL,
-		'delete'           => TYPE_STR,
-		'undelete'         => TYPE_BOOL,
-		'reason'           => TYPE_NOHTML,
-		'petitionstatusid' => TYPE_UINT,
-		'changestatusid'   => TYPE_UINT,
-		'subscribetype'    => TYPE_NOHTML,
-		'preview'          => TYPE_NOHTML,
-		'humanverify'      => TYPE_ARRAY,
-		'ajax'             => TYPE_BOOL,
-		'ajax_lastpost'    => TYPE_INT,
-		'loggedinuser'     => TYPE_INT,
-		'specifiedpost'    => TYPE_BOOL,
+	$vbulletin->input->clean_array_gpc('r', array(
+		'message'            => TYPE_STR,
+		'wysiwyg'            => TYPE_BOOL,
+		'quickreply'         => TYPE_BOOL,
+		'ajaxqrfailed'       => TYPE_BOOL,
+		'private'            => TYPE_BOOL,
+		'delete'             => TYPE_STR,
+		'undelete'           => TYPE_BOOL,
+		'reason'             => TYPE_NOHTML,
+		'petitionstatusid'   => TYPE_UINT,
+		'changestatusid'     => TYPE_UINT,
+		'subscribetype'      => TYPE_NOHTML,
+		'preview'            => TYPE_NOHTML,
+		'humanverify'        => TYPE_ARRAY,
+		'ajax'               => TYPE_BOOL,
+		'ajax_lastissuenote' => TYPE_INT,
+		'loggedinuser'       => TYPE_INT,
+		'specifiedissuenote' => TYPE_BOOL,
 	));
 
 	if ($vbulletin->GPC['loggedinuser'] != 0 AND $vbulletin->userinfo['userid'] == 0)
@@ -294,8 +294,8 @@ if ($_POST['do'] == 'postreply')
 		ERRTYPE_ARRAY,
 		'pt_issuenote'
 	);
-	$issuenotedata->set_info('do_floodcheck', !can_moderate());
 
+	$issuenotedata->set_info('do_floodcheck', !can_moderate());
 
 	if ($issuenote['issuenoteid'])
 	{
@@ -432,8 +432,8 @@ if ($_POST['do'] == 'postreply')
 			$issuenote = $issuenotedata->pt_issuenote;
 			$issuenote['issuenoteid'] = $issuenoteid;
 
-			if ($vbulletin->GPC['ajax'])
-			{
+			/*if ($vbulletin->GPC['ajax'])
+			{*/
 				// AJAX return code
 				require_once(DIR . '/includes/class_xml.php');
 
@@ -571,7 +571,7 @@ if ($_POST['do'] == 'postreply')
 				$xml->add_tag('time', TIMENOW);
 				$xml->close_group();
 				$xml->print_xml(true);
-			}
+			/*}
 			else
 			{
 				send_issue_reply_notification($issue, $issuenote);
@@ -599,7 +599,7 @@ if ($_POST['do'] == 'postreply')
 
 				$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
 				eval(print_standard_redirect('pt_issuenote_inserted'));
-			}
+			}*/
 		}
 		else
 		{

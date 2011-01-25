@@ -221,8 +221,8 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			$this->info['reason'] = $this->registry->input->clean($this->info['reason'], TYPE_NOHTMLCOND);
 
 			$insert_history = ($this->info['reason'] !== '');
-			if ((isset($this->pt_issuenote['pagetext']) AND $this->pt_issuenote['pagetext'] != $this->existing['pagetext'])
-				OR (isset($this->pt_issuenote['visible']) AND $this->pt_issuenote['visible'] != $this->existing['visible']))
+
+			if ((isset($this->pt_issuenote['pagetext']) AND $this->pt_issuenote['pagetext'] != $this->existing['pagetext']) OR (isset($this->pt_issuenote['visible']) AND $this->pt_issuenote['visible'] != $this->existing['visible']))
 			{
 				$insert_history = true;
 			}
@@ -247,6 +247,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	function is_flooding()
 	{
 		$floodmintime = TIMENOW - $this->registry->options['floodchecktime'];
+
 		if ($this->fetch_field('dateline') > $floodmintime)
 		{
 			$flood = $this->registry->db->query_first("
@@ -257,13 +258,10 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				ORDER BY dateline DESC
 				LIMIT 1
 			");
+
 			if ($flood)
 			{
-				$this->error(
-					'postfloodcheck',
-					$this->registry->options['floodchecktime'],
-					$flood['dateline'] - $floodmintime
-				);
+				$this->error('postfloodcheck', $this->registry->options['floodchecktime'], $flood['dateline'] - $floodmintime);
 				return true;
 			}
 		}
@@ -279,9 +277,11 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	function is_duplicate()
 	{
 		$dupemintime = TIMENOW - 300;
+
 		if ($this->fetch_field('dateline') > $dupemintime)
 		{
 			$dupehash = md5($this->fetch_field('issueid') . $this->fetch_field('pagetext') . $this->fetch_field('userid') .  $this->fetch_field('visible'));
+
 			$dupe = $this->registry->db->query_first("
 				SELECT dateline
 				FROM " . TABLE_PREFIX . "pt_issuenotehash
@@ -291,6 +291,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				ORDER BY dateline DESC
 				LIMIT 1
 			");
+
 			if ($dupe)
 			{
 				$this->error('duplicate_post');
@@ -316,8 +317,8 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			$this->info['reason'] = $this->registry->input->clean($this->info['reason'], TYPE_NOHTMLCOND);
 
 			$insert_history = ($this->info['reason'] !== '');
-			if ((isset($this->pt_issuenote['pagetext']) AND $this->pt_issuenote['pagetext'] != $this->existing['pagetext'])
-				OR (isset($this->pt_issuenote['visible']) AND $this->pt_issuenote['visible'] != $this->existing['visible']))
+
+			if ((isset($this->pt_issuenote['pagetext']) AND $this->pt_issuenote['pagetext'] != $this->existing['pagetext']) OR (isset($this->pt_issuenote['visible']) AND $this->pt_issuenote['visible'] != $this->existing['visible']))
 			{
 				$insert_history = true;
 			}
@@ -349,6 +350,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			{
 				// insert the duplicate note hash
 				$dupehash = md5($this->fetch_field('issueid') . $this->fetch_field('pagetext') . $this->fetch_field('userid') .  $this->fetch_field('visible'));
+
 				$this->registry->db->query_write("
 					REPLACE INTO " . TABLE_PREFIX . "pt_issuenotehash
 						(issuenoteid, userid, issueid, dupehash, dateline)
@@ -369,6 +371,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				FROM " . TABLE_PREFIX . "pt_issue
 				WHERE issueid = " . intval($this->fetch_field('issueid'))
 			);
+
 			if ($issue)
 			{
 				$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
@@ -381,6 +384,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 					FROM " . TABLE_PREFIX . "pt_project
 					WHERE projectid = $issue[projectid]
 				");
+
 				if ($project)
 				{
 					$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
@@ -478,6 +482,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			FROM " . TABLE_PREFIX . "pt_issue
 			WHERE issueid = " . intval($this->fetch_field('issueid'))
 		);
+
 		if ($issue)
 		{
 			$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
@@ -490,6 +495,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				FROM " . TABLE_PREFIX . "pt_project
 				WHERE projectid = $issue[projectid]
 			");
+
 			if ($project)
 			{
 				$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
@@ -511,6 +517,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	function undelete()
 	{
 		$issuenoteid = intval($this->fetch_field('issuenoteid'));
+
 		if (!$issuenoteid)
 		{
 			return false;
@@ -535,6 +542,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			FROM " . TABLE_PREFIX . "pt_issue
 			WHERE issueid = " . intval($this->fetch_field('issueid'))
 		);
+
 		if ($issue)
 		{
 			$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
@@ -547,6 +555,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				FROM " . TABLE_PREFIX . "pt_project
 				WHERE projectid = $issue[projectid]
 			");
+
 			if ($project)
 			{
 				$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
@@ -579,6 +588,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			FROM " . TABLE_PREFIX . "pt_issue
 			WHERE issueid = " . intval($this->fetch_field('issueid'))
 		);
+
 		if (!$issue)
 		{
 			return false;
@@ -626,10 +636,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				$issuedata->set('lastpostuserid', $this->fetch_field('userid'));
 				$issuedata->set('lastpostusername', $this->fetch_field('username'));
 
-				$this->registry->db->query_write("
-					DELETE FROM " . TABLE_PREFIX . "pt_issueprivatelastpost
-					WHERE issueid = $issue[issueid]
-				");
+				$this->registry->db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueprivatelastpost WHERE issueid = $issue[issueid]");
 
 				if ($issue['visible'] == 'private')
 				{

@@ -1027,8 +1027,8 @@ if ($show['quick_reply'])
 			var require_click = 0;
 			var is_last_page = $show[allow_ajax_qr]; // leave for people with cached JS files
 			var allow_ajax_qr = $show[allow_ajax_qr];
-			var last_post_id = $issue[lastnoteid];
-			var ajax_last_post = " . intval($displayed_dateline) . ";
+			var last_issuenote_id = $issue[lastnoteid];
+			var ajax_last_issuenote = " . intval($displayed_dateline) . ";
 		// -->
 		</script>
 		$messagearea
