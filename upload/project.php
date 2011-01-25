@@ -43,6 +43,7 @@ $specialtemplates = array(
 $globaltemplates = array(
 	'pt_issuebit',
 	'pt_issuebit_deleted',
+	'pt_issuebit_pagelink',
 	'pt_listprojects',
 	'pt_listprojects_link',
 	'pt_markread_script',
