@@ -1245,7 +1245,7 @@ function build_issue_bit($issue, $project, $issueperms)
 			WHERE projectid = " . $project['projectid'] . "
 				AND issuestatusid = " . $issue['issuestatusid'] . "
 		");
-echo $issue['statuscolor'];
+
 		if ($issue['statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
 		{
 			$show['statuscolor'] = true;
