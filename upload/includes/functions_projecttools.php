@@ -1213,9 +1213,7 @@ function build_issue_bit($issue, $project, $issueperms)
 		{
 			if ($vbulletin->options['maxmultipage'] AND $curpage > $vbulletin->options['maxmultipage'])
 			{
-				$lastpageinfo = array(
-					'page' => $issue['totalpages']
-				);
+				$lastpageinfo = array('page' => $issue['totalpages']);
 				$issue['lastpagelink'] = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 				$show['pagenavmore'] = true;
 				break;
@@ -1249,7 +1247,7 @@ function build_issue_bit($issue, $project, $issueperms)
 			WHERE projectid = " . $project['projectid'] . "
 				AND issuestatusid = " . $issue['issuestatusid'] . "
 		");
-
+echo 'Test - Status Color: ' . $issue['statuscolor']; // Debug line
 		if ($issue['statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
 		{
 			$show['statuscolor'] = true;
