@@ -16,7 +16,7 @@ $md5_sums = array(
 		'projecttimeline.php' => '98516262c1363a7182a334a360755360',
 	),
 	'/admincp' => array(
-		'project.php' => '558b70268b56a6e8a98f2abcc12eda30',
+		'project.php' => 'ad8147239a74963a87d33d8749b51354',
 		'projectattachment.php' => '538c493b5fa191f83f939fc25ac884a9',
 		'projectpermission.php' => '15439b068298a038a8f803e62c550656',
 	),
@@ -57,7 +57,7 @@ $md5_sums = array(
 		'class_reportitem_pt.php' => '495bda8f28fbfac1513af5da9d27778e',
 		'class_upload_pt.php' => '8f0bdebdccd046b4bbf766ed1ad823e8',
 		'class_upload_ptimporter.php' => '973c5a881e2cbdb3856554e8d43324e4',
-		'functions_projecttools.php' => '638a7783f9ee8abbf0b502f86458c17d',
+		'functions_projecttools.php' => 'ae7aa8e798a2b7a19528097b7bdd7b75',
 		'functions_pt_digest.php' => 'c7dfa7169a02cac2290a8678ee9251ef',
 		'functions_pt_forumbit.php' => '97183690113d9294692243d33ca64386',
 		'functions_pt_milestone.php' => '03fb66595895ce63390bcbdf0992e664',
@@ -83,7 +83,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => '82fbdab8993354b6805f020ff250a565',
-		'product-vbprojecttools.xml' => '2131e73e7970cfbe18a61ff96461e1a0',
+		'product-vbprojecttools.xml' => '1553d289f24af23661eddc2cb1d77ccd',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'b3b48fe8595c439439a95343f927cae1',

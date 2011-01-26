@@ -10309,6 +10309,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="edit_permissions_for_x" date="1213804739" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_permissions_for_x_in_y" date="1213804793" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span> in <span class="normal">'{2}'</span>]]></phrase>
 			<phrase name="edit_project_category" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Edit Project Category]]></phrase>
+			<phrase name="edit_project_priority" date="1296047654" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Priority]]></phrase>
 			<phrase name="edit_project_version" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Edit Project Version]]></phrase>
 			<phrase name="edit_project_version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Edit Project Version Group]]></phrase>
 			<phrase name="edit_project_x" date="1213804805" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Project <span class="normal">'{1}'</span>]]></phrase>
@@ -10379,7 +10380,6 @@ To create your own report, make a search with the criteria that you want and cli
 </ul>]]></phrase>
 			<phrase name="project_tools_upgraded_successfully" date="1179502428" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[vBulletin Project Tools Upgraded Successfully!]]></phrase>
 			<phrase name="project_versions_for_x" date="1213805622" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Versions for <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="pt_severity_color" date="1295361327" username="Pitchoune" version="2.2.0"><![CDATA[Severity Color]]></phrase>
 			<phrase name="ptperm_can_assign_edit" date="1176211762" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Assignments]]></phrase>
 			<phrase name="ptperm_can_assign_edit_others" date="1176211771" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Others' Assignments]]></phrase>
 			<phrase name="ptperm_can_assigned" date="1176211751" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can be Assigned]]></phrase>
@@ -10436,6 +10436,8 @@ To create your own report, make a search with the criteria that you want and cli
 <dfn>Choose this option if you want users to receive an email when they are assigned to an issue by another user.</dfn>]]></phrase>
 			<phrase name="send_pm_on_issueassignment" date="1278776794" username="Jeremy" version="2.1.2"><![CDATA[Send PM on Issue Assignment
 <dfn>Choose this option if you want users to receive a PM when they are assigned to an issue by another user.</dfn>]]></phrase>
+			<phrase name="severitycolor_darkstyles" date="1296033443" username="Pitchoune" version="2.2.0"><![CDATA[Severity Color - Dark Styles]]></phrase>
+			<phrase name="severitycolor_lightstyles" date="1296033472" username="Pitchoune" version="2.2.0"><![CDATA[Severity Color - Light Styles]]></phrase>
 			<phrase name="show_globally_disabled_groups" date="1176819233" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Show Globally-Disabled User Groups]]></phrase>
 			<phrase name="singular_form_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Singular Form<dfn>Example: Bug</dfn>]]></phrase>
 			<phrase name="some_issue_fields_not_editable_frontend" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Some issue fields, such as project and issue type, are not editable via the front-end. This system allows you edit those fields.]]></phrase>

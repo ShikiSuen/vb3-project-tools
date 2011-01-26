@@ -475,7 +475,17 @@ function prepare_issue($issue)
 	// Severity Color
 	if ($vbulletin->options['pt_statuscolor'] == 2)
 	{
-		$issue['statuscolor'] = $vbulletin->pt_priorities["$issue[priority]"]['statuscolor'];
+		// Dark styles
+		if (in_array($vbulletin->userinfo['styleid'], explode(',', $vbulletin->options['statuscolor_darkstyles'])))
+		{
+			$issue['statuscolor'] = $vbulletin->pt_priorities["$issue[priority]"]['statuscolor'];
+		}
+
+		// Light styles
+		if (in_array($vbulletin->userinfo['styleid'], explode(',', $vbulletin->options['statuscolor_lightstyles'])))
+		{
+			$issue['statuscolor'] = $vbulletin->pt_priorities["$issue[priority]"]['statuscolor2'];
+		}
 	}
 
 	($hook = vBulletinHook::fetch_hook('project_issue_prepare')) ? eval($hook) : false;
