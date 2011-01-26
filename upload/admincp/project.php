@@ -2534,15 +2534,15 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 	if ($projectcategory['projectpriorityid'])
 	{
 		print_table_header($vbphrase['edit_project_priority']);
-		$trans_link = "phrase.php?" . $vbulletin->session->vars['sessionurl'] . "do=edit&fieldname=projecttools&t=1&varname=priority";
+		print_input_row($vbphrase['title'] . '<dfn>' . construct_link_code($vbphrase['translations'], 'phrase.php?' . $vbulletin->session->vars['sessionurl'] . 'do=edit&amp;fieldname=projecttools&amp;t=1&amp;varname=priority' . $projectpriority['projectpriorityid'], true) . '</dfn>', 'title', $vbphrase['priority' . $projectpriority['projectpriorityid'] . ''], false);
 	}
 	else
 	{
 		print_table_header($vbphrase['add_project_priority']);
-		$trans_link = '';
+		print_input_row($vbphrase['title'], 'title', '', false);
 	}
 
-	print_input_row($vbphrase['title'] . ($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . $projectpriority['projectpriorityid'], true) . '</dfn>' : ''), 'title', $vbphrase['priority' . $projectpriority['projectpriorityid'] . ''], false);
+
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectpriority['displayorder'], true, 5);
 
 	require_once(DIR . '/includes/adminfunctions_template.php');
@@ -2550,12 +2550,25 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 	// Construct_color_row reworked just for here
 	echo "<tr>
-		<td class=\"alt1\">" . $vbphrase['pt_severity_color'] . "</td>
+		<td class=\"alt1\">" . $vbphrase['severitycolor_darkstyles'] . "</td>
 		<td class=\"alt1\">
 			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
 			<tr>
 				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$projectpriority['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
 				<td><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
+			</tr>
+			</table>
+		</td>
+	</tr>\n";
+
+	// Construct_color_row reworked just for here
+	echo "<tr>
+		<td class=\"alt1\">" . $vbphrase['severitycolor_lightstyles'] . "</td>
+		<td class=\"alt1\">
+			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
+			<tr>
+				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor2\" id=\"color_1\" value=\"{$projectpriority['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(1)\" dir=\"ltr\" />&nbsp;</td>
+				<td><div id=\"preview_1\" class=\"colorpreview\" onclick=\"open_color_picker(1, event)\"></div></td>
 			</tr>
 			</table>
 		</td>
@@ -2573,7 +2586,7 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 	var bburl = "<?php echo $vbulletin->options['bburl']; ?>/";
 	var cpstylefolder = "<?php echo $vbulletin->options['cpstylefolder']; ?>";
-	var numColors = 1;
+	var numColors = 2;
 	var colorPickerWidth = 253;
 	var colorPickerType = 0;
 
