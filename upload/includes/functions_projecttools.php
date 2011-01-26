@@ -446,7 +446,7 @@ function prepare_issue($issue)
 		$issue['categorytitle'] = $vbphrase['unknown'];
 	}
 
-	$issue['priority_text'] = $vbphrase["priority_$issue[priority]"];
+	$issue['priority_text'] = $vbphrase["priority$issue[priority]"];
 
 	if (!$issue['milestoneid'])
 	{
