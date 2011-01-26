@@ -1529,6 +1529,7 @@ $db->query_write("
 		projectid INT UNSIGNED NOT NULL,
 		displayorder INT UNSIGNED NOT NULL,
 		statuscolor VARCHAR(20) NOT NULL,
+		statuscolor2 VARCHAR(20) NOT NULL,
 		PRIMARY KEY (projectpriorityid),
 		KEY finder (projectid,displayorder)
 	) ENGINE=MyISAM
@@ -10148,17 +10149,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="post_new_issue" date="1174401738" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Post New Issue]]></phrase>
 			<phrase name="post_reply" date="1174401490" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Post Reply]]></phrase>
 			<phrase name="priority" date="1174483439" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Priority]]></phrase>
-			<phrase name="priority_0" date="1171535401" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Unknown]]></phrase>
-			<phrase name="priority_1" date="1171535409" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[1 - Highest]]></phrase>
-			<phrase name="priority_10" date="1171535464" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[10 - Lowest]]></phrase>
-			<phrase name="priority_2" date="1171535415" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[2]]></phrase>
-			<phrase name="priority_3" date="1171535420" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[3]]></phrase>
-			<phrase name="priority_4" date="1171535424" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[4]]></phrase>
-			<phrase name="priority_5" date="1171535435" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[5 - Medium]]></phrase>
-			<phrase name="priority_6" date="1171535441" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[6]]></phrase>
-			<phrase name="priority_7" date="1171535448" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[7]]></phrase>
-			<phrase name="priority_8" date="1171535453" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[8]]></phrase>
-			<phrase name="priority_9" date="1171535457" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[9]]></phrase>
+			<phrase name="priority0" date="1296032538" username="Pitchoune" version="2.2.0"><![CDATA[Unknown]]></phrase>
 			<phrase name="private_message_keep_in_mind" date="1175092015" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[This is a private message. Keep this in mind when replying!]]></phrase>
 			<phrase name="project" date="1174406316" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project]]></phrase>
 			<phrase name="project_information" date="1175174027" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Information]]></phrase>

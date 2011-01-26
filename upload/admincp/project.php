@@ -2393,6 +2393,7 @@ if ($_POST['do'] == 'projectpriorityupdate')
 		'title' => TYPE_NOHTML,
 		'displayorder' => TYPE_UINT,
 		'statuscolor' => TYPE_STR,
+		'statuscolor2' => TYPE_STR,
 	));
 
 	if ($vbulletin->GPC['projectpriorityid'])
@@ -2427,6 +2428,7 @@ if ($_POST['do'] == 'projectpriorityupdate')
 			UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
 				displayorder = " . $vbulletin->GPC['displayorder'] . "
 				" . ($vbulletin->GPC['statuscolor'] ? ", statuscolor = '" . $db->escape_string($vbulletin->GPC['statuscolor']) . "'" : '') . "
+				" . ($vbulletin->GPC['statuscolor2'] ? ", statuscolor2 = '" . $db->escape_string($vbulletin->GPC['statuscolor2']) . "'" : '') . "
 			WHERE projectpriorityid = " . $projectpriority['projectpriorityid'] . "
 		");
 
@@ -2531,7 +2533,7 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 	print_form_header('project', 'projectpriorityupdate');
 
-	if ($projectcategory['projectpriorityid'])
+	if ($projectpriority['projectpriorityid'])
 	{
 		print_table_header($vbphrase['edit_project_priority']);
 		print_input_row($vbphrase['title'] . '<dfn>' . construct_link_code($vbphrase['translations'], 'phrase.php?' . $vbulletin->session->vars['sessionurl'] . 'do=edit&amp;fieldname=projecttools&amp;t=1&amp;varname=priority' . $projectpriority['projectpriorityid'], true) . '</dfn>', 'title', $vbphrase['priority' . $projectpriority['projectpriorityid'] . ''], false);
@@ -2563,8 +2565,8 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 	// Construct_color_row reworked just for here
 	echo "<tr>
-		<td class=\"alt1\">" . $vbphrase['severitycolor_lightstyles'] . "</td>
-		<td class=\"alt1\">
+		<td class=\"alt2\">" . $vbphrase['severitycolor_lightstyles'] . "</td>
+		<td class=\"alt2\">
 			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
 			<tr>
 				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor2\" id=\"color_1\" value=\"{$projectpriority['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(1)\" dir=\"ltr\" />&nbsp;</td>
