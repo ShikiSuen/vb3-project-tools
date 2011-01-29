@@ -99,6 +99,8 @@ $vbulletin->input->clean_array_gpc('r', array(
 
 $project = verify_project($vbulletin->GPC['projectid']);
 
+$postable_types = array();
+
 if ($vbulletin->GPC['issuetypeid'])
 {
 	verify_issuetypeid($vbulletin->GPC['issuetypeid'], $project['projectid']);
@@ -106,6 +108,7 @@ if ($vbulletin->GPC['issuetypeid'])
 	$issuetype_printable_plural = $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_plural'];
 	$vbphrase['applies_version_issuetype'] = $vbphrase["applies_version_" . $vbulletin->GPC['issuetypeid']];
 	$vbphrase['post_new_issue_issuetype'] = $vbphrase["post_new_issue_" . $vbulletin->GPC['issuetypeid']];
+	$postable_types[] = htmlspecialchars_uni($vbulletin->GPC['issuetypeid']);
 }
 else
 {
@@ -404,7 +407,6 @@ $anyversion_selected = ($vbulletin->GPC['appliesversionid'] == 0 ? ' selected="s
 $unknownversion_selected = ($vbulletin->GPC['appliesversionid'] == -1 ? ' selected="selected"' : '');
 
 // status options / posting options drop down
-$postable_types = array();
 $status_options = '';
 $post_issue_options = '';
 
