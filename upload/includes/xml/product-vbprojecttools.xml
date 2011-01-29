@@ -7095,10 +7095,10 @@ init_project_readmarker_system();
 		</ul>
 	</div>
 </div>]]></template>
-		<template name="pt_projectbit_typecount" templatetype="template" date="1294284973" username="Pitchoune" version="2.2.0"><![CDATA[<li>
+		<template name="pt_projectbit_typecount" templatetype="template" date="1296289590" username="Pitchoune" version="2.2.0"><![CDATA[<li>
 	<a href="{vb:link issuelist, {vb:raw project}}&amp;issuetypeid={vb:raw type.issuetypeid}">{vb:raw typename}</a>: 
 	<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
-		{vb:raw type.issuecountactive} / {vb:raw type.issuecount}
+		{vb:raw type.issuecountactive}&nbsp;/&nbsp;{vb:raw type.issuecount}
 	</span>
 </li>]]></template>
 		<template name="pt_project_milestones" templatetype="template" date="1295104706" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
