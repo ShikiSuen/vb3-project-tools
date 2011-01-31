@@ -6,7 +6,7 @@ function vB_QuickEditor_IssueNote_Vars(args)
 vB_QuickEditor_IssueNote_Vars.prototype.init = function()
 {
 	this.target = "projectpost.php";
-	this.postaction = "postreply";
+	this.postaction = "=postreply";
 
 	this.objecttype = "issuenoteid";
 	this.getaction = "message";
