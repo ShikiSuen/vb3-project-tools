@@ -2122,7 +2122,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1295973315" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1296488756" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2782,6 +2782,12 @@ a.firstunread, a.firstunread:hover
 	background: {vb:stylevar postbit_userinfo_background};
 }
 
+.pt_issue_note .formcontrols .blockrow {
+	background: {vb:stylevar formrow_background.backgroundColor} {vb:stylevar formrow_background.backgroundImage} bottom repeat-x;
+	border-top: solid 1px {vb:stylevar light_border.borderColor};
+	padding: 10px 5px;
+}
+
 .pt_issue_note .issuetext {
 	padding-bottom: 26px;
 	background: {vb:stylevar postbit_background};
@@ -2992,13 +2998,6 @@ a.firstunread, a.firstunread:hover
 .pt_issuepopup .navpopupbody {
 	overflow: visible;
 }
-
-<vb:comment>
-/* Issue since 4.1.1 */
-.pt_issuepopup .navpopupbody.popupbody {
-	min-width: 0;
-}
-</vb:comment>
 
 .pt_issuepopup .pagenav {
 	margin-bottom: 5px;
@@ -3633,7 +3632,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1295968688" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1296488831" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3664,6 +3663,9 @@ legend {
 	<vb:if condition="$show['quick_reply']">
 	<script type="text/javascript" src="clientscript/vbulletin_pt_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
+
+	<script type="text/javascript" src="clientscript/vbulletin_quick_edit_generic.js?v={vb:raw vboptions.simpleversion}"></script>
+	<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issuenote.js?v={vb:raw vboptions.simpleversion}"></script>
 
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -4685,7 +4687,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </li>]]></template>
 		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1295973344" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1296505063" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
@@ -4715,7 +4717,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			</div>
 		</div>
 		<div class="blockrow issuetext">
-			<div class="issue_message">
+			<div class="issue_message" id="issuenote_message_{vb:raw note.issuenoteid}">
 				<div class="restore">{vb:raw note.message}</div>
 
 				<vb:if condition="$note['visible'] == 'private'">
@@ -4737,8 +4739,11 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			<div class="issuefoot">
 				<div class="textcontrols">
 					<span class="issuecontrols">
+
+					<img style="margin: 0; padding: 0;" class="hidden" id="issuenote_progress_{vb:raw note.issuenoteid}" src="images/misc/progress.gif" alt="" />
+
 					<vb:if condition="$show['edit_note']">
-						<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw note.issuenoteid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
+						<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw note.issuenoteid}" id="issuenote_edit_{vb:raw note.issuenoteid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
 					</vb:if>
 
 					<vb:if condition="$show['reply_note'] AND $show['edit_note']">
@@ -4770,6 +4775,11 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+	<!--
+	vBulletin.register_control("vB_QuickEdit", "{vb:raw note.issuenoteid}", 'IssueNote'); 
+	//--> 
+	</script> 
 </li>]]></template>
 		<template name="pt_listbuilder_box" templatetype="template" date="1274474523" username="Pitchoune" version="2.1.1"><![CDATA[<table class="pt_listbuilder_box" border="0">
 <tr>
@@ -6576,7 +6586,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postmenubit" templatetype="template" date="1276056195" username="Jeremy" version="2.1.1"><![CDATA[<li>
+		<template name="pt_postmenubit" templatetype="template" date="1296398709" username="Pitchoune" version="2.2.0"><![CDATA[<li>
 	<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}<vb:if condition="$urlinclude['milestoneid']">&amp;milestoneid={vb:var milestoneid}</vb:if>">
 		<vb:if condition="$type['iconfile']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw type.iconfile}" alt="{vb:raw typename}" border="0" class="inlineimg" />
