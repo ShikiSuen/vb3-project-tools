@@ -153,6 +153,51 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 // #######################################################################
 
 // #######################################################################
+if ($_REQUEST['do'] == 'quickedit')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'editorid' => TYPE_NOHTML,
+		'issuenoteid' => TYPE_UINT,
+	));
+
+	$issuenote = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_issuenote
+		WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid']
+	);
+	$vbulletin->GPC['issueid'] = $issuenote['issueid'];
+
+	require_once(DIR . '/includes/class_xml.php');
+	require_once(DIR . '/includes/functions_editor.php');
+
+	$issueinfo = verify_issue($vbulletin->GPC['issueid']);
+
+	$editorid = construct_edit_toolbar(
+		htmlspecialchars_uni($issuenote['pagetext']),
+		false,
+		'pt',
+		true,
+		true,
+		false,
+		'qenr',
+		$vbulletin->GPC['editorid']
+	);
+
+	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+
+	$xml->add_group('quickedit');
+	$xml->add_tag('editor', process_replacement_vars($messagearea), array(
+		'reason'       => '',
+		'parsetype'    => 'pt',
+		'parsesmilies' => true,
+		'mode'         => $show['is_wysiwyg_editor']
+	));
+	$xml->close_group();
+
+	$xml->print_xml();
+}
+
+// #######################################################################
 if ($_POST['do'] == 'postreply' OR $_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
