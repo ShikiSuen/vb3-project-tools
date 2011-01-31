@@ -17,5 +17,5 @@ vB_QuickEditor_IssueNote_Vars.prototype.init = function()
 
 	this.messagetype = "issuenote_message_";
 	this.containertype = "issuenote_";
-	this.responsecontainer = "issuenotes";
+	this.responsecontainer = "commentbits";
 }

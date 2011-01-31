@@ -153,7 +153,7 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 // #######################################################################
 
 // #######################################################################
-if ($_REQUEST['do'] == 'quickedit')
+if ($_POST['do'] == 'quickedit')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'editorid' => TYPE_NOHTML,
@@ -477,8 +477,8 @@ if ($_POST['do'] == 'postreply')
 			$issuenote = $issuenotedata->pt_issuenote;
 			$issuenote['issuenoteid'] = $issuenoteid;
 
-			/*if ($vbulletin->GPC['ajax'])
-			{*/
+			if ($vbulletin->GPC['ajax'])
+			{
 				// AJAX return code
 				require_once(DIR . '/includes/class_xml.php');
 
@@ -616,7 +616,7 @@ if ($_POST['do'] == 'postreply')
 				$xml->add_tag('time', TIMENOW);
 				$xml->close_group();
 				$xml->print_xml(true);
-			/*}
+			}
 			else
 			{
 				send_issue_reply_notification($issue, $issuenote);
@@ -644,13 +644,14 @@ if ($_POST['do'] == 'postreply')
 
 				$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
 				eval(print_standard_redirect('pt_issuenote_inserted'));
-			}*/
+			}
 		}
 		else
 		{
-			$issuenoteid = $issuenotedata->save();
-			$issuenote = $issuenotedata->pt_issuenote;
-			$issuenote['issuenoteid'] = $issuenoteid;
+			$issuenotedata->save();
+			//$issuenote = $issuenotedata->pt_issuenote;
+
+			$issuenote['issuenoteid'] = $vbulletin->GPC['issuenoteid'];//$issuenoteid;
 
 			if ($vbulletin->GPC['ajax'])
 			{
@@ -780,12 +781,12 @@ if ($_POST['do'] == 'postreply')
 				$factory->browsing_perms = $issueperms;
 
 				$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
-				$xml->add_group('issuenotes');
+				$xml->add_group('commentbits');
 
 				while ($note = $db->fetch_array($notes))
 				{
 					$note_handler =& $factory->create($note);
-					$xml->add_tag('issuenotebit', process_replacement_vars($note_handler->construct($note)), array('issuenoteid' => $note['issuenoteid']));
+					$xml->add_tag('message', process_replacement_vars($note_handler->construct($note)), array('issuenoteid' => $note['issuenoteid'], 'quickedit' => 1));
 				}
 
 				$xml->add_tag('time', TIMENOW);
