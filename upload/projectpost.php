@@ -153,6 +153,41 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 // #######################################################################
 
 // #######################################################################
+if ($_POST['do'] == 'quickeditissue')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'editorid' => TYPE_NOHTML,
+		'issueid' => TYPE_UINT,
+	));
+
+	$issueinfo = verify_issue($vbulletin->GPC['issueid']);
+
+	$editorid = construct_edit_toolbar(
+		htmlspecialchars_uni($issuenote['pagetext']),
+		false,
+		'pt',
+		true,
+		true,
+		false,
+		'qenr',
+		$vbulletin->GPC['editorid']
+	);
+
+	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+
+	$xml->add_group('quickedit');
+	$xml->add_tag('editor', process_replacement_vars($messagearea), array(
+		'reason'       => '',
+		'parsetype'    => 'pt',
+		'parsesmilies' => true,
+		'mode'         => $show['is_wysiwyg_editor']
+	));
+	$xml->close_group();
+
+	$xml->print_xml();
+}
+
+// #######################################################################
 if ($_POST['do'] == 'quickedit')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
