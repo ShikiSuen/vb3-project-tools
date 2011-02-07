@@ -166,7 +166,7 @@ if ($_POST['do'] == 'quickeditissue')
 	$issueinfo = verify_issue($vbulletin->GPC['issueid']);
 
 	$editorid = construct_edit_toolbar(
-		htmlspecialchars_uni($issuenote['pagetext']),
+		htmlspecialchars_uni($issueinfo['pagetext']),
 		false,
 		'pt',
 		true,
