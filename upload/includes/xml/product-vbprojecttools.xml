@@ -2122,7 +2122,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1296488756" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1296563299" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2614,41 +2614,41 @@ a.firstunread, a.firstunread:hover
 	margin-top: {vb:stylevar padding};
 }
 
-#pt_issue_content .issue_content {
+.pt_issue_content .issue_content {
 	margin-{vb:stylevar left}:{vb:math ((220px + {vb:stylevar padding})) * 1}; 
 }
 
-#pt_issue_content {
+.pt_issue_content {
 	width: 100%;
 	float: {vb:stylevar left};
 	margin-{vb:stylevar left}:{vb:math ((220px + {vb:stylevar padding})) * -1};
 	margin-top: {vb:stylevar padding};
 }
 
-#pt_issue_content .block {
+.pt_issue_content .block {
 	width: 100%;
 	display: block;
 	float: {vb:stylevar right};
 }
 
-#pt_issue_content .blockrow {
+.pt_issue_content .blockrow {
 	background: {vb:stylevar postbit_userinfo_background};
 }
 
-#pt_issue_content .issuetext {
+.pt_issue_content .issuetext {
 	padding-bottom: 26px;
 	background: {vb:stylevar postbit_background};
 }
 
-#pt_issue_content .blockrow .issue_message {
+.pt_issue_content .blockrow .issue_message {
 	padding-bottom: 1em;
 }
 
-#pt_issue_content .blockrow .issue_message .shade {
+.pt_issue_content .blockrow .issue_message .shade {
 	font-size: {vb:stylevar small_fontSize};
 }
 
-#pt_issue_content .issuefoot {
+.pt_issue_content .issuefoot {
 	background: none repeat scroll 0 0 transparent;
 	clear: both;
 	display: block;
@@ -2661,7 +2661,7 @@ a.firstunread, a.firstunread:hover
 	margin-{vb:stylevar right}: -20px;
 }
 
-#pt_issue_content .issuefoot .textcontrols {
+.pt_issue_content .issuefoot .textcontrols {
 	background: {vb:stylevar postbit_foot_background};
 	display: block;
 	font: {vb:stylevar postbit_control_font};
@@ -2670,96 +2670,96 @@ a.firstunread, a.firstunread:hover
 	width: 100%;
 }
 
-#pt_issue_content .issuefoot .issuecontrols {
+.pt_issue_content .issuefoot .issuecontrols {
 	margin-{vb:stylevar left}: 1px;
 	position: absolute;
 	{vb:stylevar right}: -10px;
 }
 
-#pt_issue_content .issuefoot .textcontrols span.separator {
+.pt_issue_content .issuefoot .textcontrols span.separator {
 	border-right: {vb:stylevar postfoot_separator_width} solid {vb:stylevar postfoot_separator_color};
 	display: inline;
 	width: {vb:stylevar postfoot_separator_width};
 	margin: 0 5px;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.editissue {
+.pt_issue_content .issuefoot .textcontrols a.editissue {
 	background: url({vb:stylevar imgdir_button}/edit_40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.editissue:hover {
+.pt_issue_content .issuefoot .textcontrols a.editissue:hover {
 	background: url({vb:stylevar imgdir_button}/edit_40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.replyissue {
+.pt_issue_content .issuefoot .textcontrols a.replyissue {
 	background: url({vb:stylevar imgdir_button}/reply_40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.replyissue:hover {
+.pt_issue_content .issuefoot .textcontrols a.replyissue:hover {
 	background: url({vb:stylevar imgdir_button}/reply_40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .issuelinking {
+.pt_issue_content .issuefoot .issuelinking {
 	margin-{vb:stylevar left}: 0px;
 	position: absolute;
 	{vb:stylevar left}: 10px;
 }
 
-#pt_issue_content .issuefoot .textcontrols a {
+.pt_issue_content .issuefoot .textcontrols a {
 	display: inline-block;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.issuehistory {
+.pt_issue_content .issuefoot .textcontrols a.issuehistory {
 	background: none no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: 0;
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.issuehistory:hover {
+.pt_issue_content .issuefoot .textcontrols a.issuehistory:hover {
 	background: none no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: 0;
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.reportissue {
+.pt_issue_content .issuefoot .textcontrols a.reportissue {
 	background: url({vb:stylevar imgdir_button}/report-40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.reportissue:hover {
+.pt_issue_content .issuefoot .textcontrols a.reportissue:hover {
 	background: url({vb:stylevar imgdir_button}/report-40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.ipissue {
+.pt_issue_content .issuefoot .textcontrols a.ipissue {
 	background: url({vb:stylevar imgdir_button}/ip-40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .textcontrols a.ipissue:hover {
+.pt_issue_content .issuefoot .textcontrols a.ipissue:hover {
 	background: url({vb:stylevar imgdir_button}/ip-40b-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
 	border: 0 solid #A8A8A8;
 }
 
-#pt_issue_content .issuefoot .textcontrols a img {
+.pt_issue_content .issuefoot .textcontrols a img {
 	{vb:stylevar left}: 3px;
 	position: absolute;
 	top: 2px;
 }
 
-#pt_issue_content .issuevote, #pt_issue_content .issueclosed {
+.pt_issue_content .issuevote, #pt_issue_content .issueclosed {
 	background: none repeat scroll 0 0 #FFFFFF;
 	border-top: 1px solid #D1D1E1; 
 	margin-top: 3px; 
@@ -2767,7 +2767,7 @@ a.firstunread, a.firstunread:hover
 	text-align: center;
 }
 
-#pt_issue_content img.author_avatar
+.pt_issue_content img.author_avatar
 {
 	float: {vb:stylevar left};
 	margin-{vb:stylevar right}: 5px;
@@ -3632,7 +3632,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1296488831" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1297115630" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3655,17 +3655,20 @@ legend {
 		</vb:if>
 	</vb:if>
 
-	<vb:if condition="$show['quickedit'] OR $show['quick_reply']">
+	<vb:if condition="$vbulletin->options['quickedit'] OR $show['quick_reply']">
 		<script type="text/javascript" src="clientscript/vbulletin_textedit.js?v={vb:raw vboptions.simpleversion}"></script>
 		<script type="text/javascript" src="clientscript/vbulletin_issuenote_loader.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 
 	<vb:if condition="$show['quick_reply']">
-	<script type="text/javascript" src="clientscript/vbulletin_pt_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
+		<script type="text/javascript" src="clientscript/vbulletin_pt_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 
-	<script type="text/javascript" src="clientscript/vbulletin_quick_edit_generic.js?v={vb:raw vboptions.simpleversion}"></script>
-	<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issuenote.js?v={vb:raw vboptions.simpleversion}"></script>
+	<vb:if condition="$vbulletin->options['quickedit']">
+		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_generic.js?v={vb:raw vboptions.simpleversion}"></script>
+		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issue.js?v={vb:raw vboptions.simpleversion}">
+		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issuenote.js?v={vb:raw vboptions.simpleversion}"></script>
+	</vb:if>
 
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -3764,127 +3767,9 @@ legend {
 	</div>
 </div>
 
-<div id="pt_issue_content" style="margin-bottom: 10px;">
-	<div class="issue_content">
-		<div class="block">
-			<div class="blockhead">
-				{vb:raw issue.title}
-			</div>
-			<div class="blockbody settings_form_border">
-				<div class="blocksubhead">
-					<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$issue['newflag']">new<vb:else />old</vb:if>.png" alt="issueid={vb:raw issue.issueid}" class="inlineimg" />
-					{vb:raw issue.submitdate} {vb:raw issue.submittime}
-				</div>
-				<div class="blockrow">
-					<div class="floatcontainer">
-						<vb:if condition="$show['avatar']"><a href="{vb:link member, {vb:raw issue}, null, 'userid', 'musername'}"><img class="author_avatar" src="{vb:raw issue.avatarurl}" {vb:raw issue.avwidth} {vb:raw issue.avheight} alt="{vb:rawphrase xs_avatar, {vb:raw issue.username}}" border="0" /></a></vb:if>
-
-						<div id="notemenu_{vb:raw issue.issuenoteid}">
-						<vb:if condition="$show['profile']">
-							<a class="bigtext" href="{vb:link member, {vb:raw issue}, null, 'userid', 'musername'}">{vb:raw issue.musername}</a>
-							<vb:if condition="$show['onlinestatus']">
-								<vb:if condition="$issue['onlinestatus'] == 0"><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw issue.username}}" border="0" />
-								<vb:elseif condition="$issue['onlinestatus'] == 1" /><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw issue.username}}" border="0" />
-								<vb:elseif condition="$issue['onlinestatus'] == 2" /><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw issue.username}}" border="0" /></vb:if>
-							</vb:if>
-						<vb:else />
-							{vb:raw issue.musername}
-						</vb:if>
-						</div>
-
-						<vb:if condition="$issue['usertitle']"><div class="smallfont">{vb:raw issue.usertitle}</div></vb:if>
-						<vb:if condition="$vbulletin->options['pt_profile_issue_counters']"><div class="smallfont">{vb:rawphrase number_reported_issues_by_x, {vb:raw issue.username}}: {vb:raw issue.totalissues}</div></vb:if>
-
-					</div>
-				</div>
-				<div class="blockrow issuetext">
-
-				<div class="issue_message">
-					<div style="font-size:14pt">{vb:raw issue.title}</div>
-					<vb:if condition="$issue['summary']"><div><strong>{vb:raw issue.summary}</strong></div></vb:if>
-
-					<vb:if condition="$issue['visible'] == 'private'">
-						<div class="shade" style="font-size: 11px"><img src="{vb:stylevar imgdir_misc}/issue_private.png" class="inlineimg" alt="" /> {vb:rawphrase this_is_private_issue}</div>
-					</vb:if>
-					<vb:if condition="$issue['visible'] == 'deleted'">
-						<div class="shade" style="font-size: 11px"><img src="{vb:stylevar imgdir_misc}/trashcan_small.gif" class="inlineimg" alt="" /> {vb:rawphrase issue_has_been_deleted}</div>
-					</vb:if>
-
-					<hr style="border:0px; height:1px; color: #D1D1E1; background-color: #D1D1E1" />
-					<div class="restore">{vb:raw issue.message}</div>
-				</div>
-
-				<vb:if condition="$show['vote_option']">
-				<vb:if condition="$template_hook['issue_vote']">
-					{vb:raw template_hook.issue_vote}
-				<vb:else />
-				<div class="blockrow issuevote">
-				<a name="voteform"></a>
-				<vb:if condition="$issue['vote']">
-					{vb:rawphrase vote_question_issuetype} &nbsp; <strong><vb:if condition="$issue['vote'] == 'positive'">{vb:rawphrase yes}<vb:else />{vb:rawphrase no}</vb:if></strong> ({vb:rawphrase you_have_voted_issue})
-				<vb:else />
-					<form action="issue.php?do=vote" method="post">
-						{vb:rawphrase vote_question_issuetype}
-						<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
-						<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
-						<input type="hidden" name="do" value="vote" />
-						<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
-						<input type="submit" class="button" name="vote[positive]" id="votepositive_button" value="{vb:rawphrase yes}" style="width:50px; font-size:10px" tabindex="1" />
-						<input type="submit" class="button" name="vote[negative]" id="votenegative_button" value="{vb:rawphrase no}" style="width:50px; font-size:10px" tabindex="1" />
-					</form>
-				</vb:if>
-				</div>
-				</vb:if>
-				</vb:if>
-				<div class="issuefoot">
-					<div class="textcontrols">
-						<span class="issuecontrols">
-						<vb:if condition="$show['edit_issue']">
-							<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editissue&amp;issueid={vb:raw issue.issueid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
-						<vb:elseif condition="$show['edit_note']" />
-							<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw issue.issuenoteid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
-						</vb:if>
-
-						<vb:if condition="($show['reply_issue'] AND !$show['issue_closed']) AND ($show['edit_issue'] OR $show['edit_note'])">
-							<span class="separator">&nbsp;</span>
-						</vb:if>
-
-						<vb:if condition="$show['reply_issue'] AND !$show['issue_closed']">
-							<a class="replyissue" href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase reply}" /> {vb:rawphrase reply}</a>
-						</vb:if>
-						</span>
-
-						<span class="issuelinking">
-						<vb:if condition="$show['edit_history']">
-							<a class="issuehistory" href="issue.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw issue.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw issue.lastedit_date}, {vb:raw issue.lastedit_time}}</a>
-						</vb:if>
-
-						<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'])">
-							<span class="separator">&nbsp;</span>
-						</vb:if>
-
-						<vb:if condition="$show['reportlink']">
-							<a class="reportissue" href="issue.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw issue.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
-						</vb:if>
-						<vb:if condition="$issue['noteipaddress']">
-							<a class="ipissue" href="issue.php?do=viewip&amp;issuenoteid={vb:raw issue.issuenoteid}" title="{vb:raw issue.noteipaddress}">&nbsp;</a>
-						</vb:if>
-						</span>
-					</div>
-				</div>
-
-				</div>
-
-				<vb:if condition="$show['issue_closed']">
-				<div class="blockrow" style="text-align: center">
-					<img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="" class="inlineimg" /> {vb:rawphrase this_issue_is_closed}
-					<vb:if condition="!$posting_perms['issue_close']">{vb:rawphrase no_more_replies_may_be_made}</vb:if>
-				</div>
-				</vb:if>
-			</div>
-		</div>
-	</div>
-</div>
+<ol id="issue">
+	{vb:raw issuefirstnote}
+</ol>
 
 <div id="pt_issue_details">
 	<div class="block">
@@ -4778,6 +4663,142 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<script type="text/javascript">
 	<!--
 	vBulletin.register_control("vB_QuickEdit", "{vb:raw note.issuenoteid}", 'IssueNote'); 
+	//--> 
+	</script> 
+</li>]]></template>
+		<template name="pt_issue_firstnote" templatetype="template" date="1297118513" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="pt_issue_content" style="margin-bottom: 10px;">
+	<div class="issue_content">
+		<div class="block">
+			<div class="blockhead">
+				{vb:raw issue.title}
+			</div>
+			<div class="blockbody settings_form_border">
+				<div class="blocksubhead">
+					<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$issue['newflag']">new<vb:else />old</vb:if>.png" alt="issueid={vb:raw issue.issueid}" class="inlineimg" />
+					{vb:raw issue.submitdate} {vb:raw issue.submittime}
+				</div>
+				<div class="blockrow">
+					<div class="floatcontainer">
+						<vb:if condition="$show['avatar']">
+							<a href="{vb:link member, {vb:raw issue}, null, 'userid', 'musername'}">
+								<img class="author_avatar" src="{vb:raw issue.avatarurl}" {vb:raw issue.avwidth} {vb:raw issue.avheight} alt="{vb:rawphrase xs_avatar, {vb:raw issue.username}}" border="0" />
+							</a>
+						</vb:if>
+
+						<div id="notemenu_{vb:raw issue.issuenoteid}">
+							<vb:if condition="$show['profile']">
+								<a class="bigtext" href="{vb:link member, {vb:raw issue}, null, 'userid', 'musername'}">{vb:raw issue.musername}</a>
+								<vb:if condition="$show['onlinestatus']">
+									<vb:if condition="$issue['onlinestatus'] == 0"><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw issue.username}}" border="0" />
+									<vb:elseif condition="$issue['onlinestatus'] == 1" /><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw issue.username}}" border="0" />
+									<vb:elseif condition="$issue['onlinestatus'] == 2" /><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw issue.username}}" border="0" /></vb:if>
+								</vb:if>
+							<vb:else />
+								{vb:raw issue.musername}
+							</vb:if>
+						</div>
+
+						<vb:if condition="$issue['usertitle']"><div class="smallfont">{vb:raw issue.usertitle}</div></vb:if>
+						<vb:if condition="$vbulletin->options['pt_profile_issue_counters']"><div class="smallfont">{vb:rawphrase number_reported_issues_by_x, {vb:raw issue.username}}: {vb:raw issue.totalissues}</div></vb:if>
+
+					</div>
+				</div>
+
+				<div class="blockrow issuetext">
+
+					<div class="issue_message" id="issue_message_{vb:raw issue.issueid}">
+						<div style="font-size:14pt">{vb:raw issue.title}</div>
+						<vb:if condition="$issue['summary']"><div><strong>{vb:raw issue.summary}</strong></div></vb:if>
+
+						<vb:if condition="$issue['visible'] == 'private'">
+							<div class="shade" style="font-size: 11px"><img src="{vb:stylevar imgdir_misc}/issue_private.png" class="inlineimg" alt="" /> {vb:rawphrase this_is_private_issue}</div>
+						</vb:if>
+
+						<vb:if condition="$issue['visible'] == 'deleted'">
+							<div class="shade" style="font-size: 11px"><img src="{vb:stylevar imgdir_misc}/trashcan_small.gif" class="inlineimg" alt="" /> {vb:rawphrase issue_has_been_deleted}</div>
+						</vb:if>
+
+						<hr style="border:0px; height:1px; color: #D1D1E1; background-color: #D1D1E1" />
+						<div class="restore">{vb:raw issue.message}</div>
+					</div>
+
+					<vb:if condition="$show['vote_option']">
+						<vb:if condition="$template_hook['issue_vote']">
+							{vb:raw template_hook.issue_vote}
+						<vb:else />
+							<div class="blockrow issuevote">
+								<a name="voteform"></a>
+								<vb:if condition="$issue['vote']">
+									{vb:rawphrase vote_question_issuetype} &nbsp; <strong><vb:if condition="$issue['vote'] == 'positive'">{vb:rawphrase yes}<vb:else />{vb:rawphrase no}</vb:if></strong> ({vb:rawphrase you_have_voted_issue})
+								<vb:else />
+									<form action="issue.php?do=vote" method="post">
+										{vb:rawphrase vote_question_issuetype}
+										<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+										<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+										<input type="hidden" name="do" value="vote" />
+										<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
+										<input type="submit" class="button" name="vote[positive]" id="votepositive_button" value="{vb:rawphrase yes}" style="width:50px; font-size:10px" tabindex="1" />
+										<input type="submit" class="button" name="vote[negative]" id="votenegative_button" value="{vb:rawphrase no}" style="width:50px; font-size:10px" tabindex="1" />
+									</form>
+								</vb:if>
+							</div>
+						</vb:if>
+					</vb:if>
+
+					<div class="issuefoot">
+						<div class="textcontrols">
+							<span class="issuecontrols">
+
+								<img style="margin: 0; padding: 0;" class="hidden" id="issue_progress_{vb:raw issue.issueid}" src="images/misc/progress.gif" alt="" />
+
+								<vb:if condition="$show['edit_issue']">
+									<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editissue&amp;issueid={vb:raw issue.issueid}" id="issue_edit_{vb:raw issue.issueid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
+								<vb:elseif condition="$show['edit_note']" />
+									<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw issue.issuenoteid}" id="issue_edit_{vb:raw issue.issueid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
+								</vb:if>
+
+								<vb:if condition="($show['reply_issue'] AND !$show['issue_closed']) AND ($show['edit_issue'] OR $show['edit_note'])">
+									<span class="separator">&nbsp;</span>
+								</vb:if>
+
+								<vb:if condition="$show['reply_issue'] AND !$show['issue_closed']">
+									<a class="replyissue" href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase reply}" /> {vb:rawphrase reply}</a>
+								</vb:if>
+							</span>
+
+							<span class="issuelinking">
+								<vb:if condition="$show['edit_history']">
+									<a class="issuehistory" href="issue.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw issue.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw issue.lastedit_date}, {vb:raw issue.lastedit_time}}</a>
+								</vb:if>
+
+								<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'])">
+									<span class="separator">&nbsp;</span>
+								</vb:if>
+
+								<vb:if condition="$show['reportlink']">
+									<a class="reportissue" href="issue.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw issue.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
+								</vb:if>
+								<vb:if condition="$issue['noteipaddress']">
+									<a class="ipissue" href="issue.php?do=viewip&amp;issuenoteid={vb:raw issue.issuenoteid}" title="{vb:raw issue.noteipaddress}">&nbsp;</a>
+								</vb:if>
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<vb:if condition="$show['issue_closed']">
+					<div class="blockrow" style="text-align: center">
+						<img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="" class="inlineimg" /> {vb:rawphrase this_issue_is_closed}
+						<vb:if condition="!$posting_perms['issue_close']">{vb:rawphrase no_more_replies_may_be_made}</vb:if>
+					</div>
+				</vb:if>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	<!--
+	vBulletin.register_control("vB_QuickEdit", "{vb:raw issue.issueid}", 'Issue'); 
 	//--> 
 	</script> 
 </li>]]></template>
