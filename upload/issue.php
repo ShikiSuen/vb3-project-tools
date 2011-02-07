@@ -43,6 +43,7 @@ $specialtemplates = array(
 // pre-cache templates used by all actions
 $globaltemplates = array(
 	'pt_issue',
+	'pt_issue_firstnote',
 	'pt_issuenotebit_user',
 	'pt_issuenotebit_petition',
 	'pt_issuenotebit_system',
@@ -1106,6 +1107,10 @@ $pageinfo = array();
 
 $pageinfo['issuetypeid'] = $issue['issuetypeid'];
 
+$templater = vB_Template::create('pt_issue_firstnote');
+	$templater->register('issue', $issue);
+$issuefirstnote = $templater->render();
+
 // navbar and output
 $navbits = construct_navbits(array(
 	'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
@@ -1124,6 +1129,7 @@ $templater = vB_Template::create('pt_issue');
 	$templater->register('attachmentbits', $attachmentbits);
 	$templater->register('display_type_counts', $display_type_counts);
 	$templater->register('editorid', $editorid);
+	$templater->register('issuefirstnote', $issuefirstnote);
 	$templater->register('issue', $issue);
 	$templater->register('messagearea', $messagearea);
 	$templater->register('navbar', $navbar);
