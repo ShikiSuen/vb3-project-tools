@@ -160,6 +160,9 @@ if ($_POST['do'] == 'quickeditissue')
 		'issueid' => TYPE_UINT,
 	));
 
+	require_once(DIR . '/includes/class_xml.php');
+	require_once(DIR . '/includes/functions_editor.php');
+
 	$issueinfo = verify_issue($vbulletin->GPC['issueid']);
 
 	$editorid = construct_edit_toolbar(
