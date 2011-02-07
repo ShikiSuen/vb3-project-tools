@@ -1,9 +1,9 @@
-function vB_QuickEditor_IssueNote_Vars(args)
+function vB_QuickEditor_Issuenote_Vars(args)
 {
 	this.init();
 }
 
-vB_QuickEditor_IssueNote_Vars.prototype.init = function()
+vB_QuickEditor_Issuenote_Vars.prototype.init = function()
 {
 	this.target = "projectpost.php";
 	this.postaction = "postreply";
