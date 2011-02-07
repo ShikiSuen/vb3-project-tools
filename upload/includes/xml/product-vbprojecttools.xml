@@ -2122,7 +2122,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1296563299" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1297120862" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2638,6 +2638,12 @@ a.firstunread, a.firstunread:hover
 .pt_issue_content .issuetext {
 	padding-bottom: 26px;
 	background: {vb:stylevar postbit_background};
+}
+
+.pt_issue_content .formcontrols .blockrow {
+	background: {vb:stylevar formrow_background.backgroundColor} {vb:stylevar formrow_background.backgroundImage} bottom repeat-x;
+	border-top: solid 1px {vb:stylevar light_border.borderColor};
+	padding: 10px 5px;
 }
 
 .pt_issue_content .blockrow .issue_message {
@@ -3632,7 +3638,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1297115630" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1297120447" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3666,7 +3672,7 @@ legend {
 
 	<vb:if condition="$vbulletin->options['quickedit']">
 		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_generic.js?v={vb:raw vboptions.simpleversion}"></script>
-		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issue.js?v={vb:raw vboptions.simpleversion}">
+		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issue.js?v={vb:raw vboptions.simpleversion}"></script>
 		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issuenote.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 
