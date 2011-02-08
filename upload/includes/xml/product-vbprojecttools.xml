@@ -2122,7 +2122,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1297120862" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1297187663" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2374,6 +2374,14 @@ a.firstunread, a.firstunread:hover
 .pt_reportlist .blockrow .ptreportlist_checkbox_del {
 	width: 5%;
 	float: {vb:stylevar right};
+}
+
+/* Special definition for issue listing - allowing AJAX issue title editing */
+.projectissuelist {
+	clear: both;
+	display: block;
+	float: {vb:stylevar left};
+	width: 100%;
 }
 
 /* Project issue list definitions */
@@ -4223,7 +4231,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1294753607" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}, {vb:raw pageinfo_pagelink}}">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1294664262" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1297187684" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4352,75 +4360,77 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>
 
-<form action="issuelist.php" method="get">
-<input type="hidden" name="s" value="{vb:raw session.sessionid}" />
-<input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
-<input type="hidden" name="sortfield" value="{vb:raw sortfield}" />
-<input type="hidden" name="sortorder" value="{vb:raw input.sortorder}" />
+<div class="projectissuelist" id="projectissuelist">
+	<form action="issuelist.php" method="get">
+	<input type="hidden" name="s" value="{vb:raw session.sessionid}" />
+	<input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
+	<input type="hidden" name="sortfield" value="{vb:raw sortfield}" />
+	<input type="hidden" name="sortorder" value="{vb:raw input.sortorder}" />
 
-<div class="pt_issuelist block">
-	<div class="blockhead">
-		<div class="normal smallfont" style="float:{vb:stylevar right}">
-			<div align="{vb:stylevar right}" style="display: inline-block">
-				<vb:if condition="$issuetype_printable"><span>{vb:rawphrase issue_type}</span> <a href="{vb:link issuelist, {vb:raw project}, null}&amp;issuetypeid={vb:raw input.issuetypeid}">{vb:raw issuetype_printable}</a> - </vb:if>
-				<span>{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a>
+	<div class="pt_issuelist block">
+		<div class="blockhead">
+			<div class="normal smallfont" style="float:{vb:stylevar right}">
+				<div align="{vb:stylevar right}" style="display: inline-block">
+					<vb:if condition="$issuetype_printable"><span>{vb:rawphrase issue_type}</span> <a href="{vb:link issuelist, {vb:raw project}, null}&amp;issuetypeid={vb:raw input.issuetypeid}">{vb:raw issuetype_printable}</a> - </vb:if>
+					<span>{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a>
+				</div>
+				<div align="{vb:stylevar right}" style="display: inline-block">
+					<vb:if condition="$issuestatus_printable"><span> - {vb:rawphrase status}</span> {vb:raw issuestatus_printable}</vb:if>
+					<vb:if condition="$appliesversion_printable"><span> - <vb:if condition="$input['issuetypeid']">{vb:rawphrase applies_version_issuetype}<vb:else />{vb:rawphrase applicable_version}</vb:if></span> {vb:raw appliesversion_printable}</vb:if>
+				</div>
 			</div>
-			<div align="{vb:stylevar right}" style="display: inline-block">
-				<vb:if condition="$issuestatus_printable"><span> - {vb:rawphrase status}</span> {vb:raw issuestatus_printable}</vb:if>
-				<vb:if condition="$appliesversion_printable"><span> - <vb:if condition="$input['issuetypeid']">{vb:rawphrase applies_version_issuetype}<vb:else />{vb:rawphrase applicable_version}</vb:if></span> {vb:raw appliesversion_printable}</vb:if>
-			</div>
+			{vb:rawphrase issue_list}
 		</div>
-		{vb:rawphrase issue_list}
-	</div>
-	<div class="blockbody formcontrols">
-		<div class="blocksubhead issuelist">
-			<div class="ptissuelist_title">
-				<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_title}}">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
-				<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_username}}">{vb:rawphrase submitted_by}</a> {vb:raw sort_arrow.submitusername}
+		<div class="blockbody formcontrols">
+			<div class="blocksubhead issuelist">
+				<div class="ptissuelist_title">
+					<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_title}}">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
+					<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_username}}">{vb:rawphrase submitted_by}</a> {vb:raw sort_arrow.submitusername}
+				</div>
+				<div class="ptissuelist_lastpost"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_lastpost}}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
+				<div class="ptissuelist_replies"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_replies}}">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
+				<div class="ptissuelist_priority"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_priority}}">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
+				<div class="ptissuelist_status"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_issuestatus}}">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
 			</div>
-			<div class="ptissuelist_lastpost"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_lastpost}}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
-			<div class="ptissuelist_replies"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_replies}}">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
-			<div class="ptissuelist_priority"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_priority}}">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
-			<div class="ptissuelist_status"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_issuestatus}}">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
-		</div>
 
-		<vb:if condition="$issuebits">
-			{vb:raw issuebits}
-		<vb:else />
-			<div class="blockrow">
-				<div align="center">{vb:rawphrase no_issues_matching_criteria}</div>
+			<vb:if condition="$issuebits">
+				{vb:raw issuebits}
+			<vb:else />
+				<div class="blockrow">
+					<div align="center">{vb:rawphrase no_issues_matching_criteria}</div>
+				</div>
+			</vb:if>
+		</div>
+		<div class="blockfoot actionbuttons">
+			<div style="text-align: center">
+				<label style="white-space: nowrap">{vb:rawphrase issue_type}
+					<select name="issuetypeid" tabindex="1">
+						<option value=""{vb:raw any_issuetype_selected}>{vb:rawphrase any_meta}</option>
+						{vb:raw issuetype_options}
+					</select>
+				</label>
+				&nbsp; &nbsp;
+				<label style="white-space: nowrap"><vb:if condition="$input['issuetypeid']">{vb:rawphrase applies_version_issuetype}<vb:else />{vb:rawphrase applicable_version}</vb:if>
+					<select name="appliesversionid" tabindex="1">
+						<option value="0"{vb:raw anyversion_selected}>{vb:rawphrase any_meta}</option>
+						<option value="-1"{vb:raw unknownversion_selected}>{vb:rawphrase unknown}</option>
+						{vb:raw appliesversion_options}
+					</select>
+				</label>
+				&nbsp; &nbsp;
+				<label style="white-space: nowrap">{vb:rawphrase status}
+					<select name="issuestatusid" tabindex="1">
+						<option value="0" {vb:raw anystatus_selected}>{vb:rawphrase any_meta}</option>
+						<option value="-1" {vb:raw activestatus_selected}>{vb:rawphrase any_active_meta}</option>
+						{vb:raw status_options}
+					</select>
+				</label>
+				<input type="submit" class="button" value="{vb:rawphrase go}" tabindex="1" accesskey="s" />
 			</div>
-		</vb:if>
-	</div>
-	<div class="blockfoot actionbuttons">
-		<div style="text-align: center">
-			<label style="white-space: nowrap">{vb:rawphrase issue_type}
-				<select name="issuetypeid" tabindex="1">
-					<option value=""{vb:raw any_issuetype_selected}>{vb:rawphrase any_meta}</option>
-					{vb:raw issuetype_options}
-				</select>
-			</label>
-			&nbsp; &nbsp;
-			<label style="white-space: nowrap"><vb:if condition="$input['issuetypeid']">{vb:rawphrase applies_version_issuetype}<vb:else />{vb:rawphrase applicable_version}</vb:if>
-				<select name="appliesversionid" tabindex="1">
-					<option value="0"{vb:raw anyversion_selected}>{vb:rawphrase any_meta}</option>
-					<option value="-1"{vb:raw unknownversion_selected}>{vb:rawphrase unknown}</option>
-					{vb:raw appliesversion_options}
-				</select>
-			</label>
-			&nbsp; &nbsp;
-			<label style="white-space: nowrap">{vb:rawphrase status}
-				<select name="issuestatusid" tabindex="1">
-					<option value="0" {vb:raw anystatus_selected}>{vb:rawphrase any_meta}</option>
-					<option value="-1" {vb:raw activestatus_selected}>{vb:rawphrase any_active_meta}</option>
-					{vb:raw status_options}
-				</select>
-			</label>
-			<input type="submit" class="button" value="{vb:rawphrase go}" tabindex="1" accesskey="s" />
 		</div>
 	</div>
+	</form>
 </div>
-</form>
 
 <div class="clear"></div>
 <div class="pt_issuepopup">
