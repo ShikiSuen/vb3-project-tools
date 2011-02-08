@@ -154,11 +154,11 @@ function vB_AJAX_TitleEdit(obj)
 	*/
 	this.save = function(titletext)
 	{
-		YAHOO.util.Connect.asyncRequest("POST", "ajax.php?do=updatethreadtitle&t=" + this.threadid, {
+		YAHOO.util.Connect.asyncRequest("POST", "projectajax.php?do=updateissuetitle&issueid=" + this.issueid, {
 			success: this.handle_ajax_response,
 			timeout: vB_Default_Timeout,
 			scope: this
-		}, SESSIONURL + "securitytoken=" + SECURITYTOKEN + "&do=updatethreadtitle&t=" + this.threadid + '&title=' + PHP.urlencode(titletext));
+		}, SESSIONURL + "securitytoken=" + SECURITYTOKEN + "&do=updateissuetitle&issueid=" + this.issueid + '&title=' + PHP.urlencode(titletext));
 	}
 
 	/**
@@ -175,7 +175,7 @@ function vB_AJAX_TitleEdit(obj)
 		}
 
 		this.container.removeChild(this.progress_image);
-		vB_ThreadTitle_Editor.obj = null;
+		vB_IssueTitle_Editor.obj = null;
 	}
 
 	// start the editor

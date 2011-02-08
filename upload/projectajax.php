@@ -73,6 +73,49 @@ $vbulletin->input->clean_array_gpc('p', array(
 	'value' => TYPE_NOCLEAN // might be an array, might be a scalar
 ));
 
+// #############################################################################
+if ($_POST['do'] == 'updateissuetitle')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'issueid' => TYPE_UINT,
+		'title'    => TYPE_STR
+	));
+
+	$issue = verify_issue($vbulletin->GPC['issueid']);
+	$project = verify_project($issue['projectid']);
+
+	$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
+	$issueperms = $projectperms["$issue[issuetypeid]"];
+	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
+
+	// allow edit if...
+	if ($posting_perms['issue_edit'])
+	{
+		$issuetitle = convert_urlencoded_unicode($vbulletin->GPC['title']);
+		$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_ARRAY);
+		$issuedata->set_existing($issue);
+		$issuedata->set('title', $issuetitle);
+
+		if ($issuedata->save())
+		{
+			$issue['title'] = $issuedata->fetch_field('title');
+
+			// we do not appear to log thread title updates
+			$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+			$xml->add_group('foo');
+				$xml->add_tag('linkhtml', $issue['title']);
+				$xml->add_tag('linkhref', fetch_seo_url('issue', $issue));
+			$xml->close_group('foo');
+			$xml->print_xml();
+			exit;
+		}
+	}
+
+	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+	$xml->add_tag('linkhtml', $issue['title']);
+	$xml->print_xml();
+}
+
 // #######################################################################
 if ($_REQUEST['do'] == 'markread')
 {
