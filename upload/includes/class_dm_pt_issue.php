@@ -191,10 +191,27 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			return false;
 		}
 
-		if ($title == '')
+		if (!$this->registry->GPC['ajax'])
 		{
-			$this->error('nosubject');
-			return false;
+			if ($title == '')
+			{
+				$this->error('nosubject');
+				return false;
+			}
+		}
+		else
+		{
+			if ($title == '')
+			{
+				$title_result = $this->registry->db->query_first("
+					SELECT title
+					FROM " . TABLE_PREFIX . "pt_issue
+					WHERE issueid = " . $this->registry->GPC['issueid'] . "
+				");
+
+				$title = $title_result['title'];
+				return true;
+			}
 		}
 
 		return true;

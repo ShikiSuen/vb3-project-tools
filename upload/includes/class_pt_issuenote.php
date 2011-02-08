@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ï¿½2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -77,6 +77,7 @@ class vB_Pt_IssueNoteFactory
 		{
 			case 'system':   $class_name = 'vB_Pt_IssueNote_System';   break;
 			case 'petition': $class_name = 'vB_Pt_IssueNote_Petition'; break;
+			case 'firstnote': $class_name = 'vB_Pt_IssueNote_Firstnote'; break;
 			case 'user':
 			default:
 				$class_name = 'vB_Pt_IssueNote_User';
@@ -200,10 +201,19 @@ class vB_Pt_IssueNote
 		$issue =& $this->issue;
 		$note =& $this->note;
 
-		global $show, $vbphrase;
-		global $spacer_open, $spacer_close;
+		if ($note['type'] == 'firstnote')
+		{
+			// This is needed to workaround some issues in quick reply main issue text
+  			$issue['musername'] = $note['musername'];
+  			$issue['note_date'] = $note['note_date'];
+  			$issue['note_time'] = $note['note_time'];
+  			$issue['message'] = $note['message'];
+  			$issue['lastedit_date'] = $note['lastedit_date'];
+  			$issue['lastedit_time'] = $note['lastedit_time'];
+  			$issue['noteipaddress'] = $note['noteipaddress'];
+		}
 
-		global $bgclass, $altbgclass;
+		global $vbphrase;
 
 		($hook = vBulletinHook::fetch_hook('project_issue_notebit')) ? eval($hook) : false;
 
@@ -506,5 +516,21 @@ class vB_Pt_IssueNote_System extends vB_Pt_IssueNote
 			$this->note['message'] .= $templater->render();
 		}
 	}
+}
+
+/**
+* Generic issue note class for the first issue note
+*
+* @package		vBulletin Project Tools
+* @copyright	http://www.vbulletin.com/liense.html
+*/
+class vB_Pt_IssueNote_Firstnote extends vB_Pt_IssueNote_User
+{
+	/**
+	* The template that will be used for outputting
+	*
+	* @var	string
+	*/
+	var $template = 'pt_issue_firstnote';
 }
 ?>
