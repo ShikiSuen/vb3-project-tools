@@ -2122,7 +2122,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1297187663" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1297190069" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2431,6 +2431,11 @@ a.firstunread, a.firstunread:hover
 .pt_issuelist .blocksubhead .ptissuelist_notifications {
 	float: {vb:stylevar right};
 	width: 12%;
+}
+
+.pt_issuelist .issuecontent {
+	clear: both;
+	display: block;
 }
 
 .pt_issuelist .blockrow {
@@ -4134,7 +4139,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1294258820" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
+		<template name="pt_issuebit" templatetype="template" date="1297190123" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -4145,7 +4150,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<div class="ptissuelist_title">
 		<div class="issuetitle">
 			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.png" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if> id="issue_title_{vb:raw issue.issueid}">{vb:raw issue.title}</a>
 			<vb:if condition="$issue['pagenav']">
 			<dl class="pagination" id="pagination_issuebit_{vb:raw issue.issueid}">
 				<dd>
@@ -4203,7 +4208,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			</vb:if>
 		</div>
 	</div>
-</div>]]></template>
+</li>]]></template>
 		<template name="pt_issuebit_deleted" templatetype="template" date="1294258843" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow table deleted">
 	<div class="ptissuelist_statusicon td">
 		<vb:if condition="$issue['typeicon']">
@@ -4231,7 +4236,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1294753607" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}, {vb:raw pageinfo_pagelink}}">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1297187684" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1297191623" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4247,6 +4252,13 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<!--[if lt IE 8]>
 	{vb:cssfile projecttools-ie.css}
 	<![endif]-->
+
+        <script type="text/javascript" src="clientscript/vbulletin_pt_ajax_issuelist.js?v={vb:raw vboptions.simpleversion}"></script>
+        <script type="text/javascript">
+	<!--
+	var titlemaxchars = parseInt("{vb:raw vboptions.titlemaxchars}");
+	//-->
+	</script>
 
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
@@ -4394,7 +4406,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			</div>
 
 			<vb:if condition="$issuebits">
-				{vb:raw issuebits}
+				<ol class="issuecontent" id="issuecontent">
+					{vb:raw issuebits}
+				</ol>
 			<vb:else />
 				<div class="blockrow">
 					<div align="center">{vb:rawphrase no_issues_matching_criteria}</div>

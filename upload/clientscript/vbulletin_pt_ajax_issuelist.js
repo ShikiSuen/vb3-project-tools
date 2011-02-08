@@ -10,7 +10,7 @@
 || #################################################################### ||
 \*======================================================================*/
 
-var vB_ThreadTitle_Editor = null;
+var vB_IssueTitle_Editor = null;
 
 if (AJAX_Compatible && (typeof vb_disable_ajax == 'undefined' || vb_disable_ajax < 2))
 {
@@ -35,7 +35,7 @@ function vB_AJAX_IssueList_Init(issuelistid)
 		return;
 	}
 
-	var issuebits = YAHOO.Util.Dom.getElementsByClassName("issuebit", "div", issuelistid);
+	var issuebits = YAHOO.util.Dom.getElementsByClassName("issuebit", "li", issuelistid);
 	for (var i = 0; i < issuebits.length; i++)
 	{
 		if (issuebits[i].id.match(/^issue_/))
