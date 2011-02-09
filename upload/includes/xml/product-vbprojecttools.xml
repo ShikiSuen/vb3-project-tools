@@ -3651,7 +3651,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1297120447" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1297291085" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3689,6 +3689,7 @@ legend {
 		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issuenote.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 
+	<script type="text/javascript" src="clientscript/vbulletin_pt_petition.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_menu.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript" src="clientscript/vbulletin_list_builder.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -4480,7 +4481,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </body>
 </html>]]></template>
 		<template name="pt_issuelist_arrow" templatetype="template" date="1294664144" username="Pitchoune" version="2.2.0"><![CDATA[<img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" />]]></template>
-		<template name="pt_issuenotebit_petition" templatetype="template" date="1297259408" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_petition" templatetype="template" date="1297291048" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<div style="float:{vb:stylevar right}" class="smallfont">
@@ -4511,21 +4512,24 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			<vb:if condition="$note['usertitle']"><div class="smallfont">{vb:raw note.usertitle}</div></vb:if>
 		</div>
 		<div class="blockrow issuetext">
-			<div class="issue_message">
-				<div>{vb:raw note.message}</div>
+			<div class="issue_message" id="issuenote_message_{vb:raw note.issuenoteid}">
+				<div class="restore">{vb:raw note.message}</div>
 
 				<!-- petition stuff -->
 				<vb:if condition="$show['process_petition']">
 					<form action="projectpost.php?do=processpetition" method="post">
 						<fieldset style="margin-top:10px">
-							<div align="{vb:stylevar right}" style="margin-top:{vb:stylevar cellpadding}px">
-								<div style="float:{vb:stylevar left}">{vb:rawphrase accept_petition_change_status_x, {vb:raw note.petitionstatus}}</div>
+							<div align="{vb:stylevar right}">
+								<div style="float: {vb:stylevar left}">{vb:rawphrase accept_petition_change_status_x, {vb:raw note.petitionstatus}}</div>
 								<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 								<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 								<input type="hidden" name="do" value="processpetition" />
 								<input type="hidden" name="issuenoteid" value="{vb:raw note.issuenoteid}" />
-								<input type="submit" class="button" name="confirm[yes]" value="{vb:rawphrase yes}" style="width:50px; font-size: 10px" />
-								<input type="submit" class="button" name="confirm[no]" value="{vb:rawphrase no}" style="width:50px; font-size: 10px" />
+
+								<img style="margin: 0; padding: 0;" class="hidden" id="issuenote_petition_progress_{vb:raw note.issuenoteid}" src="images/misc/progress.gif" alt="" />
+
+								<input type="submit" class="button" name="confirm[yes]" value="{vb:rawphrase yes}" style="width:50px; font-size: 10px" id="issuenote_petition_yes_{vb:raw note.issuenoteid}" />
+								<input type="submit" class="button" name="confirm[no]" value="{vb:rawphrase no}" style="width:50px; font-size: 10px" id="issuenote_petition_no_{vb:raw note.issuenoteid}" />
 							</div>
 						</fieldset>
 					</form>
@@ -4551,8 +4555,11 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			<div class="issuefoot">
 				<div class="textcontrols">
 					<span class="issuecontrols">
+
+					<img style="margin: 0; padding: 0;" class="hidden" id="issuenote_progress_{vb:raw note.issuenoteid}" src="images/misc/progress.gif" alt="" />
+
 					<vb:if condition="$show['edit_note']">
-						<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw note.issuenoteid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
+						<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw note.issuenoteid}" id="issuenote_edit_{vb:raw note.issuenoteid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
 					</vb:if>
 
 					<vb:if condition="($show['reply_issue'] AND !$show['issue_closed']) AND ($show['edit_issue'] OR $show['edit_note'])">
@@ -4584,6 +4591,20 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+	<!--
+	vBulletin.register_control("vB_Pt_Petition", "{vb:raw note.issuenoteid}", 'Issuenote');
+
+	vbphrase["yes"] = "{vb:rawphrase yes}";
+	vbphrase["no"] = "{vb:rawphrase no}";
+	//--> 
+	</script>
+
+	<script type="text/javascript">
+	<!--
+	vBulletin.register_control("vB_QuickEdit", "{vb:raw note.issuenoteid}", 'Issuenote'); 
+	//--> 
+	</script>
 </li>]]></template>
 		<template name="pt_issuenotebit_system" templatetype="template" date="1295973362" username="Pitchoune" version="2.2.0"><![CDATA[<!-- note system -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
@@ -4602,7 +4623,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </li>]]></template>
 		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1297118911" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1297261334" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
