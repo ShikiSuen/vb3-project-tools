@@ -3404,15 +3404,15 @@ if ($_REQUEST['do'] == 'assigntoself')
 
 if (in_array($_REQUEST['do'], array('processimportthread', 'importthread', 'importthread2')))
 {
+	require_once(DIR . '/includes/functions_pt_impex.php');
+
 	if ($threadid)
-	{
-		require_once(DIR . '/includes/functions_ptimporter.php');
+	{	
 		$threadinfo = verify_id('thread', $threadid, 1, 1);
 	}
 
 	if ($postid)
 	{
-		require_once(DIR . '/includes/functions_ptimporter.php');
 		$threadinfo = verify_id('thread', $threadid, 1, 1);
 		$postinfo = verify_id('post', $postid, 1, 1);
 	}
