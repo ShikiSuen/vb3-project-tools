@@ -4881,13 +4881,13 @@ vbphrase['doubleclick_project_markread'] = "{vb:rawphrase doubleclick_project_ma
 init_project_readmarker_system();
 //-->
 </script>]]></template>
-		<template name="pt_member_findissues_37" templatetype="template" date="1278280262" username="Pitchoune" version="2.1.2"><![CDATA[<h5 class="subsubsectionhead">
+		<template name="pt_member_findissues_37" templatetype="template" date="1297544354" username="Pitchoune" version="2.1.2"><![CDATA[<h5 class="subsubsectionhead">
 	{vb:rawphrase projects}
 </h5>
 <vb:if condition="$vbulletin->options['pt_profile_issue_counters']">
 <dl class="stats">
 	<dt>{vb:rawphrase total_issues}</dt>
-	<dd>{vb:raw userinfo.totalissues}</dd>
+	<dd>{vb:raw userinfo.pt_totalissues}</dd>
 </dl>
 </vb:if>
 <ul class="group">
@@ -8933,7 +8933,7 @@ foreach($do AS $field)
 		<plugin active="1" executionorder="5">
 			<title>fetch_userinfo(): Add PT Fields/Joins</title>
 			<hookname>fetch_userinfo_query</hookname>
-			<phpcode><![CDATA[$hook_query_fields .= ", ptuser.*";
+			<phpcode><![CDATA[$hook_query_fields .= ", ptuser.userid AS pt_userid, ptuser.totalissues AS pt_totalissues";
 $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_user AS ptuser ON (user.userid = ptuser.userid)";]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -9339,7 +9339,7 @@ $template_hook['usercp_main_pos3'] .= process_new_subscribed_issues();]]></phpco
 process_pt_user_delete($this);]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
-			<title>User DM: Rebuild PT Assignable</title>
+			<title>User DM: Rebuild PT Assignable AND add the user in table 'pt_user' if not done</title>
 			<hookname>userdata_postsave</hookname>
 			<phpcode><![CDATA[// Rebuild PT Assignable
 if ($usergroups_changed OR (isset($this->user['username']) AND $this->user['username'] != $this->existing['username']))
@@ -9349,14 +9349,14 @@ if ($usergroups_changed OR (isset($this->user['username']) AND $this->user['user
 	build_pt_user_list('pt_report_users', 'pt_report_user_cache');
 }
 
-// Insert the new user into pt_user table
+// Insert the new user into pt_user table - new user
 if (!$this->condition)
 {
 	$this->registry->db->query_write("
 		INSERT INTO " . TABLE_PREFIX . "pt_user
-			(userid)
+			(userid, totalissues)
 		VALUES
-			($userid)
+			($userid, 0)
 	");
 }]]></phpcode>
 		</plugin>
