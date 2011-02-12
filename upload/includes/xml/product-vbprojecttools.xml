@@ -3408,7 +3408,7 @@ legend {
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_import_thread" templatetype="template" date="1297541269" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content" templatetype="template" date="1297542365" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3474,7 +3474,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_thread_confirm" templatetype="template" date="1297541291" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1297542378" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
