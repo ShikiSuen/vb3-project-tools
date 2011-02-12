@@ -3402,7 +3402,7 @@ if ($_REQUEST['do'] == 'assigntoself')
 	}
 }
 
-if (in_array($_REQUEST['do'], array('processimportthread', 'importthread', 'importthread2')))
+if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'importcontent2')))
 {
 	require_once(DIR . '/includes/functions_pt_impex.php');
 
