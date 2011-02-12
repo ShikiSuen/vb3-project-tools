@@ -3443,7 +3443,7 @@ if ($_POST['do'] == 'processimportcontent')
 	ptimporter_verify_issuestatusid($vbulletin->GPC['issuestatusid'], $vbulletin->GPC['issuetypeid']);
 
 	// Finally, run the import
-	require_once(DIR . '/includes/class_ptimporter.php');
+	require_once(DIR . '/includes/class_pt_impex.php');
 
 	if ($vbulletin->GPC['postid'])
 	{
