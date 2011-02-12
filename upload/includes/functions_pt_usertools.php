@@ -135,6 +135,12 @@ function process_pt_user_merge($destinfo, $sourceinfo)
 			userid = $destinfo[userid]
 		WHERE userid = $sourceinfo[userid]
 	");
+
+	$db->query_write("
+		UPDATE " . TABLE_PREFIX . "pt_user SET
+			userid = $destinfo[userid]
+		WHERE userid = $sourceinfo[userid]
+	");
 }
 
 /**
@@ -208,6 +214,11 @@ function process_pt_user_delete(&$dataman)
 		DELETE FROM " . TABLE_PREFIX . "pt_projecttypesubscribe
 		WHERE userid = " . $dataman->existing['userid']
 	);
+
+	$db->query_write("
+		DELETE FROM " . TABLE_PREFIX . "pt_user
+		WHERE userid = " . $dataman->existing['userid'] . "
+	");
 
 	require_once(DIR . '/includes/adminfunctions_projecttools.php');
 	build_assignable_users();
