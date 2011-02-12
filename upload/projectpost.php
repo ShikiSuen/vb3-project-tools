@@ -79,13 +79,21 @@ $actiontemplates = array(
 		'bbcode_quote',
 		'bbcode_video',
 	),
-	'importthread' => array(
+	'exportcontent' => array(
 		'optgroup',
-		'pt_import_thread',
+		'pt_export_content'
 	),
-	'importthread2' => array(
+	'exportcontent2' => array(
 		'optgroup',
-		'pt_import_thread_confirm',
+		'pt_export_content_confirm'
+	),
+	'importcontent' => array(
+		'optgroup',
+		'pt_import_content',
+	),
+	'importcontent2' => array(
+		'optgroup',
+		'pt_import_content_confirm',
 	),
 	'manageattach' => array(
 		'pt_manageattach'
@@ -3601,7 +3609,7 @@ if ($_REQUEST['do'] == 'importcontent2')
 	$navbits = construct_navbits($navbits);
 	$navbar = render_navbar_template($navbits);
 
-	$templater = vB_Template::create('pt_import_thread_confirm');
+	$templater = vB_Template::create('pt_import_content_confirm');
 		$templater->register_page_templates();
 		$templater->register('addressed_next_selected', $addressed_next_selected);
 		$templater->register('addressed_unaddressed_selected', $addressed_unaddressed_selected);
@@ -3673,7 +3681,7 @@ if ($_REQUEST['do'] == 'importcontent')
 	$navbits = construct_navbits($navbits);
 	$navbar = render_navbar_template($navbits);
 
-	$templater = vB_Template::create('pt_import_thread');
+	$templater = vB_Template::create('pt_import_content');
 		$templater->register_page_templates();
 		$templater->register('navbar', $navbar);
 		$templater->register('postinfo', $postinfo);
