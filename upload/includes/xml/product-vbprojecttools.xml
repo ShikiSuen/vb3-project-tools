@@ -3408,7 +3408,7 @@ legend {
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_import_thread" templatetype="template" date="1291146688" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread" templatetype="template" date="1297541269" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3436,12 +3436,12 @@ legend {
 	<h1>{vb:rawphrase pt_create_issue}</h1>
 </div>
 
-<form class="vbform block" action="projectpost.php?do=importthread2&amp;t={vb:raw threadinfo.threadid}<vb:if condition="$postinfo['postid']">&amp;p={vb:raw postinfo.postid}</vb:if>" method="post" name="vbform">
+<form class="vbform block" action="projectpost.php?do=importcontent2&amp;t={vb:raw threadinfo.threadid}<vb:if condition="$postinfo['postid']">&amp;p={vb:raw postinfo.postid}</vb:if>" method="post" name="vbform">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 <input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
 <input type="hidden" name="p" value="{vb:raw postinfo.postid}" />
-<input type="hidden" name="do" value="importthread2" />
+<input type="hidden" name="do" value="importcontent2" />
 
 	<h2 class="blockhead">{vb:rawphrase pt_create_issue}</h2>
 
@@ -3474,7 +3474,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_thread_confirm" templatetype="template" date="1292754859" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_thread_confirm" templatetype="template" date="1297541291" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3503,12 +3503,12 @@ legend {
 	<p class="description">{vb:rawphrase issue_type}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issuetypeid}">{vb:raw issuetype}</a> | {vb:rawphrase project}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a></p>
 </div>
 
-<form class="vbform block" method="post" action="projectpost.php?do=processimportthread&amp;t={vb:raw threadinfo.threadid}<vb:if condition="$postinfo['title']">&amp;p={vb:raw postinfo.postid}</vb:if>">
+<form class="vbform block" method="post" action="projectpost.php?do=processimportcontent&amp;t={vb:raw threadinfo.threadid}<vb:if condition="$postinfo['title']">&amp;p={vb:raw postinfo.postid}</vb:if>">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 <input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
 <input type="hidden" name="issuetypeid" value="{vb:raw issuetypeid}" />
-<input type="hidden" name="do" value="processimportthread" />
+<input type="hidden" name="do" value="processimportcontent" />
 <input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
 <input type="hidden" name="p" value="{vb:raw postinfo.postid}" />
 <input type="hidden" name="threadtitle" value="{vb:raw threadinfo.title}" />
@@ -5482,7 +5482,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1294758638" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1297325322" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5498,6 +5498,13 @@ init_project_readmarker_system();
 	<!--[if lt IE 8]>
 	{vb:cssfile projecttools-ie.css}
 	<![endif]-->
+
+        <script type="text/javascript" src="clientscript/vbulletin_pt_ajax_issuelist.js?v={vb:raw vboptions.simpleversion}"></script>
+        <script type="text/javascript">
+	<!--
+	var titlemaxchars = parseInt("{vb:raw vboptions.titlemaxchars}");
+	//-->
+	</script>
 
 	<script type="text/javascript" src="clientscript/vbulletin_magic_select.js?v={vb:raw vboptions.simpleversion}"></script>
 	<script type="text/javascript">
@@ -5572,7 +5579,7 @@ init_project_readmarker_system();
 </div>
 </vb:if>
 
-<div class="pt_issuelist block">
+<div class="pt_issuelist block" id="projectissuelist">
 	<div class="blockhead">
 		<vb:if condition="$filter_value == 'active'">
 			<span style="float: {vb:stylevar right}" class="smallfont">{vb:rawphrase issue_state} {vb:rawphrase active}</span>
@@ -5597,7 +5604,9 @@ init_project_readmarker_system();
 		</div>
 
 		<vb:if condition="$issuebits">
-			{vb:raw issuebits}
+			<ol class="issuecontent" id="issuecontent">
+				{vb:raw issuebits}
+			</ol>
 		<vb:else />
 			<div class="blockrow">{vb:rawphrase no_issues_matching_criteria}</div>
 		</vb:if>
@@ -6140,9 +6149,9 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postbit_create_issue" templatetype="template" date="1288528218" username="Pitchoune" version="2.1.2"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importthread&amp;p={vb:raw post.postid}" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
+		<template name="pt_postbit_create_issue" templatetype="template" date="1297541328" username="Pitchoune" version="2.2.0"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importcontent&amp;p={vb:raw post.postid}" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
 <span class="seperator">&nbsp;</span>]]></template>
-		<template name="pt_postbit_link_issue" templatetype="template" date="1294259188" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="$show['pt_separator']">
+		<template name="pt_postbit_link_issue" templatetype="template" date="1297541343" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="$show['pt_separator']">
 	<div class="ptseparator">-</div>
 </vb:if>
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid'}">
@@ -9542,8 +9551,8 @@ $show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];
 
 if ($show['createptissue'])
 {
-	$vbulletin->templatecache['SHOWTHREAD'] = str_replace('<form action="postings.php" method="post">
-						<ul class="popupbody popuphover">', '<form action="postings.php" method="post">
+	$vbulletin->templatecache['SHOWTHREAD'] = str_replace('postings.php" method="post">
+						<ul class="popupbody popuphover">', 'postings.php" method="post">
 						<ul class="popupbody popuphover">
 <li><label><input type="radio" name="do" value="createptissue" /> ' . $vbphrase['pt_create_issue'] . '&hellip;</label></li>', $vbulletin->templatecache['SHOWTHREAD']);
 }]]></phpcode>
@@ -9636,7 +9645,7 @@ if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1
 		eval(standard_error(fetch_error('invalidid', $vbphrase['thread'], $vbulletin->options['contactuslink'])));
 	}
 	
-	exec_header_redirect('projectpost.php?' . $vbulletin->session->vars['sessionurl_js'] . "do=importthread&amp;t=$threadinfo[threadid]");
+	exec_header_redirect('projectpost.php?' . $vbulletin->session->vars['sessionurl_js'] . "do=importcontent&amp;t=$threadinfo[threadid]");
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">

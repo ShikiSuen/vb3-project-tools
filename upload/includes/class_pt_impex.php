@@ -28,7 +28,7 @@ if (!isset($GLOBALS['vbulletin']->db))
 * @version		$Revision$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
-class vB_PtImporter
+class vB_Pt_Impex
 {
 	/**
 	 * The vBulletin Registry
@@ -146,11 +146,11 @@ class vB_PtImporter
 	*/
 	public function import_all()
 	{
-		//Import issue and notes
+		// Import issue and notes
 		$this->execute_import_issue();
 
 		// Assign to self
-		$this->execute_set_assignment();
+		$this->execute_import_set_assignment();
 
 		// Import attachments
 		$this->execute_import_attachments();
@@ -162,17 +162,17 @@ class vB_PtImporter
 		{
 			case 'thread':
 				// Update the original thread
-				$this->execute_update_thread();
+				$this->execute_import_from_thread();
 				break;
 
 			case 'post':
 				// Update the original post
-				$this->execute_update_post();
+				$this->execute_import_from_post();
 				break;
 		}
 
 		// Create import notice
-		$this->execute_insert_import_notice();
+		$this->execute_import_insert_notice();
 
 		// Useful to redirect the user
 		return $this->issueid;
@@ -356,7 +356,7 @@ class vB_PtImporter
 	* 
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
 	*/
-	private function execute_set_assignment()
+	private function execute_import_set_assignment()
 	{
 		// Note to self:
 		// Can't use process_assignment_changes because it won't use the log_assignment_changes parameter
@@ -609,7 +609,7 @@ class vB_PtImporter
 	* 
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
 	*/
-	private function execute_update_thread()
+	private function execute_import_from_thread()
 	{
 		// We need to get the content type id of threads
 		$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
@@ -654,7 +654,7 @@ class vB_PtImporter
 	*
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
 	*/
-	private function execute_update_post()
+	private function execute_import_from_post()
 	{
 		// We need to get the content type id of threads
 		$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Post');
@@ -692,7 +692,7 @@ class vB_PtImporter
 	* 
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
 	*/
-	private function execute_insert_import_notice()
+	private function execute_import_insert_notice()
 	{
 		if (!$this->registry->options['ptimporter_createnotice'])
 		{
@@ -717,6 +717,43 @@ class vB_PtImporter
 
 		$change->set('newvalue', $this->datainfo['threadtitle']);
 		$change->save();
+	}
+
+	/**
+	* Executes all export methods in the correct order
+	*
+	* @return	integer		The id of the actual issue
+	*/
+	public function export_all()
+	{
+		// Export issue and notes
+		$this->execute_export_issue();
+
+		// Import attachments
+		$this->execute_export_attachments();
+
+		// Import subscriptions
+		$this->execute_export_subscriptions();
+
+		switch ($this->datatype)
+		{
+			case 'thread':
+				// Update the original thread
+				$this->execute_export_to_thread();
+				break;
+
+			case 'post':
+				// Update the original post
+				$this->execute_export_to_post();
+				break;
+		}
+
+		// Create export notice
+		$this->execute_export_insert_notice();
+
+		// Useful to redirect the user
+		return $this->issueid;
+		
 	}
 }
 

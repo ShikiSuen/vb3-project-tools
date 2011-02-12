@@ -3419,7 +3419,7 @@ if (in_array($_REQUEST['do'], array('processimportthread', 'importthread', 'impo
 }
 
 // #######################################################################
-if ($_POST['do'] == 'processimportthread')
+if ($_POST['do'] == 'processimportcontent')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'projectid' => TYPE_UINT,
@@ -3464,7 +3464,7 @@ if ($_POST['do'] == 'processimportthread')
 
 	$datainfo['threadtitle'] = $vbulletin->GPC['threadtitle'];
 
-	$importer = new vB_PtImporter($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
+	$importer = new vB_Pt_Impex($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
 	$issueid = $importer->import_all();
 
 	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";
@@ -3472,7 +3472,7 @@ if ($_POST['do'] == 'processimportthread')
 }
 
 // #######################################################################
-if ($_REQUEST['do'] == 'importthread2')
+if ($_REQUEST['do'] == 'importcontent2')
 {
 	$vbulletin->input->clean_gpc('r', 'project-issuetype', TYPE_NOHTML);
 
@@ -3624,7 +3624,7 @@ if ($_REQUEST['do'] == 'importthread2')
 }
 
 // #######################################################################
-if ($_REQUEST['do'] == 'importthread')
+if ($_REQUEST['do'] == 'importcontent')
 {
 	$project_type_select = '';
 	$optionclass = '';
