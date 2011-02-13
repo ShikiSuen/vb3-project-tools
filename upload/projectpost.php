@@ -3440,7 +3440,7 @@ if ($_POST['do'] == 'processimportcontent')
 		'addressedversionid' => TYPE_INT,
 		'issuestatusid' => TYPE_UINT,
 		'milestoneid' => TYPE_UINT,
-		'threadtitle' => TYPE_NOHTML,
+		'type' => TYPE_NOHTML
 	));
 
 	// Do our own checking to make sure we have all permissions needed to create issues
@@ -3453,21 +3453,17 @@ if ($_POST['do'] == 'processimportcontent')
 	// Finally, run the import
 	require_once(DIR . '/includes/class_pt_impex.php');
 
-	if ($vbulletin->GPC['postid'])
+	switch ($vbulletin->GPC['type'])
 	{
-		$datatype = 'post';
-		$datainfo = $postinfo;
-
-		if (empty($postinfo['title']))
-		{
-			$datainfo['title'] = $threadinfo['title'];
-		}
-
-	}
-	else if ($vbulletin->GPC['threadid'])
-	{
-		$datatype = 'thread';
-		$datainfo = $threadinfo;
+		case 't':
+			$datatype = 'thread';
+			$datainfo = $threadinfo;
+			break;
+		case 'p':
+			$datatype = 'post';
+			$datainfo = $postinfo;
+			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
+			break;
 	}
 
 	$datainfo['threadtitle'] = $vbulletin->GPC['threadtitle'];
@@ -3482,7 +3478,10 @@ if ($_POST['do'] == 'processimportcontent')
 // #######################################################################
 if ($_REQUEST['do'] == 'importcontent2')
 {
-	$vbulletin->input->clean_gpc('r', 'project-issuetype', TYPE_NOHTML);
+	$vbulletin->input->clean_array_gpc('r', array(
+		'project-issuetype' => TYPE_NOHTML,
+		'type' => TYPE_NOHTML
+	));
 
 	list($projectid, $issuetypeid) = explode('-', $vbulletin->GPC['project-issuetype']);
 
@@ -3599,7 +3598,21 @@ if ($_REQUEST['do'] == 'importcontent2')
 	$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
 	$milestone_options = fetch_milestone_select($project['projectid'], $issue['milestoneid']);
 
-	$title = $postinfo['title'] ? $postinfo['title'] : $threadinfo['title'];
+	switch ($vbulletin->GPC['type'])
+	{
+		case 't':
+			$datainfo = $threadinfo;
+			$datainfo['id'] = $threadinfo['threadid'];
+			$datainfo['title'] = $threadinfo['title'];
+			$datainfo['type'] = 't';
+			break;
+		case 'p':	
+			$datainfo = $postinfo;
+			$datainfo['id'] = $postinfo['postid'];
+			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
+			$datainfo['type'] = 'p';
+			break;
+	}
 
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
@@ -3618,22 +3631,22 @@ if ($_REQUEST['do'] == 'importcontent2')
 		$templater->register('applies_versions', $applies_versions);
 		$templater->register('category_options', $category_options);
 		$templater->register('category_unknown_selected', $category_unknown_selected);
+		$templater->register('datainfo', $datainfo);
 		$templater->register('startstatusid', $issuestatus['startstatusid']);
 		$templater->register('issuetype', $issuetype);
 		$templater->register('issuetypeid', $issuetypeid);
 		$templater->register('milestone_options', $milestone_options);
 		$templater->register('navbar', $navbar);
-		$templater->register('postinfo', $postinfo);
 		$templater->register('project', $project);
 		$templater->register('status_options', $status_options);
-		$templater->register('title', $title);
-		$templater->register('threadinfo', $threadinfo);
 	print_output($templater->render());
 }
 
 // #######################################################################
 if ($_REQUEST['do'] == 'importcontent')
 {
+	$vbulletin->input->clean_gpc('r', 'type', TYPE_NOHTML);
+
 	$project_type_select = '';
 	$optionclass = '';
 
@@ -3670,8 +3683,21 @@ if ($_REQUEST['do'] == 'importcontent')
 		$project_type_select .= $templater->render();
 	}
 
-	// Select the title to display - no post title? Display thread title
-	$title = $postinfo['title'] ? $postinfo['title'] : $threadinfo['title'];
+	switch ($vbulletin->GPC['type'])
+	{
+		case 't':
+			$datainfo = $threadinfo;
+			$datainfo['id'] = $threadinfo['threadid'];
+			$datainfo['title'] = $threadinfo['title'];
+			$datainfo['type'] = 't';
+			break;
+		case 'p':	
+			$datainfo = $postinfo;
+			$datainfo['id'] = $postinfo['postid'];
+			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
+			$datainfo['type'] = 'p';
+			break;
+	}
 
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
@@ -3684,10 +3710,8 @@ if ($_REQUEST['do'] == 'importcontent')
 	$templater = vB_Template::create('pt_import_content');
 		$templater->register_page_templates();
 		$templater->register('navbar', $navbar);
-		$templater->register('postinfo', $postinfo);
+		$templater->register('datainfo', $datainfo);
 		$templater->register('project_type_select', $project_type_select);
-		$templater->register('threadinfo', $threadinfo);
-		$templater->register('title', $title);
 	print_output($templater->render());
 }
 
