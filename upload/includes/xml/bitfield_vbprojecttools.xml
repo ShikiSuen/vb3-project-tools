@@ -50,7 +50,7 @@
 				<bitfield group="issue_delete" name="candeletenote" phrase="ptperm_can_delete_note" install="2,5,6,7">1024</bitfield>
 				<bitfield group="issue_delete" name="candeletenoteothers" phrase="ptperm_can_delete_note_others" install="5,6,7">2048</bitfield>
 				<bitfield group="issue_post" name="canimportintoissues" phrase="ptperm_can_import_into_issues" install="5,6,7">4096</bitfield>
-				<bitfield group="issue_post" name"canexportfromissues" phrase="ptperm_can_export_from_issues" install="5,6,7">8192</bitfield>
+				<bitfield group="issue_post" name="canexportfromissues" phrase="ptperm_can_export_from_issues" install="5,6,7">8192</bitfield>
 			</group>
 			<group name="attach">
 				<bitfield group="attach" name="canattachview" phrase="ptperm_can_attach_view" install="1,2,3,4,5,6,7">1</bitfield>
