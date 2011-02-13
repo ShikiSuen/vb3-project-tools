@@ -11,6 +11,8 @@
 				<bitfield name="candeletepublicreportothers" group="project_tools_permissions" phrase="can_delete_public_report_others" install="5,6,7">8</bitfield>
 				<bitfield name="cancustomtag" group="project_tools_permissions" phrase="can_create_custom_tags" install="5,6,7">32</bitfield>
 				<bitfield name="canusehumancheck" group="project_tools_permissions" phrase="can_use_humancheck" install="1,2,3,4,5,6,7">64</bitfield>
+				<bitfield name="canimportintoissues" group="project_tools_permissions" phrase="ptperm_can_import_into_issues" install="5,6,7">4096</bitfield>
+				<bitfield name="canexportfromissues" group="project_tools_permissions" phrase="ptperm_can_export_from_issues" install="5,6,7">8192</bitfield>
 			</group>
 		</group>
 		<group name="pt_permissions">
@@ -49,8 +51,6 @@
 				<bitfield group="issue_delete" name="candeleteissueothers" phrase="ptperm_can_delete_issue_others" install="5,6,7">128</bitfield>
 				<bitfield group="issue_delete" name="candeletenote" phrase="ptperm_can_delete_note" install="2,5,6,7">1024</bitfield>
 				<bitfield group="issue_delete" name="candeletenoteothers" phrase="ptperm_can_delete_note_others" install="5,6,7">2048</bitfield>
-				<bitfield group="issue_post" name="canimportintoissues" phrase="ptperm_can_import_into_issues" install="5,6,7">4096</bitfield>
-				<bitfield group="issue_post" name="canexportfromissues" phrase="ptperm_can_export_from_issues" install="5,6,7">8192</bitfield>
 			</group>
 			<group name="attach">
 				<bitfield group="attach" name="canattachview" phrase="ptperm_can_attach_view" install="1,2,3,4,5,6,7">1</bitfield>
