@@ -3465,6 +3465,23 @@ if ($_REQUEST['do'] == 'export')
 	$issue = verify_issue($issueid);
 	$project = verify_project($issue['projectid']);
 
+	$issue['issuenoteid'] = $vbulletin->GPC['issuenoteid'];
+
+	// Actual available content types
+	$contenttypes = array(
+		'thread',
+		'post'
+	);
+
+	$content_type_select = '';
+
+	foreach ($contenttypes AS $contentname)
+	{
+		$optionvalue = $contentname;
+		$optiontitle = $vbphrase['export_issue_' . $contentname . ''];
+		$content_type_select .= render_option_template($optiontitle, $optionvalue, '', '');
+	}
+
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
 		fetch_seo_url('project', $project) => $project['title'],
@@ -3475,6 +3492,7 @@ if ($_REQUEST['do'] == 'export')
 
 	$templater = vB_Template::create('pt_export_content');
 		$templater->register_page_templates();
+		$templater->register('content_type_select', $content_type_select);
 		$templater->register('navbar', $navbar);
 		$templater->register('issue', $issue);
 	print_output($templater->render());
@@ -3726,7 +3744,6 @@ if ($_REQUEST['do'] == 'importcontent')
 	$vbulletin->input->clean_gpc('r', 'type', TYPE_NOHTML);
 
 	$project_type_select = '';
-	$optionclass = '';
 
 	foreach ($vbulletin->pt_projects AS $projectid => $projectinfo)
 	{
@@ -3744,8 +3761,7 @@ if ($_REQUEST['do'] == 'importcontent')
 
 			$optionvalue = $projectinfo['projectid'] . '-' . $type;
 			$optiontitle = $vbphrase["issuetype_{$type}_singular"];
-			$optionselected = '';
-			$optgroup_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$optgroup_options .= render_option_template($optiontitle, $optionvalue, '', '');
 		}
 
 		if (empty($optgroup_options))
