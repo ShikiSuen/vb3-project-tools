@@ -3408,7 +3408,7 @@ legend {
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_import_content" templatetype="template" date="1297542365" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content" templatetype="template" date="1297600166" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3436,18 +3436,18 @@ legend {
 	<h1>{vb:rawphrase pt_create_issue}</h1>
 </div>
 
-<form class="vbform block" action="projectpost.php?do=importcontent2&amp;t={vb:raw threadinfo.threadid}<vb:if condition="$postinfo['postid']">&amp;p={vb:raw postinfo.postid}</vb:if>" method="post" name="vbform">
+<form class="vbform block" action="projectpost.php?do=importcontent2&amp;{vb:raw datainfo.type}={vb:raw datainfo.id}&amp;type={vb:raw datainfo.type}" method="post" name="vbform">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
-<input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
-<input type="hidden" name="p" value="{vb:raw postinfo.postid}" />
+<input type="hidden" name="{vb:raw datainfo.type}" value="{vb:raw datainfo.id}" />
 <input type="hidden" name="do" value="importcontent2" />
+<input type="hidden" name="type" value="{vb:raw datainfo.type}" />
 
 	<h2 class="blockhead">{vb:rawphrase pt_create_issue}</h2>
 
 	<div class="blockbody formcontrols">
 		<div class="blocksubhead">
-			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw title}</span>
+			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw datainfo.title}</span>
 		</div>
 		<div class="section">
 			<div class="blockrow">
@@ -3474,7 +3474,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1297542378" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1297600589" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3503,26 +3503,26 @@ legend {
 	<p class="description">{vb:rawphrase issue_type}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issuetypeid}">{vb:raw issuetype}</a> | {vb:rawphrase project}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a></p>
 </div>
 
-<form class="vbform block" method="post" action="projectpost.php?do=processimportcontent&amp;t={vb:raw threadinfo.threadid}<vb:if condition="$postinfo['title']">&amp;p={vb:raw postinfo.postid}</vb:if>">
+<form class="vbform block" method="post" action="projectpost.php?do=processimportcontent&amp;{vb:raw datainfo.type}={vb:raw datainfo.id}&amp;type={vb:raw datainfo.type}">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 <input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
 <input type="hidden" name="issuetypeid" value="{vb:raw issuetypeid}" />
 <input type="hidden" name="do" value="processimportcontent" />
-<input type="hidden" name="t" value="{vb:raw threadinfo.threadid}" />
-<input type="hidden" name="p" value="{vb:raw postinfo.postid}" />
-<input type="hidden" name="threadtitle" value="{vb:raw threadinfo.title}" />
+<input type="hidden" name="{vb:raw datainfo.type}" value="{vb:raw datainfo.id}" />
+<input type="hidden" name="type" value="{vb:raw datainfo.type}" />
+<input type="hidden" name="originaltitle" value="{vb:raw datainfo.title}" />
 
 	<h2 class="blockhead">{vb:rawphrase post_new_issue}</h2>
 
 	<div class="blockbody formcontrols">
 		<div class="blocksubhead">
-			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw title}</span>
+			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw datainfo.title}</span>
 		</div>
 		<div class="section">
 			<div class="blockrow">
 				<label class="full" for="input_issue_title">{vb:rawphrase title}</label>
-				<input name="title" id="input_issue_title" type="text" class="primary full textbox" value="{vb:raw title}" size="50" tabindex="1" />
+				<input name="title" id="input_issue_title" type="text" class="primary full textbox" value="{vb:raw datainfo.title}" size="50" tabindex="1" />
 			</div>
 
 			<div class="blockrow">
@@ -5188,13 +5188,13 @@ vbphrase['doubleclick_project_markread'] = "{vb:rawphrase doubleclick_project_ma
 init_project_readmarker_system();
 //-->
 </script>]]></template>
-		<template name="pt_member_findissues_37" templatetype="template" date="1278280262" username="Pitchoune" version="2.1.2"><![CDATA[<h5 class="subsubsectionhead">
+		<template name="pt_member_findissues_37" templatetype="template" date="1297544354" username="Pitchoune" version="2.2.0"><![CDATA[<h5 class="subsubsectionhead">
 	{vb:rawphrase projects}
 </h5>
 <vb:if condition="$vbulletin->options['pt_profile_issue_counters']">
 <dl class="stats">
 	<dt>{vb:rawphrase total_issues}</dt>
-	<dd>{vb:raw userinfo.totalissues}</dd>
+	<dd>{vb:raw userinfo.pt_totalissues}</dd>
 </dl>
 </vb:if>
 <ul class="group">
@@ -6149,7 +6149,7 @@ init_project_readmarker_system();
 		<div class="smallfont">{vb:rawphrase petition_for_change_to_x_by_y, {vb:raw pending.petitionstatus}, {vb:raw pending.username}}</div>
 	</div>
 </div>]]></template>
-		<template name="pt_postbit_create_issue" templatetype="template" date="1297541328" username="Pitchoune" version="2.2.0"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importcontent&amp;p={vb:raw post.postid}" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
+		<template name="pt_postbit_create_issue" templatetype="template" date="1297600315" username="Pitchoune" version="2.2.0"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importcontent&amp;p={vb:raw post.postid}&amp;type=post" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
 <span class="seperator">&nbsp;</span>]]></template>
 		<template name="pt_postbit_link_issue" templatetype="template" date="1297541343" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="$show['pt_separator']">
 	<div class="ptseparator">-</div>
@@ -9276,7 +9276,7 @@ foreach($do AS $field)
 		<plugin active="1" executionorder="5">
 			<title>fetch_userinfo(): Add PT Fields/Joins</title>
 			<hookname>fetch_userinfo_query</hookname>
-			<phpcode><![CDATA[$hook_query_fields .= ", ptuser.*";
+			<phpcode><![CDATA[$hook_query_fields .= ", ptuser.userid AS pt_userid, ptuser.totalissues AS pt_totalissues";
 $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_user AS ptuser ON (user.userid = ptuser.userid)";]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -9498,8 +9498,7 @@ if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'proce
 		<plugin active="1" executionorder="5">
 			<title>Postbit: Misc data for postbits</title>
 			<hookname>postbit_display_complete</hookname>
-			<phpcode><![CDATA[// TODO: this could have its own permission in moderation for future
-$show['createptissue'] = can_moderate($thread['forumid'], 'canmanagethreads') AND can_moderate($thread['forumid'], 'canremoveposts');
+			<phpcode><![CDATA[$show['createptissue'] = $this->registry->userinfo['permissions']['ptpermissions'] & $this->registry->bf_ugp_ptpermissions['canimportintoissues'];
 
 // Add link to promote the post as an issue
 if ($show['createptissue'] AND (!$post['forwardlink'] AND THIS_SCRIPT != 'usernote' AND THIS_SCRIPT != 'announcement'))
@@ -9687,7 +9686,7 @@ $template_hook['usercp_main_pos3'] .= process_new_subscribed_issues();]]></phpco
 process_pt_user_delete($this);]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
-			<title>User DM: Rebuild PT Assignable</title>
+			<title><![CDATA[User DM: Rebuild PT Assignable AND add the user in table 'pt_user' if not done]]></title>
 			<hookname>userdata_postsave</hookname>
 			<phpcode><![CDATA[// Rebuild PT Assignable
 if ($usergroups_changed OR (isset($this->user['username']) AND $this->user['username'] != $this->existing['username']))
@@ -9697,14 +9696,14 @@ if ($usergroups_changed OR (isset($this->user['username']) AND $this->user['user
 	build_pt_user_list('pt_report_users', 'pt_report_user_cache');
 }
 
-// Insert the new user into pt_user table
+// Insert the new user into pt_user table - new user
 if (!$this->condition)
 {
 	$this->registry->db->query_write("
 		INSERT INTO " . TABLE_PREFIX . "pt_user
-			(userid)
+			(userid, totalissues)
 		VALUES
-			($userid)
+			($userid, 0)
 	");
 }]]></phpcode>
 		</plugin>
@@ -9834,6 +9833,8 @@ There are also several permissions that are not definable per project or issue t
 <dfn>If you set this to no, users will not be able to create any reports.</dfn>]]></phrase>
 			<phrase name="can_delete_public_report_others" date="1176812058" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Delete Others' Public Reports]]></phrase>
 			<phrase name="can_delete_public_report_own" date="1176812062" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Delete Own Public Reports]]></phrase>
+			<phrase name="can_export_from_issues" date="1297608824" username="Pitchoune" version="2.2.0"><![CDATA[Can Export From Issues]]></phrase>
+			<phrase name="can_import_into_issues" date="1297608836" username="Pitchoune" version="2.2.0"><![CDATA[Can Import Into Issues]]></phrase>
 			<phrase name="can_use_humancheck" date="1276072756" username="Pitchoune" version="2.1.2"><![CDATA[Use the Human Verification in Project Tools
 <dfn>This option will work if you set correctly the option <strong>Human Verification by usergroup</strong> in the vBulletin Options <a href="options.php?dogroup=projecttools"><strong>Project Tools Options</strong></a> group.</dfn>]]></phrase>
 			<phrase name="can_view_project_tools" date="1183130974" username="Ed Sullivan" version="1.0.0"><![CDATA[Can View Project Tools
