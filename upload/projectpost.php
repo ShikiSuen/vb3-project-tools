@@ -3410,6 +3410,29 @@ if ($_REQUEST['do'] == 'assigntoself')
 	}
 }
 
+// #######################################################################
+if ($_POST['do'] == 'processexport')
+{
+	// Do the export
+	require_once(DIR . '/includes/class_pt_impex.php');
+
+	$exporter = new vB_Pt_Impex($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
+	$contentid = $exporter->export_all();
+}
+
+// #######################################################################
+if ($_POST['do'] == 'confirmexport')
+{
+	// Changing some values?
+}
+
+// #######################################################################
+if ($_REQUEST['do'] == 'export')
+{
+	// Select the contenttype
+}
+
+// #######################################################################
 if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'importcontent2')))
 {
 	require_once(DIR . '/includes/functions_pt_impex.php');
@@ -3440,7 +3463,8 @@ if ($_POST['do'] == 'processimportcontent')
 		'addressedversionid' => TYPE_INT,
 		'issuestatusid' => TYPE_UINT,
 		'milestoneid' => TYPE_UINT,
-		'type' => TYPE_NOHTML
+		'type' => TYPE_NOHTML,
+		'originaltitle' => TYPE_NOHTML
 	));
 
 	// Do our own checking to make sure we have all permissions needed to create issues
@@ -3455,11 +3479,11 @@ if ($_POST['do'] == 'processimportcontent')
 
 	switch ($vbulletin->GPC['type'])
 	{
-		case 't':
+		case 'thread':
 			$datatype = 'thread';
 			$datainfo = $threadinfo;
 			break;
-		case 'p':
+		case 'post':
 			$datatype = 'post';
 			$datainfo = $postinfo;
 			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
@@ -3600,17 +3624,17 @@ if ($_REQUEST['do'] == 'importcontent2')
 
 	switch ($vbulletin->GPC['type'])
 	{
-		case 't':
+		case 'thread':
 			$datainfo = $threadinfo;
 			$datainfo['id'] = $threadinfo['threadid'];
 			$datainfo['title'] = $threadinfo['title'];
-			$datainfo['type'] = 't';
+			$datainfo['type'] = 'thread';
 			break;
-		case 'p':	
+		case 'post':
 			$datainfo = $postinfo;
 			$datainfo['id'] = $postinfo['postid'];
 			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
-			$datainfo['type'] = 'p';
+			$datainfo['type'] = 'post';
 			break;
 	}
 
@@ -3685,17 +3709,17 @@ if ($_REQUEST['do'] == 'importcontent')
 
 	switch ($vbulletin->GPC['type'])
 	{
-		case 't':
+		case 'thread':
 			$datainfo = $threadinfo;
 			$datainfo['id'] = $threadinfo['threadid'];
 			$datainfo['title'] = $threadinfo['title'];
-			$datainfo['type'] = 't';
+			$datainfo['type'] = 'thread';
 			break;
-		case 'p':	
+		case 'post':	
 			$datainfo = $postinfo;
 			$datainfo['id'] = $postinfo['postid'];
 			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
-			$datainfo['type'] = 'p';
+			$datainfo['type'] = 'post';
 			break;
 	}
 
