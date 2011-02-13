@@ -3467,6 +3467,7 @@ if ($_REQUEST['do'] == 'export')
 
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
+		fetch_seo_url('project', $project) => $project['title'],
 		'' => $vbphrase['export_issue']
 	);
 
@@ -3475,7 +3476,7 @@ if ($_REQUEST['do'] == 'export')
 	$templater = vB_Template::create('pt_export_content');
 		$templater->register_page_templates();
 		$templater->register('navbar', $navbar);
-		$templater->register('datainfo', $datainfo);
+		$templater->register('issue', $issue);
 	print_output($templater->render());
 }
 
