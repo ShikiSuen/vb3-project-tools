@@ -79,11 +79,11 @@ $actiontemplates = array(
 		'bbcode_quote',
 		'bbcode_video',
 	),
-	'exportcontent' => array(
+	'export' => array(
 		'optgroup',
 		'pt_export_content'
 	),
-	'exportcontent2' => array(
+	'confirmexport' => array(
 		'optgroup',
 		'pt_export_content_confirm'
 	),
@@ -3411,6 +3411,29 @@ if ($_REQUEST['do'] == 'assigntoself')
 }
 
 // #######################################################################
+if (in_array($_REQUEST['do'], array('processexport', 'export', 'confirmexport')))
+{
+	// Allowed to be here?
+	if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canexportfromissues']))
+	{
+		print_no_permission();
+	}
+
+	require_once(DIR . '/includes/functions_pt_impex.php');
+
+	if ($threadid)
+	{	
+		$threadinfo = verify_id('thread', $threadid, 1, 1);
+	}
+
+	if ($postid)
+	{
+		$threadinfo = verify_id('thread', $threadid, 1, 1);
+		$postinfo = verify_id('post', $postid, 1, 1);
+	}
+}
+
+// #######################################################################
 if ($_POST['do'] == 'processexport')
 {
 	// Do the export
@@ -3429,12 +3452,42 @@ if ($_POST['do'] == 'confirmexport')
 // #######################################################################
 if ($_REQUEST['do'] == 'export')
 {
-	// Select the contenttype
+	$vbulletin->input->clean_gpc('r', 'issuenoteid', TYPE_UINT);
+
+	$issueinfo = $db->query_first("
+		SELECT issueid
+		FROM " . TABLE_PREFIX . "pt_issuenote
+		WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
+	");
+
+	$issueid = $issueinfo['issueid'];
+
+	$issue = verify_issue($issueid);
+	$project = verify_project($issue['projectid']);
+
+	$navbits = array(
+		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
+		'' => $vbphrase['export_issue']
+	);
+
+	$navbar = render_navbar_template(construct_navbits($navbits));
+
+	$templater = vB_Template::create('pt_export_content');
+		$templater->register_page_templates();
+		$templater->register('navbar', $navbar);
+		$templater->register('datainfo', $datainfo);
+	print_output($templater->render());
 }
 
 // #######################################################################
 if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'importcontent2')))
 {
+	// Allowed to be here?
+	if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_pt_permissions['canimportintoissues']))
+	{
+		print_no_permission();
+	}
+
 	require_once(DIR . '/includes/functions_pt_impex.php');
 
 	if ($threadid)
