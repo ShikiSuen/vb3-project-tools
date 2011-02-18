@@ -93,6 +93,7 @@
 		<hook>projectpost_subscription_bit</hook>
 		<hook>projectpost_subscription_complete</hook>
 		<hook>projectpost_petition</hook>
+		<hook>projectpost_export_contenttypes</hook>
 	</hooktype>
 
 	<hooktype type="projectsearch">

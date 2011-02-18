@@ -3468,10 +3468,14 @@ if ($_REQUEST['do'] == 'export')
 	$issue['issuenoteid'] = $vbulletin->GPC['issuenoteid'];
 
 	// Actual available content types
+	// Create an admincp custom content type manager for export?
 	$contenttypes = array(
 		'thread',
 		'post'
 	);
+
+	// Hook here to allow anyone to add its own content type
+	($hook = vBulletinHook::fetch_hook('projectpost_export_contenttypes')) ? eval($hook) : false;
 
 	$content_type_select = '';
 
