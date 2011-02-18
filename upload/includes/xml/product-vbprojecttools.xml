@@ -3344,6 +3344,71 @@ legend {
 		<input type="checkbox" id="{vb:raw optionid}" name="{vb:raw optionname}" value="{vb:raw optionvalue}" tabindex="1" {vb:raw optionchecked} />&nbsp;{vb:raw optiontitle}
 	</label>
 </li>]]></template>
+		<template name="pt_export_content" templatetype="template" date="1297615833" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
+
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
+
+	<title>{vb:var vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase export_issue}</title>
+
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+{vb:raw navbar}
+
+<div id="pagetitle">
+	<h1>{vb:rawphrase export_issue}</h1>
+</div>
+
+<form class="vbform block" action="projectpost.php?do=confirmexport&amp;issuenote={vb:raw issue.issuenoteid}" method="post" name="vbform">
+<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+<input type="hidden" name="issuenote" value="{vb:raw issue.issuenoteid}" />
+<input type="hidden" name="do" value="confirmexport" />
+
+	<h2 class="blockhead">{vb:rawphrase export_issue}</h2>
+
+	<div class="blockbody formcontrols">
+		<div class="blocksubhead">
+			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw issue.title}</span>
+		</div>
+		<div class="section">
+			<div class="blockrow">
+				<label for="project-issuetype">{vb:rawphrase new_content_type}</label>
+				<ul class="group rightcol">
+					<li>
+						<select id="contenttype" name="contenttype" style="display: block; width: 100%">
+							{vb:raw content_type_select}
+						</select>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="blockfoot actionbuttons">
+		<div class="group">
+			<input type="submit" class="button" value="{vb:rawphrase proceed_ellipsis}" accesskey="s" />
+		</div>
+	</div>
+
+</form>
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
 		<template name="pt_forumbit_project" templatetype="template" date="1294258002" username="Pitchoune" version="2.2.0"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
 	<div class="forumrow table">
         <div class="foruminfo td">
@@ -10147,6 +10212,9 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="edit_reply_to_issue_x" date="1175174798" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Edit Reply to Issue]]></phrase>
 			<phrase name="edit_this_issue" date="1175077434" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Edit this Issue]]></phrase>
 			<phrase name="edited_by_x" date="1175077910" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Edited by</span> {1}]]></phrase>
+			<phrase name="export_issue" date="1297614681" username="Pitchoune" version="2.2.0"><![CDATA[Export issue]]></phrase>
+			<phrase name="export_issue_post" date="1297615903" username="Pitchoune" version="2.2.0"><![CDATA[Post]]></phrase>
+			<phrase name="export_issue_thread" date="1297615892" username="Pitchoune" version="2.2.0"><![CDATA[Thread]]></phrase>
 			<phrase name="field_addressedversionid" date="1175779896" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Addressed Version]]></phrase>
 			<phrase name="field_appliesversionid" date="1175779906" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Applicable Version]]></phrase>
 			<phrase name="field_assigneduser" date="1175779921" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Assigned Users]]></phrase>
@@ -10214,6 +10282,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="move_this_issue" date="1213193758" username="Scott" version="2.0.0 Alpha 1"><![CDATA[Move this Issue]]></phrase>
 			<phrase name="my_reports" date="1174490045" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[My Reports]]></phrase>
 			<phrase name="negative_votes" date="1175173970" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Negative Votes]]></phrase>
+			<phrase name="new_content_type" date="1297615822" username="Pitchoune" version="2.2.0"><![CDATA[New content type]]></phrase>
 			<phrase name="new_project_and_issue_type" date="1213889193" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[New Project and Issue Type]]></phrase>
 			<phrase name="new_subscribed_issues" date="1175175250" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[New Subscribed Issues]]></phrase>
 			<phrase name="next_release" date="1174484792" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Next Release]]></phrase>
