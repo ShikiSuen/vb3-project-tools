@@ -1631,8 +1631,18 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 }
 
 // Ensure phrases will be rebuilt
-$rebuild['phrases'] = true;]]></installcode>
-			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");]]></uninstallcode>
+$rebuild['phrases'] = true;
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectimpex (
+		projectimpexid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		contenttypeid INT UNSIGNED NOT NULL,
+		phpcode TEXT,
+		PRIMARY KEY (projectimpexid),
+	) ENGINE=MyISAM
+");]]></installcode>
+			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectimpex");]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
@@ -9133,6 +9143,24 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 			$item['title'] = $vbphrase["issuetype_{$itemid}_singular"];
 			$handled = true;
 			break;
+
+		case 'pt_projectimpex':
+			$item = $vbulletin->db->query_first("
+				SELECT projectimpexid, projectimpexid AS title, contenttypeid
+				FROM " . TABLE_PREFIX . "pt_projectimpex
+				WHERE projectimpexid = $itemid
+			");
+
+			$contenttype = $vbulletin->db->query_first("
+				SELECT c.class AS cclass, p.class AS pclass
+				FROM " . TABLE_PREFIX . "contenttype AS c
+					LEFT JOIN " . TABLE_PREFIX . "package AS p ON (p.packageid = c.packageid)
+				WHERE c.contenttypeid = " . $item['contenttypeid'] . " 
+			");
+
+			$item['title'] = $contenttype['pclass'] . '_' . $contenttype['cclass'];
+			$handled = true;
+			break;
 	}
 }]]></phpcode>
 		</plugin>
@@ -10069,6 +10097,7 @@ If you wish to continue this action, <a href="{1}">click here to try again</a>.]
 			<phrase name="pt_petition_not_pending" date="1172238793" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[This petition is no longer pending. Please press back to see the resolution.]]></phrase>
 			<phrase name="pt_petition_status_invalid" date="1172239028" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You did not select a valid petition status.]]></phrase>
 			<phrase name="pt_search_field_x_unknown" date="1173175606" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Invalid search field {1} specified.]]></phrase>
+			<phrase name="saved_pt_contenttype_successfully" date="1298114527" username="Pitchoune" version="2.2.0"><![CDATA[Saved content type successfully]]></phrase>
 			<phrase name="tags_deleted" date="1168607107" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Tags Deleted]]></phrase>
 			<phrase name="there_is_no_project_you_can_create_issues_in" date="1274871343" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no project you can create issues in.]]></phrase>
 			<phrase name="there_is_no_type_you_can_create_issues_in" date="1274871359" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no issue type in this project you can create issues in.]]></phrase>
@@ -10426,6 +10455,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="your_personal_reports" date="1175173180" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Your Personal Reports]]></phrase>
 		</phrasetype>
 		<phrasetype name="Project Tools (Admin)" fieldname="projecttoolsadmin">
+			<phrase name="add_content_type" date="1298113795" username="Pitchoune" version="2.2.0"><![CDATA[Add Content Type]]></phrase>
 			<phrase name="add_issue_status" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Issue Status]]></phrase>
 			<phrase name="add_issue_type" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Issue Type]]></phrase>
 			<phrase name="add_milestone" date="1213799689" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Add Milestone]]></phrase>
@@ -10444,6 +10474,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="are_you_sure_want_to_delete_milestone_x" date="1213021483" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the milestone called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_project_x" date="1213021416" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectcategory_x" date="1213021424" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project category called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
+			<phrase name="are_you_sure_want_to_delete_projectimpex_x" date="1298142493" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the content type called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectpriority_x" date="1295124347" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the project priority called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectversion_x" date="1213021442" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project version called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectversiongroup_x" date="1213021452" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project version group called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
@@ -10456,6 +10487,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="chose_delete_types_project" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[You chose to delete one or more issue types from this project. To complete this process, you should choose a new issue type and status to move all affected issues into.
 		<p>If do not do this, the issues will remain but become inaccessible until their type is re-enabled for this project. To skip this process and go back to the project list, <a href="project.php?do=projectlist">click here</a>.</p>]]></phrase>
 			<phrase name="completed_date_desc" date="1213893922" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[If you specify a date here, this milestone will be moved to the "Completed Milestones" list.]]></phrase>
+			<phrase name="contenttype" date="1298114216" username="Pitchoune" version="2.2.0"><![CDATA[Content Type]]></phrase>
 			<phrase name="default_version_group" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Default Version Group]]></phrase>
 			<phrase name="default_version_number" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Default Version Number]]></phrase>
 			<phrase name="deleted_issue_type" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[Deleted Issue Type]]></phrase>
@@ -10465,6 +10497,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="do_not_change_meta" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[(do not change)]]></phrase>
 			<phrase name="do_not_use_meta" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[(do not use)]]></phrase>
 			<phrase name="double_click_permission_quick_set" date="1181838059" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[<em>Tip</em>: You can double-click a permission name to quickly grant or revoke that permission for all issue types!]]></phrase>
+			<phrase name="edit_content_type" date="1298114133" username="Pitchoune" version="2.2.0"><![CDATA[Edit Content Type]]></phrase>
 			<phrase name="edit_link_colored_custom_permissions" date="1176817614" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[The edit link will be colored this way if custom permissions exist.]]></phrase>
 			<phrase name="edit_milestone" date="1213799669" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Milestone]]></phrase>
 			<phrase name="edit_permissions_for_x" date="1213804739" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span>]]></phrase>
@@ -10514,6 +10547,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="note_pt_attachments_diff_dir_vb" date="1181225872" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Note: Your Project Tools' attachments must be stored in a different directory than your vBulletin attachments!]]></phrase>
 			<phrase name="permission_apply_all_projects_unless_custom" date="1176819290" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[These permissions will apply to all projects unless you specify a custom set of permissions for a specific project and user group.]]></phrase>
 			<phrase name="permissions_for_project_x" date="1213805602" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Permissions for Project <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="php_code_desc" date="1298114256" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the PHP code that you would like to be run.]]></phrase>
 			<phrase name="plural_form_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Plural Form<dfn>Example: Bugs</dfn>]]></phrase>
 			<phrase name="positive_vote_count_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Positive Vote Count<dfn>Example: Users able to reproduce bug</dfn>]]></phrase>
 			<phrase name="post_new_issue_example" date="1181310382" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Post New Issue
@@ -10541,6 +10575,8 @@ To create your own report, make a search with the criteria that you want and cli
 </ul>]]></phrase>
 			<phrase name="project_tools_upgraded_successfully" date="1179502428" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[vBulletin Project Tools Upgraded Successfully!]]></phrase>
 			<phrase name="project_versions_for_x" date="1213805622" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Versions for <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="projectimpex_list" date="1298113615" username="Pitchoune" version="2.2.0"><![CDATA[Project ImpEx - Content Types]]></phrase>
+			<phrase name="projectimpex_no_content_type" date="1298113820" username="Pitchoune" version="2.2.0"><![CDATA[There is no content type defined.]]></phrase>
 			<phrase name="ptperm_can_assign_edit" date="1176211762" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Assignments]]></phrase>
 			<phrase name="ptperm_can_assign_edit_others" date="1176211771" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Others' Assignments]]></phrase>
 			<phrase name="ptperm_can_assigned" date="1176211751" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can be Assigned]]></phrase>
