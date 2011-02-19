@@ -3120,6 +3120,184 @@ if ($_REQUEST['do'] == 'projectcategory')
 }
 
 // ########################################################################
+// ##################### PROJECT IMPEX MANAGEMENT #########################
+// ########################################################################
+if ($_POST['do'] == 'projectimpexkill')
+{
+	// Delete the content type
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'projectimpexdelete')
+{
+	// Confirmation message of deletion of a content type
+}
+
+// ########################################################################
+if ($_POST['do'] == 'projectimpexupdate')
+{
+	// Update the content type
+	$vbulletin->input->clean_array_gpc('p', array(
+		'projectimpexid' => TYPE_UINT,
+		'contenttypeid' => TYPE_UINT,
+		'phpcode' => TYPE_STR
+	));
+
+	if ($vbulletin->GPC['projectimpexid'])
+	{
+		// Edit
+		$db->query_write("
+			UPDATE " . TABLE_PREFIX . "pt_projectimpex SET
+				contenttypeid = " . $vbulletin->GPC['contenttypeid'] . ",
+				phpcode = '" . $vbulletin->GPC['phpcode'] . "'
+			WHERE pt_projectimpexid = " . $vbulletin->GPC['projectimpexid'] . "
+		");
+	}
+	else
+	{
+		// Add
+		$db->query_write("
+			INSERT INTO " . TABLE_PREFIX . "pt_projectimpex
+				(contenttypeid, phpcode)
+			VALUES
+				(" . intval($vbulletin->GPC['contenttypeid']) . ",
+				'" . $db->escape_string($vbulletin->GPC['phpcode']) . "')
+		");
+	}
+
+	define('CP_REDIRECT', 'project.php?do=projectimpex');
+	print_stop_message('saved_projectimpex_contenttype_successfully');
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'projectimpexadd' OR $_REQUEST['do'] == 'projectimpexedit')
+{
+	$vbulletin->input->clean_gpc('r', 'projectimpexid', TYPE_UINT);
+
+	print_form_header('project', 'projectimpexupdate');
+
+	if ($vbulletin->GPC['projectimpexid'])
+	{
+		// Edit
+		$projectimpex = $db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_projectimpex
+			WHERE pt_projectimpexid = " . $vbulletin->GPC['projectimpexid'] . "
+		");
+
+		print_table_header($vbphrase['edit_project_impex']);
+		construct_hidden_code('projectimpexid', $projectimpex['pt_projectimpexid']);
+
+		$ctarray = array();
+		$selectarray = array();
+		$ctvalues = '';
+
+		// List all existing content type with php code
+		$existingct = $db->query_read("
+			SELECT contenttypeid
+			FROM " . TABLE_PREFIX . "pt_projectimpex
+		");
+
+		while ($ct = $db->fetch_array($existingct))
+		{
+			$ctarray[] = $ct['contenttypeid'];
+		}
+
+		// Remove every contenttype already used
+		$ctarray = array_diff($ctarray, array($projectimpex['contenttypeid']));
+
+		$ctvalues = implode(',', $ctarray);
+
+		// Create the content type menu
+		$contenttypes = $db->query_read("
+			SELECT c.contenttypeid, c.class AS cclass, p.productid, p.class AS pclass
+			FROM " . TABLE_PREFIX . "contenttype AS c
+				LEFT JOIN " . TABLE_PREFIX . "package AS p ON (p.packageid = c.packageid)
+			WHERE c.contenttypeid NOT IN ('" . $ctvalues . "')
+		");
+
+		while ($contenttype = $db->fetch_array($contenttypes))
+		{
+			$selectarray[$contenttype['contenttypeid']] = $contenttype['pclass'] . '_' . $contenttype['cclass'];
+		}
+	}
+	else
+	{
+		// Add
+		print_table_header($vbphrase['add_project_impex']);
+
+		$ctarray = array();
+		$selectarray = array();
+		$ctvalues = '';
+
+		// List all existing content type with php code
+		$existingct = $db->query_read("
+			SELECT contenttypeid
+			FROM " . TABLE_PREFIX . "pt_projectimpex
+		");
+
+		while ($ct = $db->fetch_array($existingct))
+		{
+			$ctarray[] = $ct['contenttypeid'];
+		}
+
+		$ctvalues = implode(',', $ctarray);
+
+		// Create the content type menu and remove contenttype already used
+		$contenttypes = $db->query_read("
+			SELECT c.contenttypeid, c.class AS cclass, p.productid, p.class AS pclass
+			FROM " . TABLE_PREFIX . "contenttype AS c
+				LEFT JOIN " . TABLE_PREFIX . "package AS p ON (p.packageid = c.packageid)
+			WHERE c.contenttypeid NOT IN (" . $ctvalues . ")
+		");
+
+		while ($contenttype = $db->fetch_array($contenttypes))
+		{
+			$selectarray[$contenttype['contenttypeid']] = $contenttype['pclass'] . '_' . $contenttype['cclass'];
+		}
+	}
+
+	print_select_row($vbphrase['contenttype'], 'contenttypeid', $selectarray, $projectimpex['contenttypeid']);
+
+	print_textarea_row(
+		"$vbphrase[php_code] <dfn>$vbphrase[php_code_desc]</dfn>",
+		'phpcode',
+		htmlspecialchars($projectimpex['phpcode']),
+		10, '45" style="width:100%',
+		false,
+		true,
+		'ltr',
+		'code'
+	);
+
+	print_submit_row();
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'projectimpex')
+{
+	print_form_header('project', 'projectimpexorder');
+	print_table_header($vbphrase['projectimpex_list'], 2);
+	// List of content types
+	$contenttypes = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectimpex
+	");
+
+	if ($db->num_rows($contenttypes) > 0)
+	{
+		print_submit_row();
+	}
+	else
+	{
+		print_description_row('<div align="center">' . $vbphrase['projectimpex_no_content_type'] . '</div>');
+		print_table_footer();
+	}
+
+	echo '<p align="center">' . construct_link_code($vbphrase['add_content_type'], 'project.php?do=projectimpexadd') . '</p>';
+}
+
+// ########################################################################
 // ####################### PROJECT MANAGEMENT #############################
 // ########################################################################
 if ($_POST['do'] == 'projecttypedel_commit')
