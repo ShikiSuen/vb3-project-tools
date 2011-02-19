@@ -3124,7 +3124,15 @@ if ($_REQUEST['do'] == 'projectcategory')
 // ########################################################################
 if ($_POST['do'] == 'projectimpexkill')
 {
-	// Delete the content type
+	$vbulletin->input->clean_gpc('p', 'projectimpexid', TYPE_UINT);
+
+	$db->query_write("
+		DELETE FROM " . TABLE_PREFIX . "pt_projectimpex
+		WHERE projectimpexid = " . $vbulletin->GPC['projectimpexid'] . "
+	");
+
+	define('CP_REDIRECT', 'project.php?do=projectimpex');
+	print_stop_message('project_contenttype_deleted');
 }
 
 // ########################################################################
