@@ -3166,7 +3166,7 @@ if ($_POST['do'] == 'projectimpexupdate')
 	}
 
 	define('CP_REDIRECT', 'project.php?do=projectimpex');
-	print_stop_message('saved_projectimpex_contenttype_successfully');
+	print_stop_message('saved_pt_contenttype_successfully');
 }
 
 // ########################################################################
