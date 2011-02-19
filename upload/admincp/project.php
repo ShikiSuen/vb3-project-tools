@@ -3185,7 +3185,7 @@ if ($_REQUEST['do'] == 'projectimpexadd' OR $_REQUEST['do'] == 'projectimpexedit
 			WHERE pt_projectimpexid = " . $vbulletin->GPC['projectimpexid'] . "
 		");
 
-		print_table_header($vbphrase['edit_project_impex']);
+		print_table_header($vbphrase['edit_content_type']);
 		construct_hidden_code('projectimpexid', $projectimpex['pt_projectimpexid']);
 
 		$ctarray = array();
@@ -3224,7 +3224,7 @@ if ($_REQUEST['do'] == 'projectimpexadd' OR $_REQUEST['do'] == 'projectimpexedit
 	else
 	{
 		// Add
-		print_table_header($vbphrase['add_project_impex']);
+		print_table_header($vbphrase['add_content_type']);
 
 		$ctarray = array();
 		$selectarray = array();
