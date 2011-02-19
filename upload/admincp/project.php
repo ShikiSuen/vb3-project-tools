@@ -3150,7 +3150,7 @@ if ($_POST['do'] == 'projectimpexupdate')
 			UPDATE " . TABLE_PREFIX . "pt_projectimpex SET
 				contenttypeid = " . $vbulletin->GPC['contenttypeid'] . ",
 				phpcode = '" . $vbulletin->GPC['phpcode'] . "'
-			WHERE pt_projectimpexid = " . $vbulletin->GPC['projectimpexid'] . "
+			WHERE projectimpexid = " . $vbulletin->GPC['projectimpexid'] . "
 		");
 	}
 	else
@@ -3182,11 +3182,11 @@ if ($_REQUEST['do'] == 'projectimpexadd' OR $_REQUEST['do'] == 'projectimpexedit
 		$projectimpex = $db->query_first("
 			SELECT *
 			FROM " . TABLE_PREFIX . "pt_projectimpex
-			WHERE pt_projectimpexid = " . $vbulletin->GPC['projectimpexid'] . "
+			WHERE projectimpexid = " . $vbulletin->GPC['projectimpexid'] . "
 		");
 
 		print_table_header($vbphrase['edit_content_type']);
-		construct_hidden_code('projectimpexid', $projectimpex['pt_projectimpexid']);
+		construct_hidden_code('projectimpexid', $projectimpex['projectimpexid']);
 
 		$ctarray = array();
 		$selectarray = array();
