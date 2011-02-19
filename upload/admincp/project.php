@@ -3236,19 +3236,26 @@ if ($_REQUEST['do'] == 'projectimpexadd' OR $_REQUEST['do'] == 'projectimpexedit
 			FROM " . TABLE_PREFIX . "pt_projectimpex
 		");
 
-		while ($ct = $db->fetch_array($existingct))
+		if ($db->num_rows($existingct) > 0)
 		{
-			$ctarray[] = $ct['contenttypeid'];
-		}
+			while ($ct = $db->fetch_array($existingct))
+			{
+				$ctarray[] = $ct['contenttypeid'];
+			}
 
-		$ctvalues = implode(',', $ctarray);
+			$ctvalues = implode(',', $ctarray);
+		}
+		else
+		{
+			$ctvalues = '';
+		}
 
 		// Create the content type menu and remove contenttype already used
 		$contenttypes = $db->query_read("
 			SELECT c.contenttypeid, c.class AS cclass, p.productid, p.class AS pclass
 			FROM " . TABLE_PREFIX . "contenttype AS c
 				LEFT JOIN " . TABLE_PREFIX . "package AS p ON (p.packageid = c.packageid)
-			WHERE c.contenttypeid NOT IN (" . $ctvalues . ")
+			" . ($ctvalues != '' ? "WHERE c.contenttypeid NOT IN (" . $ctvalues . ")" : '') . "
 		");
 
 		while ($contenttype = $db->fetch_array($contenttypes))
