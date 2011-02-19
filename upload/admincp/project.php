@@ -3130,7 +3130,10 @@ if ($_POST['do'] == 'projectimpexkill')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectimpexdelete')
 {
+	$vbulletin->input->clean_gpc('r', 'projectimpexid', TYPE_UINT);
+
 	// Confirmation message of deletion of a content type
+	print_delete_confirmation('pt_projectimpex', $vbulletin->GPC['projectimpexid'], 'project', 'projectimpexkill');
 }
 
 // ########################################################################
@@ -3278,6 +3281,50 @@ if ($_REQUEST['do'] == 'projectimpexadd' OR $_REQUEST['do'] == 'projectimpexedit
 	);
 
 	print_submit_row();
+
+	if ($projectimpex['phpcode'] != '')
+	{
+		// highlight the string
+		$code = $projectimpex['phpcode'];
+
+		// do we have an opening <? tag?
+		if (!preg_match('#^\s*<\?#si', $code))
+		{
+			// if not, replace leading newlines and stuff in a <?php tag and a closing tag at the end
+			$code = "<?php BEGIN__VBULLETIN__CODE__SNIPPET $code \r\nEND__VBULLETIN__CODE__SNIPPET ?>";
+			$addedtags = true;
+		}
+		else
+		{
+			$addedtags = false;
+		}
+
+		// highlight the string
+		$oldlevel = error_reporting(0);
+		$code = highlight_string($code, true);
+		error_reporting($oldlevel);
+
+		// if we added tags above, now get rid of them from the resulting string
+		if ($addedtags)
+		{
+			$search = array(
+				'#(<|&lt;)\?php( |&nbsp;)BEGIN__VBULLETIN__CODE__SNIPPET( |&nbsp;)#siU',
+				'#(<(span|font).*>)(<|&lt;)\?(</\\2>(<\\2.*>))php( |&nbsp;)BEGIN__VBULLETIN__CODE__SNIPPET( |&nbsp;)#siU',
+				'#END__VBULLETIN__CODE__SNIPPET( |&nbsp;)\?(>|&gt;)#siU'
+			);
+			$replace = array(
+				'',
+				'\\5',
+				''
+			);
+			$code = preg_replace($search, $replace, $code);
+		}
+
+		print_form_header('', '');
+		print_table_header($vbphrase['php_code']);
+		print_description_row("<div dir=\"ltr\">$code</div>");
+		print_table_footer();
+	}
 }
 
 // ########################################################################
@@ -3285,6 +3332,7 @@ if ($_REQUEST['do'] == 'projectimpex')
 {
 	print_form_header('project', 'projectimpexorder');
 	print_table_header($vbphrase['projectimpex_list'], 2);
+
 	// List of content types
 	$contenttypes = $db->query_read("
 		SELECT *
@@ -3293,6 +3341,23 @@ if ($_REQUEST['do'] == 'projectimpex')
 
 	if ($db->num_rows($contenttypes) > 0)
 	{
+		while ($contenttype = $db->fetch_array($contenttypes))
+		{
+			$ct = $db->query_first("
+				SELECT c.class AS cclass, p.class AS pclass
+				FROM " . TABLE_PREFIX . "contenttype AS c
+					LEFT JOIN " . TABLE_PREFIX . "package AS p ON (p.packageid = c.packageid)
+				WHERE c.contenttypeid = " . $contenttype['contenttypeid'] . "
+			");
+			print_cells_row(array(
+				$ct['pclass'] . '_' . $ct['cclass'],
+				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
+					construct_link_code($vbphrase['edit'], 'project.php?do=projectimpexedit&amp;projectimpexid=' . $contenttype['projectimpexid']) .
+					construct_link_code($vbphrase['delete'], 'project.php?do=projectimpexdelete&amp;projectimpexid=' . $contenttype['projectimpexid']) .
+				'</div>'
+			));
+		}
+
 		print_submit_row();
 	}
 	else
