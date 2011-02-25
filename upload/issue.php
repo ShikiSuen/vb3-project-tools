@@ -658,6 +658,7 @@ else
 $show['attachments'] = ($vbulletin->userinfo['userid'] AND ($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachview']));
 $show['attachment_upload'] = ($show['attachments'] AND ($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattach']) AND !is_issue_closed($issue, $issueperms));
 $show['edit_issue'] = $posting_perms['issue_edit'];
+$show['export_note'] = ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp['ptpermissions']['canexportfromissues']);
 
 if ($issue['state'] == 'closed')
 {
