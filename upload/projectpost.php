@@ -3570,12 +3570,20 @@ if ($_POST['do'] == 'processexport')
 	$contentid = $exporter->export_all();
 
 	// Getting the correct redirect URL
-	switch ($vbulletin->GPC['type'])
+	switch ($vbulletin->GPC['contenttype'])
 	{
 		case 'post':
-			$url = fetch_seo_url('post', $contentid);
+			$threadinfo = $db->query_first("
+				SELECT t.threadid, t.title
+				FROM " . TABLE_PREFIX . "post AS p
+					LEFT JOIN " . TABLE_PREFIX . "thread AS t ON (p.threadid = t.threadid)
+				WHERE p.postid = " . $contentid . "
+			");
+
+			$url = fetch_seo_url('thread', $threadinfo);
 			break;
 		case 'thread':
+			$threadinfo = verify_id('thread', $contentid);
 			$url = fetch_seo_url('thread', $contentid);
 			break;
 	}
