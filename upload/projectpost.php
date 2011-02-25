@@ -3580,7 +3580,7 @@ if ($_POST['do'] == 'processexport')
 				WHERE p.postid = " . $contentid . "
 			");
 
-			$url = fetch_seo_url('thread', $threadinfo);
+			$url = fetch_seo_url('thread', $threadinfo) . '#post' . $contentid;
 			break;
 		case 'thread':
 			$threadinfo = verify_id('thread', $contentid);
