@@ -1631,18 +1631,8 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 }
 
 // Ensure phrases will be rebuilt
-$rebuild['phrases'] = true;
-
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectimpex (
-		projectimpexid INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		contenttypeid INT UNSIGNED NOT NULL,
-		phpcode TEXT,
-		PRIMARY KEY (projectimpexid),
-	) ENGINE=MyISAM
-");]]></installcode>
-			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectimpex");]]></uninstallcode>
+$rebuild['phrases'] = true;]]></installcode>
+			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
@@ -3354,7 +3344,7 @@ legend {
 		<input type="checkbox" id="{vb:raw optionid}" name="{vb:raw optionname}" value="{vb:raw optionvalue}" tabindex="1" {vb:raw optionchecked} />&nbsp;{vb:raw optiontitle}
 	</label>
 </li>]]></template>
-		<template name="pt_export_content" templatetype="template" date="1297615833" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_export_content" templatetype="template" date="1298643152" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3385,7 +3375,7 @@ legend {
 <form class="vbform block" action="projectpost.php?do=confirmexport&amp;issuenote={vb:raw issue.issuenoteid}" method="post" name="vbform">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
-<input type="hidden" name="issuenote" value="{vb:raw issue.issuenoteid}" />
+<input type="hidden" name="issuenoteid" value="{vb:raw issue.issuenoteid}" />
 <input type="hidden" name="do" value="confirmexport" />
 
 	<h2 class="blockhead">{vb:rawphrase export_issue}</h2>
@@ -3396,7 +3386,7 @@ legend {
 		</div>
 		<div class="section">
 			<div class="blockrow">
-				<label for="project-issuetype">{vb:rawphrase new_content_type}</label>
+				<label for="contenttype">{vb:rawphrase new_content_type}</label>
 				<ul class="group rightcol">
 					<li>
 						<select id="contenttype" name="contenttype" style="display: block; width: 100%">
@@ -3419,6 +3409,118 @@ legend {
 
 </body>
 </html>]]></template>
+		<template name="pt_export_content_confirm" templatetype="template" date="1298643184" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
+
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
+
+	<title>{vb:var vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase export_issue}</title>
+
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+{vb:raw navbar}
+
+{vb:raw HTML}
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
+		<template name="pt_export_content_post" templatetype="template" date="1298643208" username="Pitchoune" version="2.2.0"><![CDATA[<div id="pagetitle">
+	<h1>{vb:rawphrase export_as_post}</h1>
+</div>
+
+<br />
+
+<form action="projectpost.php?do=processexport&amp;issuenoteid={vb:raw issuenoteid}" method="post" name="vbform" class="vbform block">
+	<h2 class="blockhead">{vb:rawphrase export_as_post}</h2>
+	<div class="blockbody formcontrols">
+		<div class="section">
+			<div class="blockrow">
+				<label>{vb:rawphrase move_posts_to_existing_thread}:</label>
+				<ul class="group checkradio rightcol">
+					<li>
+						<label for="mergethreadurl">{vb:rawphrase url_of_thread_to_be_merged}:</label>
+						<input type="text" class="primary textbox" name="mergethreadurl" id="mergethreadurl" value="" tabindex="1" />
+					</li>
+				</ul>
+				<p class="description">{vb:rawphrase move_posts_note}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="blockfoot actionbuttons">
+		<div class="group">
+			<input type="submit" class="button" value="{vb:rawphrase export_as_post}" accesskey="s" tabindex="1" />
+			<input type="reset" class="button" value="{vb:rawphrase reset_fields}" accesskey="r" tabindex="1" />
+			<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+			<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+			<input type="hidden" name="contenttype" value="{vb:raw contenttype}" />
+			<input type="hidden" name="issuenoteid" value="{vb:raw issuenoteid}" />
+			<input type="hidden" name="do" value="processexport" />
+			<input type="hidden" name="posthash" value="{vb:raw posthash}" />
+			<input type="hidden" name="poststarttime" value="{vb:raw poststarttime}" />
+		</div>
+	</div>
+</form>]]></template>
+		<template name="pt_export_content_thread" templatetype="template" date="1298643253" username="Pitchoune" version="2.2.0"><![CDATA[<div id="pagetitle">
+	<h1>{vb:rawphrase export_as_thread}</h1>
+</div>
+
+<br />
+
+<form action="projectpost.php?do=processexport&amp;issuenoteid={vb:raw issuenoteid}" method="post" name="vbform" class="vbform block">
+	<h2 class="blockhead">{vb:rawphrase export_as_thread}</h2>
+	<div class="blockbody formcontrols">
+		<div class="section">
+			<div class="blockrow">
+				<label>{vb:rawphrase move_posts_to_new_thread}:</label>
+				<ul class="group checkradio rightcol">
+					<li>
+						<label for="destforumid">{vb:rawphrase destination_forum}:</label>
+						<select name="destforumid" id="destforumid" class="primary" tabindex="1">
+							{vb:raw moveforumbits}
+						</select>
+					</li>
+					<li>
+						<label for="title_textbox">{vb:rawphrase title}:</label>
+						<input type="text" class="primary textbox" name="title" id="title_textbox" value="{vb:raw title}" maxlength="{vb:raw vboptions.titlemaxchars}" tabindex="1" />
+					</li>
+				</ul>
+				<p class="description">
+					{vb:rawphrase you_must_have_the_required_permission}
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="blockfoot actionbuttons">
+		<div class="group">
+			<input type="submit" class="button" value="{vb:rawphrase export_as_thread}" accesskey="s" tabindex="1" />
+			<input type="reset" class="button" value="{vb:rawphrase reset_fields}" accesskey="r" tabindex="1" />
+			<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+			<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+			<input type="hidden" name="contenttype" value="{vb:raw contenttype}" />
+			<input type="hidden" name="issuenoteid" value="{vb:raw issuenoteid}" />
+			<input type="hidden" name="do" value="processexport" />
+			<input type="hidden" name="posthash" value="{vb:raw posthash}" />
+			<input type="hidden" name="poststarttime" value="{vb:raw poststarttime}" />
+		</div>
+	</div>
+</form>]]></template>
 		<template name="pt_forumbit_project" templatetype="template" date="1294258002" username="Pitchoune" version="2.2.0"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
 	<div class="forumrow table">
         <div class="foruminfo td">
@@ -4698,7 +4800,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </li>]]></template>
 		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1297261334" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1298643532" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
@@ -4763,6 +4865,11 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 					<vb:if condition="$show['reply_note']">
 						<a class="replyissue" href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}&amp;quotenoteid={vb:raw note.issuenoteid}"><img alt="{vb:rawphrase reply}" src="clear.gif" title="{vb:rawphrase reply}" /> {vb:rawphrase reply}</a>
+					</vb:if>
+
+					<vb:if condition="$show['export_note']">
+						<span class="separator">&nbsp;</span>
+						<a class="replyissue" href="projectpost.php?{vb:raw session.sessionurl}do=export&amp;issuenoteid={vb:raw note.issuenoteid}"><img alt="{vb:rawphrase export}" src="clear.gif" title="{vb:rawphrase export}" /> {vb:rawphrase export}</a>
 					</vb:if>
 					</span>
 
@@ -10097,7 +10204,6 @@ If you wish to continue this action, <a href="{1}">click here to try again</a>.]
 			<phrase name="pt_petition_not_pending" date="1172238793" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[This petition is no longer pending. Please press back to see the resolution.]]></phrase>
 			<phrase name="pt_petition_status_invalid" date="1172239028" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You did not select a valid petition status.]]></phrase>
 			<phrase name="pt_search_field_x_unknown" date="1173175606" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Invalid search field {1} specified.]]></phrase>
-			<phrase name="saved_pt_contenttype_successfully" date="1298114527" username="Pitchoune" version="2.2.0"><![CDATA[Saved content type successfully]]></phrase>
 			<phrase name="tags_deleted" date="1168607107" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Tags Deleted]]></phrase>
 			<phrase name="there_is_no_project_you_can_create_issues_in" date="1274871343" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no project you can create issues in.]]></phrase>
 			<phrase name="there_is_no_type_you_can_create_issues_in" date="1274871359" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no issue type in this project you can create issues in.]]></phrase>
@@ -10161,6 +10267,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="pt_cannont_be_assigned" date="1276801151" username="Jeremy" version="2.1.2"><![CDATA[You cannot be assigned to issues in the project and status type.]]></phrase>
 			<phrase name="pt_issue_deleted" date="1171029781" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue deleted.]]></phrase>
 			<phrase name="pt_issue_edited" date="1171029827" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue updated.]]></phrase>
+			<phrase name="pt_issue_exported" date="1298645302" username="Pitchoune" version="2.2.0"><![CDATA[Issue exported successfully.]]></phrase>
 			<phrase name="pt_issue_inserted" date="1171029834" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue created.]]></phrase>
 			<phrase name="pt_issue_state_modified" date="1212155939" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Issue State Modified Successfully]]></phrase>
 			<phrase name="pt_issue_undeleted" date="1171029787" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue undeleted.]]></phrase>
@@ -10241,6 +10348,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="edit_reply_to_issue_x" date="1175174798" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Edit Reply to Issue]]></phrase>
 			<phrase name="edit_this_issue" date="1175077434" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Edit this Issue]]></phrase>
 			<phrase name="edited_by_x" date="1175077910" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Edited by</span> {1}]]></phrase>
+			<phrase name="export_as_post" date="1298644800" username="Pitchoune" version="2.2.0"><![CDATA[Export as Post]]></phrase>
+			<phrase name="export_as_thread" date="1298644788" username="Pitchoune" version="2.2.0"><![CDATA[Export as thread]]></phrase>
 			<phrase name="export_issue" date="1297614681" username="Pitchoune" version="2.2.0"><![CDATA[Export issue]]></phrase>
 			<phrase name="export_issue_post" date="1297615903" username="Pitchoune" version="2.2.0"><![CDATA[Post]]></phrase>
 			<phrase name="export_issue_thread" date="1297615892" username="Pitchoune" version="2.2.0"><![CDATA[Thread]]></phrase>
@@ -10399,6 +10508,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="system_message_attachment_deleted" date="1171983644" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Attachment </span> <em>{3}</em> <span class="shade">deleted</span>]]></phrase>
 			<phrase name="system_message_attachment_uploaded" date="1171983636" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Attachment </span> <em>{3}</em> <span class="shade">uploaded</span>]]></phrase>
 			<phrase name="system_message_default" date="1169740935" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">{1} changed from</span> <em>{2}</em> <span class="shade">to</span> <em>{3}</em>]]></phrase>
+			<phrase name="system_message_issue_exported" date="1298647234" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue exported into thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+			<phrase name="system_message_issue_exported_post" date="1298647264" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue imported into a post in the thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
 			<phrase name="system_message_issue_imported" date="1288565383" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Issue imported from thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
 			<phrase name="system_message_issue_imported_post" date="1288565854" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Issue imported from a post in the thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
 			<phrase name="system_message_milestoneid" date="1213093821" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[<span class="shade">Milestone changed</span>]]></phrase>
@@ -10455,7 +10566,6 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="your_personal_reports" date="1175173180" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Your Personal Reports]]></phrase>
 		</phrasetype>
 		<phrasetype name="Project Tools (Admin)" fieldname="projecttoolsadmin">
-			<phrase name="add_content_type" date="1298113795" username="Pitchoune" version="2.2.0"><![CDATA[Add Content Type]]></phrase>
 			<phrase name="add_issue_status" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Issue Status]]></phrase>
 			<phrase name="add_issue_type" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Issue Type]]></phrase>
 			<phrase name="add_milestone" date="1213799689" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Add Milestone]]></phrase>
@@ -10474,7 +10584,6 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="are_you_sure_want_to_delete_milestone_x" date="1213021483" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the milestone called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_project_x" date="1213021416" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectcategory_x" date="1213021424" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project category called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
-			<phrase name="are_you_sure_want_to_delete_projectimpex_x" date="1298142493" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the content type called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectpriority_x" date="1295124347" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the project priority called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectversion_x" date="1213021442" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project version called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectversiongroup_x" date="1213021452" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project version group called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
@@ -10487,7 +10596,6 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="chose_delete_types_project" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[You chose to delete one or more issue types from this project. To complete this process, you should choose a new issue type and status to move all affected issues into.
 		<p>If do not do this, the issues will remain but become inaccessible until their type is re-enabled for this project. To skip this process and go back to the project list, <a href="project.php?do=projectlist">click here</a>.</p>]]></phrase>
 			<phrase name="completed_date_desc" date="1213893922" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[If you specify a date here, this milestone will be moved to the "Completed Milestones" list.]]></phrase>
-			<phrase name="contenttype" date="1298114216" username="Pitchoune" version="2.2.0"><![CDATA[Content Type]]></phrase>
 			<phrase name="default_version_group" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Default Version Group]]></phrase>
 			<phrase name="default_version_number" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Default Version Number]]></phrase>
 			<phrase name="deleted_issue_type" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[Deleted Issue Type]]></phrase>
@@ -10497,7 +10605,6 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="do_not_change_meta" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[(do not change)]]></phrase>
 			<phrase name="do_not_use_meta" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[(do not use)]]></phrase>
 			<phrase name="double_click_permission_quick_set" date="1181838059" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[<em>Tip</em>: You can double-click a permission name to quickly grant or revoke that permission for all issue types!]]></phrase>
-			<phrase name="edit_content_type" date="1298114133" username="Pitchoune" version="2.2.0"><![CDATA[Edit Content Type]]></phrase>
 			<phrase name="edit_link_colored_custom_permissions" date="1176817614" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[The edit link will be colored this way if custom permissions exist.]]></phrase>
 			<phrase name="edit_milestone" date="1213799669" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Milestone]]></phrase>
 			<phrase name="edit_permissions_for_x" date="1213804739" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span>]]></phrase>
@@ -10547,7 +10654,6 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="note_pt_attachments_diff_dir_vb" date="1181225872" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Note: Your Project Tools' attachments must be stored in a different directory than your vBulletin attachments!]]></phrase>
 			<phrase name="permission_apply_all_projects_unless_custom" date="1176819290" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[These permissions will apply to all projects unless you specify a custom set of permissions for a specific project and user group.]]></phrase>
 			<phrase name="permissions_for_project_x" date="1213805602" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Permissions for Project <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="php_code_desc" date="1298114256" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the PHP code that you would like to be run.]]></phrase>
 			<phrase name="plural_form_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Plural Form<dfn>Example: Bugs</dfn>]]></phrase>
 			<phrase name="positive_vote_count_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Positive Vote Count<dfn>Example: Users able to reproduce bug</dfn>]]></phrase>
 			<phrase name="post_new_issue_example" date="1181310382" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Post New Issue
@@ -10575,8 +10681,6 @@ To create your own report, make a search with the criteria that you want and cli
 </ul>]]></phrase>
 			<phrase name="project_tools_upgraded_successfully" date="1179502428" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[vBulletin Project Tools Upgraded Successfully!]]></phrase>
 			<phrase name="project_versions_for_x" date="1213805622" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Versions for <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="projectimpex_list" date="1298113615" username="Pitchoune" version="2.2.0"><![CDATA[Project ImpEx - Content Types]]></phrase>
-			<phrase name="projectimpex_no_content_type" date="1298113820" username="Pitchoune" version="2.2.0"><![CDATA[There is no content type defined.]]></phrase>
 			<phrase name="ptperm_can_assign_edit" date="1176211762" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Assignments]]></phrase>
 			<phrase name="ptperm_can_assign_edit_others" date="1176211771" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Others' Assignments]]></phrase>
 			<phrase name="ptperm_can_assigned" date="1176211751" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can be Assigned]]></phrase>
