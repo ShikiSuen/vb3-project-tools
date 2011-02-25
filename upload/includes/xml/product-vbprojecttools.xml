@@ -4899,7 +4899,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	//--> 
 	</script> 
 </li>]]></template>
-		<template name="pt_issue_firstnote" templatetype="template" date="1297118513" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="pt_issue_content" style="margin-bottom: 10px;">
+		<template name="pt_issue_firstnote" templatetype="template" date="1298665517" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="pt_issue_content" style="margin-bottom: 10px;">
 	<div class="issue_content">
 		<div class="block">
 			<div class="blockhead">
@@ -4996,6 +4996,11 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 								<vb:if condition="$show['reply_issue'] AND !$show['issue_closed']">
 									<a class="replyissue" href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase reply}" /> {vb:rawphrase reply}</a>
+								</vb:if>
+
+								<vb:if condition="$show['export_note']">
+									<span class="separator">&nbsp;</span>
+									<a class="replyissue" href="projectpost.php?{vb:raw session.sessionurl}do=export&amp;issuenoteid={vb:raw issue.issuenoteid}"><img alt="{vb:rawphrase export}" src="clear.gif" title="{vb:rawphrase export}" /> {vb:rawphrase export}</a>
 								</vb:if>
 							</span>
 
