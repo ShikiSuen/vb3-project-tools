@@ -3160,7 +3160,7 @@ if ($_POST['do'] == 'projectimpexupdate')
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectimpex SET
 				contenttypeid = " . $vbulletin->GPC['contenttypeid'] . ",
-				phpcode = '" . $vbulletin->GPC['phpcode'] . "'
+				phpcode = '" . $db->escape_string($vbulletin->GPC['phpcode']) . "'
 			WHERE projectimpexid = " . $vbulletin->GPC['projectimpexid'] . "
 		");
 	}

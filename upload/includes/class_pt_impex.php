@@ -28,7 +28,7 @@ if (!isset($GLOBALS['vbulletin']->db))
 * @version		$Revision$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
-class vB_Pt_Impex
+class vB_Pt_Import
 {
 	/**
 	 * The vBulletin Registry
@@ -718,6 +718,130 @@ class vB_Pt_Impex
 		$change->set('newvalue', $this->datainfo['threadtitle']);
 		$change->save();
 	}
+}
+
+/**
+* This class exports an issue note from the Project Tools.
+* 
+* Note that NO PERMISSION CHECKING is done here. You have to do it beforehand.
+* Requires most of the data available in $vbulletin->GPC.
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
+class vB_Pt_Export
+{
+	/**
+	* The vBulletin Registry
+	* 
+	* @var	vB_Registry object
+	*/
+	public $registry = NULL;
+
+	/**
+	* The type of data from the target
+	*
+	* @var	string
+	*/
+	var $datatype = '';
+
+	/**
+	* The info of the target - this could be post or thread
+	*
+	* @var	array
+	*/
+	var $datainfo = array();
+
+	/**
+	* The id of the existing issue
+	*
+	* @var integer
+	*/
+	var $issueid = 0;
+
+	/**
+	* The project info of the source project
+	*
+	* @var	array
+	*/
+	var $project = array();
+
+	/**
+	* The posting permissions
+	*
+	* @var	array
+	*/
+	var $posting_perms = array();
+
+	/**
+	* The issue type of the existing issue
+	*
+	* @var	string
+	*/
+	var $issuetypeid = '';
+
+	/**
+	* An array containing the ids of the issue notes to export
+	*
+	* @var	array
+	*/
+	var $postids = array();
+
+	/**
+	* An array containing the ids of the attachments to export
+	*
+	* @var	array
+	*/
+	var $attachmentids = array();
+
+	/**
+	* Ctor.
+	*
+	* @param	integer		The id of the target thread
+	* @param	integer		The id of the source project
+	* @param	string		The issue type of the existing issue
+	* @param	array		Integer array containing the ids of the posts to export.
+	* @param	array		Integer array containing the ids of the attachments to export.
+	*/
+	public function __construct(vB_Registry &$registry, $datatype, $datainfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
+	{
+		$this->registry = &$registry;
+		$this->datatype = $datatype;
+		$this->datainfo = $datainfo;
+		$this->project = $project;
+
+		$this->postids = $this->validate_array($postids);
+		$this->attachmentids = $this->validate_array($attachmentids);
+
+		// Require to get the contenttypeid
+		require_once(DIR . '/includes/class_bootstrap_framework.php');
+		vB_Bootstrap_Framework::init();
+	}
+
+	/**
+	* Make sure we have an array here
+	*
+	* @param	mixed		Input
+	*
+	* @return 	array		The input in array form
+	*/
+	private function validate_array($source = array())
+	{
+		if ($source == null)
+		{
+			return array();
+		}
+
+		if (!is_array($source))
+		{
+			return array($source);
+		}
+
+		return $source;
+	}
 
 	/**
 	* Executes all export methods in the correct order
@@ -727,23 +851,23 @@ class vB_Pt_Impex
 	public function export_all()
 	{
 		// Export issue and notes
-		$this->execute_export_issue();
+		//$this->execute_export_issue();
 
 		// Import attachments
-		$this->execute_export_attachments();
+		//$this->execute_export_attachments();
 
 		// Import subscriptions
-		$this->execute_export_subscriptions();
+		//$this->execute_export_subscriptions();
 
 		switch ($this->datatype)
 		{
 			case 'thread':
-				// Update the original thread
+				// Export as new thread
 				$this->execute_export_to_thread();
 				break;
 
 			case 'post':
-				// Update the original post
+				// Export as new post
 				$this->execute_export_to_post();
 				break;
 		}
@@ -752,8 +876,214 @@ class vB_Pt_Impex
 		$this->execute_export_insert_notice();
 
 		// Useful to redirect the user
-		return $this->issueid;
+		return $this->contentid;
 		
+	}
+
+	/**
+	* 
+	*/
+	private function get_threadinfo()
+	{
+		$threadinfo = verify_id('thread', $this->datainfo['threadid']);
+
+		return $threadinfo;
+	}
+
+	/**
+	* 
+	*/
+	private function get_foruminfo()
+	{
+		$foruminfo = verify_id('forum', $this->datainfo['forumid'], 0, 1);
+
+		return $foruminfo;
+	}
+
+	/**
+	* 
+	*/
+	private function get_userinfo()
+	{
+		$userinfo = verify_id('user', $this->datainfo['userid'], 0, 1);
+
+		return $userinfo;
+	}
+
+	/**
+	* 
+	*/
+	private function verify_hash()
+	{
+		// Make sure the posthash is valid
+		if (md5($this->datainfo['poststarttime'] . $this->registry->userinfo['userid'] . $this->registry->userinfo['salt']) != $this->datainfo['posthash'])
+		{
+			return false; //$post['posthash'] = 'invalid posthash'; // don't phrase me
+		}
+
+		return true;
+	}
+
+	/**
+	* 
+	*/
+	private function execute_export_to_thread()
+	{
+		// Verify if the sent hash is correct
+		$this->verify_hash();
+
+		$foruminfo = $this->get_foruminfo();
+		$userinfo = $this->get_userinfo();
+
+		$allowsmilies = ($foruminfo['options'] & 512) ? 1 : 0;
+
+		// Export as new thread
+		$thread =& datamanager_init('Thread_FirstPost', $this->registry, ERRTYPE_ARRAY, 'threadpost');
+			$thread->set_info('posthash', $this->datainfo['posthash']);
+			$thread->setr('userid', $userinfo['userid']);
+			$thread->setr('title', $this->datainfo['title']);
+			$thread->setr('forumid', $foruminfo['forumid']);
+			$thread->setr('dateline', $this->datainfo['dateline']);
+			$thread->setr('pagetext', $this->datainfo['pagetext']);
+			$thread->setr('allowsmilie', $allowsmilies);
+		$this->contentid = $thread->save();
+
+		echo $this->contentid;
+	}
+
+	/**
+	* Export as new post
+	*
+	* Make sure to set $this->issueid if you have not called execute_export_issue() before!
+	*/
+	private function execute_export_to_post()
+	{
+		// Verify if the sent hash is correct
+		$this->verify_hash();
+
+		$threaddata = $this->get_threadinfo();
+		$foruminfo = $this->get_foruminfo();
+		$userinfo = $this->get_userinfo();
+
+		$forumperms = fetch_permissions($foruminfo['forumid']);
+		$threadid = $threaddata['threadid'];
+
+		$allowsmilies = ($foruminfo['options'] & 512) ? 1 : 0;
+		$allowsignature = ($userinfo['options'] & 1) AND !empty($userinfo['signature']) ? 1 : 0;
+
+		// Export as post in a thread
+		$post =& datamanager_init('Post', $this->registry, ERRTYPE_ARRAY, 'threadpost');
+			$post->set_info('posthash', $this->datainfo['posthash']);
+			$post->setr('userid', $userinfo['userid']);
+			$post->setr('title', $this->datainfo['title']);
+			$post->setr('dateline', $this->datainfo['dateline']);
+			$post->setr('pagetext', $this->datainfo['pagetext']);
+			$post->setr('allowsmilie', $allowsmilies);
+
+			$post->setr('showsignature', $allowsignature);
+			$post->setr('iconid', $this->registry->options['showdeficon']);
+
+			// get parentid of the new post
+			// we're not posting a new thread, so make this post a child of the first post in the thread
+			if(!empty($threaddata['firstpostid']))
+			{
+				//we have the postid in the thread table (firstpostid)
+				$parentid = $threaddata['firstpostid'];
+			}
+			else
+			{
+				//for some reason it might not be available in the $threadinfo array, need to fetch it
+				$getfirstpost = $this->registry->db->query_first("
+					SELECT postid
+					FROM " . TABLE_PREFIX . "post
+					WHERE threadid = " . $threaddata['threadid'] . "
+					ORDER BY dateline
+					LIMIT 1
+				");
+				$parentid = $getfirstpost['postid'];
+			}
+
+			$post->setr('parentid', $parentid);
+			$post->setr('threadid', $threadid);
+
+			$post->setr('htmlstate', trim('on_nl2br')); // trim() use is needed - PHP don't like to have numbers in variables, need to 'confirm' this is text, not integer
+
+			if ($userinfo['userid'] == 0)
+			{
+				$post->setr('username', $userinfo['username']);
+			}
+
+			if (
+				((
+					($foruminfo['moderatenewpost']) OR !($forumperms & $this->registry->bf_ugp_forumpermissions['followforummoderation'])
+				)
+				AND !can_moderate($foruminfo['forumid']))
+			)
+			{
+				// note: specified post comes from a variable passed into newreply.php
+				$post->set('visible', 0);
+			}
+			else
+			{
+				$post->set('visible', 1);
+			}
+
+		$this->contentid = $post->save();
+
+		echo $this->contentid;
+	}
+
+	/**
+	* 
+	*/
+	private function execute_export_insert_notice()
+	{
+		if (!$this->registry->options['ptimporter_createnotice'])
+		{
+			return;
+		}
+
+		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change->set('issueid', $this->datainfo['issueid']);
+		$change->set('userid', $this->registry->userinfo['userid']);
+
+		switch ($this->datatype)
+		{
+			case 'thread':
+				$contentdata = $this->registry->db->query_first("
+					SELECT title
+					FROM " . TABLE_PREFIX . "thread
+					WHERE threadid = " . $this->contentid . "
+				");
+
+				$change->set('field', 'issue_exported');
+				$change->set('oldvalue', $this->contentid);
+
+				break;
+			case 'post':
+				$contentdata = $this->registry->db->query_first("
+					SELECT title, threadid
+					FROM " . TABLE_PREFIX . "post
+					WHERE postid = " . $this->contentid . "
+				");
+
+				if (!$contentdata['title'])
+				{
+					$contentdata = $this->registry->db->query_first("
+						SELECT title
+						FROM " . TABLE_PREFIX . "thread
+						WHERE threadid = " . $contentdata['threadid'] . "
+					");
+				}
+
+				$change->set('field', 'issue_exported_post');
+				$change->set('oldvalue', $this->contentid); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
+
+				break;
+		}
+
+		$change->set('newvalue', $contentdata['title']);
+		$change->save();
 	}
 }
 

@@ -34,7 +34,7 @@ if (in_array($_POST['do'], array('postreply', 'postissue', 'processpetition')))
 
 // ################### PRE-CACHE TEMPLATES AND DATA ######################
 // get special phrase groups
-$phrasegroups = array('projecttools', 'posting');
+$phrasegroups = array('projecttools', 'posting', 'threadmanage');
 
 // get special data templates from the datastore
 $specialtemplates = array(
@@ -48,6 +48,7 @@ $specialtemplates = array(
 	'pt_versions',
 	'smiliecache',
 	'bbcodecache',
+	'forumcache'
 );
 
 // pre-cache templates used by all actions
@@ -85,7 +86,9 @@ $actiontemplates = array(
 	),
 	'confirmexport' => array(
 		'optgroup',
-		'pt_export_content_confirm'
+		'pt_export_content_confirm',
+		'pt_export_content_post',
+		'pt_export_content_thread'
 	),
 	'importcontent' => array(
 		'optgroup',
@@ -3418,35 +3421,238 @@ if (in_array($_REQUEST['do'], array('processexport', 'export', 'confirmexport'))
 	{
 		print_no_permission();
 	}
-
-	require_once(DIR . '/includes/functions_pt_impex.php');
-
-	if ($threadid)
-	{	
-		$threadinfo = verify_id('thread', $threadid, 1, 1);
-	}
-
-	if ($postid)
-	{
-		$threadinfo = verify_id('thread', $threadid, 1, 1);
-		$postinfo = verify_id('post', $postid, 1, 1);
-	}
 }
 
 // #######################################################################
 if ($_POST['do'] == 'processexport')
 {
-	// Do the export
-	require_once(DIR . '/includes/class_pt_impex.php');
+	$vbulletin->input->clean_array_gpc('p', array(
+		'contenttype' => TYPE_NOHTML,
+		'issuenoteid' => TYPE_UINT
+	));
 
-	$exporter = new vB_Pt_Impex($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
+	// Input variables for 'post' content type
+	$vbulletin->input->clean_array_gpc('p', array(
+		'destforumid' => TYPE_UINT,
+		'title' => TYPE_NOHTML,
+		'mergethreadurl' => TYPE_STR,
+		'posthash' => TYPE_NOHTML,
+		'poststarttime' => TYPE_UINT
+	));
+
+	// Request issue infos from issuenote
+	$issuenote = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_issuenote
+		WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
+	");
+
+	$issue = verify_issue($issuenote['issueid']);
+	$project = verify_project($issue['projectid']);
+
+	require_once(DIR . '/includes/functions_pt_impex.php');
+	require_once(DIR . '/includes/class_pt_impex.php');
+	require_once(DIR . '/includes/functions_threadmanage.php');
+
+	switch ($vbulletin->GPC['contenttype'])
+	{
+		case 'thread':
+			$datatype = 'thread';
+
+			// Move to new thread
+			if (empty($vbulletin->GPC['title']))
+			{
+				eval(standard_error(fetch_error('notitle')));
+			}
+
+			// check whether dest can contain posts
+			$destforumid = verify_id('forum', $vbulletin->GPC['destforumid']);
+			$destforuminfo = fetch_foruminfo($destforumid);
+			if (!$destforuminfo['cancontainthreads'] OR $destforuminfo['link'])
+			{
+				eval(standard_error(fetch_error('moveillegalforum')));
+			}
+
+			// check destination forum permissions
+			$forumperms = fetch_permissions($destforuminfo['forumid']);
+			if (!($forumperms & $vbulletin->bf_ugp_forumpermissions['canview']))
+			{
+				print_no_permission();
+			}
+
+			$datainfo = array(
+				'forumid' => $destforumid,
+				'posthash' => $vbulletin->GPC['posthash'],
+				'poststarttime' => $vbulletin->GPC['poststarttime'],
+				'title' => $vbulletin->GPC['title'],
+				'issueid' => $issue['issueid'],
+				'userid' => $issuenote['userid'],
+				'pagetext' => $issuenote['pagetext'],
+				'dateline' => $issuenote['dateline']
+			);
+
+			break;
+
+		case 'post':
+			$datatype = 'post';
+
+			// Validate destination thread
+			$destthreadid = extract_threadid_from_url($vbulletin->GPC['mergethreadurl']);
+
+			if (!$destthreadid)
+			{
+				// Invalid URL
+				eval(standard_error(fetch_error('mergebadurl')));
+			}
+
+			$destthreadid = verify_id('thread', $destthreadid);
+			$destthreadinfo = fetch_threadinfo($destthreadid);
+			$destforuminfo = fetch_foruminfo($destthreadinfo['forumid']);
+
+			$forumperms = fetch_permissions($destforuminfo['forumid']);
+			if (!($forumperms & $vbulletin->bf_ugp_forumpermissions['canview']))
+			{
+				print_no_permission();
+			}
+
+			if ($destthreadinfo['open'] == 10)
+			{
+				if (can_moderate($destthreadinfo['forumid']))
+				{
+					eval(standard_error(fetch_error('mergebadurl')));
+				}
+				else
+				{
+					eval(standard_error(fetch_error('invalidid', $vbphrase['thread'], $vbulletin->options['contactuslink'])));
+				}
+			}
+
+			if (($destthreadinfo['isdeleted'] AND !can_moderate($destthreadinfo['forumid'], 'candeleteposts')) OR (!$destthreadinfo['visible'] AND !can_moderate($destthreadinfo['forumid'], 'canmoderateposts')))
+			{
+				if (can_moderate($destthreadinfo['forumid']))
+				{
+					print_no_permission();
+				}
+				else
+				{
+					eval(standard_error(fetch_error('invalidid', $vbphrase['thread'], $vbulletin->options['contactuslink'])));
+				}
+			}
+
+			// allow merging only in forums this user can moderate - otherwise, they
+			// have a good vector for faking posts in other forums, etc
+			if (!can_moderate($destthreadinfo['forumid']))
+			{
+				eval(standard_error(fetch_error('move_posts_moderated_forums_only')));
+			}
+
+			if (!can_moderate($destforumid, 'canmanagethreads'))
+			{
+				eval(standard_error(fetch_error('you_do_not_have_permission_to_manage_threads_and_posts', $issue['title'], $issue['title'], $vbulletin->forumcache["$destforumid"]['title'])));
+			}
+
+			$datainfo = array(
+				'threadid' => $destthreadid,
+				'forumid' => $destforumid,
+				'posthash' => $vbulletin->GPC['posthash'],
+				'poststarttime' => $vbulletin->GPC['poststarttime'],
+				'title' => $vbulletin->GPC['title'],
+				'issueid' => $issue['issueid'],
+				'userid' => $issuenote['userid'],
+				'pagetext' => $issuenote['pagetext'],
+				'dateline' => $issuenote['dateline']
+			);
+
+			break;
+	}
+
+	$exporter = new vB_Pt_Export($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
 	$contentid = $exporter->export_all();
+
+	// Getting the correct redirect URL
+	switch ($vbulletin->GPC['type'])
+	{
+		case 'post':
+			$url = fetch_seo_url('post', $contentid);
+			break;
+		case 'thread':
+			$url = fetch_seo_url('thread', $contentid);
+			break;
+	}
+
+	$vbulletin->url = $url;
+	eval(print_standard_redirect('pt_issue_exported'));
 }
 
 // #######################################################################
 if ($_POST['do'] == 'confirmexport')
 {
-	// Changing some values?
+	$vbulletin->input->clean_array_gpc('p', array(
+		'issuenoteid' => TYPE_UINT,
+		'contenttype' => TYPE_NOHTML
+	));
+
+	// Get the issueid from the issuenoteid
+	$issueinfo = $db->query_first("
+		SELECT issueid
+		FROM " . TABLE_PREFIX . "pt_issuenote
+		WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
+	");
+
+	$issueid = $issueinfo['issueid'];
+
+	$issue = verify_issue($issueid);
+	$project = verify_project($issue['projectid']);
+
+	$issue['issuenoteid'] = $vbulletin->GPC['issuenoteid'];
+
+	$poststarttime = TIMENOW;
+	$posthash = md5($poststarttime . $vbulletin->userinfo['userid'] . $vbulletin->userinfo['salt']);
+
+	require_once(DIR . '/includes/functions_threadmanage.php');
+
+	// Display the corresponding template from the previous selected content type
+	switch (strtolower($vbulletin->GPC['contenttype']))
+	{
+		case 'post':
+			$templater = vB_Template::create('pt_export_content_post');
+				$templater->register('contenttype', $vbulletin->GPC['contenttype']);
+				$templater->register('issuenoteid', $issue['issuenoteid']);
+				$templater->register('posthash', $posthash);
+				$templater->register('poststarttime', $poststarttime);
+			$HTML = $templater->render();
+			break;
+		case 'thread':
+			$curforumid = '-1';
+			$moveforumbits = construct_move_forums_options();
+
+			$templater = vB_Template::create('pt_export_content_thread');
+				$templater->register('moveforumbits', $moveforumbits);
+				$templater->register('title', $issue['title']);
+				$templater->register('contenttype', $vbulletin->GPC['contenttype']);
+				$templater->register('issuenoteid', $issue['issuenoteid']);
+				$templater->register('posthash', $posthash);
+				$templater->register('poststarttime', $poststarttime);
+			$HTML = $templater->render();
+			break;
+		default:
+			break;
+	}
+
+	// Navbits
+	$navbits = array(
+		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
+		fetch_seo_url('project', $project) => $project['title'],
+		'' => $vbphrase['export_issue']
+	);
+
+	$navbar = render_navbar_template(construct_navbits($navbits));
+
+	$templater = vB_Template::create('pt_export_content_confirm');
+		$templater->register_page_templates();
+		$templater->register('HTML', $HTML);
+		$templater->register('navbar', $navbar);
+	print_output($templater->render());
 }
 
 // #######################################################################
@@ -3467,23 +3673,17 @@ if ($_REQUEST['do'] == 'export')
 
 	$issue['issuenoteid'] = $vbulletin->GPC['issuenoteid'];
 
-	// Actual available content types
-	// Create an admincp custom content type manager for export?
+	// Available content type to export
 	$contenttypes = array(
-		'thread',
-		'post'
+		'post',
+		'thread'
 	);
-
-	// Hook here to allow anyone to add its own content type
-	($hook = vBulletinHook::fetch_hook('projectpost_export_contenttypes')) ? eval($hook) : false;
 
 	$content_type_select = '';
 
-	foreach ($contenttypes AS $contentname)
+	foreach ($contenttypes AS $contenttype)
 	{
-		$optionvalue = $contentname;
-		$optiontitle = $vbphrase['export_issue_' . $contentname . ''];
-		$content_type_select .= render_option_template($optiontitle, $optionvalue, '', '');
+		$content_type_select .= render_option_template($vbphrase['export_issue_' . $contenttype . ''], $contenttype, '', '');
 	}
 
 	$navbits = array(
@@ -3568,7 +3768,7 @@ if ($_POST['do'] == 'processimportcontent')
 
 	$datainfo['threadtitle'] = $vbulletin->GPC['threadtitle'];
 
-	$importer = new vB_Pt_Impex($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
+	$importer = new vB_Pt_Import($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
 	$issueid = $importer->import_all();
 
 	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";
