@@ -721,7 +721,7 @@ class vB_Pt_Import
 }
 
 /**
-* This class exports an issue note from the Project Tools.
+* This class exports an issue note from Project Tools.
 * 
 * Note that NO PERMISSION CHECKING is done here. You have to do it beforehand.
 * Requires most of the data available in $vbulletin->GPC.
@@ -760,7 +760,7 @@ class vB_Pt_Export
 	*
 	* @var integer
 	*/
-	var $issueid = 0;
+	var $contentid = 0;
 
 	/**
 	* The project info of the source project
@@ -775,13 +775,6 @@ class vB_Pt_Export
 	* @var	array
 	*/
 	var $posting_perms = array();
-
-	/**
-	* The issue type of the existing issue
-	*
-	* @var	string
-	*/
-	var $issuetypeid = '';
 
 	/**
 	* An array containing the ids of the issue notes to export
@@ -846,7 +839,7 @@ class vB_Pt_Export
 	/**
 	* Executes all export methods in the correct order
 	*
-	* @return	integer		The id of the actual issue
+	* @return	integer		The id of the actual issue note
 	*/
 	public function export_all()
 	{
@@ -881,7 +874,7 @@ class vB_Pt_Export
 	}
 
 	/**
-	* 
+	* Get infos about the target thread
 	*/
 	private function get_threadinfo()
 	{
@@ -891,7 +884,7 @@ class vB_Pt_Export
 	}
 
 	/**
-	* 
+	* Get infos about the target forum
 	*/
 	private function get_foruminfo()
 	{
@@ -901,7 +894,7 @@ class vB_Pt_Export
 	}
 
 	/**
-	* 
+	* Get infos about the source user
 	*/
 	private function get_userinfo()
 	{
@@ -911,7 +904,7 @@ class vB_Pt_Export
 	}
 
 	/**
-	* 
+	* Verify the posthash
 	*/
 	private function verify_hash()
 	{
@@ -925,7 +918,7 @@ class vB_Pt_Export
 	}
 
 	/**
-	* 
+	* Export the issue note as a new thread
 	*/
 	private function execute_export_to_thread()
 	{
@@ -948,13 +941,11 @@ class vB_Pt_Export
 			$thread->setr('allowsmilie', $allowsmilies);
 		$this->contentid = $thread->save();
 
-		echo $this->contentid;
+		return $this->contentid;
 	}
 
 	/**
-	* Export as new post
-	*
-	* Make sure to set $this->issueid if you have not called execute_export_issue() before!
+	* Export as new post in an existing thread
 	*/
 	private function execute_export_to_post()
 	{
@@ -1030,7 +1021,7 @@ class vB_Pt_Export
 
 		$this->contentid = $post->save();
 
-		echo $this->contentid;
+		return $this->contentid;
 	}
 
 	/**
