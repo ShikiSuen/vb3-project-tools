@@ -398,12 +398,8 @@ class vB_Pt_IssueNote
 
 		$show['edit_note'] = can_edit_issue_note($this->issue, $this->note, $issueperms);
 		$show['edit_history'] = ($this->note['lasteditdate'] AND $show['edit_note']);
-
-		$show['reply_note'] = (
-			($this->issue['state'] == 'open' OR $issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancloseissue'])
-			AND	$this->note['visible'] != 'deleted'
-		);
-
+		$show['reply_note'] = (($this->issue['state'] == 'open' OR $issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancloseissue']) AND $this->note['visible'] != 'deleted');
+		$show['export_note'] = ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp['ptpermissions']['canexportfromissues']);
 		$this->note['newflag'] = ($this->note['dateline'] > issue_lastview($this->issue));
 	}
 }
