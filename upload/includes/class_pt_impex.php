@@ -878,7 +878,7 @@ class vB_Pt_Export
 	*/
 	private function get_threadinfo()
 	{
-		$threadinfo = verify_id('thread', $this->datainfo['threadid']);
+		$threadinfo = verify_id('thread', $this->datainfo['threadid'], 0, 1);
 
 		return $threadinfo;
 	}
