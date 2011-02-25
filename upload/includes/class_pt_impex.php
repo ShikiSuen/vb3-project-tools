@@ -939,6 +939,22 @@ class vB_Pt_Export
 			$thread->setr('dateline', $this->datainfo['dateline']);
 			$thread->setr('pagetext', $this->datainfo['pagetext']);
 			$thread->setr('allowsmilie', $allowsmilies);
+
+			if (
+				((
+					($foruminfo['moderatenewpost']) OR !($forumperms & $this->registry->bf_ugp_forumpermissions['followforummoderation'])
+				)
+				AND !can_moderate($foruminfo['forumid']))
+			)
+			{
+				// note: specified post comes from a variable passed into newreply.php
+				$thread->set('visible', 0);
+			}
+			else
+			{
+				$thread->set('visible', 1);
+			}
+
 		$this->contentid = $thread->save();
 
 		return $this->contentid;
