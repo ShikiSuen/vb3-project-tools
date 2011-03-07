@@ -1907,8 +1907,25 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	}
 
 	// setup priority options
-	$priority_selected = array_fill(0, 11, ''); // 0 - 10, inclusive
-	$priority_selected["$issue[priority]"] = ' selected="selected"';
+	$priority = array();
+	$priorities = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectpriority
+		WHERE projectid = " . $project['projectid'] . "
+	");
+
+	while ($prioritys = $db->fetch_array($priorities))
+	{
+		$priority["$prioritys[projectpriorityid]"] = $prioritys;
+	}
+
+	foreach ($priority AS $optionvalue => $options)
+	{
+		$optiontitle = $vbphrase['priority' . $optionvalue . ''];
+		$optionselected = ($issue['priority'] == $optionvalue ? ' selected="selected"' : '');
+
+		$priority_options .= render_option_template($optiontitle, $optionvalue, $optionselected);
+	}
 
 	// setup versions
 	$version_groups = array();
@@ -2081,7 +2098,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$templater->register('milestone_options', $milestone_options);
 		$templater->register('navbar', $navbar);
 		$templater->register('preview', $preview);
-		$templater->register('priority_selected', $priority_selected);
+		$templater->register('priority_options', $priority_options);
 		$templater->register('private_checked', $private_checked);
 		$templater->register('project', $project);
 		$templater->register('status_options', $status_options);
@@ -3428,11 +3445,9 @@ if ($_POST['do'] == 'processexport')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'contenttype' => TYPE_NOHTML,
-		'issuenoteid' => TYPE_UINT
-	));
-
-	// Input variables for 'post' content type
-	$vbulletin->input->clean_array_gpc('p', array(
+		'issuenoteid' => TYPE_UINT,
+		'issueid' => TYPE_UINT,
+		// Specific data
 		'destforumid' => TYPE_UINT,
 		'title' => TYPE_NOHTML,
 		'mergethreadurl' => TYPE_STR,
@@ -3440,12 +3455,32 @@ if ($_POST['do'] == 'processexport')
 		'poststarttime' => TYPE_UINT
 	));
 
-	// Request issue infos from issuenote
-	$issuenote = $db->query_first("
-		SELECT *
-		FROM " . TABLE_PREFIX . "pt_issuenote
-		WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
-	");
+	// If issueid is specified, export the full issue
+	// If issuenoteid is specified, export the issue note only
+	// Issueid and issuenoteid can't be specified at the same time.
+	if ($vbulletin->GPC['issueid'] AND $vbulletin->GPC['issuenoteid'])
+	{
+		eval(standard_error(fetch_error('pt_issue_issuenote_cant_defined_same_time')));
+	}
+
+	if ($vbulletin->GPC['issuenoteid'])
+	{
+		// Request issue infos from issuenote
+		$issuenote = $db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_issuenote
+			WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
+		");
+	}
+	else
+	{
+		// Request issue infos from issuenote
+		$issuenote = $db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_issuenote
+			WHERE issueid = " . $vbulletin->GPC['issueid'] . "
+		");
+	}
 
 	$issue = verify_issue($issuenote['issueid']);
 	$project = verify_project($issue['projectid']);
@@ -3564,6 +3599,43 @@ if ($_POST['do'] == 'processexport')
 			);
 
 			break;
+		case 'issuethread':
+			$datatype = 'issuethread';
+
+			// Move to new thread
+			if (empty($vbulletin->GPC['title']))
+			{
+				eval(standard_error(fetch_error('notitle')));
+			}
+
+			// check whether dest can contain posts
+			$destforumid = verify_id('forum', $vbulletin->GPC['destforumid']);
+			$destforuminfo = fetch_foruminfo($destforumid);
+			if (!$destforuminfo['cancontainthreads'] OR $destforuminfo['link'])
+			{
+				eval(standard_error(fetch_error('moveillegalforum')));
+			}
+
+			// check destination forum permissions
+			$forumperms = fetch_permissions($destforuminfo['forumid']);
+			if (!($forumperms & $vbulletin->bf_ugp_forumpermissions['canview']))
+			{
+				print_no_permission();
+			}
+
+			$datainfo = array(
+				'forumid' => $destforumid,
+				'posthash' => $vbulletin->GPC['posthash'],
+				'poststarttime' => $vbulletin->GPC['poststarttime'],
+				'title' => $vbulletin->GPC['title'],
+				'issueid' => $issue['issueid'],
+				'userid' => $issuenote['userid'],
+				'pagetext' => $issuenote['pagetext'],
+				'dateline' => $issuenote['dateline'],
+				'issuenoteid' => $issue['issuenoteid']
+			);
+
+			break;
 	}
 
 	$exporter = new vB_Pt_Export($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
@@ -3586,6 +3658,10 @@ if ($_POST['do'] == 'processexport')
 			$threadinfo = verify_id('thread', $contentid, 0, 1);
 			$url = fetch_seo_url('thread', $threadinfo);
 			break;
+		case 'issuethread':
+			$threadinfo = verify_id('thread', $contentid, 0, 1);
+			$url = fetch_seo_url('thread', $threadinfo);
+			break;
 	}
 
 	$vbulletin->url = $url;
@@ -3597,27 +3673,48 @@ if ($_POST['do'] == 'confirmexport')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'issuenoteid' => TYPE_UINT,
+		'issueid' => TYPE_UINT,
 		'contenttype' => TYPE_NOHTML
 	));
 
-	// Get the issueid from the issuenoteid
-	$issueinfo = $db->query_first("
-		SELECT issueid
-		FROM " . TABLE_PREFIX . "pt_issuenote
-		WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
-	");
+	// If issueid is specified, export the full issue
+	// If issuenoteid is specified, export the issue note only
+	// Issueid and issuenoteid can't be specified at the same time.
+	if ($vbulletin->GPC['issueid'] AND $vbulletin->GPC['issuenoteid'])
+	{
+		eval(standard_error(fetch_error('pt_issue_issuenote_cant_defined_same_time')));
+	}
 
-	$issueid = $issueinfo['issueid'];
+	if ($vbulletin->GPC['issuenoteid'])
+	{
+		// Get the issueid from the issuenoteid
+		$issueinfo = $db->query_first("
+			SELECT issueid
+			FROM " . TABLE_PREFIX . "pt_issuenote
+			WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
+		");
+
+		$issueid = $issueinfo['issueid'];
+	}
+	else
+	{
+		$issueid = $vbulletin->GPC['issueid'];
+	}
 
 	$issue = verify_issue($issueid);
 	$project = verify_project($issue['projectid']);
 
-	$issue['issuenoteid'] = $vbulletin->GPC['issuenoteid'];
+	if ($vbulletin->GPC['issuenoteid'])
+	{
+		$issue['issuenoteid'] = $vbulletin->GPC['issuenoteid'];
+	}
 
 	$poststarttime = TIMENOW;
 	$posthash = md5($poststarttime . $vbulletin->userinfo['userid'] . $vbulletin->userinfo['salt']);
 
 	require_once(DIR . '/includes/functions_threadmanage.php');
+	$curforumid = '-1';
+	$moveforumbits = construct_move_forums_options();
 
 	// Display the corresponding template from the previous selected content type
 	switch (strtolower($vbulletin->GPC['contenttype']))
@@ -3631,14 +3728,21 @@ if ($_POST['do'] == 'confirmexport')
 			$HTML = $templater->render();
 			break;
 		case 'thread':
-			$curforumid = '-1';
-			$moveforumbits = construct_move_forums_options();
-
 			$templater = vB_Template::create('pt_export_content_thread');
 				$templater->register('moveforumbits', $moveforumbits);
 				$templater->register('title', $issue['title']);
 				$templater->register('contenttype', $vbulletin->GPC['contenttype']);
 				$templater->register('issuenoteid', $issue['issuenoteid']);
+				$templater->register('posthash', $posthash);
+				$templater->register('poststarttime', $poststarttime);
+			$HTML = $templater->render();
+			break;
+		case 'issuethread':
+			$templater = vB_Template::create('pt_export_content_thread');
+				$templater->register('moveforumbits', $moveforumbits);
+				$templater->register('title', $issue['title']);
+				$templater->register('contenttype', $vbulletin->GPC['contenttype']);
+				$templater->register('issueid', $issue['issueid']);
 				$templater->register('posthash', $posthash);
 				$templater->register('poststarttime', $poststarttime);
 			$HTML = $templater->render();
@@ -3666,26 +3770,52 @@ if ($_POST['do'] == 'confirmexport')
 // #######################################################################
 if ($_REQUEST['do'] == 'export')
 {
-	$vbulletin->input->clean_gpc('r', 'issuenoteid', TYPE_UINT);
+	$vbulletin->input->clean_array_gpc('r', array(
+		'issuenoteid' => TYPE_UINT,
+		'issueid' => TYPE_UINT
+	));
 
-	$issueinfo = $db->query_first("
-		SELECT issueid
-		FROM " . TABLE_PREFIX . "pt_issuenote
-		WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
-	");
+	// If issueid is specified, export the full issue
+	// If issuenoteid is specified, export the issue note only
+	// Issueid and issuenoteid can't be specified at the same time.
+	if ($vbulletin->GPC['issueid'] AND $vbulletin->GPC['issuenoteid'])
+	{
+		eval(standard_error(fetch_error('pt_issue_issuenote_cant_defined_same_time')));
+	}
 
-	$issueid = $issueinfo['issueid'];
+	if (!$vbulletin->GPC['issueid'])
+	{
+		$issueinfo = $db->query_first("
+			SELECT issueid
+			FROM " . TABLE_PREFIX . "pt_issuenote
+			WHERE issuenoteid = " . $vbulletin->GPC['issuenoteid'] . "
+		");
+
+		$issueid = $issueinfo['issueid'];
+	}
+	else
+	{
+		$issueid = $vbulletin->GPC['issueid'];
+	}
 
 	$issue = verify_issue($issueid);
 	$project = verify_project($issue['projectid']);
 
-	$issue['issuenoteid'] = $vbulletin->GPC['issuenoteid'];
+	if ($vbulletin->GPC['issuenoteid'])
+	{
+		$issue['issuenoteid'] = $vbulletin->GPC['issuenoteid'];
 
-	// Available content type to export
-	$contenttypes = array(
-		'post',
-		'thread'
-	);
+		$contenttypes = array(
+			'post',
+			'thread'
+		);
+	}
+	else
+	{
+		$contenttypes = array(
+			'issuethread'
+		);
+	}
 
 	$content_type_select = '';
 

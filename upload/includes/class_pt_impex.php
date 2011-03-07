@@ -863,6 +863,11 @@ class vB_Pt_Export
 				// Export as new post
 				$this->execute_export_to_post();
 				break;
+
+			case 'issuethread':
+				// Export full issue as thread
+				$this->execute_export_issue_to_thread();
+				break;
 		}
 
 		// Create export notice
@@ -1038,6 +1043,115 @@ class vB_Pt_Export
 		$this->contentid = $post->save();
 
 		return $this->contentid;
+	}
+
+	/**
+	* Export the full issue as new thread
+	*/
+	private function execute_export_issue_to_thread()
+	{
+		// First, create the thread which will 'host' all replies
+
+		// Verify if the sent hash is correct
+		$this->verify_hash();
+
+		$foruminfo = $this->get_foruminfo();
+		$userinfo = $this->get_userinfo();
+
+		$allowsmilies = ($foruminfo['options'] & 512) ? 1 : 0;
+
+		// Export as new thread
+		$thread =& datamanager_init('Thread_FirstPost', $this->registry, ERRTYPE_ARRAY, 'threadpost');
+			$thread->set_info('posthash', $this->datainfo['posthash']);
+			$thread->setr('userid', $userinfo['userid']);
+			$thread->setr('title', $this->datainfo['title']);
+			$thread->setr('forumid', $foruminfo['forumid']);
+			$thread->setr('dateline', $this->datainfo['dateline']);
+			$thread->setr('pagetext', $this->datainfo['pagetext']);
+			$thread->setr('allowsmilie', $allowsmilies);
+
+			if (
+				((
+					($foruminfo['moderatenewpost']) OR !($forumperms & $this->registry->bf_ugp_forumpermissions['followforummoderation'])
+				)
+				AND !can_moderate($foruminfo['forumid']))
+			)
+			{
+				// note: specified post comes from a variable passed into newreply.php
+				$thread->set('visible', 0);
+			}
+			else
+			{
+				$thread->set('visible', 1);
+			}
+
+		$this->threadid = $thread->save();
+
+		// Now we have the threadid of the thread which will contains all replies,
+		// we can create an array of issue notes from the issue minus the original issue note
+		// and create a post in a foreach for every issue note listed.
+		$issuenotearray = array();
+
+		$issuenotelist = $this->registry->db->query_read("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_issuenote
+			WHERE issueid = " . $this->datainfo['issueid'] . "
+				AND issuenoteid != " . $this->datainfo['issuenoteid'] . "
+				AND type = 'user'
+		");
+
+		while ($issuenotedata = $this->registry->db->fetch_array($issuenotelist))
+		{
+			$issuenotearray[$issuenotedata['issuenoteid']] = $issuenotedata;
+		}
+
+		foreach ($issuenotearray AS $issuenoteid => $issuenote)
+		{
+			// Create a post for each issue note
+			$post =& datamanager_init('Post', $this->registry, ERRTYPE_ARRAY, 'threadpost');
+				$post->set_info('posthash', $this->datainfo['posthash']);
+				$post->setr('userid', $issuenote['userid']);
+				$post->setr('dateline', $issuenote['dateline']);
+				$post->setr('pagetext', $issuenote['pagetext']);
+				$post->setr('allowsmilie', $allowsmilies);
+				$post->setr('ipaddress', $issuenote['ipaddress']);
+
+				$post->setr('showsignature', $allowsignature);
+				$post->setr('iconid', $this->registry->options['showdeficon']);
+
+				// get parentid of the new post
+				$getfirstpost = $this->registry->db->query_first("
+						SELECT postid
+						FROM " . TABLE_PREFIX . "post
+						WHERE threadid = " . $this->threadid . "
+						ORDER BY dateline
+						LIMIT 1
+				");
+
+				$post->setr('parentid', $getfirstpost['postid']);
+				$post->setr('threadid', $this->threadid);
+
+				$post->setr('htmlstate', trim('on_nl2br')); // trim() use is needed - PHP don't like to have numbers in variables, need to 'confirm' this is text, not integer
+
+				if ($userinfo['userid'] == 0)
+				{
+					$post->setr('username', $issuenote['username']);
+				}
+
+				if (in_array($issuenote['visible'], array('moderation', 'private')))
+				{
+					// note: specified post comes from a variable passed into newreply.php
+					$post->set('visible', 0);
+				}
+				else
+				{
+					$post->set('visible', 1);
+				}
+
+			$post->save();
+		}
+
+		return $this->threadid;
 	}
 
 	/**
