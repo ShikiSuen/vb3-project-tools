@@ -1212,7 +1212,14 @@ function build_issue_bit($issue, $project, $issueperms)
 
 	if ($issue['totalnotes'] > $vbulletin->options['pt_notesperpage'] AND $vbulletin->options['linktopages'])
 	{
-		$issue['totalpages'] = ceil($issue['totalnotes'] / $vbulletin->options['pt_notesperpage']);
+		if ($vbulletin->options['pt_notesperpage'] == 0)
+		{
+			$issue['totalpages'] = 1;
+		}
+		else
+		{
+			$issue['totalpages'] = ceil($issue['totalnotes'] / $vbulletin->options['pt_notesperpage']);
+		}
 
 		$curpage = 0;
 
