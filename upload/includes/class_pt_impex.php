@@ -843,15 +843,6 @@ class vB_Pt_Export
 	*/
 	public function export_all()
 	{
-		// Export issue and notes
-		//$this->execute_export_issue();
-
-		// Import attachments
-		//$this->execute_export_attachments();
-
-		// Import subscriptions
-		//$this->execute_export_subscriptions();
-
 		switch ($this->datatype)
 		{
 			case 'thread':
@@ -869,6 +860,12 @@ class vB_Pt_Export
 				$this->execute_export_issue_to_thread();
 				break;
 		}
+
+		// Import attachments
+		//$this->execute_export_attachments();
+
+		// Import subscriptions
+		//$this->execute_export_subscriptions();
 
 		// Create export notice
 		$this->execute_export_insert_notice();
@@ -1151,7 +1148,12 @@ class vB_Pt_Export
 			$post->save();
 		}
 
-		return $this->threadid;
+		require_once(DIR . '/includes/functions_databuild.php');
+		build_thread_counters($this->threadid);
+
+		$this->contentid = $this->threadid;
+
+		return $this->contentid;
 	}
 
 	/**
@@ -1198,6 +1200,17 @@ class vB_Pt_Export
 				}
 
 				$change->set('field', 'issue_exported_post');
+				$change->set('oldvalue', $this->contentid); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
+
+				break;
+			case 'issuethread':
+				$contentdata = $this->registry->db->query_first("
+					SELECT title
+					FROM " . TABLE_PREFIX . "thread
+					WHERE threadid = " . $this->threadid . "
+				");
+
+				$change->set('field', 'issue_exported_issuethread');
 				$change->set('oldvalue', $this->contentid); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
 
 				break;
