@@ -1027,14 +1027,22 @@ if ($show['quick_reply'])
 		<!--
 			var threaded_mode = 1;
 			var require_click = 0;
-			var is_last_page = $show[allow_ajax_qr]; // leave for people with cached JS files
-			var allow_ajax_qr = $show[allow_ajax_qr];
-			var last_issuenote_id = $issue[lastnoteid];
+			var is_last_page = " . $show['allow_ajax_qr'] . "; // leave for people with cached JS files
+			var allow_ajax_qr = " . $show['allow_ajax_qr'] . ";
+			var last_issuenote_id = " . $issue['lastnoteid'] . ";
 			var ajax_last_issuenote = " . intval($displayed_dateline) . ";
 		// -->
 		</script>
 		$messagearea
 	";
+
+	// Workaround for CKEditor
+	if ($vbulletin->options['templateversion'] >= '4.1.3')
+	{
+		$vbversion = explode('.', $vbulletin->options['templateversion']);
+
+		$vbversion[2] = intval($vbversion[2]);
+	}
 }
 else if ($show['ajax_js'])
 {
@@ -1144,6 +1152,7 @@ $templater = vB_Template::create('pt_issue');
 	$templater->register('selected_filter', $selected_filter);
 	$templater->register('tags', $tags);
 	$templater->register('vBeditTemplate', $vBeditTemplate);
+	$templater->register('vbversion', $vbversion);
 	$templater->register('contenttypeid', $issue_contenttypeid);
 print_output($templater->render());
 

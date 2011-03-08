@@ -21,6 +21,11 @@ var qr_imgsrc = '';
 var clickedelm = false;
 var qr_require_click = false;
 
+if (vbversion >= '4.1.3')
+{
+	var QR_EditorID = 'vB_Editor_QR';
+}
+
 /**
 * Initializes the quick reply system
 */

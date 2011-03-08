@@ -3828,7 +3828,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1299559950" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1299598720" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3857,6 +3857,11 @@ legend {
 	</vb:if>
 
 	<vb:if condition="$show['quick_reply']">
+		<script type="text/javascript">
+		<!--
+		var vbversion = '{vb:raw vbversion.0}.{vb:raw vbversion.1}.{vb:raw vbversion.2}';
+		//-->
+		</script>
 		<script type="text/javascript" src="clientscript/vbulletin_pt_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 
@@ -10510,6 +10515,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="system_message_attachment_uploaded" date="1171983636" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Attachment </span> <em>{3}</em> <span class="shade">uploaded</span>]]></phrase>
 			<phrase name="system_message_default" date="1169740935" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">{1} changed from</span> <em>{2}</em> <span class="shade">to</span> <em>{3}</em>]]></phrase>
 			<phrase name="system_message_issue_exported" date="1298647234" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue exported into thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+			<phrase name="system_message_issue_exported_issuethread" date="1299592002" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue exported in the thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
 			<phrase name="system_message_issue_exported_post" date="1298647264" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue imported into a post in the thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
 			<phrase name="system_message_issue_imported" date="1288565383" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Issue imported from thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
 			<phrase name="system_message_issue_imported_post" date="1288565854" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Issue imported from a post in the thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
