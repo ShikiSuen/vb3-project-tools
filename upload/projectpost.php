@@ -146,6 +146,8 @@ if (empty($vbulletin->products['vbprojecttools']))
 
 require_once(DIR . '/includes/functions_projecttools.php');
 require_once(DIR . '/includes/functions_pt_posting.php');
+require_once(DIR . '/includes/class_bootstrap_framework.php');
+vB_Bootstrap_Framework::init();
 
 if (!function_exists('ini_size_to_bytes') OR (($current_memory_limit = ini_size_to_bytes(@ini_get('memory_limit'))) < 128 * 1024 * 1024 AND $current_memory_limit > 0))
 {
@@ -196,6 +198,7 @@ if ($_POST['do'] == 'quickeditissue')
 		'parsesmilies' => true,
 		'mode'         => $show['is_wysiwyg_editor']
 	));
+	$xml->add_tag('ckeconfig', vB_Ckeditor::getInstance($editorid)->getConfig());
 	$xml->close_group();
 
 	$xml->print_xml();
@@ -241,6 +244,7 @@ if ($_POST['do'] == 'quickedit')
 		'parsesmilies' => true,
 		'mode'         => $show['is_wysiwyg_editor']
 	));
+	$xml->add_tag('ckeconfig', vB_Ckeditor::getInstance($editorid)->getConfig());
 	$xml->close_group();
 
 	$xml->print_xml();
