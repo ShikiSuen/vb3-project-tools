@@ -3828,7 +3828,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1299598720" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1299610167" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3857,11 +3857,13 @@ legend {
 	</vb:if>
 
 	<vb:if condition="$show['quick_reply']">
-		<script type="text/javascript">
-		<!--
-		var vbversion = '{vb:raw vbversion.0}.{vb:raw vbversion.1}.{vb:raw vbversion.2}';
-		//-->
-		</script>
+		<vb:if condition="$vbulletin->options['templateversion'] >= '4.1.3'">
+			<script type="text/javascript">
+			<!--
+			var vbversion = '{vb:raw vbversion.0}.{vb:raw vbversion.1}.{vb:raw vbversion.2}';
+			//-->
+			</script>
+		</vb:if>
 		<script type="text/javascript" src="clientscript/vbulletin_pt_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 
@@ -9484,6 +9486,18 @@ foreach($do AS $field)
 $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_user AS ptuser ON (user.userid = ptuser.userid)";]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
+			<title>Forum Admin: Add Default Options</title>
+			<hookname>forumadmin_add_default</hookname>
+			<phpcode><![CDATA[$forum['canimportintoissues'] = 0;]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
+			<title>Forum Admin: Add Some Options</title>
+			<hookname>forumadmin_edit_form</hookname>
+			<phpcode><![CDATA[print_table_header($vbphrase['project_tools_options']);
+
+print_yes_no_row($vbphrase['pt_can_import_into_issues'], 'forum[options][canimportintoissues]', $forum['canimportintoissues']);]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
 			<title>Forumbit: PT Display</title>
 			<hookname>forumbit_display</hookname>
 			<phpcode><![CDATA[if (function_exists('pt_forumbit_display'))
@@ -9702,7 +9716,7 @@ if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'proce
 		<plugin active="1" executionorder="5">
 			<title>Postbit: Misc data for postbits</title>
 			<hookname>postbit_display_complete</hookname>
-			<phpcode><![CDATA[$show['createptissue'] = $this->registry->userinfo['permissions']['ptpermissions'] & $this->registry->bf_ugp_ptpermissions['canimportintoissues'];
+			<phpcode><![CDATA[$show['createptissue'] = (($this->registry->userinfo['permissions']['ptpermissions'] & $this->registry->bf_ugp_ptpermissions['canimportintoissues']) AND $this->forum['canimportintoissues']) ? true : false;
 
 // Add link to promote the post as an issue
 if ($show['createptissue'] AND (!$post['forwardlink'] AND THIS_SCRIPT != 'usernote' AND THIS_SCRIPT != 'announcement'))
@@ -9743,8 +9757,7 @@ if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 		<plugin active="1" executionorder="5">
 			<title>Show Thread: Display moderation option if permitted</title>
 			<hookname>showthread_complete</hookname>
-			<phpcode><![CDATA[// TODO: this could have its own permission in moderation for future
-$show['createptissue'] = can_moderate($threadinfo['forumid'], 'canmanagethreads') AND can_moderate($threadinfo['forumid'], 'canremoveposts');
+			<phpcode><![CDATA[$show['createptissue'] = (($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND $forum['canimportintoissues']) ? true : false;
 
 $show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];
 
@@ -10256,6 +10269,11 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="pt_faq_how_post" date="1176396643" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What makes a good issue description?]]></phrase>
 			<phrase name="pt_faq_private" date="1176396652" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What does it mean to make something private? When should I do this?]]></phrase>
 			<phrase name="pt_faq_report" date="1176812007" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What are reports? How do I use them?]]></phrase>
+		</phrasetype>
+		<phrasetype name="Forum-Related" fieldname="forum">
+			<phrase name="project_tools_options" date="1299622568" username="Pitchoune" version="2.2.0"><![CDATA[vBulletin Project Tools Options]]></phrase>
+			<phrase name="pt_can_import_into_issues" date="1299622693" username="Pitchoune" version="2.2.0"><![CDATA[Can import into issues?
+<dfn>If the usergroup have the permission associated to this option, the user will be able to import any post/thread as an issue or issue note.</dfn>]]></phrase>
 		</phrasetype>
 		<phrasetype name="Forum Display" fieldname="forumdisplay">
 			<phrase name="pt_import_threadprefix" date="1274871230" username="Pitchoune" version="2.1.1"><![CDATA[Project Tools:]]></phrase>

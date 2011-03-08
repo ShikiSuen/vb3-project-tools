@@ -2,7 +2,7 @@
 // vbprojecttools 2.2.0
 $md5_sums = array(
 	'/' => array(
-		'issue.php' => 'd41a9a61635fa14a2bd1b9171b990f6b',
+		'issue.php' => '39ba69467cfd1dfa91aa7377df371866',
 		'issuelist.php' => '9652401ef18719487babc5f60ef175a9',
 		'milestone.php' => '6aecdcfe69a46b50cb73f247f4c34d79',
 		'milestoneissuelist.php' => '478a5fc4ab1f4c2744fc6159f5c7f52c',
@@ -11,7 +11,7 @@ $md5_sums = array(
 		'projectattachment.php' => '082bd4253cf4399a5ed58f7e37ca8900',
 		'projectexternal.php' => '7826107f3e6e17dc2145d5f52d74b3b9',
 		'projectmilestone.php' => '081199e35719eecbc1ce9aa4ebc23c75',
-		'projectpost.php' => '0a21acd790a7146b925e576451c0e628',
+		'projectpost.php' => '96f0d7521ea7f752bb32c278abb3fb94',
 		'projectsearch.php' => 'a83fe1a62ffc42a2c59e2e9a7e3cef4f',
 		'projecttimeline.php' => '98516262c1363a7182a334a360755360',
 	),
@@ -30,7 +30,7 @@ $md5_sums = array(
 		'vbulletin_pt_issue.js' => '239e1509bf86c296255d81eced7c61af',
 		'vbulletin_pt_issuenote_loader.js' => '1e476f832182983b441d05d58e397984',
 		'vbulletin_pt_petition.js' => 'd52ea9455c31e057fbce6fbeb66dfd65',
-		'vbulletin_pt_quick_reply.js' => '60cce5118dd922b89c87a18486a8e219',
+		'vbulletin_pt_quick_reply.js' => 'afc1009f8470e3a238c2e3e471ec3de5',
 		'vbulletin_pt_read_marker.js' => '607236ed69a7ec7b10c9d0cf52bcfe30',
 		'vbulletin_ptsearch_form.js' => 'fd82c7c2ab2a3e347ae7a9dcf5915135',
 		'vbulletin_quick_edit_issue.js' => '8ac0a0767b3e534ee07a87098d681fdf',
@@ -53,7 +53,7 @@ $md5_sums = array(
 		'class_dm_pt_milestone.php' => '8d1546bf47ab66562e184d78ecf8c8d9',
 		'class_dm_pt_project.php' => '07120125ca172548ac64f510e80b36ef',
 		'class_friendly_url_project.php' => 'bce13cb396847984d0e9862c114644ce',
-		'class_pt_impex.php' => 'e2d519f70a62f72bedaf327635186055',
+		'class_pt_impex.php' => '368d2208d36b26dd25313b58ff857deb',
 		'class_pt_issuelist.php' => '6ba99a95b9c1a79d97f7ca4fc477e2a1',
 		'class_pt_issuenote.php' => '18cff45b2dc07a819fd00aa9731bdc37',
 		'class_pt_issuesearch.php' => '49106a38a00a311b57cddbc20bfc8491',
@@ -87,7 +87,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'd5c92c116d3d6890724a7dce6dbe94fa',
-		'product-vbprojecttools.xml' => '74b500ef6aaf3f53ff79f3ce486c0c09',
+		'product-vbprojecttools.xml' => '4ae10baef2da3b4539bd6eee5edfe9ba',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'b3b48fe8595c439439a95343f927cae1',
