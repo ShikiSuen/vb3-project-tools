@@ -848,23 +848,23 @@ class vB_Pt_Export
 			case 'thread':
 				// Export as new thread
 				$this->execute_export_to_thread();
+				$this->execute_export_attachments('thread', $this->contentid);
 				break;
 
 			case 'post':
 				// Export as new post
 				$this->execute_export_to_post();
+				$this->execute_export_attachments('post', $this->contentid);
 				break;
 
 			case 'issuethread':
 				// Export full issue as thread
 				$this->execute_export_issue_to_thread();
+				$this->execute_export_attachments('thread', $this->contentid);
 				break;
 		}
 
-		// Import attachments
-		//$this->execute_export_attachments();
-
-		// Import subscriptions
+		// Export subscriptions
 		//$this->execute_export_subscriptions();
 
 		// Create export notice
@@ -1040,6 +1040,19 @@ class vB_Pt_Export
 		$this->contentid = $post->save();
 
 		return $this->contentid;
+	}
+
+	/**
+	* Export attachments from issue(notes) to the target
+	*
+	* @var		string		Data type
+	* @var		integer		ID of the exported data type
+	*
+	* @return	mixed
+	*/
+	private function execute_export_attachments($type, $id)
+	{
+		// Nothing to do actually -- will be when PT attachment system will be rewrite to be 'compliant' with vB4 attachment system
 	}
 
 	/**
