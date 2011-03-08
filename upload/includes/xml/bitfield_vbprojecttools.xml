@@ -15,6 +15,11 @@
 				<bitfield name="canexportfromissues" group="project_tools_permissions" phrase="can_export_from_issues" install="5,6,7">256</bitfield>
 			</group>
 		</group>
+		<group name="misc">
+			<group name="forumoptions">
+				<bitfield name="canimportintoissues">262144</bitfield>
+			</group>
+		</group>
 		<group name="pt_permissions">
 			<group name="general">
 				<bitfield group="general" name="canview" phrase="ptperm_can_view" install="1,2,3,4,5,6,7">1</bitfield>
