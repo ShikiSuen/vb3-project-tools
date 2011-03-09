@@ -3848,10 +3848,14 @@ if ($_REQUEST['do'] == 'export')
 if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'importcontent2')))
 {
 	// Allowed to be here?
-	if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_pt_permissions['canimportintoissues']))
+	if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']))
 	{
 		print_no_permission();
 	}
+
+	$vbulletin->input->clean_array_gpc('r', array(
+		'issuenoteid' => TYPE_UINT,
+	));
 
 	require_once(DIR . '/includes/functions_pt_impex.php');
 
@@ -3864,6 +3868,15 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 	{
 		$threadinfo = verify_id('thread', $threadid, 1, 1);
 		$postinfo = verify_id('post', $postid, 1, 1);
+	}
+
+	if ($vbulletin->GPC['issuenoteid'])
+	{
+		$issuenoteinfo = $db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_issuenote
+			WHERE issuenoteid = " . intval($vbulletin->GPC['issuenoteid']) . "
+		");
 	}
 }
 
@@ -4136,6 +4149,12 @@ if ($_REQUEST['do'] == 'importcontent')
 			$datainfo['id'] = $postinfo['postid'];
 			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
 			$datainfo['type'] = 'post';
+			break;
+		case 'issuenote':
+			$datainfo = $issuenoteinfo;
+			//$datainfo['id'] = ;
+			//$datainfo['title'] = ;
+			$datainfo['type'] = 'issuenote';
 			break;
 	}
 
