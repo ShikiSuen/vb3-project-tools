@@ -430,6 +430,8 @@ class vB_Pt_IssueNote_User extends vB_Pt_IssueNote
 			AND ($this->registry->options['rpforumid'] OR
 				($this->registry->options['enableemail'] AND $this->registry->options['rpemail']))
 		);
+
+		$show['import_note'] = ($this->registry->userinfo['permissions']['ptpermissions'] & $this->registry->bf_ugp['ptpermissions']['canimportintoissues']);
 	}
 }
 
