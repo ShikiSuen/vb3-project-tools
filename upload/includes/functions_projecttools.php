@@ -644,6 +644,10 @@ function translate_system_note($data)
 				$entry['oldvalue'] = fetch_seo_url('thread', $entry, null, 'oldvalue', 'newvalue');
 				break;
 
+			case 'issue_imported_issuenote':
+				$entry['oldvalue'] = fetch_seo_url('issue', $entry, null, 'oldvalue', 'newvalue');
+				break;
+
 			default:
 				($hook = vBulletinHook::fetch_hook('project_system_note_translate')) ? eval($hook) : false;
 		}

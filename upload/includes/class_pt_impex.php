@@ -155,8 +155,11 @@ class vB_Pt_Import
 		// Import attachments
 		$this->execute_import_attachments();
 
-		// Import subscriptions
-		$this->execute_import_subscriptions();
+		if ($this->datainfo['threadid'])
+		{
+			// Import subscriptions
+			$this->execute_import_subscriptions();
+		}
 
 		switch ($this->datatype)
 		{
@@ -168,6 +171,11 @@ class vB_Pt_Import
 			case 'post':
 				// Update the original post
 				$this->execute_import_from_post();
+				break;
+
+			case 'issuenote':
+				// Update the original issue note
+				$this->execute_import_from_issue_note();
 				break;
 		}
 
@@ -221,133 +229,181 @@ class vB_Pt_Import
 		$issuedata->set('submitdate', $this->datainfo['dateline']);
 		$issuedata->set('lastpost', $this->datainfo['lastpost']);
 
-		if ($this->datatype == 'thread')
+		switch ($this->datatype)
 		{
-			// prepare issue notes
-			$issuenotes = array();
+			case 'thread':
+				// prepare issue notes
+				$issuenotes = array();
 
-			$i = 0;
-			$postids = array();
+				$i = 0;
+				$postids = array();
 
-			$post_query = $this->registry->db->query_read("
-				SELECT p.postid, p.userid, p.username, p.dateline, p.pagetext, t.firstpostid, p.ipaddress
-				FROM " . TABLE_PREFIX . "post AS p
-					LEFT JOIN " . TABLE_PREFIX . "thread AS t ON (t.threadid = p.threadid)
-				WHERE p.threadid = " . $this->datainfo['threadid'] . "
-					" . (count($this->postids) > 0 ? 'AND p.postid IN (' . implode(',', $this->postids) . ')' : '') . "
-				ORDER BY p.dateline
-			");
+				$post_query = $this->registry->db->query_read("
+					SELECT p.postid, p.userid, p.username, p.dateline, p.pagetext, t.firstpostid, p.ipaddress
+					FROM " . TABLE_PREFIX . "post AS p
+						LEFT JOIN " . TABLE_PREFIX . "thread AS t ON (t.threadid = p.threadid)
+					WHERE p.threadid = " . $this->datainfo['threadid'] . "
+						" . (count($this->postids) > 0 ? 'AND p.postid IN (' . implode(',', $this->postids) . ')' : '') . "
+					ORDER BY p.dateline
+				");
 
-			if ($this->registry->db->num_rows($post_query) > 0)
-			{
-				while ($post = $this->registry->db->fetch_array($post_query))
+				if ($this->registry->db->num_rows($post_query) > 0)
 				{
-					$issuenotes[$i] =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
-					$issuenotes[$i]->set_info('do_floodcheck', false);
-					$issuenotes[$i]->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
-					$issuenotes[$i]->set('userid', $post['userid']);
-					$issuenotes[$i]->set('username', $post['username']);
-					$issuenotes[$i]->set('visible', 'visible');
-
-					if ($post['postid'] == $post['firstpostid'])
+					while ($post = $this->registry->db->fetch_array($post_query))
 					{
-						$issuenotes[$i]->set('isfirstnote', 1);
+						$issuenotes[$i] =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
+						$issuenotes[$i]->set_info('do_floodcheck', false);
+						$issuenotes[$i]->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
+						$issuenotes[$i]->set('userid', $post['userid']);
+						$issuenotes[$i]->set('username', $post['username']);
+						$issuenotes[$i]->set('visible', 'visible');
+
+						if ($post['postid'] == $post['firstpostid'])
+						{
+							$issuenotes[$i]->set('isfirstnote', 1);
+						}
+						else
+						{
+							$issuenotes[$i]->set('isfirstnote', 0);
+						}
+
+						$issuenotes[$i]->set('pagetext', $post['pagetext']);
+						$issuenotes[$i]->set('dateline', $post['dateline']);
+						$issuenotes[$i]->set('ipaddress', $post['ipaddress']);
+
+						$issuedata->pre_save();
+
+						if (!$issuedata->errors)
+						{
+							$issuenotes[$i]->pre_save();
+						}
+
+						$errors = array_merge($issuedata->errors, $issuenotes[$i]->errors);
+
+						$postids[] = $post['postid'];
+
+						$i++;
 					}
-					else
-					{
-						$issuenotes[$i]->set('isfirstnote', 0);
-					}
 
-					$issuenotes[$i]->set('pagetext', $post['pagetext']);
-					$issuenotes[$i]->set('dateline', $post['dateline']);
-					$issuenotes[$i]->set('ipaddress', $post['ipaddress']);
-
-					$issuedata->pre_save();
-
-					if (!$issuedata->errors)
-					{
-						$issuenotes[$i]->pre_save();
-					}
-
-					$errors = array_merge($issuedata->errors, $issuenotes[$i]->errors);
-
-					$postids[] = $post['postid'];
-
-					$i++;
+					$this->postids = $postids;
 				}
 
-				$this->postids = $postids;
-			}
-
-			if ($errors)
-			{
-				require_once(DIR . '/includes/functions_newpost.php');
-				echo construct_errors($errors);
-				exit; // need to review this on a later release - issue #156
-
-				$_REQUEST['do'] = 'importthread2';
-			}
-			else
-			{
-				$this->issueid = $issuedata->save();
-
-				for ($i = 0; $i < count($issuenotes); $i++)
+				if ($errors)
 				{
-					$issuenotes[$i]->set('issueid', $this->issueid);
-					$issuenotes[$i]->save();
+					require_once(DIR . '/includes/functions_newpost.php');
+					echo construct_errors($errors);
+					exit; // need to review this on a later release - issue #156
+
+					$_REQUEST['do'] = 'importthread2';
+				}
+				else
+				{
+					$this->issueid = $issuedata->save();
+
+					for ($i = 0; $i < count($issuenotes); $i++)
+					{
+						$issuenotes[$i]->set('issueid', $this->issueid);
+						$issuenotes[$i]->save();
+					}
+
+					return $this->issueid;
+				}
+				break;
+			case 'post':
+				// prepare issue notes
+				$post = $this->registry->db->query_first("
+					SELECT postid, userid, username, dateline, pagetext, ipaddress
+					FROM " . TABLE_PREFIX . "post
+					WHERE postid = " . $this->datainfo['postid'] . "
+				");
+
+				$issuenotes =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
+				$issuenotes->set_info('do_floodcheck', false);
+				$issuenotes->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
+				$issuenotes->set('userid', $post['userid']);
+				$issuenotes->set('username', $post['username']);
+				$issuenotes->set('visible', 'visible');
+				$issuenotes->set('isfirstnote', 1);
+				$issuenotes->set('pagetext', $post['pagetext']);
+				$issuenotes->set('dateline', $post['dateline']);
+				$issuenotes->set('ipaddress', $post['ipaddress']);
+
+				$this->postids = $post['postid'];
+
+				$issuedata->pre_save();
+
+				if (!$issuedata->errors)
+				{
+					$issuenotes->pre_save();
 				}
 
-				return $this->issueid;
-			}
-		}
-		else if ($this->datatype == 'post')
-		{
-			// prepare issue notes
-			$post = $this->registry->db->query_first("
-				SELECT postid, userid, username, dateline, pagetext, ipaddress
-				FROM " . TABLE_PREFIX . "post
-				WHERE postid = " . $this->datainfo['postid'] . "
-			");
+				$errors = array_merge($issuedata->errors, $issuenotes->errors);
 
-			$issuenotes =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
-			$issuenotes->set_info('do_floodcheck', false);
-			$issuenotes->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
-			$issuenotes->set('userid', $post['userid']);
-			$issuenotes->set('username', $post['username']);
-			$issuenotes->set('visible', 'visible');
-			$issuenotes->set('isfirstnote', 1);
-			$issuenotes->set('pagetext', $post['pagetext']);
-			$issuenotes->set('dateline', $post['dateline']);
-			$issuenotes->set('ipaddress', $post['ipaddress']);
+				if ($errors)
+				{
+					require_once(DIR . '/includes/functions_newpost.php');
+					echo construct_errors($errors);
+					exit; // need to review this on a later release - issue #156
 
-			$this->postids = $post['postid'];
+					$_REQUEST['do'] = 'importthread2';
+				}
+				else
+				{
+					$this->issueid = $issuedata->save();
 
-			$issuedata->pre_save();
+					$issuenotes->set('issueid', $this->issueid);
+					$issuenotes->save();
 
-			if (!$issuedata->errors)
-			{
-				$issuenotes->pre_save();
-			}
+					return $this->issueid;
+				}
+				break;
+			case 'issuenote':
+				// prepare issue notes
+				$issuenote = $this->registry->db->query_first("
+					SELECT userid, username, pagetext, dateline, ipaddress
+					FROM " . TABLE_PREFIX . "pt_issuenote
+					WHERE issuenoteid = " . intval($this->datainfo['issuenoteid']) . "
+				");
 
-			$errors = array_merge($issuedata->errors, $issuenotes->errors);
+				$issuenotes =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
+				$issuenotes->set_info('do_floodcheck', false);
+				$issuenotes->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
+				$issuenotes->set('userid', $issuenote['userid']);
+				$issuenotes->set('username', $issuenote['username']);
+				$issuenotes->set('visible', 'visible');
+				$issuenotes->set('isfirstnote', 1);
+				$issuenotes->set('pagetext', $issuenote['pagetext']);
+				$issuenotes->set('dateline', $issuenote['dateline']);
+				$issuenotes->set('ipaddress', $issuenote['ipaddress']);
 
-			if ($errors)
-			{
-				require_once(DIR . '/includes/functions_newpost.php');
-				echo construct_errors($errors);
-				exit; // need to review this on a later release - issue #156
+				$issuedata->pre_save();
 
-				$_REQUEST['do'] = 'importthread2';
-			}
-			else
-			{
-				$this->issueid = $issuedata->save();
+				if (!$issuedata->errors)
+				{
+					$issuenotes->pre_save();
+				}
 
-				$issuenotes->set('issueid', $this->issueid);
-				$issuenotes->save();
+				$errors = array_merge($issuedata->errors, $issuenotes->errors);
 
-				return $this->issueid;
-			}
+				if ($errors)
+				{
+					require_once(DIR . '/includes/functions_newpost.php');
+					echo construct_errors($errors);
+					exit; // need to review this on a later release - issue #156
+
+					$_REQUEST['do'] = 'importthread2';
+				}
+				else
+				{
+					$this->issueid = $issuedata->save();
+
+					$issuenotes->set('issueid', $this->issueid);
+					$issuenotes->save();
+
+					return $this->issueid;
+				}
+
+				break;
 		}
 	}
 
@@ -688,6 +744,36 @@ class vB_Pt_Import
 	}
 
 	/**
+	* Update the original issue note
+	* 
+	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
+	*/
+	private function execute_import_from_issue_note()
+	{
+		// We need to get the content type id of issue notes
+		$contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_IssueNote');
+
+		// Define $importdata as an array of values to serialize
+		$importdata = array();
+
+		// Adding the isue id
+		$importdata['pt_issueid'] = $this->issueid;
+
+		// Adding the forward mode
+		$importdata['pt_forwardmode'] = 0; // No use here
+
+		// Srialialize the data
+		$data = serialize($importdata);
+
+		$this->registry->db->query_write("
+			INSERT INTO " . TABLE_PREFIX . "pt_issueimport
+				(issueid, contenttypeid, contentid, data)
+			VALUES
+				(" . $importdata['pt_issueid'] . ", $contenttypeid, " . $this->datainfo['issuenoteid'] . ", '" . $data . "')
+		");
+	}
+
+	/**
 	* Insert a notice stating the import date and the importer
 	* 
 	* Make sure to set $this->issueid if you have not called execute_import_issue() before!
@@ -703,19 +789,25 @@ class vB_Pt_Import
 		$change->set('issueid', $this->issueid);
 		$change->set('userid', $this->registry->userinfo['userid']);
 
-		if ($this->datatype == 'thread')
+		switch ($this->datatype)
 		{
-			$change->set('field', 'issue_imported');
-			$change->set('oldvalue', $this->datainfo['threadid']);
+			case 'thread':
+				$change->set('field', 'issue_imported');
+				$change->set('oldvalue', $this->datainfo['threadid']);
+				break;
+
+			case 'post':
+				$change->set('field', 'issue_imported_post');
+				$change->set('oldvalue', $this->datainfo['threadid']); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
+				break;
+
+			case 'issuenote':
+				$change->set('field', 'issue_imported_issuenote');
+				$change->set('oldvalue', $this->datainfo['issueid']); // There is no issuenote SEO url.
+				break;
 		}
 
-		if ($this->datatype == 'post')
-		{
-			$change->set('field', 'issue_imported_post');
-			$change->set('oldvalue', $this->datainfo['threadid']); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
-		}
-
-		$change->set('newvalue', $this->datainfo['threadtitle']);
+		$change->set('newvalue', $this->datainfo['originaltitle']);
 		$change->save();
 	}
 }

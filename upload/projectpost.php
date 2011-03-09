@@ -3882,7 +3882,7 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 	if ($vbulletin->GPC['issuenote'])
 	{
 		$issuenoteinfo = $db->query_first("
-			SELECT note.*, issue.title, issue.summary
+			SELECT note.*, issue.title, issue.summary, issue.issueid
 			FROM " . TABLE_PREFIX . "pt_issuenote AS note
 				LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = note.issueid)
 			WHERE note.issuenoteid = " . intval($vbulletin->GPC['issuenote']) . "
@@ -3940,7 +3940,7 @@ if ($_POST['do'] == 'processimportcontent')
 			break;
 	}
 
-	$datainfo['threadtitle'] = $vbulletin->GPC['threadtitle'];
+	$datainfo['originaltitle'] = $vbulletin->GPC['originaltitle'];
 
 	$importer = new vB_Pt_Import($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
 	$issueid = $importer->import_all();
