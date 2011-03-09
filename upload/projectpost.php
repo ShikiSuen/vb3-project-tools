@@ -3854,8 +3854,17 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 	}
 
 	$vbulletin->input->clean_array_gpc('r', array(
-		'issuenoteid' => TYPE_UINT,
+		'issuenote' => TYPE_UINT,
 	));
+
+	if (
+		!$vbulletin->GPC['issuenoteid']
+	)
+	{
+		$vbulletin->input->clean_array_gpc('p', array(
+			'issuenote' => TYPE_UINT,
+		));
+	}
 
 	require_once(DIR . '/includes/functions_pt_impex.php');
 
@@ -3870,13 +3879,17 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 		$postinfo = verify_id('post', $postid, 1, 1);
 	}
 
-	if ($vbulletin->GPC['issuenoteid'])
+	if ($vbulletin->GPC['issuenote'])
 	{
 		$issuenoteinfo = $db->query_first("
-			SELECT *
-			FROM " . TABLE_PREFIX . "pt_issuenote
-			WHERE issuenoteid = " . intval($vbulletin->GPC['issuenoteid']) . "
+			SELECT note.*, issue.title, issue.summary
+			FROM " . TABLE_PREFIX . "pt_issuenote AS note
+				LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = note.issueid)
+			WHERE note.issuenoteid = " . intval($vbulletin->GPC['issuenote']) . "
 		");
+
+		$issue = verify_issue($issuenoteinfo['issueid']);
+		$project = verify_project($issue['projectid']);
 	}
 }
 
@@ -3910,6 +3923,7 @@ if ($_POST['do'] == 'processimportcontent')
 
 	switch ($vbulletin->GPC['type'])
 	{
+		// $datainfo['title'] corresponds to the original title from which the content is imported from
 		case 'thread':
 			$datatype = 'thread';
 			$datainfo = $threadinfo;
@@ -3918,6 +3932,11 @@ if ($_POST['do'] == 'processimportcontent')
 			$datatype = 'post';
 			$datainfo = $postinfo;
 			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
+			break;
+		case 'issuenote':
+			$datatype = 'issuenote';
+			$datainfo = $issuenoteinfo;
+			$datainfo['title'] = $issuenoteinfo['title'];
 			break;
 	}
 
@@ -4053,6 +4072,24 @@ if ($_REQUEST['do'] == 'importcontent2')
 	$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
 	$milestone_options = fetch_milestone_select($project['projectid'], $issue['milestoneid']);
 
+	// setup priorities
+	$priorities = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectpriority
+		WHERE projectid = " . intval($project['projectid']) . "
+	");
+
+	while ($priority = $db->fetch_array($priorities))
+	{
+		$priority_array["$priority[projectpriorityid]"] = $priority;
+	}
+
+	foreach ($priority_array AS $optionvalue => $options)
+	{
+		$optiontitle = $vbphrase['priority' . $optionvalue . ''];
+		$priority_options .= render_option_template($optiontitle, $optionvalue, '');
+	}
+
 	switch ($vbulletin->GPC['type'])
 	{
 		case 'thread':
@@ -4066,6 +4103,13 @@ if ($_REQUEST['do'] == 'importcontent2')
 			$datainfo['id'] = $postinfo['postid'];
 			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
 			$datainfo['type'] = 'post';
+			break;
+		case 'issuenote':
+			$datainfo = $issuenoteinfo;
+			$datainfo['id'] = $issuenoteinfo['issuenoteid'];
+			$datainfo['title'] = $issuenoteinfo['title'];
+			$datainfo['summary'] = $issuenoteinfo['summary'];
+			$datainfo['type'] = 'issuenote';
 			break;
 	}
 
@@ -4092,6 +4136,7 @@ if ($_REQUEST['do'] == 'importcontent2')
 		$templater->register('issuetypeid', $issuetypeid);
 		$templater->register('milestone_options', $milestone_options);
 		$templater->register('navbar', $navbar);
+		$templater->register('priority_options', $priority_options);
 		$templater->register('project', $project);
 		$templater->register('status_options', $status_options);
 	print_output($templater->render());
@@ -4152,8 +4197,8 @@ if ($_REQUEST['do'] == 'importcontent')
 			break;
 		case 'issuenote':
 			$datainfo = $issuenoteinfo;
-			//$datainfo['id'] = ;
-			//$datainfo['title'] = ;
+			$datainfo['id'] = $issuenoteinfo['issuenoteid'];
+			$datainfo['title'] = $issuenoteinfo['title']; // Use issue title as issue note can't have title
 			$datainfo['type'] = 'issuenote';
 			break;
 	}
