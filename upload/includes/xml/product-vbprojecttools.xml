@@ -4813,7 +4813,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </li>]]></template>
 		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1299659979" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1299680880" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
@@ -4840,6 +4840,8 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					</vb:if>
 				</div>
 				<vb:if condition="$note['usertitle']"><div class="smallfont">{vb:raw note.usertitle}</div></vb:if>
+
+				<vb:if condition="$note['import_issueid']"><div class="smallfont"><a href="{vb:raw note.import_seo}">{vb:rawphrase issuenote_made_as_issue}</a></div></vb:if>
 			</div>
 		</div>
 		<div class="blockrow issuetext">
@@ -10430,6 +10432,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="issue_subscriptions" date="1174482849" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Subscriptions]]></phrase>
 			<phrase name="issue_tools" date="1175076760" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Tools]]></phrase>
 			<phrase name="issue_type" date="1174490994" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Type]]></phrase>
+			<phrase name="issuenote_made_as_issue" date="1299680814" username="Pitchoune" version="2.2.0"><![CDATA[This issue note was made as an issue.]]></phrase>
 			<phrase name="issues_in_milestone_x_html" date="1274643485" username="Pitchoune" version="2.1.1"><![CDATA[Issues in Milestone '{1}']]></phrase>
 			<phrase name="issues_with_recent_replies" date="1174490403" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issues with Recent Replies]]></phrase>
 			<phrase name="last_updated_x_at_y" date="1175166978" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Last updated {1} at {2}]]></phrase>
@@ -10544,10 +10547,11 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="system_message_attachment_uploaded" date="1171983636" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Attachment </span> <em>{3}</em> <span class="shade">uploaded</span>]]></phrase>
 			<phrase name="system_message_default" date="1169740935" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">{1} changed from</span> <em>{2}</em> <span class="shade">to</span> <em>{3}</em>]]></phrase>
 			<phrase name="system_message_issue_exported" date="1298647234" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue exported into thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
-			<phrase name="system_message_issue_exported_issuethread" date="1299592002" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue exported in the thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
-			<phrase name="system_message_issue_exported_post" date="1298647264" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue imported into a post in the thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
-			<phrase name="system_message_issue_imported" date="1288565383" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Issue imported from thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
-			<phrase name="system_message_issue_imported_post" date="1288565854" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Issue imported from a post in the thread</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+			<phrase name="system_message_issue_exported_issuethread" date="1299679100" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue exported in the thread</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+			<phrase name="system_message_issue_exported_post" date="1299679100" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue imported into a post in the thread</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+			<phrase name="system_message_issue_imported" date="1299679100" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue imported from thread</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+			<phrase name="system_message_issue_imported_issuenote" date="1299679017" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue imported from an issue note in the issue</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+			<phrase name="system_message_issue_imported_post" date="1299679100" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue imported from a post in the thread</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
 			<phrase name="system_message_milestoneid" date="1213093821" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[<span class="shade">Milestone changed</span>]]></phrase>
 			<phrase name="system_message_projectcategoryid" date="1172156916" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Category changed from</span> <em>{2}</em> <span class="shade">to</span> <em>{3}</em>]]></phrase>
 			<phrase name="system_message_tags" date="1171983040" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Tags modified</span>]]></phrase>
