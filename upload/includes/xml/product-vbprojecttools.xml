@@ -2122,7 +2122,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1297190069" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1299657581" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2897,6 +2897,18 @@ a.firstunread, a.firstunread:hover
 	border: 0 solid #A8A8A8;
 }
 
+.pt_issue_note .issuefoot .textcontrols a.promoteissue {
+	background: url({vb:stylevar imgdir_button}/project.png) no-repeat scroll {vb:stylevar left} center transparent;
+	padding-{vb:stylevar left}: 20px;
+	border: {vb:stylevar postbit_control_border};
+}
+
+.pt_issue_note .issuefoot .textcontrols a.promoteissue:hover {
+	background: url({vb:stylevar imgdir_button}/project-hover.png) no-repeat scroll {vb:stylevar left} center transparent;
+	padding-{vb:stylevar left}: 20px;
+	border: {vb:stylevar postbit_control_hover_border};
+}
+
 .pt_issue_note .issuefoot .textcontrols a.reportissue {
 	background: url({vb:stylevar imgdir_button}/report-40b.png) no-repeat scroll {vb:stylevar left} center transparent;
 	padding-{vb:stylevar left}: {vb:math {vb:stylevar padding} * 2};
@@ -3651,7 +3663,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1297600589" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1299659941" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3717,17 +3729,7 @@ legend {
 				<ul class="rightcol">
 					<li>
 						<select class="primary" name="priority" tabindex="1">
-							<option value="0" {vb:raw priority_selected.0}>{vb:rawphrase priority_0}</option>
-							<option value="1" {vb:raw priority_selected.1}>{vb:rawphrase priority_1}</option>
-							<option value="2" {vb:raw priority_selected.2}>{vb:rawphrase priority_2}</option>
-							<option value="3" {vb:raw priority_selected.3}>{vb:rawphrase priority_3}</option>
-							<option value="4" {vb:raw priority_selected.4}>{vb:rawphrase priority_4}</option>
-							<option value="5" {vb:raw priority_selected.5}>{vb:rawphrase priority_5}</option>
-							<option value="6" {vb:raw priority_selected.6}>{vb:rawphrase priority_6}</option>
-							<option value="7" {vb:raw priority_selected.7}>{vb:rawphrase priority_7}</option>
-							<option value="8" {vb:raw priority_selected.8}>{vb:rawphrase priority_8}</option>
-							<option value="9" {vb:raw priority_selected.9}>{vb:rawphrase priority_9}</option>
-							<option value="10" {vb:raw priority_selected.10}>{vb:rawphrase priority_10}</option>
+							{vb:raw priority_options}
 						</select>
 					</li>
 				</ul>
@@ -4811,7 +4813,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </li>]]></template>
 		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1298643532" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1299659979" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
@@ -4885,20 +4887,28 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					</span>
 
 					<span class="issuelinking">
-					<vb:if condition="$show['edit_history']">
-						<a class="issuehistory" href="issue.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw note.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw note.lastedit_date}, {vb:raw note.lastedit_time}}</a>
-					</vb:if>
+						<vb:if condition="$show['edit_history']">
+							<a class="issuehistory" href="issue.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw note.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw note.lastedit_date}, {vb:raw note.lastedit_time}}</a>
+						</vb:if>
 
-					<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'])">
-						<span class="separator">&nbsp;</span>
-					</vb:if>
+						<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'] OR $show['import_note'])">
+							<span class="separator">&nbsp;</span>
+						</vb:if>
 
-					<vb:if condition="$show['reportlink']">
-						<a class="reportissue" href="issue.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw note.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
-					</vb:if>
-					<vb:if condition="$issue['noteipaddress']">
-						<a class="ipissue" href="issue.php?do=viewip&amp;issuenoteid={vb:raw note.issuenoteid}" title="{vb:raw note.noteipaddress}">&nbsp;</a>
-					</vb:if>
+						<vb:if condition="$show['import_note']">
+							<a href="projectpost.php?{vb:raw session.sessionurl}do=importcontent&amp;issuenote={vb:raw note.issuenoteid}&amp;type=issuenote" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
+						</vb:if>
+
+						<vb:if condition="($show['edit_history'] OR $show['import_note']) AND ($show['reportlink'] OR $issue['noteipaddress'])">
+							<span class="separator">&nbsp;</span>
+						</vb:if>
+
+						<vb:if condition="$show['reportlink']">
+							<a class="reportissue" href="issue.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw note.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
+						</vb:if>
+						<vb:if condition="$issue['noteipaddress']">
+							<a class="ipissue" href="issue.php?do=viewip&amp;issuenoteid={vb:raw note.issuenoteid}" title="{vb:raw note.noteipaddress}">&nbsp;</a>
+						</vb:if>
 					</span>
 				</div>
 			</div>
@@ -10482,6 +10492,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="project_timeline" date="1174484010" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Timeline]]></phrase>
 			<phrase name="project_tools" date="1174388807" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools]]></phrase>
 			<phrase name="projects_list" date="1281875205" username="Pitchoune" version="2.1.2"><![CDATA[Project lists. Separate each project ID with a comma.]]></phrase>
+			<phrase name="promote_to_ptissue" date="1299657660" username="Pitchoune" version="2.2.0"><![CDATA[Promote to Issue]]></phrase>
 			<phrase name="pt_create_issue" date="1274869090" username="Pitchoune" version="2.1.1"><![CDATA[Create issue]]></phrase>
 			<phrase name="pt_managesubscriptions" date="1275163644" username="Pitchoune" version="2.1.1"><![CDATA[Manage Subscriptions]]></phrase>
 			<phrase name="public_reports" date="1175173202" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Public Reports]]></phrase>
