@@ -33,17 +33,7 @@ class vB_Attachment_Display_Single_vBProjectTools_Issue extends vB_Attachment_Di
 	*/
 	public function verify_attachment()
 	{
-		$selectsql = array(
-			"thread.forumid, thread.threadid, thread.postuserid",
-			"post.visible AS post_visible, thread.visible AS thread_visible",
-		);
-
-		$joinsql = array(
-			"LEFT JOIN " . TABLE_PREFIX . "post AS post ON (post.postid = a.contentid)",
-			"LEFT JOIN " . TABLE_PREFIX . "thread AS thread ON (post.threadid = thread.threadid)",
-		);
-
-		if (!$this->verify_attachment_specific('vBProjectTools_Issue', $selectsql, $joinsql))
+		if (!$this->verify_attachment_specific('vBProjectTools_Issue', array("issue.visible AS issue_visible"), array("LEFT JOIN " . TABLE_PREFIX . "issue AS issue ON (issue.issueid = a.contentid)")))
 		{
 			return false;
 		}
