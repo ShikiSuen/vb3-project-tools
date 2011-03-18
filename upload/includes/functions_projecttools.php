@@ -636,6 +636,7 @@ function translate_system_note($data)
 				// note: if this is changed to show more information, permission data must be available
 				break;
 
+			// PT ImpEx
 			case 'issue_imported':
 				$entry['oldvalue'] = fetch_seo_url('thread', $entry, null, 'oldvalue', 'newvalue');
 				break;
