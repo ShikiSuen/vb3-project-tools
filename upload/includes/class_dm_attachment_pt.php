@@ -38,22 +38,22 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	* @var	array
 	*/
 	var $validfields = array(
-		'attachmentid'       => array(TYPE_UINT,     REQ_INCR, VF_METHOD, 'verify_nonzero'),
-		'userid'             => array(TYPE_UINT,     REQ_YES),
-		'issueid'            => array(TYPE_UINT,     REQ_YES),
-		'dateline'           => array(TYPE_UNIXTIME, REQ_AUTO),
-		'filename'           => array(TYPE_NOHTMLCOND, REQ_YES, VF_METHOD, 'verify_filename'),
-		'filedata'           => array(TYPE_BINARY,   REQ_NO, VF_METHOD),
-		'filesize'           => array(TYPE_UINT,     REQ_YES),
-		'visible'            => array(TYPE_UINT,     REQ_NO),
-		'counter'            => array(TYPE_UINT,     REQ_NO),
-		'filehash'           => array(TYPE_STR,      REQ_YES, VF_METHOD, 'verify_md5'),
-		'thumbnail'          => array(TYPE_BINARY,   REQ_NO, VF_METHOD),
-		'thumbnail_dateline' => array(TYPE_UNIXTIME, REQ_AUTO),
-		'thumbnail_filesize' => array(TYPE_UINT,     REQ_NO),
+		'attachmentid'       => array(TYPE_UINT,       REQ_INCR, VF_METHOD, 'verify_nonzero'),
+		'userid'             => array(TYPE_UINT,       REQ_YES),
+		'issueid'            => array(TYPE_UINT,       REQ_YES),
+		'dateline'           => array(TYPE_UNIXTIME,   REQ_AUTO),
+		'filename'           => array(TYPE_NOHTMLCOND, REQ_YES,  VF_METHOD, 'verify_filename'),
+		'filedata'           => array(TYPE_BINARY,     REQ_NO,   VF_METHOD),
+		'filesize'           => array(TYPE_UINT,       REQ_YES),
+		'visible'            => array(TYPE_UINT,       REQ_NO),
+		'counter'            => array(TYPE_UINT,       REQ_NO),
+		'filehash'           => array(TYPE_STR,        REQ_YES,  VF_METHOD, 'verify_md5'),
+		'thumbnail'          => array(TYPE_BINARY,     REQ_NO,   VF_METHOD),
+		'thumbnail_dateline' => array(TYPE_UNIXTIME,   REQ_AUTO),
+		'thumbnail_filesize' => array(TYPE_UINT,       REQ_NO),
 		'extension'          => array(TYPE_NOHTMLCOND, REQ_YES),
-		'status'             => array(TYPE_STR,      REQ_NO),
-		'ispatchfile'        => array(TYPE_UINT,     REQ_NO)
+		'status'             => array(TYPE_STR,        REQ_NO),
+		'ispatchfile'        => array(TYPE_UINT,       REQ_NO)
 	);
 
 	/**

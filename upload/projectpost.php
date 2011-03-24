@@ -2116,7 +2116,10 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 // #######################################################################
 if ($_POST['do'] == 'uploadattachment')
 {
-	$vbulletin->input->clean_gpc('p', 'issueid', TYPE_UINT);
+	$vbulletin->input->clean_array_gpc('p', array(
+		'issueid' => TYPE_UINT,
+		'contenttypeid' => TYPE_UINT
+	));
 	$vbulletin->input->clean_gpc('f', 'attachment', TYPE_FILE);
 
 	$issue = verify_issue($vbulletin->GPC['issueid']);
@@ -2132,7 +2135,7 @@ if ($_POST['do'] == 'uploadattachment')
 
 	if ($vbulletin->GPC['attachment'])
 	{
-		require_once(DIR . '/includes/class_upload_pt.php');
+		/*require_once(DIR . '/includes/class_upload_pt.php');
 		require_once(DIR . '/includes/class_image.php');
 
 		require_once(DIR . '/includes/class_dm.php');
@@ -2157,7 +2160,9 @@ if ($_POST['do'] == 'uploadattachment')
 		if ($error = $upload->fetch_error())
 		{
 			standard_error($error);
-		}
+		}*/
+
+		
 	}
 
 	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";

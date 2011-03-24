@@ -1680,6 +1680,7 @@ $rebuild['phrases'] = true;]]></installcode>
 	</div>
 	<div class="underblock"></div>
 </li>]]></template>
+		<template name="modifyattachmentsbit_issue" templatetype="template" date="1300995423" username="Pitchoune" version="2.2.0"><![CDATA[{vb:rawphrase issue}: <a href="{vb:link issue, {vb:raw issue}}">{vb:raw issue.title}</a>]]></template>
 		<template name="projecttools-ie.css" templatetype="template" date="1288450759" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */

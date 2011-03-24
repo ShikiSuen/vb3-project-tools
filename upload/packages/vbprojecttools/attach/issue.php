@@ -33,40 +33,42 @@ class vB_Attachment_Display_Single_vBProjectTools_Issue extends vB_Attachment_Di
 	*/
 	public function verify_attachment()
 	{
-		if (!$this->verify_attachment_specific('vBProjectTools_Issue', array("issue.visible AS issue_visible"), array("LEFT JOIN " . TABLE_PREFIX . "issue AS issue ON (issue.issueid = a.contentid)")))
+		if (!$this->verify_attachment_specific('vBProjectTools_Issue', array("issue.issuetypeid, issue.projectid, issue.issueid, issue.submituserid, issue.visible AS issue_visible", "issueattach.ispatchfile"), array("LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = a.contentid)", "LEFT JOIN " . TABLE_PREFIX . "pt_issueattach AS issueattach ON (issueattach.attachmentid = a.attachmentid)")))
 		{
 			return false;
 		}
 
-		$postinfo = array(
-			'forumid'        => $this->attachmentinfo['forumid'],
-			'threadid'       =>	$this->attachmentinfo['threadid'],
-			'postuserid'     =>	$this->attachmentinfo['postuserid'],
-			'post_visible'   =>	$this->attachmentinfo['post_visible'],
-			'thread_visible' =>	$this->attachmentinfo['thread_visible'],
+		$issueinfo = array(
+			'projectid'      => $this->attachmentinfo['projectid'],
+			'issueid'        =>	$this->attachmentinfo['issueid'],
+			'submituserid'   =>	$this->attachmentinfo['submituserid'],
+			'issue_visible'  =>	$this->attachmentinfo['issue_visible'],
+			'issuetypeid'    =>	$this->attachmentinfo['issuetypeid'],
 		);
 		unset(
-			$this->attachmentinfo['forumid'],
-			$this->attachmentinfo['threadid'],
-			$this->attachmentinfo['postuserid'],
-			$this->attachmentinfo['post_visible'],
-			$this->attachmentinfo['thread_visible']
+			$this->attachmentinfo['projectid'],
+			$this->attachmentinfo['issueid'],
+			$this->attachmentinfo['submituserid'],
+			$this->attachmentinfo['issue_visible'],
+			$this->attachmentinfo['issuetypeid']
 		);
 
-		$forumperms = fetch_permissions($postinfo['forumid']);
+		require_once(DIR . '/includes/functions_projecttools.php');
+		$project = verify_project($issueinfo['projectid']);
+		$issueperms = fetch_project_permissions($this->registry->userinfo, $project['projectid'], $issueinfo['issuetypeid']);
 
 		$this->browsinginfo = array(
-			'threadinfo' => array(
-				'threadid' => $postinfo['threadid'],
+			'issueinfo' => array(
+				'issueid' => $issueinfo['issueid'],
 			),
-			'foruminfo' => array(
-				'forumid' => $postinfo['forumid'],
+			'projectinfo' => array(
+				'projectid' => $issueinfo['projectid'],
 			),
 		);
 
 		if ($this->attachmentinfo['contentid'] == 0)
 		{
-			if ($this->registry->userinfo['userid'] != $this->attachmentinfo['userid'] AND !can_moderate($postinfo['forumid'], 'caneditposts'))
+			if ($this->registry->userinfo['userid'] != $this->attachmentinfo['userid'])
 			{
 				return false;
 			}
@@ -74,29 +76,24 @@ class vB_Attachment_Display_Single_vBProjectTools_Issue extends vB_Attachment_Di
 		else
 		{
 			# Block attachments belonging to soft deleted posts and threads
-			if (!can_moderate($postinfo['forumid']) AND ($postinfo['post_visible'] == 2 OR $postinfo['thread_visible'] == 2))
+			if ($issueinfo['issue_visible'] == 'deleted')
 			{
 				return false;
 			}
 			# Block attachments belonging to moderated posts and threads
-			if (!can_moderate($postinfo['forumid'], 'canmoderateposts') AND (!$postinfo['post_visible'] OR !$postinfo['thread_visible']))
+			if (!$issueinfo['issue_visible'])
 			{
 				return false;
 			}
 
-			// check if there is a forum password and if so, ensure the user has it set
-			if (!verify_forum_password($postinfo['forumid'], $this->registry->forumcache["$postinfo[forumid]"]['password'], false))
-			{
-				return false;
-			}
-			if ($this->attachmentinfo['state'] == 'moderation' AND !can_moderate($postinfo['forumid'], 'canmoderateattachments') AND $this->attachmentinfo['userid'] != $this->registry->userinfo['userid'])
+			if ($this->attachmentinfo['state'] == 'moderation' AND $this->attachmentinfo['userid'] != $this->registry->userinfo['userid'])
 			{
 				return false;
 			}
 
-			$viewpermission = (($forumperms & $this->registry->bf_ugp_forumpermissions['cangetattachment']));
-			$viewthumbpermission = (($forumperms & $this->registry->bf_ugp_forumpermissions['cangetattachment']) OR ($forumperms & $this->registry->bf_ugp_forumpermissions['canseethumbnails']));
-			if (!($forumperms & $this->registry->bf_ugp_forumpermissions['canview']) OR !($forumperms & $this->registry->bf_ugp_forumpermissions['canviewthreads']) OR (!($forumperms & $this->registry->bf_ugp_forumpermissions['canviewothers']) AND ($postinfo['postuserid'] != $this->registry->userinfo['userid'] OR $this->registry->userinfo['userid'] == 0)))
+			$viewpermission = ($issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattachview']);
+			$viewthumbpermission = ($issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattachview']);
+			if (!($issueperms['generalpermissions'] & $this->registry->pt_bitfields['general']['canview']) OR (!($issueperms['generalpermissions'] & $this->registry->pt_bitfields['general']['canviewothers']) AND ($issueinfo['submituserid'] != $this->registry->userinfo['userid'] OR $this->registry->userinfo['userid'] == 0)))
 			{
 				return false;
 			}
@@ -146,14 +143,12 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 	public function fetch_sql($attachmentids)
 	{
 		$selectsql = array(
-			"post.postid, post.title AS p_title, post.dateline AS p_dateline",
-			"thread.forumid, thread.open, thread.threadid, thread.title AS t_title",
+			"issue.issueid, issue.title AS title, issue.submitdate AS dateline, issue.projectid, issue.state",
 			"user.username",
 		);
 
 		$joinsql = array(
-			"LEFT JOIN " . TABLE_PREFIX . "post AS post ON (post.postid = a.contentid)",
-			"LEFT JOIN " . TABLE_PREFIX . "thread AS thread ON (post.threadid = thread.threadid)",
+			"LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = a.contentid)",
 			"LEFT JOIN " . TABLE_PREFIX . "user AS user ON (a.userid = user.userid)",
 		);
 
@@ -170,9 +165,9 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 	*/
 	protected function fetch_sql_ids($criteria, $selectfields)
 	{
-		$cangetforumids = $canget = $canviewothers = $canmod = $canmodhidden = $canmodattach = array(0);
+		$cangetprojectids = $canget = $canviewothers = $canmod = $canmodhidden = $canmodattach = array(1);//0);
 
-		foreach ($this->registry->userinfo['forumpermissions'] AS $forumid => $perm)
+		/*foreach ($this->registry->userinfo['forumpermissions'] AS $forumid => $perm)
 		{
 			if (
 				$password = $this->registry->forumcache["$forumid"]['password']
@@ -217,47 +212,46 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 			{
 				$canmodattach["$forumid"] = $forumid;
 			}
-		}
+		}*/
 
 		$joinsql = array(
-			"LEFT JOIN " . TABLE_PREFIX . "post AS post ON (post.postid = a.contentid)",
-			"LEFT JOIN " . TABLE_PREFIX . "thread AS thread ON (post.threadid = thread.threadid)",
+			"LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = a.contentid)",
 			"LEFT JOIN " . TABLE_PREFIX . "user AS user ON (a.userid = user.userid)",
 		);
 
 		// This SQL can be condensed down in some fashion
 		// This is not optimized beyond the userid level
 		$subwheresql = array(
-			"thread.forumid IN (" . implode(", ", $cangetforumids) . ")",
+			"issue.projectid IN (" . implode(", ", $cangetprojectids) . ")",
 			"(
-				thread.forumid IN (" . implode(", ", $canviewothers) . ")
+				issue.projectid IN (" . implode(", ", $canviewothers) . ")
 					OR
-				thread.postuserid = {$this->registry->userinfo['userid']}
+				issue.submituserid = {$this->registry->userinfo['userid']}
 			)",
 			"(
 				a.state <> 'moderation'
 					OR
 				a.userid = {$this->registry->userinfo['userid']}
 					OR
-				thread.forumid IN (" . implode(", ", $canmodattach) . ")
+				issue.projectid IN (" . implode(", ", $canmodattach) . ")
 			)",
 			"(
 				(
-					post.visible = 1
+					issue.visible = 'open'
 						AND
-					thread.visible = 1
+					issue.visible = 'open'
 				)
 					OR
 				(
-					thread.forumid IN (" . implode(", ", $canmodhidden) . ")
+					issue.projectid IN (" . implode(", ", $canmodhidden) . ")
 				)
 					OR
 				(
-					thread.forumid IN (" . implode(", ", $canmod) . ")
+					issue.projectid IN (" . implode(", ", $canmod) . ")
 						AND
-					post.visible = 2
+					issue.state = 'close'
 						AND
-					thread.visible = 2
+					issue.visible = 'close'
 				)
 			)",
 		);
@@ -276,12 +270,12 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 	{
 		global $show, $vbphrase;
 
-		if (!$post['p_title'])
+		if (!$post['title'])
 		{
-			$post['p_title'] = '&laquo;' . $vbphrase['n_a'] . '&raquo;';
+			$post['title'] = '&laquo; ' . $vbphrase['n_a'] . ' &raquo;';
 		}
 
-		$show['thumbnail'] = ($post['hasthumbnail'] == 1 AND $this->registry->options['attachthumbs'] AND $showthumbs);
+		$show['thumbnail'] = ($this->registry->options['attachthumbs'] AND $showthumbs);
 		$show['inprogress'] = $post['inprogress'];
 
 		$show['candelete'] = false;
@@ -309,18 +303,18 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 			}
 		}
 
-		$threadinfo = array(
-			'threadid' => $post['threadid'],
-			'title'    => $post['t_title'],
+		$issueinfo = array(
+			'threadid' => $post['issueid'],
+			'title'    => $post['title'],
 		);
 		$pageinfo = array(
 			'p'        => $post['contentid'],
 		);
 
 		return array(
-			'template'   => 'post',
-			'post'       => $post,
-			'threadinfo' => $threadinfo,
+			'template'   => 'issue',
+			'issue'      => $post,
+			'issueinfo'  => $issueinfo,
 			'pageinfo'   => $pageinfo,
 		);
 	}
@@ -334,7 +328,7 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 	*/
 	protected function fetch_content_url_instance($contentinfo)
 	{
-		return fetch_seo_url('thread', $contentinfo, array('p' => $contentinfo['contentid']), 'threadid', 'threadtitle') . "#post$contentinfo[contentid]";
+		return fetch_seo_url('issue', $contentinfo, array('issueid' => $contentinfo['contentid']), 'issueid', 'title') . "#note$contentinfo[contentid]";
 	}
 }
 
@@ -349,25 +343,18 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 class vB_Attachment_Store_vBProjectTools_Issue extends vB_Attachment_Store
 {
 	/**
-	*	Postinfo
+	* Issue info
 	*
-	* @var	array
+	* @var	integer
 	*/
-	protected $postinfo = array();
+	protected $issueinfo = array();
 
 	/**
-	* Threadinfo
+	* Project info
 	*
-	* @var 	array
+	* @var	integer
 	*/
-	protected $threadinfo = array();
-
-	/**
-	* Foruminfo
-	*
-	* @var	array
-	*/
-	protected $foruminfo = array();
+	protected $projectinfo = array();
 
 	/**
 	* Constructor
@@ -380,7 +367,7 @@ class vB_Attachment_Store_vBProjectTools_Issue extends vB_Attachment_Store
 	}
 
 	/**
-	* Verifies permissions to attach content to posts
+	* Verifies permissions to attach content to issues
 	*
 	* @return	boolean
 	*/
@@ -388,171 +375,49 @@ class vB_Attachment_Store_vBProjectTools_Issue extends vB_Attachment_Store
 	{
 		global $show;
 
-		$this->values['postid'] = intval($this->values['p']) ? intval($this->values['p']) : intval($this->values['postid']);
-		$this->values['threadid'] = intval($this->values['t']) ? intval($this->values['t']) : intval($this->values['threadid']);
-		$this->values['forumid'] = intval($this->values['f']) ? intval($this->values['f']) : intval($this->values['forumid']);
+		$this->issue = verify_issue($this->values['issueid']);
+		$project = verify_project($issue['projectid']);
 
-		if ($this->values['postid'])
-		{
-			if (!($this->postinfo = fetch_postinfo($this->values['postid'])))
-			{
-				return false;
-			}
-			$this->values['threadid'] = $this->postinfo['threadid'];
-		}
-
-		if ($this->values['threadid'])
-		{
-			if (!($this->threadinfo = fetch_threadinfo($this->values['threadid'])))
-			{
-				return false;
-			}
-			$this->values['forumid'] = $this->threadinfo['forumid'];
-		}
-
-		if ($this->values['forumid'] AND !($this->foruminfo = fetch_foruminfo($this->values['forumid'])))
+		$this->issueperms = fetch_project_permissions($this->registry->userinfo, $project['projectid'], $this->issue['issuetypeid']);
+		if (!($this->issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattach']) OR is_issue_closed($this->issue, $this->issueperms))
 		{
 			return false;
 		}
 
-		if (!$this->foruminfo AND !$this->threadinfo AND !($this->postinfo AND $this->values['editpost']))
+		if ($this->values['issueid'])
 		{
-			return false;
-		}
-
-		$forumperms = fetch_permissions($this->foruminfo['forumid']);
-
-		// No permissions to post attachments in this forum or no permission to view threads in this forum.
-		if (
-			!($forumperms & $this->registry->bf_ugp_forumpermissions['canpostattachment'])
-				OR
-			!($forumperms & $this->registry->bf_ugp_forumpermissions['canview'])
-				OR
-			!($forumperms & $this->registry->bf_ugp_forumpermissions['canviewthreads'])
-		)
-		{
-			return false;
-		}
-
-		if (
-			(!$this->postinfo AND !$this->foruminfo['allowposting'])
-				OR
-			$this->foruminfo['link']
-				OR
-			!$this->foruminfo['cancontainthreads']
-		)
-		{
-			return false;
-		}
-
-		if ($this->threadinfo) // newreply.php or editpost.php called
-		{
-			if ($this->threadinfo['isdeleted'] OR (!$this->threadinfo['visible'] AND !can_moderate($this->threadinfo['forumid'], 'canmoderateposts')))
-			{
-				return false;
-			}
-			if (!$this->threadinfo['open'])
-			{
-				if (!can_moderate($this->threadinfo['forumid'], 'canopenclose'))
-				{
-					return false;
-				}
-			}
-			if (
-				($this->registry->userinfo['userid'] != $this->threadinfo['postuserid'])
-					AND
-				(
-					!($forumperms & $this->registry->bf_ugp_forumpermissions['canviewothers'])
-						OR
-					!($forumperms & $this->registry->bf_ugp_forumpermissions['canreplyothers'])
-				))
+			if (!($this->issueinfo = verify_issue($this->values['issueid'])))
 			{
 				return false;
 			}
 
-			// don't call this part on editpost.php (which will have a $postid)
-			if (
-				!$this->postinfo
-					AND
-				!($forumperms & $this->registry->bf_ugp_forumpermissions['canreplyown'])
-					AND
-				$this->registry->userinfo['userid'] == $this->threadinfo['postuserid']
-			)
+			if (!($this->projectinfo = verify_project($this->issue['projectid'])))
 			{
 				return false;
 			}
-		}
-		else if (!($forumperms & $this->registry->bf_ugp_forumpermissions['canpostnew'])) // newthread.php
-		{
-			return false;
-		}
 
-		if ($this->postinfo) // editpost.php
-		{
-			if (!can_moderate($this->threadinfo['forumid'], 'caneditposts'))
-			{
-				if (!($forumperms & $this->registry->bf_ugp_forumpermissions['caneditpost']))
-				{
-					return false;
-				}
-				else
-				{
-					if ($this->registry->userinfo['userid'] != $this->postinfo['userid'])
-					{
-						// check user owns this post
-						return false;
-					}
-					else
-					{
-						// check for time limits
-						if ($this->postinfo['dateline'] < (TIMENOW - ($this->registry->options['edittimelimit'] * 60)) AND $this->registry->options['edittimelimit'])
-						{
-							return false;
-						}
-					}
-				}
-			}
-
-			$this->contentid = $this->postinfo['postid'];
-			$this->userinfo = fetch_userinfo($this->postinfo['userid']);
-			cache_permissions($this->userinfo, true);
+			$this->contentid = $this->issueinfo['issueid'];
+			$this->userinfo = fetch_userinfo($this->issueinfo['userid']);
+			cache_permissions($this->userinfo);
 		}
 		else
 		{
-			$this->userinfo = $this->registry->userinfo;
-		}
-
-		// check if there is a forum password and if so, ensure the user has it set
-		verify_forum_password($this->foruminfo['forumid'], $this->foruminfo['password'], false);
-
-		if (!$this->foruminfo['allowposting'])
-		{
-			$show['attachoption'] = false;
-			$show['forumclosed'] = true;
-		}
-
-		return true;
-	}
-
-	/**
-	* Ensures that attachment interface isn't display if forum doesn't allow posting and there are no existing attachments
-	*
-	* @return	boolean
-	*/
-	public function fetch_attachcount()
-	{
-		parent::fetch_attachcount();
-
-		if (!$this->foruminfo['allowposting'] AND !$this->attachcount)
-		{
-			return false;
+			if ($userid = intval($this->values['u']) AND $userinfo = fetch_userinfo($userid))
+			{
+				$this->userinfo = $userinfo;
+				cache_permissions($this->userinfo);
+			}
+			else
+			{
+				$this->userinfo = $this->registry->userinfo;
+			}
 		}
 
 		return true;
 	}
 
 	/**
-	* Verifies permissions to attach content to posts
+	* Verifies permissions to attach content to issues
 	*
 	* @param	object		vB_Upload
 	* @param	array		Information about uploaded attachment
@@ -561,54 +426,29 @@ class vB_Attachment_Store_vBProjectTools_Issue extends vB_Attachment_Store
 	*/
 	protected function process_upload($upload, $attachment, $imageonly = false)
 	{
-		if (!$this->foruminfo['allowposting'])
-		{
-			$error = $vbphrase['this_forum_is_not_accepting_new_attachments'];
-			$errors[] = array(
-				'filename' => is_array($attachment) ? $attachment['name'] : $attachment,
-				'error'    => $error
-			);
-		}
-		else
-		{
-			if (
-				($attachmentid = parent::process_upload($upload, $attachment, $imageonly))
-					AND
-				$this->registry->userinfo['userid'] != $this->postinfo['userid']
-					AND
-				can_moderate($this->threadinfo['forumid'], 'caneditposts')
-			)
-			{
-				$this->postinfo['attachmentid'] = $attachmentid;
-				$this->postinfo['forumid'] = $foruminfo['forumid'];
-				require_once(DIR . '/includes/functions_log_error.php');
-				log_moderator_action($this->postinfo, 'attachment_uploaded');
-			}
-
-			return $attachmentid;
-		}
-	}
-
-	/**
-	* Set attachment to moderated if the forum dictates it so
-	*
-	* @return	object
-	*/
-	protected function &fetch_attachdm()
-	{
-		$attachdata =& parent::fetch_attachdm();
-		$state = (
-			!isset($this->foruminfo['moderateattach'])
-				OR
-			(
-				!$this->foruminfo['moderateattach']
+		if (
+			($attachmentid = parent::process_upload($upload, $attachment, $imageonly))
+				AND
+			$this->registry->userinfo['userid'] != $this->issueinfo['userid']
+				AND
+			(!
+				($this->issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattach'])
 					OR
-				can_moderate($this->foruminfo['forumid'], 'canmoderateattachments')
+				is_issue_closed($this->issue, $this->issueperms)
 			)
-		) ? 'visible' : 'moderation';
-		$attachdata->set('state', $state);
+		)
+		{
+			$this->issueinfo['attachmentid'] = $attachmentid;
+			$this->issueinfo['projectid'] = $project['projectid'];
 
-		return $attachdata;
+			// Need to put some checks and a query for diff/patch files
+			
+
+			require_once(DIR . '/includes/functions_log_error.php');
+			log_moderator_action($this->issueinfo, 'attachment_uploaded');
+		}
+
+		return $attachmentid;
 	}
 }
 
@@ -847,6 +687,343 @@ class vB_Attachment_Upload_Displaybit_vBProjectTools_Issue extends vB_Attachment
 		$templater = vB_Template::create('newpost_attachmentbit');
 			$templater->register('attach', $attach);
 		return $templater->render($disablecomment);
+	}
+}
+
+/**
+* Class for common attachment tasks that are content agnostic
+*
+* @package 		vBulletin
+* @version		$Revision$
+* @date 		$Date$
+*
+*/
+class vB_Attach_Display_Content_vBProjectTools_Issue
+{
+	/**
+	* Main data registry
+	*
+	* @var	vB_Registry
+	*/
+	protected $registry = null;
+
+	/**
+	* Contenttype id
+	*
+	* @var	integer
+	*/
+	protected $contenttypeid = 0;
+
+	/**
+	* Constructor - checks that the registry object has been passed correctly.
+	*
+	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
+	* @param	string			Contenttype
+	*/
+	public function __construct(&$registry, $contenttype)
+	{
+		$this->registry =& $registry;
+
+		require_once(DIR . '/includes/class_bootstrap_framework.php');
+		vB_Bootstrap_Framework::init();
+		$this->contenttypeid = vB_Types::instance()->getContentTypeID($contenttype);
+	}
+
+	/**
+	* Fetches the contenttypeid
+	*
+	*	@return	integer
+	*/
+	public function fetch_contenttypeid()
+	{
+		return $this->contenttypeid;
+	}
+
+	/**
+	* Fetches a list of attachments for display on edit or preview
+	*
+	* @param	string	Posthash of this edit/add
+	* @param	integer	Start time of this edit/add
+	* @param	array		Combined existing and new attachments belonging to this content
+	* @param	integer id of attachments owner
+	* @param	string	Content specific values that need to be passed on to the attachment form
+	* @param	string	$editorid of the message editor on the page that launched the asset manager
+	* @param	integer	Number of fetched attachments, set by this function
+	* @param	mixed		Who can view an attachment with no contentid (in progress), other than vbulletin->userinfo
+	*
+	* @return	string
+	*/
+	public function fetch_edit_attachments(&$posthash, &$poststarttime, &$postattach, $contentid, $values, $editorid, &$attachcount, $users = null)
+	{
+		global $show;
+
+		require_once(DIR . '/includes/functions_file.php');
+		// $maxattachsize is redundant, never used 
+		$attachcount = 0;
+		$attachment_js = '';
+
+		if (!$posthash OR !$poststarttime)
+		{
+			$poststarttime = TIMENOW;
+			$posthash = md5($poststarttime . $this->registry->userinfo['userid'] . $this->registry->userinfo['salt']);
+		}
+
+		if (empty($postattach))
+		{
+			$postattach = $this->fetch_postattach($posthash, $contentid, $users);
+		}
+
+		if (!empty($postattach))
+		{
+			$attachdisplaylib =& vB_Attachment_Upload_Displaybit_Library::fetch_library($this->registry, $this->contenttypeid);
+			foreach($postattach AS $attachmentid => $attach)
+			{
+				$attachcount++;
+				$attach['html'] = $attachdisplaylib->process_display_template($attach, $values);
+				$attachments .= $attach['html'];
+				$show['attachmentlist'] = true;
+				$attachment_js .= $attachdisplaylib->construct_attachment_add_js($attach);
+			}
+		}
+
+		$templater = vB_Template::create('newpost_attachment');
+			$templater->register('attachments', $attachments);
+			$templater->register('attachment_js', $attachment_js);
+			$templater->register('editorid', $editorid);
+			$templater->register('posthash', $posthash);
+			$templater->register('contentid', $contentid);
+			$templater->register('poststarttime', $poststarttime);
+			$templater->register('attachuserid', $this->registry->userinfo['userid']);
+			$templater->register('contenttypeid', $this->contenttypeid);
+			$templater->register('values', $values);
+		return $templater->render();
+	}
+
+	/**
+	* Constructor - checks that the registry object has been passed correctly.
+	*
+	* @param	string		Posthash of this edit/add
+	* @param	integer 	id of attachments owner
+	* @param	mixed		Who can view an attachment with no contentid (in progress), other than vbulletin->userinfo
+	*
+	* @return	array
+	*/
+	public function fetch_postattach($posthash = 0, $contentid = 0, $users = null)
+	{
+		// if we were passed no information, simply return an empty array
+		// to avoid a nasty database error
+		if (empty($posthash) AND empty($contentid))
+		{
+			return array();
+		}
+
+		if (!$users)
+		{
+			$users = array($this->registry->userinfo['userid']);
+		}
+		else
+		{
+			if (is_array($users))
+			{
+				$temp = array_map("intval", $users);
+				$users = $temp;
+			}
+			else if ($userid = intval($users))
+			{
+				$users = array($userid);
+			}
+			$users[] = $this->registry->userinfo['userid'];
+		}
+
+		$union = array();
+
+		if ($contentid)
+		{
+			$union[] = "
+				SELECT
+					fd.thumbnail_dateline, fd.filesize, IF(fd.thumbnail_filesize > 0, 1, 0) AS hasthumbnail, fd.thumbnail_filesize,
+					a.dateline, a.state, a.attachmentid, a.counter, a.contentid, a.filename, a.userid, a.settings, a.displayorder,
+					at.contenttypes, i.ispatchfile, i.status, u.username
+				FROM " . TABLE_PREFIX . "attachment AS a
+					INNER JOIN " . TABLE_PREFIX . "filedata AS fd ON (fd.filedataid = a.filedataid)
+					LEFT JOIN " . TABLE_PREFIX . "attachmenttype AS at ON (at.extension = fd.extension)
+					LEFT JOIN " . TABLE_PREFIX . "pt_issueattach AS i ON (i.attachmentid = a.attachmentid)
+					LEFT JOIN " . TABLE_PREFIX . "user AS u ON (u.userid = a.userid)
+				WHERE
+					a.contentid = " . intval($contentid) . "
+						AND
+					a.contenttypeid = " . $this->contenttypeid . "
+			";
+		}
+
+		if ($posthash)
+		{
+			$union[] = "
+				SELECT
+					fd.thumbnail_dateline, fd.filesize, IF(fd.thumbnail_filesize > 0, 1, 0) AS hasthumbnail, fd.thumbnail_filesize,
+					a.dateline, a.state, a.attachmentid, a.counter, a.contentid, a.filename, a.userid, a.settings, a.displayorder,
+					at.contenttypes, i.ispatchfile, i.status, u.username
+				FROM " . TABLE_PREFIX . "attachment AS a
+					INNER JOIN " . TABLE_PREFIX . "filedata AS fd ON (fd.filedataid = a.filedataid)
+					LEFT JOIN " . TABLE_PREFIX . "attachmenttype AS at ON (at.extension = fd.extension)
+					LEFT JOIN " . TABLE_PREFIX . "pt_issueattach AS i ON (i.attachmentid = a.attachmentid)
+					LEFT JOIN " . TABLE_PREFIX . "user AS u ON (u.userid = a.userid)
+				WHERE
+					a.posthash = '" . $this->registry->db->escape_string($posthash) . "'
+						AND
+					a.userid IN (" . implode(',', $users) . ")
+						AND
+					a.contenttypeid = " . $this->contenttypeid . "
+			";
+		}
+
+		if (count($union) > 1)
+		{
+			$unionsql = array(
+				"(" . implode(") UNION ALL (", $union) . ")",
+				"ORDER BY displayorder",
+			);
+		}
+		else
+		{
+			$unionsql = array(
+				$union[0],
+				"ORDER BY a.contentid, a.displayorder",
+			);
+		}
+
+		$postattach = array();
+		$attachments = $this->registry->db->query_read_slave(implode("\r\n", $unionsql));
+		while ($attachment = $this->registry->db->fetch_array($attachments))
+		{
+			$content = @unserialize($attachment['contenttypes']);
+			$attachment['newwindow'] = $content[$this->contenttypeid]['n'];
+
+			$postattach["$attachment[attachmentid]"] = $attachment;
+		}
+
+		return $postattach;
+	}
+
+	/**
+	* Constructor - checks that the registry object has been passed correctly.
+	*
+	* @param	array		Information about the content that owns these attachments
+	* @param	array		List of attachments belonging to the specifed post
+	* @param	boolean 	Display download count
+	* @param	boolean 	Viewer has permission to download attachments
+	* @param	boolean 	Viewer has permission to get attachments
+	* @param	boolean 	Viewer has permission to set thumbnails
+	*
+	* @return	void
+	*/
+	function process_attachments(&$post, &$attachments, $hidecounter = false, $canmod = false, $canget = true, $canseethumb = true, $linkonly = false)
+	{
+		global $show, $vbphrase;
+
+		if (!empty($attachments))
+		{
+			$show['modattachmentlink'] = ($canmod OR $post['userid'] == $this->registry->userinfo['userid']);
+			$show['attachments'] = true;
+			$show['moderatedattachment'] = $show['thumbnailattachment'] = $show['otherattachment'] = false;
+			$show['imageattachment'] = $show['imageattachmentlink'] = false;
+
+			$attachcount = sizeof($attachments);
+			$thumbcount = 0;
+
+			if (!$this->registry->options['viewattachedimages'])
+			{
+				$showimagesprev = $this->registry->userinfo['showimages'];
+				$this->registry->userinfo['showimages'] = false;
+			}
+
+			foreach ($attachments AS $attachmentid => $attachment)
+			{
+				if ($canget AND $canseethumb AND $attachment['thumbnail_filesize'] == $attachment['filesize'])
+				{
+					// This is an image that is already thumbnail sized..
+					$attachment['hasthumbnail'] = 0;
+					$attachment['forceimage'] = ($this->registry->options['viewattachedimages'] ? $this->registry->userinfo['showimages'] : 0);
+				}				
+				else if (!$canseethumb)
+				{
+					$attachment['hasthumbnail'] = 0;
+				}
+
+				$show['newwindow'] = $attachment['newwindow'];
+
+				$attachment['filename'] = fetch_censored_text(htmlspecialchars_uni($attachment['filename']));
+				$attachment['attachmentextension'] = strtolower(file_extension($attachment['filename']));
+				$attachment['filesize'] = vb_number_format($attachment['filesize'], 1, true);
+
+				if (vB_Template_Runtime::fetchStyleVar('dirmark'))
+				{
+					$attachment['filename'] .= vB_Template_Runtime::fetchStyleVar('dirmark');
+				}
+
+				($hook = vBulletinHook::fetch_hook('postbit_attachment')) ? eval($hook) : false;
+
+				if ($attachment['state'] == 'visible')
+				{
+					/*if ($hidecounter)
+					{
+						$attachment['counter'] = $vbphrase['n_a'];
+						$show['views'] = false;
+					}
+					else
+					{
+						$show['views'] = true;
+					}
+
+					$lightbox_extensions = array('gif', 'jpg', 'jpeg', 'jpe', 'png', 'bmp');
+					$ext = $linkonly ? null : $attachment['attachmentextension'];
+
+					$attachmenturl = create_full_url("attachment.php?{$this->registry->session->vars['sessionurl']}attachmentid=$attachment[attachmentid]&d=$attachment[dateline]");
+					$imageurl = create_full_url("attachment.php?{$this->registry->session->vars['sessionurl']}attachmentid=$attachment[attachmentid]&stc=1&d=$attachment[dateline]");
+					$thumburl = create_full_url("attachment.php?{$this->registry->session->vars['sessionurl']}attachmentid=$attachment[attachmentid]&stc=1&thumb=1&d=$attachment[thumbnail_dateline]");*/
+
+					// PT stuff
+					$project = verify_project($post['projectid']);
+					$issueperms = fetch_project_permissions($this->registry->userinfo, $project['projectid'], $post['issuetypeid']);
+
+					$show['attachment_obsolete'] = ($attachment['status'] == 'obsolete');
+					$show['manage_attach_link'] = (($issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattachedit']) AND (($issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattacheditothers']) OR $this->registry->userinfo['userid'] == $attachment['userid']));
+
+					if ($attachment['ispatchfile'])
+					{
+						$attachment['link'] = create_full_url('project.php?' . $this->registry->session->vars['sessionurl'] . "do=patch&amp;attachmentid=$attachment[attachmentid]");
+					}
+					else
+					{
+						$attachment['link'] = create_full_url('projectattachment.php?' . $this->registry->session->vars['sessionurl'] . "attachmentid=$attachment[attachmentid]");
+					}
+
+					$attachment['attachtime'] = vbdate($this->registry->options['timeformat'], $attachment['dateline']);
+					$attachment['attachdate'] = vbdate($this->registry->options['dateformat'], $attachment['dateline'], true);
+					// End PT stuff
+
+					switch($ext)
+					{
+						default:
+							$templater = vB_Template::create('pt_attachmentbit');
+								$templater->register('attachment', $attachment);
+								$templater->register('url', $attachmenturl);
+							$post['attachmentbits'] .= $templater->render();
+					}
+				}
+				else
+				{
+					$templater = vB_Template::create('pt_attachmentbit');
+						$templater->register('attachment', $attachment);
+						$templater->register('url', $attachmenturl);
+					$post['attachmentbits'] .= $templater->render();
+				}
+			}
+		}
+		else
+		{
+			$show['attachments'] = false;
+		}
 	}
 }
 

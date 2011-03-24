@@ -950,7 +950,7 @@ if ($show['status_petition'] OR $show['status_edit'])
 if ($show['attachments'])
 {
 	// attachments
-	$attachments = $db->query_read("
+	/*$attachments = $db->query_read("
 		SELECT issueattach.attachmentid, issueattach.userid, issueattach.filename, issueattach.extension,
 			issueattach.dateline, issueattach.visible, issueattach.status, issueattach.filesize,
 			issueattach.thumbnail_filesize, issueattach.thumbnail_dateline, issueattach.ispatchfile,
@@ -987,7 +987,22 @@ if ($show['attachments'])
 			$templater->register('attachment', $attachment);
 			$templater->register('contenttypeid', $issue_contenttypeid);
 		$attachmentbits .= $templater->render();
-	}
+	}*/
+
+	require_once(DIR . '/packages/vbattach/attach.php');
+	require_once(DIR . '/packages/vbprojecttools/attach/issue.php');
+	$attach = new vB_Attach_Display_Content_vBProjectTools_Issue($vbulletin, 'vBProjectTools_Issue');
+	$postattach = $attach->fetch_postattach(0, $issue['issueid']);
+	$attach->process_attachments(
+		$issue,
+		$postattach,
+		true,
+		$issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachview'], // Can view
+		$issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachview'], // Can download - There is no permission in PT dedicated to this
+		true // Can see thumbnails - There is no permission in PT dedicated to this
+	);
+	$attachmentbits = $issue['attachmentbits'];
+
 }
 
 // mark this issue as read
