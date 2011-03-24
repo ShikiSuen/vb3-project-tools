@@ -3830,7 +3830,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1299610167" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1300995027" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3859,7 +3859,7 @@ legend {
 	</vb:if>
 
 	<vb:if condition="$show['quick_reply']">
-		<vb:if condition="$vbulletin->options['templateversion'] >= '4.1.3'">
+		<vb:if condition="$vbulletin->options['templateversion'] >= '4.1.4'">
 			<script type="text/javascript">
 			<!--
 			var vbversion = '{vb:raw vbversion.0}.{vb:raw vbversion.1}.{vb:raw vbversion.2}';
