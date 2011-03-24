@@ -1630,6 +1630,17 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 	));
 }
 
+// Query to allow attachments to issues
+$db->query_write("
+	UPDATE " . TABLE_PREFIX . "contenttype SET
+		canattach = '1'
+	WHERE package = 'vBProjectTools'
+		AND class = 'Issue'
+");
+
+// Function to move PT attachments from pt_issueattach table to attachment/filedata tables.
+pt_update_move_attachments();
+
 // Ensure phrases will be rebuilt
 $rebuild['phrases'] = true;]]></installcode>
 			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");]]></uninstallcode>

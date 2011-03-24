@@ -585,4 +585,11 @@ function build_pt_user_list($name, $callback)
 	return $userlist;
 }
 
+function pt_update_move_attachments()
+{
+	// Code will be made here to move attachments in the latest system.
+	// 'return true' is the actual code, will be done later
+	return true;
+}
+
 ?>
