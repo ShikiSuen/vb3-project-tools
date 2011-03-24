@@ -9281,21 +9281,14 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 			$handled = true;
 			break;
 
-		case 'pt_projectimpex':
+		case 'pt_projectpriority':
 			$item = $vbulletin->db->query_first("
-				SELECT projectimpexid, projectimpexid AS title, contenttypeid
-				FROM " . TABLE_PREFIX . "pt_projectimpex
-				WHERE projectimpexid = $itemid
+				SELECT projectpriorityid, projectpriorityid AS title
+				FROM " . TABLE_PREFIX . "pt_projectpriority
+				WHERE projectpriorityid = $itemid
 			");
 
-			$contenttype = $vbulletin->db->query_first("
-				SELECT c.class AS cclass, p.class AS pclass
-				FROM " . TABLE_PREFIX . "contenttype AS c
-					LEFT JOIN " . TABLE_PREFIX . "package AS p ON (p.packageid = c.packageid)
-				WHERE c.contenttypeid = " . $item['contenttypeid'] . " 
-			");
-
-			$item['title'] = $contenttype['pclass'] . '_' . $contenttype['cclass'];
+			$item['title'] = $vbphrase["priority$itemid"];
 			$handled = true;
 			break;
 	}
