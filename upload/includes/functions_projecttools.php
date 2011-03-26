@@ -592,8 +592,8 @@ function translate_system_note($data)
 				break;
 
 			case 'priority':
-				$entry['oldvalue'] = $vbphrase["priority_$entry[oldvalue]"];
-				$entry['newvalue'] = $vbphrase["priority_$entry[newvalue]"];
+				$entry['oldvalue'] = $vbphrase["priority$entry[oldvalue]"];
+				$entry['newvalue'] = $vbphrase["priority$entry[newvalue]"];
 				break;
 
 			case 'issuetypeid':
