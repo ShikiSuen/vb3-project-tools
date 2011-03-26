@@ -2710,7 +2710,7 @@ if ($_POST['do'] == 'projectprioritydisplayorder')
 		");
 	}
 
-	build_project_category_cache();
+	build_project_priority_cache();
 
 	define('CP_REDIRECT', 'project.php?do=projectpriority&projectid=' . $vbulletin->GPC['projectid']);
 	print_stop_message('saved_display_order_successfully');
