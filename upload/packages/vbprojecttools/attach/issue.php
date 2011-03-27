@@ -917,7 +917,6 @@ class vB_Attach_Display_Content_vBProjectTools_Issue
 		if (!empty($attachments))
 		{
 			$show['modattachmentlink'] = ($canmod OR $post['userid'] == $this->registry->userinfo['userid']);
-			$show['attachments'] = true;
 			$show['moderatedattachment'] = $show['thumbnailattachment'] = $show['otherattachment'] = false;
 			$show['imageattachment'] = $show['imageattachmentlink'] = false;
 
@@ -989,11 +988,7 @@ class vB_Attach_Display_Content_vBProjectTools_Issue
 					$post['attachmentbits'] .= $templater->render();
 				}
 			}
-		}
-		else
-		{
-			$show['attachments'] = false;
-		}
+		} // No else and defining $show['attachments'] to false - hide the full form and can't add any attachment!
 	}
 }
 
