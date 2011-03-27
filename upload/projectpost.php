@@ -506,7 +506,7 @@ if ($_POST['do'] == 'postreply')
 		}
 		else
 		{
-			$preview = construct_errors($issuenotedata->errors); //prepare_pt_note_preview($vbulletin->GPC, $issuenotedata, $issuenote, $issue);
+			$preview = prepare_pt_note_preview($vbulletin->GPC, $issuenotedata, $issuenote, $issue);
 			construct_checkboxes($vbulletin->GPC);
 			define('IS_PREVIEW', true);
 			$_REQUEST['do'] = 'editreply';
