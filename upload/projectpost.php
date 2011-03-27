@@ -2151,8 +2151,8 @@ if ($_POST['do'] == 'uploadattachment')
 		$attachdata->save();
 	}
 
-	/*$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
-	eval(print_standard_redirect('pt_attachment_uploaded'));*/
+	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
+	eval(print_standard_redirect('pt_attachment_uploaded'));
 }
 
 // #######################################################################
