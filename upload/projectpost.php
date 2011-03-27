@@ -2148,6 +2148,7 @@ if ($_POST['do'] == 'uploadattachment')
 			$attachdata->setr('attachmentid', $attachment['attachmentid']);
 			$attachdata->setr('userid', $vbulletin->userinfo['userid']);
 			$attachdata->setr('issueid', $issue['issueid']);
+			$attachdata->setr('visible', 1); // Need to redefine how to manage it
 		$attachdata->save();
 	}
 
