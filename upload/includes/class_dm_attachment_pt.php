@@ -125,12 +125,17 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 			return false;
 		}
 
-		// The attachment exists in corresponding tables, but not in pt_attach
 		if ($this->condition === null)
 		{
+			// The attachment exists in corresponding tables, but not in 'pt_attach'
 			$this->db_insert(TABLE_PREFIX, $this->table, $doquery);
 			$return = $this->fetch_field('attachmentid');
 			$this->set('attachmentid', $return);
+		}
+		else
+		{
+			// Needed only to mark an attachment as obsolete / current
+			$this->db_update(TABLE_PREFIX, $this->table, $this->condition, $doquery);
 		}
 
 		if ($return AND $this->post_save_each($doquery) AND $this->post_save_once($doquery))
@@ -187,7 +192,11 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 			// new attachment or making one invisible
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "pt_issue SET
-					attachcount = attachcount + 1
+					attachcount = (
+						SELECT COUNT(*)
+						FROM " . TABLE_PREFIX . "attachment
+						WHERE contentid = " . intval($this->fetch_field('issueid')) . "
+					)
 				WHERE issueid = " . intval($this->fetch_field('issueid')) . "
 			");
 		}
@@ -239,6 +248,19 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	}
 
 	/**
+	* Deletes the specified data item from the database
+	*
+	* @return	integer	The number of rows deleted
+	*/
+	/*function delete($doquery = true)
+	{
+		
+
+		return parent::delete($doquery);
+	}*/
+	
+
+	/**
 	* Any code to run before deleting. Builds lists and updates mod log
 	*
 	* @param	Boolean Do the query?
@@ -261,9 +283,9 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 				issue.submitdate AS issue_dateline,
 				issue.submituserid AS issue_userid
 			FROM " . TABLE_PREFIX . "attachment AS attachment
-			LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = attachment.issueid)
-			WHERE " . $this->condition
-		);
+			LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = attachment.contentid)
+			WHERE " . $this->condition . "
+		");
 		while ($id = $this->registry->db->fetch_array($ids))
 		{
 			$this->lists['idlist']["{$id['attachmentid']}"] = $id['userid'];
@@ -273,6 +295,12 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 				$this->lists['issuelist']["{$id['issueid']}"]++;
 			}
 		}
+
+		// Change contentid value in 'attachment' table to avoid problems
+		$this->registry->db->query_write("
+			DELETE FROM " . TABLE_PREFIX . "attachment
+			WHERE " . $this->condition . "
+		");
 
 		if ($this->registry->db->num_rows($ids) == 0)
 		{

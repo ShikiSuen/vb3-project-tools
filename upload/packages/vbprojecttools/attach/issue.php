@@ -480,17 +480,14 @@ class vB_Attachment_Dm_vBProjectTools_Issue extends vB_Attachment_Dm
 		$ids = $this->registry->db->query_read("
 			SELECT
 				a.attachmentid, a.userid, IF(a.contentid = 0, 1, 0) AS inprogress,
-				post.postid, post.threadid, post.dateline AS p_dateline, post.userid AS post_userid,
-				thread.forumid, thread.threadid, thread.open
+				issue.issueid, issue.projectid,
 			FROM " . TABLE_PREFIX . "attachment AS a
-			LEFT JOIN " . TABLE_PREFIX . "post AS post ON (post.postid = a.contentid)
-			LEFT JOIN " . TABLE_PREFIX . "thread AS thread ON (thread.threadid = post.threadid)
-			LEFT JOIN " . TABLE_PREFIX . "editlog AS editlog ON (editlog.postid = post.postid)
+				LEFT JOIN " . TABLE_PREFIX . "issue AS issue ON (issue.issueid = a.contentid)
 			WHERE a.attachmentid IN (" . implode(", ", $list) . ")
 		");
 		while ($id = $this->registry->db->fetch_array($ids))
 		{
-			if (!can_moderate($id['forumid'], 'canmoderateattachments') AND $checkperms)
+			if (!can_moderate($id['projectid'], 'canmoderateattachments') AND $checkperms)
 			{
 				return false;
 			}
@@ -945,6 +942,7 @@ class vB_Attach_Display_Content_vBProjectTools_Issue
 				$attachment['filename'] = fetch_censored_text(htmlspecialchars_uni($attachment['filename']));
 				$attachment['attachmentextension'] = strtolower(file_extension($attachment['filename']));
 				$attachment['filesize'] = vb_number_format($attachment['filesize'], 1, true);
+				$attachment['issueid'] = $post['issueid'];
 
 				if (vB_Template_Runtime::fetchStyleVar('dirmark'))
 				{

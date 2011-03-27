@@ -2227,9 +2227,10 @@ if ($_REQUEST['do'] == 'manageattach')
 	$vbulletin->input->clean_gpc('r', 'attachmentid', TYPE_UINT);
 
 	$attachment = $db->query_first("
-		SELECT *
-		FROM " . TABLE_PREFIX . "attachment
-		WHERE attachmentid = " . $vbulletin->GPC['attachmentid']
+		SELECT a.*, i.status
+		FROM " . TABLE_PREFIX . "attachment AS a
+			LEFT JOIN " . TABLE_PREFIX . "pt_issueattach AS i ON (i.attachmentid = a.attachmentid)
+		WHERE a.attachmentid = " . $vbulletin->GPC['attachmentid']
 	);
 
 	$issue = verify_issue($attachment['contentid']);
