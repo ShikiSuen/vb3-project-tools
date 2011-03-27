@@ -131,8 +131,6 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 	{
 		parent::__construct($registry);
 		$this->contenttypeid = $contenttypeid;
-		require_once(DIR . '/includes/functions_forumlist.php');
-		cache_moderators($registry->userinfo['userid']);
 	}
 
 	/**
