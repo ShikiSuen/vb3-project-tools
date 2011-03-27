@@ -1470,6 +1470,11 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 			<installcode><![CDATA[require_once(DIR . '/includes/adminfunctions_projecttools.php');
 $full_product_info = fetch_product_list(true);
 
+// Required?
+require_once(DIR . '/includes/class_bootstrap_framework.php');
+vB_Bootstrap_Framework::init();
+$issue_contenttypeid = vB_Types::instace()->getContentTypeID('vBProjectTools_Issue');
+
 // Move milestones into phrase system
 $milestone_data = $db->query_read("
 	SELECT milestoneid, projectid, title, description
@@ -1641,12 +1646,19 @@ $db->query_write("
 // Function to move PT attachments from pt_issueattach table to attachment/filedata tables.
 pt_update_move_attachments();
 
+$db->query_write("
+	UPDATE " . TABLE_PREFIX . "contenttype SET
+		canattach = '1'
+	WHERE contenttypeid = " . $issue_contenttypeid . "
+");
+
 // Ensure phrases will be rebuilt
 $rebuild['phrases'] = true;]]></installcode>
 			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
+		<template name="assetmanager_usage_issue" templatetype="template" date="1301174021" username="Pitchoune" version="2.2.0"><![CDATA[<div class="{vb:raw usagerow}">{vb:rawphrase issue}: <a href="{vb:link issue, {vb:raw issue}}" target="_blank">{vb:raw issue.title}</a></div>]]></template>
 		<template name="block_issues" templatetype="template" date="1294257989" username="Pitchoune" version="2.2.0"><![CDATA[<li>
 	<div class="block smaller">
 		<div class="blocksubhead">
@@ -3310,10 +3322,10 @@ legend {
 .footer_copyright, .footer_morecopyright, .footer_time {
 	color: {vb:stylevar footer_copyright_color};
 }]]></template>
-		<template name="pt_attachmentbit" templatetype="template" date="1273784756" username="Pitchoune" version="2.1.0"><![CDATA[<div class="blockrow">
+		<template name="pt_attachmentbit" templatetype="template" date="1301231961" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
 	<div style="display: inline-block; float: {vb:stylevar left}">
 		<vb:if condition="$attachment['thumbnail_filesize']">
-			<a href="projectattachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}"<vb:if condition="$show['lightbox']"> rel="Lightbox_{vb:raw attachment.issueid}" id="attachment{vb:raw attachment.attachmentid}"</vb:if> target="_blank"><img src="projectattachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}&amp;thumb=1" alt="" border="0" /></a>
+			<a href="attachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}"<vb:if condition="$show['lightbox']"> rel="Lightbox_{vb:raw attachment.issueid}" id="attachment{vb:raw attachment.attachmentid}"</vb:if> target="_blank"><img src="attachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}&amp;thumb=1" alt="" border="0" /></a>
 		<vb:else />
 			&nbsp;
 		</vb:if>
@@ -3336,9 +3348,9 @@ legend {
 	</div>
 	<div style="display: inline-block; float: {vb:stylevar right}; white-space: nowrap;">
 		<vb:if condition="$show['attachment_obsolete']"><div style="text-decoration: line-through"></vb:if>
-		<div><a href="projectattachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}" target="_blank">{vb:rawphrase download}</a></div>
+		<div><a href="attachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}" target="_blank">{vb:rawphrase download}</a></div>
 		<vb:if condition="$attachment['ispatchfile']">
-			<div><a href="project.php?{vb:raw session.sessionurl}do=patch&amp;attachmentid={vb:raw attachment.attachmentid}" target="_blank">{vb:rawphrase view_highlighted_patch}</a></div>
+			<div><a href="issue.php?{vb:raw session.sessionurl}do=patch&amp;attachmentid={vb:raw attachment.attachmentid}" target="_blank">{vb:rawphrase view_highlighted_patch}</a></div>
 		</vb:if>
 		<vb:if condition="$show['attachment_obsolete']"></div></vb:if>
 	</div>
@@ -3842,7 +3854,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1300995027" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1301261948" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4273,25 +4285,19 @@ legend {
 	<div class="blockbody formcontrols">
 		{vb:raw attachmentbits}
 		<div class="blockrow">
+			<div class="smallfont" style="float: {vb:stylevar left}"><span class="shade">{vb:rawphrase total_attachments}</span> {vb:raw issue.attachcount}</div>
 			<vb:if condition="$show['attachment_upload']">
-				<div class="smallfont" style="float:{vb:stylevar right}">
-					<label for="tx_upload_attachment">{vb:rawphrase upload_file} <a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_attach" target="_blank">[?]</a> <input type="file" id="tx_upload_attachment" name="attachment" tabindex="1" size="30" class="bginput" /></label>
-				</div>
-			</vb:if>
-			<div class="smallfont" style="margin-top:{vb:stylevar cellpadding}px"><span class="shade">{vb:rawphrase total_attachments}</span> {vb:raw issue.attachcount}</div>
-		</div>
-
-		<vb:if condition="$show['attachment_upload']">
-			<div class="blockrow">
-				<vb:if condition="$vboptions['pt_attachmentextensions']">
-					<div class="smallfont" style="float:{vb:stylevar left}"><span class="shade">{vb:rawphrase valid_file_extensions}</span> {vb:raw vboptions.pt_attachmentextensions}</div>
-				</vb:if>
 				<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 				<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 				<input type="hidden" name="do" value="uploadattachment" />
 				<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
+				<input type="hidden" name="contenttypeid" value="{vb:raw issue.contenttypeid}" />
 				<input type="submit" value="{vb:rawphrase upload}" class="button" accesskey="u" tabindex="1" style="float: {vb:stylevar right}" />
-			</div>
+			</vb:if>
+		</div>
+
+		<vb:if condition="$show['attachment_upload']">
+			{vb:raw attachmentoption}
 		</vb:if>
 	</div>
 </div>
@@ -6083,6 +6089,37 @@ init_project_readmarker_system();
 <vb:else />
 	<li><a class="navtab" href="project.php{vb:raw session.sessionurl_q}">{vb:rawphrase projects}</a></li>
 </vb:if>]]></template>
+		<template name="pt_newpost_attachment" templatetype="template" date="1301261978" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" id="attachfiles">
+	<div class="smallfont"><span class="shade">{vb:rawphrase manage_attachments}</span> <a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_attach" target="_blank">[?]</a></div>
+	<div class="rightcol">
+		<a href="newattachment.php?{vb:raw session.sessionurl}{vb:raw values}&amp;poststarttime={vb:raw poststarttime}&amp;posthash={vb:raw posthash}&amp;contenttypeid={vb:raw contenttypeid}" class="uploadlaunchfallback" target="manageattach" title="{vb:rawphrase add_edit_files_attached}" tabindex="1">{vb:rawphrase manage_attachments}</a>
+		<input style="display:none" type="button" id="manage_attachments_button" class="button uploadlaunchbutton" tabindex="1" value="{vb:rawphrase manage_attachments}" title="{vb:rawphrase add_edit_files_attached}" />
+
+		<ul class="group attachments hidden" id="attachlist_list2">
+			<li class="hidden">&nbsp;</li>
+			{vb:raw attachments}
+		</ul>			
+	</div>
+	<p class="description">{vb:rawphrase valid_file_extensions}: {vb:raw bbuserinfo.attachmentextensions}</p>
+</div>
+		
+<script type="text/javascript" src="clientscript/vbulletin_attachment.js?v={vb:raw vboptions.simpleversion}"></script>
+<script type="text/javascript">
+<!--
+	vB_Attachments = new vB_Attachment('attachlist', {
+			editorid     : '{vb:raw editorid}',
+			poststarttime: '{vb:raw poststarttime}',
+			posthash     : '{vb:raw posthash}',
+			contentid    : '{vb:raw contentid}',
+			userid       : '{vb:raw attachuserid}',
+			contenttypeid: '{vb:raw contenttypeid}',
+			insertinline : '1',
+			values       : '{vb:raw values}',
+			enhanced     : '<vb:if condition="$vboptions['vbasset_enable'] AND $bbuserinfo['vbasset_enable']">1</vb:if>'
+	});
+	{vb:raw attachment_js}
+//-->
+</script>]]></template>
 		<template name="pt_notehistory" templatetype="template" date="1291146822" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
@@ -9604,6 +9641,11 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 		$datastore_fetch[] = "'pt_bitfields'";
 		$datastore_fetch[] = "'pt_issuestatus'";
 		$datastore_fetch[] = "'pt_issuetype'";
+		$datastore_fetch[] = "'pt_permissions'";
+		break;
+	case 'attachment':
+	case 'newattachment':
+		$datastore_fetch[] = "'pt_bitfields'";
 		$datastore_fetch[] = "'pt_permissions'";
 		break;
 }]]></phpcode>
