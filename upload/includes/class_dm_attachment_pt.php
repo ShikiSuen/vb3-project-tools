@@ -38,20 +38,10 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	* @var	array
 	*/
 	var $validfields = array(
-		'attachmentid'       => array(TYPE_UINT,       REQ_INCR, VF_METHOD, 'verify_nonzero'),
+		'attachmentid'       => array(TYPE_UINT,       REQ_YES, VF_METHOD, 'verify_nonzero'),
 		'userid'             => array(TYPE_UINT,       REQ_YES),
 		'issueid'            => array(TYPE_UINT,       REQ_YES),
-		'dateline'           => array(TYPE_UNIXTIME,   REQ_AUTO),
-		'filename'           => array(TYPE_NOHTMLCOND, REQ_YES,  VF_METHOD, 'verify_filename'),
-		'filedata'           => array(TYPE_BINARY,     REQ_NO,   VF_METHOD),
-		'filesize'           => array(TYPE_UINT,       REQ_YES),
 		'visible'            => array(TYPE_UINT,       REQ_NO),
-		'counter'            => array(TYPE_UINT,       REQ_NO),
-		'filehash'           => array(TYPE_STR,        REQ_YES,  VF_METHOD, 'verify_md5'),
-		'thumbnail'          => array(TYPE_BINARY,     REQ_NO,   VF_METHOD),
-		'thumbnail_dateline' => array(TYPE_UNIXTIME,   REQ_AUTO),
-		'thumbnail_filesize' => array(TYPE_UINT,       REQ_NO),
-		'extension'          => array(TYPE_NOHTMLCOND, REQ_YES),
 		'status'             => array(TYPE_STR,        REQ_NO),
 		'ispatchfile'        => array(TYPE_UINT,       REQ_NO)
 	);
@@ -79,6 +69,13 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	var $condition_construct = array('attachmentid = %1$d', 'attachmentid');
 
 	/**
+	* Contenttype id
+	*
+	* @var	integer
+	*/
+	protected $contenttypeid = 0;
+
+	/**
 	* Constructor - checks that the registry object has been passed correctly.
 	*
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
@@ -87,6 +84,10 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	function vB_DataManager_Attachment_Pt(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
 		parent::vB_DataManager($registry, $errtype);
+
+		require_once(DIR . '/includes/class_bootstrap_framework.php');
+		vB_Bootstrap_Framework::init();
+		$this->contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
 
 		($hook = vBulletinHook::fetch_hook('ptattachdata_start')) ? eval($hook) : false;
 	}
@@ -102,66 +103,8 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	function &fetch_library(&$registry, $errtype = ERRTYPE_ARRAY)
 	{
 		// Library
-		$selectclass = ($registry->options['pt_attachfile']) ? 'vB_DataManager_Attachment_Pt_Filesystem' : 'vB_DataManager_Attachment_Pt_Database';
+		$selectclass = ($registry->options['attachfile']) ? 'vB_DataManager_Attachment_Pt_Filesystem' : 'vB_DataManager_Attachment_Pt_Database';
 		return new $selectclass($registry, $errtype);
-	}
-
-	/**
-	* Verify that posthash is either md5 or empty
-	* @param	string the md5
-	*
-	* @return	boolean
-	*/
-	function verify_md5_alt(&$md5)
-	{
-		return (empty($md5) OR (strlen($md5) == 32 AND preg_match('#^[a-f0-9]{32}$#', $md5)));
-	}
-
-	/**
-	* Set the extension of the filename
-	*
-	* @param	filename
-	*
-	* @return	boolean
-	*/
-	function verify_filename(&$filename)
-	{
-		$this->set('extension', strtolower(substr(strrchr($filename, '.'), 1)));
-		return true;
-	}
-
-	/**
-	* Set the filesize of the thumbnail
-	*
-	* @param	integer	Maximum posts per page
-	*
-	* @return	boolean
-	*/
-	function verify_thumbnail(&$thumbnail)
-	{
-		if (strlen($thumbnail) > 0)
-		{
-			$this->set('thumbnail_filesize', strlen($thumbnail));
-		}
-		return true;
-	}
-
-	/**
-	* Set the filehash/filesize of the file
-	*
-	* @param	integer	Maximum posts per page
-	*
-	* @return	boolean
-	*/
-	function verify_filedata(&$filedata)
-	{
-		if (strlen($filedata) > 0)
-		{
-			$this->set('filehash', md5($filedata));
-			$this->set('filesize', strlen($filedata));
-		}
-
-		return true;
 	}
 
 	/**
@@ -182,14 +125,12 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 			return false;
 		}
 
+		// The attachment exists in corresponding tables, but not in pt_attach
 		if ($this->condition === null)
 		{
-			$return = $this->db_insert(TABLE_PREFIX, $this->table, $doquery);
+			$this->db_insert(TABLE_PREFIX, $this->table, $doquery);
+			$return = $this->fetch_field('attachmentid');
 			$this->set('attachmentid', $return);
-		}
-		else
-		{
-			$return = $this->db_update(TABLE_PREFIX, $this->table, $this->condition, $doquery, $delayed);
 		}
 
 		if ($return AND $this->post_save_each($doquery) AND $this->post_save_once($doquery))
@@ -231,6 +172,15 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	*/
 	function post_save_each($doquery = true)
 	{
+		// Define the content id to the new selected attachments
+		$this->registry->db->query_write("
+			UPDATE " . TABLE_PREFIX . "attachment SET
+				contentid = " . intval($this->fetch_field('issueid')) . ",
+				posthash = ''
+			WHERE contenttypeid = " . $this->contenttypeid . "
+				AND contentid = 0
+		");
+
 		// attachment counts
 		if ($this->fetch_field('visible') AND empty($this->existing['visible']))
 		{
@@ -238,8 +188,8 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "pt_issue SET
 					attachcount = attachcount + 1
-				WHERE issueid = " . intval($this->fetch_field('issueid'))
-			);
+				WHERE issueid = " . intval($this->fetch_field('issueid')) . "
+			");
 		}
 		else if (!$this->fetch_field('visible') AND !empty($this->existing['visible']))
 		{
@@ -247,8 +197,28 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "pt_issue SET
 					attachcount = IF(attachcount > 0, attachcount - 1, 0)
-				WHERE issueid = " . intval($this->fetch_field('issueid'))
-			);
+				WHERE issueid = " . intval($this->fetch_field('issueid')) . "
+			");
+		}
+
+		// determine if this file is actually a patch
+		$extension = $this->registry->db->query_first("
+			SELECT f.extension
+			FROM " . TABLE_PREFIX . "filedata AS f
+				LEFT JOIN " . TABLE_PREFIX . "attachment AS a ON (a.filedataid = f.filedataid)
+				LEFT JOIN " . TABLE_PREFIX . "pt_issueattach AS i ON (i.attachmentid = a.attachmentid)
+			WHERE i.attachmentid = " . $this->fetch_field('attachmentid') . "
+		");
+
+		if (in_array(strtolower($extension['extension']), array('txt', 'diff', 'patch')))
+		{
+			require_once(DIR . '/includes/class_pt_patch_parse.php');
+			$patch_parser = new vB_PatchParser();
+			$this->registry->db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_issueattach SET
+					ispatchfile = 1
+				WHERE attachmentid = " . $this->fetch_field('attachmentid') . "
+			");
 		}
 
 		if (!$this->condition AND $this->fetch_field('visible'))
@@ -290,7 +260,7 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 				issue.issueid,
 				issue.submitdate AS issue_dateline,
 				issue.submituserid AS issue_userid
-			FROM " . TABLE_PREFIX . "pt_issueattach AS attachment
+			FROM " . TABLE_PREFIX . "attachment AS attachment
 			LEFT JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = attachment.issueid)
 			WHERE " . $this->condition
 		);
@@ -327,14 +297,14 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	function post_delete($doquery = true)
 	{
 		// A little cheater function..
-		if (!empty($this->lists['idlist']) AND $this->registry->options['pt_attachfile'])
+		if (!empty($this->lists['idlist']) AND $this->registry->options['attachfile'])
 		{
 			require_once(DIR . '/includes/functions_file.php');
 			// Delete attachments from the FS
 			foreach ($this->lists['idlist'] AS $attachmentid => $userid)
 			{
-				@unlink(fetch_attachment_path($userid, $attachmentid, false, $this->registry->options['pt_attachpath']));
-				@unlink(fetch_attachment_path($userid, $attachmentid, true, $this->registry->options['pt_attachpath']));
+				@unlink(fetch_attachment_path($userid, $attachmentid, false, $this->registry->options['attachpath']));
+				@unlink(fetch_attachment_path($userid, $attachmentid, true, $this->registry->options['attachpath']));
 			}
 		}
 
@@ -399,23 +369,6 @@ class vB_DataManager_Attachment_Pt_Database extends vB_DataManager_Attachment_Pt
 		if ($this->presave_called !== null)
 		{
 			return $this->presave_called;
-		}
-
-		if (!empty($this->info['filedata']))
-		{
-			$this->setr('filedata', $this->info['filedata']);
-
-			// determine if this file is actually a patch
-			if (in_array(strtolower($this->fetch_field('extension')), array('txt', 'diff', 'patch')))
-			{
-				require_once(DIR . '/includes/class_pt_patch_parse.php');
-				$patch_parser = new vB_PatchParser();
-				$this->set('ispatchfile', $patch_parser->parse($this->info['filedata']) ? 1 : 0);
-			}
-		}
-		if (!empty($this->info['thumbnail']))
-		{
-			$this->setr('thumbnail', $this->info['thumbnail']);
 		}
 
 		return parent::pre_save($doquery);
@@ -514,15 +467,15 @@ class vB_DataManager_Attachment_Pt_Filesystem extends vB_DataManager_Attachment_
 		// Check for filedata in an information field
 		if (!empty($this->info['filedata']))
 		{
-			$filename = fetch_attachment_path($userid, $attachmentid, false, $this->registry->options['pt_attachpath']);
+			$filename = fetch_attachment_path($userid, $attachmentid, false, $this->registry->options['attachpath']);
 			if ($fp = fopen($filename, 'wb'))
 			{
 				fwrite($fp, $this->info['filedata']);
 				fclose($fp);
 				#remove possible existing thumbnail in case no thumbnail is written in the next step.
-				if (file_exists(fetch_attachment_path($userid, $attachmentid, true, $this->registry->options['pt_attachpath'])))
+				if (file_exists(fetch_attachment_path($userid, $attachmentid, true, $this->registry->options['attachpath'])))
 				{
-					@unlink(fetch_attachment_path($userid, $attachmentid, true, $this->registry->options['pt_attachpath']));
+					@unlink(fetch_attachment_path($userid, $attachmentid, true, $this->registry->options['attachpath']));
 				}
 			}
 			else
@@ -534,7 +487,7 @@ class vB_DataManager_Attachment_Pt_Filesystem extends vB_DataManager_Attachment_
 		if (!$failed AND !empty($this->info['thumbnail']))
 		{
 			// write out thumbnail now
-			$filename = fetch_attachment_path($userid, $attachmentid, true, $this->registry->options['pt_attachpath']);
+			$filename = fetch_attachment_path($userid, $attachmentid, true, $this->registry->options['attachpath']);
 			if ($fp = fopen($filename, 'wb'))
 			{
 				fwrite($fp, $this->info['thumbnail']);
@@ -579,7 +532,7 @@ class vB_DataManager_Attachment_Pt_Filesystem extends vB_DataManager_Attachment_
 			return false;
 		}
 
-		$path = fetch_attachment_path($userid, 0, false, $this->registry->options['pt_attachpath']);
+		$path = fetch_attachment_path($userid, 0, false, $this->registry->options['attachpath']);
 		if (vbmkdir($path))
 		{
 			return $path;

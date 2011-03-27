@@ -16,6 +16,8 @@ if (!isset($GLOBALS['vbulletin']->db))
 	exit;
 }
 
+require_once(DIR . '/includes/functions_projecttools.php');
+
 /**
 * Class for verifying a vBulletin Project Tools issue attachment
 *
@@ -169,15 +171,6 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 
 		/*foreach ($this->registry->userinfo['forumpermissions'] AS $forumid => $perm)
 		{
-			if (
-				$password = $this->registry->forumcache["$forumid"]['password']
-					AND
-				(!verify_forum_password($forumid, $password, false))
-			)
-			{
-				continue;
-			}
-
 			if (
 				($perm & $this->registry->bf_ugp_forumpermissions['canview'])
 					AND
@@ -345,14 +338,14 @@ class vB_Attachment_Store_vBProjectTools_Issue extends vB_Attachment_Store
 	/**
 	* Issue info
 	*
-	* @var	integer
+	* @var	array
 	*/
 	protected $issueinfo = array();
 
 	/**
 	* Project info
 	*
-	* @var	integer
+	* @var	array
 	*/
 	protected $projectinfo = array();
 
@@ -376,7 +369,7 @@ class vB_Attachment_Store_vBProjectTools_Issue extends vB_Attachment_Store
 		global $show;
 
 		$this->issue = verify_issue($this->values['issueid']);
-		$project = verify_project($issue['projectid']);
+		$project = verify_project($this->issue['projectid']);
 
 		$this->issueperms = fetch_project_permissions($this->registry->userinfo, $project['projectid'], $this->issue['issuetypeid']);
 		if (!($this->issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattach']) OR is_issue_closed($this->issue, $this->issueperms))
@@ -786,7 +779,7 @@ class vB_Attach_Display_Content_vBProjectTools_Issue
 			}
 		}
 
-		$templater = vB_Template::create('newpost_attachment');
+		$templater = vB_Template::create('pt_newpost_attachment');
 			$templater->register('attachments', $attachments);
 			$templater->register('attachment_js', $attachment_js);
 			$templater->register('editorid', $editorid);
@@ -965,24 +958,6 @@ class vB_Attach_Display_Content_vBProjectTools_Issue
 
 				if ($attachment['state'] == 'visible')
 				{
-					/*if ($hidecounter)
-					{
-						$attachment['counter'] = $vbphrase['n_a'];
-						$show['views'] = false;
-					}
-					else
-					{
-						$show['views'] = true;
-					}
-
-					$lightbox_extensions = array('gif', 'jpg', 'jpeg', 'jpe', 'png', 'bmp');
-					$ext = $linkonly ? null : $attachment['attachmentextension'];
-
-					$attachmenturl = create_full_url("attachment.php?{$this->registry->session->vars['sessionurl']}attachmentid=$attachment[attachmentid]&d=$attachment[dateline]");
-					$imageurl = create_full_url("attachment.php?{$this->registry->session->vars['sessionurl']}attachmentid=$attachment[attachmentid]&stc=1&d=$attachment[dateline]");
-					$thumburl = create_full_url("attachment.php?{$this->registry->session->vars['sessionurl']}attachmentid=$attachment[attachmentid]&stc=1&thumb=1&d=$attachment[thumbnail_dateline]");*/
-
-					// PT stuff
 					$project = verify_project($post['projectid']);
 					$issueperms = fetch_project_permissions($this->registry->userinfo, $project['projectid'], $post['issuetypeid']);
 
@@ -991,25 +966,20 @@ class vB_Attach_Display_Content_vBProjectTools_Issue
 
 					if ($attachment['ispatchfile'])
 					{
-						$attachment['link'] = create_full_url('project.php?' . $this->registry->session->vars['sessionurl'] . "do=patch&amp;attachmentid=$attachment[attachmentid]");
+						$attachment['link'] = create_full_url('issue.php?' . $this->registry->session->vars['sessionurl'] . "do=patch&amp;attachmentid=$attachment[attachmentid]");
 					}
 					else
 					{
-						$attachment['link'] = create_full_url('projectattachment.php?' . $this->registry->session->vars['sessionurl'] . "attachmentid=$attachment[attachmentid]");
+						$attachment['link'] = create_full_url('attachment.php?' . $this->registry->session->vars['sessionurl'] . "attachmentid=$attachment[attachmentid]");
 					}
 
 					$attachment['attachtime'] = vbdate($this->registry->options['timeformat'], $attachment['dateline']);
 					$attachment['attachdate'] = vbdate($this->registry->options['dateformat'], $attachment['dateline'], true);
-					// End PT stuff
 
-					switch($ext)
-					{
-						default:
-							$templater = vB_Template::create('pt_attachmentbit');
-								$templater->register('attachment', $attachment);
-								$templater->register('url', $attachmenturl);
-							$post['attachmentbits'] .= $templater->render();
-					}
+					$templater = vB_Template::create('pt_attachmentbit');
+						$templater->register('attachment', $attachment);
+						$templater->register('url', $attachmenturl);
+					$post['attachmentbits'] .= $templater->render();
 				}
 				else
 				{

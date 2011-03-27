@@ -2120,7 +2120,13 @@ if ($_POST['do'] == 'uploadattachment')
 		'issueid' => TYPE_UINT,
 		'contenttypeid' => TYPE_UINT
 	));
-	$vbulletin->input->clean_gpc('f', 'attachment', TYPE_FILE);
+
+	$attachments = $db->query_read("
+		SELECT attachmentid
+		FROM " . TABLE_PREFIX . "attachment
+		WHERE contenttypeid = " . $vbulletin->GPC['contenttypeid'] . "
+			AND contentid = 0
+	");
 
 	$issue = verify_issue($vbulletin->GPC['issueid']);
 	$project = verify_project($issue['projectid']);
@@ -2133,40 +2139,20 @@ if ($_POST['do'] == 'uploadattachment')
 
 	($hook = vBulletinHook::fetch_hook('projectpost_attachment_upload')) ? eval($hook) : false;
 
-	if ($vbulletin->GPC['attachment'])
+	require_once(DIR . '/includes/class_dm.php');
+	require_once(DIR . '/includes/class_dm_attachment_pt.php');
+
+	while ($attachment = $db->fetch_array($attachments))
 	{
-		/*require_once(DIR . '/includes/class_upload_pt.php');
-		require_once(DIR . '/includes/class_image.php');
-
-		require_once(DIR . '/includes/class_dm.php');
-		require_once(DIR . '/includes/class_dm_attachment_pt.php');
-
 		$attachdata =& vB_DataManager_Attachment_Pt::fetch_library($vbulletin, ERRTYPE_STANDARD);
-		$upload = new vB_Upload_Attachment_Pt($vbulletin);
-		$image =& vB_Image::fetch_library($vbulletin);
-
-		$upload->data =& $attachdata;
-		$upload->image =& $image;
-		$upload->issueinfo = $issue;
-
-		$attachment = array(
-			'name'     =>& $vbulletin->GPC['attachment']['name'],
-			'tmp_name' =>& $vbulletin->GPC['attachment']['tmp_name'],
-			'error'    =>&	$vbulletin->GPC['attachment']['error'],
-			'size'     =>& $vbulletin->GPC['attachment']['size'],
-		);
-
-		$attachmentid = $upload->process_upload($attachment);
-		if ($error = $upload->fetch_error())
-		{
-			standard_error($error);
-		}*/
-
-		
+			$attachdata->setr('attachmentid', $attachment['attachmentid']);
+			$attachdata->setr('userid', $vbulletin->userinfo['userid']);
+			$attachdata->setr('issueid', $issue['issueid']);
+		$attachdata->save();
 	}
 
-	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
-	eval(print_standard_redirect('pt_attachment_uploaded'));
+	/*$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
+	eval(print_standard_redirect('pt_attachment_uploaded'));*/
 }
 
 // #######################################################################
@@ -2180,12 +2166,12 @@ if ($_POST['do'] == 'updateattach')
 	));
 
 	$attachment = $db->query_first("
-		SELECT issueattach.*
-		FROM " . TABLE_PREFIX . "pt_issueattach AS issueattach
-		WHERE issueattach.attachmentid = " . $vbulletin->GPC['attachmentid']
+		SELECT *
+		FROM " . TABLE_PREFIX . "attachment
+		WHERE attachmentid = " . $vbulletin->GPC['attachmentid']
 	);
 
-	$issue = verify_issue($attachment['issueid']);
+	$issue = verify_issue($attachment['contentid']);
 	$project = verify_project($issue['projectid']);
 
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
@@ -2208,7 +2194,7 @@ if ($_POST['do'] == 'updateattach')
 	{
 		$attachdata->delete();
 
-		$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
+		$vbulletin->url = fetch_seo_url('issue', $issue) . "#attachments";
 		eval(print_standard_redirect('pt_attachment_deleted'));
 	}
 	else if ($vbulletin->GPC['obsolete'] OR $vbulletin->GPC['unobsolete'])
@@ -2223,7 +2209,7 @@ if ($_POST['do'] == 'updateattach')
 		}
 		$attachdata->save();
 
-		$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]#attachments";
+		$vbulletin->url = fetch_seo_url('issue', $issue) . "#attachments";
 		eval(print_standard_redirect('pt_attachment_edited'));
 	}
 	else
@@ -2240,12 +2226,12 @@ if ($_REQUEST['do'] == 'manageattach')
 	$vbulletin->input->clean_gpc('r', 'attachmentid', TYPE_UINT);
 
 	$attachment = $db->query_first("
-		SELECT issueattach.*
-		FROM " . TABLE_PREFIX . "pt_issueattach AS issueattach
-		WHERE issueattach.attachmentid = " . $vbulletin->GPC['attachmentid']
+		SELECT *
+		FROM " . TABLE_PREFIX . "attachment
+		WHERE attachmentid = " . $vbulletin->GPC['attachmentid']
 	);
 
-	$issue = verify_issue($attachment['issueid']);
+	$issue = verify_issue($attachment['contentid']);
 	$project = verify_project($issue['projectid']);
 
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);

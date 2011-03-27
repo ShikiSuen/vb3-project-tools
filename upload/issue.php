@@ -42,6 +42,7 @@ $specialtemplates = array(
 
 // pre-cache templates used by all actions
 $globaltemplates = array(
+	'newpost_attachmentbit',
 	'pt_issue',
 	'pt_issue_firstnote',
 	'pt_issuenotebit_user',
@@ -50,6 +51,7 @@ $globaltemplates = array(
 	'pt_issuenotebit_systembit',
 	'pt_listprojects',
 	'pt_listprojects_link',
+	'pt_newpost_attachment',
 	'bbcode_code',
 	'bbcode_html',
 	'bbcode_php',
@@ -243,12 +245,14 @@ if ($_REQUEST['do'] == 'patch')
 	$vbulletin->input->clean_gpc('r', 'attachmentid', TYPE_UINT);
 
 	$attachment = $db->query_first("
-		SELECT *
-		FROM " . TABLE_PREFIX . "pt_issueattach
-		WHERE attachmentid = " . $vbulletin->GPC['attachmentid']
+		SELECT a.*, f.*, i.ispatchfile
+		FROM " . TABLE_PREFIX . "attachment AS a
+		LEFT JOIN " . TABLE_PREFIX . "filedata AS f ON (f.filedataid = a.filedataid)
+		LEFT JOIN " . TABLE_PREFIX . "pt_issueattach AS i ON (i.attachmentid = a.attachmentid AND i.issueid = a.contentid)
+		WHERE a.attachmentid = " . $vbulletin->GPC['attachmentid']
 	);
 
-	$issue = verify_issue($attachment['issueid']);
+	$issue = verify_issue($attachment['contentid']);
 	$project = verify_project($issue['projectid']);
 
 	$issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
@@ -260,14 +264,14 @@ if ($_REQUEST['do'] == 'patch')
 
 	if (!$attachment['ispatchfile'])
 	{
-		exec_header_redirect("projectattachment.php?attachmentid=$attachment[attachmentid]");
+		exec_header_redirect("attachment.php?attachmentid=$attachment[attachmentid]");
 		exit;
 	}
 
 	if ($vbulletin->options['pt_attachfile'])
 	{
 		require_once(DIR . '/includes/functions_file.php');
-		$attachpath = fetch_attachment_path($attachment['userid'], $attachment['attachmentid'], false, $vbulletin->options['pt_attachpath']);
+		$attachpath = fetch_attachment_path($attachment['userid'], $attachment['attachmentid'], false, $vbulletin->options['attachpath']);
 		$attachment['filedata'] = file_get_contents($attachpath);
 	}
 
@@ -276,7 +280,7 @@ if ($_REQUEST['do'] == 'patch')
 	if (!$patch_parser->parse($attachment['filedata']))
 	{
 		// parsing failed for some reason, just download the attachment
-		exec_header_redirect("projectattachment.php?attachmentid=$attachment[attachmentid]");
+		exec_header_redirect("attachment.php?attachmentid=$attachment[attachmentid]");
 		exit;
 	}
 
@@ -624,6 +628,8 @@ if ($_REQUEST['do'] == 'report' OR $_POST['do'] == 'sendemail')
 $userid = $vbulletin->userinfo['userid'];
 require_once(DIR . '/includes/class_bbcode_pt.php');
 require_once(DIR . '/includes/class_pt_issuenote.php');
+require_once(DIR . '/packages/vbattach/attach.php');
+require_once(DIR . '/packages/vbprojecttools/attach/issue.php');
 
 $vbulletin->input->clean_array_gpc('r', array(
 	'issueid' => TYPE_UINT,
@@ -633,6 +639,8 @@ $vbulletin->input->clean_array_gpc('r', array(
 
 $issue = verify_issue($vbulletin->GPC['issueid'], true, array('avatar', 'vote', 'milestone'));
 $project = verify_project($issue['projectid']);
+
+$issue['contenttypeid'] = $issue_contenttypeid;
 
 verify_seo_url('issue', $issue, array('pagenumber' => $vbulletin->GPC['pagenumber']));
 
@@ -950,47 +958,6 @@ if ($show['status_petition'] OR $show['status_edit'])
 if ($show['attachments'])
 {
 	// attachments
-	/*$attachments = $db->query_read("
-		SELECT issueattach.attachmentid, issueattach.userid, issueattach.filename, issueattach.extension,
-			issueattach.dateline, issueattach.visible, issueattach.status, issueattach.filesize,
-			issueattach.thumbnail_filesize, issueattach.thumbnail_dateline, issueattach.ispatchfile,
-			user.username
-		FROM " . TABLE_PREFIX . "pt_issueattach AS issueattach
-		LEFT JOIN " . TABLE_PREFIX . "user AS user ON (issueattach.userid = user.userid)
-		WHERE issueattach.issueid = $issue[issueid]
-			AND visible = 1
-		ORDER BY dateline
-	");
-
-	$attachmentbits = '';
-
-	while ($attachment = $db->fetch_array($attachments))
-	{
-		$show['attachment_obsolete'] = ($attachment['status'] == 'obsolete');
-		$show['manage_attach_link'] = (($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattachedit']) AND (($issueperms['attachpermissions'] & $vbulletin->pt_bitfields['attach']['canattacheditothers']) OR $vbulletin->userinfo['userid'] == $attachment['userid']));
-
-		if ($attachment['ispatchfile'])
-		{
-			$attachment['link'] = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=patch&amp;attachmentid=$attachment[attachmentid]";
-		}
-		else
-		{
-			$attachment['link'] = 'projectattachment.php?' . $vbulletin->session->vars['sessionurl'] . "attachmentid=$attachment[attachmentid]";
-		}
-
-		$attachment['attachtime'] = vbdate($vbulletin->options['timeformat'], $attachment['dateline']);
-		$attachment['attachdate'] = vbdate($vbulletin->options['dateformat'], $attachment['dateline'], true);
-
-		($hook = vBulletinHook::fetch_hook('project_issue_attachmentbit')) ? eval($hook) : false;
-
-		$templater = vB_Template::create('pt_attachmentbit');
-			$templater->register('attachment', $attachment);
-			$templater->register('contenttypeid', $issue_contenttypeid);
-		$attachmentbits .= $templater->render();
-	}*/
-
-	require_once(DIR . '/packages/vbattach/attach.php');
-	require_once(DIR . '/packages/vbprojecttools/attach/issue.php');
 	$attach = new vB_Attach_Display_Content_vBProjectTools_Issue($vbulletin, 'vBProjectTools_Issue');
 	$postattach = $attach->fetch_postattach(0, $issue['issueid']);
 	$attach->process_attachments(
@@ -1002,7 +969,22 @@ if ($show['attachments'])
 		true // Can see thumbnails - There is no permission in PT dedicated to this
 	);
 	$attachmentbits = $issue['attachmentbits'];
+}
 
+$attachcount = 0;
+
+if ($show['attachment_upload'])
+{
+	// Do some code to display the asset manager link
+	$values = "values[issueid]=$issue[issueid]";
+	$attach = new vB_Attach_Display_Content_vBProjectTools_Issue($vbulletin, 'vBProjectTools_Issue');
+	$attachmentoption = $attach->fetch_edit_attachments($posthash, $poststarttime, $postattach, 0, $values, $editorid, $attachcount);
+	$contenttypeid = $attach->fetch_contenttypeid();
+}	
+else
+{
+	$attachmentoption = '';
+	$contenttypeid = 0;
 }
 
 // mark this issue as read
@@ -1052,7 +1034,7 @@ if ($show['quick_reply'])
 	";
 
 	// Workaround for CKEditor
-	if ($vbulletin->options['templateversion'] >= '4.1.3')
+	if ($vbulletin->options['templateversion'] >= '4.1.4')
 	{
 		$vbversion = explode('.', $vbulletin->options['templateversion']);
 
@@ -1151,6 +1133,7 @@ $templater = vB_Template::create('pt_issue');
 	$templater->register_page_templates();
 	$templater->register('assignments', $assignments);
 	$templater->register('attachmentbits', $attachmentbits);
+	$templater->register('attachmentoption', $attachmentoption);
 	$templater->register('display_type_counts', $display_type_counts);
 	$templater->register('editorid', $editorid);
 	$templater->register('issuefirstnote', $issuefirstnote);
