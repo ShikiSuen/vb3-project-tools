@@ -91,6 +91,17 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 	*/
 	public function cansearch()
 	{
+		$cansearch = $db->query_read("
+			SELECT cansearch
+			FROM " . TABLE_PREFIX . "contenttype
+			WHERE contenttypeid = " . vB_Search_Core::get_instance()->get_contenttypeid('vBProjectTools', 'Issue') . "
+		");
+
+		if (!$cansearch)
+		{
+			return false;
+		}
+
 		return true;
 	}
 	/**
