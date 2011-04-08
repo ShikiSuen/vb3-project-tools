@@ -1,8 +1,8 @@
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||

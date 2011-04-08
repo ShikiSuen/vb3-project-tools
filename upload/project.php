@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -1090,6 +1090,9 @@ if ($_REQUEST['do'] == 'issuelist')
 	));
 
 	$project = verify_project($vbulletin->GPC['projectid']);
+
+	$postable_types = array();
+
 	if ($vbulletin->GPC['issuetypeid'])
 	{
 		verify_issuetypeid($vbulletin->GPC['issuetypeid'], $project['projectid']);
@@ -1098,6 +1101,7 @@ if ($_REQUEST['do'] == 'issuelist')
 		$vbphrase['applies_version_issuetype'] = $vbphrase["applies_version_" . $vbulletin->GPC['issuetypeid']];
 
 		$vbphrase['post_new_issue_issuetype'] = $vbphrase["post_new_issue_" . $vbulletin->GPC['issuetypeid']];
+		$postable_types[] = htmlspecialchars_uni($vbulletin->GPC['issuetypeid']);
 	}
 	else
 	{
@@ -1352,7 +1356,6 @@ if ($_REQUEST['do'] == 'issuelist')
 	$unknownversion_selected = ($vbulletin->GPC['appliesversionid'] == -1 ? ' selected="selected"' : '');
 
 	// status options / posting options drop down
-	$postable_types = array();
 	$status_options = '';
 	$post_issue_options = '';
 	foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)

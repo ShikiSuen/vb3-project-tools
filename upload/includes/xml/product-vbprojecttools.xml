@@ -3,9 +3,9 @@
 <product productid="vbprojecttools" active="1">
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
-	<version>2.1.2</version>
-	<url />
-	<versioncheckurl />
+	<version>2.1.3</version>
+	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
+	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.0.8" maxversion="" />
 	</dependencies>
@@ -5175,7 +5175,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1291146791" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1301315568" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5221,7 +5221,7 @@ init_project_readmarker_system();
 </vb:if>
 
 <vb:if condition="$show['search_options']">
-<div id="above_project_controls" class="above_project_controls">
+<div id="above_project_controls" class="toolsmenu above_project_controls">
 	<div>
 		<ul id="projectpopups" class="popupgroup projectpopups">
 			<li id="searchproject" class="popupmenu nohovermenu searchprojects">
@@ -7540,7 +7540,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_searchresultgroupbit" templatetype="template" date="1276796181" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
+		<template name="pt_searchresultgroupbit" templatetype="template" date="1301315319" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
 
 <vb:if condition="$pagenav">
 <div class="pt_issuepopup">
@@ -7553,7 +7553,7 @@ init_project_readmarker_system();
 </vb:if>
 
 <vb:if condition="$show['first_group']">
-<div id="above_project_controls" class="above_project_controls">
+<div id="above_project_controls" class="toolsmenu above_project_controls">
 	<div>
 		<ul id="projectpopups" class="popupgroup projectpopups">
 			<li id="search_tools" class="popupmenu nohovermenu searchprojects">
@@ -8825,7 +8825,9 @@ if ($do == 'index' AND $vbulletin->userinfo['permissions']['ptpermissions'] & $v
 			<hookname>cache_templates</hookname>
 			<phpcode><![CDATA[$pt_templates =  array(
 	'pt_navbar_link',
-	'pt_headinclude'
+	'pt_headinclude',
+	'vbcms_widget_recentptissues_page',
+	'vbcms_widget_recentptcomments_page'
 );
 
 switch (THIS_SCRIPT)
@@ -8839,6 +8841,7 @@ switch (THIS_SCRIPT)
 			$pt_templates[] = 'pt_subforumbit_project';
 			$pt_templates[] = 'pt_projectbit_typecount';
 		}
+		$pt_templates[] = 'block_issues';
 		break;
 
 	case 'usercp':
@@ -9203,8 +9206,8 @@ $show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];
 
 if ($show['createptissue'])
 {
-	$vbulletin->templatecache['SHOWTHREAD'] = str_replace('<form action="postings.php" method="post">
-						<ul class="popupbody popuphover">', '<form action="postings.php" method="post">
+	$vbulletin->templatecache['SHOWTHREAD'] = str_replace('postings.php" method="post">
+						<ul class="popupbody popuphover">', 'postings.php" method="post">
 						<ul class="popupbody popuphover">
 <li><label><input type="radio" name="do" value="createptissue" /> ' . $vbphrase['pt_create_issue'] . '&hellip;</label></li>', $vbulletin->templatecache['SHOWTHREAD']);
 }]]></phpcode>
@@ -9339,7 +9342,7 @@ $template_hook['usercp_main_pos3'] .= process_new_subscribed_issues();]]></phpco
 process_pt_user_delete($this);]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
-			<title>User DM: Rebuild PT Assignable AND add the user in table 'pt_user' if not done</title>
+			<title><![CDATA[User DM: Rebuild PT Assignable AND add the user in table 'pt_user' if not done]]></title>
 			<hookname>userdata_postsave</hookname>
 			<phpcode><![CDATA[// Rebuild PT Assignable
 if ($usergroups_changed OR (isset($this->user['username']) AND $this->user['username'] != $this->existing['username']))

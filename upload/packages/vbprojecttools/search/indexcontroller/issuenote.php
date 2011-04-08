@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -22,20 +22,20 @@ require_once(DIR . '/vb/legacy/issuenote.php');
 require_once(DIR . '/vb/search/core.php');
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
+* @package vBulletin Project Tools
+* @subpackage Search
+* @author $Author
+* @version $Revision$
+* @since $Date$
+* @copyright http://www.vbulletin.org/open_source_license_agreement.php
+*/
 
 /**
- * Index controller for issue notes
- *
- * @package vBulletin Project Tools
- * @subpackage Search
- */
+* Index controller for issue notes
+*
+* @package vBulletin Project Tools
+* @subpackage Search
+*/
 class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexController
 {
 	// We need to set the content types. This is available in a static method as below
@@ -349,6 +349,7 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		$fields['groupusername'] = $issue->get_field('submitusername');
 		$fields['defaultusername'] = $fields['username'];
 		$fields['ipaddress'] = $issuenote->get_ipstring();
+		$fields['title'] = $issue->get_field('title');
 
 		if ($issue->get_field('summary'))
 		{

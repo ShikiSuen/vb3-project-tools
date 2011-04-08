@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -13,22 +13,22 @@
 \*======================================================================*/
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
+* @package vBulletin Project Tools
+* @subpackage Search
+* @author $Author$
+* @version $Revision$
+* @since $Date$
+* @copyright http://www.vbulletin.org/open_source_license_agreement.php
+*/
 
 require_once(DIR . '/vb/legacy/forum.php');
 require_once(DIR . '/vb/search/core.php');
 /**
- * Index Controller
- *
- * @package vBulletin Project Tools
- * @subpackage Search
- */
+* Index Controller
+*
+* @package vBulletin Project Tools
+* @subpackage Search
+*/
 class vBProjectTools_Search_IndexController_Project extends vB_Search_IndexController
 {
 	// We need to set the content types. This is available in a static method as below

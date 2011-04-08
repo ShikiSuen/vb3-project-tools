@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -18,8 +18,8 @@
 * @author $Author$
 * @version $Revision$
 * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
+* @copyright http://www.vbulletin.org/open_source_license_agreement.php
+*/
 
 require_once(DIR . '/vb/search/searchcontroller.php');
 
@@ -60,7 +60,7 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		$equals_filters = $criteria->get_equals_filters();
 		$notequals_filter = $criteria->get_notequals_filters();
 
-		//handle forums
+		//handle projects
 		if (isset($equals_filters['projectid']))
 		{
 			$projectids = $equals_filters['projectid'];
@@ -71,6 +71,7 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		}
 
 		$excluded_projectids = array();
+
 		if (isset($notequals_filter['projectid']))
 		{
 			$excluded_projectids = $notequals_filter['projectid'];
@@ -176,12 +177,12 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 	}
 
 	/**
-	 * Does the user have the requested permission on this project.
-	 *
-	 * @param int $projectid
-	 * @param string $permission Name of permission
-	 * @return boolean
-	 */
+	* Does the user have the requested permission on this project.
+	*
+	* @param  int       Project ID
+	* @param  string    Name of permission
+	* @return boolean   Boolean result of the permission
+	*/
 	public function hasProjectPermission($projectid, $permission)
 	{
 		//should be cached and therefore not too expensive to look up on every permissions call.
@@ -192,12 +193,12 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 	/**
 	* Get projects the user is unable to view.
 	*
-	*	Need to verify that this makes sense in general code stolen from search
+	* Need to verify that this makes sense in general code stolen from search
 	* logic and search specific param removed.
 	*
-	*	This value is calculated once and the list is returned on subsequent calls
+	* This value is calculated once and the list is returned on subsequent calls
 	*
-	*	@return array(int) list of hidden project ids 
+	* @return array(int) list of hidden project ids 
 	*/
 	public function getHiddenProjects()
 	{
@@ -221,9 +222,9 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 	/**
 	* Get projects the user is unable to search.
 	*
-	*	This value is calculated once and the list is returned on subsequent calls
+	* This value is calculated once and the list is returned on subsequent calls
 	*
-	*	@return array(int) list of unsearchable project ids 
+	* @return array(int) list of unsearchable project ids 
 	*/
 	public function getUnsearchableProjects()
 	{
@@ -301,9 +302,5 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		return $orderby;
 	}
 }
-/*======================================================================*\
-|| ####################################################################
-|| # Downloaded: 18:15, Fri Sep 3rd 2010
-|| # SVN: $Revision$
-|| ####################################################################
-\*======================================================================*/
+
+?>

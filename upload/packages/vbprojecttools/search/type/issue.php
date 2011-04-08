@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -13,13 +13,13 @@
 \*======================================================================*/
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
+* @package vBulletin Project Tools
+* @subpackage Search
+* @author $Author$
+* @version $Revision$
+* @since $Date$
+* @copyright http://www.vbulletin.org/open_source_license_agreement.php
+*/
 
 require_once(DIR . '/vb/search/type.php');
 require_once(DIR . '/packages/vbprojecttools/search/result/issue.php');

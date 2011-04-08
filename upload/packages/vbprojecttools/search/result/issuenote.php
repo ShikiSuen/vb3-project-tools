@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -13,24 +13,24 @@
 \*======================================================================*/
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
+* @package vBulletin Project Tools
+* @subpackage Search
+* @author $Author$
+* @version $Revision$
+* @since $Date$
+* @copyright http://www.vbulletin.org/open_source_license_agreement.php
+*/
 
 require_once(DIR . '/includes/functions_projecttools.php');
 require_once(DIR . '/vb/search/result.php');
 require_once(DIR . '/packages/vbprojecttools/search/result/issue.php');
 
 /**
- * Enter description here...
- *
- * @package vBulletin Project Tools
- * @subpackage Search
- */
+* Enter description here...
+*
+* @package vBulletin Project Tools
+* @subpackage Search
+*/
 class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 {
 	public static function create($id)
@@ -97,6 +97,7 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 		{
 			$vbulletin->GPC['pagenumber'] = 1;
 		}
+
 		if (!$vbulletin->GPC['start'])
 		{
 			$vbulletin->GPC['start'] = ($vbulletin->GPC['pagenumber'] - 1) * $perpage;
@@ -108,7 +109,6 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 		}
 
 		build_issue_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $private_lastpost_fields);
-
 		$replycount_clause = fetch_private_replycount_clause($vbulletin->userinfo);
 
 		$show['first_group'] = true;

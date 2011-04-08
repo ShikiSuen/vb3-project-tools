@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -13,25 +13,25 @@
 \*======================================================================*/
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
+* @package vBulletin Project Tools
+* @subpackage Search
+* @author $Author$
+* @version $Revision$
+* @since $Date$
+* @copyright http://www.vbulletin.org/open_source_license_agreement.php
+*/
 
 require_once (DIR . '/vb/search/type.php');
 
 /**
- * vBProjectTools_Search_Type_Project
- *
- * @package vBulletin Project Tools
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
+* vBProjectTools_Search_Type_Project
+*
+* @package vBulletin Project Tools
+* @author $Author$
+* @version $Revision$
+* @since $Date$
+* @copyright http://www.vbulletin.org/open_source_license_agreement.php
+*/
 class vBProjectTools_Search_Type_Project extends vB_Search_Type
 {
 
@@ -39,8 +39,8 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 	/**
 	* This creates the type object
 	*
-	* @param integer $id
-	* @return object vBProjectTools_Search_Result_Project
+	* @param    integer    ID
+	* @return   object     vBProjectTools_Search_Result_Project
 	*/
 	public function create_item($id)
 	{
@@ -91,12 +91,24 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 	*/
 	public function cansearch()
 	{
+		$cansearch = $db->query_read("
+			SELECT cansearch
+			FROM " . TABLE_PREFIX . "contenttype
+			WHERE contenttypeid = " . vB_Search_Core::get_instance()->get_contenttypeid('vBProjectTools', 'Issue') . "
+		");
+
+		if (!$cansearch)
+		{
+			return false;
+		}
+
 		return true;
 	}
+
 	/**
 	* This prepares the HTML for the user to search for forums
 	*
-	* @return $html: complete html for the search elements
+	* @return $html  Complete html for the search elements
 	*/
 	public function listUi($prefs = null)
 	{
@@ -143,3 +155,4 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 		'beforeafter'    => TYPE_NOHTML);
 }
 
+?>

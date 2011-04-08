@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -13,13 +13,13 @@
 \*======================================================================*/
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
+* @package vBulletin Project Tools
+* @subpackage Search
+* @author $Author$
+* @version $Revision$
+* @since $Date$
+* @copyright http://www.vbulletin.org/open_source_license_agreement.php
+*/
 
 require_once(DIR . '/vb/search/type.php');
 require_once(DIR . '/includes/functions_projecttools.php');
@@ -565,13 +565,13 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 
 	// ###################### Start listSearchGlobals ######################
 	/**
-	 * vB_Search_Type::list_SearchGlobals()
-	 * The globals is a list of variables we'll try to pull from the input.
-	 * They should be here because we want to use them in searchcommon and ajax,
-	 * and probably elsewhere as we proceed.
-	 *
-	 * @return array
-	 */
+	* vB_Search_Type::list_SearchGlobals()
+	* The globals is a list of variables we'll try to pull from the input.
+	* They should be here because we want to use them in searchcommon and ajax,
+	* and probably elsewhere as we proceed.
+	*
+	* @return array
+	*/
 	public function listSearchGlobals()
 	{
 		return $this->form_globals;
@@ -704,3 +704,5 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	private static $tag_join = " INNER JOIN %spt_issuetag AS pt_issuetag ON (pt_issuetag.issueid = issue.issueid)";
 	private static $issue_join = " INNER JOIN %spt_issue AS pt_issue ON (searchcore.contenttypeid =%u  AND searchcore.primaryid = issue.issueid)";
 }
+
+?>

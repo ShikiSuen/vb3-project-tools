@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -13,23 +13,23 @@
 \*======================================================================*/
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
+* @package vBulletin Project Tools
+* @subpackage Search
+* @author $Author$
+* @version $Revision$
+* @since $Date$
+* @copyright http://www.vbulletin.org/open_source_license_agreement.php
+*/
 
 require_once(DIR . '/vb/search/result.php');
 require_once(DIR . '/includes/functions_projecttools.php');
 
 /**
- * Enter description here...
- *
- * @package vBulletin Project Tools
- * @subpackage Search
- */
+* Enter description here...
+*
+* @package vBulletin Project Tools
+* @subpackage Search
+*/
 class vBProjectTools_Search_Result_Project extends vB_Search_Result
 {
 	public static function create($id)
@@ -69,9 +69,7 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 			print_no_permission();
 		}
 
-		build_project_private_lastpost_sql_all($vbulletin->userinfo,
-			$private_lastpost_join, $private_lastpost_fields
-		);
+		build_project_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $private_lastpost_fields);
 
 		$project_types = array();
 		$project_types_query = $vbulletin->db->query_read("
@@ -139,13 +137,14 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 					$projettypeview = $vbulletin->userinfo['lastvisit'];
 				}
 			}
+
 			if ($type['lastpost'] > $projettypeview)
 			{
 				$type['newflag'] = true;
 				$project['newflag'] = true;
 			}
-			$project['projectread'] = max($project['projectread'], $projettypeview);
 
+			$project['projectread'] = max($project['projectread'], $projettypeview);
 			$type['countid'] = "project_typecount_$project[projectid]_$type[issuetypeid]";
 
 			$templater = vB_Template::create('pt_projectbit_typecount');
@@ -164,7 +163,6 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 			$template->register('project', $project);
 			$template->register('type_counts', $type_counts);
 		return $template->render();
-
 	}
 }
 
