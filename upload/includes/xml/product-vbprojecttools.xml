@@ -1470,10 +1470,20 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 			<installcode><![CDATA[require_once(DIR . '/includes/adminfunctions_projecttools.php');
 $full_product_info = fetch_product_list(true);
 
-// Required?
+// Required? Include it in any occasion
 require_once(DIR . '/includes/class_bootstrap_framework.php');
 vB_Bootstrap_Framework::init();
-$issue_contenttypeid = vB_Types::instace()->getContentTypeID('vBProjectTools_Issue');
+$issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
+
+// Use the Db Alter class
+require_once(DIR . '/includes/class_dbalter.php');
+$db_alter = new vB_Database_Alter_MySQL($db);
+
+/*================================*\
+|| ############################## ||
+|| #		Milestones			# ||
+|| ############################## ||
+\*================================*/
 
 // Move milestones into phrase system
 $milestone_data = $db->query_read("
@@ -1495,6 +1505,12 @@ while ($milestone = $db->fetch_array($milestone_data))
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title_clean");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP description");
+
+/*================================*\
+|| ############################## ||
+|| #		Categories			# ||
+|| ############################## ||
+\*================================*/
 
 // Move categories into phrase system
 $category_data = $db->query_read("
@@ -1526,6 +1542,12 @@ while ($category = $db->fetch_array($category_data))
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory DROP title");
 
 build_project_category_cache();
+
+/*================================*\
+|| ############################## ||
+|| #		Priorities			# ||
+|| ############################## ||
+\*================================*/
 
 // Adding a table for priority
 $db->query_write("
@@ -1621,8 +1643,11 @@ foreach ($project_array AS $projects)
 // Build the new priority cache
 build_project_priority_cache();
 
-require_once(DIR . '/includes/class_dbalter.php');
-$db_alter = new vB_Database_Alter_MySQL($db);
+/*================================*\
+|| ############################## ||
+|| #		Status Color		# ||
+|| ############################## ||
+\*================================*/
 
 // Add field for 'PT color titles by status' feature
 if ($db_alter->fetch_table_info('pt_issuestatus'))
@@ -1634,6 +1659,12 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 		'null' => false
 	));
 }
+
+/*================================*\
+|| ############################## ||
+|| #		 Attachments		# ||
+|| ############################## ||
+\*================================*/
 
 // Query to allow attachments to issues
 $db->query_write("
@@ -1651,6 +1682,12 @@ $db->query_write("
 		canattach = '1'
 	WHERE contenttypeid = " . $issue_contenttypeid . "
 ");
+
+/*================================*\
+|| ############################## ||
+|| #			Final			# ||
+|| ############################## ||
+\*================================*/
 
 // Ensure phrases will be rebuilt
 $rebuild['phrases'] = true;]]></installcode>
