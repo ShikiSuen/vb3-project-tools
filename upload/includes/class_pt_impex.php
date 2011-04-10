@@ -884,7 +884,7 @@ class vB_Pt_Export_Factory
 		switch ($datatype)
 		{
 			case 'thread':
-				$out = new vB_Pt_Export_Thread()
+				$out = new vB_Pt_Export_Thread();
 				break;
 			case 'post':
 				$out = new vB_Pt_Export_Post();
