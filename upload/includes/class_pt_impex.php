@@ -1002,7 +1002,7 @@ class vB_Pt_Export
 	*
 	* @return	mixed
 	*/
-	private function export_issue()
+	public function export_issue()
 	{
 		// Nothing to do here - will be in subclasses
 		return $this->contentid;
@@ -1035,7 +1035,7 @@ class vB_Pt_Export
 	*
 	* @return	mixed
 	*/
-	private function execute_export_insert_notice()
+	public function execute_export_insert_notice()
 	{
 		if (!$this->registry->options['ptimporter_createnotice'])
 		{
@@ -1060,7 +1060,7 @@ class vB_Pt_Export_Thread extends vB_Pt_Export
 	*
 	* @return	mixed
 	*/
-	private function export_issue()
+	public function export_issue()
 	{
 		// Verify if the sent hash is correct
 		if (md5($this->datainfo['poststarttime'] . $this->registry->userinfo['userid'] . $this->registry->userinfo['salt']) != $this->datainfo['posthash'])
@@ -1108,7 +1108,7 @@ class vB_Pt_Export_Thread extends vB_Pt_Export
 	*
 	* @return	mixed
 	*/
-	private function execute_export_insert_notice()
+	public function execute_export_insert_notice()
 	{
 		parent::execute_export_insert_notice();
 
@@ -1144,7 +1144,7 @@ class vB_Pt_Export_Post extends vB_Pt_Export
 	*
 	* @return	mixed
 	*/
-	private function export_issue()
+	public function export_issue()
 	{
 		// Verify if the sent hash is correct
 		if (md5($this->datainfo['poststarttime'] . $this->registry->userinfo['userid'] . $this->registry->userinfo['salt']) != $this->datainfo['posthash'])
@@ -1229,7 +1229,7 @@ class vB_Pt_Export_Post extends vB_Pt_Export
 	*
 	* @return	mixed
 	*/
-	private function execute_export_insert_notice()
+	public function execute_export_insert_notice()
 	{
 		parent::execute_export_insert_notice();
 
@@ -1275,7 +1275,7 @@ class vB_Pt_Export_Issuethread extends vB_Pt_Export
 	*
 	* @return	mixed
 	*/
-	private function export_issue()
+	public function export_issue()
 	{
 		// First, create the thread which will 'host' all replies
 
@@ -1394,7 +1394,7 @@ class vB_Pt_Export_Issuethread extends vB_Pt_Export
 	*
 	* @return	mixed
 	*/
-	private function execute_export_insert_notice()
+	public function execute_export_insert_notice()
 	{
 		parent::execute_export_insert_notice();
 
