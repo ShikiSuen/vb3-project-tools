@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.3</version>
-	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
-	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
+	<url />
+	<versioncheckurl />
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.0.8" maxversion="" />
 	</dependencies>
@@ -5175,7 +5175,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1301315568" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1302401455" username="Pitchoune" version="2.1.3"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5250,7 +5250,7 @@ init_project_readmarker_system();
 						</li>
 						<li class="formsubmit">
 							<div class="advancedsearchlink">
-								<a href="projectsearch.php?{vb:raw session.sessionurl}do=dosearch&amp;contenttypeid={vb:raw contenttypeid}&amp;milestoneid={vb:raw milestone.milestoneid}">{vb:rawphrase advanced_search}</a>
+								<a href="projectsearch.php?{vb:raw session.sessionurl}do=search&amp;milestoneid={vb:raw milestone.milestoneid}">{vb:rawphrase advanced_search}</a>
 							</div>
 						</li>
 					</ul>
