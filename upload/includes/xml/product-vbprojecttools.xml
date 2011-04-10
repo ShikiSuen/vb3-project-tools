@@ -1674,9 +1674,6 @@ $db->query_write("
 		AND class = 'Issue'
 ");
 
-// Function to move PT attachments from pt_issueattach table to attachment/filedata tables.
-pt_update_move_attachments();
-
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
 		canattach = '1'

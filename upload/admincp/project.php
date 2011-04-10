@@ -123,6 +123,149 @@ if ($_REQUEST['do'] == 'install')
 }
 
 // ########################################################################
+if ($_REQUEST['do'] == 'updateattachments')
+{
+	if (empty($vbulletin->GPC['perpage']))
+	{
+		$vbulletin->GPC['perpage'] = 25;
+	}
+
+	require_once(DIR . '/includes/functions_file.php');
+	require_once(DIR . '/includes/class_dbalter.php');
+	$db_alter = new vB_Database_Alter_MySQL($db);
+
+	if ($db_alter->fetch_table_info('pt_issueattach'))
+	{
+		$fields = $db_alter->fetch_field_info();
+
+		if ($fields)
+		{
+			if (!$fields->table_field_data['filesize'])
+			{
+				define('CP_REDIRECT', 'project.php');
+				print_stop_message('updated_pt_attachments_successfully');
+			}
+		}
+
+		// Add a temp column we can delete after
+		$db_alter->add_field(array(
+			'name' => 'oldattachmentid',
+			'type' => 'int',
+			'attributes' => 'unsigned',
+			'null' => false,
+			'default' => 0
+		));
+	}
+
+	$finishat = $vbulletin->GPC['startat'] + $vbulletin->GPC['perpage'];
+	echo '<p>' . $vbphrase['updating_pt_attachments'] . '</p>';
+
+	$attachments = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_issueattach
+		WHERE attachmentid >= " . $vbulletin->GPC['startat'] . "
+		ORDER BY attachmentid
+		LIMIT " . $vbulletin->GPC['perpage'] . "
+	");
+
+	while ($attachment = $db->fetch_array($attachments))
+	{
+		echo construct_phrase($vbphrase['processing_x'], $attachment['attachmentid']) . "<br />\n";
+		vbflush();
+
+		if ($vbulletin->options['pt_attachfile'])
+		{
+			$attachthumbpath = fetch_attachment_path($attachment['userid'], $attachment['attachmentid'], true, $vbulletin->options['pt_attachpath']);
+			$attachpath = fetch_attachment_path($attachment['userid'], $attachment['attachmentid'], false, $vbulletin->options['pt_attachpath']);
+
+			$thumbnail = @file_get_contents($attachthumbpath);
+			$filedata = @file_get_contents($attachpath);
+		}
+		else
+		{
+			$thumbnail =& $attachment['thumbnail'];
+			$filedata =& $attachment['filedata'];
+		}
+
+		require_once(DIR . '/includes/class_bootstrap_framework.php');
+		vB_Bootstrap_Framework::init();
+
+		$dataman =& datamanager_init('AttachmentFiledata', $vbulletin, ERRTYPE_STANDARD, 'attachment');
+		$dataman->set('contenttypeid', vB_Types::instance()->getContentTypeID('vBProjectTools_Issue'));
+		$dataman->set('contentid', $attachment['issueid']);
+		$dataman->set('userid', $attachment['userid']);
+		$dataman->set('filename', $attachment['filename']);
+		$dataman->set('dateline', $attachment['dateline']);
+		$dataman->set('thumbnail_dateline', $attachment['thumbnail_dateline']);
+		$dataman->set('counter', $attachment['counter']);
+		$dataman->set('state', $attachment['visible']);
+		$dataman->setr('filedata', $filedata);
+		$dataman->setr('thumbnail', $thumbnail);
+
+		if ($attachmentid = $dataman->save())
+		{
+			$db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_issueattach SET
+					oldattachmentid = $attachmentid
+				WHERE attachmentid = " . $attachment['attachmentid'] . "
+			");
+
+			if ($vbulletin->options['pt_attachfile'])
+			{
+				@unlink($attachthumbpath);
+				@unlink($attachpath);
+			}
+		}
+
+		$finishat = ($attachment['attachmentid'] > $finishat ? $attachment['attachmentid'] : $finishat);
+	}
+
+	$finishat++;
+
+	if ($checkmore = $db->query_first("
+		SELECT attachmentid
+		FROM " . TABLE_PREFIX . "pt_issueattach
+		WHERE attachmentid >= $finishat
+		LIMIT 1
+	"))
+	{
+		print_cp_redirect("project.php?" . $vbulletin->session->vars['sessionurl'] . "do=updateattachments&startat=$finishat&pp=" . $vbulletin->GPC['perpage']);
+		echo "<p><a href=\"project.php?" . $vbulletin->session->vars['sessionurl'] . "do=updateattachments&amp;startat=$finishat&amp;pp=" . $vbulletin->GPC['perpage'] . "\">" . $vbphrase['click_here_to_continue_processing'] . "</a></p>";
+	}
+	else
+	{
+		// Drop useless columns table if all data are converted!
+		if ($db_alter->fetch_table_info('pt_issueattach'))
+		{
+			// Remove useless columns
+			$db_alter->drop_field('userid');
+			$db_alter->drop_field('filename');
+			$db_alter->drop_field('extension');
+			$db_alter->drop_field('dateline');
+			$db_alter->drop_field('filesize');
+			$db_alter->drop_field('filehash');
+			$db_alter->drop_field('filedata');
+			$db_alter->drop_field('thumbnail');
+			$db_alter->drop_field('thumbnail_filesize');
+			$db_alter->drop_field('thumbnail_dateline');
+
+			// Remove attachmentid column and rename 'oldattachmenid' by 'attachmentid'
+			$db_alter->drop_field('attachmentid');
+			$db->query_write("
+				ALTER TABLE " . TABLE_PREFIX . "pt_issueattach
+				CHANGE oldattachmentid attachmentid
+				INT(10)
+				NOT NULL
+				DEFAULT 0
+			");
+		}
+
+		define('CP_REDIRECT', 'project.php');
+		print_stop_message('updated_pt_attachments_successfully');
+	}
+}
+
+// ########################################################################
 if ($_REQUEST['do'] == 'counters')
 {
 	print_form_header('project', 'issuecounters');
