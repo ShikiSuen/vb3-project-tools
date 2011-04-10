@@ -186,7 +186,11 @@ if ($_POST['do'] == 'quickeditissue')
 		true,
 		false,
 		'qenr',
-		$vbulletin->GPC['editorid']
+		$vbulletin->GPC['editorid'],
+		'', // attachments - handled differently in PT
+		'content', // default value
+		'vBProjectTools_Issue', // Content type - needed for auto-save
+		$issueinfo['issueid'] // ID of the content
 	);
 
 	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
@@ -232,7 +236,12 @@ if ($_POST['do'] == 'quickedit')
 		true,
 		false,
 		'qenr',
-		$vbulletin->GPC['editorid']
+		$vbulletin->GPC['editorid'],
+		'', // attachments - handled differently in PT
+		'content', // default value
+		'vBProjectTools_IssueNote', // Content type - needed for auto-save
+		$issuenote['issuenoteid'], // ID of the content
+		$issueinfo['issueid'] // Parent ID of the content
 	);
 
 	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
@@ -1014,7 +1023,14 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 		'pt',
 		$vbulletin->options['pt_allowsmilies'],
 		true,
-		false
+		false,
+		'fe',
+		'',
+		'', // attachments - handled differently in PT
+		'content', // default value
+		'vBProjectTools_IssueNote', // Content type - needed for auto-save
+		$issuenote['issuenoteid'], // ID of the content
+		$issue['issueid'] // Parent ID of the content
 	);
 
 	$private_checked = ($issuenote['visible'] == 'private' ? ' checked="checked"' : '');
@@ -2074,7 +2090,13 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		'pt',
 		$vbulletin->options['pt_allowsmilies'],
 		true,
-		false
+		false,
+		'fe',
+		'',
+		'', // attachments - handled differently in PT
+		'content', // default value
+		'vBProjectTools_Issue', // Content type - needed for auto-save
+		$issue['issueid'] // ID of the content
 	);
 
 	$private_checked = ($issue['visible'] == 'private' ? ' checked="checked"' : '');
