@@ -3657,9 +3657,19 @@ if ($_POST['do'] == 'processexport')
 			break;
 	}
 
-	$exporter = new vB_Pt_Export($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
-	$contentid = $exporter->export_all();
+	// Do the export
+	$exporter = new vB_Pt_Export_Factory();
 
+	$exporter->registry =& $vbulletin;
+	$exporter->datatype =& $datatype;
+	$exporter->datainfo =& $datainfo;
+	$exporter->project =& $project;
+	$exporter->posting_perms =& $posting_perms;
+
+	$exportdata = $exporter->fetch_export($datatype);
+
+	$contentid = $exportdata->export_all();
+	
 	// Getting the correct redirect URL
 	switch ($vbulletin->GPC['contenttype'])
 	{

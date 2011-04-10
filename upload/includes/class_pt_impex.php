@@ -813,10 +813,7 @@ class vB_Pt_Import
 }
 
 /**
-* This class exports an issue note from Project Tools.
-* 
-* Note that NO PERMISSION CHECKING is done here. You have to do it beforehand.
-* Requires most of the data available in $vbulletin->GPC.
+* This class choose the correct method to export data from Project Tools.
 *
 * @package 		vBulletin Project Tools
 * @author		$Author$
@@ -824,14 +821,14 @@ class vB_Pt_Import
 * @version		$Revision$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
-class vB_Pt_Export
+class vB_Pt_Export_Factory
 {
 	/**
 	* The vBulletin Registry
-	* 
+	*
 	* @var	vB_Registry object
 	*/
-	public $registry = NULL;
+	public $registry = null;
 
 	/**
 	* The type of data from the target
@@ -882,50 +879,99 @@ class vB_Pt_Export
 	*/
 	var $attachmentids = array();
 
-	/**
-	* Ctor.
-	*
-	* @param	integer		The id of the target thread
-	* @param	integer		The id of the source project
-	* @param	string		The issue type of the existing issue
-	* @param	array		Integer array containing the ids of the posts to export.
-	* @param	array		Integer array containing the ids of the attachments to export.
-	*/
-	public function __construct(vB_Registry &$registry, $datatype, $datainfo, $project, $posting_perms, $postids = array(), $attachmentids = array())
+	public function fetch_export($datatype)
 	{
-		$this->registry = &$registry;
-		$this->datatype = $datatype;
-		$this->datainfo = $datainfo;
-		$this->project = $project;
+		switch ($datatype)
+		{
+			case 'thread':
+				$out = new vB_Pt_Export_Thread()
+				break;
+			case 'post':
+				$out = new vB_Pt_Export_Post();
+				break;
+			case 'issuethread':
+				$out = new vB_Pt_Export_Issuethread();
+				break;
+			default:
+				trigger_error('vB_Pt_Export_Factory::fetch_export(): Invalid export type.', E_USER_ERROR);
+		}
 
-		$this->postids = $this->validate_array($postids);
-		$this->attachmentids = $this->validate_array($attachmentids);
+		$out->registry =& $this->registry;
+		$out->datatype =& $this->datatype;
+		$out->datainfo =& $this->datainfo;
+		$out->project =& $this->project;
+		$out->posting_perms =& $this->posting_perms;
+
+		return $out;
+	}
+}
+
+/**
+* This class exports an issue note from Project Tools.
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
+class vB_Pt_Export
+{
+	/**
+	* The vBulletin Registry
+	* 
+	* @var	vB_Registry object
+	*/
+	public $registry = null;
+
+	/**
+	* The type of data from the target
+	*
+	* @var	string
+	*/
+	var $datatype = '';
+
+	/**
+	* The info of the target - this could be post or thread
+	*
+	* @var	array
+	*/
+	var $datainfo = array();
+
+	/**
+	* The id of the existing issue
+	*
+	* @var integer
+	*/
+	var $contentid = 0;
+
+	/**
+	* The project info of the source project
+	*
+	* @var	array
+	*/
+	var $project = array();
+
+	/**
+	* The posting permissions
+	*
+	* @var	array
+	*/
+	var $posting_perms = array();
+
+	/**
+	* Constructor. Prevents direct instantiation.
+	*/
+	public function __construct()
+	{
+		if (!is_subclass_of($this, 'vB_Pt_Export'))
+		{
+			trigger_error('Direct instantiation of vB_Pt_Export class prohibited. Use the vB_Pt_Export_Factory class.', E_USER_ERROR);
+		}
 
 		// Require to get the contenttypeid
 		require_once(DIR . '/includes/class_bootstrap_framework.php');
 		vB_Bootstrap_Framework::init();
-	}
-
-	/**
-	* Make sure we have an array here
-	*
-	* @param	mixed		Input
-	*
-	* @return 	array		The input in array form
-	*/
-	private function validate_array($source = array())
-	{
-		if ($source == null)
-		{
-			return array();
-		}
-
-		if (!is_array($source))
-		{
-			return array($source);
-		}
-
-		return $source;
 	}
 
 	/**
@@ -935,92 +981,95 @@ class vB_Pt_Export
 	*/
 	public function export_all()
 	{
-		switch ($this->datatype)
-		{
-			case 'thread':
-				// Export as new thread
-				$this->execute_export_to_thread();
-				$this->execute_export_attachments('thread', $this->contentid);
-				break;
+		// Export the content
+		$this->export_issue();
 
-			case 'post':
-				// Export as new post
-				$this->execute_export_to_post();
-				$this->execute_export_attachments('post', $this->contentid);
-				break;
-
-			case 'issuethread':
-				// Export full issue as thread
-				$this->execute_export_issue_to_thread();
-				$this->execute_export_attachments('thread', $this->contentid);
-				break;
-		}
+		// Export attachments
+		$this->execute_export_attachments();
 
 		// Export subscriptions
-		//$this->execute_export_subscriptions();
+		$this->execute_export_subscriptions();
 
 		// Create export notice
 		$this->execute_export_insert_notice();
 
 		// Useful to redirect the user
 		return $this->contentid;
-		
 	}
 
 	/**
-	* Get infos about the target thread
+	* Export the issue in the choosen type
+	*
+	* @return	mixed
 	*/
-	private function get_threadinfo()
+	private function export_issue()
 	{
-		$threadinfo = verify_id('thread', $this->datainfo['threadid'], 0, 1);
-
-		return $threadinfo;
+		// Nothing to do here - will be in subclasses
+		return $this->contentid;
 	}
 
 	/**
-	* Get infos about the target forum
+	* Export attachments from issue(notes) to the target
+	*
+	* @return	mixed
 	*/
-	private function get_foruminfo()
+	private function execute_export_attachments()
 	{
-		$foruminfo = verify_id('forum', $this->datainfo['forumid'], 0, 1);
-
-		return $foruminfo;
-	}
-
-	/**
-	* Get infos about the source user
-	*/
-	private function get_userinfo()
-	{
-		$userinfo = verify_id('user', $this->datainfo['userid'], 0, 1);
-
-		return $userinfo;
-	}
-
-	/**
-	* Verify the posthash
-	*/
-	private function verify_hash()
-	{
-		// Make sure the posthash is valid
-		if (md5($this->datainfo['poststarttime'] . $this->registry->userinfo['userid'] . $this->registry->userinfo['salt']) != $this->datainfo['posthash'])
-		{
-			return false; //$post['posthash'] = 'invalid posthash'; // don't phrase me
-		}
-
+		// Nothing to do here - will be in subclasses
 		return true;
 	}
 
 	/**
-	* Export the issue note as a new thread
+	* Export subscriptions from issue(notes) to the target
+	*
+	* @return	mixed
 	*/
-	private function execute_export_to_thread()
+	private function execute_export_subscriptions()
+	{
+		// Nothing to do here - will be in subclasses
+		return true;
+	}
+
+	/**
+	* Insert some notice in the original issue
+	*
+	* @return	mixed
+	*/
+	private function execute_export_insert_notice()
+	{
+		if (!$this->registry->options['ptimporter_createnotice'])
+		{
+			return false;
+		}
+	}
+}
+
+/**
+* This class exports an issue note from Project Tools as new thread
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
+class vB_Pt_Export_Thread extends vB_Pt_Export
+{
+	/**
+	* Export the issue to the target datatype
+	*
+	* @return	mixed
+	*/
+	private function export_issue()
 	{
 		// Verify if the sent hash is correct
-		$this->verify_hash();
+		if (md5($this->datainfo['poststarttime'] . $this->registry->userinfo['userid'] . $this->registry->userinfo['salt']) != $this->datainfo['posthash'])
+		{
+			return false;
+		}
 
-		$foruminfo = $this->get_foruminfo();
-		$userinfo = $this->get_userinfo();
+		$foruminfo = verify_id('forum', $this->datainfo['forumid'], 0, 1);
+		$userinfo = verify_id('user', $this->datainfo['userid'], 0, 1);
 
 		$allowsmilies = ($foruminfo['options'] & 512) ? 1 : 0;
 
@@ -1051,20 +1100,61 @@ class vB_Pt_Export
 
 		$this->contentid = $thread->save();
 
-		return $this->contentid;
+		parent::export_issue();
 	}
 
 	/**
-	* Export as new post in an existing thread
+	* Insert some notice in the original issue
+	*
+	* @return	mixed
 	*/
-	private function execute_export_to_post()
+	private function execute_export_insert_notice()
+	{
+		parent::execute_export_insert_notice();
+
+		$contentdata = $this->registry->db->query_first("
+			SELECT title
+			FROM " . TABLE_PREFIX . "thread
+			WHERE threadid = " . $this->contentid . "
+		");
+
+		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change->set('issueid', $this->datainfo['issueid']);
+		$change->set('userid', $this->registry->userinfo['userid']);
+		$change->set('field', 'issue_exported');
+		$change->set('oldvalue', $this->contentid);
+		$change->set('newvalue', $contentdata['title']);
+		$change->save();
+	}
+}
+
+/**
+* This class exports an issue note from Project Tools as new post in an existing thread
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
+class vB_Pt_Export_Post extends vB_Pt_Export
+{
+	/**
+	* Export the issue to the target datatype
+	*
+	* @return	mixed
+	*/
+	private function export_issue()
 	{
 		// Verify if the sent hash is correct
-		$this->verify_hash();
+		if (md5($this->datainfo['poststarttime'] . $this->registry->userinfo['userid'] . $this->registry->userinfo['salt']) != $this->datainfo['posthash'])
+		{
+			return false;
+		}
 
-		$threaddata = $this->get_threadinfo();
-		$foruminfo = $this->get_foruminfo();
-		$userinfo = $this->get_userinfo();
+		$threaddata = verify_id('thread', $this->datainfo['threadid'], 0, 1);
+		$foruminfo = verify_id('forum', $this->datainfo['forumid'], 0, 1);
+		$userinfo = verify_id('user', $this->datainfo['userid'], 0, 1);
 
 		$forumperms = fetch_permissions($foruminfo['forumid']);
 		$threadid = $threaddata['threadid'];
@@ -1131,34 +1221,72 @@ class vB_Pt_Export
 
 		$this->contentid = $post->save();
 
-		return $this->contentid;
+		parent::export_issue();
 	}
 
 	/**
-	* Export attachments from issue(notes) to the target
-	*
-	* @var		string		Data type
-	* @var		integer		ID of the exported data type
+	* Insert some notice in the original issue
 	*
 	* @return	mixed
 	*/
-	private function execute_export_attachments($type, $id)
+	private function execute_export_insert_notice()
 	{
-		// Nothing to do actually -- will be when PT attachment system will be rewrite to be 'compliant' with vB4 attachment system
-	}
+		parent::execute_export_insert_notice();
 
+		$contentdata = $this->registry->db->query_first("
+			SELECT title, threadid
+			FROM " . TABLE_PREFIX . "post
+			WHERE postid = " . $this->contentid . "
+		");
+
+		if (!$contentdata['title'])
+		{
+			$contentdata = $this->registry->db->query_first("
+				SELECT title
+				FROM " . TABLE_PREFIX . "thread
+				WHERE threadid = " . $contentdata['threadid'] . "
+			");
+		}
+
+		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change->set('issueid', $this->datainfo['issueid']);
+		$change->set('userid', $this->registry->userinfo['userid']);
+
+		$change->set('field', 'issue_exported_post');
+		$change->set('oldvalue', $this->contentid); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
+		$change->set('newvalue', $contentdata['title']);
+		$change->save();
+	}
+}
+
+/**
+* This class exports an issue note from Project Tools as new issue
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Revision$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
+class vB_Pt_Export_Issuethread extends vB_Pt_Export
+{
 	/**
-	* Export the full issue as new thread
+	* Export the issue to the target datatype
+	*
+	* @return	mixed
 	*/
-	private function execute_export_issue_to_thread()
+	private function export_issue()
 	{
 		// First, create the thread which will 'host' all replies
 
 		// Verify if the sent hash is correct
-		$this->verify_hash();
+		if (md5($this->datainfo['poststarttime'] . $this->registry->userinfo['userid'] . $this->registry->userinfo['salt']) != $this->datainfo['posthash'])
+		{
+			return false;
+		}
 
-		$foruminfo = $this->get_foruminfo();
-		$userinfo = $this->get_userinfo();
+		$foruminfo = verify_id('forum', $this->datainfo['forumid'], 0, 1);
+		$userinfo = verify_id('user', $this->datainfo['userid'], 0, 1);
 
 		$allowsmilies = ($foruminfo['options'] & 512) ? 1 : 0;
 
@@ -1258,69 +1386,29 @@ class vB_Pt_Export
 
 		$this->contentid = $this->threadid;
 
-		return $this->contentid;
+		parent::export_issue();
 	}
 
 	/**
-	* 
+	* Insert some notice in the original issue
+	*
+	* @return	mixed
 	*/
 	private function execute_export_insert_notice()
 	{
-		if (!$this->registry->options['ptimporter_createnotice'])
-		{
-			return;
-		}
+		parent::execute_export_insert_notice();
+
+		$contentdata = $this->registry->db->query_first("
+			SELECT title
+			FROM " . TABLE_PREFIX . "thread
+			WHERE threadid = " . $this->threadid . "
+		");
 
 		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 		$change->set('issueid', $this->datainfo['issueid']);
 		$change->set('userid', $this->registry->userinfo['userid']);
-
-		switch ($this->datatype)
-		{
-			case 'thread':
-				$contentdata = $this->registry->db->query_first("
-					SELECT title
-					FROM " . TABLE_PREFIX . "thread
-					WHERE threadid = " . $this->contentid . "
-				");
-
-				$change->set('field', 'issue_exported');
-				$change->set('oldvalue', $this->contentid);
-
-				break;
-			case 'post':
-				$contentdata = $this->registry->db->query_first("
-					SELECT title, threadid
-					FROM " . TABLE_PREFIX . "post
-					WHERE postid = " . $this->contentid . "
-				");
-
-				if (!$contentdata['title'])
-				{
-					$contentdata = $this->registry->db->query_first("
-						SELECT title
-						FROM " . TABLE_PREFIX . "thread
-						WHERE threadid = " . $contentdata['threadid'] . "
-					");
-				}
-
-				$change->set('field', 'issue_exported_post');
-				$change->set('oldvalue', $this->contentid); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
-
-				break;
-			case 'issuethread':
-				$contentdata = $this->registry->db->query_first("
-					SELECT title
-					FROM " . TABLE_PREFIX . "thread
-					WHERE threadid = " . $this->threadid . "
-				");
-
-				$change->set('field', 'issue_exported_issuethread');
-				$change->set('oldvalue', $this->contentid); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
-
-				break;
-		}
-
+		$change->set('field', 'issue_exported_issuethread');
+		$change->set('oldvalue', $this->contentid); // It seems there is a bug with SEO urls which goes to 'post' content - need to use 'thread'.
 		$change->set('newvalue', $contentdata['title']);
 		$change->save();
 	}
