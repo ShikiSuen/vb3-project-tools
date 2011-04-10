@@ -5747,7 +5747,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1297325322" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1302401318" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5829,7 +5829,7 @@ init_project_readmarker_system();
 						</li>
 						<li class="formsubmit">
 							<div class="advancedsearchlink">
-								<a href="projectsearch.php?{vb:raw session.sessionurl}do=dosearch&amp;contenttypeid={vb:raw contenttypeid}&amp;milestoneid={vb:raw milestone.milestoneid}">{vb:rawphrase advanced_search}</a>
+								<a href="projectsearch.php?{vb:raw session.sessionurl}do=search&amp;milestoneid={vb:raw milestone.milestoneid}">{vb:rawphrase advanced_search}</a>
 							</div>
 						</li>
 					</ul>
