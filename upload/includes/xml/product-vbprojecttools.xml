@@ -1475,6 +1475,14 @@ $db->query_write("
 // Reload
 $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
+		<code version="2.1.3">
+			<installcode><![CDATA[// Issue #163 fix
+$db->query_write("
+	ALTER TABLE " . TABLE_PREFIX . "pt_user
+	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT 0
+");]]></installcode>
+			<uninstallcode />
+		</code>
 	</codes>
 	<templates>
 		<template name="block_issues" templatetype="template" date="1288561867" username="Pitchoune" version="2.1.2"><![CDATA[<li>
