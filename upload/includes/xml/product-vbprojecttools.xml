@@ -1680,11 +1680,76 @@ $db->query_write("
 	WHERE contenttypeid = " . $issue_contenttypeid . "
 ");
 
+// Default data to import with PT 2.2
+$attachmenttypes = array(
+	'type' => array(
+		'extension' => 'diff',
+		'mimetype' => 'a:1:{i:0;s:24:"Content-type: plain/text";}',
+		'size' => 20000
+	),
+	'type' => array(
+		'extension' => 'patch',
+		'mimetype' => 'a:1:{i:0;s:24:"Content-type: plain/text";}',
+		'size' => 20000
+	),
+	'type' => array(
+		'extension' => 'xml',
+		'mimetype' => 'a:1:{i:0;s:24:"Content-type: plain/text";}',
+		'size' => 20000
+	)
+);
+
+foreach ($attachmenttypes AS $attachmenttype)
+{
+	$indexed_types = array();
+	$contenttype = array();
+	$collection = new vB_Collection_ContentType();
+	$collection->filterAttachable(true);
+
+	foreach ($collection AS $type)
+	{
+		$value['package'] = $type->getPackageClass();
+		$value['class'] = $type->getClass();
+		$indexed_types[$type->getID()] = $value;
+	}
+
+	foreach ($indexed_types AS $contenttypeid => $content)
+	{
+		if ($content['package'] == 'vBProjectTools' AND $content['class'] == 'Issue')
+		{
+			$contenttype["$contenttypeid"]['n'] = 0;
+			$contenttype["$contenttypeid"]['e'] = 1;
+		}
+		else
+		{
+			$contenttype["$contenttypeid"]['n'] = 0;
+			$contenttype["$contenttypeid"]['e'] = 0;
+		}
+	}
+
+	$attachmenttype['type']['contenttype'] = serialize($contenttype);
+
+	$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "attachmenttype
+			(extension, size, mimetype, contenttypes)
+		VALUES
+			('" . $db->escape_string($attachmenttype['type']['extension']) . "', " . intval($attachmenttype['type']['size']) . ", '" . $db->escape_string($attachmenttype['type']['mimetype']) . "', '" . $db->escape_string($attachmenttype['type']['contenttype']) . "')
+	");
+}
+
+build_attachment_permissions();
+
 /*================================*\
 || ############################## ||
 || #			Final			# ||
 || ############################## ||
 \*================================*/
+
+// Issue #163 fix
+$db->query_write("
+	ALTER TABLE " . TABLE_PREFIX . "pt_user
+	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT 0
+");
 
 // Ensure phrases will be rebuilt
 $rebuild['phrases'] = true;]]></installcode>
