@@ -3699,6 +3699,10 @@ legend {
 	</div>
 	</div>
 </li>]]></template>
+		<template name="pt_forumhome_legend" templatetype="template" date="1302902925" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="$vboptions['pt_hasprojectforums']">
+	<dt><img src="{vb:stylevar imgdir_statusicon}/project_forum_new_16.png" alt="{vb:rawphrase project_new_issue_notes}" /></dt><dd>{vb:rawphrase project_new_issue_notes}</dd>
+	<dt><img src="{vb:stylevar imgdir_statusicon}/project_forum_old_16.png" alt="{vb:rawphrase project_no_new_issue_notes}" /></dt><dd>{vb:rawphrase project_no_new_issue_notes}</dd>
+</vb:if>]]></template>
 		<template name="pt_headinclude" templatetype="template" date="1291148231" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="$vboptions['storecssasfile']">
 	{vb:cssfile projecttools-rollup.css}
 <vb:else />
@@ -9863,12 +9867,18 @@ else if ($userinfo['activity'] == 'archive_project')
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
-			<title>Search: Adding PT CSS Template in various places</title>
+			<title>Adding PT CSS Template in various places</title>
 			<hookname>parse_templates</hookname>
 			<phpcode><![CDATA[// In search.php & projectpost.php?do=managesubscriptions, projecttools.css is not automatically added - do it here
 if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))) OR (THIS_SCRIPT == 'projectpost' AND in_array($_REQUEST['do'], array('managesubscriptions'))) OR (THIS_SCRIPT == 'showthread') OR (THIS_SCRIPT == 'usercp'))
 {
 	$template_hook['headinclude_bottom_css'] .= vB_Template::create('pt_headinclude')->render();
+}
+
+// Adding some template in forum home page in the legend
+if (THIS_SCRIPT == 'index')
+{
+	$template_hook['forumhome_icon_legend'] .= vB_Template::create('pt_forumhome_legend')->render();
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -10635,6 +10645,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="private_message_keep_in_mind" date="1175092015" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[This is a private message. Keep this in mind when replying!]]></phrase>
 			<phrase name="project" date="1174406316" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project]]></phrase>
 			<phrase name="project_information" date="1175174027" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Information]]></phrase>
+			<phrase name="project_new_issue_notes" date="1302902774" username="Pitchoune" version="2.2.0"><![CDATA[Project which contains unread issue notes]]></phrase>
+			<phrase name="project_no_new_issue_notes" date="1302902790" username="Pitchoune" version="2.2.0"><![CDATA[Project which contains no unread issue notes]]></phrase>
 			<phrase name="project_rss_feed" date="1214316638" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project RSS Feed]]></phrase>
 			<phrase name="project_statistics" date="1174490381" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Statistics]]></phrase>
 			<phrase name="project_subscriptions" date="1211555542" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Subscriptions]]></phrase>

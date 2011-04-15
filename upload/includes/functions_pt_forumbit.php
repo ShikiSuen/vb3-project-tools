@@ -59,9 +59,7 @@ function pt_forumbit_setup(&$project_forums, &$project_types)
 
 	if ($after_projects)
 	{
-		build_project_private_lastpost_sql_all($vbulletin->userinfo,
-			$private_lastpost_join, $private_lastpost_fields
-		);
+		build_project_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $private_lastpost_fields);
 		$marking = ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid']);
 
 		$project_type_data = $db->query_read("
@@ -78,6 +76,7 @@ function pt_forumbit_setup(&$project_forums, &$project_types)
 			WHERE projecttype.projectid IN (" . implode(',', $after_projects) . ")
 			ORDER BY issuetype.displayorder
 		");
+
 		while ($project_type = $db->fetch_array($project_type_data))
 		{
 			$project_types["$project_type[projectid]"]["$project_type[issuetypeid]"] = $project_type;
