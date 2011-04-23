@@ -443,18 +443,21 @@ class vB_Pt_IssueNote_User extends vB_Pt_IssueNote
 		{
 			$unserialized_data = unserialize($import['data']);
 
-			$this->note['import_issueid'] = $unserialized_data['pt_issueid'];
+			if ($unserialized_data['visible'] == 'visible')
+			{
+				$this->note['import_issueid'] = $unserialized_data['pt_issueid'];
 
-			// Need to create another query... I don't like that
-			$import_title = $this->registry->db->query_first("
-				SELECT title
-				FROM " . TABLE_PREFIX . "pt_issue
-				WHERE issueid = " . intval($this->note['import_issueid']) . "
-			");
+				// Need to create another query... I don't like that
+				$import_title = $this->registry->db->query_first("
+					SELECT title
+					FROM " . TABLE_PREFIX . "pt_issue
+					WHERE issueid = " . intval($this->note['import_issueid']) . "
+				");
 
-			$this->note['import_title'] = $import_title['title'];
+				$this->note['import_title'] = $import_title['title'];
 
-			$this->note['import_seo'] = fetch_seo_url('issue', $this->note, null, 'import_issueid', 'import_title');
+				$this->note['import_seo'] = fetch_seo_url('issue', $this->note, null, 'import_issueid', 'import_title');
+			}
 		}
 	}
 }

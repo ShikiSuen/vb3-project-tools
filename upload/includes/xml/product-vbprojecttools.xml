@@ -2252,7 +2252,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1299657581" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1303583670" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3405,6 +3405,11 @@ div.checkbox_multiselect {
 
 .pagination span.prev_next a, .pagination span.first_last a {
 	top: -1px;
+}
+
+a.firstunread {
+	padding-{vb:stylevar left}: 1px;
+	padding-{vb:stylevar right}: 1px;
 }
 
 /* Old vB3 Project Tools CSS definitions - we will keep these definitions only */
@@ -6520,10 +6525,10 @@ init_project_readmarker_system();
 </div>]]></template>
 		<template name="pt_postbit_create_issue" templatetype="template" date="1297600315" username="Pitchoune" version="2.2.0"><![CDATA[<a href="projectpost.php?{vb:raw session.sessionurl}do=importcontent&amp;p={vb:raw post.postid}&amp;type=post" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
 <span class="seperator">&nbsp;</span>]]></template>
-		<template name="pt_postbit_link_issue" templatetype="template" date="1297541343" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="$show['pt_separator']">
+		<template name="pt_postbit_link_issue" templatetype="template" date="1303583689" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="$show['pt_separator']">
 	<div class="ptseparator">-</div>
 </vb:if>
-<a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid'}">
+<a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
 		<template name="pt_postissue" templatetype="template" date="1299559724" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
