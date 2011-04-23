@@ -694,6 +694,9 @@ class vB_Pt_Import
 			");
 		}
 
+		// Issue is visible
+		$importdata['visible'] = 'visible';
+
 		// Serialize the data
 		$data = serialize($importdata);
 
@@ -732,6 +735,9 @@ class vB_Pt_Import
 			$importdata['pt_forwardmode'] = 1;
 		}
 
+		// Issue is visible
+		$importdata['visible'] = 'visible';
+
 		// Serialize the data
 		$data = serialize($importdata);
 
@@ -761,6 +767,9 @@ class vB_Pt_Import
 
 		// Adding the forward mode
 		$importdata['pt_forwardmode'] = 0; // No use here
+
+		// Issue is visible
+		$importdata['visible'] = 'visible';
 
 		// Srialialize the data
 		$data = serialize($importdata);

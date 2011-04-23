@@ -568,7 +568,7 @@ if ($_REQUEST['do'] == 'report' OR $_POST['do'] == 'sendemail')
 
 	if (!verify_issue_note_perms($issue, $issuenote, $vbulletin->userinfo))
 	{
-			eval(standard_error(fetch_error('invalidid', $vbphrase['issue_note'], $vbulletin->options['contactuslink'])));
+		eval(standard_error(fetch_error('invalidid', $vbphrase['issue_note'], $vbulletin->options['contactuslink'])));
 	}
 
 	($hook = vBulletinHook::fetch_hook('project_report_start')) ? eval($hook) : false;

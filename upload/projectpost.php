@@ -1277,8 +1277,7 @@ if ($_POST['do'] == 'postissue')
 
 		if ($vbulletin->GPC['delete'])
 		{
-			if (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['candeleteissue'])
-				OR (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['candeleteissueothers']) AND $vbulletin->userinfo['userid'] != $issue['submituserid'])
+			if (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['candeleteissue']) OR (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['candeleteissueothers']) AND $vbulletin->userinfo['userid'] != $issue['submituserid'])
 			)
 			{
 				print_no_permission();
@@ -3892,6 +3891,7 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 	}
 
 	require_once(DIR . '/includes/functions_pt_impex.php');
+	$datainfo = array();
 
 	if ($threadid)
 	{	
@@ -4001,7 +4001,7 @@ if ($_REQUEST['do'] == 'importcontent2')
 
 	// categories
 	$category_options = '';
-	$optionclass = '';
+
 	foreach ($vbulletin->pt_categories AS $category)
 	{
 		if ($category['projectid'] != $project['projectid'])
@@ -4011,9 +4011,9 @@ if ($_REQUEST['do'] == 'importcontent2')
 
 		$optionvalue = $category['projectcategoryid'];
 		$optiontitle = $category['title'];
-		$optionselected = '';
-		$category_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$category_options .= render_option_template($optiontitle, $optionvalue);
 	}
+
 	$category_unknown_selected = ' selected="selected"';
 
 	// setup versions
@@ -4034,7 +4034,6 @@ if ($_REQUEST['do'] == 'importcontent2')
 
 	$applies_versions = '';
 	$addressed_versions = '';
-	$optionclass = '';
 
 	foreach ($version_groups AS $optgroup_label => $versions)
 	{
@@ -4043,14 +4042,12 @@ if ($_REQUEST['do'] == 'importcontent2')
 
 		foreach ($versions AS $optionvalue => $optiontitle)
 		{
-			$optionselected = '';
-			$group_applies .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
-
-			$optionselected = '';
-			$group_addressed .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$group_applies .= render_option_template($optiontitle, $optionvalue);
+			$group_addressed .= render_option_template($optiontitle, $optionvalue);
 		}
 
 		$optgroup_options = $group_applies;
+
 		$templater = vB_Template::create('optgroup');
 			$templater->register('optgroup_extra', $optgroup_extra);
 			$templater->register('optgroup_label', $optgroup_label);
@@ -4058,6 +4055,7 @@ if ($_REQUEST['do'] == 'importcontent2')
 		$applies_versions .= $templater->render();
 
 		$optgroup_options = $group_addressed;
+
 		$templater = vB_Template::create('optgroup');
 			$templater->register('optgroup_extra', $optgroup_extra);
 			$templater->register('optgroup_label', $optgroup_label);
@@ -4098,6 +4096,9 @@ if ($_REQUEST['do'] == 'importcontent2')
 	$milestone_options = fetch_milestone_select($project['projectid'], $issue['milestoneid']);
 
 	// setup priorities
+	$priority_array = array();
+	$priority_options = '';
+
 	$priorities = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectpriority
@@ -4112,7 +4113,7 @@ if ($_REQUEST['do'] == 'importcontent2')
 	foreach ($priority_array AS $optionvalue => $options)
 	{
 		$optiontitle = $vbphrase['priority' . $optionvalue . ''];
-		$priority_options .= render_option_template($optiontitle, $optionvalue, '');
+		$priority_options .= render_option_template($optiontitle, $optionvalue);
 	}
 
 	switch ($vbulletin->GPC['type'])
@@ -4121,20 +4122,23 @@ if ($_REQUEST['do'] == 'importcontent2')
 			$datainfo = $threadinfo;
 			$datainfo['id'] = $threadinfo['threadid'];
 			$datainfo['title'] = $threadinfo['title'];
-			$datainfo['type'] = 'thread';
+			$datainfo['longtype'] = 'thread';
+			$datainfo['shorttype'] = 't';
 			break;
 		case 'post':
 			$datainfo = $postinfo;
 			$datainfo['id'] = $postinfo['postid'];
 			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
-			$datainfo['type'] = 'post';
+			$datainfo['longtype'] = 'post';
+			$datainfo['shorttype'] = 'p';
 			break;
 		case 'issuenote':
 			$datainfo = $issuenoteinfo;
 			$datainfo['id'] = $issuenoteinfo['issuenoteid'];
 			$datainfo['title'] = $issuenoteinfo['title'];
 			$datainfo['summary'] = $issuenoteinfo['summary'];
-			$datainfo['type'] = 'issuenote';
+			$datainfo['longtype'] = 'issuenote';
+			$datainfo['shorttype'] = 'issuenote';
 			break;
 	}
 
@@ -4188,9 +4192,7 @@ if ($_REQUEST['do'] == 'importcontent')
 				continue;
 			}
 
-			$optionvalue = $projectinfo['projectid'] . '-' . $type;
-			$optiontitle = $vbphrase["issuetype_{$type}_singular"];
-			$optgroup_options .= render_option_template($optiontitle, $optionvalue, '', '');
+			$optgroup_options .= render_option_template($vbphrase["issuetype_{$type}_singular"], $projectinfo['projectid'] . '-' . $type);
 		}
 
 		if (empty($optgroup_options))
@@ -4198,10 +4200,9 @@ if ($_REQUEST['do'] == 'importcontent')
 			continue;
 		}
 
-		$optgroup_label = $projectinfo['title'];
 		$templater = vB_Template::create('optgroup');
-			$templater->register('optgroup_extra', $optgroup_extra);
-			$templater->register('optgroup_label', $optgroup_label);
+			$templater->register('optgroup_extra', '');
+			$templater->register('optgroup_label', $projectinfo['title']);
 			$templater->register('optgroup_options', $optgroup_options);
 		$project_type_select .= $templater->render();
 	}
@@ -4212,19 +4213,22 @@ if ($_REQUEST['do'] == 'importcontent')
 			$datainfo = $threadinfo;
 			$datainfo['id'] = $threadinfo['threadid'];
 			$datainfo['title'] = $threadinfo['title'];
-			$datainfo['type'] = 'thread';
+			$datainfo['longtype'] = 'thread';
+			$datainfo['shorttype'] = 't';
 			break;
 		case 'post':	
 			$datainfo = $postinfo;
 			$datainfo['id'] = $postinfo['postid'];
 			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
-			$datainfo['type'] = 'post';
+			$datainfo['longtype'] = 'post';
+			$datainfo['shorttype'] = 'p';
 			break;
 		case 'issuenote':
 			$datainfo = $issuenoteinfo;
 			$datainfo['id'] = $issuenoteinfo['issuenoteid'];
 			$datainfo['title'] = $issuenoteinfo['title']; // Use issue title as issue note can't have title
-			$datainfo['type'] = 'issuenote';
+			$datainfo['longtype'] = 'issuenote';
+			$datainfo['shorttype'] = 'issuenote';
 			break;
 	}
 

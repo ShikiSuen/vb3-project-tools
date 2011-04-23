@@ -348,13 +348,22 @@ class vB_Attachment_Store_vBProjectTools_Issue extends vB_Attachment_Store
 	protected $projectinfo = array();
 
 	/**
-	* Constructor
+	* Given an attachmentid, retrieve values that verify_permissions needs
 	*
-	* @return	void
+	* @param	int	Attachmentid
+	*
+	* @return	array
 	*/
-	public function __construct(&$registry, $contenttypeid, $categoryid, $values)
+	public function fetch_associated_contentinfo($attachmentid)
 	{
-		parent::__construct($registry, $contenttypeid, $categoryid, $values);
+		return $this->registry->db->query_first("
+			SELECT
+				i.issueid
+			FROM " . TABLE_PREFIX . "attachment AS a
+			INNER JOIN " . TABLE_PREFIX . "pt_issue AS i ON (i.issueid = a.contentid)
+			WHERE
+				a.attachmentid = " . intval($attachmentid) . "
+		");
 	}
 
 	/**
@@ -362,7 +371,7 @@ class vB_Attachment_Store_vBProjectTools_Issue extends vB_Attachment_Store
 	*
 	* @return	boolean
 	*/
-	public function verify_permissions()
+	public function verify_permissions($info = array())
 	{
 		global $show;
 
@@ -370,6 +379,7 @@ class vB_Attachment_Store_vBProjectTools_Issue extends vB_Attachment_Store
 		$project = verify_project($this->issue['projectid']);
 
 		$this->issueperms = fetch_project_permissions($this->registry->userinfo, $project['projectid'], $this->issue['issuetypeid']);
+
 		if (!($this->issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattach']) OR is_issue_closed($this->issue, $this->issueperms))
 		{
 			return false;

@@ -1670,36 +1670,29 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
 		canattach = '1'
-	WHERE package = 'vBProjectTools'
-		AND class = 'Issue'
-");
-
-$db->query_write("
-	UPDATE " . TABLE_PREFIX . "contenttype SET
-		canattach = '1'
 	WHERE contenttypeid = " . $issue_contenttypeid . "
 ");
 
 // Default data to import with PT 2.2
 $attachmenttypes = array(
-	'type' => array(
+	'diff' => array(
 		'extension' => 'diff',
 		'mimetype' => 'a:1:{i:0;s:24:"Content-type: plain/text";}',
 		'size' => 20000
 	),
-	'type' => array(
+	'patch' => array(
 		'extension' => 'patch',
 		'mimetype' => 'a:1:{i:0;s:24:"Content-type: plain/text";}',
 		'size' => 20000
 	),
-	'type' => array(
+	'xml' => array(
 		'extension' => 'xml',
 		'mimetype' => 'a:1:{i:0;s:24:"Content-type: plain/text";}',
 		'size' => 20000
 	)
 );
 
-foreach ($attachmenttypes AS $attachmenttype)
+foreach ($attachmenttypes AS $extension => $attachmenttype)
 {
 	$indexed_types = array();
 	$contenttype = array();
@@ -1727,15 +1720,29 @@ foreach ($attachmenttypes AS $attachmenttype)
 		}
 	}
 
-	$attachmenttype['type']['contenttype'] = serialize($contenttype);
+	$attachmenttype['contenttype'] = serialize($contenttype);
 
 	$db->query_write("
-		INSERT INTO " . TABLE_PREFIX . "attachmenttype
+		REPLACE INTO " . TABLE_PREFIX . "attachmenttype
 			(extension, size, mimetype, contenttypes)
 		VALUES
-			('" . $db->escape_string($attachmenttype['type']['extension']) . "', " . intval($attachmenttype['type']['size']) . ", '" . $db->escape_string($attachmenttype['type']['mimetype']) . "', '" . $db->escape_string($attachmenttype['type']['contenttype']) . "')
+			('" . $db->escape_string($attachmenttype['extension']) . "', " . intval($attachmenttype['size']) . ", '" . $db->escape_string($attachmenttype['mimetype']) . "', '" . $db->escape_string($attachmenttype['contenttype']) . "')
 	");
 }
+
+// Add an admin message to move attachments in the vB4 system
+$db->query_write("
+	INSERT INTO " . TABLE_PREFIX . "adminmessage
+		(varname, dismissable, script, action, execurl, method, status)
+	VALUES
+		('after_upgrade_40_update_pt_attachment',
+		1,
+		'project.php',
+		'updateattachments',
+		'project.php?do=updateattachments&pp=25',
+		'get',
+		'undone')
+");
 
 build_attachment_permissions();
 
@@ -3724,7 +3731,7 @@ legend {
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_import_content" templatetype="template" date="1297600166" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content" templatetype="template" date="1303573039" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3752,12 +3759,12 @@ legend {
 	<h1>{vb:rawphrase pt_create_issue}</h1>
 </div>
 
-<form class="vbform block" action="projectpost.php?do=importcontent2&amp;{vb:raw datainfo.type}={vb:raw datainfo.id}&amp;type={vb:raw datainfo.type}" method="post" name="vbform">
+<form class="vbform block" action="projectpost.php?do=importcontent2&amp;type={vb:raw datainfo.longtype}&amp;{vb:raw datainfo.shorttype}={vb:raw datainfo.id}" method="post" name="vbform">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
-<input type="hidden" name="{vb:raw datainfo.type}" value="{vb:raw datainfo.id}" />
+<input type="hidden" name="{vb:raw datainfo.shorttype}" value="{vb:raw datainfo.id}" />
 <input type="hidden" name="do" value="importcontent2" />
-<input type="hidden" name="type" value="{vb:raw datainfo.type}" />
+<input type="hidden" name="type" value="{vb:raw datainfo.longtype}" />
 
 	<h2 class="blockhead">{vb:rawphrase pt_create_issue}</h2>
 
@@ -3790,7 +3797,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1299659941" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1303573057" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3819,14 +3826,14 @@ legend {
 	<p class="description">{vb:rawphrase issue_type}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issuetypeid}">{vb:raw issuetype}</a> | {vb:rawphrase project}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a></p>
 </div>
 
-<form class="vbform block" method="post" action="projectpost.php?do=processimportcontent&amp;{vb:raw datainfo.type}={vb:raw datainfo.id}&amp;type={vb:raw datainfo.type}">
+<form class="vbform block" method="post" action="projectpost.php?do=processimportcontent&amp;type={vb:raw datainfo.longtype}&amp;{vb:raw datainfo.shorttype}={vb:raw datainfo.id}">
 <input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 <input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
 <input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
 <input type="hidden" name="issuetypeid" value="{vb:raw issuetypeid}" />
 <input type="hidden" name="do" value="processimportcontent" />
-<input type="hidden" name="{vb:raw datainfo.type}" value="{vb:raw datainfo.id}" />
-<input type="hidden" name="type" value="{vb:raw datainfo.type}" />
+<input type="hidden" name="{vb:raw datainfo.shorttype}" value="{vb:raw datainfo.id}" />
+<input type="hidden" name="type" value="{vb:raw datainfo.longtype}" />
 <input type="hidden" name="originaltitle" value="{vb:raw datainfo.title}" />
 
 	<h2 class="blockhead">{vb:rawphrase post_new_issue}</h2>
@@ -9956,9 +9963,12 @@ $issuedata = $db->query_first("
 
 $issueinfos = unserialize($issuedata['data']);
 
-if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1)
+if ($issueinfos['visible'] == 'visible')
 {
-	exec_header_redirect('project.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issueinfos[pt_issueid]");
+	if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1)
+	{
+		exec_header_redirect('issue.php?' . $vbulletin->session->vars['sessionurl_js'] . "issueid=$issueinfos[pt_issueid]");
+	}
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -9980,43 +9990,44 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 			<hookname>threadbit_display</hookname>
 			<phpcode><![CDATA[$issueinfos = unserialize($thread['pt_issueimport']);
 
-if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1)
+if ($issueinfos['visible'] == 'visible')
 {
-	if ($vbulletin->options['ptimporter_extendedthreadprefix'])
+	if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1)
 	{
-		$ptissueinfo = $db->query_first_slave("
-			SELECT
-				pt_issue.issuetypeid AS issuetype,
-				pt_project.title AS project
-			FROM " . TABLE_PREFIX . "pt_issue AS pt_issue
-				LEFT JOIN " . TABLE_PREFIX . "pt_project AS pt_project ON (pt_issue.projectid = pt_project.projectid)
-			WHERE pt_issue.issueid = " . $issueinfos['pt_issueid'] . "
-		");
+		if ($vbulletin->options['ptimporter_extendedthreadprefix'])
+		{
+			$ptissueinfo = $db->query_first_slave("
+				SELECT
+					pt_issue.issuetypeid AS issuetype,
+					pt_project.title AS project
+				FROM " . TABLE_PREFIX . "pt_issue AS pt_issue
+					LEFT JOIN " . TABLE_PREFIX . "pt_project AS pt_project ON (pt_issue.projectid = pt_project.projectid)
+				WHERE pt_issue.issueid = " . $issueinfos['pt_issueid'] . "
+			");
 
-		$thread['typeprefix'] = construct_phrase($vbphrase['pt_import_threadprefix_extended'], $ptissueinfo['project'], $vbphrase["issuetype_$ptissueinfo[issuetype]_singular"]);
-	}
-	else
-	{
-		$thread['typeprefix'] = $vbphrase['pt_import_threadprefix'];
-	}
+			$thread['typeprefix'] = construct_phrase($vbphrase['pt_import_threadprefix_extended'], $ptissueinfo['project'], $vbphrase["issuetype_$ptissueinfo[issuetype]_singular"]);
+		}
+		else
+		{
+			$thread['typeprefix'] = $vbphrase['pt_import_threadprefix'];
+		}
 	
-	$thread['preview'] = '';
-	$thread['views'] = '-';
-	$thread['openclose_editable'] = '';
-	$thread['statusicon'] = '_moved';
-	$thread['pagenav'] = '';
-	$thread['pagenav'] = '';
-	$thread['rating'] = 0;
-	$thread['votenum'] = 0;
-	$thread['pagenav'] = '';
-	$thread['showpagenav'] = false;
-	$show['paperclip'] = false;
-	$show['threadmoved'] = true;
-	$show['threadicon'] = false;
-	$show['threadcount'] = false;
-	$show['sticky'] = false;
-	$show['gotonewpost'] = false;
-	$show['subscribed'] = false;
+		$thread['preview'] = '';
+		$thread['views'] = '-';
+		$thread['openclose_editable'] = '';
+		$thread['statusicon'] = '_moved';
+		$thread['rating'] = 0;
+		$thread['votenum'] = 0;
+		$thread['pagenav'] = '';
+		$thread['showpagenav'] = false;
+		$show['paperclip'] = false;
+		$show['threadmoved'] = true;
+		$show['threadicon'] = false;
+		$show['threadcount'] = false;
+		$show['sticky'] = false;
+		$show['gotonewpost'] = false;
+		$show['subscribed'] = false;
+	}
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -10029,7 +10040,7 @@ if (intval($issueinfos['pt_issueid']) > 0 AND $issueinfos['pt_forwardmode'] == 1
 		eval(standard_error(fetch_error('invalidid', $vbphrase['thread'], $vbulletin->options['contactuslink'])));
 	}
 	
-	exec_header_redirect('projectpost.php?' . $vbulletin->session->vars['sessionurl_js'] . "do=importcontent&amp;t=$threadinfo[threadid]");
+	exec_header_redirect('projectpost.php?' . $vbulletin->session->vars['sessionurl_js'] . "do=importcontent&amp;type=thread&amp;t=$threadinfo[threadid]");
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -10353,6 +10364,8 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 			<phrase name="reportissuenote_newthread" date="1213627782" username="Scott" version="2.0.0 Alpha 1"><![CDATA[Reported Issue Note by $reportinfo[rusername]]]></phrase>
 		</phrasetype>
 		<phrasetype name="Error Messages" fieldname="error">
+			<phrase name="after_upgrade_40_update_pt_attachment" date="1303579053" username="Pitchoune" version="2.2.0"><![CDATA[<strong>vBulletin Project Tools 2.2 Post Upgrade</strong>
+<p>You must update your Project Tools attachments to vBulletin 4 format.</p>]]></phrase>
 			<phrase name="applicable_version_required" date="1178898662" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You must select an applicable version for this issue.]]></phrase>
 			<phrase name="category_required" date="1178898704" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You must select a category for this issue.]]></phrase>
 			<phrase name="counters_rebuilt" date="1170954293" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Counters Rebuilt]]></phrase>

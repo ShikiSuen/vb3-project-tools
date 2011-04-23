@@ -715,6 +715,46 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					'" . $db->escape_string($this->info['reason']) . "',
 					" . TIMENOW . ")
 			");
+
+			// We need to check here if the issue was imported from another content type.
+			// If yes, change the 'visible' value in the serialized data
+			$importdata = $this->registry->db->query_first("
+				SELECT contenttypeid, contentid, data
+				FROM " . TABLE_PREFIX . "pt_issueimport
+				WHERE issueid = " . $issueid . "
+			");
+
+			if ($importdata)
+			{
+				$data = unserialize($importdata['data']);
+
+				// Set the soft-deleted issue as not visible
+				$data['visible'] = 'deleted';
+
+				// Update the original content - open back thread
+				// We need first to get the content type id about 'vBForum_Thread' - could be not the same in each install
+				$thread_contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+				if ($thread_contenttypeid == $importdata['contenttypeid'] AND $data['pt_forwardmode'] == 1)
+				{
+					// Content type ID are the same, continue
+					// Open back the original thread
+					$this->registry->db->query_write("
+						UPDATE " . TABLE_PREFIX . "thread SET
+							open = 1
+						WHERE threadid = " . $importdata['contentid'] . "
+					");
+				}
+
+				$newdata = serialize($data);
+
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "pt_issueimport SET
+						data = '" . $this->registry->db->escape_string($newdata) . "'
+					WHERE issueid = " . $issueid . "
+						AND contentid = " . $importdata['contentid'] . "
+				");
+			}
 		}
 
 		if ($project = fetch_project_info($this->fetch_field('projectid'), false))
@@ -740,24 +780,62 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	function undelete()
 	{
 		$issueid = intval($this->fetch_field('issueid'));
+
 		if (!$issueid)
 		{
 			return false;
 		}
 
-		$db =& $this->registry->db;
-
-		$db->query_write("
+		$this->registry->db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_issue SET
 				visible = 'visible'
 			WHERE issueid = $issueid
 		");
 
-		$db->query_write("
+		$this->registry->db->query_write("
 			DELETE FROM " . TABLE_PREFIX . "pt_issuedeletionlog
 			WHERE primaryid = $issueid
 				AND type = 'issue'
 		");
+
+		// Restore a soft-deleted issue which was imported from a thread need to edit original thread back
+		// Like it was when the thread was imported as an issue
+		$importdata = $this->registry->db->query_first("
+			SELECT contenttypeid, contentid, data
+			FROM " . TABLE_PREFIX . "pt_issueimport
+			WHERE issueid = " . $issueid . "
+		");
+
+		if ($importdata)
+		{
+			$data = unserialize($importdata['data']);
+
+			// Set the import infos back to visible
+			$data['visible'] = 'visible';
+
+			// We need to close the thread again
+			$thread_contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+			if ($thread_contenttypeid == $importdata['contenttypeid'] AND $data['pt_forwardmode'] == 1)
+			{
+				// Content type ID are the same, continue
+				// Open back the original thread
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "thread SET
+						open = 0
+					WHERE threadid = " . $importdata['contentid'] . "
+				");
+			}
+
+			$newdata = serialize($data);
+
+			$this->registry->db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_issueimport SET
+					data = '" . $this->registry->db->escape_string($newdata) . "'
+				WHERE issueid = " . $issueid . "
+					AND contentid = " . $importdata['contentid'] . "
+			");
+		}
 
 		// Increment totalissues counter
 		$this->registry->db->query_write("
