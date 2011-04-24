@@ -1893,7 +1893,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	$show['milestone'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $project['milestonecount']);
 	$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
 
-	if(!empty($vbulletin->GPC['milestoneid']) AND empty($issue['milestoneid']))
+	if (!empty($vbulletin->GPC['milestoneid']) AND empty($issue['milestoneid']))
 	{
 		$issue['milestoneid'] = $vbulletin->GPC['milestoneid'];
 	}
@@ -1904,10 +1904,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	if ($show['status_edit'])
 	{
 		$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
-		$status_options = build_issuestatus_select(
-			$vbulletin->pt_issuetype["$issue[issuetypeid]"]['statuses'],
-			$issue['issuestatusid']
-		);
+		$status_options = build_issuestatus_select($vbulletin->pt_issuetype["$issue[issuetypeid]"]['statuses'], $issue['issuestatusid']);
 	}
 	else
 	{
@@ -1915,6 +1912,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	}
 
 	$category_options = '';
+
 	foreach ($vbulletin->pt_categories AS $category)
 	{
 		if ($category['projectid'] != $project['projectid'])
@@ -1922,14 +1920,12 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 			continue;
 		}
 
-		$optionvalue = $category['projectcategoryid'];
-		$optiontitle = $category['title'];
-		$optionselected = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
-		$category_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$category_options .= render_option_template($$category['title'], $category['projectcategoryid'], ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : ''));
 	}
 
 	// setup priority options
 	$priority = array();
+
 	$priorities = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectpriority
@@ -1943,14 +1939,12 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 
 	foreach ($priority AS $optionvalue => $options)
 	{
-		$optiontitle = $vbphrase['priority' . $optionvalue . ''];
-		$optionselected = ($issue['priority'] == $optionvalue ? ' selected="selected"' : '');
-
-		$priority_options .= render_option_template($optiontitle, $optionvalue, $optionselected);
+		$priority_options .= render_option_template($vbphrase['priority' . $optionvalue . ''], $optionvalue, ($issue['priority'] == $optionvalue ? ' selected="selected"' : ''));
 	}
 
 	// setup versions
 	$version_groups = array();
+
 	$version_query = $db->query_read("
 		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
@@ -1959,6 +1953,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		WHERE projectversion.projectid = $project[projectid]
 		ORDER BY projectversion.effectiveorder DESC
 	");
+
 	while ($version = $db->fetch_array($version_query))
 	{
 		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
@@ -1966,21 +1961,20 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 
 	$applies_versions = '';
 	$addressed_versions = '';
-	$optionclass = '';
+
 	foreach ($version_groups AS $optgroup_label => $versions)
 	{
 		$group_applies = '';
 		$group_addressed = '';
+
 		foreach ($versions AS $optionvalue => $optiontitle)
 		{
-			$optionselected = ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : '');
-			$group_applies .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
-
-			$optionselected = (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : '');
-			$group_addressed .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$group_applies .= render_option_template($optiontitle, $optionvalue, ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : ''));
+			$group_addressed .= render_option_template($optiontitle, $optionvalue, (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : ''));
 		}
 
 		$optgroup_options = $group_applies;
+
 		$templater = vB_Template::create('optgroup');
 			$templater->register('optgroup_extra', $optgroup_extra);
 			$templater->register('optgroup_label', $optgroup_label);
@@ -1988,6 +1982,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$applies_versions .= $templater->render();
 
 		$optgroup_options = $group_addressed;
+
 		$templater = vB_Template::create('optgroup');
 			$templater->register('optgroup_extra', $optgroup_extra);
 			$templater->register('optgroup_label', $optgroup_label);
@@ -2058,6 +2053,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 			WHERE issueassign.issueid = $issue[issueid]
 			ORDER BY user.username
 		");
+
 		while ($assignment = $db->fetch_array($assignment_data))
 		{
 			$assigned_user_list["$assignment[userid]"] = $assignment['userid'];
@@ -2067,17 +2063,15 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	$unassigned_users = '';
 	$assigned_users = '';
 
-	$optionselected = '';
-	$optionclass = '';
 	foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"] AS $optionvalue => $optiontitle)
 	{
 		if (isset($assigned_user_list["$optionvalue"]))
 		{
-			$assigned_users .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$assigned_users .= render_option_template($optiontitle, $optionvalue);
 		}
 		else
 		{
-			$unassigned_users .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$unassigned_users .= render_option_template($optiontitle, $optionvalue);
 		}
 	}
 
@@ -3198,6 +3192,16 @@ if ($_POST['do'] == 'moveissue2')
 	$new_posting_perms = prepare_issue_posting_pemissions($issue, $new_issueperms);
 
 	$show['status_edit'] = ($posting_perms['status_edit'] AND $new_posting_perms['status_edit']);
+	$show['tags_edit'] = ($posting_perms['tags_edit'] AND $new_posting_perms['tags_edit']);
+	$show['can_custom_tag'] = ($posting_perms['can_custom_tag'] AND $new_posting_perms['can_custom_tag']);
+	$show['assign_checkbox'] = ($posting_perms['assign_checkbox'] AND $new_posting_perms['assign_checkbox']);
+	$show['assign_dropdown'] = ($posting_perms['assign_dropdown'] AND $new_posting_perms['assign_dropdown']);
+
+	$show['private_edit'] = $posting_perms['private_edit'];
+	$assign_checkbox_checked = $posting_perms['assign_checkbox_checked'];
+
+	$show['close_issue'] = $posting_perms['issue_close'];
+	$close_issue_checked = ($issue['state'] == 'closed' ? ' checked="checked"' : '');
 
 	if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmoveissue']))
 	{
@@ -3205,15 +3209,14 @@ if ($_POST['do'] == 'moveissue2')
 	}
 
 	// Check we can both view and post the target issue type
-	if (!($new_issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview'])
-		OR !($new_issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
+	if (!($new_issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($new_issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
 	{
 		print_no_permission();
 	}
 
 	// categories
 	$category_options = '';
-	$optionclass = '';
+
 	foreach ($vbulletin->pt_categories AS $category)
 	{
 		if ($category['projectid'] != $new_project['projectid'])
@@ -3221,15 +3224,33 @@ if ($_POST['do'] == 'moveissue2')
 			continue;
 		}
 
-		$optionvalue = $category['projectcategoryid'];
-		$optiontitle = $category['title'];
-		$optionselected = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
-		$category_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$category_options .= render_option_template($category['title'], $category['projectcategoryid'], ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : ''));
 	}
+
 	$category_unknown_selected = ($issue['projectcategoryid'] == 0 ? ' selected="selected"' : '');
+
+	// setup priority options
+	$priority = array();
+
+	$priorities = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectpriority
+		WHERE projectid = " . $project['projectid'] . "
+	");
+
+	while ($prioritys = $db->fetch_array($priorities))
+	{
+		$priority["$prioritys[projectpriorityid]"] = $prioritys;
+	}
+
+	foreach ($priority AS $optionvalue => $options)
+	{
+		$priority_options .= render_option_template($vbphrase['priority' . $optionvalue . ''], $optionvalue, ($issue['priority'] == $optionvalue ? ' selected="selected"' : ''));
+	}
 
 	// setup versions
 	$version_groups = array();
+
 	$version_query = $db->query_read("
 		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
@@ -3238,6 +3259,7 @@ if ($_POST['do'] == 'moveissue2')
 		WHERE projectversion.projectid = $new_project[projectid]
 		ORDER BY projectversion.effectiveorder DESC
 	");
+
 	while ($version = $db->fetch_array($version_query))
 	{
 		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
@@ -3245,38 +3267,58 @@ if ($_POST['do'] == 'moveissue2')
 
 	$applies_versions = '';
 	$addressed_versions = '';
-	$optionclass = '';
+
 	foreach ($version_groups AS $optgroup_label => $versions)
 	{
 		$group_applies = '';
 		$group_addressed = '';
+
 		foreach ($versions AS $optionvalue => $optiontitle)
 		{
-			$optionselected = ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : '');
-			$group_applies .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
-
-			$optionselected = (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : '');
-			$group_addressed .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$group_applies .= render_option_template($optiontitle, $optionvalue, ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : ''));
+			$group_addressed .= render_option_template($optiontitle, $optionvalue, (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : ''));
 		}
 
-		$optgroup_options = $group_applies;
 		$templater = vB_Template::create('optgroup');
 			$templater->register('optgroup_extra', $optgroup_extra);
 			$templater->register('optgroup_label', $optgroup_label);
-			$templater->register('optgroup_options', $optgroup_options);
+			$templater->register('optgroup_options', $group_applies);
 		$applies_versions .= $templater->render();
 
-		$optgroup_options = $group_addressed;
 		$templater = vB_Template::create('optgroup');
 			$templater->register('optgroup_extra', $optgroup_extra);
 			$templater->register('optgroup_label', $optgroup_label);
-			$templater->register('optgroup_options', $optgroup_options);
+			$templater->register('optgroup_options', $group_addressed);
 		$addressed_versions .= $templater->render();
 	}
 
 	$applies_unknown_selected = ($issue['appliesversionid'] == 0 ? ' selected="selected"' : '');
 	$addressed_unaddressed_selected = ($issue['isaddressed'] == 0 ? ' selected="selected"' : '');
 	$addressed_next_selected = (($issue['isaddressed'] == 1 AND $issue['addressedversionid'] == 0) ? ' selected="selected"' : '');
+
+	// set up appliable tags
+	$unapplied_tags = '';
+	$applied_tags = '';
+
+	$tag_data = $db->query_read("
+		SELECT tag.tagtext, IF(issuetag.tagid IS NOT NULL, 1, 0) AS isapplied
+		FROM " . TABLE_PREFIX . "pt_tag AS tag
+		LEFT JOIN " . TABLE_PREFIX . "pt_issuetag AS issuetag ON (issuetag.tagid = tag.tagid AND issuetag.issueid = $issue[issueid])
+		ORDER BY tag.tagtext
+	");
+
+	while ($tag = $db->fetch_array($tag_data))
+	{
+		if ($tag['isapplied'])
+		{
+			unset($preview_tags["$tag[tagtext]"]);
+			$applied_tags .= render_option_template($tag['tagtext'], $tag['tagtext']);
+		}
+		else
+		{
+			$unapplied_tags .= render_option_template($tag['tagtext'], $tag['tagtext']);
+		}
+	}
 
 	// status
 	$status_options = build_issuestatus_select($vbulletin->pt_issuetype["$issuetypeid"]['statuses'], $issue['issuestatusid']);
@@ -3303,12 +3345,55 @@ if ($_POST['do'] == 'moveissue2')
 		'weekly' => ($issue['subscribetype'] == 'weekly' ? ' selected="selected"' : ''),
 	);
 
-	$show['subscribe_option'] = (!$issue['issueid'] AND $vbulletin->userinfo['userid'] > 0);
+	$show['subscribe_option'] = ($vbulletin->userinfo['userid'] > 0);
 
 	// setup milestones
-	$show['milestone'] = ($new_issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone']);
+	$show['milestone'] = ($new_issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $project['milestonecount']);
 	$show['milestone_edit'] = ($show['milestone'] AND $new_posting_perms['milestone_edit']);
+
+	if (!empty($vbulletin->GPC['milestoneid']) AND empty($issue['milestoneid']))
+	{
+		$issue['milestoneid'] = $vbulletin->GPC['milestoneid'];
+	}
+
 	$milestone_options = fetch_milestone_select($new_project['projectid'], $issue['milestoneid']);
+
+	// set up assignable users
+	$assigned_user_list = array();
+
+	// assignments
+	$assignments = '';
+
+	$assignment_data = $db->query_read("
+		SELECT user.userid
+		FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
+			INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid)
+		WHERE issueassign.issueid = $issue[issueid]
+		ORDER BY user.username
+	");
+
+	while ($assignment = $db->fetch_array($assignment_data))
+	{
+		$assigned_user_list["$assignment[userid]"] = $assignment['userid'];
+	}
+
+	$unassigned_users = '';
+	$assigned_users = '';
+
+	foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"] AS $optionvalue => $optiontitle)
+	{
+		if (isset($assigned_user_list["$optionvalue"]))
+		{
+			$assigned_users .= render_option_template($optiontitle, $optionvalue);
+		}
+		else
+		{
+			$unassigned_users .= render_option_template($optiontitle, $optionvalue);
+		}
+	}
+
+	$vbphrase['applies_version_issuetype'] = $vbphrase["applies_version_$issuetypeid"];
+	$vbphrase['addressed_version_issuetype'] = $vbphrase["addressed_version_$issuetypeid"];
 
 	$navbits = array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
@@ -3327,15 +3412,20 @@ if ($_POST['do'] == 'moveissue2')
 		$templater->register('addressed_versions', $addressed_versions);
 		$templater->register('applies_unknown_selected', $applies_unknown_selected);
 		$templater->register('applies_versions', $applies_versions);
+		$templater->register('assign_checkbox_checked', $assign_checkbox_checked);
+		$templater->register('assigned_users', $assigned_users);
 		$templater->register('category_options', $category_options);
 		$templater->register('category_unknown_selected', $category_unknown_selected);
+		$templater->register('close_issue_checked', $close_issue_checked);
 		$templater->register('issue', $issue);
 		$templater->register('issuetypeid', $issuetypeid);
 		$templater->register('milestone_options', $milestone_options);
 		$templater->register('navbar', $navbar);
 		$templater->register('new_issuetype', $new_issuetype);
 		$templater->register('new_project', $new_project);
+		$templater->register('priority_options', $priority_options);
 		$templater->register('status_options', $status_options);
+		$templater->register('unassigned_users', $unassigned_users);
 	print_output($templater->render());
 
 }
