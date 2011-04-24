@@ -1886,15 +1886,18 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		'daily' => ($issue['subscribetype'] == 'daily' ? ' selected="selected"' : ''),
 		'weekly' => ($issue['subscribetype'] == 'weekly' ? ' selected="selected"' : ''),
 	);
+
 	$show['subscribe_option'] = (!$issue['issueid'] AND $vbulletin->userinfo['userid'] > 0);
 
 	// setup milestones
 	$show['milestone'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $project['milestonecount']);
 	$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
+
 	if(!empty($vbulletin->GPC['milestoneid']) AND empty($issue['milestoneid']))
 	{
 		$issue['milestoneid'] = $vbulletin->GPC['milestoneid'];
 	}
+
 	$milestone_options = fetch_milestone_select($project['projectid'], $issue['milestoneid']);
 
 	// figure out viable status/type options
@@ -3276,10 +3279,31 @@ if ($_POST['do'] == 'moveissue2')
 	$addressed_next_selected = (($issue['isaddressed'] == 1 AND $issue['addressedversionid'] == 0) ? ' selected="selected"' : '');
 
 	// status
-	$status_options = build_issuestatus_select(
-		$vbulletin->pt_issuetype["$issuetypeid"]['statuses'],
-		$issue['issuestatusid']
+	$status_options = build_issuestatus_select($vbulletin->pt_issuetype["$issuetypeid"]['statuses'], $issue['issuestatusid']);
+
+	// setup default subscribe type
+	if ($issue['subscribetype'] === NULL)
+	{
+		switch ($vbulletin->userinfo['autosubscribe'])
+		{
+			case -1: $issue['subscribetype'] = ''; break;
+			case 0: $issue['subscribetype'] = 'none'; break;
+			case 1: $issue['subscribetype'] = 'instant'; break;
+			case 2: $issue['subscribetype'] = 'daily'; break;
+			case 3: $issue['subscribetype'] = 'weekly'; break;
+			default: $issue['subscribetype'] = ''; break;
+		}
+	}
+
+	$subscribe_selected = array(
+		'donot' => ($issue['subscribetype'] == '' ? ' selected="selected"' : ''),
+		'none' => ($issue['subscribetype'] == 'none' ? ' selected="selected"' : ''),
+		'instant' => ($issue['subscribetype'] == 'instant' ? ' selected="selected"' : ''),
+		'daily' => ($issue['subscribetype'] == 'daily' ? ' selected="selected"' : ''),
+		'weekly' => ($issue['subscribetype'] == 'weekly' ? ' selected="selected"' : ''),
 	);
+
+	$show['subscribe_option'] = (!$issue['issueid'] AND $vbulletin->userinfo['userid'] > 0);
 
 	// setup milestones
 	$show['milestone'] = ($new_issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone']);
