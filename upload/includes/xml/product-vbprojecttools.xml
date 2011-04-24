@@ -6051,7 +6051,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1303661812" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1303662885" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6173,7 +6173,7 @@ init_project_readmarker_system();
 				<vb:if condition="$applies_versions">
 					<!-- applies to version -->
 					<fieldset class="blockrow">
-						<legend>{vb:rawphrase applicable_version_issuetype}</legend>
+						<legend>{vb:rawphrase applies_version_issuetype}</legend>
 						<ul class="rightcol">
 							<li>
 								<select name="appliesversionid" style="display:block; width:200px" tabindex="1">

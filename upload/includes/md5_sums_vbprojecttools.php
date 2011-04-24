@@ -87,7 +87,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'd5c92c116d3d6890724a7dce6dbe94fa',
-		'product-vbprojecttools.xml' => '0c7ef1ce2d2407a341b2b76404081ccb',
+		'product-vbprojecttools.xml' => 'ad58e6f69f0a389ca374a1cd921d13ad',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'b3b48fe8595c439439a95343f927cae1',
