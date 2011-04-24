@@ -3952,23 +3952,39 @@ if ($_POST['do'] == 'processimportcontent')
 		case 'thread':
 			$datatype = 'thread';
 			$datainfo = $threadinfo;
+			$datainfo['id'] = $datainfo['threadid'];
+			$datainfo['contenttypeid'] = vB_Types::instance()->getContentTypeID('vBForum_Post'); // Attachments are linked to posts, not threads
 			break;
 		case 'post':
 			$datatype = 'post';
 			$datainfo = $postinfo;
+			$datainfo['id'] = $datainfo['postid'];
+			$datainfo['contenttypeid'] = vB_Types::instance()->getContentTypeID('vBForum_Post');
 			$datainfo['title'] = ($postinfo['title'] ? $postinfo['title'] : $threadinfo['title']);
 			break;
 		case 'issuenote':
 			$datatype = 'issuenote';
 			$datainfo = $issuenoteinfo;
+			$datainfo['id'] = $datainfo['issueid'];
+			$datainfo['contenttypeid'] = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue'); // Attachments are linked to issues, not issuenotes
 			$datainfo['title'] = $issuenoteinfo['title'];
 			break;
 	}
 
 	$datainfo['originaltitle'] = $vbulletin->GPC['originaltitle'];
 
-	$importer = new vB_Pt_Import($vbulletin, $datatype, $datainfo, $project, $posting_perms, array(), array());
-	$issueid = $importer->import_all();
+	// Do the import
+	$importer = new vB_Pt_Import_Factory();
+
+	$importer->registry =& $vbulletin;
+	$importer->datatype =& $datatype;
+	$importer->datainfo =& $datainfo;
+	$importer->project =& $project;
+	$importer->posting_perms =& $posting_perms;
+
+	$importdata = $importer->fetch_import($datatype);
+
+	$issueid = $importdata->import_all();
 
 	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";
 	eval(print_standard_redirect('pt_issue_inserted'));

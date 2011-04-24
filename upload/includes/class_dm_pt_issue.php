@@ -140,6 +140,9 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	{
 		parent::vB_DataManager($registry, $errtype);
 
+		require_once(DIR . '/includes/class_bootstrap_framework.php');
+		vB_Bootstrap_Framework::init();
+
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_start')) ? eval($hook) : false;
 	}
 
@@ -699,6 +702,39 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuesubscribe WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuetag WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuevote WHERE issueid = $issueid");
+
+			// Attachments
+			$db->query_write("DELETE FROM " . TABLE_PREFIX . "attachments WHERE contentid = $issueid AND contenttypeid = " . vB_Types::instance()->getContentTypeID('vBProjectTools_Issue') . "");
+			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueattach WHERE issueid = $issueid");
+
+			// Before to hard-delete import infos, we need to open back the thread if the import was from a thread
+			$importdata = $this->registry->db->query_first("
+				SELECT contenttypeid, contentid, data
+				FROM " . TABLE_PREFIX . "pt_issueimport
+				WHERE issueid = " . $issueid . "
+			");
+
+			if ($importdata)
+			{
+				$data = unserialize($importdata['data']);
+
+				// Update the original content - open back thread
+				// We need first to get the content type id about 'vBForum_Thread' - could be not the same in each install
+				$thread_contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+				if ($thread_contenttypeid == $importdata['contenttypeid'] AND $data['pt_forwardmode'] == 1)
+				{
+					// Content type ID are the same, continue
+					// Open back the original thread
+					$this->registry->db->query_write("
+						UPDATE " . TABLE_PREFIX . "thread SET
+							open = 1
+						WHERE threadid = " . $importdata['contentid'] . "
+					");
+				}
+			}
+
+			// Now perform the deletion
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueimport WHERE issueid = $issueid");
 		}
 		else
