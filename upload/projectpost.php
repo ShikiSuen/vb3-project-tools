@@ -4210,18 +4210,30 @@ if ($_POST['do'] == 'processimportcontent')
 
 	$importdata = $importer->fetch_import($datatype);
 
-	$issueid = $importdata->import_all();
+	$return = $importdata->import_all();
 
-	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issueid";
-	eval(print_standard_redirect('pt_issue_inserted'));
+	if (is_array($return))
+	{
+		define('PTIPREVIEW', 1);
+		require_once(DIR . '/includes/functions_newpost.php');
+		$preview = construct_errors($return);
+
+		$_POST['do'] = 'importcontent2';
+	}
+	else
+	{
+		$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=" . $return;
+		eval(print_standard_redirect('pt_issue_inserted'));
+	}
 }
 
 // #######################################################################
-if ($_REQUEST['do'] == 'importcontent2')
+if ($_POST['do'] == 'importcontent2')
 {
 	$vbulletin->input->clean_array_gpc('r', array(
 		'project-issuetype' => TYPE_NOHTML,
-		'type' => TYPE_NOHTML
+		'type' => TYPE_NOHTML,
+		'preview' => TYPE_NOHTML,
 	));
 
 	list($projectid, $issuetypeid) = explode('-', $vbulletin->GPC['project-issuetype']);
@@ -4251,6 +4263,12 @@ if ($_REQUEST['do'] == 'importcontent2')
 	if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
 	{
 		print_no_permission();
+	}
+
+	// setup for preview display
+	if (defined('PTIPREVIEW'))
+	{
+		$postpreview =& $preview;
 	}
 
 	// setup priorities
@@ -4513,8 +4531,10 @@ if ($_REQUEST['do'] == 'importcontent2')
 		$templater->register('issuetypeid', $issuetypeid);
 		$templater->register('milestone_options', $milestone_options);
 		$templater->register('navbar', $navbar);
+		$templater->register('postpreview', $postpreview);
 		$templater->register('priority_options', $priority_options);
 		$templater->register('project', $project);
+		$templater->register('projectissuetype', $vbulletin->GPC['project-issuetype']);
 		$templater->register('startstatusid', $issuestatus['startstatusid']);
 		$templater->register('status_options', $status_options);
 		$templater->register('subscribe_selected', $subscribe_selected);

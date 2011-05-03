@@ -3802,7 +3802,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1304432399" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1304433928" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3840,6 +3840,8 @@ legend {
 <input type="hidden" name="{vb:raw datainfo.shorttype}" value="{vb:raw datainfo.id}" />
 <input type="hidden" name="type" value="{vb:raw datainfo.longtype}" />
 <input type="hidden" name="originaltitle" value="{vb:raw datainfo.title}" />
+
+	{vb:raw postpreview}
 
 	<h2 class="blockhead">{vb:rawphrase post_new_issue}</h2>
 

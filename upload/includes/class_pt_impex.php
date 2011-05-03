@@ -194,25 +194,32 @@ class vB_Pt_Import
 		// Import issue and notes
 		$this->execute_import_issue();
 
-		// Assign to self
-		$this->execute_import_set_assignment();
-
-		// Import attachments
-		$this->execute_import_attachments();
-
-		if ($this->datainfo['threadid'])
+		if (empty($this->errors))
 		{
-			// Import subscriptions
-			$this->execute_import_subscriptions();
+			// Assign to self
+			$this->execute_import_set_assignment();
+
+			// Import attachments
+			$this->execute_import_attachments();
+
+			if ($this->datainfo['threadid'])
+			{
+				// Import subscriptions
+				$this->execute_import_subscriptions();
+			}
+
+			$this->execute_import_from_source();
+
+			// Create import notice
+			$this->execute_import_insert_notice();
+
+			// Useful to redirect the user
+			return $this->issueid;
 		}
-
-		$this->execute_import_from_source();
-
-		// Create import notice
-		$this->execute_import_insert_notice();
-
-		// Useful to redirect the user
-		return $this->issueid;
+		else
+		{
+			return $this->errors;
+		}
 	}
 
 	/**
@@ -250,6 +257,7 @@ class vB_Pt_Import
 		}
 
 		$this->issuedata->set('projectid', $this->project['projectid']);
+		$this->issuedata->set('projectcategoryid', $this->registry->GPC['projectcategoryid']);
 		$this->issuedata->set('issuetypeid', $this->registry->GPC['issuetypeid']);
 		$this->issuedata->set('milestoneid', $this->registry->GPC['milestoneid']);
 		$this->issuedata->set('submituserid', ($this->datainfo['userid'] ? $this->datainfo['userid'] : $this->datainfo['postuserid']));
@@ -471,7 +479,7 @@ class vB_Pt_Import_Thread extends vB_Pt_Import
 					$issuenotes[$i]->pre_save();
 				}
 
-				$errors = array_merge($this->issuedata->errors, $issuenotes[$i]->errors);
+				$this->errors = array_unique(array_merge($this->issuedata->errors, $issuenotes[$i]->errors));
 
 				$postids[] = $post['postid'];
 
@@ -481,13 +489,9 @@ class vB_Pt_Import_Thread extends vB_Pt_Import
 			$this->postids = $postids;
 		}
 
-		if ($errors)
+		if ($this->errors)
 		{
-			require_once(DIR . '/includes/functions_newpost.php');
-			echo construct_errors($errors);
-			exit; // need to review this on a later release - issue #156
-
-			$_REQUEST['do'] = 'importthread2';
+			return $this->errors;
 		}
 		else
 		{
@@ -675,15 +679,11 @@ class vB_Pt_Import_Post extends vB_Pt_Import
 			$issuenotes->pre_save();
 		}
 
-		$errors = array_merge($issuedata->errors, $issuenotes->errors);
+		$this->errors = array_merge($issuedata->errors, $issuenotes->errors);
 
-		if ($errors)
+		if ($this->errors)
 		{
-			require_once(DIR . '/includes/functions_newpost.php');
-			echo construct_errors($errors);
-			exit; // need to review this on a later release - issue #156
-
-			$_REQUEST['do'] = 'importthread2';
+			return $this->errors;
 		}
 		else
 		{
@@ -849,15 +849,11 @@ class vB_Pt_Import_Issuenote extends vB_Pt_Import
 			$issuenotes->pre_save();
 		}
 
-		$errors = array_merge($issuedata->errors, $issuenotes->errors);
+		$this->errors = array_merge($issuedata->errors, $issuenotes->errors);
 
-		if ($errors)
+		if ($this->errors)
 		{
-			require_once(DIR . '/includes/functions_newpost.php');
-			echo construct_errors($errors);
-			exit; // need to review this on a later release - issue #156
-
-			$_REQUEST['do'] = 'importthread2';
+			return $this->errors;
 		}
 		else
 		{
