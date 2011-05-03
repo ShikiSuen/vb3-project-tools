@@ -3802,7 +3802,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1303573057" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1304432399" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3857,103 +3857,314 @@ legend {
 				<label class="full" for="input_issue_sumary">{vb:rawphrase summary}</label>
 				<input name="summary" id="input_issue_summary" type="text" class="primary full textbox" value="" size="50" tabindex="1" />
 			</div>
+		</div>
+	</div>
 
-			<fieldset class="blockrow">
-				<legend>{vb:rawphrase project}</legend>
-				<div class="rightcol">{vb:raw project.title_clean}</div>
-			</fieldset>
+	<div class="blockfoot actionbuttons">
+		<div class="group">
+			&nbsp;
+		</div>
+	</div>
 
-			<fieldset class="blockrow">
-				<legend>{vb:rawphrase priority}</legend>
-				<ul class="rightcol">
+	<h3 class="blockhead">{vb:rawphrase additional_options}</h3>
+	<div class="blockbody formcontrols">
+		<div class="section">
+			<div class="blockrow">
+				<label>{vb:rawphrase additional_options}</label>
+				<ul class="checkradio group rightcol">
 					<li>
-						<select class="primary" name="priority" tabindex="1">
-							{vb:raw priority_options}
-						</select>
+						<label>{vb:rawphrase project}<br />{vb:raw project.title_clean}</label>
 					</li>
-				</ul>
-			</fieldset>
-
-			<!-- category -->
-			<fieldset class="blockrow">
-				<legend>{vb:rawphrase category}</legend>
-				<ul class="rightcol">
+					<vb:if condition="$show['private_edit']">
 					<li>
-						<select name="projectcategoryid" style="display:block; width:200px" tabindex="1">
-							<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
-							{vb:raw category_options}
-						</select>
+						<label for="cb_private"><input type="checkbox" name="private" value="1" id="cb_private" tabindex="1"{vb:raw private_checked} /> {vb:rawphrase private} <a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_private" target="_blank">[?]</a></label>
 					</li>
-				</ul>
-			</fieldset>
-
-			<fieldset class="blockrow">
-				<legend>{vb:rawphrase issue_type}</legend>
-				<ul class="rightcol">
+					</vb:if>
+					<vb:if condition="$show['close_issue']">
 					<li>
-						{vb:raw issuetype}
+						<label for="cb_close_issue"><input type="checkbox" name="close_issue" value="1" id="cb_close_issue" tabindex="1"{vb:raw close_issue_checked} /> {vb:rawphrase close_this_issue}</label>
+							<input type="hidden" name="original_state" value="{vb:raw issue.state}" />
 					</li>
-				</ul>
-			</fieldset>
-
-			<!-- status -->
-			<fieldset class="blockrow">
-				<legend>{vb:rawphrase status}</legend>
-				<ul class="rightcol">
+					</vb:if>
+					<vb:if condition="$show['assign_checkbox'] AND !$show['assign_dropdown']">
 					<li>
-						<vb:if condition="$show['status_edit']">
-							<select name="issuestatusid" style="display:block; width:200px" tabindex="1">{vb:raw status_options}</select>
-						<vb:else />
-							{vb:raw status_options}
-							<input type="hidden" name="issuestatusid" value="{vb:raw startstatusid}" />
+						<label for="cb_assign_self"><input type="checkbox" id="cb_assign_self" name="assignself" value="1" tabindex="1"{vb:raw assign_checkbox_checked} />&nbsp;{vb:rawphrase assign_yourself_to_issue}</label>
+					</li>
+					</vb:if>
+				</ul>
+			</div>
+
+			<vb:if condition="$priority_options">
+				<!-- priority -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase priority}</legend>
+					<ul class="rightcol">
+						<li>
+							<select class="primary" name="priority" tabindex="1">
+								{vb:raw priority_options}
+							</select>
+						</li>
+					</ul>
+				</fieldset>
+			</vb:if>
+
+			<vb:if condition="$category_options">
+				<!-- category -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase category}</legend>
+					<ul class="rightcol">
+						<li>
+							<select class="primary" name="projectcategoryid" tabindex="1">
+								<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
+								{vb:raw category_options}
+							</select>
+						</li>
+					</ul>
+				</fieldset>
+			</vb:if>
+
+			<vb:if condition="$show['assign_dropdown']">
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase issue_type}</legend>
+					<ul class="rightcol">
+						<li>
+							{vb:raw issuetype}
+						</li>
+					</ul>
+				</fieldset>
+
+				<!-- status -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase status}</legend>
+					<ul class="rightcol">
+						<li>
+							<vb:if condition="$show['status_edit']">
+								<select class="primary" name="issuestatusid" tabindex="1">{vb:raw status_options}</select>
+							<vb:else />
+								{vb:raw status_options}
+								<input type="hidden" name="issuestatusid" value="{vb:raw issue.issuestatusid}" />
+							</vb:if>
+						</li>
+					</ul>
+				</fieldset>
+			</vb:if>
+
+			<vb:if condition="$show['tags_edit']">
+				<vb:if condition="$applies_versions">
+					<!-- applies to version -->
+					<fieldset class="blockrow">
+						<legend>{vb:rawphrase applies_version_issuetype}</legend>
+						<ul class="rightcol">
+							<li>
+								<select class="primary" name="appliesversionid" tabindex="1">
+									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
+									{vb:raw applies_versions}
+								</select>
+							</li>
+						</ul>
+					</fieldset>
+				</vb:if>
+
+				<!-- addressed in version -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase addressed_version_issuetype}</legend>
+					<ul class="rightcol">
+						<li>
+							<vb:if condition="$show['status_edit']">
+								<select class="primary" name="addressedversionid" tabindex="1">
+									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
+									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+									{vb:raw addressed_versions}
+								</select>
+							<vb:else />
+								{vb:raw issue.addressedversion}
+							</vb:if>
+						</li>
+					</ul>
+				</fieldset>
+			</vb:if>
+
+			<vb:if condition="$show['milestone_edit']">
+				<!-- milestone -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase milestone}</legend>
+					<ul class="rightcol">
+						<li>
+							<vb:if condition="$show['milestone_edit']">
+								<select class="primary" name="milestoneid" tabindex="1">
+									{vb:raw milestone_options}
+								</select>
+							<vb:else />
+								{vb:raw issue.milestonetitle}
+							</vb:if>
+						</li>
+					</ul>
+				</fieldset>
+			</vb:if>
+
+			<vb:if condition="$show['subscribe_option']">
+				<!-- subscription -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase subscribe_to_this_issue}</legend>
+					<ul class="rightcol group">
+						<li>
+							<select class="primary" name="subscribetype" tabindex="1">
+								<option value=""{vb:raw subscribe_selected.donot}>{vb:rawphrase do_not_subscribe}</option>
+								<option value="none"{vb:raw subscribe_selected.none}>{vb:rawphrase no_email_notification}</option>
+								<option value="instant"{vb:raw subscribe_selected.instant}>{vb:rawphrase instant_email_notification}</option>
+								<option value="daily"{vb:raw subscribe_selected.daily}>{vb:rawphrase daily_email_notification}</option>
+								<option value="weekly"{vb:raw subscribe_selected.weekly}>{vb:rawphrase weekly_email_notification}</option>
+							</select>
+						</li>
+					</ul>
+				</fieldset>
+			</vb:if>
+
+			<vb:if condition="$show['assign_dropdown']">
+				<!-- assign users -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase assigned_users}</legend>
+					<table border="0" cellspacing="0" cellpadding="0">
+						<vb:if condition="$show['assign_checkbox']">
+							<tr>
+								<td colspan="3">
+									<ul class="rightcol">
+										<li>
+											<label><input type="checkbox" name="assignself" value="2" tabindex="1"{vb:raw assign_checkbox_checked} />&nbsp;{vb:rawphrase assign_yourself_to_issue}</label>
+										</li>
+									</ul>
+								</td>
+							</tr>
 						</vb:if>
-					</li>
-				</ul>
-			</fieldset>
+					<tr>
+						<td>
+							<label>{vb:rawphrase unassigned_users}</label>
+							<ul class="group">
+								<li>
+									<select class="primary" name="unassigned[]" size="6" id="usrassgn_select_n" tabindex="2" multiple="multiple">
+										{vb:raw unassigned_users}
+									</select>
+								</li>
+							</ul>
+						</td>
+						<td>
+							<div><input type="submit" class="button" id="usrassgn_button_y" tabindex="2" value="&gt;&gt;" name="submit_assign" /></div>
+							<div>&nbsp;</div>
+							<div><input type="submit" class="button" id="usrassgn_button_n" tabindex="2" value="&lt;&lt;" name="submit_unassign" /></div>
+						</td>
+						<td>
+							<label>{vb:rawphrase assigned_users}</label>
+							<ul class="group">
+								<li>
+									<select class="primary" name="assigned[]" size="6" id="usrassgn_select_y"tabindex="2" multiple="multiple" >
+										{vb:raw assigned_users}
+									</select>
+								</li>
+							</ul>
+						</td>
+					</tr>
+					</table>
+				</fieldset>
+			<vb:else />
+				<!-- issue type -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase issue_type}</legend>
+					<ul class="rightcol">
+						<li>
+							{vb:raw issue.issuetype}
+						</li>
+					</ul>
+				</fieldset>
 
-			<!-- applies to version -->
-			<fieldset class="blockrow">
-				<legend>{vb:rawphrase applicable_version}</legend>
-				<ul class="rightcol">
-					<li>
-						<select name="appliesversionid" style="display:block; width:200px" tabindex="1">
-							<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
-							{vb:raw applies_versions}
-						</select>
-					</li>
-				</ul>
-			</fieldset>
+				<!-- status -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase status}</legend>
+					<ul class="group rightcol">
+						<li>
+							<vb:if condition="$show['status_edit']">
+								<select name="issuestatusid" class="primary" tabindex="2">
+									{vb:raw status_options}
+								</select>
+							<vb:else />
+								{vb:raw issue.issuestatus}
+							</vb:if>
+						</li>
+					</ul>
+				</fieldset>
+			</vb:if>
 
-			<!-- addressed in version -->
-			<fieldset class="blockrow">
-				<legend>{vb:rawphrase addressed_version}</legend>
-				<ul class="rightcol">
-					<li>
-						<select name="addressedversionid" style="display:block; width:200px" tabindex="1">
-							<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
-							<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-							{vb:raw addressed_versions}
-						</select>
-					</li>
-				</ul>
-			</fieldset>
+			<vb:if condition="$show['tags_edit']">
+				<!-- tags -->
+				<fieldset class="blockrow">
+					<legend>{vb:rawphrase tags}</legend>
+					<table border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td>
+							<label>{vb:rawphrase unapplied_tags}</label>
+							<ul class="group">
+								<li>
+									<select class="primary" name="unappliedtags[]" size="<vb:if condition="$show['can_custom_tag']">4<vb:else />6</vb:if>" id="tags_select_n" tabindex="2" multiple="multiple">
+										{vb:raw unapplied_tags}
+									</select>
+								</li>
+								<vb:if condition="$show['can_custom_tag']">
+									<li>
+										<input type="text" name="customtag" id="tags_custom" class="textbox" tabindex="2" />
+									</li>
+								</vb:if>
+							</ul>
+						</td>
+						<td>
+							<div><input type="submit" class="button" id="tags_button_y" value="&gt;&gt;" tabindex="2" name="submit_addtag" /></div>
+							<div>&nbsp;</div>
+							<div><input type="submit" class="button" id="tags_button_n" value="&lt;&lt;" tabindex="2" name="submit_removetag" /></div>
+						</td>
+						<td>
+							<label class="smallfont">{vb:rawphrase applied_tags}</label>
+							<ul class="group">
+								<li>
+									<select class="primary" name="appliedtags[]" size="6" id="tags_select_y" multiple="multiple" tabindex="2">
+										{vb:raw applied_tags}
+									</select>
+								</li>
+							</ul>
+						</td>
+					</tr>
+					</table>
+				</fieldset>
+			<vb:else />
+				<vb:if condition="$applies_versions">
+					<!-- applies to version -->
+					<div class="blockrow">
+						<label class="smallfont">{vb:rawphrase applies_version_issuetype}</label>
+						<ul class="group">
+							<li>
+								<select class="primary" name="appliesversionid" tabindex="2">
+									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
+									{vb:raw applies_versions}
+								</select>
+							</li>
+						</ul>
+					</div>
+				</vb:if>
 
-			<vb:if condition="$show['milestone']">
-			<!-- milestone -->
-			<fieldset class="blockrow">
-				<legend>{vb:rawphrase milestone}</legend>
-				<ul class="rightcol">
-					<li>
-						<vb:if condition="$show['milestone_edit']">
-						<select name="milestoneid" style="display:block; width:200px" tabindex="1">
-							{vb:raw milestone_options}
-						</select>
-						<vb:else />
-							{vb:raw issue.milestonetitle}
-						</vb:if>
-					</li>
-				</ul>
-			</fieldset>
+				<!-- addressed in version -->
+				<div class="blockrow">
+					<label class="smallfont">{vb:rawphrase addressed_version_issuetype}</label>
+					<ul class="group">
+						<li>
+							<vb:if condition="$show['status_edit']">
+								<select class="primary" name="addressedversionid" tabindex="2">
+									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
+									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+									{vb:raw addressed_versions}
+								</select>
+							<vb:else />
+								{vb:raw issue.addressedversion}
+							</vb:if>
+						</li>
+					</ul>
+				</div>
 			</vb:if>
 		</div>
 	</div>
@@ -6051,7 +6262,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1303662885" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1304432405" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6089,6 +6300,27 @@ init_project_readmarker_system();
 		<div class="blocksubhead">
 			{vb:rawphrase title}: <span style="font-weight:normal">{vb:raw issue.title}</span>
 		</div>
+		<div class="section">
+			<div class="blockrow">
+				<label class="full" for="input_issue_title">{vb:rawphrase title}</label>
+				<input name="title" id="input_issue_title" type="text" class="primary full textbox" value="{vb:raw issue.title}" size="50" tabindex="1" />
+			</div>
+
+			<div class="blockrow">
+				<label class="full" for="input_issue_sumary">{vb:rawphrase summary}</label>
+				<input name="summary" id="input_issue_summary" type="text" class="primary full textbox" value="{vb:raw issue.summary}" size="50" tabindex="1" />
+			</div>
+		</div>
+	</div>
+
+	<div class="blockfoot actionbuttons">
+		<div class="group">
+			&nbsp;
+		</div>
+	</div>
+
+	<h3 class="blockhead">{vb:rawphrase additional_options}</h3>
+	<div class="blockbody formcontrols">
 		<div class="section">
 			<div class="blockrow">
 				<label>{vb:rawphrase additional_options}:</label>
@@ -6135,7 +6367,7 @@ init_project_readmarker_system();
 					<legend>{vb:rawphrase category}</legend>
 					<ul class="rightcol">
 						<li>
-							<select name="projectcategoryid" style="display:block; width:200px" tabindex="1">
+							<select class="primary" name="projectcategoryid" tabindex="1">
 								<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
 								{vb:raw category_options}
 							</select>
@@ -6160,7 +6392,7 @@ init_project_readmarker_system();
 					<ul class="rightcol">
 						<li>
 							<vb:if condition="$show['status_edit']">
-								<select name="issuestatusid" style="display:block; width:200px" tabindex="1">{vb:raw status_options}</select>
+								<select class="primary" name="issuestatusid" tabindex="1">{vb:raw status_options}</select>
 							<vb:else />
 								{vb:raw issue.issuestatus}
 							</vb:if>
@@ -6176,7 +6408,7 @@ init_project_readmarker_system();
 						<legend>{vb:rawphrase applies_version_issuetype}</legend>
 						<ul class="rightcol">
 							<li>
-								<select name="appliesversionid" style="display:block; width:200px" tabindex="1">
+								<select class="primary" name="appliesversionid" tabindex="1">
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 									{vb:raw applies_versions}
 								</select>
@@ -6191,7 +6423,7 @@ init_project_readmarker_system();
 					<ul class="rightcol">
 						<li>
 							<vb:if condition="$show['status_edit']">
-								<select name="addressedversionid" style="display:block; width:200px" tabindex="1">
+								<select class="primary" name="addressedversionid" tabindex="1">
 									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 									{vb:raw addressed_versions}
@@ -6211,7 +6443,7 @@ init_project_readmarker_system();
 					<ul class="rightcol">
 						<li>
 							<vb:if condition="$show['milestone_edit']">
-								<select name="milestoneid" style="display:block; width:200px" tabindex="1">
+								<select class="primary" name="milestoneid" tabindex="1">
 									{vb:raw milestone_options}
 								</select>
 							<vb:else />
@@ -10632,6 +10864,7 @@ If you wish to continue this action, <a href="{1}">click here to try again</a>.]
 			<phrase name="there_is_no_project_you_can_create_issues_in" date="1274871343" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no project you can create issues in.]]></phrase>
 			<phrase name="there_is_no_type_you_can_create_issues_in" date="1274871359" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no issue type in this project you can create issues in.]]></phrase>
 			<phrase name="type_must_have_one_status" date="1176210879" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Each issue type must have at least one status.]]></phrase>
+			<phrase name="updated_pt_attachments_successfully" date="1304432479" username="Pitchoune" version="2.2.0"><![CDATA[Updated Project Tools Attachments Successfully]]></phrase>
 		</phrasetype>
 		<phrasetype name="FAQ Text" fieldname="faqtext">
 			<phrase name="pt_faq" date="1185887224" username="Ed Sullivan" version="1.0.1"><![CDATA[The Project Tools system adds project management capabilities to the $vboptions[bbtitle]. Depending on how the administrator has configured this system, you will likely be using it to report bugs or make suggestions.]]></phrase>

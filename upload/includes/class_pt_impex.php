@@ -254,9 +254,38 @@ class vB_Pt_Import
 		$this->issuedata->set('milestoneid', $this->registry->GPC['milestoneid']);
 		$this->issuedata->set('submituserid', ($this->datainfo['userid'] ? $this->datainfo['userid'] : $this->datainfo['postuserid']));
 		$this->issuedata->set('submitusername', ($this->datainfo['username'] ? $this->datainfo['username'] : $this->datainfo['postusername']));
-		$this->issuedata->set('visible', 'visible');
 		$this->issuedata->set('submitdate', $this->datainfo['dateline']);
 		$this->issuedata->set('lastpost', $this->datainfo['lastpost']);
+
+		// New
+		$this->issuedata->set('state', $this->registry->GPC['close_issue'] ? 'closed' : 'open');
+
+		if ($this->registry->GPC['private'])
+		{
+			// make it private
+			$this->issuedata->set('visible', 'private');
+		}
+		else
+		{
+			// make it visible if it was private, else leave it as is
+			$this->issuedata->set('visible', 'visible');
+		}
+
+		if ($posting_perms['tags_edit'])
+		{
+			$issuedata->set_info('allow_tag_creation', $this->posting_perms['can_custom_tag']);
+			prepare_tag_changes($this->registry->GPC, $existing_tags, $tag_add, $tag_remove);
+
+			foreach ($tag_add AS $tag)
+			{
+				$this->issuedata->add_tag($tag);
+			}
+
+			foreach ($tag_remove AS $tag)
+			{
+				$this->issuedata->remove_tag($tag);
+			}
+		}
 	}
 
 	/**
