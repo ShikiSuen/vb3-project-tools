@@ -445,6 +445,10 @@ function prepare_issue($issue)
 	{
 		$issue['categorytitle'] = $vbphrase['unknown'];
 	}
+	else
+	{
+		$issue['categorytitle'] = $vbphrase["category$issue[projectcategoryid]"];
+	}
 
 	$issue['priority_text'] = $vbphrase["priority$issue[priority]"];
 

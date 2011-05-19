@@ -176,6 +176,11 @@ class vB_Pt_IssueList
 				$this->sort_field = 'issuestatusid';
 				$this->sort_field_sql = array('issuestatus.displayorder', 'issuestatus.issuestatusid');
 				break;
+			
+			case 'category':
+				$this->sort_field = 'projectcategoryid';
+				$this->sort_field_sql = array('issue.projectcategoryid');
+				break;
 
 			// these are the simple sorts
 			case 'title':
@@ -221,6 +226,7 @@ class vB_Pt_IssueList
 		$sort_arrow = array(
 			'title' => '',
 			'submitusername' => '',
+			'projectcategoryid' => '',
 			'issuestatusid' => '',
 			'priority' => '',
 			'replycount' => '',
