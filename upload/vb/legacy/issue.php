@@ -117,7 +117,7 @@ class vB_Legacy_Issue extends vB_Legacy_DataObject
 		$issues = array();
 		while ($issue = $vbulletin->db->fetch_array($set))
 		{
-			$issues[$issue['issueid']] = $issue;
+			$issues[$issue['issueid']] = self::create_from_record($issue);
 		}
 
 		return $issues;

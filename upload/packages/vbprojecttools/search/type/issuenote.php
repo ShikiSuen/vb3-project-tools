@@ -23,8 +23,6 @@
 
 require_once(DIR . '/vb/search/type.php');
 require_once(DIR . '/includes/functions_projecttools.php');
-require_once(DIR . '/packages/vbprojecttools/search/result/issuenote.php');
-require_once(DIR . '/packages/vbprojecttools/search/result/issue.php');
 
 /**
 * There is a type file for each search type. This is the one for issue notes
@@ -35,75 +33,19 @@ require_once(DIR . '/packages/vbprojecttools/search/result/issue.php');
 class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 {
 	/**
-	* This checks to see if we can view this project.
+	* This checks to see if we can view this issue note.
 	*
-	* @param	integer		$projectid
+	* @param	vB_Legacy_Object	$issue
+	* @param	vB_Legacy_Object	$issuenote
+	* @param	vB_Legacy_Object	$user
 	*
 	* @return	boolean
 	**/
-	private function verify_project_canread($projectid)
+	protected function verify_issuenote_canread(&$issue, &$issuenote, &$user)
 	{
-		global $vbulletin;
+		fetch_pt_datastore();
 
-		$datastores = $vbulletin->db->query_read("
-			SELECT data, title
-			FROM " . TABLE_PREFIX . "datastore
-			WHERE title IN ('pt_bitfields', 'pt_permissions', 'pt_issuestatus', 'pt_issuetype', 'pt_projects', 'pt_categories', 'pt_assignable', 'pt_versions')
-		");
-
-		while ($datastore = $vbulletin->db->fetch_array($datastores))
-		{
-			$title = $datastore['title'];
-
-			if (!is_array($datastore['data']))
-			{
-				$data = unserialize($datastore['data']);
-
-				if (is_array($data))
-				{
-					$vbulletin->$title = $data;
-				}
-			}
-			else if ($datastore['data'] != '')
-			{
-				$vbulletin->$title = $datastore['data'];
-			}
-		}
-
-		$permissions = fetch_project_permissions($vbulletin->userinfo, $projectid);
-
-		// We get an array, like 'type=>array('perm_type' => 65555,...), ...
-		// the types are the three (currently at least) issue types. perm_types
-		// are currently generalpermissions, postpermissions, attachpermissions
-		// I would say that if we have rights to one of the three issue types we
-		// can view the project.
-
-		if ($vbulletin->userinfo['projectpermissions'])
-		{
-			foreach ($vbulletin->userinfo['projectpermissions'] AS $pjid => $tasks)
-			{
-				foreach ($tasks AS $key => $value)
-				{
-					if ($value['generalpermissions'] > 0 OR $value['postpermissions'] > 0)
-					{
-						return true;
-					}
-				}
-			}
-		}
-
-		/*if ($permissions)
-		{
-			foreach ($permissions AS $type => $permission)
-			{
-				if ($permission['projectpermissions']["$projectid"] > 0)
-				{
-					return true;
-				}
-			}
-		}*/
-		//If we got here we aren't authorized
-		return false;
+		return verify_issue_note_perms($issue->get_record(), $issuenote->get_record(), $user->get_record());
 	}
 	
 	/**
@@ -118,34 +60,24 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	*/
 	public function fetch_validated_list($user, $ids, $gids)
 	{
-		global $vbulletin;
+		require_once(DIR . '/vb/legacy/issuenote.php');
+		require_once(DIR . '/vb/legacy/issue.php');
 
-		$map = array();
+		$notes = vB_Legacy_IssueNote::create_array($ids);
+		$issues = vB_Legacy_Issue::create_array($gids);
 
-		foreach ($ids AS $i => $id)
+		foreach ($notes AS $key => $note)
 		{
-			$map[$gids[$i]][] = $id;
-		}
+			$issueid = $note->get_field('issueid');
 
-		$projects = array_unique($gids);
-		$rejected_projects = array();
-
-		foreach ($projects AS $projectid)
-		{
-			if (!$this->verify_project_canread($projectid))
+			if (!$this->verify_issuenote_canread($issues["$issueid"], $note, $user))
 			{
-				$rejected_groups[] = $projectid;
+				$rejected_groups[] = $issueid;
+				$list["$key"] = false;
 			}
-		}
-
-		if (count($ids))
-		{
-			foreach ($ids AS $id => $issueid)
+			else
 			{
-				if ($issue = verify_issue($issueid, false))
-				{
-					$list[$issueid] = vBProjectTools_Search_Result_IssueNote::create($issueid);
-				}
+				$list["$key"] = vBProjectTools_Search_Result_IssueNote::create_from_object($note, $issues["$issueid"]);
 			}
 		}
 
@@ -253,7 +185,6 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 		$phrase = new vB_Legacy_Phrase();
 		$phrase->add_phrase_groups(array('projecttools'));
 
-		require_once(DIR . '/includes/functions_projecttools.php');
 		require_once(DIR . '/includes/functions_pt_search.php');
 
 		$vbulletin->input->clean_array_gpc('r', array(
@@ -262,30 +193,7 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 			'issuetypeid' => TYPE_NOHTML
 		));
 
-		$datastores = $vbulletin->db->query_read("
-			SELECT data, title
-			FROM " . TABLE_PREFIX . "datastore
-			WHERE title IN('pt_bitfields', 'pt_permissions', 'pt_issuestatus', 'pt_issuetype', 'pt_projects', 'pt_categories', 'pt_assignable', 'pt_versions')
-		");
-
-		while ($datastore = $vbulletin->db->fetch_array($datastores))
-		{
-			$title = $datastore['title'];
-
-			if (!is_array($datastore['data']))
-			{
-				$data = unserialize($datastore['data']);
-
-				if (is_array($data))
-				{
-					$vbulletin->$title = $data;
-				}
-			}
-			else if ($datastore['data'] != '')
-			{
-				$vbulletin->$title = $datastore['data'];
-			}
-		}
+		fetch_pt_datastore();
 
 		if (!$search_perms = build_issue_permissions_query($vbulletin->userinfo, 'cansearch'))
 		{
@@ -594,23 +502,129 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 
 	public function add_advanced_search_filters($criteria, $registry)
 	{
+		if ($registry->GPC['textlocation'] == 'first')
+		{
+			$this->first_only = true;
+		}
+		else if ($registry->GPC['textlocation'] == 'summary')
+		{
+
+		}
+
 		if ($registry->GPC['projecttags'])
 		{
 			$this->add_tagid_filter($criteria, $registry->GPC['projecttags']);
+		}
+
+		if ($registry->GPC['assigneduser'])
+		{
+			$this->add_assigned_filter($criteria, $registry->GPC['assigneduser']);
+		}
+
+		if ($registry->GPC['appliesversion'])
+		{
+			$this->add_versionid_filter($criteria, $registry->GPC['appliesversion']);
+		}
+
+		if ($registry->GPC['addressedversion'])
+		{
+			$this->add_versionid_filter($criteria, $registry->GPC['addressedversion'], true);
+		}
+
+		if ($registry->GPC['projectcategoryid'])
+		{
+			$this->add_categoryid_filter($criteria, $registry->GPC['projectcategoryid']);
+		}
+
+		if ($registry->GPC['needsattachments'])
+		{
+			$criteria->add_filter('attachcount', vB_Search_Core::OP_GT, 0, true);
+		}
+
+		if ($registry->GPC['needspendingpetitions'])
+		{
+			$criteria->add_filter('pendingpetitions', vB_Search_Core::OP_GT, 0, true);
+		}
+
+		if ($registry->GPC['replycount'] > 0 OR $registry->GPC['replycount_type'] == 'lteq')
+		{
+			$op = $registry->GPC['replycount_type'] == 'lteq' ? vB_Search_Core::OP_LT : vB_Search_Core::OP_GT;
+			$criteria->add_filter('replycount', $op, $registry->GPC['replycount'], true);
+
+			$criteria->add_display_strings('replycount',
+				vB_Search_Searchtools::getCompareString($registry->GPC['replycount_type'] == 'lteq')
+				. $registry->GPC['replycount'] . ' ' . $vbphrase['replies']);
+		}
+
+		if ($registry->GPC['priority'] > 0 OR $registry->GPC['priority_type'] == 'lteq')
+		{
+			$op = $registry->GPC['priority_type'] == 'lteq' ? vB_Search_Core::OP_LT : vB_Search_Core::OP_GT;
+			$criteria->add_filter('priority', $op, $registry->GPC['priority'], true);
+
+			$criteria->add_display_strings('priority',
+				vB_Search_Searchtools::getCompareString($registry->GPC['priority_type'] == 'lteq')
+				. $registry->GPC['priority'] . ' ' . $vbphrase['priority']);
+		}
+
+		if ($registry->GPC['votecount'] > 0 OR $registry->GPC['votecount_type'] == 'lteq')
+		{
+			$op = $registry->GPC['votecount_type'] == 'lteq' ? vB_Search_Core::OP_LT : vB_Search_Core::OP_GT;
+			$fieldname = $registry->GPC['votecount_posneg'] == 'positive' ? 'votepositive' : 'votenegative';
+			$criteria->add_filter($fieldname, $op, $registry->GPC['votecount'], true);
+
+			$criteria->add_display_strings($fieldname,
+				vB_Search_Searchtools::getCompareString($registry->GPC['votecount_type'] == 'lteq')
+				. $registry->GPC['votecount'] . ' ' . $vbphrase[$registry->GPC['votecount_posneg']] . ' ' . $vbphrase['votes']);
+		}
+
+		if ($registry->GPC['milestoneid'])
+		{
+			$criteria->add_filter('milestoneid', vB_Search_Core::OP_EQ, $registry->GPC['milestoneid'], true);
+			$milestone_string = vB_Search_Searchtools::getDisplayString('pt_milestone', $vbphrase['milestone'], 'title', 'milestoneid', $registry->GPC['milestoneid'], vB_Search_Core::OP_EQ, false);
+			$criteria->add_display_strings('milestoneid', $milestone_string);
 		}
 	}
 
 	public function get_db_query_info($fieldname)
 	{
-		$result['join']['issue'] = sprintf(self::$issue_join, TABLE_PREFIX, vB_Types::instance()->getContentTypeId("vBProjectTools_Issue"));
+		$result['corejoin']['pt_issue'] = sprintf(
+			$this->first_only ? self::$issue_core_join_first : self::$issue_core_join,
+			TABLE_PREFIX,
+			vB_Types::instance()->getContentTypeId("vBProjectTools_Issue")
+		);
+		$result['groupjoin']['pt_issue'] = sprintf(
+			self::$issue_group_join,
+			TABLE_PREFIX,
+			vB_Types::instance()->getContentTypeId("vBProjectTools_Issue")
+		);
 
-		$result['table'] = 'issue';
+		$result['table'] = 'pt_issue';
 
-		$fields = array('issuestatusid', 'priority');
+		$fields = array(
+			'issuestatusid',
+			'priority',
+			'lastpost',
+			'replycount',
+			'projectid',
+			'projectcategoryid',
+			'attachcount',
+			'pendingpetitions',
+			'addressedversionid',
+			'appliesversionid',
+			'priority',
+			'votepositive',
+			'votenegative'
+		);
 
 		if (in_array($fieldname, $fields))
 		{
 			$result['field'] = $fieldname;
+		}
+		else if ($fieldname == 'assigned_userid')
+		{
+			$result['field'] = 'userid';
+			$result['table'] = 'pt_issueassign';
+			$result['join']['pt_issueassign'] = sprintf(self::$assign_join, TABLE_PREFIX);
 		}
 		else if ($fieldname == 'tag')
 		{
@@ -627,12 +641,138 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	}
 
 	/**
+	*	Add a filter for projects. We'll get them as an array. We should verify
+	*  that each is an integer
+	*
+	*	@param array $projectids
+	*/
+	protected function add_projectid_filter($criteria, $projectids)
+	{
+		global $vbulletin, $vbphrase;
+
+		if (in_array(' ', $projectids) OR in_array('', $projectids))
+		{
+			return;
+		}
+
+		$projectids = array_unique($projectids);
+
+		foreach ($projectids as $key => $projectid)
+		{
+			if (!is_numeric($projectid))
+			{
+				unset($projectids[$key]);
+			}
+		}
+
+		if (!count($projectids))
+		{
+			$criteria->add_error('invalidid', $vbphrase['project'], $vbulletin->options['contactuslink']);
+			return;
+		}
+		//if we got here we have an array of integers, so we're good. Now let's get
+		// the display information.
+		$project_strings =  vB_Search_Searchtools::getDisplayString('pt_project', $vbphrase['project'], 'title', 'projectid', $projectids, vB_Search_Core::OP_EQ, false);
+		$criteria->add_filter('projectid', vB_Search_Core::OP_EQ, $projectids, true);
+		$criteria->add_display_strings('projectid', $project_strings) ;
+	}
+
+	/**
+	*	Add a filter for categories. We'll get them as an array. We should verify
+	*  that each is an integer
+	*
+	*	@param array $categoryids
+	*/
+	protected function add_categoryid_filter($criteria, $categoryids)
+	{
+		global $vbulletin, $vbphrase;
+
+		if (in_array(' ', $categoryids) OR in_array('', $categoryids))
+		{
+			return;
+		}
+
+		$categoryids = array_unique($categoryids);
+
+		foreach ($categoryids as $key => $categoryid)
+		{
+			if (!is_numeric($categoryid))
+			{
+				unset($categoryids[$key]);
+			}
+		}
+
+		if (!count($categoryids))
+		{
+			$criteria->add_error('invalidid', $vbphrase['category'], $vbulletin->options['contactuslink']);
+			return;
+		}
+
+		$category_strings =  vB_Search_Searchtools::getDisplayString('pt_projectcategory', $vbphrase['category'], 'title', 'projectcategoryid', $categoryids, vB_Search_Core::OP_EQ, false);
+		$criteria->add_filter('projectcategoryid', vB_Search_Core::OP_EQ, $categoryids, true);
+		$criteria->add_display_strings('projectcategoryid', $category_strings) ;
+	}
+
+	/**
+	*	Add a filter for versions. We'll get them as an array. We should verify
+	*  that each is an integer
+	*
+	*	@param array $versionids
+	*/
+	protected function add_versionid_filter($criteria, $versionids, $addressed = false)
+	{
+		global $vbulletin, $vbphrase;
+
+		if (in_array(' ', $versionids) OR in_array('', $versionids) OR in_array(0, $versionids))
+		{
+			// empty or 'none'
+			return;
+		}
+
+		$versionids = array_unique($versionids);
+
+		foreach ($versionids as $key => $versionid)
+		{
+			if (!is_numeric($versionid))
+			{
+				unset($versionids[$key]);
+			}
+			else if ($versionid == -1)
+			{
+				// unknown / next release
+				$versionids[$key] = 0;
+			}
+		}
+
+		if (!count($versionids))
+		{
+			$criteria->add_error('invalidid', $vbphrase['version'], $vbulletin->options['contactuslink']);
+			return;
+		}
+
+		if ($addressed)
+		{
+			$fieldname = 'addressedversionid';
+			$phrase_key = 'addressed_version';
+		}
+		else
+		{
+			$fieldname = 'appliesversionid';
+			$phrase_key = 'applicable_version';
+		}
+
+		$version_strings =  vB_Search_Searchtools::getDisplayString('pt_projectversion', $vbphrase[$phrase_key], 'versionname', 'projectversionid', $versionids, vB_Search_Core::OP_EQ, false);
+		$criteria->add_filter($fieldname, vB_Search_Core::OP_EQ, $versionids, true);
+		$criteria->add_display_strings($fieldname, $version_strings) ;
+	}
+
+	/**
 	*	Add a filter for tags. We'll get them as an array. We should verify
 	*  that each is an integer
 	*
-	*	@param array $forumids
+	*	@param array $tagids
 	*/
-	protected function add_tagid_filter($criteria, $tagids )
+	protected function add_tagid_filter($criteria, $tagids)
 	{
 		global $vbulletin, $vbphrase;
 
@@ -645,7 +785,7 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 
 		foreach ($tagids as $key => $tagid)
 		{
-			if (! is_numeric($tagid))
+			if (!is_numeric($tagid))
 			{
 				unset($tagids[$key]);
 			}
@@ -656,11 +796,46 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 			$criteria->add_error('invalidid', $vbphrase['tag'], $vbulletin->options['contactuslink']);
 			return;
 		}
-		//if we got here we have an array of integers, so we're good. Now let's get
-		// the display information.
-		$tag_strings =  vB_Search_Searchtools::getDisplayString('pt_project', $vbphrase['project'], 'tagtext', 'tagid', $tagids, vB_Search_Core::OP_EQ, false);
-		$criteria->add_filter('tagid', vB_Search_Core::OP_EQ, $tagids,true);
+
+		$tag_strings =  vB_Search_Searchtools::getDisplayString('pt_tag', $vbphrase['project'], 'tagtext', 'tagid', $tagids, vB_Search_Core::OP_EQ, false);
+		$criteria->add_filter('tagid', vB_Search_Core::OP_EQ, $tagids, true);
 		$criteria->add_display_strings('tagid', $tag_strings) ;
+	}
+
+	/**
+	*	Add a filter for assigned users. We'll get them as an array. We should verify
+	*  that each is an integer
+	*
+	*	@param array $userids
+	*/
+	protected function add_assigned_filter($criteria, $userids)
+	{
+		global $vbulletin, $vbphrase;
+
+		if (in_array(' ', $userids) OR in_array('', $userids))
+		{
+			return;
+		}
+
+		$userids = array_unique($userids);
+
+		foreach ($userids AS $key => $userid)
+		{
+			if (!is_numeric($userid))
+			{
+				unset($userids[$key]);
+			}
+		}
+
+		if (!count($userids))
+		{
+			$criteria->add_error('invalidid', $vbphrase['user'], $vbulletin->options['contactuslink']);
+			return;
+		}
+
+		$user_strings = vB_Search_Searchtools::getDisplayString('user', $vbphrase['assigned_users'], 'username', 'userid', $userids, vB_Search_Core::OP_EQ, false);
+		$criteria->add_filter('assigned_userid', vB_Search_Core::OP_EQ, $userids, true);
+		$criteria->add_display_strings('assigned_userid', $user_strings);
 	}
 
 	protected $package = "vBProjectTools";
@@ -701,8 +876,11 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 		'showposts'	=> TYPE_INT
 	);
 
-	private static $tag_join = " INNER JOIN %spt_issuetag AS pt_issuetag ON (pt_issuetag.issueid = issue.issueid)";
-	private static $issue_join = " INNER JOIN %spt_issue AS pt_issue ON (searchcore.contenttypeid =%u  AND searchcore.primaryid = issue.issueid)";
+	private static $tag_join = " INNER JOIN %spt_issuetag AS pt_issuetag ON (pt_issuetag.issueid = pt_issue.issueid)";
+	private static $issue_core_join = " INNER JOIN %spt_issue AS pt_issue ON (searchcore.contenttypeid =%u  AND searchcore.groupid = pt_issue.issueid)";
+	private static $issue_core_join_first = " INNER JOIN %spt_issue AS pt_issue ON (searchcore.contenttypeid =%u AND searchcore.primaryid = pt_issue.firstnoteid)";
+	private static $issue_group_join = " INNER JOIN %spt_issue AS pt_issue ON (searchgroup.contenttypeid =%u  AND searchgroup.groupid = pt_issue.issueid)";
+	private static $assign_join = " INNER JOIN %spt_issueassign AS pt_issueassign ON (pt_issueassign.issueid = pt_issue.issueid)";
 }
 
 ?>

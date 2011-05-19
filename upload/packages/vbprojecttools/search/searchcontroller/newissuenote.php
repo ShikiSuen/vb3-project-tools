@@ -22,6 +22,7 @@
 */
 
 require_once(DIR . '/vb/search/searchcontroller.php');
+require_once(DIR . '/includes/functions_projecttools.php');
 
 class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_SearchController
 {
@@ -29,30 +30,7 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 	{
 		global $vbulletin;
 
-		$datastores = $vbulletin->db->query_read("
-			SELECT data, title
-			FROM " . TABLE_PREFIX . "datastore
-			WHERE title IN ('pt_bitfields', 'pt_permissions', 'pt_issuestatus', 'pt_issuetype', 'pt_projects', 'pt_categories', 'pt_assignable', 'pt_versions')
-		");
-
-		while ($datastore = $vbulletin->db->fetch_array($datastores))
-		{
-			$title = $datastore['title'];
-
-			if (!is_array($datastore['data']))
-			{
-				$data = unserialize($datastore['data']);
-
-				if (is_array($data))
-				{
-					$vbulletin->$title = $data;
-				}
-			}
-			else if ($datastore['data'] != '')
-			{
-				$vbulletin->$title = $datastore['data'];
-			}
-		}
+		fetch_pt_datastore();
 
 		$db = $vbulletin->db;
 
@@ -60,7 +38,7 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		$equals_filters = $criteria->get_equals_filters();
 		$notequals_filter = $criteria->get_notequals_filters();
 
-		//handle projects
+		//handle forums
 		if (isset($equals_filters['projectid']))
 		{
 			$projectids = $equals_filters['projectid'];
@@ -71,42 +49,46 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		}
 
 		$excluded_projectids = array();
-
 		if (isset($notequals_filter['projectid']))
 		{
 			$excluded_projectids = $notequals_filter['projectid'];
 		}
 
-		$projectids = array_diff($projectids, $excluded_projectids, $this->getUnsearchableProjects());
+		$project_where = build_issue_permissions_query($vbulletin->userinfo);
+
+		foreach ($excluded_projectids AS $exclude)
+		{
+			unset($project_where["$exclude"]);
+		}
 
 		$results = array();
 
-		if (empty($projectids))
+		if (empty($project_where))
 		{
 			return $results;
 		}
 
-		//get thread/post results.
+		$project_where = "((" . implode(") OR (", $project_where) . "))";
+		build_issue_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $devnull);
+
+		$lastpost_col = ($private_lastpost_join ?
+			'IF(issueprivatelastpost.lastpost IS NOT NULL, issueprivatelastpost.lastpost, issue.lastpost)' :
+			'issue.lastpost'
+		);
+
 		if (!empty($range_filters['markinglimit'][0]))
 		{
 			$cutoff = $range_filters['markinglimit'][0];
 
 			$marking_join = "
 				LEFT JOIN " . TABLE_PREFIX . "pt_issueread AS issueread ON (issueread.issueid = issue.issueid AND issueread.userid = " . $vbulletin->userinfo['userid'] . ")
-				INNER JOIN " . TABLE_PREFIX . "pt_project AS project ON (project.projectid = issue.projectid)
-				LEFT JOIN " . TABLE_PREFIX . "pt_projectread AS projectread ON (projectread.projectid = project.projectid AND projectread.userid = " . $vbulletin->userinfo['userid'] . ")
+				LEFT JOIN " . TABLE_PREFIX . "pt_projectread as projectread ON (projectread.projectid = issue.projectid AND projectread.userid = " . $vbulletin->userinfo['userid'] . " AND projectread.issuetypeid = issue.issuetypeid)
 			";
 
 			$lastpost_where = "
-				AND issue.lastpost > IF(issueread.readtime IS NULL, $cutoff, issueread.readtime)
-				AND issue.lastpost > IF(projectread.readtime IS NULL, $cutoff, projectread.readtime)
-				AND issue.lastpost > $cutoff
-			";
-
-			$issuenote_lastpost_where = "
-				AND issuenote.dateline > IF(issueread.readtime IS NULL, $cutoff, issueread.readtime)
-				AND issuenote.dateline > IF(projectread.readtime IS NULL, $cutoff, projectread.readtime)
-				AND issuenote.dateline > $cutoff
+				AND ($lastpost_col > IF(issueread.readtime AND issueread.readtime > $cutoff, issueread.readtime, $cutoff)
+				AND $lastpost_col > IF(projectread.readtime AND projectread.readtime > $cutoff, projectread.readtime, $cutoff)
+				AND $lastpost_col > $cutoff)
 			";
 		}
 		else
@@ -123,8 +105,7 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 			}
 
 			$marking_join = '';
-			$lastpost_where = "AND issue.lastpost >= $datecut";
-			$issuenote_lastpost_where = "AND issuenote.dateline >= $datecut";
+			$lastpost_where = "AND $lastpost_col > $datecut";
 		}
 
 		$orderby = $this->get_orderby($criteria);
@@ -141,9 +122,9 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 				FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
 				INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuenote.issueid)
 				$marking_join
-				WHERE issue.projectid IN(" . implode(', ', $projectids) . ")
+				$private_lastpost_join
+				WHERE $project_where
 					$lastpost_where
-					$issuenote_lastpost_where
 				ORDER BY $orderby
 				LIMIT " . intval($vbulletin->options['maxresults'])
 			);
@@ -156,13 +137,13 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		else
 		{
 			$contenttypeid = vB_Search_Core::get_instance()->get_contenttypeid('vBProjectTools', 'Issue');
-			$threads = $db->query_read_slave($q = "
+			$issues = $db->query_read_slave($q = "
 				SELECT issue.issueid
 				FROM " . TABLE_PREFIX . "pt_issue AS issue
 				$marking_join
-				WHERE issue.projectid IN(" . implode(', ', $projectids) . ")
+				$private_lastpost_join
+				WHERE $project_where
 					$lastpost_where
-					AND issue.open <> 10
 				ORDER BY $orderby
 				LIMIT " . intval($vbulletin->options['maxresults'])
 			);
@@ -174,76 +155,6 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		}
 
 		return $results;
-	}
-
-	/**
-	* Does the user have the requested permission on this project.
-	*
-	* @param  int       Project ID
-	* @param  string    Name of permission
-	* @return boolean   Boolean result of the permission
-	*/
-	public function hasProjectPermission($projectid, $permission)
-	{
-		//should be cached and therefore not too expensive to look up on every permissions call.
-		$perms = fetch_permissions($projectid);
-		return (bool) ($perms & $this->registry->bf_ugp_projectpermissions[$permission]);
-	}
-
-	/**
-	* Get projects the user is unable to view.
-	*
-	* Need to verify that this makes sense in general code stolen from search
-	* logic and search specific param removed.
-	*
-	* This value is calculated once and the list is returned on subsequent calls
-	*
-	* @return array(int) list of hidden project ids 
-	*/
-	public function getHiddenProjects()
-	{
-		if (is_null($this->hidden_projects))
-		{
-			$this->hidden_projects = array();
-
-			foreach ($this->registry->userinfo['projectpermissions'] AS $projectid => $pperms)
-			{
-				$project = fetch_foruminfo($projectid);
-
-				if (!$this->hasProjectPermission($projectid, 'canview'))
-				{
-					$this->hidden_projects[] = $projectid;
-				}
-			}
-		}
-		return $this->hidden_projects;
-	}
-
-	/**
-	* Get projects the user is unable to search.
-	*
-	* This value is calculated once and the list is returned on subsequent calls
-	*
-	* @return array(int) list of unsearchable project ids 
-	*/
-	public function getUnsearchableProjects()
-	{
-		if (is_null($this->unsearchable_projects))
-		{
-			$this->unsearchable_projects = $this->getHiddenProjects();
-
-			foreach ($this->registry->userinfo['projectpermissions'] AS $projectid => $pperms)
-			{
-				if (!in_array($projectid, $this->unsearchable_projects))
-				{
-					if (!$this->hasProjectPermission($projectid, 'cansearch'))
-					{
-						$this->unsearchable_projects[] = $projectid;
-					}
-				}
-			}
-		}
-		return $this->unsearchable_projects;
 	}
 
 	private function get_orderby($criteria)

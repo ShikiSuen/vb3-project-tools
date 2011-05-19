@@ -34,74 +34,16 @@ require_once(DIR . '/includes/functions_projecttools.php');
 class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 {
 	/***
-	* This checks to see if we can view this project.
+	* This checks to see if we can view this issue.
 	*
-	* @param integer $projectid
+	* @param vB_Legacy_Object $issue
+	* @param vB_Legacy_Object $user
 	* @return  boolean
 	**/
-	private function verify_project_canread($projectid)
+	protected function verify_issue_canread(&$issue, &$user)
 	{
-		global $vbulletin;
-
-		$datastores = $vbulletin->db->query_read("
-			SELECT data, title
-			FROM " . TABLE_PREFIX . "datastore
-			WHERE title IN('pt_bitfields', 'pt_permissions', 'pt_issuestatus', 'pt_issuetype', 'pt_projects', 'pt_categories', 'pt_assignable', 'pt_versions')
-		");
-
-		while ($datastore = $vbulletin->db->fetch_array($datastores))
-		{
-			$title = $datastore['title'];
-
-			if (!is_array($datastore['data']))
-			{
-				$data = unserialize($datastore['data']);
-				if (is_array($data))
-				{
-					$vbulletin->$title = $data;
-				}
-			}
-			else if ($datastore['data'] != '')
-			{
-				$vbulletin->$title = $datastore['data'];
-			}
-		}
-
-		$permissions = fetch_project_permissions($vbulletin->userinfo, $projectid);
-
-		//We get an array, like 'type=>array('perm_type' => 65555,...), ...
-		// the types are the three (currently at least) issue types. perm_types
-		// are currently generalpermissions, postpermissions, attachpermissions
-		//I would say that if we have rights to one of the three issue types we
-		// can view the project.
-
-		if ($vbulletin->userinfo['projectpermissions'])
-		{
-			foreach ($vbulletin->userinfo['projectpermissions'] AS $pjid => $tasks)
-			{
-				foreach ($tasks AS $key => $value)
-				{
-					if ($value['generalpermissions'] > 0 OR $value['postpermissions'] > 0)
-					{
-						return true;
-					}
-				}
-			}
-		}
-
-		/*if ($permissions)
-		{
-			foreach ($permissions AS $type => $permission)
-			{
-				if ($permission['projectpermissions']["$projectid"] > 0)
-				{
-					return true;
-				}
-			}
-		}*/
-
-		//If we got here we aren't authorized
-		return false;
+		fetch_pt_datastore();
+		return verify_issue_perms($issue->get_record(), $user->get_record());
 	}
 	
 	/**
@@ -116,42 +58,20 @@ class vBProjectTools_Search_Type_Issue extends vB_Search_Type
 	*/
 	public function fetch_validated_list($user, $ids, $gids)
 	{
-		global $vbulletin;
+		require_once(DIR . '/vb/legacy/issue.php');
+		$issues = vB_Legacy_Issue::create_array($ids);
 
-		/*$map = array();
-
-		foreach ($ids AS $i => $id)
+		foreach ($issues AS $key => $issue)
 		{
-			$map[$gids[$i]][] = $id;
-		}
-
-		$issues = array_unique($gids);
-		$rejected_issues = array();
-		foreach ($issues as $issueid)
-		{
-			if (!$this->verify_project_canread($issueid))
+			if (!$this->verify_issue_canread($issue, $user))
 			{
-				$rejected_groups[] = $issueid;
+				$rejected_groups[] = $key;
+				$list["$key"] = false;
 			}
-		}*/
-
-		if (count($ids))
-		{
-			foreach ($ids AS $id => $issueid)
+			else
 			{
-				if ($issue = verify_issue($issueid, false))
-				{
-					$list[$issueid] = vBProjectTools_Search_Result_Issue::create($issueid);
-				}
+				$list["$key"] = vBProjectTools_Search_Result_Issue::create_from_issue($issue);
 			}
-		}
-
-		$list = array_fill_keys($ids, false);
-		foreach (vB_Legacy_Issue::create_array($ids) AS $key => $issue)
-		{
-			$item = vBProjectTools_Search_Result_Issue::create_from_issue($issue);
-
-			$list[$key] = $item;
 		}
 
 		return array('list' => $list, 'groups_rejected' => $rejected_groups);
