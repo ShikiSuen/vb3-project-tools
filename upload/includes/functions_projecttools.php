@@ -1751,4 +1751,27 @@ function construct_project_chooser_options($displayselectproject = false, $topna
 	return $selectoptions;
 }
 
+// #############################################################################
+/**
+* Load the pt_* datastore caches into memory.
+*/
+function fetch_pt_datastore()
+{
+	global $vbulletin;
+
+	if (!isset($vbulletin->pt_permissions))
+	{
+		$vbulletin->datastore->fetch(array(
+			'pt_bitfields',
+			'pt_permissions',
+			'pt_issuestatus',
+			'pt_issuetype',
+			'pt_projects',
+			'pt_categories',
+			'pt_assignable',
+			'pt_versions'
+		));
+	}
+}
+
 ?>

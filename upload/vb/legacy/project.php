@@ -66,7 +66,7 @@ class vB_Legacy_Project extends vB_Legacy_DataObject
 		//There is an incomplete copy stored in cache. Not sure why,
 		// but it consistently doesn't give me the lastthreadid unless I pass "false"
 		// to prevent reading from cache
-		$projectinfo = verify_project($id, false);
+		$projectinfo = fetch_project_info($id, false);
 
 		//try to work with bad data integrity.  There are dbs out there
 		//with threads that belong to a nonexistant forum.
