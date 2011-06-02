@@ -2252,7 +2252,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1303583670" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1307030913" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2533,19 +2533,24 @@ a.firstunread, a.firstunread:hover
 	margin-{vb:stylevar left}: 22px;
 }
 
+.pt_issuelist .blocksubhead .ptissuelist_category {
+	float: {vb:stylevar right};
+	width: 6%;
+}
+
 .pt_issuelist .blocksubhead .ptissuelist_status {
 	float: {vb:stylevar right};
-	width: 10%;
+	width: 6%;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_priority {
 	float: {vb:stylevar right};
-	width: 8%;
+	width: 5%;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_replies {
 	float: {vb:stylevar right};
-	width: 10%;
+	width: 5%;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_issuetype {
@@ -2555,7 +2560,7 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuelist .blocksubhead .ptissuelist_lastpost {
 	float: {vb:stylevar right};
-	width: 15%;
+	width: 10%;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_notifications {
@@ -2627,7 +2632,14 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuelist .blockrow .ptissuelist_icons {
 	padding: 0 5px;
-	/*width: 10%;*/
+	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+}
+
+.pt_issuelist .blockrow .ptissuelist_category {
+	padding: 0 5px;
+	vertical-align: middle;
+	width: 6%;
 	text-align: {vb:stylevar right};
 	float: {vb:stylevar right};
 }
@@ -2635,7 +2647,7 @@ a.firstunread, a.firstunread:hover
 .pt_issuelist .blockrow .ptissuelist_status {
 	padding: 0 5px;
 	vertical-align: middle;
-	width: 10%;
+	width: 6%;
 	text-align: {vb:stylevar right};
 	float: {vb:stylevar right};
 }
@@ -2643,7 +2655,7 @@ a.firstunread, a.firstunread:hover
 .pt_issuelist .blockrow .ptissuelist_priority {
 	padding: 0 5px;
 	vertical-align: middle;
-	width: 8%;
+	width: 5%;
 	text-align: {vb:stylevar right};
 	float: {vb:stylevar right};
 }
@@ -2651,7 +2663,7 @@ a.firstunread, a.firstunread:hover
 .pt_issuelist .blockrow .ptissuelist_replies {
 	padding: 0 5px;
 	vertical-align: middle;
-	width: 10%;
+	width: 5%;
 	text-align: center;
 	float: {vb:stylevar right};
 }
@@ -2667,7 +2679,7 @@ a.firstunread, a.firstunread:hover
 .pt_issuelist .blockrow .ptissuelist_lastpost {
 	padding: 0 5px;
 	vertical-align: middle;
-	width: 15%;
+	width: 10%;
 	margin-top: -5px;
 	text-align: {vb:stylevar left};
 	float: {vb:stylevar right};
@@ -4182,7 +4194,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1301261948" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1307030802" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4211,13 +4223,6 @@ legend {
 	</vb:if>
 
 	<vb:if condition="$show['quick_reply']">
-		<vb:if condition="$vbulletin->options['templateversion'] >= '4.1.4'">
-			<script type="text/javascript">
-			<!--
-			var vbversion = '{vb:raw vbversion.0}.{vb:raw vbversion.1}.{vb:raw vbversion.2}';
-			//-->
-			</script>
-		</vb:if>
 		<script type="text/javascript" src="clientscript/vbulletin_pt_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
 	</vb:if>
 
@@ -4676,7 +4681,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1297190123" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
+		<template name="pt_issuebit" templatetype="template" date="1307030781" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -4704,31 +4709,55 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 				{vb:raw issue.submitusername}
 			</vb:if>
 		</div>
-	</div>
-	<div class="ptissuelist_lastpost smallfont">
-		<div>
-			<p class="lastpostdate">
-				{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
-			</p>
-			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
-			<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
-		</div>
 		<script type="text/javascript">
 		<!--
-		<vb:if condition="$show['status_edit']">vBulletin.register_control("vB_MagicSelect", "ms_stat_{vb:raw issue.issueid}", "issuestatusid", "{vb:raw issue.issueid}");</vb:if>
-		<vb:if condition="$show['edit_issue']">vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");</vb:if>
+		<vb:if condition="$show['status_edit']">
+			vBulletin.register_control("vB_MagicSelect", "ms_stat_{vb:raw issue.issueid}", "issuestatusid", "{vb:raw issue.issueid}");
+		</vb:if>
+		<vb:if condition="$show['edit_issue']">
+			vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");
+			vBulletin.register_control("vB_MagicSelect", "ms_cat_{vb:raw issue.issueid}", "projectcategoryid", "{vb:raw issue.issueid}");
+		</vb:if>
 		//-->
 		</script>
 	</div>
-	<div class="ptissuelist_replies smallfont">
-		{vb:raw issue.replycount}
-	</div>
-	<div class="ptissuelist_priority smallfont">
-		<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
-	</div>
-	<div class="ptissuelist_status smallfont">
-		<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
-	</div>
+
+	<vb:if condition="$columns['lastpost']">
+		<div class="ptissuelist_lastpost smallfont">
+			<div>
+				<p class="lastpostdate">
+					{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
+				</p>
+				{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
+				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+			</div>
+		</div>
+	</vb:if>
+
+	<vb:if condition="$columns['replies']">
+		<div class="ptissuelist_replies smallfont">
+			{vb:raw issue.replycount}
+		</div>
+	</vb:if>
+
+	<vb:if condition="$columns['priority']">
+		<div class="ptissuelist_priority smallfont">
+			<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
+		</div>
+	</vb:if>
+
+	<vb:if condition="$columns['status']">
+		<div class="ptissuelist_status smallfont">
+			<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
+		</div>
+	</vb:if>
+
+	<vb:if condition="$columns['category']">
+		<div class="ptissuelist_category smallfont">
+			<div id="ms_cat_{vb:raw issue.issueid}">{vb:raw issue.categorytitle}</div>
+		</div>
+	</vb:if>
+
 	<div class="ptissuelist_icons">
 		<div>
 			<div class="smallfont" style="float: {vb:stylevar right}">
@@ -4773,7 +4802,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1294753607" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}, {vb:raw pageinfo_pagelink}}">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1297191623" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1307029755" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4802,7 +4831,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<!--
 	vbphrase['request_timed_out_refresh'] = '{vb:rawphrase request_timed_out_refresh}';
 
-	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority"));
+	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority", "projectcategoryid"));
 	//-->
 	</script>
 
@@ -4936,10 +4965,26 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_title}}">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
 					<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_username}}">{vb:rawphrase submitted_by}</a> {vb:raw sort_arrow.submitusername}
 				</div>
-				<div class="ptissuelist_lastpost"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_lastpost}}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
-				<div class="ptissuelist_replies"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_replies}}">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
-				<div class="ptissuelist_priority"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_priority}}">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
-				<div class="ptissuelist_status"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_issuestatus}}">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
+
+				<vb:if condition="$columns['lastpost']">
+					<div class="ptissuelist_lastpost"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_lastpost}}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
+				</vb:if>
+
+				<vb:if condition="$columns['replies']">
+					<div class="ptissuelist_replies"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_replies}}">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
+				</vb:if>
+
+				<vb:if condition="$columns['priority']">
+					<div class="ptissuelist_priority"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_priority}}">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
+				</vb:if>
+
+				<vb:if condition="$columns['status']">
+					<div class="ptissuelist_status"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_issuestatus}}">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
+				</vb:if>
+
+				<vb:if condition="$columns['category']">
+					<div class="ptissuelist_category"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_category}}">{vb:rawphrase category}</a> {vb:raw sort_arrow.projectcategoryid}</div>
+				</vb:if>
 			</div>
 
 			<vb:if condition="$issuebits">
@@ -11483,14 +11528,14 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="setting_pt_allowstartervote_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow Issue Starter to Vote on Issue?]]></phrase>
 			<phrase name="setting_pt_attachfile_desc" date="1216216839" username="Ed Sullivan" version="2.0.0 Beta 1" />
 			<phrase name="setting_pt_attachfile_title" date="1216216839" username="Ed Sullivan" version="2.0.0 Beta 1"><![CDATA[Project Tools Attachments as Files?]]></phrase>
-			<phrase name="setting_pt_attachmentextensions_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[The Project Tools allow different file types to be attached than the forum. Enter the file extensions that users will be allowed to attach to issues here.<br />
+			<phrase name="setting_pt_attachmentextensions_desc" date="1307024065" username="Pitchoune" version="2.2.0"><![CDATA[The Project Tools allow different file types to be attached than the forum. Enter the file extensions that users will be allowed to attach to issues here.<br />
 <br />
 Put each extension on a separate line.<br />
 <br />
 Making this blank will allow all extensions. To disable attachments in the project tools, set the "Maximum Issue Attachment Size" to 0 or use permissions.]]></phrase>
-			<phrase name="setting_pt_attachmentextensions_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allowed Issue Attachment Extensions]]></phrase>
-			<phrase name="setting_pt_attachmentsize_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[The maximum allowed attachment size, <em>in kilobytes</em>.]]></phrase>
-			<phrase name="setting_pt_attachmentsize_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Maximum Issue Attachment Size]]></phrase>
+			<phrase name="setting_pt_attachmentextensions_title" date="1307024065" username="Pitchoune" version="2.2.0"><![CDATA[Allowed Issue Attachment Extensions - Deprecated]]></phrase>
+			<phrase name="setting_pt_attachmentsize_desc" date="1307024081" username="Pitchoune" version="2.2.0"><![CDATA[The maximum allowed attachment size, <em>in kilobytes</em>.]]></phrase>
+			<phrase name="setting_pt_attachmentsize_title" date="1307024081" username="Pitchoune" version="2.2.0"><![CDATA[Maximum Issue Attachment Size - Deprecated]]></phrase>
 			<phrase name="setting_pt_attachpath_desc" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1" />
 			<phrase name="setting_pt_attachpath_title" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1"><![CDATA[Project Tools Attachment File Path]]></phrase>
 			<phrase name="setting_pt_groupsearchissuespergroup_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[When performing a grouped search, how many issues should be displayed in each group on the first page?<br />

@@ -21,7 +21,7 @@ var qr_imgsrc = '';
 var clickedelm = false;
 var qr_require_click = false;
 
-if (vbversion >= '4.1.4')
+if (SIMPLEVERSION >= '414')
 {
 	var QR_EditorID = 'vB_Editor_QR';
 }

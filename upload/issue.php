@@ -1032,14 +1032,6 @@ if ($show['quick_reply'])
 		</script>
 		$messagearea
 	";
-
-	// Workaround for CKEditor
-	if ($vbulletin->options['templateversion'] >= '4.1.4')
-	{
-		$vbversion = explode('.', $vbulletin->options['templateversion']);
-
-		$vbversion[2] = intval($vbversion[2]);
-	}
 }
 else if ($show['ajax_js'])
 {

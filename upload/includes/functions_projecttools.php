@@ -1709,7 +1709,6 @@ function fetch_require_pt_hvcheck($action)
 	}
 }
 
-// #############################################################################
 /**
 * Returns a list of <option> tags representing the list of projects
 *
@@ -1755,7 +1754,6 @@ function construct_project_chooser_options($displayselectproject = false, $topna
 	return $selectoptions;
 }
 
-// #############################################################################
 /**
 * Load the pt_* datastore caches into memory.
 */
@@ -1778,7 +1776,6 @@ function fetch_pt_datastore()
 	}
 }
 
-// #############################################################################
 /**
 * Returns a list of columns to display
 *
