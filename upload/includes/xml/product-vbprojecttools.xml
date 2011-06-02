@@ -2252,7 +2252,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1307030913" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1307034433" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2533,6 +2533,16 @@ a.firstunread, a.firstunread:hover
 	margin-{vb:stylevar left}: 22px;
 }
 
+.pt_issuelist .blocksubhead .ptissuelist_applyversion {
+	float: {vb:stylevar right};
+	width: 10%;
+}
+
+.pt_issuelist .blocksubhead .ptissuelist_addressversion {
+	float: {vb:stylevar right};
+	width: 10%;
+}
+
 .pt_issuelist .blocksubhead .ptissuelist_category {
 	float: {vb:stylevar right};
 	width: 6%;
@@ -2632,6 +2642,22 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuelist .blockrow .ptissuelist_icons {
 	padding: 0 5px;
+	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+}
+
+.pt_issuelist .blockrow .ptissuelist_applyversion {
+	padding: 0 5px;
+	vertical-align: middle;
+	width: 10%;
+	text-align: {vb:stylevar right};
+	float: {vb:stylevar right};
+}
+
+.pt_issuelist .blockrow .ptissuelist_addressversion {
+	padding: 0 5px;
+	vertical-align: middle;
+	width: 10%;
 	text-align: {vb:stylevar right};
 	float: {vb:stylevar right};
 }
@@ -4681,7 +4707,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1307030781" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
+		<template name="pt_issuebit" templatetype="template" date="1307039811" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -4709,17 +4735,6 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 				{vb:raw issue.submitusername}
 			</vb:if>
 		</div>
-		<script type="text/javascript">
-		<!--
-		<vb:if condition="$show['status_edit']">
-			vBulletin.register_control("vB_MagicSelect", "ms_stat_{vb:raw issue.issueid}", "issuestatusid", "{vb:raw issue.issueid}");
-		</vb:if>
-		<vb:if condition="$show['edit_issue']">
-			vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");
-			vBulletin.register_control("vB_MagicSelect", "ms_cat_{vb:raw issue.issueid}", "projectcategoryid", "{vb:raw issue.issueid}");
-		</vb:if>
-		//-->
-		</script>
 	</div>
 
 	<vb:if condition="$columns['lastpost']">
@@ -4741,20 +4756,67 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</vb:if>
 
 	<vb:if condition="$columns['priority']">
+		<script type="text/javascript">
+		<!--
+		<vb:if condition="$show['edit_issue']">
+			vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");
+		</vb:if>
+		//-->
+		</script>
 		<div class="ptissuelist_priority smallfont">
 			<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
 		</div>
 	</vb:if>
 
 	<vb:if condition="$columns['status']">
+		<script type="text/javascript">
+		<!--
+		<vb:if condition="$show['status_edit']">
+			vBulletin.register_control("vB_MagicSelect", "ms_stat_{vb:raw issue.issueid}", "issuestatusid", "{vb:raw issue.issueid}");
+		</vb:if>
+		//-->
+		</script>
 		<div class="ptissuelist_status smallfont">
 			<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
 		</div>
 	</vb:if>
 
 	<vb:if condition="$columns['category']">
+		<script type="text/javascript">
+		<!--
+		<vb:if condition="$show['edit_issue']">
+			vBulletin.register_control("vB_MagicSelect", "ms_cat_{vb:raw issue.issueid}", "projectcategoryid", "{vb:raw issue.issueid}");
+		</vb:if>
+		//-->
+		</script>
 		<div class="ptissuelist_category smallfont">
 			<div id="ms_cat_{vb:raw issue.issueid}">{vb:raw issue.categorytitle}</div>
+		</div>
+	</vb:if>
+
+	<vb:if condition="$columns['addressversion']">
+		<script type="text/javascript">
+		<!--
+		<vb:if condition="$show['status_edit']">
+			vBulletin.register_control("vB_MagicSelect", "ms_addver_{vb:raw issue.issueid}", "addressedversionid", "{vb:raw issue.issueid}");
+		</vb:if>
+		//-->
+		</script>
+		<div class="ptissuelist_addressversion smallfont">
+			<div id="ms_addver_{vb:raw issue.issueid}">{vb:raw issue.addressedversion}</div>
+		</div>
+	</vb:if>
+
+	<vb:if condition="$columns['applyversion']">
+		<script type="text/javascript">
+		<!--
+		<vb:if condition="$show['edit_issue']">
+			vBulletin.register_control("vB_MagicSelect", "ms_appver_{vb:raw issue.issueid}", "appliesversionid", "{vb:raw issue.issueid}");
+		</vb:if>
+		//-->
+		</script>
+		<div class="ptissuelist_applyversion smallfont">
+			<div id="ms_appver_{vb:raw issue.issueid}">{vb:raw issue.appliesversion}</div>
 		</div>
 	</vb:if>
 
@@ -4802,7 +4864,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1294753607" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}, {vb:raw pageinfo_pagelink}}">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1307029755" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1307034605" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4831,7 +4893,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<!--
 	vbphrase['request_timed_out_refresh'] = '{vb:rawphrase request_timed_out_refresh}';
 
-	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority", "projectcategoryid"));
+	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority", "projectcategoryid", "appliesversionid", "addressedversionid"));
 	//-->
 	</script>
 
@@ -4984,6 +5046,14 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 				<vb:if condition="$columns['category']">
 					<div class="ptissuelist_category"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_category}}">{vb:rawphrase category}</a> {vb:raw sort_arrow.projectcategoryid}</div>
+				</vb:if>
+
+				<vb:if condition="$columns['addressversion']">
+					<div class="ptissuelist_addressversion"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_addressversion}}">{vb:rawphrase addressversion}</a> {vb:raw sort_arrow.addressversion}</div>
+				</vb:if>
+
+				<vb:if condition="$columns['applyversion']">
+					<div class="ptissuelist_applyversion"><a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_applyversion}}">{vb:rawphrase applyversion}</a> {vb:raw sort_arrow.applyversion}</div>
 				</vb:if>
 			</div>
 
@@ -10992,6 +11062,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="pt_vote_cast" date="1171030291" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Vote cast.]]></phrase>
 		</phrasetype>
 		<phrasetype name="GLOBAL" fieldname="global">
+			<phrase name="addressversion" date="1307034067" username="Pitchoune" version="2.2.0"><![CDATA[Address version]]></phrase>
+			<phrase name="applyversion" date="1307034048" username="Pitchoune" version="2.2.0"><![CDATA[Apply version]]></phrase>
 			<phrase name="category" date="1307022136" username="Pitchoune" version="2.2.0"><![CDATA[Category]]></phrase>
 			<phrase name="doubleclick_project_markread" date="1211381999" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Double-click this icon to mark this project and its contents as read]]></phrase>
 			<phrase name="issue" date="1295039807" username="Pitchoune" version="2.2.0"><![CDATA[Issue]]></phrase>
@@ -11512,10 +11584,10 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="setting_issues_type_title" date="1284669686" username="Pitchoune" version="2.1.2"><![CDATA[Issue Type]]></phrase>
 		</phrasetype>
 		<phrasetype name="vBulletin Settings" fieldname="vbsettings">
-			<phrase name="setting_issuelist_columns_desc" date="1307020736" username="Pitchoune" version="2.2.0"><![CDATA[Select here the columns you want to display for your users in every issue lists.<br />
+			<phrase name="setting_issuelist_columns_desc" date="1307040460" username="Pitchoune" version="2.2.0"><![CDATA[Select here the columns you want to display for your users in every issue lists.<br />
 <br />
-<strong>Note:</strong> Select maximum 4 columns or the style could have lots of errors!]]></phrase>
-			<phrase name="setting_issuelist_columns_title" date="1307020736" username="Pitchoune" version="2.2.0"><![CDATA[Columns to show in issue list]]></phrase>
+<span class="modlasttendays"><strong>Note:</strong> Select lots of columns can destroy your styles, especially on lower screen resolutions!</span>]]></phrase>
+			<phrase name="setting_issuelist_columns_title" date="1307040460" username="Pitchoune" version="2.2.0"><![CDATA[Columns to show in issue list]]></phrase>
 			<phrase name="setting_pt_allowbbcode_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow users to include BB Code in issues? (Such as [b], [i] etc.)]]></phrase>
 			<phrase name="setting_pt_allowbbcode_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow BB Code in Issues?]]></phrase>
 			<phrase name="setting_pt_allowbbimagecode_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow users to display images via [IMG] codes in issue?]]></phrase>
