@@ -236,6 +236,8 @@ class vB_Pt_IssueList
 		$sort_arrow = array(
 			'title' => '',
 			'submitusername' => '',
+			'applyversion' => '',
+			'addressversion' => '',
 			'projectcategoryid' => '',
 			'issuestatusid' => '',
 			'priority' => '',
