@@ -119,6 +119,9 @@ else
 
 ($hook = vBulletinHook::fetch_hook('project_issuelist_start')) ? eval($hook) : false;
 
+// Definition to display selected columns
+$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+
 // issues per page = 0 means "unlmiited"
 if (!$vbulletin->options['pt_issuesperpage'])
 {
@@ -547,6 +550,7 @@ $templater = vB_Template::create('pt_issuelist');
 	$templater->register('appliesversion_options', $appliesversion_options);
 	$templater->register('appliesversion_printable', $appliesversion_printable);
 	$templater->register('assignable_users', $assignable_users);
+	$templater->register('columns', $columns);
 	$templater->register('input', $input);
 	$templater->register('issuebits', $issuebits);
 	$templater->register('issuestatus_printable', $issuestatus_printable);

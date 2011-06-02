@@ -1774,4 +1774,36 @@ function fetch_pt_datastore()
 	}
 }
 
+// #############################################################################
+/**
+* Returns a list of columns to display
+*
+* @return	array	List of columns
+*/
+function fetch_issuelist_columns($column)
+{
+	$columns = array();
+
+	// Last post
+	if ($column & 1)
+	{
+		$columns['lastpost'] = true;
+	}
+	else
+	{
+		$columns['lastpost'] = false;
+	}
+
+	if ($column & 2)
+	{
+		$columns['replies'] = true;
+	}
+	else
+	{
+		$columns['replies'] = false;
+	}
+
+	return $columns;
+}
+
 ?>
