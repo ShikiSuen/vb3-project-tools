@@ -73,6 +73,13 @@
 			<group name="forumoptions">
 				<bitfield name="canimportintoissues">262144</bitfield>
 			</group>
+			<group name="pt_columns">
+				<bitfield name="lastpost">1</bitfield>
+				<bitfield name="replies">2</bitfield>
+				<bitfield name="priority">4</bitfield>
+				<bitfield name="status">8</bitfield>
+				<bitfield name="category">16</bitfield>
+			</group>
 		</group>
 		<group name="nocache">
 			<group name="pt_dropdownmenu">
