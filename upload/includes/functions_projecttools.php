@@ -1788,23 +1788,40 @@ function fetch_issuelist_columns($column)
 {
 	$columns = array();
 
+	$columns['lastpost'] = false;
+	$columns['replies'] = false;
+	$columns['priority'] = false;
+	$columns['status'] = false;
+	$columns['category'] = false;
+
 	// Last post
 	if ($column & 1)
 	{
 		$columns['lastpost'] = true;
 	}
-	else
-	{
-		$columns['lastpost'] = false;
-	}
 
+	// Replies
 	if ($column & 2)
 	{
 		$columns['replies'] = true;
 	}
-	else
+
+	// Priority
+	if ($column & 4)
 	{
-		$columns['replies'] = false;
+		$columns['priority'] = true;
+	}
+
+	// Status
+	if ($column & 8)
+	{
+		$columns['status'] = true;
+	}
+
+	// Category
+	if ($column & 16)
+	{
+		$columns['category'] = true;
 	}
 
 	return $columns;
