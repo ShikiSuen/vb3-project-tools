@@ -10947,8 +10947,10 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="pt_vote_cast" date="1171030291" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Vote cast.]]></phrase>
 		</phrasetype>
 		<phrasetype name="GLOBAL" fieldname="global">
+			<phrase name="category" date="1307022136" username="Pitchoune" version="2.2.0"><![CDATA[Category]]></phrase>
 			<phrase name="doubleclick_project_markread" date="1211381999" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Double-click this icon to mark this project and its contents as read]]></phrase>
 			<phrase name="issue" date="1295039807" username="Pitchoune" version="2.2.0"><![CDATA[Issue]]></phrase>
+			<phrase name="priority" date="1307022121" username="Pitchoune" version="2.2.0"><![CDATA[Priority]]></phrase>
 			<phrase name="projects" date="1181655523" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Projects]]></phrase>
 			<phrase name="search_projects" date="1174406531" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search Projects]]></phrase>
 		</phrasetype>
@@ -11465,113 +11467,120 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="setting_issues_type_title" date="1284669686" username="Pitchoune" version="2.1.2"><![CDATA[Issue Type]]></phrase>
 		</phrasetype>
 		<phrasetype name="vBulletin Settings" fieldname="vbsettings">
-			<phrase name="setting_pt_allowbbcode_desc" date="1176811910" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow users to include BB Code in issues? (Such as [b], [i] etc.)]]></phrase>
-			<phrase name="setting_pt_allowbbcode_title" date="1176811917" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow BB Code in Issues?]]></phrase>
-			<phrase name="setting_pt_allowbbimagecode_desc" date="1176811930" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow users to display images via [IMG] codes in issue?]]></phrase>
-			<phrase name="setting_pt_allowbbimagecode_title" date="1176811936" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow [IMG] BB Code in Issues?]]></phrase>
-			<phrase name="setting_pt_allowhtml_desc" date="1176811943" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow users to include raw HTML code in issues?<br />(<b>Strongly not recommended.</b>)]]></phrase>
-			<phrase name="setting_pt_allowhtml_title" date="1176811966" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow HTML in Issues?]]></phrase>
-			<phrase name="setting_pt_allowsmilies_desc" date="1176811973" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow users to include smilies in issues?]]></phrase>
-			<phrase name="setting_pt_allowsmilies_title" date="1176811982" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Allow Smilies in Issues?]]></phrase>
-			<phrase name="setting_pt_allowstartervote_desc" date="1180017105" username="Ed Sullivan" version="1.0.0 Beta 2"><![CDATA[If you set this to yes, the issue starter will be able to vote on the issue (such as to confirm that they can reproduce the issue).]]></phrase>
-			<phrase name="setting_pt_allowstartervote_title" date="1180017105" username="Ed Sullivan" version="1.0.0 Beta 2"><![CDATA[Allow Issue Starter to Vote on Issue?]]></phrase>
+			<phrase name="setting_issuelist_columns_desc" date="1307020736" username="Pitchoune" version="2.2.0"><![CDATA[Select here the columns you want to display for your users in every issue lists.<br />
+<br />
+<strong>Note:</strong> Select maximum 4 columns or the style could have lots of errors!]]></phrase>
+			<phrase name="setting_issuelist_columns_title" date="1307020736" username="Pitchoune" version="2.2.0"><![CDATA[Columns to show in issue list]]></phrase>
+			<phrase name="setting_pt_allowbbcode_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow users to include BB Code in issues? (Such as [b], [i] etc.)]]></phrase>
+			<phrase name="setting_pt_allowbbcode_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow BB Code in Issues?]]></phrase>
+			<phrase name="setting_pt_allowbbimagecode_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow users to display images via [IMG] codes in issue?]]></phrase>
+			<phrase name="setting_pt_allowbbimagecode_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow [IMG] BB Code in Issues?]]></phrase>
+			<phrase name="setting_pt_allowhtml_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow users to include raw HTML code in issues?<br />(<b>Strongly not recommended.</b>)]]></phrase>
+			<phrase name="setting_pt_allowhtml_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow HTML in Issues?]]></phrase>
+			<phrase name="setting_pt_allowsmilies_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow users to include smilies in issues?]]></phrase>
+			<phrase name="setting_pt_allowsmilies_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow Smilies in Issues?]]></phrase>
+			<phrase name="setting_pt_allowstartervote_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[If you set this to yes, the issue starter will be able to vote on the issue (such as to confirm that they can reproduce the issue).]]></phrase>
+			<phrase name="setting_pt_allowstartervote_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow Issue Starter to Vote on Issue?]]></phrase>
 			<phrase name="setting_pt_attachfile_desc" date="1216216839" username="Ed Sullivan" version="2.0.0 Beta 1" />
 			<phrase name="setting_pt_attachfile_title" date="1216216839" username="Ed Sullivan" version="2.0.0 Beta 1"><![CDATA[Project Tools Attachments as Files?]]></phrase>
-			<phrase name="setting_pt_attachmentextensions_desc" date="1181743164" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[The Project Tools allow different file types to be attached than the forum. Enter the file extensions that users will be allowed to attach to issues here.<br />
+			<phrase name="setting_pt_attachmentextensions_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[The Project Tools allow different file types to be attached than the forum. Enter the file extensions that users will be allowed to attach to issues here.<br />
 <br />
 Put each extension on a separate line.<br />
 <br />
 Making this blank will allow all extensions. To disable attachments in the project tools, set the "Maximum Issue Attachment Size" to 0 or use permissions.]]></phrase>
-			<phrase name="setting_pt_attachmentextensions_title" date="1181743164" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Allowed Issue Attachment Extensions]]></phrase>
-			<phrase name="setting_pt_attachmentsize_desc" date="1181137707" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[The maximum allowed attachment size, <em>in kilobytes</em>.]]></phrase>
-			<phrase name="setting_pt_attachmentsize_title" date="1181137707" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Maximum Issue Attachment Size]]></phrase>
+			<phrase name="setting_pt_attachmentextensions_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allowed Issue Attachment Extensions]]></phrase>
+			<phrase name="setting_pt_attachmentsize_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[The maximum allowed attachment size, <em>in kilobytes</em>.]]></phrase>
+			<phrase name="setting_pt_attachmentsize_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Maximum Issue Attachment Size]]></phrase>
 			<phrase name="setting_pt_attachpath_desc" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1" />
 			<phrase name="setting_pt_attachpath_title" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1"><![CDATA[Project Tools Attachment File Path]]></phrase>
-			<phrase name="setting_pt_groupsearchissuespergroup_desc" date="1181653336" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[When performing a grouped search, how many issues should be displayed in each group on the first page?<br />
+			<phrase name="setting_pt_groupsearchissuespergroup_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[When performing a grouped search, how many issues should be displayed in each group on the first page?<br />
 <br />
 A value of 0 will display all issues in a group on the first page.]]></phrase>
-			<phrase name="setting_pt_groupsearchissuespergroup_title" date="1181653336" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Grouped Search Issues Per Group]]></phrase>
+			<phrase name="setting_pt_groupsearchissuespergroup_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Grouped Search Issues Per Group]]></phrase>
 			<phrase name="setting_pt_hasprojectforums_desc" date="1180529115" username="Ed Sullivan" version="1.0.0 Beta 2"><![CDATA[Set to yes if projects are set to show up as forums.]]></phrase>
 			<phrase name="setting_pt_hasprojectforums_title" date="1180529115" username="Ed Sullivan" version="1.0.0 Beta 2"><![CDATA[Has Project Forums]]></phrase>
-			<phrase name="setting_pt_humancheck_desc" date="1276077978" username="Pitchoune" version="2.1.2"><![CDATA[Do you want to allow human verification by usergroup only? Set 'Yes' in that case, or 'No' if you prefer to use the next option.]]></phrase>
-			<phrase name="setting_pt_humancheck_title" date="1276077978" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification by usergroup]]></phrase>
-			<phrase name="setting_pt_hvcheck_desc" date="1276077936" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification will be required for the selected actions where the user's usergroup permission <strong>Require Human Verification for Configured Actions</strong> is selected.]]></phrase>
-			<phrase name="setting_pt_hvcheck_title" date="1276077936" username="Pitchoune" version="2.1.2"><![CDATA[Human Verification Options]]></phrase>
-			<phrase name="setting_pt_issuesperpage_desc" date="1181652734" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This is the number of issues to display per page in the issue list.<br />
+			<phrase name="setting_pt_humancheck_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Do you want to allow human verification by usergroup only? Set 'Yes' in that case, or 'No' if you prefer to use the next option.]]></phrase>
+			<phrase name="setting_pt_humancheck_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Human Verification by usergroup]]></phrase>
+			<phrase name="setting_pt_hvcheck_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Human Verification will be required for the selected actions where the user's usergroup permission <strong>Require Human Verification for Configured Actions</strong> is selected.]]></phrase>
+			<phrase name="setting_pt_hvcheck_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Human Verification Options]]></phrase>
+			<phrase name="setting_pt_issuesperpage_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[This is the number of issues to display per page in the issue list.<br />
 <br />
 A value of 0 will display all issues on one page.]]></phrase>
-			<phrase name="setting_pt_issuesperpage_title" date="1181652734" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Issues Displayed Per Page]]></phrase>
-			<phrase name="setting_pt_listprojects_activate_desc" date="1295991239" username="Pitchoune" version="2.2.0"><![CDATA[Do you want to activate this system?]]></phrase>
-			<phrase name="setting_pt_listprojects_activate_title" date="1295991239" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Enable]]></phrase>
-			<phrase name="setting_pt_listprojects_locations_desc" date="1295991226" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display this dropdown menu.]]></phrase>
-			<phrase name="setting_pt_listprojects_locations_title" date="1295991226" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Location of the dropdown menu]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issue_desc" date="1295991192" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues pages of Project Tools.]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issue_title" date="1295991192" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Position of Projectjump menu in project issue]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issuelist_desc" date="1295991202" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues list page of Project Tools.<br />
+			<phrase name="setting_pt_issuesperpage_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Issues Displayed Per Page]]></phrase>
+			<phrase name="setting_pt_listprojects_activate_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Do you want to activate this system?]]></phrase>
+			<phrase name="setting_pt_listprojects_activate_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Enable]]></phrase>
+			<phrase name="setting_pt_listprojects_locations_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display this dropdown menu.]]></phrase>
+			<phrase name="setting_pt_listprojects_locations_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Location of the dropdown menu]]></phrase>
+			<phrase name="setting_pt_listprojects_position_issue_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues pages of Project Tools.]]></phrase>
+			<phrase name="setting_pt_listprojects_position_issue_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project issue]]></phrase>
+			<phrase name="setting_pt_listprojects_position_issuelist_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues list page of Project Tools.<br />
 <br />
 <strong>Note:</strong> if you have no issue in some project, this option is not used and will be placed before footer.]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issuelist_title" date="1295991202" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Position of Projectjump menu in project issue list]]></phrase>
-			<phrase name="setting_pt_listprojects_position_projects_desc" date="1295991214" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project overview pages of Project Tools.<br />
+			<phrase name="setting_pt_listprojects_position_issuelist_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project issue list]]></phrase>
+			<phrase name="setting_pt_listprojects_position_projects_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project overview pages of Project Tools.<br />
 <br />
 <strong>Note:</strong> if you have no issue in some project, this option is not used and will be placed before footer.]]></phrase>
-			<phrase name="setting_pt_listprojects_position_projects_title" date="1295991214" username="Pitchoune" version="2.2.0"><![CDATA[Project Jump - Position of Projectjump menu in project overview]]></phrase>
-			<phrase name="setting_pt_notesperpage_desc" date="1181750222" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This is the number of notes that will be displayed per page in an issue. A note can be a comment/petition or information about changes to the issues details.<br />
+			<phrase name="setting_pt_listprojects_position_projects_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project overview]]></phrase>
+			<phrase name="setting_pt_notesperpage_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[This is the number of notes that will be displayed per page in an issue. A note can be a comment/petition or information about changes to the issues details.<br />
 <br />
 A value of 0 will display all notes on one page.]]></phrase>
-			<phrase name="setting_pt_notesperpage_title" date="1181652711" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Notes Displayed Per Page]]></phrase>
-			<phrase name="setting_pt_overview_timelineentries_desc" date="1181652874" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[On the Project Tools' overview page (which lists all projects), a timeline section is displayed. This controls the maximum number of timeline entries to display here.<br />
+			<phrase name="setting_pt_notesperpage_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Notes Displayed Per Page]]></phrase>
+			<phrase name="setting_pt_overview_timelineentries_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[On the Project Tools' overview page (which lists all projects), a timeline section is displayed. This controls the maximum number of timeline entries to display here.<br />
 <br />
 A value of 0 will hide the timeline from this page.]]></phrase>
-			<phrase name="setting_pt_overview_timelineentries_title" date="1181652874" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Overview: Timeline Entries]]></phrase>
-			<phrase name="setting_pt_profile_issue_counters_desc" date="1295984931" username="Pitchoune" version="2.2.0"><![CDATA[Do you want to display in various locations the number of issue each user have made?]]></phrase>
-			<phrase name="setting_pt_profile_issue_counters_title" date="1295984931" username="Pitchoune" version="2.2.0"><![CDATA[Display profile issue counters]]></phrase>
-			<phrase name="setting_pt_project_recentissues_desc" date="1181652895" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[When viewing a project's information, the most recent issues are displayed. This controls the maximum number of issues to display on this page.<br />
+			<phrase name="setting_pt_overview_timelineentries_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Overview: Timeline Entries]]></phrase>
+			<phrase name="setting_pt_profile_issue_counters_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Do you want to display in various locations the number of issue each user have made?]]></phrase>
+			<phrase name="setting_pt_profile_issue_counters_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Display profile issue counters]]></phrase>
+			<phrase name="setting_pt_project_recentissues_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[When viewing a project's information, the most recent issues are displayed. This controls the maximum number of issues to display on this page.<br />
 <br />
 A value of 0 will hide the recent issues from this page.]]></phrase>
-			<phrase name="setting_pt_project_recentissues_title" date="1181652895" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Project View: Recent Issue Count]]></phrase>
-			<phrase name="setting_pt_project_timelineentries_desc" date="1181652861" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[When viewing a project's information, this controls the number of timeline entries that will be displayed.<br />
+			<phrase name="setting_pt_project_recentissues_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Project View: Recent Issue Count]]></phrase>
+			<phrase name="setting_pt_project_timelineentries_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[When viewing a project's information, this controls the number of timeline entries that will be displayed.<br />
 <br />
 A value of 0 will hide the timeline from this page.]]></phrase>
-			<phrase name="setting_pt_project_timelineentries_title" date="1181652861" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Project View: Timeline Entries]]></phrase>
-			<phrase name="setting_pt_statuscolor_desc" date="1295991718" username="Pitchoune" version="2.2.0"><![CDATA[Which color would you like to use in the issue list?]]></phrase>
-			<phrase name="setting_pt_statuscolor_title" date="1295991718" username="Pitchoune" version="2.2.0"><![CDATA[Issue Color]]></phrase>
-			<phrase name="setting_pt_timelineperpage_desc" date="1181652760" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[When viewing the timeline page, this controls the number of entries shown on each page.<br />
+			<phrase name="setting_pt_project_timelineentries_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Project View: Timeline Entries]]></phrase>
+			<phrase name="setting_pt_statuscolor_desc" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Which color would you like to use in the issue list?]]></phrase>
+			<phrase name="setting_pt_statuscolor_title" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Issue Color]]></phrase>
+			<phrase name="setting_pt_timelineperpage_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[When viewing the timeline page, this controls the number of entries shown on each page.<br />
 <br />
 A value of 0 will display all entries in the specified time range on one page.]]></phrase>
-			<phrase name="setting_pt_timelineperpage_title" date="1181652760" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Timeline Entries Per Page]]></phrase>
-			<phrase name="setting_pt_wordwrap_desc" date="1275013912" username="Pitchoune" version="2.1.1"><![CDATA[Project Tools often needs to wrap long unbroken text strings at a higher value than vBulletin does for posts. If you want the PT to automatically insert spaces into long words to make them wrap after a certain number of characters, set the number of characters in the box above.<br /> 
+			<phrase name="setting_pt_timelineperpage_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Timeline Entries Per Page]]></phrase>
+			<phrase name="setting_pt_wordwrap_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools often needs to wrap long unbroken text strings at a higher value than vBulletin does for posts. If you want the PT to automatically insert spaces into long words to make them wrap after a certain number of characters, set the number of characters in the box above.<br /> 
 <br /> 
 To disable word wrap, enter 0.]]></phrase>
-			<phrase name="setting_pt_wordwrap_title" date="1275013912" username="Pitchoune" version="2.1.1"><![CDATA[Number of Characters Before Wrapping Text]]></phrase>
-			<phrase name="setting_ptimporter_createnotice_desc" date="1281506353" username="Pitchoune" version="2.1.2"><![CDATA[If true, a notice will be created showing the title of the original content, the user and the date the content was imported.]]></phrase>
-			<phrase name="setting_ptimporter_createnotice_title" date="1281506353" username="Pitchoune" version="2.1.2"><![CDATA[Import Contents - Create import notice]]></phrase>
-			<phrase name="setting_ptimporter_extendedthreadprefix_desc" date="1281506294" username="Pitchoune" version="2.1.2"><![CDATA[If you enable this option, the thread prefix will be generated using the <strong>pt_importhread_threadprefix_extended</strong> phrase which can contain project title and issue type. This currently requires one additional query per visible redirector.<br />
+			<phrase name="setting_pt_wordwrap_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Number of Characters Before Wrapping Text]]></phrase>
+			<phrase name="setting_ptimporter_createnotice_desc" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[If true, a notice will be created showing the title of the original content, the user and the date the content was imported.]]></phrase>
+			<phrase name="setting_ptimporter_createnotice_title" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[Create import notice]]></phrase>
+			<phrase name="setting_ptimporter_extendedthreadprefix_desc" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[If you enable this option, the thread prefix will be generated using the <strong>pt_importhread_threadprefix_extended</strong> phrase which can contain project title and issue type. This currently requires one additional query per visible redirector.<br />
 <br />
 If disabled, the <strong>pt_importhread_threadprefix</strong> phrase will be used.<br />
 <br />
 <strong>Note:</strong> This setting affect only threads actually.]]></phrase>
-			<phrase name="setting_ptimporter_extendedthreadprefix_title" date="1281506294" username="Pitchoune" version="2.1.2"><![CDATA[Import Contents - Show dynamic content prefix]]></phrase>
-			<phrase name="setting_ptimporter_ignoreattachlimits_desc" date="1281506316" username="Pitchoune" version="2.1.2"><![CDATA[If this is set to true, attachments which do not comply to the limits set in the project tools options will be imported.]]></phrase>
-			<phrase name="setting_ptimporter_ignoreattachlimits_title" date="1281506316" username="Pitchoune" version="2.1.2"><![CDATA[Import Contents - Ignore Attachment Limits]]></phrase>
-			<phrase name="setting_ptimporter_keepthreads_desc" date="1281506236" username="Pitchoune" version="2.1.2"><![CDATA[If you set this to yes, the content will be copied to the project tools, but will not be touched otherwise. If you set this to no, the content will be closed. The content will still be shown in its original location, but forward to the project tools issue.<br />
+			<phrase name="setting_ptimporter_extendedthreadprefix_title" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[Show dynamic content prefix]]></phrase>
+			<phrase name="setting_ptimporter_ignoreattachlimits_desc" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[If this is set to true, attachments which do not comply to the limits set in the project tools options will be imported.]]></phrase>
+			<phrase name="setting_ptimporter_ignoreattachlimits_title" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[Ignore Attachment Limits]]></phrase>
+			<phrase name="setting_ptimporter_keepthreads_desc" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[If you set this to yes, the content will be copied to the project tools, but will not be touched otherwise. If you set this to no, the content will be closed. The content will still be shown in its original location, but forward to the project tools issue.<br />
 <br />
 This setting will only affect contents imported in the future.<br />
 <br />
 <strong>Note:</strong> This setting affect only threads actually.]]></phrase>
-			<phrase name="setting_ptimporter_keepthreads_title" date="1281506236" username="Pitchoune" version="2.1.2"><![CDATA[Import Contents - Keep original content intact]]></phrase>
-			<phrase name="setting_statuscolor_darkstyles_desc" date="1295992015" username="Pitchoune" version="2.2.0"><![CDATA[Insert here all ID of your dark styles.<br />
+			<phrase name="setting_ptimporter_keepthreads_title" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[Keep original content intact]]></phrase>
+			<phrase name="setting_statuscolor_darkstyles_desc" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Insert here all ID of your dark styles.<br />
 <br />
 Separate each style ID with a comma.<br />
 <br />
 <span class="modlasttendays">The style IDs in this list must not be in the list below!</span>]]></phrase>
-			<phrase name="setting_statuscolor_darkstyles_title" date="1295992015" username="Pitchoune" version="2.2.0"><![CDATA[Issue Color - Dark Styles]]></phrase>
-			<phrase name="setting_statuscolor_lightstyles_desc" date="1295992032" username="Pitchoune" version="2.2.0"><![CDATA[Insert here all ID of your light styles.<br />
+			<phrase name="setting_statuscolor_darkstyles_title" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Dark Styles]]></phrase>
+			<phrase name="setting_statuscolor_lightstyles_desc" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Insert here all ID of your light styles.<br />
 <br />
 Separate each style ID with a comma.<br />
 <br />
 <span class="modlasttendays">The style IDs in this list must not be in the list above!</span>]]></phrase>
-			<phrase name="setting_statuscolor_lightstyles_title" date="1295992032" username="Pitchoune" version="2.2.0"><![CDATA[Issue Color - Light Styles]]></phrase>
-			<phrase name="settinggroup_projecttools" date="1169222341" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools Options]]></phrase>
+			<phrase name="setting_statuscolor_lightstyles_title" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Light Styles]]></phrase>
+			<phrase name="settinggroup_projecttools" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools: General Options]]></phrase>
+			<phrase name="settinggroup_projecttools_impex" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools: Import/Export Options]]></phrase>
+			<phrase name="settinggroup_projecttools_projectjump" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools: Project Jump Options]]></phrase>
+			<phrase name="settinggroup_projecttools_statuscolor" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools: Status Color Options]]></phrase>
 		</phrasetype>
 		<phrasetype name="CMS Widget Types" fieldname="widgettypes">
 			<phrase name="widgettype_vbcms_recentptcomments" date="1283371360" username="Pitchoune" version="2.1.2"><![CDATA[Recent PT Comments]]></phrase>
@@ -11583,7 +11592,7 @@ Separate each style ID with a comma.<br />
 		</phrasetype>
 	</phrases>
 	<options>
-		<settinggroup name="projecttools" displayorder="1000">
+		<settinggroup name="projecttools" displayorder="800">
 			<setting varname="pt_allowbbcode" displayorder="10">
 				<datatype>boolean</datatype>
 				<optioncode>yesno</optioncode>
@@ -11659,66 +11668,61 @@ diff</defaultvalue>
 				<datatype>integer</datatype>
 				<defaultvalue>100</defaultvalue>
 			</setting>
-			<setting varname="ptimporter_keepthreads" displayorder="160">
+			<setting varname="pt_humancheck" displayorder="160">
 				<datatype>boolean</datatype>
 				<optioncode>yesno</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="ptimporter_extendedthreadprefix" displayorder="170">
-				<datatype>boolean</datatype>
-				<optioncode>yesno</optioncode>
-				<defaultvalue>0</defaultvalue>
-			</setting>
-			<setting varname="ptimporter_ignoreattachlimits" displayorder="180">
-				<datatype>boolean</datatype>
-				<optioncode>yesno</optioncode>
-				<defaultvalue>0</defaultvalue>
-			</setting>
-			<setting varname="ptimporter_createnotice" displayorder="190">
-				<datatype>boolean</datatype>
-				<optioncode>yesno</optioncode>
-				<defaultvalue>1</defaultvalue>
-			</setting>
-			<setting varname="pt_humancheck" displayorder="200">
-				<datatype>boolean</datatype>
-				<optioncode>yesno</optioncode>
-				<defaultvalue>0</defaultvalue>
-			</setting>
-			<setting varname="pt_hvcheck" displayorder="210">
+			<setting varname="pt_hvcheck" displayorder="170">
 				<datatype>bitfield</datatype>
 				<optioncode>bitfield:misc|pt_hvcheck</optioncode>
 				<defaultvalue>1</defaultvalue>
 			</setting>
-			<setting varname="pt_profile_issue_counters" displayorder="220">
+			<setting varname="pt_profile_issue_counters" displayorder="180">
 				<datatype>boolean</datatype>
 				<optioncode>yesno</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="pt_statuscolor" displayorder="230">
-				<datatype>posint</datatype>
-				<optioncode>radio:piped
-0|none
-1|pt_status_color
-2|pt_severity_color</optioncode>
-				<defaultvalue>0</defaultvalue>
+			<setting varname="issuelist_columns" displayorder="190">
+				<datatype>bitfield</datatype>
+				<optioncode>bitfield:misc|pt_columns</optioncode>
+				<defaultvalue>15</defaultvalue>
 			</setting>
-			<setting varname="statuscolor_darkstyles" displayorder="240">
-				<datatype>free</datatype>
-			</setting>
-			<setting varname="statuscolor_lightstyles" displayorder="250">
-				<datatype>free</datatype>
-			</setting>
-			<setting varname="pt_listprojects_activate" displayorder="260">
+		</settinggroup>
+		<settinggroup name="projecttools_impex" displayorder="810">
+			<setting varname="ptimporter_keepthreads" displayorder="10">
 				<datatype>boolean</datatype>
 				<optioncode>yesno</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="pt_listprojects_locations" displayorder="270">
+			<setting varname="ptimporter_extendedthreadprefix" displayorder="20">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="ptimporter_ignoreattachlimits" displayorder="30">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="ptimporter_createnotice" displayorder="40">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>1</defaultvalue>
+			</setting>
+		</settinggroup>
+		<settinggroup name="projecttools_projectjump" displayorder="830">
+			<setting varname="pt_listprojects_activate" displayorder="10">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="pt_listprojects_locations" displayorder="20">
 				<datatype>bitfield</datatype>
 				<optioncode>bitfield:nocache|pt_dropdownmenu</optioncode>
 				<defaultvalue>7</defaultvalue>
 			</setting>
-			<setting varname="pt_listprojects_position_projects" displayorder="280">
+			<setting varname="pt_listprojects_position_projects" displayorder="30">
 				<datatype>integer</datatype>
 				<optioncode>radio:piped
 0|pt_listprojects_before_timeline
@@ -11726,20 +11730,36 @@ diff</defaultvalue>
 2|pt_listprojects_before_recent_issuelist</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="pt_listprojects_position_issuelist" displayorder="290">
+			<setting varname="pt_listprojects_position_issuelist" displayorder="40">
 				<datatype>number</datatype>
 				<optioncode>radio:piped
 0|pt_listprojects_before_footer
 1|pt_listprojects_before_recent_issuelist</optioncode>
 				<defaultvalue>0</defaultvalue>
 			</setting>
-			<setting varname="pt_listprojects_position_issue" displayorder="300">
+			<setting varname="pt_listprojects_position_issue" displayorder="50">
 				<datatype>number</datatype>
 				<optioncode>radio:piped
 0|pt_listprojects_before_notes
 1|pt_listprojects_before_qr
 2|pt_listprojects_before_footer</optioncode>
 				<defaultvalue>0</defaultvalue>
+			</setting>
+		</settinggroup>
+		<settinggroup name="projecttools_statuscolor" displayorder="820">
+			<setting varname="pt_statuscolor" displayorder="10">
+				<datatype>posint</datatype>
+				<optioncode>radio:piped
+0|none
+1|pt_status_color
+2|pt_severity_color</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="statuscolor_darkstyles" displayorder="20">
+				<datatype>free</datatype>
+			</setting>
+			<setting varname="statuscolor_lightstyles" displayorder="30">
+				<datatype>free</datatype>
 			</setting>
 		</settinggroup>
 		<settinggroup name="version" displayorder="0">
