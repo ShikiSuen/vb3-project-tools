@@ -1790,6 +1790,8 @@ function fetch_issuelist_columns($column)
 	$columns['priority'] = false;
 	$columns['status'] = false;
 	$columns['category'] = false;
+	$columns['applyversion'] = false;
+	$columns['addressversion'] = false;
 
 	// Last post
 	if ($column & 1)
@@ -1819,6 +1821,18 @@ function fetch_issuelist_columns($column)
 	if ($column & 16)
 	{
 		$columns['category'] = true;
+	}
+
+	// Affect version
+	if ($column & 32)
+	{
+		$columns['applyversion'] = true;
+	}
+
+	// Address version
+	if ($column & 64)
+	{
+		$columns['addressversion'] = true;
 	}
 
 	return $columns;

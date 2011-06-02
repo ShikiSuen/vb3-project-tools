@@ -79,6 +79,8 @@
 				<bitfield name="priority">4</bitfield>
 				<bitfield name="status">8</bitfield>
 				<bitfield name="category">16</bitfield>
+				<bitfield name="applyversion">32</bitfield>
+				<bitfield name="addressversion">64</bitfield>
 			</group>
 		</group>
 		<group name="nocache">

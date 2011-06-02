@@ -231,6 +231,8 @@ $oppositesort = $vbulletin->GPC['sortorder'] == 'asc' ? 'desc' : 'asc';
 
 $pageinfo_title = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'title', 'order' => ('title' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_username = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'submitusername', 'order' => ('submitusername' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_applyversion = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'applyversion', 'order' => ('applyversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_addressversion = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'addressversion', 'order' => ('addressversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_category = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'category', 'order' => ('projectcategoryid' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_issuestatus = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'issuestatusid', 'order' => ('issuestatusid' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_priority = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'priority', 'order' => ('priority' == $issue_list->sort_field) ? $oppositesort : 'asc');
@@ -560,6 +562,8 @@ $templater = vB_Template::create('pt_issuelist');
 	$templater->register('navbar', $navbar);
 	$templater->register('pageinfo_title', $pageinfo_title);
 	$templater->register('pageinfo_username', $pageinfo_username);
+	$templater->register('pageinfo_applyversion', $pageinfo_applyversion);
+	$templater->register('pageinfo_addressversion', $pageinfo_addressversion);
 	$templater->register('pageinfo_category', $pageinfo_category);
 	$templater->register('pageinfo_issuestatus', $pageinfo_issuestatus);
 	$templater->register('pageinfo_priority', $pageinfo_priority);

@@ -182,6 +182,16 @@ class vB_Pt_IssueList
 				$this->sort_field_sql = array('issue.projectcategoryid');
 				break;
 
+			case 'applyversion':
+				$this->sort_field = 'applyversion';
+				$this->sort_field_sql = array('issue.appliesversionid');
+				break;
+
+			case 'addressversion':
+				$this->sort_field = 'addressversion';
+				$this->sort_field_sql = array('issue.addressedversionid');
+				break;
+
 			// these are the simple sorts
 			case 'title':
 			case 'submitusername':
