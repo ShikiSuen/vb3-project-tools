@@ -1215,6 +1215,9 @@ function build_issue_bit($issue, $project, $issueperms)
 
 	$issue = prepare_issue($issue);
 
+	// Columns to show
+	$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+
 	// multipage nav
 	$issue['totalnotes'] = $issue['replycount'];
 	$total =& $issue['totalnotes'];
@@ -1289,6 +1292,7 @@ function build_issue_bit($issue, $project, $issueperms)
 	($hook = vBulletinHook::fetch_hook('project_issuebit')) ? eval($hook) : false;
 
 	$templater = vB_Template::create($template_name);
+		$templater->register('columns', $columns);
 		$templater->register('issue', $issue);
 	return $templater->render();
 }
