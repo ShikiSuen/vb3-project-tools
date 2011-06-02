@@ -281,8 +281,6 @@ class vB_Pt_IssueList
 			$status_join = '';
 		}
 
-		$version_join = empty($this->registry->pt_versions);
-
 		if (is_array($this->sort_field_sql))
 		{
 			$this->sort_field_sql = implode(" {$this->sort_order}, ", $this->sort_field_sql);
@@ -302,7 +300,7 @@ class vB_Pt_IssueList
 				SELECT
 					" . ($this->calc_total_rows ? "SQL_CALC_FOUND_ROWS" : '') . "
 					issue.*, issuedeletionlog.reason AS deletionreason
-					" . ($version_join ? ", appliesversion.versionname AS appliesversion, addressedversion.versionname AS addressedversion" : '') . "
+					" . ($this->registry->pt_versions ? ", appliesversion.versionname AS appliesversion, addressedversion.versionname AS addressedversion" : '') . "
 					" . ($this->registry->userinfo['userid'] ? ", issuesubscribe.subscribetype, IF(issueassign.issueid IS NULL, 0, 1) AS isassigned" : '') . "
 					" . ($marking ? ", issueread.readtime AS issueread, projectread.readtime AS projectread" : '') . "
 					" . ($private_lastpost_fields ? ", $private_lastpost_fields" : '') . "
@@ -314,7 +312,7 @@ class vB_Pt_IssueList
 						(issuedeletionlog.primaryid = issue.issueid AND issuedeletionlog.type = 'issue')
 					LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS projectversion ON
 						(projectversion.projectversionid = issue.appliesversionid)
-				" . ($version_join ? "
+				" . ($this->registry->pt_versions ? "
 					LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS appliesversion ON
 						(appliesversion.projectversionid = issue.appliesversionid)
 					LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS addressedversion ON
