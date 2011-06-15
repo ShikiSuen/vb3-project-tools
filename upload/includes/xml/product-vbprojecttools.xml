@@ -8765,10 +8765,12 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		<plugin active="1" executionorder="5">
 			<title>Admin Global: Fix for afterforumids help entry</title>
 			<hookname>admin_global</hookname>
-			<phpcode><![CDATA[if ($_REQUEST['do'] == 'answer' AND $_REQUEST['page'] == 'project' AND $_REQUEST['option'] == 'afterforumids[]')
+			<phpcode><![CDATA[require_once(DIR . '/includes/adminfunctions_projecttools.php');
+
+if ($_REQUEST['do'] == 'answer' AND $_REQUEST['page'] == 'project' AND $_REQUEST['option'] == 'afterforumids[]')
 {
 	// fetch just the script out of the path, and see if it's help.php
-	$sp = preg_replace('#^([^/]*/)*([^/?]+)(\?.*)?$#siU', '$2', $vbulletin->input->fetch_scriptpath());
+	$sp = preg_replace('#^([^/]*/)*([^/?]+)(\?.*)?$#siU', '$2', fetch_scriptpath());
 	if (substr($sp, 0, 5) == 'help.')
 	{
 		$_REQUEST['option'] = 'afterforumids';
