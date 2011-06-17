@@ -97,8 +97,6 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 
 		static $projectperms = array();
 
-		static $projectperms = array();
-
 		if (!isset($projectperms["$issue[projectid]"]))
 		{
 			$projectperms["$issue[projectid]"] = fetch_project_permissions($vbulletin->userinfo, $issue['projectid']);
