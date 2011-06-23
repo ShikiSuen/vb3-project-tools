@@ -2268,7 +2268,7 @@ $rebuild['phrases'] = true;]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1307034433" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1308853257" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3130,6 +3130,12 @@ a.firstunread, a.firstunread:hover
 }
 
 /* Milestones */
+.pt_milestone {
+	margin-top: 5px;
+	display: inline-block;
+	width: 100%;
+}
+
 .pt_milestone .blockrow .milestone_date {
 	float: {vb:stylevar right};
 }
@@ -8142,7 +8148,7 @@ init_project_readmarker_system();
 		{vb:raw type.issuecountactive}&nbsp;/&nbsp;{vb:raw type.issuecount}
 	</span>
 </li>]]></template>
-		<template name="pt_project_milestones" templatetype="template" date="1295104706" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project_milestones" templatetype="template" date="1308853340" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8179,7 +8185,7 @@ init_project_readmarker_system();
 	{vb:raw no_target_milestones}
 </div>
 
-<br />
+<br /><br />
 </vb:if>
 
 <vb:if condition="$completed_milestones">
@@ -11409,8 +11415,10 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="default_version_number" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Default Version Number]]></phrase>
 			<phrase name="deleted_issue_type" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[Deleted Issue Type]]></phrase>
 			<phrase name="denote_as_next_version" date="1176208980" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Denote as next version?<dfn>If selected, any issues marked as being addressed in the "next version" will become associated with this version.</dfn>]]></phrase>
-			<phrase name="display_after_forums" date="1180531450" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Display After Forums
-<dfn>This project's information will appear in the forum list after the selected forums.</dfn>]]></phrase>
+			<phrase name="display_after_forums" date="1308853574" username="Pitchoune" version="2.2.0"><![CDATA[Display After Forums
+<dfn>This project's information will appear in the forum list after the selected forums.
+<br /><br />
+<span class="modlasttendays">To see the project on a subforum, you need to select the parent forum, not the latest forum where you want to display the project. If the parent forum is not visible for some usergroups, the project will not be visible.</span></dfn>]]></phrase>
 			<phrase name="do_not_change_meta" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[(do not change)]]></phrase>
 			<phrase name="do_not_use_meta" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[(do not use)]]></phrase>
 			<phrase name="double_click_permission_quick_set" date="1181838059" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[<em>Tip</em>: You can double-click a permission name to quickly grant or revoke that permission for all issue types!]]></phrase>
