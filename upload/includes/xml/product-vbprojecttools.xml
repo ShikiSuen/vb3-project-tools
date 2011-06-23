@@ -1486,25 +1486,34 @@ $db_alter = new vB_Database_Alter_MySQL($db);
 \*================================*/
 
 // Move milestones into phrase system
-$milestone_data = $db->query_read("
-	SELECT milestoneid, projectid, title, description
-	FROM " . TABLE_PREFIX . "pt_milestone
-	ORDER BY milestoneid ASC
-");
+$db->hide_errors();
+$datamilestone = $db->query_read("SELECT title FROM " . TABLE_PREFIX . "pt_milestone")
+$db->show_errors();
 
-while ($milestone = $db->fetch_array($milestone_data))
+if ($datamilestone)
 {
-	$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
-	$milestonedata->set_existing($milestone);
-	$milestonedata->set_info('title', $milstone['title']);
-	$milestonedata->set_info('description', $milestone['description']);
-	$milestonedata->save();
+	$milestone_data = $db->query_read("
+		SELECT milestoneid, projectid, title, description
+		FROM " . TABLE_PREFIX . "pt_milestone
+		ORDER BY milestoneid ASC
+	");
+
+	while ($milestone = $db->fetch_array($milestone_data))
+	{
+		$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
+		$milestonedata->set_existing($milestone);
+		$milestonedata->set_info('title', $milestone['title']);
+		$milestonedata->set_info('description', $milestone['description']);
+		$milestonedata->save();
+	}
+
+	// Delete useless table fields in pt_milestone table
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title_clean");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP description");
 }
 
-// Delete useless table fields in pt_milestone table
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title");
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title_clean");
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP description");
+
 
 /*================================*\
 || ############################## ||
@@ -1513,33 +1522,40 @@ $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP description"
 \*================================*/
 
 // Move categories into phrase system
-$category_data = $db->query_read("
-	SELECT projectcategoryid, title
-	FROM " . TABLE_PREFIX . "pt_projectcategory
-	ORDER BY projectcategoryid ASC
-");
+$db->hide_errors();
+$datacategory = $db->query_read("SELECT title FROM " . TABLE_PREFIX . "pt_projectcategory")
+$db->show_errors();
 
-while ($category = $db->fetch_array($category_data))
+if ($datacategory)
 {
-	$vbulletin->db->query_write("
-		REPLACE INTO " . TABLE_PREFIX . "phrase
-			(languageid, fieldname, varname, text, product, username, dateline, version)
-		VALUES
-			(
-				0,
-				'projecttools',
-				'category" . intval($category['projectcategoryid']) . "',
-				'" . $vbulletin->db->escape_string($category['title']) . "',
-				'vbprojecttools',
-				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
-				" . TIMENOW . ",
-				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
-			)
+	$category_data = $db->query_read("
+		SELECT projectcategoryid, title
+		FROM " . TABLE_PREFIX . "pt_projectcategory
+		ORDER BY projectcategoryid ASC
 	");
-}
 
-// Delete useless table fields in pt_projectcategory table
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory DROP title");
+	while ($category = $db->fetch_array($category_data))
+	{
+		$vbulletin->db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'category" . intval($category['projectcategoryid']) . "',
+					'" . $vbulletin->db->escape_string($category['title']) . "',
+					'vbprojecttools',
+					'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+	}
+
+	// Delete useless table fields in pt_projectcategory table
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory DROP title");
+}
 
 build_project_category_cache();
 
@@ -1755,7 +1771,7 @@ build_attachment_permissions();
 // Issue #163 fix
 $db->query_write("
 	ALTER TABLE " . TABLE_PREFIX . "pt_user
-	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT 0
+	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT '0'
 ");
 
 // Ensure phrases will be rebuilt
