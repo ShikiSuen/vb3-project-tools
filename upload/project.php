@@ -440,6 +440,9 @@ $project['description'] = nl2br($project['description']);
 
 ($hook = vBulletinHook::fetch_hook('project_project_start')) ? eval($hook) : false;
 
+// Definition to display selected columns
+$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+
 // milestones
 require_once(DIR . '/includes/functions_pt_milestone.php');
 
@@ -741,6 +744,7 @@ $navbar = render_navbar_template($navbits);
 $templater = vB_Template::create('pt_project');
 	$templater->register_page_templates();
 	$templater->register('assignable_users', $assignable_users);
+	$templater->register('columns', $columns);
 	$templater->register('issuebits', $issuebits);
 	$templater->register('navbar', $navbar);
 	$templater->register('petitionbits', $petitionbits);
