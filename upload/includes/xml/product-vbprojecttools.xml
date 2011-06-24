@@ -2348,7 +2348,7 @@ build_project_cache();]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1308853257" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1308945687" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3561,7 +3561,7 @@ a.firstunread {
 	font-size: {vb:stylevar big_fontSize};
 }
 
-.boldtext {
+.boldtext, strong {
 	font-weight: bold;
 }
 
