@@ -221,8 +221,28 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	}
 
 	/**
+	* Validates that the specified priority is valid for this issue.
+	* Project come from the DM's settings.
+	*
+	* @param	string	Priority ID
+	*
+	* @param	bool	Whether the priority is valid
+	*/
+	function validate_priority($priority)
+	{
+		$priority_result = $this->registry->db->query_first("
+			SELECT projectpriorityid
+			FROM " . TABLE_PREFIX . "pt_priority
+			WHERE projectpriorityid = " . intval($priority) . "
+				AND projectid = " . intval($this->fetch_field('projectid')) . "
+		");
+
+		return ($priority_result ? true : false);
+	}
+
+	/**
 	* Validates that the specified issue status is valid for this issue.
-	* Issue type and project come from the DM's settings.
+	* Issue type come from the DM's settings.
 	*
 	* @param	integer	Issue status ID
 	*
@@ -242,7 +262,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 	/**
 	* Validates that the specified milestone is valid for this issue.
-	* Issue type and project come from the DM's settings.
+	* Project come from the DM's settings.
 	*
 	* @param	integer	Milestone ID
 	*
@@ -299,6 +319,17 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				{
 					$this->do_set('submitusername', $userinfo['username']);
 				}
+			}
+		}
+
+		// confirm that the priority is valid
+		if (isset($this->pt_issue['priority']))
+		{
+			if (!$this->validate_priority($this->pt_issue['priority']))
+			{
+				global $vbphrase;
+				$this->error('invalidid', $vbphrase['priority'], $this->registry->options['contactuslink']);
+				return false;
 			}
 		}
 
