@@ -185,10 +185,10 @@ if ($_POST['do'] == 'quickeditissue')
 		true,
 		true,
 		false,
-		'qenr',
+		'qe',
 		$vbulletin->GPC['editorid'],
-		'', // attachments - handled differently in PT
-		'content', // default value
+		array(), // attachments - handled differently in PT
+		'projecttools', // default value
 		'vBProjectTools_Issue', // Content type - needed for auto-save
 		$issueinfo['issueid'] // ID of the content
 	);
@@ -200,7 +200,8 @@ if ($_POST['do'] == 'quickeditissue')
 		'reason'       => '',
 		'parsetype'    => 'pt',
 		'parsesmilies' => true,
-		'mode'         => $show['is_wysiwyg_editor']
+		'mode'         => $show['is_wysiwyg_editor'],
+		'content'      => 'projecttools'
 	));
 	$xml->add_tag('ckeconfig', vB_Ckeditor::getInstance($editorid)->getConfig());
 	$xml->close_group();
