@@ -236,7 +236,7 @@ if ($_POST['do'] == 'quickedit')
 		true,
 		true,
 		false,
-		'qenr',
+		'qe',
 		$vbulletin->GPC['editorid'],
 		'', // attachments - handled differently in PT
 		'content', // default value

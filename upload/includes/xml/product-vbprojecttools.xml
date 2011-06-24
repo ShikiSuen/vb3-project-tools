@@ -7946,7 +7946,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1308942592" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1308943541" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7978,7 +7978,7 @@ init_project_readmarker_system();
 	vbphrase['friday']    = '{vb:rawphrase friday}';
 	vbphrase['saturday']  = '{vb:rawphrase saturday}';
 
-	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority"));
+	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority", "projectcategoryid", "appliesversionid", "addressedversionid"));
 	//-->
 	</script>
 
@@ -8148,10 +8148,34 @@ init_project_readmarker_system();
 			<div class="ptissuelist_title">
 				{vb:rawphrase title} / {vb:rawphrase submitted_by}
 			</div>
-			<div class="ptissuelist_lastpost">{vb:rawphrase last_post}</div>
-			<div class="ptissuelist_replies">{vb:rawphrase replies}</div>
-			<div class="ptissuelist_priority">{vb:rawphrase priority}</div>
-			<div class="ptissuelist_status">{vb:rawphrase status}</div>
+
+			<vb:if condition="$columns['lastpost']">
+				<div class="ptissuelist_lastpost">{vb:rawphrase last_post}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['replies']">
+				<div class="ptissuelist_replies">{vb:rawphrase replies}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['priority']">
+				<div class="ptissuelist_priority">{vb:rawphrase priority}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['status']">
+				<div class="ptissuelist_status">{vb:rawphrase status}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['category']">
+				<div class="ptissuelist_category">{vb:rawphrase category}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['addressversion']">
+				<div class="ptissuelist_addressversion">{vb:rawphrase addressversion}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['applyversion']">
+				<div class="ptissuelist_applyversion">{vb:rawphrase applyversion}</div>
+			</vb:if>
 		</div>
 		<ol class="issuecontent" id="issuecontent">
 			{vb:raw issuebits}
