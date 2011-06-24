@@ -1,4 +1,4 @@
-	<?php if (!defined('VB_ENTRY')) die('Access denied.');
+<?php if (!defined('VB_ENTRY')) die('Access denied.');
 
 /*======================================================================*\
 || #################################################################### ||
@@ -95,8 +95,6 @@ class vBProjectTools_Search_Result_Issue extends vB_Search_Result
 
 		static $projectperms = array();
 
-		$issue = $this->get_issue($results['issueid']);
-
 		if (!isset($projectperms["$issue[projectid]"]))
 		{
 			$projectperms["$issue[projectid]"] = fetch_project_permissions($vbulletin->userinfo, $issue['projectid']);
@@ -117,19 +115,6 @@ class vBProjectTools_Search_Result_Issue extends vB_Search_Result
 			$template->register('issue', $issue);
 			$template->register('project', $project);
 		return $template->render();
-	}
-
-	private function get_issue($id)
-	{
-		global $vbulletin;
-
-		$issue = $vbulletin->db->query_first("
-			SELECT *
-			FROM " . TABLE_PREFIX . "pt_issue
-			WHERE issueid = $id
-		");
-
-		return $issue;
 	}
 
 	private $issue;
