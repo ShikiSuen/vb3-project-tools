@@ -7,7 +7,7 @@
 	<url />
 	<versioncheckurl />
 	<dependencies>
-		<dependency dependencytype="vbulletin" minversion="4.1.1" maxversion="" />
+		<dependency dependencytype="vbulletin" minversion="4.1.4" maxversion="" />
 	</dependencies>
 	<codes>
 		<code version="*">
@@ -4322,7 +4322,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1308937932" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1308942108" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4346,18 +4346,17 @@ legend {
 	</vb:if>
 
 	<vb:if condition="$vbulletin->options['quickedit'] OR $show['quick_reply']">
-		<script type="text/javascript" src="clientscript/vbulletin_textedit.js?v={vb:raw vboptions.simpleversion}"></script>
 		<script type="text/javascript" src="clientscript/vbulletin_pt_issuenote_loader.js?v={vb:raw vboptions.simpleversion}"></script>
-	</vb:if>
 
-	<vb:if condition="$show['quick_reply']">
-		<script type="text/javascript" src="clientscript/vbulletin_pt_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
-	</vb:if>
+		<vb:if condition="$show['quick_reply']">
+			<script type="text/javascript" src="clientscript/vbulletin_pt_quick_reply.js?v={vb:raw vboptions.simpleversion}"></script>
+		</vb:if>
 
-	<vb:if condition="$vbulletin->options['quickedit']">
-		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_generic.js?v={vb:raw vboptions.simpleversion}"></script>
-		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issue.js?v={vb:raw vboptions.simpleversion}"></script>
-		<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issuenote.js?v={vb:raw vboptions.simpleversion}"></script>
+		<vb:if condition="$vbulletin->options['quickedit']">
+			<script type="text/javascript" src="clientscript/vbulletin_quick_edit_generic.js?v={vb:raw vboptions.simpleversion}"></script>
+			<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issue.js?v={vb:raw vboptions.simpleversion}"></script>
+			<script type="text/javascript" src="clientscript/vbulletin_quick_edit_issuenote.js?v={vb:raw vboptions.simpleversion}"></script>
+		</vb:if>
 	</vb:if>
 
 	<script type="text/javascript" src="clientscript/vbulletin_pt_petition.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -7947,7 +7946,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1294734568" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1308942592" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8154,8 +8153,9 @@ init_project_readmarker_system();
 			<div class="ptissuelist_priority">{vb:rawphrase priority}</div>
 			<div class="ptissuelist_status">{vb:rawphrase status}</div>
 		</div>
-
-		{vb:raw issuebits}
+		<ol class="issuecontent" id="issuecontent">
+			{vb:raw issuebits}
+		</ol>
 	</div>
 </div>
 </vb:if>
