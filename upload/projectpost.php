@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright �2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ï¿½2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -351,6 +351,7 @@ if ($_POST['do'] == 'postreply')
 		'ajax_lastissuenote' => TYPE_INT,
 		'loggedinuser'       => TYPE_INT,
 		'specifiedissuenote' => TYPE_BOOL,
+		'advanced'			 => TYPE_BOOL
 	));
 
 	if ($vbulletin->GPC['loggedinuser'] != 0 AND $vbulletin->userinfo['userid'] == 0)
@@ -363,8 +364,9 @@ if ($_POST['do'] == 'postreply')
 
 	if ($vbulletin->GPC['wysiwyg'])
 	{
-		require_once(DIR . '/includes/functions_wysiwyg.php');
-		$vbulletin->GPC['message'] = convert_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
+		require_once(DIR . '/includes/class_wysiwygparser.php');
+		$html_parser = new vB_WysiwygHtmlParser($vbulletin);
+		$vbulletin->GPC['message'] = $html_parser->parse_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
 	}
 
 	if ($vbulletin->GPC['ajax'])
@@ -442,7 +444,7 @@ if ($_POST['do'] == 'postreply')
 			eval(print_standard_redirect('pt_issuenote_undeleted'));
 		}
 
-		if (!$issuenote['isfirstnote'])
+		if (!$issuenote['isfirstnote'] AND !$vbulletin->GPC['advanced'])
 		{
 			if (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditprivate']))
 			{
@@ -530,6 +532,10 @@ if ($_POST['do'] == 'postreply')
 		// Nothing actually - need to be developed
 		$preview = prepare_pt_note_preview($vbulletin->GPC, $issuenotedata, $issuenote, $issue);
 		define('IS_PREVIEW', true);
+		$_REQUEST['do'] = 'editreply';
+	}
+	else if ($vbulletin->GPC['advanced'])
+	{
 		$_REQUEST['do'] = 'editreply';
 	}
 	else
@@ -1222,6 +1228,7 @@ if ($_POST['do'] == 'postissue')
 		'preview' => TYPE_NOHTML,
 		'humanverify' => TYPE_ARRAY,
 		'ajax' => TYPE_BOOL,
+		'advanced' => TYPE_BOOL
 	));
 
 	if ($vbulletin->GPC['wysiwyg'])
@@ -1304,121 +1311,124 @@ if ($_POST['do'] == 'postissue')
 		}
 	}
 
-	$issuedata->set('title', $vbulletin->GPC['title']);
-	$issuedata->set('summary', $vbulletin->GPC['summary']);
-	$issuedata->set('issuestatusid', $vbulletin->GPC['issuestatusid']);
-	$issuedata->set('priority', $vbulletin->GPC['priority']);
-	$issuedata->set('projectcategoryid', $vbulletin->GPC['projectcategoryid']);
-	$issuedata->set('appliesversionid', $vbulletin->GPC['appliesversionid']);
-
-	if ($posting_perms['status_edit'])
+	if (!$vbulletin->GPC['advanced'])
 	{
-		switch ($vbulletin->GPC['addressedversionid'])
+		$issuedata->set('title', $vbulletin->GPC['title']);
+		$issuedata->set('summary', $vbulletin->GPC['summary']);
+		$issuedata->set('issuestatusid', $vbulletin->GPC['issuestatusid']);
+		$issuedata->set('priority', $vbulletin->GPC['priority']);
+		$issuedata->set('projectcategoryid', $vbulletin->GPC['projectcategoryid']);
+		$issuedata->set('appliesversionid', $vbulletin->GPC['appliesversionid']);
+
+		if ($posting_perms['status_edit'])
 		{
-			case -1:
-				$issuedata->set('isaddressed', 1);
-				$issuedata->set('addressedversionid', 0);
-				break;
-
-			case 0:
-				$issuedata->set('isaddressed', 0);
-				$issuedata->set('addressedversionid', 0);
-				break;
-
-			default:
-				$issuedata->set('isaddressed', 1);
-				$issuedata->set('addressedversionid', $vbulletin->GPC['addressedversionid']);
-				break;
-		}
-	}
-
-	if ($posting_perms['milestone_edit'])
-	{
-		$issuedata->set('milestoneid', $vbulletin->GPC['milestoneid']);
-	}
-
-	if ($posting_perms['issue_close'] AND $vbulletin->GPC_exists['original_state'])
-	{
-		if (!$issue['issueid']
-			OR ($vbulletin->GPC['close_issue'] AND $vbulletin->GPC['original_state'] == 'open')
-			OR (!$vbulletin->GPC['close_issue'] AND $vbulletin->GPC['original_state'] == 'closed')
-		)
-		{
-			// new issue or we tried to change the state
-			$issuedata->set('state', $vbulletin->GPC['close_issue'] ? 'closed' : 'open');
-		}
-	}
-
-	$existing_tags = array();
-	$existing_assignments = array();
-
-	if (!$issue['issueid'])
-	{
-		$issuedata->set('projectid', $project['projectid']);
-		$issuedata->set('issuetypeid', $vbulletin->GPC['issuetypeid']);
-
-		$issuedata->set('submituserid', $vbulletin->userinfo['userid']);
-		$issuedata->set('submitusername', $vbulletin->userinfo['username']);
-		$issuedata->set('visible', ($posting_perms['private_edit'] AND $vbulletin->GPC['private']) ? 'private' : 'visible');
-		$issuedata->set('lastpost', TIMENOW);
-	}
-	else
-	{
-		if ($posting_perms['private_edit'])
-		{
-			if ($vbulletin->GPC['private'])
+			switch ($vbulletin->GPC['addressedversionid'])
 			{
-				// make it private
-				$issuedata->set('visible', 'private');
-			}
-			else
-			{
-				// make it visible if it was private, else leave it as is
-				$issuedata->set('visible', $issue['visible'] == 'private' ? 'visible': $issue['visible']);
+				case -1:
+					$issuedata->set('isaddressed', 1);
+					$issuedata->set('addressedversionid', 0);
+					break;
+
+				case 0:
+					$issuedata->set('isaddressed', 0);
+					$issuedata->set('addressedversionid', 0);
+					break;
+
+				default:
+					$issuedata->set('isaddressed', 1);
+					$issuedata->set('addressedversionid', $vbulletin->GPC['addressedversionid']);
+					break;
 			}
 		}
 
-		// tags
-		$tag_data = $db->query_read("
-			SELECT tag.tagtext
-			FROM " . TABLE_PREFIX . "pt_issuetag AS issuetag
-			INNER JOIN " . TABLE_PREFIX . "pt_tag AS tag ON (issuetag.tagid = tag.tagid)
-			WHERE issuetag.issueid = $issue[issueid]
-			ORDER BY tag.tagtext
-		");
-		while ($tag = $db->fetch_array($tag_data))
+		if ($posting_perms['milestone_edit'])
 		{
-			$existing_tags[] = $tag['tagtext'];
+			$issuedata->set('milestoneid', $vbulletin->GPC['milestoneid']);
 		}
 
-		// assignments
-		$assignment_data = $db->query_read("
-			SELECT user.userid
-			FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
-			INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid)
-			WHERE issueassign.issueid = $issue[issueid]
-			ORDER BY user.username
-		");
-		while ($assignment = $db->fetch_array($assignment_data))
+		if ($posting_perms['issue_close'] AND $vbulletin->GPC_exists['original_state'])
 		{
-			$existing_assignments["$assignment[userid]"] = $assignment['userid'];
-		}
-	}
-
-	// prepare tag changes
-	if ($posting_perms['tags_edit'])
-	{
-		$issuedata->set_info('allow_tag_creation', $posting_perms['can_custom_tag']);
-		prepare_tag_changes($vbulletin->GPC, $existing_tags, $tag_add, $tag_remove);
-
-		foreach ($tag_add AS $tag)
-		{
-			$issuedata->add_tag($tag);
+			if (!$issue['issueid']
+				OR ($vbulletin->GPC['close_issue'] AND $vbulletin->GPC['original_state'] == 'open')
+				OR (!$vbulletin->GPC['close_issue'] AND $vbulletin->GPC['original_state'] == 'closed')
+			)
+			{
+				// new issue or we tried to change the state
+				$issuedata->set('state', $vbulletin->GPC['close_issue'] ? 'closed' : 'open');
+			}
 		}
 
-		foreach ($tag_remove AS $tag)
+		$existing_tags = array();
+		$existing_assignments = array();
+
+		if (!$issue['issueid'])
 		{
-			$issuedata->remove_tag($tag);
+			$issuedata->set('projectid', $project['projectid']);
+			$issuedata->set('issuetypeid', $vbulletin->GPC['issuetypeid']);
+
+			$issuedata->set('submituserid', $vbulletin->userinfo['userid']);
+			$issuedata->set('submitusername', $vbulletin->userinfo['username']);
+			$issuedata->set('visible', ($posting_perms['private_edit'] AND $vbulletin->GPC['private']) ? 'private' : 'visible');
+			$issuedata->set('lastpost', TIMENOW);
+		}
+		else
+		{
+			if ($posting_perms['private_edit'])
+			{
+				if ($vbulletin->GPC['private'])
+				{
+					// make it private
+					$issuedata->set('visible', 'private');
+				}
+				else
+				{
+					// make it visible if it was private, else leave it as is
+					$issuedata->set('visible', $issue['visible'] == 'private' ? 'visible': $issue['visible']);
+				}
+			}
+
+			// tags
+			$tag_data = $db->query_read("
+				SELECT tag.tagtext
+				FROM " . TABLE_PREFIX . "pt_issuetag AS issuetag
+				INNER JOIN " . TABLE_PREFIX . "pt_tag AS tag ON (issuetag.tagid = tag.tagid)
+				WHERE issuetag.issueid = $issue[issueid]
+				ORDER BY tag.tagtext
+			");
+			while ($tag = $db->fetch_array($tag_data))
+			{
+				$existing_tags[] = $tag['tagtext'];
+			}
+
+			// assignments
+			$assignment_data = $db->query_read("
+				SELECT user.userid
+				FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
+				INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid)
+				WHERE issueassign.issueid = $issue[issueid]
+				ORDER BY user.username
+			");
+			while ($assignment = $db->fetch_array($assignment_data))
+			{
+				$existing_assignments["$assignment[userid]"] = $assignment['userid'];
+			}
+		}
+
+		// prepare tag changes
+		if ($posting_perms['tags_edit'])
+		{
+			$issuedata->set_info('allow_tag_creation', $posting_perms['can_custom_tag']);
+			prepare_tag_changes($vbulletin->GPC, $existing_tags, $tag_add, $tag_remove);
+
+			foreach ($tag_add AS $tag)
+			{
+				$issuedata->add_tag($tag);
+			}
+
+			foreach ($tag_remove AS $tag)
+			{
+				$issuedata->remove_tag($tag);
+			}
 		}
 	}
 
@@ -1464,7 +1474,7 @@ if ($_POST['do'] == 'postissue')
 
 	$errors = array_merge($issuedata->errors, $issuenote->errors);
 
-	if ($errors OR $vbulletin->GPC['preview'])
+	if ($errors OR $vbulletin->GPC['preview'] OR $vbulletin->GPC['advanced'])
 	{
 		if ($errors)
 		{
@@ -1487,7 +1497,7 @@ if ($_POST['do'] == 'postissue')
 				$preview = construct_errors($errors);
 			}
 		}
-		else
+		else if ($vbulletin->GPC['preview'])
 		{
 			require_once(DIR . '/includes/class_bbcode.php');
 			$bbcode = new vB_BbCodeParser($vbulletin, fetch_tag_list());
