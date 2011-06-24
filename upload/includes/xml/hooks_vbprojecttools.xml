@@ -30,6 +30,14 @@
 		<hook>project_issuelist_complete</hook>
 	</hooktype>
 
+	<hooktype type="milestone">
+		<hook>milestone_start</hook>
+	</hooktype>
+
+	<hooktype type="milestoneissuelist">
+		<hook>milestoneissuelist_start</hook>
+	</hooktype>
+
 	<hooktype type="project">
 		<hook>project_start</hook>
 		<hook>project_overview_start</hook>
@@ -67,6 +75,10 @@
 	<hooktype type="projectexternal">
 		<hook>projectexternal_start</hook>
 		<hook>projectexternal_complete</hook>
+	</hooktype>
+
+	<hooktype type="projectmilestone">
+		<hook>projectmilestone_start</hook>
 	</hooktype>
 
 	<hooktype type="projectpost">
@@ -208,5 +220,3 @@
 	</hooktype>
 
 </hooks>
-
-<!-- CVS: hooks_vbprojecttools.xml - $Revision$ -->
