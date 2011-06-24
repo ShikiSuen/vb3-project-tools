@@ -26,7 +26,7 @@ function display_issuenote(issuenoteid)
 	}
 	else
 	{
-		openWindow('issue.php?' + (SESSIONURL ? 's=' + SESSIONURL : '') + 'do=gotonote&issuenoteid=' + issuenoteid);
+		openWindow('issue.php?' + SESSIONURL + 'do=gotonote&issuenoteid=' + issuenoteid);
 	}
 	return false;
 };
@@ -67,7 +67,7 @@ vB_AJAX_IssuenoteLoader.prototype.init = function()
 			failure: this.handle_ajax_error,
 			timeout: vB_Default_Timeout,
 			scope: this
-		}, SESSIONURL + "securitytoken=" + SECURITYTOKEN + "&ajax=1&issuenoteid=" + this.issuenoteid : ""));
+		}, SESSIONURL + "securitytoken=" + SECURITYTOKEN + "&ajax=1&issuenoteid=" + this.issuenoteid);
 	}
 };
 
@@ -103,7 +103,7 @@ vB_AJAX_IssuenoteLoader.prototype.display = function(ajax)
 		}
 		else
 		{	// parsing of XML failed, probably IE
-			openWindow('issue.php?' + (SESSIONURL ? 's=' + SESSIONURL + '&' : '') + 'do=gotonote&issuenoteid=' + this.issuenoteid);
+			openWindow('issue.php?' + SESSIONURL + 'do=gotonote&issuenoteid=' + this.issuenoteid);
 		}
 	}
 };

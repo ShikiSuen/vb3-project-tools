@@ -20,11 +20,7 @@ var qr_pt_ajax = null;
 var qr_imgsrc = '';
 var clickedelm = false;
 var qr_require_click = false;
-
-if (SIMPLEVERSION >= '414')
-{
-	var QR_EditorID = 'vB_Editor_QR';
-}
+var QR_EditorID = '';
 
 /**
 * Initializes the quick reply system
@@ -36,6 +32,11 @@ if (typeof(vB_XHTML_Ready) != "undefined")
 
 function qr_pt_init()
 {
+	if (SIMPLEVERSION >= '414')
+	{
+		QR_EditorID = 'vB_Editor_QR';
+	}
+
 	if (typeof(vBulletin.attachinfo) == "undefined")
 	{
 		vBulletin.attachinfo = {
@@ -148,6 +149,7 @@ function qr_pt_handle_activate(ajax)
 	qr_pt_reset();
 	qr_pt_disable_controls();
 	qr_pt_hide_errors();
+
 
 	// reset the global id, since we are sill currently editing this issuenoteid
 	//qr_issuenoteid = issuenoteid;
