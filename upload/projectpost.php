@@ -1225,8 +1225,9 @@ if ($_POST['do'] == 'postissue')
 
 	if ($vbulletin->GPC['wysiwyg'])
 	{
-		require_once(DIR . '/includes/functions_wysiwyg.php');
-		$vbulletin->GPC['message'] = convert_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
+		require_once(DIR . '/includes/class_wysiwygparser.php');
+		$html_parser = new vB_WysiwygHtmlParser($vbulletin);
+		$vbulletin->GPC['message'] = $html_parser->parse_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
 	}
 
 	if ($vbulletin->GPC['ajax'])
