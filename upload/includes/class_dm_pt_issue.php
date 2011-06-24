@@ -232,7 +232,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	{
 		$priority_result = $this->registry->db->query_first("
 			SELECT projectpriorityid
-			FROM " . TABLE_PREFIX . "pt_priority
+			FROM " . TABLE_PREFIX . "pt_projectpriority
 			WHERE projectpriorityid = " . intval($priority) . "
 				AND projectid = " . intval($this->fetch_field('projectid')) . "
 		");
@@ -735,7 +735,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuevote WHERE issueid = $issueid");
 
 			// Attachments
-			$db->query_write("DELETE FROM " . TABLE_PREFIX . "attachments WHERE contentid = $issueid AND contenttypeid = " . vB_Types::instance()->getContentTypeID('vBProjectTools_Issue') . "");
+			$db->query_write("DELETE FROM " . TABLE_PREFIX . "attachment WHERE contentid = $issueid AND contenttypeid = " . vB_Types::instance()->getContentTypeID('vBProjectTools_Issue') . "");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueattach WHERE issueid = $issueid");
 
 			// Before to hard-delete import infos, we need to open back the thread if the import was from a thread
