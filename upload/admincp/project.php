@@ -3386,7 +3386,8 @@ if ($_POST['do'] == 'projectupdate')
 		'permissionbase' => TYPE_UINT,
 		'options' => TYPE_ARRAY_UINT,
 		'afterforumids' => TYPE_ARRAY_UINT,
-		'forumtitle' => TYPE_STR
+		'forumtitle' => TYPE_STR,
+		'required' => TYPE_ARRAY_UINT
 	));
 
 	if (empty($vbulletin->GPC['title']))
@@ -3430,6 +3431,7 @@ if ($_POST['do'] == 'projectupdate')
 	$projectdata->set('forumtitle', $vbulletin->GPC['forumtitle']);
 
 	$options = 0;
+	$required = 0;
 
 	foreach ($vbulletin->GPC['options'] AS $bitname => $bitvalue)
 	{
@@ -3439,7 +3441,16 @@ if ($_POST['do'] == 'projectupdate')
 		}
 	}
 
+	foreach ($vbulletin->GPC['required'] AS $bitname => $bitvalue)
+	{
+		if ($bitvalue > 0)
+		{
+			$required += $vbulletin->bf_misc['requiredoptions']["$bitname"];
+		}
+	}
+
 	$projectdata->set('options', $options);
+	$projectdata->set('required', $required);
 
 	if (!$project['projectid'])
 	{
@@ -3605,12 +3616,9 @@ if ($_REQUEST['do'] == 'projectadd' OR $_REQUEST['do'] == 'projectedit')
 
 	$required_fields = '';
 
-	foreach ($vbulletin->bf_misc['pt_projectoptions'] AS $bitname => $value)
+	foreach ($vbulletin->bf_misc['requiredoptions'] AS $bitname => $value)
 	{
-		if (substr($bitname, 0, 7) == 'require')
-		{
-			$required_fields .= "<div class=\"smallfont\"><label><input type=\"checkbox\" name=\"options[$bitname]\" value=\"$value\" tabindex=\"1\"" . (intval($project['options']) & $value ? ' checked="checked"' : '') . " />" . $vbphrase["required_$bitname"] . "</label></div>";
-		}
+		$required_fields .= "<div class=\"smallfont\"><label><input type=\"checkbox\" name=\"required[$bitname]\" value=\"$value\" tabindex=\"1\"" . (intval($project['required']) & $value ? ' checked="checked"' : '') . " />" . $vbphrase["required_$bitname"] . "</label></div>";
 	}
 
 	print_label_row($vbphrase['required_fields_issue_submit'], $required_fields, '', 'top', 'options');

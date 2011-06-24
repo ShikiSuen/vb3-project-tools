@@ -41,6 +41,7 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 		'summary_clean'  => array(TYPE_NOHTMLCOND, REQ_AUTO),
 		'description'    => array(TYPE_STR,        REQ_NO),
 		'options'        => array(TYPE_UINT,       REQ_NO),
+		'required'		 => array(TYPE_UINT,	   REQ_NO),
 		'afterforumids'  => array(TYPE_STR,        REQ_NO, VF_METHOD, 'verify_commalist'),
 		'forumtitle'     => array(TYPE_STR,        REQ_NO)
 	);

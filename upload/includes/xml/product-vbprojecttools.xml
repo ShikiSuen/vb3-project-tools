@@ -12,8 +12,8 @@
 	<codes>
 		<code version="*">
 			<installcode><![CDATA[// Set Product URLs //
-$info['url'] = 'http://www.vbulletin.org/forum/misc.php?do=producthelp&pid='.$info['productid'];
-$info['versioncheckurl'] = 'http://www.vbulletin.org/forum/misc.php?do=productcheck&pid='.$info['productid'];
+$info['url'] = 'http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=' . $info['productid'];
+$info['versioncheckurl'] = 'http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=' . $info['productid'];
 
 if (!file_exists(DIR . '/includes/adminfunctions_projecttools.php') OR !file_exists(DIR . '/includes/xml/bitfield_vbprojecttools.xml'))
 {
@@ -710,7 +710,7 @@ if ($installed_version === null)
 
 		// insert some good permissions for the admin group
 		$db->query_write("
-			INSERT INTO " . TABLE_PREFIX . "pt_projectpermission
+			INSERT IGNORE INTO " . TABLE_PREFIX . "pt_projectpermission
 				(usergroupid, projectid, issuetypeid, generalpermissions, postpermissions, attachpermissions)
 			VALUES
 				" . implode(',', $perms)
@@ -1231,7 +1231,7 @@ if ($db->num_rows($movedthreads) > 0)
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_issueimport
 				(issueid, contenttypeid, contentid, data)
-		VALUES
+			VALUES
 				(" . $movedthread['pt_issueid'] . ", $contenttypeid, " . $movedthread['threadid'] . ", '" . $importdata . "')
 			");
 	}
@@ -1253,7 +1253,7 @@ $usercounts = $db->query_read("
 
 while ($usercount = $db->fetch_array($usercounts))
 {
-	$db->query_write("INSERT INTO " . TABLE_PREFIX . "pt_user (userid) VALUES (" . intval($usercount['userid']) . ")");
+	$db->query_write("INSERT IGNORE INTO " . TABLE_PREFIX . "pt_user (userid) VALUES (" . intval($usercount['userid']) . ")");
 }
 
 // Rebuild profile issue counters for every user
@@ -1277,7 +1277,7 @@ if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
 
 	// Add widgets
 	$db->query_write("
-		INSERT INTO " . TABLE_PREFIX . "cms_widgettype
+		INSERT IGNORE INTO " . TABLE_PREFIX . "cms_widgettype
 			(class, packageid)
 		VALUES
 			('RecentPTIssues', " . $packageid['packageid'] . "),
@@ -1467,17 +1467,89 @@ $db->query_write("
 $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
 		<code version="2.2.0">
-			<installcode><![CDATA[require_once(DIR . '/includes/adminfunctions_projecttools.php');
+			<installcode><![CDATA[// For new phrases
 $full_product_info = fetch_product_list(true);
 
-// Required? Include it in any occasion
-require_once(DIR . '/includes/class_bootstrap_framework.php');
-vB_Bootstrap_Framework::init();
-$issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
+/*================================*\
+|| ############################## ||
+|| #		  Projects			# ||
+|| ############################## ||
+\*================================*/
 
-// Use the Db Alter class
-require_once(DIR . '/includes/class_dbalter.php');
-$db_alter = new vB_Database_Alter_MySQL($db);
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD required INT UNSIGNED NOT NULL DEFAULT 0");
+
+$projects = $db->query_read("
+	SELECT projectid, options
+	FROM " . TABLE_PREFIX . "pt_project
+");
+
+while ($project = $db->fetch_array($projects))
+{
+	require_once(DIR . '/includes/functions_projecttools.php');
+	$projectinfo = fetch_project_info($project['projectid'], false);
+
+	switch ($project['options'])
+	{
+		// If nothing is in value
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+			$options = 0;
+			$required = $project['options'];
+			break;
+		// If emailonassignment is in value
+		case '8':
+		case '9':
+		case '10':
+		case '11':
+		case '12':
+		case '13':
+		case '14':
+		case '15':
+			$options = 1;
+			$required = $project['options'] - 8;
+			break;
+		// If pmonassignment is in value
+		case '16':
+		case '17':
+		case '18':
+		case '19':
+		case '20':
+		case '21':
+		case '22':
+		case '23':
+			$options = 2;
+			$required = $project['options'] - 16;
+			break;
+		// If emailonassignment & pmonassignment are in value
+		case '24':
+		case '25':
+		case '26':
+		case '27':
+		case '28':
+		case '29':
+		case '30':
+		case '31':
+			$options = 3;
+			$required = $project['options'] - 24;
+			break;
+	}
+
+	// Now we have the right value, update each project
+	$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_CP);
+	if ($projectinfo)
+	{
+		$projectdata->set_existing($projectinfo);
+	}
+	$projectdata->set('options', $options);
+	$projectdata->set('required', $required);
+	$projectdata->save();
+}
 
 /*================================*\
 || ############################## ||
@@ -1487,7 +1559,7 @@ $db_alter = new vB_Database_Alter_MySQL($db);
 
 // Move milestones into phrase system
 $db->hide_errors();
-$datamilestone = $db->query_read("SELECT title FROM " . TABLE_PREFIX . "pt_milestone")
+$datamilestone = $db->query_read("SELECT title FROM " . TABLE_PREFIX . "pt_milestone");
 $db->show_errors();
 
 if ($datamilestone)
@@ -1513,8 +1585,6 @@ if ($datamilestone)
 	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP description");
 }
 
-
-
 /*================================*\
 || ############################## ||
 || #		Categories			# ||
@@ -1523,7 +1593,7 @@ if ($datamilestone)
 
 // Move categories into phrase system
 $db->hide_errors();
-$datacategory = $db->query_read("SELECT title FROM " . TABLE_PREFIX . "pt_projectcategory")
+$datacategory = $db->query_read("SELECT title FROM " . TABLE_PREFIX . "pt_projectcategory");
 $db->show_errors();
 
 if ($datacategory)
@@ -1556,8 +1626,6 @@ if ($datacategory)
 	// Delete useless table fields in pt_projectcategory table
 	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory DROP title");
 }
-
-build_project_category_cache();
 
 /*================================*\
 || ############################## ||
@@ -1656,9 +1724,6 @@ foreach ($project_array AS $projects)
 	}
 }
 
-// Build the new priority cache
-build_project_priority_cache();
-
 /*================================*\
 || ############################## ||
 || #		Status Color		# ||
@@ -1666,15 +1731,7 @@ build_project_priority_cache();
 \*================================*/
 
 // Add field for 'PT color titles by status' feature
-if ($db_alter->fetch_table_info('pt_issuestatus'))
-{
-	$db_alter->add_field(array(
-		'name' => 'statuscolor2',
-		'type' => 'varchar',
-		'length' => '20',
-		'null' => false
-	));
-}
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_issuestatus ADD statuscolor2 VARCHAR(20) NOT NULL");
 
 /*================================*\
 || ############################## ||
@@ -1682,11 +1739,27 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 || ############################## ||
 \*================================*/
 
+// As the Bootstrap Framework is a big shit (at least in 4.1.4),
+// we need to workaround it with some queries
+$packageid = $db->query_first("
+	SELECT packageid
+	FROM " . TABLE_PREFIX . "package
+	WHERE productid = 'vbprojecttools'
+		AND class = 'vBProjectTools'
+");
+
+$issue_contenttypeid = $db->query_first("
+	SELECT contenttypeid
+	FROM " . TABLE_PREFIX . "contenttype
+	WHERE class = 'Issue'
+		AND packageid = " . $packageid['packageid'] . "
+");
+
 // Query to allow attachments to issues
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
 		canattach = '1'
-	WHERE contenttypeid = " . $issue_contenttypeid . "
+	WHERE contenttypeid = " . $issue_contenttypeid['contenttypeid'] . "
 ");
 
 // Default data to import with PT 2.2
@@ -1760,8 +1833,6 @@ $db->query_write("
 		'undone')
 ");
 
-build_attachment_permissions();
-
 /*================================*\
 || ############################## ||
 || #			Final			# ||
@@ -1775,7 +1846,16 @@ $db->query_write("
 ");
 
 // Ensure phrases will be rebuilt
-$rebuild['phrases'] = true;]]></installcode>
+$rebuild['phrases'] = true;
+
+// Rebuild every changes
+require_once(DIR . '/includes/adminfunctions_attachment.php');
+build_attachment_permissions();
+
+require_once(DIR . '/includes/adminfunctions_projecttools.php');
+build_project_category_cache();
+build_project_priority_cache();
+build_project_cache();]]></installcode>
 			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");]]></uninstallcode>
 		</code>
 	</codes>

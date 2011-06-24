@@ -61,11 +61,15 @@
 		</group>
 		<group name="misc">
 			<group name="pt_projectoptions">
+				<!-- TODO: need to remove the original options from here now on 'requiredoptions' from any save from any customer-->
+				<!-- Code will be in 2.2 update -->
+				<bitfield name="emailonassignment">1</bitfield>
+				<bitfield name="pmonassignment">2</bitfield>
+			</group>
+			<group name="requiredoptions">
 				<bitfield name="requireappliesversion">1</bitfield>
 				<bitfield name="requirecategory">2</bitfield>
 				<bitfield name="requirepriority">4</bitfield>
-				<bitfield name="emailonassignment">8</bitfield>
-				<bitfield name="pmonassignment">16</bitfield>
 			</group>
 			<group name="pt_hvcheck">
 				<bitfield name="post">1</bitfield>
