@@ -1017,6 +1017,7 @@ if ($show['quick_reply'])
 		true,
 		false,
 		'qr',
+		'',
 		'', // attachments - handled differently in PT
 		'content', // default value
 		'vBProjectTools_Issue', // Content type - needed for auto-save
