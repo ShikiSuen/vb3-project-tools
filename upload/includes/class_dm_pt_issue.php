@@ -45,7 +45,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		'appliesversionid'   => array(TYPE_UINT,       REQ_NO),
 		'isaddressed'        => array(TYPE_UINT,       REQ_NO, 'if ($data > 1) { $data = 1; } return true;'),
 		'addressedversionid' => array(TYPE_UINT,       REQ_NO),
-		'priority'           => array(TYPE_UINT,       REQ_NO, 'if ($data < 0) { $data = 0; } else if ($data > 10) { $data = 10; } return true;'),
+		'priority'           => array(TYPE_UINT,       REQ_NO),
 		'visible'            => array(TYPE_STR,        REQ_NO, 'if (!in_array($data, array("moderation", "visible", "private", "deleted"))) { $data = "visible"; } return true;'),
 		'lastpost'           => array(TYPE_UNIXTIME,   REQ_NO),
 		'lastactivity'       => array(TYPE_UNIXTIME,   REQ_NO),
