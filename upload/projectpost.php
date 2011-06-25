@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*======================================================================*\
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
@@ -1932,7 +1932,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 			continue;
 		}
 
-		$category_options .= render_option_template($$category['title'], $category['projectcategoryid'], ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : ''));
+		$category_options .= render_option_template($vbphrase['category' . $category['projectcategoryid']], $category['projectcategoryid'], ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : ''));
 	}
 
 	// setup priority options
@@ -3092,6 +3092,7 @@ if ($_POST['do'] == 'processmoveissue')
 		'issueid' => TYPE_UINT,
 		'projectid' => TYPE_UINT,
 		'issuetypeid' => TYPE_NOHTML,
+		'priority' => TYPE_UINT,
 		'projectcategoryid' => TYPE_UINT,
 		'appliesversionid' => TYPE_UINT,
 		'addressedversionid' => TYPE_INT,
@@ -3147,19 +3148,19 @@ if ($_POST['do'] == 'processmoveissue')
 		{
 			standard_error(fetch_error('invalidid', $vbphrase['issue_status'], $vbulletin->options['contactuslink']));
 		}
-
+	}
+	else
+	{
 		if ($issue['issuetypeid'] != $status['issuetypeid'])
 		{
 			// trying to change the type and we can't
 			standard_error(fetch_error('invalidid', $vbphrase['issue_status'], $vbulletin->options['contactuslink']));
 		}
-	}
-	else
-	{
+
 		$vbulletin->GPC['issuestatusid'] = $issue['issuestatusid'];
 	}
 
-	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_CP);
+	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
 	$issuedata->set_existing($issue);
 	$issuedata->set_info('perform_activity_updates', false);
 	$issuedata->set_info('insert_change_log', false);
@@ -3167,9 +3168,9 @@ if ($_POST['do'] == 'processmoveissue')
 	$issuedata->set('title', $vbulletin->GPC['title']);
 	$issuedata->set('summary', $vbulletin->GPC['summary']);
 	$issuedata->set('issuestatusid', $vbulletin->GPC['issuestatusid']);
-	$issuedata->set('priority', $vbulletin->GPC['priority']);
 	$issuedata->set('issuetypeid', $vbulletin->GPC['issuetypeid']);
 	$issuedata->set('projectid', $vbulletin->GPC['projectid']);
+	$issuedata->set('priority', $vbulletin->GPC['priority']);
 	$issuedata->set('projectcategoryid', $vbulletin->GPC['projectcategoryid']);
 	$issuedata->set('appliesversionid', $vbulletin->GPC['appliesversionid']);
 
@@ -3227,6 +3228,8 @@ if ($_POST['do'] == 'processmoveissue')
 		}
 	}
 
+	$existing_tags = array();
+
 	// tags
 	$tag_data = $db->query_read("
 		SELECT tag.tagtext
@@ -3271,19 +3274,7 @@ if ($_POST['do'] == 'processmoveissue')
 		}
 	}
 
-	// prepare first note
-	$issuenote =& datamanager_init('Pt_IssueNote_User', $vbulletin, ERRTYPE_ARRAY, 'pt_issuenote');
-	$issuenote->set_info('do_floodcheck', !can_moderate());
-	$issuenote->set_info('parseurl', $vbulletin->options['pt_allowbbcode']);
-	$issuenote->set_existing($issue);
-	$issuenote->set('pagetext', $vbulletin->GPC['message']);
-
 	$issuedata->save();
-
-	if ($vbulletin->GPC['message'] != $issue['pagetext'])
-	{
-		$issuenote->save();
-	}
 
 	$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 	eval(print_standard_redirect('pt_issue_state_modified'));
