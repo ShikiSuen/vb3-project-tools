@@ -1847,9 +1847,11 @@ if ($_POST['do'] == 'projectversionupdate')
 	$vbulletin->input->clean_array_gpc('p', array(
 		'projectversionid' => TYPE_UINT,
 		'projectversiongroupid' => TYPE_UINT,
+		'projectid' => TYPE_UINT,
 		'versionname' => TYPE_NOHTML,
 		'displayorder' => TYPE_UINT,
-		'nextversion' => TYPE_BOOL
+		'nextversion' => TYPE_BOOL,
+		'default' => TYPE_BOOL
 	));
 
 	if ($vbulletin->GPC['projectversionid'])
@@ -1884,26 +1886,71 @@ if ($_POST['do'] == 'projectversionupdate')
 		print_stop_message('please_complete_required_fields');
 	}
 
+	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
 	// effective order means that sorting just the version table will return versions ordered by group first
 	if ($projectversion['projectversionid'])
 	{
+		// Check first if the default value is already defined for this project
+		// If yes, remove it and save the actual form
+		$defaultvalue = $db->query_first("
+			SELECT projectversionid AS ver
+			FROM " . TABLE_PREFIX . "pt_projectversion
+			WHERE defaultvalue = 1
+				AND projectid = " . intval($project['projectid']) . "
+		");
+
+		if ($defaultvalue['ver'] != $projectversion['projectversionid'])
+		{
+			// Default value already defined for an other version
+			// Removing it
+			$db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_projectversion SET
+					defaultvalue = 0
+				WHERE projectversionid = " . intval($defaultvalue['ver']) . "
+			");
+		}
+
+		// Perform the save
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectversion SET
 				versionname = '" . $db->escape_string($vbulletin->GPC['versionname']) . "',
 				displayorder = " . $vbulletin->GPC['displayorder'] . ",
-				effectiveorder = " . ($vbulletin->GPC['displayorder'] + $projectversiongroup['displayorder'] * 100000) . "
-			WHERE projectversionid = $projectversion[projectversionid]
+				effectiveorder = " . ($vbulletin->GPC['displayorder'] + $projectversiongroup['displayorder'] * 100000) . ",
+				defaultvalue = " . ($vbulletin->GPC['default'] ? 1 : 0) . "
+			WHERE projectversionid = " . $projectversion['projectversionid'] . "
 		");
 	}
 	else
 	{
+		// Check first if the default value is already defined for this project
+		// If yes, remove it and save the actual form
+		$defaultvalue = $db->query_first("
+			SELECT projectversionid AS ver
+			FROM " . TABLE_PREFIX . "pt_projectversion
+			WHERE defaultvalue = 1
+				AND projectid = " . intval($project['projectid']) . "
+		");
+
+		if ($defaultvalue['ver'])
+		{
+			// Default value already defined for an other category
+			// Removing it
+			$db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_projectversion SET
+					defaultvalue = 0
+				WHERE projectversionid = " . intval($defaultvalue['ver']) . "
+			");
+		}
+
+		// Perform the save
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_projectversion
 				(projectid, versionname, projectversiongroupid, displayorder, effectiveorder)
 			VALUES
-				($projectversiongroup[projectid],
+				(" . $projectversiongroup['projectid'] . ",
 				'" . $db->escape_string($vbulletin->GPC['versionname']) . "',
-				$projectversiongroup[projectversiongroupid],
+				" . $projectversiongroup['projectversiongroupid'] . ",
 				" . $vbulletin->GPC['displayorder'] . ",
 				" . ($vbulletin->GPC['displayorder'] + $projectversiongroup['displayorder'] * 100000) . ")
 		");
@@ -1914,8 +1961,8 @@ if ($_POST['do'] == 'projectversionupdate')
 		{
 			$db->query_write("
 				UPDATE " . TABLE_PREFIX . "pt_issue SET
-					addressedversionid = $projectversionid
-				WHERE projectid = $projectversiongroup[projectid]
+					addressedversionid = " . $projectversionid . "
+				WHERE projectid = " . $projectversiongroup['projectid'] . "
 					AND isaddressed = 1
 					AND addressedversionid = 0
 			");
@@ -1956,7 +2003,9 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 
 		$projectversion = array(
 			'projectversionid' => 0,
-			'displayorder' => $maxorder['maxorder'] + 10
+			'displayorder' => $maxorder['maxorder'] + 10,
+			'defaultvalue' => 0,
+			'projectid' => 0
 		);
 	}
 
@@ -1986,6 +2035,7 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 	print_label_row($vbphrase['version_group'], $projectversiongroup['groupname']);
 	print_input_row($vbphrase['title'], 'versionname', $projectversion['versionname'], false);
 	print_input_row($vbphrase['display_order'] . '<dfn>' . $vbphrase['note_a_larger_value_will_be_displayed_first'] . '</dfn>', 'displayorder', $projectversion['displayorder'], true, 5);
+	print_yes_no_row($vbphrase['default_value'], 'default', $projectversion['defaultvalue']);
 
 	if (!$projectversion['projectversionid'])
 	{
@@ -1994,6 +2044,7 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 
 	construct_hidden_code('projectversionid', $projectversion['projectversionid']);
 	construct_hidden_code('projectversiongroupid', $projectversiongroup['projectversiongroupid']);
+	construct_hidden_code('projectid', $projectversion['projectid']);
 	print_submit_row();
 }
 
@@ -2021,14 +2072,14 @@ if ($_POST['do'] == 'projectversionkill')
 
 	$db->query_write("
 		DELETE FROM " . TABLE_PREFIX . "pt_projectversion
-		WHERE projectversionid = $projectversion[projectversionid]
+		WHERE projectversionid = " . $projectversion['projectversionid'] . "
 	");
 
 	// updated applies version
 	$db->query_write("
 		UPDATE " . TABLE_PREFIX . "pt_issue SET
 			appliesversionid = " . $vbulletin->GPC['appliesversionid'] . "
-		WHERE appliesversionid = $projectversion[projectversionid]
+		WHERE appliesversionid = " . $projectversion['projectversionid'] . "
 	");
 
 	// update addressed version
@@ -2038,7 +2089,7 @@ if ($_POST['do'] == 'projectversionkill')
 			UPDATE " . TABLE_PREFIX . "pt_issue SET
 				addressedversionid = 0,
 				isaddressed = 1
-			WHERE addressedversionid = $projectversion[projectversionid]
+			WHERE addressedversionid = " . $projectversion['projectversionid'] . "
 		");
 	}
 	else if ($vbulletin->GPC['addressedversionid'] == 0)
@@ -2047,7 +2098,7 @@ if ($_POST['do'] == 'projectversionkill')
 			UPDATE " . TABLE_PREFIX . "pt_issue SET
 				addressedversionid = 0,
 				isaddressed = 0
-			WHERE addressedversionid = $projectversion[projectversionid]
+			WHERE addressedversionid = " . $projectversion['projectversionid'] . "
 		");
 	}
 	else
@@ -2056,7 +2107,7 @@ if ($_POST['do'] == 'projectversionkill')
 			UPDATE " . TABLE_PREFIX . "pt_issue SET
 				addressedversionid = " . $vbulletin->GPC['addressedversionid'] . ",
 				isaddressed = 1
-			WHERE addressedversionid = $projectversion[projectversionid]
+			WHERE addressedversionid = " . $projectversion['projectversionid'] . "
 		");
 	}
 
@@ -2089,9 +2140,8 @@ if ($_REQUEST['do'] == 'projectversiondelete')
 	$version_query = $db->query_read("
 		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
-		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
-			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
-		WHERE projectversion.projectid = $project[projectid]
+			INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON (projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
+		WHERE projectversion.projectid = " . $project['projectid'] . "
 			AND projectversion.projectversionid <> " . $vbulletin->GPC['projectversionid'] . "
 		ORDER BY projectversion.effectiveorder DESC
 	");
@@ -2107,7 +2157,8 @@ if ($_REQUEST['do'] == 'projectversiondelete')
 	print_delete_confirmation(
 		'pt_projectversion',
 		$projectversion['projectversionid'],
-		'project', 'projectversionkill',
+		'project',
+		'projectversionkill',
 		'',
 		0,
 		construct_phrase($vbphrase['existing_affected_issues_updated_delete_select_versions_x_y'],
@@ -2135,6 +2186,7 @@ if ($_POST['do'] == 'projectversiongroupupdate')
 			FROM " . TABLE_PREFIX . "pt_projectversiongroup
 			WHERE projectversiongroupid = " . $vbulletin->GPC['projectversiongroupid']
 		);
+
 		$vbulletin->GPC['projectid'] = $projectversiongroup['projectid'];
 	}
 	else
@@ -2571,20 +2623,20 @@ if ($_POST['do'] == 'projectpriorityupdate')
 		// Check first if the default value is already defined for this project
 		// If yes, remove it and save the actual form
 		$defaultvalue = $db->query_first("
-			SELECT projectpriorityid AS cat
+			SELECT projectpriorityid AS priority
 			FROM " . TABLE_PREFIX . "pt_projectpriority
 			WHERE defaultvalue = 1
 				AND projectid = " . intval($project['projectid']) . "
 		");
 
-		if ($defaultvalue['cat'] != $projectpriority['projectpriorityid'])
+		if ($defaultvalue['priority'] != $projectpriority['projectpriorityid'])
 		{
 			// Default value already defined for an other category
 			// Removing it
 			$db->query_write("
 				UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
 					defaultvalue = 0
-				WHERE projectpriorityid = " . intval($defaultvalue['cat']) . "
+				WHERE projectpriorityid = " . intval($defaultvalue['priority']) . "
 			");
 		}
 
@@ -2598,42 +2650,42 @@ if ($_POST['do'] == 'projectpriorityupdate')
 			WHERE projectpriorityid = " . $projectpriority['projectpriorityid'] . "
 		");
 
-	// Phrase the category
-	$vbulletin->db->query_write("
-		REPLACE INTO " . TABLE_PREFIX . "phrase
-			(languageid, fieldname, varname, text, product, username, dateline, version)
-		VALUES
-			(
-				0,
-				'projecttools',
-				'priority" . intval($vbulletin->GPC['projectpriorityid']) . "',
-				'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
-				'vbprojecttools',
-				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
-				" . TIMENOW . ",
-				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
-			)
-	");
+		// Phrase the category
+		$vbulletin->db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'priority" . intval($vbulletin->GPC['projectpriorityid']) . "',
+					'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
+					'vbprojecttools',
+					'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
 	}
 	else
 	{
 		// Check first if the default value is already defined for this project
 		// If yes, remove it and save the actual form
 		$defaultvalue = $db->query_first("
-			SELECT projectpriorityid AS cat
+			SELECT projectpriorityid AS priority
 			FROM " . TABLE_PREFIX . "pt_projectpriority
 			WHERE defaultvalue = 1
 				AND projectid = " . intval($project['projectid']) . "
 		");
 
-		if ($defaultvalue['cat'])
+		if ($defaultvalue['priority'])
 		{
 			// Default value already defined for an other category
 			// Removing it
 			$db->query_write("
 				UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
 					defaultvalue = 0
-				WHERE projectpriorityid = " . intval($defaultvalue['cat']) . "
+				WHERE projectpriorityid = " . intval($defaultvalue['priority']) . "
 			");
 		}
 
