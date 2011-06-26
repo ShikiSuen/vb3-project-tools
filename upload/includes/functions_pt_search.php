@@ -236,7 +236,7 @@ function fetch_pt_search_categories($project_names)
 
 	$categories = array();
 	$category_query = $db->query_read("
-		SELECT projectcategory.projectcategoryid, projectcategory.title, project.title_clean, project.projectid
+		SELECT projectcategory.projectcategoryid, project.title_clean, project.projectid
 		FROM " . TABLE_PREFIX . "pt_projectcategory AS projectcategory
 		INNER JOIN " . TABLE_PREFIX . "pt_project AS project ON
 			(project.projectid = projectcategory.projectid)
@@ -244,7 +244,7 @@ function fetch_pt_search_categories($project_names)
 	");
 	while ($category = $db->fetch_array($category_query))
 	{
-		$categories["$category[projectid]"]["$category[projectcategoryid]"] = $category['title'];
+		$categories["$category[projectid]"]["$category[projectcategoryid]"] = $vbphrase['category' . $category['projectcategoryid']];
 	}
 
 	$category_options = '';
