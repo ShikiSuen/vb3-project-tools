@@ -3387,7 +3387,9 @@ if ($_POST['do'] == 'projectupdate')
 		'options' => TYPE_ARRAY_UINT,
 		'afterforumids' => TYPE_ARRAY_UINT,
 		'forumtitle' => TYPE_STR,
-		'required' => TYPE_ARRAY_UINT
+		'requireappliesversion' => TYPE_UINT,
+		'requirecategry' => TYPE_UINT,
+		'requirepriority' => TYPE_UINT
 	));
 
 	if (empty($vbulletin->GPC['title']))
@@ -3431,7 +3433,6 @@ if ($_POST['do'] == 'projectupdate')
 	$projectdata->set('forumtitle', $vbulletin->GPC['forumtitle']);
 
 	$options = 0;
-	$required = 0;
 
 	foreach ($vbulletin->GPC['options'] AS $bitname => $bitvalue)
 	{
@@ -3441,16 +3442,10 @@ if ($_POST['do'] == 'projectupdate')
 		}
 	}
 
-	foreach ($vbulletin->GPC['required'] AS $bitname => $bitvalue)
-	{
-		if ($bitvalue > 0)
-		{
-			$required += $vbulletin->bf_misc['requiredoptions']["$bitname"];
-		}
-	}
-
 	$projectdata->set('options', $options);
-	$projectdata->set('required', $required);
+	$projectdata->set('requireappliesversion', $vbulletin->GPC['requireappliesversion']);
+	$projectdata->set('requirecategory', $vbulletin->GPC['requirecategory']);
+	$projectdata->set('requirepriority', $vbulletin->GPC['requirepriority']);
 
 	if (!$project['projectid'])
 	{
@@ -3614,14 +3609,17 @@ if ($_REQUEST['do'] == 'projectadd' OR $_REQUEST['do'] == 'projectedit')
 	print_yes_no_row($vbphrase['send_pm_on_issueassignment'], 'options[pmonassignment]', (intval($project['options']) & $vbulletin->bf_misc['pt_projectoptions']['pmonassignment'] ? 1 : 0));
 	print_input_row($vbphrase['display_order'], 'displayorder', $project['displayorder'], true, 5);
 
-	$required_fields = '';
+	// Phrase them
+	$required = array(
+		0 => 'Off, do not use at all',
+		1 => 'On, set to a default value (not set by user)',
+		2 => 'On, not required',
+		3 => 'On, required'
+	);
 
-	foreach ($vbulletin->bf_misc['requiredoptions'] AS $bitname => $value)
-	{
-		$required_fields .= "<div class=\"smallfont\"><label><input type=\"checkbox\" name=\"required[$bitname]\" value=\"$value\" tabindex=\"1\"" . (intval($project['required']) & $value ? ' checked="checked"' : '') . " />" . $vbphrase["required_$bitname"] . "</label></div>";
-	}
-
-	print_label_row($vbphrase['required_fields_issue_submit'], $required_fields, '', 'top', 'options');
+	print_select_row($vbphrase['required_requireappliesversion'], 'requireappliesversion', $required, $project['requireappliesversion']);
+	print_select_row($vbphrase['required_requirecategory'], 'requirecategory', $required, $project['requirecategory']);
+	print_select_row($vbphrase['required_requirepriority'], 'requirepriority', $required, $project['requirepriority']);
 
 	$afterforumids = explode(',', $project['afterforumids']);
 

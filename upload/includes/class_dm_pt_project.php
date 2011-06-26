@@ -33,17 +33,19 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 	* @var	array
 	*/
 	var $validfields = array(
-		'projectid'      => array(TYPE_UINT,       REQ_INCR),
-		'displayorder'   => array(TYPE_UINT,       REQ_NO),
-		'title'          => array(TYPE_STR,        REQ_YES),
-		'title_clean'    => array(TYPE_NOHTMLCOND, REQ_AUTO),
-		'summary'        => array(TYPE_STR,        REQ_NO),
-		'summary_clean'  => array(TYPE_NOHTMLCOND, REQ_AUTO),
-		'description'    => array(TYPE_STR,        REQ_NO),
-		'options'        => array(TYPE_UINT,       REQ_NO),
-		'required'		 => array(TYPE_UINT,	   REQ_NO),
-		'afterforumids'  => array(TYPE_STR,        REQ_NO, VF_METHOD, 'verify_commalist'),
-		'forumtitle'     => array(TYPE_STR,        REQ_NO)
+		'projectid'				=> array(TYPE_UINT, REQ_INCR),
+		'displayorder'			=> array(TYPE_UINT, REQ_NO),
+		'title'					=> array(TYPE_STR, REQ_YES),
+		'title_clean'			=> array(TYPE_NOHTMLCOND, REQ_AUTO),
+		'summary'				=> array(TYPE_STR, REQ_NO),
+		'summary_clean'			=> array(TYPE_NOHTMLCOND, REQ_AUTO),
+		'description'			=> array(TYPE_STR, REQ_NO),
+		'options'				=> array(TYPE_UINT, REQ_NO),
+		'requireappliesversion'	=> array(TYPE_UINT, REQ_NO),
+		'requirecategory'		=> array(TYPE_UINT, REQ_NO),
+		'requirepriority'		=> array(TYPE_UINT, REQ_NO),
+		'afterforumids'			=> array(TYPE_STR, REQ_NO, VF_METHOD, 'verify_commalist'),
+		'forumtitle'			=> array(TYPE_STR, REQ_NO)
 	);
 
 	/**
