@@ -404,38 +404,94 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		// check for required settings
 		if ($this->info['project'])
 		{
-			$project_options = $this->info['project']['options'];
-			$project_options_bf = $this->registry->bf_misc['pt_projectoptions'];
+			$project_requiredappliesversion = $this->info['project']['requireappliesversion'];
+			$project_requiredcategory = $this->info['project']['requirecategory'];
+			$project_requiredpriority = $this->info['project']['requirepriority'];
 
-			if ($project_options & $project_options_bf['requireappliesversion'] AND !$this->fetch_field('appliesversionid'))
+			// 0 = Off
+			// 1 = On, auto-set from default value
+			// 2 = On, not required
+			// 3 = On, required
+
+			if (in_array($project_requiredappliesversion, array(1, 2, 3) AND !$this->fetch_field('appliesversionid'))
 			{
-				if ($this->registry->db->query_first("
-					SELECT projectversionid
-					FROM " . TABLE_PREFIX . "pt_projectversion
-					WHERE projectid = " . intval($this->fetch_field('projectid')) . "
-					LIMIT 1
-				"))
+				if ($project_requiredappliesversion == 1)
 				{
-					$this->error('applicable_version_required');
+					// Defining one automatically
+					$appliesversionid = $this->registry->db->query_first("
+						SELECT projectversionid
+						FROM " . TABLE_PREFIX . "pt_projectversion
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+							AND defaultvalue = 1
+					");
+					$this->do_set('appliesversionid', $appliesversionid['projectversionid']);
+				}
+				else if ($project_requiredappliesversion == 3)
+				{
+					if ($this->registry->db->query_first("
+						SELECT projectversionid
+						FROM " . TABLE_PREFIX . "pt_projectversion
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+						LIMIT 1
+						"))
+					{
+						$this->error('applicable_version_required');
+					}
 				}
 			}
 
-			if ($project_options & $project_options_bf['requirecategory'] AND !$this->fetch_field('projectcategoryid'))
+			if (in_array($project_requiredcategory, array(1, 2, 3) AND !$this->fetch_field('projectcategoryid'))
 			{
-				if ($this->registry->db->query_first("
-					SELECT projectcategoryid
-					FROM " . TABLE_PREFIX . "pt_projectcategory
-					WHERE projectid = " . intval($this->fetch_field('projectid')) . "
-					LIMIT 1
-				"))
+				if ($project_requiredcategory == 1)
 				{
-					$this->error('category_required');
+					// Defining one automatically
+					$projectcategoryid = $this->registry->db->query_first("
+						SELECT projectcategoryid
+						FROM " . TABLE_PREFIX . "pt_projectcategory
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+							AND defaultvalue = 1
+					");
+					$this->do_set('projectcategoryid', $projectcategoryid['projectcategoryid']);
+				}
+				else if ($project_requiredcategory == 3)
+				{
+					if ($this->registry->db->query_first("
+						SELECT projectcategoryid
+						FROM " . TABLE_PREFIX . "pt_projectcategory
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+						LIMIT 1
+					"))
+					{
+						$this->error('category_required');
+					}
 				}
 			}
 
-			if ($project_options & $project_options_bf['requirepriority'] AND !$this->fetch_field('priority'))
+			if (in_array($project_requiredpriority, array(1, 2, 3) AND !$this->fetch_field('priority'))
 			{
-				$this->error('priority_required');
+				if ($project_requiredpriority == 1)
+				{
+					// Defining one automatically
+					$priority = $this->registry->db->query_first("
+						SELECT projectcategoryid
+						FROM " . TABLE_PREFIX . "pt_projectpriority
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+							AND defaultvalue = 1
+					");
+					$this->do_set('priority', $priority['projectpriorityid']);
+				}
+				else if ($project_requiredpriority == 3)
+				{
+					if ($this->registry->db->query_first("
+						SELECT projectpriorityid
+						FROM " . TABLE_PREFIX . "pt_projectpriority
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+						LIMIT 1
+					"))
+					{
+						$this->error('priority_required');
+					}
+				}
 			}
 
 			if ($this->errors)
