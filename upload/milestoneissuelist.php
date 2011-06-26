@@ -80,6 +80,9 @@ $vbulletin->input->clean_array_gpc('r', array(
 	'sortorder' => TYPE_NOHTML
 ));
 
+// Definition to display selected columns
+$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+
 $milestone = verify_milestone($vbulletin->GPC['milestoneid']);
 $project = verify_project($milestone['projectid']);
 $projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
@@ -246,6 +249,7 @@ $navbar = render_navbar_template($navbits);
 $templater = vB_Template::create('pt_milestone_issuelist');
 	$templater->register_page_templates();
 	$templater->register('assignable_users', $assignable_users);
+	$templater->register('columns', $columns);
 	$templater->register('filter_options', $filter_options);
 	$templater->register('filter_value', $filter_value);
 	$templater->register('issuebits', $issuebits);
