@@ -2535,6 +2535,7 @@ if ($_POST['do'] == 'projectpriorityupdate')
 		'projectid' => TYPE_UINT,
 		'title' => TYPE_NOHTML,
 		'displayorder' => TYPE_UINT,
+		'default' => TYPE_BOOL,
 		'statuscolor' => TYPE_STR,
 		'statuscolor2' => TYPE_STR,
 	));
@@ -2567,9 +2568,31 @@ if ($_POST['do'] == 'projectpriorityupdate')
 
 	if ($projectpriority['projectpriorityid'])
 	{
+		// Check first if the default value is already defined for this project
+		// If yes, remove it and save the actual form
+		$defaultvalue = $db->query_first("
+			SELECT projectpriorityid AS cat
+			FROM " . TABLE_PREFIX . "pt_projectpriority
+			WHERE defaultvalue = 1
+				AND projectid = " . intval($project['projectid']) . "
+		");
+
+		if ($defaultvalue['cat'] != $projectpriority['projectpriorityid'])
+		{
+			// Default value already defined for an other category
+			// Removing it
+			$db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
+					defaultvalue = 0
+				WHERE projectpriorityid = " . intval($defaultvalue['cat']) . "
+			");
+		}
+
+		// Perform the save
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
-				displayorder = " . $vbulletin->GPC['displayorder'] . "
+				displayorder = " . $vbulletin->GPC['displayorder'] . ",
+				defaultvalue = " . ($vbulletin->GPC['default'] ? 1 : 0) . "
 				" . ($vbulletin->GPC['statuscolor'] ? ", statuscolor = '" . $db->escape_string($vbulletin->GPC['statuscolor']) . "'" : '') . "
 				" . ($vbulletin->GPC['statuscolor2'] ? ", statuscolor2 = '" . $db->escape_string($vbulletin->GPC['statuscolor2']) . "'" : '') . "
 			WHERE projectpriorityid = " . $projectpriority['projectpriorityid'] . "
@@ -2594,12 +2617,34 @@ if ($_POST['do'] == 'projectpriorityupdate')
 	}
 	else
 	{
+		// Check first if the default value is already defined for this project
+		// If yes, remove it and save the actual form
+		$defaultvalue = $db->query_first("
+			SELECT projectpriorityid AS cat
+			FROM " . TABLE_PREFIX . "pt_projectpriority
+			WHERE defaultvalue = 1
+				AND projectid = " . intval($project['projectid']) . "
+		");
+
+		if ($defaultvalue['cat'])
+		{
+			// Default value already defined for an other category
+			// Removing it
+			$db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_projectpriority SET
+					defaultvalue = 0
+				WHERE projectpriorityid = " . intval($defaultvalue['cat']) . "
+			");
+		}
+
+		// Perform the save
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_projectpriority
-				(projectid, displayorder)
+				(projectid, displayorder, defaultvalue)
 			VALUES
-				($project[projectid],
-				" . $vbulletin->GPC['displayorder'] . ")
+				(" . $project['projectid'] . ",
+				" . $vbulletin->GPC['displayorder'] . ",
+				" . ($vbulletin->GPC['default'] ? 1 : 0) . ")
 		");
 
 		$priorityid = $db->insert_id();
@@ -2689,14 +2734,15 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectpriority['displayorder'], true, 5);
+	print_yes_no_row($vbphrase['default_value'], 'default', $projectpriority['default']);
 
 	require_once(DIR . '/includes/adminfunctions_template.php');
 	$colorPicker = construct_color_picker(11);
 
 	// Construct_color_row reworked just for here
 	echo "<tr>
-		<td class=\"alt1\">" . $vbphrase['severitycolor_darkstyles'] . "</td>
-		<td class=\"alt1\">
+		<td class=\"alt2\">" . $vbphrase['severitycolor_darkstyles'] . "</td>
+		<td class=\"alt2\">
 			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
 			<tr>
 				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$projectpriority['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
@@ -2708,8 +2754,8 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 	// Construct_color_row reworked just for here
 	echo "<tr>
-		<td class=\"alt2\">" . $vbphrase['severitycolor_lightstyles'] . "</td>
-		<td class=\"alt2\">
+		<td class=\"alt1\">" . $vbphrase['severitycolor_lightstyles'] . "</td>
+		<td class=\"alt1\">
 			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
 			<tr>
 				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor2\" id=\"color_1\" value=\"{$projectpriority['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(1)\" dir=\"ltr\" />&nbsp;</td>
@@ -2929,7 +2975,8 @@ if ($_POST['do'] == 'projectcategoryupdate')
 		'projectcategoryid' => TYPE_UINT,
 		'projectid' => TYPE_UINT,
 		'title' => TYPE_NOHTML,
-		'displayorder' => TYPE_UINT
+		'displayorder' => TYPE_UINT,
+		'default' => TYPE_BOOL
 	));
 
 	if ($vbulletin->GPC['projectcategoryid'])
@@ -2960,9 +3007,31 @@ if ($_POST['do'] == 'projectcategoryupdate')
 
 	if ($projectcategory['projectcategoryid'])
 	{
+		// Check first if the default value is already defined for this project
+		// If yes, remove it and save the actual form
+		$defaultvalue = $db->query_first("
+			SELECT projectcategoryid AS cat
+			FROM " . TABLE_PREFIX . "pt_projectcategory
+			WHERE defaultvalue = 1
+				AND projectid = " . intval($project['projectid']) . "
+		");
+
+		if ($defaultvalue['cat'] != $projectcategory['projectcategoryid'])
+		{
+			// Default value already defined for an other category
+			// Removing it
+			$db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_projectcategory SET
+					defaultvalue = 0
+				WHERE projectcategoryid = " . intval($defaultvalue['cat']) . "
+			");
+		}
+
+		// Perform the save
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectcategory SET
-				displayorder = " . $vbulletin->GPC['displayorder'] . "
+				displayorder = " . $vbulletin->GPC['displayorder'] . ",
+				defaultvalue = " . ($vbulletin->GPC['default'] ? 1 : 0) . "
 			WHERE projectcategoryid = $projectcategory[projectcategoryid]
 		");
 
@@ -2985,12 +3054,34 @@ if ($_POST['do'] == 'projectcategoryupdate')
 	}
 	else
 	{
+		// Check first if the default value is already defined for this project
+		// If yes, remove it and save the actual form
+		$defaultvalue = $db->query_first("
+			SELECT projectcategoryid AS cat
+			FROM " . TABLE_PREFIX . "pt_projectcategory
+			WHERE defaultvalue = 1
+				AND projectid = " . intval($project['projectid']) . "
+		");
+
+		if ($defaultvalue['cat'])
+		{
+			// Default value already defined for an other category
+			// Removing it
+			$db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_projectcategory SET
+					defaultvalue = 0
+				WHERE projectcategoryid = " . intval($defaultvalue['cat']) . "
+			");
+		}
+
+		// Perform the save
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_projectcategory
-				(projectid, displayorder)
+				(projectid, displayorder, defaultvalue)
 			VALUES
-				($project[projectid],
-				" . $vbulletin->GPC['displayorder'] . ")
+				(" . $project['projectid'] . ",
+				" . $vbulletin->GPC['displayorder'] . ",
+				" . ($vbulletin->GPC['default'] ? 1 : 0) . ")
 		");
 
 		$categoryid = $db->insert_id();
@@ -3077,6 +3168,7 @@ if ($_REQUEST['do'] == 'projectcategoryadd' OR $_REQUEST['do'] == 'projectcatego
 
 	print_input_row($vbphrase['title'] . ($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . $projectcategory['projectcategoryid'], true) . '</dfn>' : ''), 'title', $vbphrase['category' . $projectcategory['projectcategoryid'] . ''], false);
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectcategory['displayorder'], true, 5);
+	print_yes_no_row($vbphrase['default_value'], 'default', $projectpriority['default']);
 	construct_hidden_code('projectid', $project['projectid']);
 	construct_hidden_code('projectcategoryid', $projectcategory['projectcategoryid']);
 	print_submit_row();
@@ -3609,12 +3701,11 @@ if ($_REQUEST['do'] == 'projectadd' OR $_REQUEST['do'] == 'projectedit')
 	print_yes_no_row($vbphrase['send_pm_on_issueassignment'], 'options[pmonassignment]', (intval($project['options']) & $vbulletin->bf_misc['pt_projectoptions']['pmonassignment'] ? 1 : 0));
 	print_input_row($vbphrase['display_order'], 'displayorder', $project['displayorder'], true, 5);
 
-	// Phrase them
 	$required = array(
-		0 => 'Off, do not use at all',
-		1 => 'On, set to a default value (not set by user)',
-		2 => 'On, not required',
-		3 => 'On, required'
+		0 => $vbphrase['required_not_use'],
+		1 => $vbphrase['required_default_not_user_value'],
+		2 => $vbphrase['required_not_required'],
+		3 => $vbphrase['required_required']
 	);
 
 	print_select_row($vbphrase['required_requireappliesversion'], 'requireappliesversion', $required, $project['requireappliesversion']);

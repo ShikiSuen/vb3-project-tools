@@ -1482,6 +1482,10 @@ $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requireappliesv
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirecategory INT UNSIGNED NOT NULL DEFAULT 0");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirepriority INT UNSIGNED NOT NULL DEFAULT 0");
 
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversion ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectpriority ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
+
 $options = 0;
 $required = 0;
 $requireappliesversion = 0;
@@ -11546,6 +11550,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="chose_delete_types_project" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[You chose to delete one or more issue types from this project. To complete this process, you should choose a new issue type and status to move all affected issues into.
 		<p>If do not do this, the issues will remain but become inaccessible until their type is re-enabled for this project. To skip this process and go back to the project list, <a href="project.php?do=projectlist">click here</a>.</p>]]></phrase>
 			<phrase name="completed_date_desc" date="1213893922" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[If you specify a date here, this milestone will be moved to the "Completed Milestones" list.]]></phrase>
+			<phrase name="default_value" date="1309073635" username="Pitchoune" version="2.2.0"><![CDATA[Default value
+<dfn>This option is needed only if you require this setting but not from the user. You can define if this setting is required in the edit project page.</dfn>]]></phrase>
 			<phrase name="default_version_group" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Default Version Group]]></phrase>
 			<phrase name="default_version_number" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Default Version Number]]></phrase>
 			<phrase name="deleted_issue_type" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[Deleted Issue Type]]></phrase>
@@ -11678,9 +11684,13 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="rebuilding_milestone_counters_will_update_various_fields" date="1213799620" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Rebuilding milestone counters will update various fields related to a milestone that might become out of date but can be rebuilt.]]></phrase>
 			<phrase name="rebuilding_profile_issue_counters_will_update_various_fields" date="1278280116" username="Pitchoune" version="2.1.2"><![CDATA[Rebuilding profile issue counters will update the number of issues every user have made.]]></phrase>
 			<phrase name="rebuilding_project_counters_will_update_various_fields" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Rebuilding project counters will update various fields related to an project that might become out of date but can be rebuilt. Run this once you know your issue counters are up to date.]]></phrase>
+			<phrase name="required_default_not_user_value" date="1309072061" username="Pitchoune" version="2.2.0"><![CDATA[On, set to a default value (not set by user)]]></phrase>
 			<phrase name="required_fields_issue_submit" date="1178899261" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Required Fields<dfn>When submitting an issue, the following fields must be populated.</dfn>]]></phrase>
+			<phrase name="required_not_required" date="1309072084" username="Pitchoune" version="2.2.0"><![CDATA[On, not required]]></phrase>
+			<phrase name="required_not_use" date="1309072035" username="Pitchoune" version="2.2.0"><![CDATA[Off, do not use at all]]></phrase>
 			<phrase name="required_requireappliesversion" date="1178899315" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Applicable Version]]></phrase>
 			<phrase name="required_requirecategory" date="1178899299" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Category]]></phrase>
+			<phrase name="required_required" date="1309072103" username="Pitchoune" version="2.2.0"><![CDATA[On, required]]></phrase>
 			<phrase name="required_requirepriority" date="1178899329" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Priority]]></phrase>
 			<phrase name="revert_to_default_permissions" date="1176816686" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Revert to default permissions?
 <dfn>If you choose this option, the selected permission sets will be deleted and the users in this group will use their global project permissions.</dfn>]]></phrase>
