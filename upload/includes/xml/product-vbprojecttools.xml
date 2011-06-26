@@ -6289,7 +6289,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1302401318" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1309101847" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6404,10 +6404,34 @@ init_project_readmarker_system();
 				<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_title}}">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
 				<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_username}}">{vb:rawphrase submitted_by}</a> {vb:raw sort_arrow.submitusername}
 			</div>
-			<div class="ptissuelist_lastpost"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_lastpost}}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
-			<div class="ptissuelist_replies"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_replies}}">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
-			<div class="ptissuelist_priority"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_priority}}">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
-			<div class="ptissuelist_status"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_issuestatus}}">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
+
+			<vb:if condition="$columns['lastpost']">
+				<div class="ptissuelist_lastpost"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_lastpost}}">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['replies']">
+				<div class="ptissuelist_replies"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_replies}}">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replycount}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['priority']">
+				<div class="ptissuelist_priority"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_priority}}">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['status']">
+				<div class="ptissuelist_status"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_issuestatus}}">{vb:rawphrase status}</a> {vb:raw sort_arrow.issuestatusid}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['category']">
+				<div class="ptissuelist_category"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_category}}">{vb:rawphrase category}</a> {vb:raw sort_arrow.projectcategoryid}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['addressversion']">
+				<div class="ptissuelist_addressversion"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_addressversion}}">{vb:rawphrase addressversion}</a> {vb:raw sort_arrow.addressversion}</div>
+			</vb:if>
+
+			<vb:if condition="$columns['applyversion']">
+				<div class="ptissuelist_applyversion"><a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_applyversion}}">{vb:rawphrase applyversion}</a> {vb:raw sort_arrow.applyversion}</div>
+			</vb:if>
 		</div>
 
 		<vb:if condition="$issuebits">
