@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ï¿½2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -50,9 +50,6 @@ $globaltemplates = array(
 	'pt_overview',
 	'pt_petitionbit',
 	'pt_project',
-	'pt_projectbit',
-	'pt_projectbit_typecount',
-	'pt_project_typecountbit',
 	'pt_postmenubit',
 	'pt_reportmenubit',
 	'pt_timeline',
@@ -303,7 +300,7 @@ if (empty($vbulletin->GPC['projectid']))
 	$show['search_options'] = false;
 
 	// project list
-	$projectbits = '';
+	$projectbits = array();
 
 	foreach ($vbulletin->pt_projects AS $project)
 	{
@@ -317,7 +314,7 @@ if (empty($vbulletin->GPC['projectid']))
 		$show['private_lastpost'] = false;
 		$project['newflag'] = false;
 
-		$type_counts = '';
+		$type_counts = array();
 
 		foreach ($project_types["$project[projectid]"] AS $type)
 		{
@@ -343,7 +340,7 @@ if (empty($vbulletin->GPC['projectid']))
 				$show['private_lastpost'] = (($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewothers']) ? false : true);
 			}
 
-			$typename = $vbphrase["issuetype_$type[issuetypeid]_plural"];
+			$type['name'] = $vbphrase["issuetype_$type[issuetypeid]_plural"];
 			$type['issuecount'] = vb_number_format($type['issuecount']);
 			$type['issuecountactive'] = vb_number_format($type['issuecountactive']);
 
@@ -370,11 +367,9 @@ if (empty($vbulletin->GPC['projectid']))
 
 			$type['countid'] = "project_typecount_$project[projectid]_$type[issuetypeid]";
 
-			$templater = vB_Template::create('pt_projectbit_typecount');
-				$templater->register('project', $project);
-				$templater->register('type', $type);
-				$templater->register('typename', $typename);
-			$type_counts .= $templater->render();
+			$type['pageinfo'] = array('issuetypeid' => $type['issuetypeid']);
+
+			$type_counts[] = $type;
 		}
 
 		if (!$type_counts)
@@ -395,17 +390,12 @@ if (empty($vbulletin->GPC['projectid']))
 		}
 
 		($hook = vBulletinHook::fetch_hook('project_overview_projectbit')) ? eval($hook) : false;
-
-		$templater = vB_Template::create('pt_projectbit');
-			$templater->register('project', $project);
-			$templater->register('type_counts', $type_counts);
-		$projectbits .= $templater->render();
+			
+		$projectbits[] = $project;
 	}
 
 	// report list
 	$reportbits = prepare_subscribed_reports();
-
-	$markread_script = vB_Template::create('pt_markread_script')->render();
 
 	// navbar and output
 	$navbits = construct_navbits(array('' => $vbphrase['projects']));
@@ -420,6 +410,7 @@ if (empty($vbulletin->GPC['projectid']))
 		$templater->register('projectbits', $projectbits);
 		$templater->register('reportbits', $reportbits);
 		$templater->register('timeline', $timeline);
+		$templater->register('type_counts', $type_counts);
 		$templater->register('contenttypeid', $issue_contenttypeid);
 	print_output($templater->render());
 }
@@ -550,7 +541,7 @@ $show['private_lastactivity'] = false;
 
 $postable_types = array();
 
-$type_counts = '';
+$type_counts = array();
 $post_issue_options = '';
 
 foreach ($project_types AS $type)
@@ -575,7 +566,7 @@ foreach ($project_types AS $type)
 			$show['private_lastactivity'] = (($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewothers']) ? false : true);
 		}
 
-		$typename = $vbphrase["issuetype_$type[issuetypeid]_plural"];
+		$type['name'] = $vbphrase["issuetype_$type[issuetypeid]_plural"];
 		$type['issuecount'] = vb_number_format($type['issuecount']);
 		$type['issuecountactive'] = vb_number_format($type['issuecountactive']);
 
@@ -598,12 +589,9 @@ foreach ($project_types AS $type)
 			$type['newflag'] = true;
 		}
 
-		$templater = vB_Template::create('pt_project_typecountbit');
-			$templater->register('project', $project);
-			$templater->register('type', $type);
-			$templater->register('typename', $typename);
-			$templater->register('contenttypeid', $issue_contenttypeid);
-		$type_counts .= $templater->render();
+		$type['pageinfo'] = array('issuetypeid' => $type['issuetypeid']);
+
+		$type_counts[] = $type;
 	}
 }
 

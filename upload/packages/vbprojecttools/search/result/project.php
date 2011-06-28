@@ -98,7 +98,7 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 		$show['private_lastpost'] = false;
 		$project['newflag'] = false;
 
-		$type_counts = '';
+		$type_counts = array();
 		foreach ($project_types["$project[projectid]"] AS $type)
 		{
 			if (!($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
@@ -123,7 +123,7 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 				$show['private_lastpost'] = (($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewothers']) ? false : true);
 			}
 
-			$typename = $vbphrase["issuetype_$type[issuetypeid]_plural"];
+			$type['name'] = $vbphrase["issuetype_$type[issuetypeid]_plural"];
 			$type['issuecount'] = vb_number_format($type['issuecount']);
 			$type['issuecountactive'] = vb_number_format($type['issuecountactive']);
 
@@ -148,11 +148,7 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 
 			$type['countid'] = "project_typecount_$project[projectid]_$type[issuetypeid]";
 
-			$templater = vB_Template::create('pt_projectbit_typecount');
-				$templater->register('project', $project);
-				$templater->register('type', $type);
-				$templater->register('typename', $typename);
-			$type_counts .= $templater->render();
+			$type_counts[] = $type;
 		}
 
 		if (!$type_counts)
@@ -164,7 +160,6 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 			$template->register('project', $project);
 			$template->register('type_counts', $type_counts);
 		return $template->render();
-
 	}
 }
 

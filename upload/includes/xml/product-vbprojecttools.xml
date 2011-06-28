@@ -3841,7 +3841,7 @@ legend {
 		</div>
 	</div>
 </form>]]></template>
-		<template name="pt_forumbit_project" templatetype="template" date="1294258002" username="Pitchoune" version="2.2.0"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
+		<template name="pt_forumbit_project" templatetype="template" date="1309277155" username="Pitchoune" version="2.2.0"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
 	<div class="forumrow table">
         <div class="foruminfo td">
 		<img id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
@@ -3865,7 +3865,14 @@ legend {
 	</ul>
 	<h4 class="nocss_label">{vb:rawphrase forum_statistics}:</h4>
 	<ul class="forumstats td">
-		{vb:raw type_counts}
+		<vb:each from="type_counts" value="type">
+			<li>
+				<a href="{vb:link issuelist, {vb:raw project}, {vb:raw type.pageinfo}}">{vb:raw type.name}</a>: 
+				<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
+					{vb:raw type.issuecountactive}&nbsp;/&nbsp;{vb:raw type.issuecount}
+				</span>
+			</li>
+		</vb:each>
 	</ul>
 	<div class="forumlastpost td">
 		<h4 class="lastpostlabel">{vb:rawphrase last_post}:</h4>
@@ -7017,7 +7024,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_overview" templatetype="template" date="1291146839" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_overview" templatetype="template" date="1309277433" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7118,10 +7125,54 @@ init_project_readmarker_system();
 			<div class="lastpost">{vb:rawphrase last_post}</div>
 			<div class="activeissues">{vb:rawphrase active_issues}</div>
 		</div>
-		{vb:raw projectbits}
+		<vb:each from="projectbits" value="project">
+			<div class="blockrow">
+				<div class="projectstatusicon">
+					<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
+				</div>
+				<div class="projecttitle<vb:if condition="$project['summary']"> hasdescription</vb:if>">
+					<div><a href="{vb:link project, {vb:raw project}}">{vb:raw project.title}</a></div>
+					<vb:if condition="$project['summary']"><div class="smallfont">{vb:raw project.summary}</div></vb:if>
+				</div>
+				<div class="projectlastpost">
+					<vb:if condition="$show['private_lastpost']">
+						{vb:rawphrase private}
+					<vb:elseif condition="$project['lastpostdate']" />
+						<div>
+							<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}">{vb:raw project.lastissuetitle_short}</a>
+							<p>{vb:rawphrase by_x, {vb:link member, {vb:raw project}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw project.lastpostusername}}
+							<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a></p>
+							<p class="lastpostdate">
+								{vb:raw project.lastpostdate} <span class="time">{vb:raw project.lastposttime}</span>&nbsp;
+							</p>
+						</div>
+					<vb:else />
+						{vb:rawphrase n_a}
+					</vb:if>
+				</div>
+				<div class="projecttypecounts">
+					<ul>
+						<vb:each from="type_counts" value="type">
+							<li>
+								<a href="{vb:link issuelist, {vb:raw project}, {vb:raw type.pageinfo}}">{vb:raw type.name}</a>: 
+								<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
+									{vb:raw type.issuecountactive}&nbsp;/&nbsp;{vb:raw type.issuecount}
+								</span>
+							</li>
+						</vb:each>
+					</ul>
+				</div>
+			</div>
+		</vb:each>
 	</div>
 </div>
-{vb:raw markread_script}
+<script type="text/javascript" src="clientscript/vbulletin_pt_read_marker.js?v={vb:raw vboptions.simpleversion}"></script>
+<script type="text/javascript">
+<!--
+vbphrase['doubleclick_project_markread'] = "{vb:rawphrase doubleclick_project_markread}";
+init_project_readmarker_system();
+//-->
+</script>
 <br />
 
 {vb:raw timeline}
@@ -8036,7 +8087,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1308943541" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1309276815" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8190,7 +8241,14 @@ init_project_readmarker_system();
 			<div class="projectdescription restore td">{vb:raw project.description}</div>
 			<div class="stats td">
 				<ul>
-					{vb:raw type_counts}
+					<vb:each from="type_counts" value="type">
+						<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px">
+							<a href="{vb:link issuelist, {vb:raw project}, {vb:raw type.pageinfo}}" class="shade"><span class="underline">{vb:raw type.name}</span></a>
+							<span <vb:if condition="$type['newflag']">style="font-weight: bold"</vb:if>>{vb:raw type.issuecountactive} / {vb:raw type.issuecount}</span>
+						</li>
+					</vb:each>
+
+
 					<vb:if condition="$show['milestones']">
 						<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px"><a href="projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="shade"><span class="underline">{vb:rawphrase milestones}</span></a> {vb:raw project.milestonecount_formatted}</li>
 					</vb:if>
@@ -8306,42 +8364,6 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_projectbit" templatetype="template" date="1294259352" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
-	<div class="projectstatusicon">
-		<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
-	</div>
-	<div class="projecttitle<vb:if condition="$project['summary']"> hasdescription</vb:if>">
-		<div><a href="{vb:link project, {vb:raw project}}">{vb:raw project.title}</a></div>
-		<vb:if condition="$project['summary']"><div class="smallfont">{vb:raw project.summary}</div></vb:if>
-	</div>
-	<div class="projectlastpost">
-		<vb:if condition="$show['private_lastpost']">
-			{vb:rawphrase private}
-		<vb:elseif condition="$project['lastpostdate']" />
-			<div>
-				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw project.lastissueid}&amp;goto=firstnew" title="{vb:rawphrase go_first_unread_in_thread_x, {vb:raw project.lastissuetitle}}">{vb:raw project.lastissuetitle_short}</a>
-				<p>{vb:rawphrase by_x, {vb:link member, {vb:raw project}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw project.lastpostusername}}
-				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw project.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a></p>
-				<p class="lastpostdate">
-					{vb:raw project.lastpostdate} <span class="time">{vb:raw project.lastposttime}</span>&nbsp;
-				</p>
-			</div>
-		<vb:else />
-			{vb:rawphrase n_a}
-		</vb:if>
-	</div>
-	<div class="projecttypecounts">
-		<ul>
-		{vb:raw type_counts}
-		</ul>
-	</div>
-</div>]]></template>
-		<template name="pt_projectbit_typecount" templatetype="template" date="1296289590" username="Pitchoune" version="2.2.0"><![CDATA[<li>
-	<a href="{vb:link issuelist, {vb:raw project}}&amp;issuetypeid={vb:raw type.issuetypeid}">{vb:raw typename}</a>: 
-	<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
-		{vb:raw type.issuecountactive}&nbsp;/&nbsp;{vb:raw type.issuecount}
-	</span>
-</li>]]></template>
 		<template name="pt_project_milestones" templatetype="template" date="1308853340" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
@@ -8453,10 +8475,6 @@ init_project_readmarker_system();
 		{vb:raw projecttype.issuetype}
 	</div>
 </div>]]></template>
-		<template name="pt_project_typecountbit" templatetype="template" date="1294758701" username="Pitchoune" version="2.2.0"><![CDATA[<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px">
-	<a href="{vb:link issuelist, {vb:raw project}, {vb:raw pageinfo_issuetype}}" class="shade"><span class="underline">{vb:raw typename}</span></a>
-	<span <vb:if condition="$type['newflag']">style="font-weight: bold"</vb:if>>{vb:raw type.issuecountactive} / {vb:raw type.issuecount}</span>
-</li>]]></template>
 		<template name="pt_reportbit" templatetype="template" date="1292872324" username="Pitchoune" version="2.1.2"><![CDATA[<div class="blockrow">
 	<div class="ptreportlist_checkbox">
 		<vb:if condition="$bbuserinfo['userid']">
@@ -10009,7 +10027,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		</div>
 	</div>
 </li>]]></template>
-		<template name="search_results_ptproject" templatetype="template" date="1273322127" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li class="threadbit" id="project_{vb:raw project.projectid}">
+		<template name="search_results_ptproject" templatetype="template" date="1309276075" username="Pitchoune" version="2.2.0"><![CDATA[<li class="threadbit" id="project_{vb:raw project.projectid}">
 	<div class="nonsticky">
 		<div class="threadinfo thread">
 			<!--  status icon block -->
@@ -10033,7 +10051,14 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		<!-- threadstats -->
 		<div class="threadstats td">
 			<ul>
-			{vb:raw type_counts}
+				<vb:each from="type_counts" value="type">
+					<li>
+						<a href="{vb:link issuelist, {vb:raw project}}&amp;issuetypeid={vb:raw type.issuetypeid}">{vb:raw type.name}</a>: 
+						<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
+							{vb:raw type.issuecountactive}&nbsp;/&nbsp;{vb:raw type.issuecount}
+						</span>
+					</li>
+				</vb:each>
 			</ul>
 		</div>
 	</div>
@@ -10345,6 +10370,7 @@ switch (THIS_SCRIPT)
 			$pt_templates[] = 'pt_projectbit_typecount';
 		}
 		$pt_templates[] = 'block_issues';
+		$pt_templates[] = 'pt_forumhome_legend';
 		break;
 
 	case 'usercp':
