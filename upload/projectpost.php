@@ -1923,20 +1923,26 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$issue['issuestatus'] =  $vbphrase["issuestatus$issue[issuestatusid]"];
 	}
 
-	$category_options = '';
+	$category_options = array();
 
 	foreach ($vbulletin->pt_categories AS $category)
 	{
+		$option = array();
+
 		if ($category['projectid'] != $project['projectid'])
 		{
 			continue;
 		}
 
-		$category_options .= render_option_template($vbphrase['category' . $category['projectcategoryid']], $category['projectcategoryid'], ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : ''));
+		$option['title'] = $vbphrase['category' . $category['projectcategoryid']];
+		$option['value'] = $category['projectcategoryid'];
+		$option['selected'] = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
+
+		$category_options[] = $option;
 	}
 
 	// setup priority options
-	$priority = array();
+	$priority = $priority_options = array();
 
 	$priorities = $db->query_read("
 		SELECT *
@@ -1951,7 +1957,13 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 
 	foreach ($priority AS $optionvalue => $options)
 	{
-		$priority_options .= render_option_template($vbphrase['priority' . $optionvalue . ''], $optionvalue, ($issue['priority'] == $optionvalue ? ' selected="selected"' : ''));
+		$option = array();
+
+		$option['title'] = $vbphrase['priority' . $optionvalue . ''];
+		$option['value'] = $optionvalue;
+		$option['selected'] = ($issue['priority'] == $optionvalue ? ' selected="selected"' : '');
+
+		$priority_options[] = $option;
 	}
 
 	// setup versions
@@ -3328,22 +3340,28 @@ if ($_POST['do'] == 'moveissue2')
 	}
 
 	// categories
-	$category_options = '';
+	$category_options = array();
 
 	foreach ($vbulletin->pt_categories AS $category)
 	{
+		$option = array();
+
 		if ($category['projectid'] != $new_project['projectid'])
 		{
 			continue;
 		}
 
-		$category_options .= render_option_template($category['title'], $category['projectcategoryid'], ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : ''));
+		$option['title'] = $vbphrase['category' . $category['projectcategoryid'] . ''];
+		$option['value'] = $category['projectcategoryid'];
+		$option['selected'] = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
+
+		$category_options[] $option;
 	}
 
 	$category_unknown_selected = ($issue['projectcategoryid'] == 0 ? ' selected="selected"' : '');
 
 	// setup priority options
-	$priority = array();
+	$priority = $priority_options = array();
 
 	$priorities = $db->query_read("
 		SELECT *
@@ -3358,7 +3376,13 @@ if ($_POST['do'] == 'moveissue2')
 
 	foreach ($priority AS $optionvalue => $options)
 	{
-		$priority_options .= render_option_template($vbphrase['priority' . $optionvalue . ''], $optionvalue, ($issue['priority'] == $optionvalue ? ' selected="selected"' : ''));
+		$option = array();
+
+		$option['title'] = $vbphrase['priority' . $optionvalue . ''];
+		$option['value'] = $optionvalue;
+		$option['selected'] = ($issue['priority'] == $optionvalue ? ' selected="selected"' : '');
+
+		$priority_options[] = $option;
 	}
 
 	// setup versions
@@ -4382,9 +4406,6 @@ if ($_POST['do'] == 'importcontent2')
 			$unapplied_tags .= render_option_template($tag['tagtext'], $tag['tagtext']);
 		}
 	}
-
-	// status
-	//$status_options = build_issuestatus_select($vbulletin->pt_issuetype["$issuetypeid"]['statuses'], $issue['issuestatusid']);
 
 	// status
 	// Select the default status from the corresponding project / issue type
