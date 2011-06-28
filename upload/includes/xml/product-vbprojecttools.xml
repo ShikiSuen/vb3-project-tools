@@ -1467,9 +1467,7 @@ $db->query_write("
 $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
 		<code version="2.2.0">
-			<installcode><![CDATA[<?php
-
-// For new phrases
+			<installcode><![CDATA[// For new phrases
 $full_product_info = fetch_product_list(true);
 
 /*================================*\
