@@ -3355,7 +3355,7 @@ if ($_POST['do'] == 'moveissue2')
 		$option['value'] = $category['projectcategoryid'];
 		$option['selected'] = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
 
-		$category_options[] $option;
+		$category_options[] = $option;
 	}
 
 	$category_unknown_selected = ($issue['projectcategoryid'] == 0 ? ' selected="selected"' : '');
