@@ -50,6 +50,7 @@ $globaltemplates = array(
 	'pt_overview',
 	'pt_petitionbit',
 	'pt_project',
+	'pt_projectbit',
 	'pt_postmenubit',
 	'pt_timeline',
 	'pt_timeline_group',
@@ -299,7 +300,7 @@ if (empty($vbulletin->GPC['projectid']))
 	$show['search_options'] = false;
 
 	// project list
-	$projectbits = array();
+	$projectbits = '';
 
 	foreach ($vbulletin->pt_projects AS $project)
 	{
@@ -390,7 +391,10 @@ if (empty($vbulletin->GPC['projectid']))
 
 		($hook = vBulletinHook::fetch_hook('project_overview_projectbit')) ? eval($hook) : false;
 			
-		$projectbits[] = $project;
+		$templater = vB_Template::create('pt_projectbit');
+			$templater->register('project', $project);
+			$templater->register('type_counts', $type_counts);
+		$projectbits .= $templater->render();
 	}
 
 	// report list
@@ -409,7 +413,6 @@ if (empty($vbulletin->GPC['projectid']))
 		$templater->register('projectbits', $projectbits);
 		$templater->register('reportbits', $reportbits);
 		$templater->register('timeline', $timeline);
-		$templater->register('type_counts', $type_counts);
 		$templater->register('contenttypeid', $issue_contenttypeid);
 	print_output($templater->render());
 }
