@@ -413,7 +413,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			// 2 = On, not required
 			// 3 = On, required
 
-			if (in_array($project_requiredappliesversion, array(1, 2, 3) AND !$this->fetch_field('appliesversionid'))
+			if (in_array($project_requiredappliesversion, array(1, 2, 3)) AND !$this->fetch_field('appliesversionid'))
 			{
 				if ($project_requiredappliesversion == 1)
 				{
@@ -440,7 +440,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				}
 			}
 
-			if (in_array($project_requiredcategory, array(1, 2, 3) AND !$this->fetch_field('projectcategoryid'))
+			if (in_array($project_requiredcategory, array(1, 2, 3)) AND !$this->fetch_field('projectcategoryid'))
 			{
 				if ($project_requiredcategory == 1)
 				{
@@ -467,7 +467,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				}
 			}
 
-			if (in_array($project_requiredpriority, array(1, 2, 3) AND !$this->fetch_field('priority'))
+			if (in_array($project_requiredpriority, array(1, 2, 3)) AND !$this->fetch_field('priority'))
 			{
 				if ($project_requiredpriority == 1)
 				{
