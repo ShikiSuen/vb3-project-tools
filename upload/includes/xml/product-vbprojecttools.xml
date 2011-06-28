@@ -3975,7 +3975,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1304433928" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1309268784" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4076,7 +4076,9 @@ legend {
 					<ul class="rightcol">
 						<li>
 							<select class="primary" name="priority" tabindex="1">
-								{vb:raw priority_options}
+								<vb:each from="priority_options" value="option">
+									<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+								</vb:each>
 							</select>
 						</li>
 					</ul>
@@ -4091,7 +4093,9 @@ legend {
 						<li>
 							<select class="primary" name="projectcategoryid" tabindex="1">
 								<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
-								{vb:raw category_options}
+								<vb:each from="category_options" value="option">
+									<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+								</vb:each>
 							</select>
 						</li>
 					</ul>
@@ -4114,10 +4118,13 @@ legend {
 					<ul class="rightcol">
 						<li>
 							<vb:if condition="$show['status_edit']">
-								<select class="primary" name="issuestatusid" tabindex="1">{vb:raw status_options}</select>
+								<select class="primary" name="issuestatusid" tabindex="1">
+									<vb:each from="status_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
+								</select>
 							<vb:else />
-								{vb:raw status_options}
-								<input type="hidden" name="issuestatusid" value="{vb:raw issue.issuestatusid}" />
+								{vb:raw issue.issuestatus}
 							</vb:if>
 						</li>
 					</ul>
@@ -4258,7 +4265,9 @@ legend {
 						<li>
 							<vb:if condition="$show['status_edit']">
 								<select name="issuestatusid" class="primary" tabindex="2">
-									{vb:raw status_options}
+									<vb:each from="status_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.issuestatus}
@@ -6537,7 +6546,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1304432405" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1309268014" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6629,7 +6638,9 @@ init_project_readmarker_system();
 					<ul class="rightcol">
 						<li>
 							<select class="primary" name="priority" tabindex="1">
-								{vb:raw priority_options}
+								<vb:each from="priority_options" value="option">
+									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+								</vb:each>
 							</select>
 						</li>
 					</ul>
@@ -6644,7 +6655,9 @@ init_project_readmarker_system();
 						<li>
 							<select class="primary" name="projectcategoryid" tabindex="1">
 								<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
-								{vb:raw category_options}
+								<vb:each from="category_options" value="option">
+									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+								</vb:each>
 							</select>
 						</li>
 					</ul>
@@ -6667,7 +6680,11 @@ init_project_readmarker_system();
 					<ul class="rightcol">
 						<li>
 							<vb:if condition="$show['status_edit']">
-								<select class="primary" name="issuestatusid" tabindex="1">{vb:raw status_options}</select>
+								<select class="primary" name="issuestatusid" tabindex="1">
+									<vb:each from="status_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
+								</select>
 							<vb:else />
 								{vb:raw issue.issuestatus}
 							</vb:if>
@@ -6810,7 +6827,9 @@ init_project_readmarker_system();
 						<li>
 							<vb:if condition="$show['status_edit']">
 								<select name="issuestatusid" class="primary" tabindex="2">
-									{vb:raw status_options}
+									<vb:each from="status_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.issuestatus}
@@ -7249,7 +7268,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1309264355" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1309268031" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7590,7 +7609,9 @@ init_project_readmarker_system();
 						<li>
 							<vb:if condition="$show['status_edit']">
 								<select name="issuestatusid" class="primary" tabindex="2">
-									{vb:raw status_options}
+									<vb:each from="status_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.issuestatus}
@@ -7775,7 +7796,7 @@ init_project_readmarker_system();
 		{vb:raw typename}
 	</a>
 </li>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1294259214" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postreply" templatetype="template" date="1309268930" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7915,7 +7936,9 @@ init_project_readmarker_system();
 							<li>
 								<select name="changestatusid" tabindex="1" class="primary">
 									<option value="0">{vb:rawphrase none_meta}</option>
-									{vb:raw petition_options}
+									<vb:each from="petition_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
 								</select>
 							</li>
 						</ul>
@@ -7936,7 +7959,9 @@ init_project_readmarker_system();
 							<li>
 								<select name="petitionstatusid" tabindex="2" style="display:block; width:200px">
 									<option value="0">{vb:rawphrase none_meta}</option>
-									{vb:raw petition_options}
+									<vb:each from="petition_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
 								</select>
 							</li>
 						</ul>

@@ -932,6 +932,7 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 
 	if (!$issuenote['issuenoteid'])
 	{
+		// Add reply
 		if (!$vbulletin->pt_issuestatus["$issue[issuestatusid]"]['canpetitionfrom'])
 		{
 			$show['status_petition'] = false;
@@ -971,6 +972,7 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 	}
 	else
 	{
+		// Edit reply
 		$show['status_petition'] = false;
 		$show['subscribe_option'] = false;
 
@@ -4299,8 +4301,7 @@ if ($_POST['do'] == 'importcontent2')
 	}
 
 	// setup priorities
-	$priority_array = array();
-	$priority_options = '';
+	$priority_array = $priority_options = array();
 
 	$priorities = $db->query_read("
 		SELECT *
@@ -4315,21 +4316,30 @@ if ($_POST['do'] == 'importcontent2')
 
 	foreach ($priority_array AS $optionvalue => $options)
 	{
-		$optiontitle = $vbphrase['priority' . $optionvalue . ''];
-		$priority_options .= render_option_template($optiontitle, $optionvalue);
+		$option = array();
+
+		$option['title'] = $vbphrase['priority' . $optionvalue . ''];
+		$option['value'] = $optionvalue;
+
+		$priority_options[] = $option;
 	}
 
 	// categories
-	$category_options = '';
+	$category_options = array();
 
 	foreach ($vbulletin->pt_categories AS $category)
 	{
+		$option = array();
+
 		if ($category['projectid'] != $project['projectid'])
 		{
 			continue;
 		}
 
-		$category_options .= render_option_template($category['title'], $category['projectcategoryid']);
+		$option['title'] = $vbphrase['category' . $category['projectcategoryid'] . ''];
+		$option['value'] = $category['projectcategoryid'];
+
+		$category_options[] = $option;
 	}
 
 	$category_unknown_selected = ' selected="selected"';
