@@ -1310,8 +1310,8 @@ function build_issuestatus_select($statuses, $selectedid = 0, $skipids = array()
 {
 	global $vbulletin, $vbphrase, $show;
 
-	$options = '';
-	$optionclass = '';
+	$options = $option = array();
+
 	foreach ($statuses AS $status)
 	{
 		if (in_array($status['issuestatusid'], $skipids))
@@ -1319,10 +1319,10 @@ function build_issuestatus_select($statuses, $selectedid = 0, $skipids = array()
 			continue;
 		}
 
-		$optionvalue = $status['issuestatusid'];
-		$optiontitle = $vbphrase["issuestatus$status[issuestatusid]"];
-		$optionselected = ($selectedid == $status['issuestatusid'] ? ' selected="selected"' : '');
-		$options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$option['value'] = $status['issuestatusid'];
+		$option['title'] = $vbphrase["issuestatus$status[issuestatusid]"];
+		$option['selected'] = ($selectedid == $status['issuestatusid'] ? ' selected="selected"' : '');
+		$options[] = $option;
 	}
 
 	return $options;
