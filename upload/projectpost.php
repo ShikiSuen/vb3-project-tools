@@ -1,9 +1,9 @@
-﻿<?php
+<?php
 /*======================================================================*\
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ï¿½2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright �2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
