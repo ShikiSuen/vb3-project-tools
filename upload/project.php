@@ -51,7 +51,6 @@ $globaltemplates = array(
 	'pt_petitionbit',
 	'pt_project',
 	'pt_postmenubit',
-	'pt_reportmenubit',
 	'pt_timeline',
 	'pt_timeline_group',
 	'pt_timeline_item',

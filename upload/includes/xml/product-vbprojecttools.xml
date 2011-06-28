@@ -7024,7 +7024,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_overview" templatetype="template" date="1309277433" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_overview" templatetype="template" date="1309278112" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7082,7 +7082,9 @@ init_project_readmarker_system();
 				</h6>
 				<ul class="popupbody">
 					<vb:if condition="$show['member']">
-						{vb:raw reportbits}
+						<vb:each from="reportbits" value="report">
+							<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=viewreport&amp;issuereportid={vb:raw report.issuereportid}">{vb:raw report.title}</a></li>
+						</vb:each>
 					</vb:if>
 					<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=reports"><strong>{vb:rawphrase view_all}</strong></a></li>
 				</ul>
@@ -8087,7 +8089,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1309276815" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1309278138" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8171,7 +8173,9 @@ init_project_readmarker_system();
 					<a class="popupctrl" rel="nofollow" href="javascript://">{vb:rawphrase my_reports}</a>
 				</h6>
 				<ul class="popupbody">
-					{vb:raw reportbits}
+					<vb:each from="reportbits" value="report">
+						<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=viewreport&amp;issuereportid={vb:raw report.issuereportid}">{vb:raw report.title}</a></li>
+					</vb:each>
 					<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=reports"><strong>{vb:rawphrase view_all}</strong></a></li>
 				</ul>
 			</li>
@@ -8599,7 +8603,6 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_reportmenubit" templatetype="template" date="1272736733" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=viewreport&amp;issuereportid={vb:raw report.issuereportid}">{vb:raw report.title}</a></li>]]></template>
 		<template name="pt_savereport" templatetype="template" date="1291147048" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>

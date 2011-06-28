@@ -1386,7 +1386,7 @@ function prepare_subscribed_reports($projectid_limit = 0, $userid = -1)
 
 	$projectid_limit = intval($projectid_limit);
 
-	$reportbits = '';
+	$reportbits = array();
 
 	$subscribed_reports = $db->query_read_slave("
 		SELECT issuereport.issuereportid, issuereport.title, issuereport.projectlist, issuereport.issuetypelist
@@ -1405,16 +1405,16 @@ function prepare_subscribed_reports($projectid_limit = 0, $userid = -1)
 			$projects = explode(',', $report['projectlist']);
 			if (in_array($projectid_limit, $projects))
 			{
-				$templater = vB_Template::create('pt_reportmenubit');
-					$templater->register('report', $report);
-				$reportbits .= $templater->render();
+				//$templater = vB_Template::create('pt_reportmenubit');
+					//$templater->register('report', $report);
+				$reportbits[] = $report;// .= $templater->render();
 			}
 		}
 		else
 		{
-			$templater = vB_Template::create('pt_reportmenubit');
-				$templater->register('report', $report);
-			$reportbits .= $templater->render();
+			//$templater = vB_Template::create('pt_reportmenubit');
+				//$templater->register('report', $report);
+			$reportbits[] = $report;// .= $templater->render();
 		}
 	}
 
