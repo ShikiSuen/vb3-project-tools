@@ -1470,6 +1470,20 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 			<installcode><![CDATA[// For new phrases
 $full_product_info = fetch_product_list(true);
 
+// Adding a table for priority
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectpriority (
+		projectpriorityid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		projectid INT UNSIGNED NOT NULL,
+		displayorder INT UNSIGNED NOT NULL,
+		statuscolor VARCHAR(20) NOT NULL,
+		statuscolor2 VARCHAR(20) NOT NULL,
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (projectpriorityid),
+		KEY finder (projectid,displayorder)
+	) ENGINE=MyISAM
+");
+
 /*================================*\
 || ############################## ||
 || #		  Projects			# ||
@@ -1482,7 +1496,6 @@ $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirepriority
 
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversion ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectpriority ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
 
 $options = 0;
 $required = 0;
@@ -1665,19 +1678,6 @@ if ($datacategory)
 || #		Priorities			# ||
 || ############################## ||
 \*================================*/
-
-// Adding a table for priority
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectpriority (
-		projectpriorityid INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		projectid INT UNSIGNED NOT NULL,
-		displayorder INT UNSIGNED NOT NULL,
-		statuscolor VARCHAR(20) NOT NULL,
-		statuscolor2 VARCHAR(20) NOT NULL,
-		PRIMARY KEY (projectpriorityid),
-		KEY finder (projectid,displayorder)
-	) ENGINE=MyISAM
-");
 
 $project_array = array();
 
@@ -10732,13 +10732,12 @@ $show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];
 // Display the link in showthread
 // I hope future vB versions will add a template_hook in this place
 // as this code is not completely useful (can slow a page load)
+// See http://tracker.vbulletin.com/browse/VBIV-12571
 
 if ($show['createptissue'])
 {
-	$vbulletin->templatecache['SHOWTHREAD'] = str_replace('postings.php" method="post">
-						<ul class="popupbody popuphover">', 'postings.php" method="post">
-						<ul class="popupbody popuphover">
-<li><label><input type="radio" name="do" value="createptissue" /> ' . $vbphrase['pt_create_issue'] . '&hellip;</label></li>', $vbulletin->templatecache['SHOWTHREAD']);
+	$vbulletin->templatecache['SHOWTHREAD'] = preg_replace('#postings\.php" method="post">[\r\n\t]+<ul class="popupbody popuphover">#s', '\0<li><label><input type="radio" name="do" value="createptissue" /> ' . $vbphrase['pt_create_issue'] . '&hellip;</label></li>', $vbulletin->templatecache['SHOWTHREAD']);
+
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
