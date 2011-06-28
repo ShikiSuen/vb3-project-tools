@@ -51,7 +51,6 @@ $globaltemplates = array(
 	'pt_petitionbit',
 	'pt_project',
 	'pt_projectbit',
-	'pt_postmenubit',
 	'pt_timeline',
 	'pt_timeline_group',
 	'pt_timeline_item',
@@ -544,20 +543,17 @@ $show['private_lastactivity'] = false;
 $postable_types = array();
 
 $type_counts = array();
-$post_issue_options = '';
+$post_issue_options = array();
 
 foreach ($project_types AS $type)
 {
 	if (($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) AND ($projectperms["$type[issuetypeid]"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
 	{
 		$postable_types[] = $type['issuetypeid'];
-		$typename = $vbphrase["issuetype_$type[issuetypeid]_singular"];
-		$templater = vB_Template::create('pt_postmenubit');
-			$templater->register('project', $project);
-			$templater->register('type', $type);
-			$templater->register('typename', $typename);
-			$templater->register('contenttypeid', $issue_contenttypeid);
-		$post_issue_options .= $templater->render();
+
+		$type['name'] = $vbphrase["issuetype_$type[issuetypeid]_singular"];
+
+		$post_issue_options[] = $type;
 	}
 
 	if (($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))

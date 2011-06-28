@@ -46,7 +46,6 @@ $globaltemplates = array(
 	'pt_issuelist_arrow',
 	'pt_listprojects',
 	'pt_listprojects_link',
-	'pt_postmenubit',
 	'pt_issuebit',
 	'pt_issuebit_pagelink',
 	'pt_issuebit_deleted',
@@ -422,14 +421,9 @@ foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
 	{
 		$postable_types[] = $issuetypeid;
 		$type = $typeinfo;
-		$typename = $vbphrase["issuetype_{$issuetypeid}_singular"];
+		$type['name'] = $vbphrase["issuetype_{$issuetypeid}_singular"];
 
-		$templater = vB_Template::create('pt_postmenubit');
-			$templater->register('project', $project);
-			$templater->register('type', $type);
-			$templater->register('typename', $typename);
-			$templater->register('contenttypeid', $issue_contenttypeid);
-		$post_issue_options .= $templater->render();
+		$post_issue_options[] = $type;
 	}
 
 	if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))

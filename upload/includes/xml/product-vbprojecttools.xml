@@ -5014,7 +5014,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1294753607" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}, {vb:raw pageinfo_pagelink}}">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1307034605" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1309285397" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5078,7 +5078,16 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 						<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>
 					</a>
 					<ul class="navpopupbody popupbody">
-						{vb:raw post_issue_options}
+						<vb:each from="post_issue_options" value="type">
+							<li>
+								<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}">
+									<vb:if condition="$type['iconfile']">
+										<img src="{vb:stylevar imgdir_statusicon}/{vb:raw type.iconfile}" alt="{vb:raw type.name}" border="0" class="inlineimg" />
+									</vb:if>
+									{vb:raw type.name}
+								</a>
+							</li>
+						</vb:each>
 					</ul>
 				</div>
 			</vb:if>
@@ -6022,7 +6031,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1291146781" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1309285352" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6070,7 +6079,16 @@ init_project_readmarker_system();
 						<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>
 					</a>
 					<ul class="navpopupbody popupbody">
-						{vb:raw post_issue_options}
+						<vb:each from="post_issue_options" value="type">
+							<li>
+								<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw type.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}<vb:if condition="$type['milestoneid']">&amp;milestoneid={vb:raw type.milestoneid}</vb:if>">
+									<vb:if condition="$type['iconfile']">
+										<img src="{vb:stylevar imgdir_statusicon}/{vb:raw type.iconfile}" alt="{vb:raw type.name}" border="0" class="inlineimg" />
+									</vb:if>
+									{vb:raw type.name}
+								</a>
+							</li>
+						</vb:each>
 					</ul>
 				</div>
 			</vb:if>
@@ -6083,20 +6101,6 @@ init_project_readmarker_system();
 	</div>
 </div>
 </vb:if>
-
-<vb:comment>
-<vb:if condition="$post_issue_options">
-	<div class="pt_issuepopup">
-		<div class="navpopupmenu popupmenu nohovermenu">
-			<a class="popupctrl" href="{vb:raw relpath}">
-				<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>					</a>
-			<ul class="navpopupbody popupbody">
-				{vb:raw post_issue_options}
-			</ul>
-		</div>
-	</div>
-</vb:if>
-</vb:comment>
 
 <vb:if condition="$show['search_options']">
 <div id="above_project_controls" class="above_project_controls toolsmenu">
@@ -7803,14 +7807,6 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postmenubit" templatetype="template" date="1296398709" username="Pitchoune" version="2.2.0"><![CDATA[<li>
-	<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}<vb:if condition="$urlinclude['milestoneid']">&amp;milestoneid={vb:var milestoneid}</vb:if>">
-		<vb:if condition="$type['iconfile']">
-			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw type.iconfile}" alt="{vb:raw typename}" border="0" class="inlineimg" />
-		</vb:if>
-		{vb:raw typename}
-	</a>
-</li>]]></template>
 		<template name="pt_postreply" templatetype="template" date="1309268930" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
@@ -8051,7 +8047,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1309278138" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1309285375" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8113,7 +8109,16 @@ init_project_readmarker_system();
 						<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>
 					</a>
 					<ul class="navpopupbody popupbody">
-						{vb:raw post_issue_options}
+						<vb:each from="post_issue_options" value="type">
+							<li>
+								<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}">
+									<vb:if condition="$type['iconfile']">
+										<img src="{vb:stylevar imgdir_statusicon}/{vb:raw type.iconfile}" alt="{vb:raw type.name}" border="0" class="inlineimg" />
+									</vb:if>
+									{vb:raw type.name}
+								</a>
+							</li>
+						</vb:each>
 					</ul>
 				</div>
 			</vb:if>

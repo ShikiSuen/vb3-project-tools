@@ -43,7 +43,6 @@ $globaltemplates = array(
 	'pt_issuebit',
 	'pt_issuebit_pagelink',
 	'pt_milestone',
-	'pt_postmenubit',
 );
 
 // pre-cache templates used by specific actions
@@ -73,10 +72,15 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 $vbulletin->input->clean_gpc('r', 'milestoneid', TYPE_UINT);
 
 $milestone = verify_milestone($vbulletin->GPC['milestoneid']);
+
+// Workaround for having milestone title in phrase system
+$milestone['title'] = $milestone['title_clean'] = $vbphrase['milestone_' . $milestone['milestoneid'] . '_name'];
+$milestone['description'] = $vbphrase['milestone_' . $milestone['milestoneid'] . '_description'];
+
 $project = verify_project($milestone['projectid']);
 $projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 
-//verify_seo_url('milestone', $milestone);
+verify_seo_url('milestone', $milestone);
 
 $perms_query = build_issue_permissions_query($vbulletin->userinfo);
 if (empty($perms_query["$project[projectid]"]))
@@ -88,23 +92,18 @@ if (empty($perms_query["$project[projectid]"]))
 $postable_types = array();
 $status_options = '';
 $post_issue_options = '';
-$urlinclude['milestoneid'] = true;
 
-foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
+foreach ($vbulletin->pt_issuetype AS $issuetypeid => $type)
 {
 	if (($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) AND ($projectperms["$issuetypeid"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
 	{
 		$postable_types[] = $issuetypeid;
-		$type = $typeinfo;
-		$typename = $vbphrase["issuetype_{$issuetypeid}_singular"];
-		$templater = vB_Template::create('pt_postmenubit');
-			$templater->register('project', $project);
-			$templater->register('urlinclude', $urlinclude);
-			$templater->register('milestoneid', $vbulletin->GPC['milestoneid']);
-			$templater->register('type', $type);
-			$templater->register('typename', $typename);
-			$templater->register('contenttypeid', $issue_contenttypeid);
-		$post_issue_options .= $templater->render();
+
+		$type['name'] = $vbphrase["issuetype_{$issuetypeid}_singular"];
+		$type['milestoneid'] = $milestone['milestoneid'];
+		$type['projectid'] = $project['projectid'];
+
+		$post_issue_options[] = $type;
 	}
 
 	if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
@@ -112,7 +111,7 @@ foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
 		continue;
 	}
 
-	$optgroup_options = build_issuestatus_select($typeinfo['statuses'], $vbulletin->GPC['issuestatusid']);
+	$optgroup_options = build_issuestatus_select($type['statuses'], $vbulletin->GPC['issuestatusid']);
 	$status_options .= "<optgroup label=\"" . $vbphrase["issuetype_{$issuetypeid}_singular"] . "\">$optgroup_options</optgroup>";
 }
 

@@ -836,20 +836,18 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 	if ($milestone['milestoneid'])
 	{
 		print_table_header($vbphrase['edit_milestone']);
-		$trans_link_base = "phrase.php?" . $vbulletin->session->vars['sessionurl'] . "do=edit&fieldname=projecttools&t=1&varname=milestone_"; // has ID appended
-		$trans_link1 = "_name";
-		$trans_link2 = "_description"; // has ID appended
+		$trans_link_name = "phrase.php?" . $vbulletin->session->vars['sessionurl'] . "do=edit&fieldname=projecttools&t=1&varname=milestone_" . $milestone['milestoneid'] . "_name";
+		$trans_link_desc = "phrase.php?" . $vbulletin->session->vars['sessionurl'] . "do=edit&fieldname=projecttools&t=1&varname=milestone_" . $milestone['milestoneid'] . "_description";
 	}
 	else
 	{
 		print_table_header($vbphrase['add_milestone']);
-		$trans_link_base = '';
-		$trans_link1 = '';
-		$trans_link2 = '';
+		$trans_link_name = '';
+		$trans_link_desc = '';
 	}
 
-	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>" . ($trans_link_base ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_base . $milestone['milestoneid'] . $trans_link_1, true) . '</dfn>' : '') . "", 'title', $vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
-	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>" . ($trans_link_base ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_base . $milestone['milestoneid'] . $trans_link_2, true) . '</dfn>' : '') . "", 'description', $vbphrase['milestone_' . $milestone['milestoneid'] . '_description']);
+	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>" . ($trans_link_name ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_name, true) . '</dfn>' : '') . "", 'title', $vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
+	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>" . ($trans_link_desc ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_desc, true) . '</dfn>' : '') . "", 'description', $vbphrase['milestone_' . $milestone['milestoneid'] . '_description']);
 	print_time_row("$vbphrase[target_date]<dfn>$vbphrase[target_date_desc]</dfn>", 'targetdate', $milestone['targetdate'], false);
 	print_time_row("$vbphrase[completed_date]<dfn>$vbphrase[completed_date_desc]</dfn>", 'completeddate', $milestone['completeddate'], false);
 
