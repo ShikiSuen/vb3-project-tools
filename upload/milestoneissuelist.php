@@ -205,11 +205,87 @@ $pagenav = construct_page_nav(
 
 verify_seo_url('msissuelist', $milestone, $pageinfo);
 
-$issuebits = '';
+$issuebits = array();
 
 while ($issue = $db->fetch_array($issue_list->result))
 {
-	$issuebits .= build_issue_bit($issue, $project, $projectperms["$issue[issuetypeid]"]);
+	$posting_perms = prepare_issue_posting_pemissions($issue, $projectperms["$issue[issuetypeid]"]);
+	$show['edit_issue'] = $posting_perms['issue_edit'];
+	$show['status_edit'] = $posting_perms['status_edit'];
+
+	$issue = prepare_issue($issue);
+
+	// Columns to show
+	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+
+	// multipage nav
+	$issue['totalnotes'] = $issue['replycount'];
+	$total =& $issue['totalnotes'];
+
+	if ($issue['totalnotes'] > $vbulletin->options['pt_notesperpage'] AND $vbulletin->options['linktopages'])
+	{
+		if ($vbulletin->options['pt_notesperpage'] == 0)
+		{
+			$issue['totalpages'] = 1;
+		}
+		else
+		{
+			$issue['totalpages'] = ceil($issue['totalnotes'] / $vbulletin->options['pt_notesperpage']);
+		}
+
+		$curpage = 0;
+
+		$issue['pagenav'] = $issuepagenav = array();
+		$show['pagenavmore'] = false;
+
+		while ($curpage++ < $issue['totalpages'])
+		{
+			if ($vbulletin->options['maxmultipage'] AND $curpage > $vbulletin->options['maxmultipage'])
+			{
+				$issue['lastpagelink'] = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=" . $issue['issueid'] . "";
+				$show['pagenavmore'] = true;
+				break;
+			}
+
+			$pagenumbers = fetch_start_end_total_array($curpage, $vbulletin->options['pt_notesperpage'], $issue['totalnotes']);
+
+			$issuepagenav['pageinfo'] = array('pagenumber' => $curpage);
+			$issuepagenav['curpage'] = $curpage;
+
+			$issue['pagenav'][] = $issuepagenav;
+		};
+	}
+	else
+	{
+		$issue['pagenav'] = '';
+	}
+
+	$show['statuscolor'] = false;
+
+	if ($vbulletin->options['pt_statuscolor'] == 1)
+	{
+		$projectstatusset = $vbulletin->db->query_first("
+			SELECT issuestatusid, projectid
+			FROM " . TABLE_PREFIX . "pt_issuestatusprojectset
+			WHERE projectid = " . $project['projectid'] . "
+				AND issuestatusid = " . $issue['issuestatusid'] . "
+		");
+
+		if ($issue['statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
+		{
+			$show['statuscolor'] = true;
+		}
+	}
+
+	// Corresponding option choosen AND the color is filled in the coresponding priority
+	if ($vbulletin->options['pt_statuscolor'] == 2 AND $issue['statuscolor'])
+	{
+		$show['statuscolor'] = true;
+	}
+
+	($hook = vBulletinHook::fetch_hook('project_issuebit')) ? eval($hook) : false;
+
+	$issuebits[] = $issue;
 }
 
 // issue state filter
