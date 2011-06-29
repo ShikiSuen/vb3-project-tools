@@ -46,6 +46,7 @@ $globaltemplates = array(
 	'pt_issuelist_arrow',
 	'pt_listprojects',
 	'pt_listprojects_link',
+	'pt_postmenubit',
 	'pt_issuebit',
 	'pt_issuebit_pagelink',
 	'pt_issuebit_deleted',
@@ -377,16 +378,17 @@ $optionclass = '';
 
 while ($version_group = $db->fetch_array($version_groups))
 {
-	$optionvalue = 'g' . $version_group['projectversiongroupid'];
-	$optiontitle = $version_group['groupname'];
-	$optionselected = ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
+	// To be used in a vb:each
+	//$option['value'] = 'g' . $version_group['projectversiongroupid'];
+	//$option['title'] = $version_group['groupname'];
+	//$option['selected'] = ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
 
 	if ($optionselected)
 	{
 		$appliesversion_printable = $version_group['groupname'];
 	}
 
-	$appliesversion_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+	$appliesversion_options .= render_option_template($version_group['groupname'], 'g' . $version_group['projectversiongroupid'], ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : ''));
 
 	if (!is_array($version_cache["$version_group[projectversiongroupid]"]))
 	{
@@ -395,16 +397,17 @@ while ($version_group = $db->fetch_array($version_groups))
 
 	foreach ($version_cache["$version_group[projectversiongroupid]"] AS $version)
 	{
-		$optionvalue = 'v' . $version['projectversionid'];
-		$optiontitle = '-- ' . $version['versionname'];
-		$optionselected = ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
+		// To be used in a vb:each
+		//$option['value'] = 'v' . $version['projectversionid'];
+		//$option['title'] = '-- ' . $version['versionname'];
+		//$option['selected'] = ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
 
 		if ($optionselected)
 		{
 			$appliesversion_printable = $version['versionname'];
 		}
 
-		$appliesversion_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$appliesversion_options .= render_option_template('-- ' . $version['versionname'], 'v' . $version['projectversionid'], ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : ''));
 	}
 }
 
@@ -412,7 +415,8 @@ $anyversion_selected = ($vbulletin->GPC['appliesversionid'] == 0 ? ' selected="s
 $unknownversion_selected = ($vbulletin->GPC['appliesversionid'] == -1 ? ' selected="selected"' : '');
 
 // status options / posting options drop down
-$status_options = '';
+$status_options = array();
+$optgroup_options = array();
 $post_issue_options = '';
 
 foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
@@ -432,7 +436,9 @@ foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
 	}
 
 	$optgroup_options = build_issuestatus_select($typeinfo['statuses'], $vbulletin->GPC['issuestatusid']);
-	$status_options .= "<optgroup label=\"" . $vbphrase["issuetype_{$issuetypeid}_singular"] . "\">$optgroup_options</optgroup>";
+	$optgroup_options['issuetype_singular'] = $vbphrase["issuetype_" . $issuetypeid . "_singular"];
+
+	$status_options[] = $optgroup_options;
 }
 
 if (sizeof($postable_types) == 1)

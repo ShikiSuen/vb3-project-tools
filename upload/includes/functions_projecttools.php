@@ -1209,6 +1209,8 @@ function build_issue_bit($issue, $project, $issueperms)
 {
 	global $vbulletin, $vbphrase, $show, $template_hook;
 
+	$issuelist = '';
+
 	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 	$show['edit_issue'] = $posting_perms['issue_edit'];
 	$show['status_edit'] = $posting_perms['status_edit'];
@@ -1216,7 +1218,7 @@ function build_issue_bit($issue, $project, $issueperms)
 	$issue = prepare_issue($issue);
 
 	// Columns to show
-	$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
 
 	// multipage nav
 	$issue['totalnotes'] = $issue['replycount'];
@@ -1235,7 +1237,7 @@ function build_issue_bit($issue, $project, $issueperms)
 
 		$curpage = 0;
 
-		$issue['pagenav'] = '';
+		$issue['pagenav'] = array();
 		$show['pagenavmore'] = false;
 
 		while ($curpage++ < $issue['totalpages'])
@@ -1264,8 +1266,6 @@ function build_issue_bit($issue, $project, $issueperms)
 		$issue['pagenav'] = '';
 	}
 
-	$template_name = ($issue['visible'] == 'deleted' ? 'pt_issuebit_deleted' : 'pt_issuebit');
-
 	$show['statuscolor'] = false;
 
 	if ($vbulletin->options['pt_statuscolor'] == 1)
@@ -1291,10 +1291,11 @@ function build_issue_bit($issue, $project, $issueperms)
 
 	($hook = vBulletinHook::fetch_hook('project_issuebit')) ? eval($hook) : false;
 
-	$templater = vB_Template::create($template_name);
-		$templater->register('columns', $columns);
+	$templater = vB_Template::create('pt_issuebit');
 		$templater->register('issue', $issue);
-	return $templater->render();
+	$issuelist = $templater->render();
+
+	return $issuelist;
 }
 
 /**
@@ -1405,16 +1406,12 @@ function prepare_subscribed_reports($projectid_limit = 0, $userid = -1)
 			$projects = explode(',', $report['projectlist']);
 			if (in_array($projectid_limit, $projects))
 			{
-				//$templater = vB_Template::create('pt_reportmenubit');
-					//$templater->register('report', $report);
-				$reportbits[] = $report;// .= $templater->render();
+				$reportbits[] = $report;
 			}
 		}
 		else
 		{
-			//$templater = vB_Template::create('pt_reportmenubit');
-				//$templater->register('report', $report);
-			$reportbits[] = $report;// .= $templater->render();
+			$reportbits[] = $report;
 		}
 	}
 

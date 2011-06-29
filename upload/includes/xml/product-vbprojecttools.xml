@@ -4857,7 +4857,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1307039811" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if>>
+		<template name="pt_issuebit" templatetype="template" date="1309363032" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit<vb:if condition="$issue['visible'] == 'deleted'"> deleted"<vb:else />"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if></vb:if>>
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -4865,9 +4865,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			&nbsp;
 		</vb:if>
 	</div>
-	<div class="ptissuelist_title">
+	<div class="ptissuelist<vb:if condition="$issue['visible'] == 'deleted'">_deleted</vb:if>_title">
 		<div class="issuetitle">
-			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.png" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
+			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img src="{vb:stylevar imgdir_button}/firstnew.png" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
 			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if> id="issue_title_{vb:raw issue.issueid}">{vb:raw issue.title}</a>
 			<vb:if condition="$issue['pagenav']">
 			<dl class="pagination" id="pagination_issuebit_{vb:raw issue.issueid}">
@@ -4887,134 +4887,115 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</div>
 
-	<vb:if condition="$columns['lastpost']">
-		<div class="ptissuelist_lastpost smallfont">
+	<vb:if condition="$issue['visible'] == 'deleted'">
+		<div class="ptissuelist_deleted">
+			<div class="smallfont"><img src="{vb:stylevar imgdir_misc}/trashcan_small.png" class="inlineimg" alt="" /> <strong>{vb:rawphrase issue_deleted}</strong></div>
+			<vb:if condition="$issue['deletionreason']"><div><span class="shade">{vb:rawphrase reason}</span> {vb:raw issue.deletionreason}</div></vb:if>
+		</div>
+	<vb:else />
+		<vb:if condition="$issue['columns']['lastpost']">
+			<div class="ptissuelist_lastpost smallfont">
+				<div>
+					<p class="lastpostdate">
+						{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
+					</p>
+					{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
+					<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+				</div>
+			</div>
+		</vb:if>
+
+		<vb:if condition="$issue['columns']['replies']">
+			<div class="ptissuelist_replies smallfont">
+				{vb:raw issue.replycount}
+			</div>
+		</vb:if>
+
+		<vb:if condition="$issue['columns']['priority']">
+			<vb:if condition="$show['edit_issue']">
+				<script type="text/javascript">
+				<!--
+				vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");
+				//-->
+				</script>
+			</vb:if>
+			<div class="ptissuelist_priority smallfont">
+				<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
+			</div>
+		</vb:if>
+
+		<vb:if condition="$issue['columns']['status']">
+			<vb:if condition="$show['status_edit']">
+				<script type="text/javascript">
+				<!--
+				vBulletin.register_control("vB_MagicSelect", "ms_stat_{vb:raw issue.issueid}", "issuestatusid", "{vb:raw issue.issueid}");
+				//-->
+				</script>
+			</vb:if>
+			<div class="ptissuelist_status smallfont">
+				<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
+			</div>
+		</vb:if>
+
+		<vb:if condition="$issue['columns']['category']">
+			<vb:if condition="$show['edit_issue']">
+				<script type="text/javascript">
+				<!--
+				vBulletin.register_control("vB_MagicSelect", "ms_cat_{vb:raw issue.issueid}", "projectcategoryid", "{vb:raw issue.issueid}");
+				//-->
+				</script>
+			</vb:if>
+			<div class="ptissuelist_category smallfont">
+				<div id="ms_cat_{vb:raw issue.issueid}">{vb:raw issue.categorytitle}</div>
+			</div>
+		</vb:if>
+
+		<vb:if condition="$issue['columns']['addressversion']">
+			<vb:if condition="$show['status_edit']">
+				<script type="text/javascript">
+				<!--
+				vBulletin.register_control("vB_MagicSelect", "ms_addver_{vb:raw issue.issueid}", "addressedversionid", "{vb:raw issue.issueid}");
+				//-->
+				</script>
+			</vb:if>
+			<div class="ptissuelist_addressversion smallfont">
+				<div id="ms_addver_{vb:raw issue.issueid}">{vb:raw issue.addressedversion}</div>
+			</div>
+		</vb:if>
+
+		<vb:if condition="$issue['columns']['applyversion']">
+			<vb:if condition="$show['edit_issue']">
+				<script type="text/javascript">
+				<!--
+				vBulletin.register_control("vB_MagicSelect", "ms_appver_{vb:raw issue.issueid}", "appliesversionid", "{vb:raw issue.issueid}");
+				//-->
+				</script>
+			</vb:if>
+			<div class="ptissuelist_applyversion smallfont">
+				<div id="ms_appver_{vb:raw issue.issueid}">{vb:raw issue.appliesversion}</div>
+			</div>
+		</vb:if>
+
+		<div class="ptissuelist_icons">
 			<div>
-				<p class="lastpostdate">
-					{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
-				</p>
-				{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
-				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+				<div class="smallfont" style="float: {vb:stylevar right}">
+					<vb:if condition="$issue['isassigned']"><img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" /></vb:if>
+					<vb:if condition="$issue['state'] == 'closed'"><img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="{vb:rawphrase closed}" /></vb:if>
+					<vb:if condition="$issue['visible'] == 'private'"><img src="{vb:stylevar imgdir_misc}/issue_private.png" alt="{vb:rawphrase private}" /></vb:if>
+					<vb:if condition="$issue['subscribetype']"><img src="{vb:stylevar imgdir_misc}/subscribed.png" alt="{vb:rawphrase you_subscribed_issue}" /></vb:if>
+					<vb:if condition="$issue['pendingpetitions']"><img src="{vb:stylevar imgdir_misc}/issue_petition.png" alt="{vb:rawphrase has_pending_petitions}" /></vb:if>
+				</div>
 			</div>
-		</div>
-	</vb:if>
-
-	<vb:if condition="$columns['replies']">
-		<div class="ptissuelist_replies smallfont">
-			{vb:raw issue.replycount}
-		</div>
-	</vb:if>
-
-	<vb:if condition="$columns['priority']">
-		<script type="text/javascript">
-		<!--
-		<vb:if condition="$show['edit_issue']">
-			vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");
-		</vb:if>
-		//-->
-		</script>
-		<div class="ptissuelist_priority smallfont">
-			<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
-		</div>
-	</vb:if>
-
-	<vb:if condition="$columns['status']">
-		<script type="text/javascript">
-		<!--
-		<vb:if condition="$show['status_edit']">
-			vBulletin.register_control("vB_MagicSelect", "ms_stat_{vb:raw issue.issueid}", "issuestatusid", "{vb:raw issue.issueid}");
-		</vb:if>
-		//-->
-		</script>
-		<div class="ptissuelist_status smallfont">
-			<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
-		</div>
-	</vb:if>
-
-	<vb:if condition="$columns['category']">
-		<script type="text/javascript">
-		<!--
-		<vb:if condition="$show['edit_issue']">
-			vBulletin.register_control("vB_MagicSelect", "ms_cat_{vb:raw issue.issueid}", "projectcategoryid", "{vb:raw issue.issueid}");
-		</vb:if>
-		//-->
-		</script>
-		<div class="ptissuelist_category smallfont">
-			<div id="ms_cat_{vb:raw issue.issueid}">{vb:raw issue.categorytitle}</div>
-		</div>
-	</vb:if>
-
-	<vb:if condition="$columns['addressversion']">
-		<script type="text/javascript">
-		<!--
-		<vb:if condition="$show['status_edit']">
-			vBulletin.register_control("vB_MagicSelect", "ms_addver_{vb:raw issue.issueid}", "addressedversionid", "{vb:raw issue.issueid}");
-		</vb:if>
-		//-->
-		</script>
-		<div class="ptissuelist_addressversion smallfont">
-			<div id="ms_addver_{vb:raw issue.issueid}">{vb:raw issue.addressedversion}</div>
-		</div>
-	</vb:if>
-
-	<vb:if condition="$columns['applyversion']">
-		<script type="text/javascript">
-		<!--
-		<vb:if condition="$show['edit_issue']">
-			vBulletin.register_control("vB_MagicSelect", "ms_appver_{vb:raw issue.issueid}", "appliesversionid", "{vb:raw issue.issueid}");
-		</vb:if>
-		//-->
-		</script>
-		<div class="ptissuelist_applyversion smallfont">
-			<div id="ms_appver_{vb:raw issue.issueid}">{vb:raw issue.appliesversion}</div>
-		</div>
-	</vb:if>
-
-	<div class="ptissuelist_icons">
-		<div>
-			<div class="smallfont" style="float: {vb:stylevar right}">
-				<vb:if condition="$issue['isassigned']"><img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" /></vb:if>
-				<vb:if condition="$issue['state'] == 'closed'"><img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="{vb:rawphrase closed}" /></vb:if>
-				<vb:if condition="$issue['visible'] == 'private'"><img src="{vb:stylevar imgdir_misc}/issue_private.png" alt="{vb:rawphrase private}" /></vb:if>
-				<vb:if condition="$issue['subscribetype']"><img src="{vb:stylevar imgdir_misc}/subscribed.png" alt="{vb:rawphrase you_subscribed_issue}" /></vb:if>
-				<vb:if condition="$issue['pendingpetitions']"><img src="{vb:stylevar imgdir_misc}/issue_petition.png" alt="{vb:rawphrase has_pending_petitions}" /></vb:if>
-			</div>
-		</div>
-		<div class="smallfont" style="float: {vb:stylevar right}; white-space: nowrap">
+			<div class="smallfont" style="float: {vb:stylevar right}; white-space: nowrap">
 			<vb:if condition="$show['issuebit_project_title']">
-				<div class="shade" style="float: {vb:stylevar right}; white-space: nowrap">{vb:raw issue.title_clean}</div>
-			</vb:if>
+					<div class="shade" style="float: {vb:stylevar right}; white-space: nowrap">{vb:raw issue.title_clean}</div>
+				</vb:if>
+			</div>
 		</div>
-	</div>
+	</vb:if>
 </li>]]></template>
-		<template name="pt_issuebit_deleted" templatetype="template" date="1294258843" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow table deleted">
-	<div class="ptissuelist_statusicon td">
-		<vb:if condition="$issue['typeicon']">
-			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
-		<vb:else />
-			&nbsp;
-		</vb:if>
-	</div>
-	<div class="ptissuelist_deleted_title td">
-		<div>
-			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
-		</div>
-		<div class="smallfont">
-			<vb:if condition="$issue['submituserid']">
-				<a href="{vb:link member, {vb:raw issue}, null, 'submituserid', 'submitusername'}">{vb:raw issue.submitusername}</a>
-			<vb:else />
-				{vb:raw issue.submitusername}
-			</vb:if>
-		</div>
-	</div>
-	<div class="ptissuelist_deleted td">
-		<div class="smallfont"><img src="{vb:stylevar imgdir_misc}/trashcan_small.png" class="inlineimg" alt="" /> <strong>{vb:rawphrase issue_deleted}</strong></div>
-		<vb:if condition="$issue['deletionreason']"><div><span class="shade">{vb:rawphrase reason}</span> {vb:raw issue.deletionreason}</div></vb:if>
-	</div>
-</div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1294753607" username="Pitchoune" version="2.2.0"><![CDATA[<span><a href="{vb:link issue, {vb:raw issue}, {vb:raw pageinfo_pagelink}}">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1309285397" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1309364580" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5130,7 +5111,16 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 							<div class="text">{vb:rawphrase status}</div>
 							<select name="issuestatusid[]" style="display: block; width: 200px">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
-								{vb:raw status_options}
+								<vb:comment>{vb:raw status_options}</vb:comment>
+								<vb:each from="status_options" value="optgroup_options">
+									<optgroup label="{vb:raw optgroup_options.issuetype_singular}">
+										<vb:each from="optgroup_options" value="option">
+											<vb:if condition="is_numeric($option['value'])">
+												<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										</vb:if>
+										</vb:each>
+									</optgroup>
+								</vb:each>
 							</select>
 
 							<div class="text">{vb:rawphrase assigned_users}</div>
@@ -5247,7 +5237,15 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					<select name="issuestatusid" tabindex="1">
 						<option value="0" {vb:raw anystatus_selected}>{vb:rawphrase any_meta}</option>
 						<option value="-1" {vb:raw activestatus_selected}>{vb:rawphrase any_active_meta}</option>
-						{vb:raw status_options}
+							<vb:each from="status_options" value="optgroup_options">
+								<optgroup label="{vb:raw optgroup_options.issuetype_singular}">
+									<vb:each from="optgroup_options" value="option">
+										<vb:if condition="is_numeric($option['value'])">
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										</vb:if>
+									</vb:each>
+								</optgroup>
+							</vb:each>
 					</select>
 				</label>
 				<input type="submit" class="button" value="{vb:rawphrase go}" tabindex="1" accesskey="s" />
@@ -5269,7 +5267,16 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 						<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>
 					</a>
 					<ul class="navpopupbody popupbody">
-						{vb:raw post_issue_options}
+						<vb:each from="post_issue_options" value="type">
+							<li>
+								<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw type.issuetypeid}">
+									<vb:if condition="$type['iconfile']">
+										<img src="{vb:stylevar imgdir_statusicon}/{vb:raw type.iconfile}" alt="{vb:raw type.name}" border="0" class="inlineimg" />
+									</vb:if>
+									{vb:raw type.name}
+								</a>
+							</li>
+						</vb:each>
 					</ul>
 				</div>
 			</vb:if>
