@@ -162,18 +162,13 @@ if ($vbulletin->GPC['filter'])
 	$pageinfo['filter'] = $vbulletin->GPC['filter'];
 }
 
-if ($vbulletin->GPC['pagenumber'])
-{
-	$pageinfo['pagenumber'] = $vbulletin->GPC['pagenumber'];
-}
-
 $oppositesort = $vbulletin->GPC['sortorder'] == 'asc' ? 'desc' : 'asc';
 
 $pageinfo_title = $pageinfo + array('sort' => 'title', 'order' => ('title' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_username = $pageinfo + array('sort' => 'submitusername', 'order' => ('submitusername' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_applyversion = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'applyversion', 'order' => ('applyversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_addressversion = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'addressversion', 'order' => ('addressversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_category = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'category', 'order' => ('projectcategoryid' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_applyversion = $pageinfo + array('sort' => 'applyversion', 'order' => ('applyversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_addressversion = $pageinfo + array('sort' => 'addressversion', 'order' => ('addressversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_category = $pageinfo + array('sort' => 'category', 'order' => ('projectcategoryid' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_issuestatus = $pageinfo + array('sort' => 'issuestatusid', 'order' => ('issuestatusid' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_priority = $pageinfo + array('sort' => 'priority', 'order' => ('priority' == $issue_list->sort_field) ? $oppositesort : 'asc');
 $pageinfo_replies = $pageinfo + array('sort' => 'replycount', 'order' => ('replycount' == $issue_list->sort_field) ? $oppositesort : 'asc');
@@ -203,7 +198,7 @@ $pagenav = construct_page_nav(
 	$pageinfo
 );
 
-verify_seo_url('msissuelist', $milestone, $pageinfo);
+verify_seo_url('msissuelist', $milestone, $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber']));
 
 $issuebits = array();
 

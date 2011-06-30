@@ -229,15 +229,15 @@ if ($vbulletin->GPC['appliesversionid'])
 
 $oppositesort = $vbulletin->GPC['sortorder'] == 'asc' ? 'desc' : 'asc';
 
-$pageinfo_title = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'title', 'order' => ('title' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_username = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'submitusername', 'order' => ('submitusername' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_applyversion = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'applyversion', 'order' => ('applyversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_addressversion = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'addressversion', 'order' => ('addressversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_category = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'category', 'order' => ('projectcategoryid' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_issuestatus = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'issuestatusid', 'order' => ('issuestatusid' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_priority = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'priority', 'order' => ('priority' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_replies = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'replycount', 'order' => ('replycount' == $issue_list->sort_field) ? $oppositesort : 'asc');
-$pageinfo_lastpost = $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber'], 'sort' => 'lastpost', 'order' => ('lastpost' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_title = $pageinfo + array('sort' => 'title', 'order' => ('title' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_username = $pageinfo + array('sort' => 'submitusername', 'order' => ('submitusername' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_applyversion = $pageinfo + array('sort' => 'applyversion', 'order' => ('applyversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_addressversion = $pageinfo + array('sort' => 'addressversion', 'order' => ('addressversion' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_category = $pageinfo + array('sort' => 'category', 'order' => ('projectcategoryid' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_issuestatus = $pageinfo + array('sort' => 'issuestatusid', 'order' => ('issuestatusid' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_priority = $pageinfo + array('sort' => 'priority', 'order' => ('priority' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_replies = $pageinfo + array('sort' => 'replycount', 'order' => ('replycount' == $issue_list->sort_field) ? $oppositesort : 'asc');
+$pageinfo_lastpost = $pageinfo + array('sort' => 'lastpost', 'order' => ('lastpost' == $issue_list->sort_field) ? $oppositesort : 'asc');
 
 $sort_arrow = $issue_list->fetch_sort_arrow_array();
 

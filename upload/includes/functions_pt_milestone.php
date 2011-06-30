@@ -173,6 +173,9 @@ function verify_milestone($milestoneid)
 		standard_error(fetch_error('invalidid', $vbphrase['milestone'], $vbulletin->options['contactuslink']));
 	}
 
+	$milestone['title'] = $milestone['title_clean'] = $vbphrase['milestone_' . $milestone['milestoneid'] . '_name'];
+	$milestone['description'] = $vbphrase['milestone_' . $milestone['milestoneid'] . '_description'];
+
 	return $milestone;
 }
 
