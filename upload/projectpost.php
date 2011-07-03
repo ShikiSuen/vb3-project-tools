@@ -1800,7 +1800,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 
 		$optionclass = '';
 		$optionselected = '';
-		$issuetype_options = '';
+		$issuetype_options = $option = array();
 
 		foreach (array_keys($vbulletin->pt_projects["$project[projectid]"]['types']) AS $type)
 		{
@@ -1809,9 +1809,9 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 				continue;
 			}
 
-			$optionvalue = $type;
-			$optiontitle = $vbphrase["issuetype_{$type}_singular"];
-			$issuetype_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$option['value'] = $type;
+			$option['title'] = $vbphrase["issuetype_{$type}_singular"];
+			$issuetype_options[] = $option;
 		}
 
 		$templater = vB_Template::create('pt_postissue_short');
@@ -2027,8 +2027,8 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	$issue = fetch_issue_version_text($issue);
 
 	// set up appliable tags
-	$unapplied_tags = '';
-	$applied_tags = '';
+	$unapplied_tags = array();
+	$applied_tags = array();
 
 	$tag_data = $db->query_read("
 		SELECT tag.tagtext, IF(issuetag.tagid IS NOT NULL, 1, 0) AS isapplied
@@ -2037,19 +2037,19 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		ORDER BY tag.tagtext
 	");
 
-	$optionselected = '';
-	$optionclass = '';
+	$option = array();
+
 	while ($tag = $db->fetch_array($tag_data))
 	{
-		$optionvalue = $optiontitle = $tag['tagtext'];
+		$option['value'] = $option['title'] = $tag['tagtext'];
 		if ((!defined('IS_PREVIEW') AND $tag['isapplied']) OR (defined('IS_PREVIEW') AND isset($preview_tags["$tag[tagtext]"])))
 		{
 			unset($preview_tags["$tag[tagtext]"]);
-			$applied_tags .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$applied_tags[] = $option;
 		}
 		else
 		{
-			$unapplied_tags .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$unapplied_tags[] = $option;
 		}
 	}
 
@@ -2057,7 +2057,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	{
 		foreach ($preview_tags AS $optionvalue => $optiontitle)
 		{
-			$applied_tags .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$applied_tags[] = $option;
 		}
 	}
 
@@ -2086,18 +2086,20 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		}
 	}
 
-	$unassigned_users = '';
-	$assigned_users = '';
+	$unassigned_users = $assigned_users = $option = array();
 
 	foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"] AS $optionvalue => $optiontitle)
 	{
+		$option['title'] = $optiontitle;
+		$option['value'] = $optionvalue;
+
 		if (isset($assigned_user_list["$optionvalue"]))
 		{
-			$assigned_users .= render_option_template($optiontitle, $optionvalue);
+			$assigned_users[] = $option;
 		}
 		else
 		{
-			$unassigned_users .= render_option_template($optiontitle, $optionvalue);
+			$unassigned_users[] = $option;
 		}
 	}
 
@@ -3436,8 +3438,7 @@ if ($_POST['do'] == 'moveissue2')
 	$addressed_next_selected = (($issue['isaddressed'] == 1 AND $issue['addressedversionid'] == 0) ? ' selected="selected"' : '');
 
 	// set up appliable tags
-	$unapplied_tags = '';
-	$applied_tags = '';
+	$unapplied_tags = $applied_tags = $option = array();
 
 	$tag_data = $db->query_read("
 		SELECT tag.tagtext, IF(issuetag.tagid IS NOT NULL, 1, 0) AS isapplied
@@ -3448,14 +3449,16 @@ if ($_POST['do'] == 'moveissue2')
 
 	while ($tag = $db->fetch_array($tag_data))
 	{
+		$option['title'] = $option['value'] = $tag['tagtext'];
+
 		if ($tag['isapplied'])
 		{
 			unset($preview_tags["$tag[tagtext]"]);
-			$applied_tags .= render_option_template($tag['tagtext'], $tag['tagtext']);
+			$applied_tags[] = $option;
 		}
 		else
 		{
-			$unapplied_tags .= render_option_template($tag['tagtext'], $tag['tagtext']);
+			$unapplied_tags[] = $option;
 		}
 	}
 
@@ -3516,18 +3519,20 @@ if ($_POST['do'] == 'moveissue2')
 		$assigned_user_list["$assignment[userid]"] = $assignment['userid'];
 	}
 
-	$unassigned_users = '';
-	$assigned_users = '';
+	$unassigned_users = $assigned_users = $option = array();
 
 	foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"] AS $optionvalue => $optiontitle)
 	{
+		$option['title'] = $optiontitle;
+		$option['value'] = $optionvalue;
+
 		if (isset($assigned_user_list["$optionvalue"]))
 		{
-			$assigned_users .= render_option_template($optiontitle, $optionvalue);
+			$assigned_users[] = $option;
 		}
 		else
 		{
-			$unassigned_users .= render_option_template($optiontitle, $optionvalue);
+			$unassigned_users[] = $option;
 		}
 	}
 
@@ -4099,11 +4104,13 @@ if ($_REQUEST['do'] == 'export')
 		);
 	}
 
-	$content_type_select = '';
+	$content_type_select = array();
 
 	foreach ($contenttypes AS $contenttype)
 	{
-		$content_type_select .= render_option_template($vbphrase['export_issue_' . $contenttype . ''], $contenttype, '', '');
+		$option['title'] = $vbphrase['export_issue_' . $contenttype . ''];
+		$option['value'] = $contenttype;
+		$content_type_select[] = $option;
 	}
 
 	$navbits = array(
@@ -4392,8 +4399,7 @@ if ($_POST['do'] == 'importcontent2')
 	$addressed_next_selected = '';
 
 	// set up appliable tags
-	$unapplied_tags = '';
-	$applied_tags = '';
+	$unapplied_tags = $applied_tags = $option = array();
 
 	$tag_data = $db->query_read("
 		SELECT
@@ -4406,14 +4412,16 @@ if ($_POST['do'] == 'importcontent2')
 
 	while ($tag = $db->fetch_array($tag_data))
 	{
+		$option['title'] = $option['value'] = $tag['tagtext'];
+
 		if ($tag['isapplied'])
 		{
 			unset($preview_tags["$tag[tagtext]"]);
-			$applied_tags .= render_option_template($tag['tagtext'], $tag['tagtext']);
+			$applied_tags[] = $option;
 		}
 		else
 		{
-			$unapplied_tags .= render_option_template($tag['tagtext'], $tag['tagtext']);
+			$unapplied_tags[] = $option;
 		}
 	}
 
@@ -4485,18 +4493,20 @@ if ($_POST['do'] == 'importcontent2')
 		$assigned_user_list["$assignment[userid]"] = $assignment['userid'];
 	}
 
-	$unassigned_users = '';
-	$assigned_users = '';
+	$unassigned_users = $assigned_users = $option = array();
 
 	foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issuetypeid"] AS $optionvalue => $optiontitle)
 	{
+		$option['title'] = $optiontitle;
+		$option['value'] = $optionvalue;
+
 		if (isset($assigned_user_list["$optionvalue"]))
 		{
-			$assigned_users .= render_option_template($optiontitle, $optionvalue);
+			$assigned_users[] = $option;
 		}
 		else
 		{
-			$unassigned_users .= render_option_template($optiontitle, $optionvalue);
+			$unassigned_users[] = $option;
 		}
 	}
 
