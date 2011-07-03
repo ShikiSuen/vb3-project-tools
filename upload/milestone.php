@@ -162,7 +162,7 @@ $list_criteria = $perms_query["$project[projectid]"] . "AND issue.milestoneid = 
 
 $issue_list->exec_query($list_criteria, 1, $vbulletin->options['pt_project_recentissues']);
 
-$issuebits = array();
+$issuebits = '';
 
 while ($issue = $db->fetch_array($issue_list->result))
 {

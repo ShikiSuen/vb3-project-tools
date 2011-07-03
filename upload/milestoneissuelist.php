@@ -200,7 +200,7 @@ $pagenav = construct_page_nav(
 
 verify_seo_url('msissuelist', $milestone, $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber']));
 
-$issuebits = array();
+$issuebits = '';
 
 while ($issue = $db->fetch_array($issue_list->result))
 {

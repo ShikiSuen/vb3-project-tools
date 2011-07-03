@@ -618,7 +618,7 @@ else
 }
 
 // issue list
-$issuebits = array();
+$issuebits = '';
 
 if ($vbulletin->options['pt_project_recentissues'])
 {
