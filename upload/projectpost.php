@@ -4414,14 +4414,20 @@ if ($_POST['do'] == 'importcontent2')
 	{
 		$option['title'] = $option['value'] = $tag['tagtext'];
 
-		if ($tag['isapplied'])
+		if ($vbulletin->GPC['type'] == 'issuenote')
 		{
-			unset($preview_tags["$tag[tagtext]"]);
-			$applied_tags[] = $option;
+			if ($tag['isapplied'])
+			{
+				$applied_tags[] = $option;
+			}
+			else
+			{
+				$unapplied_tags[] = $option;
+			}
 		}
 		else
 		{
-			$unapplied_tags[] = $option;
+			$applied_tags[] = $option;
 		}
 	}
 

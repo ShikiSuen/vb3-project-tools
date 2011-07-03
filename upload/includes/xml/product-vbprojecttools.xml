@@ -3664,7 +3664,7 @@ legend {
 		<input type="checkbox" id="{vb:raw optionid}" name="{vb:raw optionname}" value="{vb:raw optionvalue}" tabindex="1" {vb:raw optionchecked} />&nbsp;{vb:raw optiontitle}
 	</label>
 </li>]]></template>
-		<template name="pt_export_content" templatetype="template" date="1298643152" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_export_content" templatetype="template" date="1309720235" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3710,7 +3710,9 @@ legend {
 				<ul class="group rightcol">
 					<li>
 						<select id="contenttype" name="contenttype" style="display: block; width: 100%">
-							{vb:raw content_type_select}
+							<vb:each from="content_type_select" value="option">
+								<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+							</vb:each>
 						</select>
 					</li>
 				</ul>
@@ -3841,7 +3843,7 @@ legend {
 		</div>
 	</div>
 </form>]]></template>
-		<template name="pt_forumbit_project" templatetype="template" date="1309277155" username="Pitchoune" version="2.2.0"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
+		<template name="pt_forumbit_project" templatetype="template" date="1309716073" username="Pitchoune" version="2.2.0"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
 	<div class="forumrow table">
         <div class="foruminfo td">
 		<img id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
@@ -3868,7 +3870,7 @@ legend {
 		<vb:each from="type_counts" value="type">
 			<li>
 				<a href="{vb:link issuelist, {vb:raw project}, {vb:raw type.pageinfo}}">{vb:raw type.name}</a>: 
-				<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
+				<span id="{vb:raw type.countid}" class="smallfont<vb:if condition="$type['newflag']"> boldtext</vb:if>">
 					{vb:raw type.issuecountactive}&nbsp;/&nbsp;{vb:raw type.issuecount}
 				</span>
 			</li>
@@ -3982,7 +3984,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1309268784" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1309725415" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3996,6 +3998,8 @@ legend {
 	<!--[if lt IE 8]>
 	{vb:cssfile projecttools-ie.css}
 	<![endif]-->
+
+	<script type="text/javascript" src="clientscript/vbulletin_list_builder.js"></script>
 
 	<title>{vb:var vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase pt_create_issue}</title>
 
@@ -4231,7 +4235,9 @@ legend {
 							<ul class="group">
 								<li>
 									<select class="primary" name="unassigned[]" size="6" id="usrassgn_select_n" tabindex="2" multiple="multiple">
-										{vb:raw unassigned_users}
+										<vb:each from="unassigned_users" value="option">
+											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 							</ul>
@@ -4246,7 +4252,9 @@ legend {
 							<ul class="group">
 								<li>
 									<select class="primary" name="assigned[]" size="6" id="usrassgn_select_y"tabindex="2" multiple="multiple" >
-										{vb:raw assigned_users}
+										<vb:each from="assigned_users" value="option">
+											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 							</ul>
@@ -4295,7 +4303,9 @@ legend {
 							<ul class="group">
 								<li>
 									<select class="primary" name="unappliedtags[]" size="<vb:if condition="$show['can_custom_tag']">4<vb:else />6</vb:if>" id="tags_select_n" tabindex="2" multiple="multiple">
-										{vb:raw unapplied_tags}
+										<vb:each from="unapplied_tags" value="option">
+											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 								<vb:if condition="$show['can_custom_tag']">
@@ -4315,7 +4325,9 @@ legend {
 							<ul class="group">
 								<li>
 									<select class="primary" name="appliedtags[]" size="6" id="tags_select_y" multiple="multiple" tabindex="2">
-										{vb:raw applied_tags}
+										<vb:each from="applied_tags" value="option">
+											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 							</ul>
@@ -4366,6 +4378,13 @@ legend {
 		</div>
 	</div>
 </form>
+
+<script type="text/javascript">
+<!--
+<vb:if condition="$show['assign_dropdown']"> vBulletin.register_control("vB_ListBuilder", null, "usrassgn", null); </vb:if>
+<vb:if condition="$show['tags_edit']"> vBulletin.register_control("vB_ListBuilder", null, "tags", null); </vb:if>
+//-->
+</script>
 
 {vb:raw footer}
 
@@ -4859,7 +4878,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1309711837" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit<vb:if condition="$issue['visible'] == 'deleted'"> deleted"<vb:else />"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if></vb:if>>
+		<template name="pt_issuebit" templatetype="template" date="1309716100" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit<vb:if condition="$issue['visible'] == 'deleted'"> deleted"<vb:else />"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if></vb:if>>
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -4870,11 +4889,13 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<div class="ptissuelist<vb:if condition="$issue['visible'] == 'deleted'">_deleted</vb:if>_title">
 		<div class="issuetitle">
 			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img src="{vb:stylevar imgdir_button}/firstnew.png" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if> id="issue_title_{vb:raw issue.issueid}">{vb:raw issue.title}</a>
+			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> class="boldtext"</vb:if> id="issue_title_{vb:raw issue.issueid}">{vb:raw issue.title}</a>
 			<vb:if condition="$issue['pagenav']">
 			<dl class="pagination" id="pagination_issuebit_{vb:raw issue.issueid}">
 				<dd>
-					{vb:raw issue.pagenav}
+					<vb:each from="issue[pagenav]" value="issuepagenav">
+						<span><a href="{vb:link issue, {vb:raw issue}, {vb:raw issuepagenav.pageinfo}}">{vb:raw issuepagenav.curpage}</a></span>
+					</vb:each>
 					<vb:if condition="$show['pagenavmore']"> <span class="separator">...</span> <span><a href="{vb:raw issue.lastpagelink}">{vb:raw issue.totalpages}</a></span></vb:if>
 				</dd>
 			</dl>
@@ -6581,7 +6602,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1309268014" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1309725459" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6821,7 +6842,9 @@ init_project_readmarker_system();
 							<ul class="group">
 								<li>
 									<select class="primary" name="unassigned[]" size="6" id="usrassgn_select_n" tabindex="2" multiple="multiple">
-										{vb:raw unassigned_users}
+										<vb:each from="unassigned_users" value="option">
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 							</ul>
@@ -6836,7 +6859,9 @@ init_project_readmarker_system();
 							<ul class="group">
 								<li>
 									<select class="primary" name="assigned[]" size="6" id="usrassgn_select_y"tabindex="2" multiple="multiple" >
-										{vb:raw assigned_users}
+										<vb:each from="assigned_users" value="option">
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 							</ul>
@@ -6885,7 +6910,9 @@ init_project_readmarker_system();
 							<ul class="group">
 								<li>
 									<select class="primary" name="unappliedtags[]" size="<vb:if condition="$show['can_custom_tag']">4<vb:else />6</vb:if>" id="tags_select_n" tabindex="2" multiple="multiple">
-										{vb:raw unapplied_tags}
+										<vb:each from="unapplied_tags" value="option">
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 								<vb:if condition="$show['can_custom_tag']">
@@ -6905,7 +6932,9 @@ init_project_readmarker_system();
 							<ul class="group">
 								<li>
 									<select class="primary" name="appliedtags[]" size="6" id="tags_select_y" multiple="multiple" tabindex="2">
-										{vb:raw applied_tags}
+										<vb:each from="applied_tags" value="option">
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 							</ul>
@@ -6956,6 +6985,13 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </form>
+
+<script type="text/javascript">
+<!--
+<vb:if condition="$show['assign_dropdown']"> vBulletin.register_control("vB_ListBuilder", null, "usrassgn", null); </vb:if>
+<vb:if condition="$show['tags_edit']"> vBulletin.register_control("vB_ListBuilder", null, "tags", null); </vb:if>
+//-->
+</script>
 
 {vb:raw footer}
 
@@ -7311,7 +7347,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1309268031" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1309719930" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7611,7 +7647,9 @@ init_project_readmarker_system();
 							<ul class="group">
 								<li>
 									<select class="primary" name="unassigned[]" size="6" id="usrassgn_select_n" tabindex="2" multiple="multiple">
-										{vb:raw unassigned_users}
+										<vb:each from="unassigned_users" value="option">
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 							</ul>
@@ -7626,7 +7664,9 @@ init_project_readmarker_system();
 							<ul class="group">
 								<li>
 									<select class="primary" name="assigned[]" size="6" id="usrassgn_select_y"tabindex="2" multiple="multiple" >
-										{vb:raw assigned_users}
+										<vb:each from="assigned_users" value="option">
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 							</ul>
@@ -7675,7 +7715,9 @@ init_project_readmarker_system();
 							<ul class="group">
 								<li>
 									<select class="primary" name="unappliedtags[]" size="<vb:if condition="$show['can_custom_tag']">4<vb:else />6</vb:if>" id="tags_select_n" tabindex="2" multiple="multiple">
-										{vb:raw unapplied_tags}
+										<vb:each from="unapplied_tags" value="option">
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										</vb:each>
 									</select>
 								</li>
 								<vb:if condition="$show['can_custom_tag']">
@@ -7695,7 +7737,9 @@ init_project_readmarker_system();
 							<ul class="group">
 								<li>
 									<select class="primary" name="appliedtags[]" size="6" id="tags_select_y" multiple="multiple" tabindex="2">
-										{vb:raw applied_tags}
+									<vb:each from="applied_tags" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
 									</select>
 								</li>
 							</ul>
@@ -7759,7 +7803,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postissue_short" templatetype="template" date="1291146959" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue_short" templatetype="template" date="1309716367" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7810,7 +7854,9 @@ init_project_readmarker_system();
 			<div class="blockrow">
 				<label for="issuetypeid" class="full">{vb:rawphrase issue_type}</label>
 				<select class="primary" name="issuetypeid" id="issuetypeid" tabindex="1">
-					{vb:raw issuetype_options}
+					<vb:each from="issuetype_options" value="option">
+						<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+					</vb:each>
 				</select>
 			</div>
 		</div>
@@ -8359,7 +8405,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_projectbit" templatetype="template" date="1309280375" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
+		<template name="pt_projectbit" templatetype="template" date="1309716123" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
 	<div class="projectstatusicon">
 		<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
 	</div>
@@ -8388,7 +8434,7 @@ init_project_readmarker_system();
 			<vb:each from="type_counts" value="type">
 				<li>
 					<a href="{vb:link issuelist, {vb:raw project}, {vb:raw type.pageinfo}}">{vb:raw type.name}</a>: 
-					<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
+					<span id="{vb:raw type.countid}" class="smallfont<vb:if condition="$type['newflag']"> boldtext</vb:if>">
 						{vb:raw type.issuecountactive}&nbsp;/&nbsp;{vb:raw type.issuecount}
 					</span>
 				</li>
@@ -9007,14 +9053,14 @@ init_project_readmarker_system();
 {vb:raw errorbits}
 </ul>]]></template>
 		<template name="pt_searcherrorbit" templatetype="template" date="1273444813" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw error}</li>]]></template>
-		<template name="pt_searchresultbit" templatetype="template" date="1294259419" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
+		<template name="pt_searchresultbit" templatetype="template" date="1309716145" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
 	</div>
 	<div class="ptissuelist_title">
 		<div>
 			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> class="boldtext"</vb:if>>{vb:raw issue.title}</a>
 		</div>
 	</div>
 	<div class="ptissuelist_lastpost_search smallfont">
@@ -9198,14 +9244,14 @@ init_project_readmarker_system();
 		<span class="shade">{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title}</a>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_subscriptionbit" templatetype="template" date="1294259472" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
+		<template name="pt_subscriptionbit" templatetype="template" date="1309716158" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
 	</div>
 	<div class="ptissuelist_titlesub">
 		<div>
 			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
-			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>{vb:raw issue.title}</a>
+			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> class="boldtext"</vb:if>>{vb:raw issue.title}</a>
 		</div>
 		<div class="smallfont">
 			<vb:if condition="$issue['submituserid']">
@@ -10058,7 +10104,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		</div>
 	</div>
 </li>]]></template>
-		<template name="search_results_ptproject" templatetype="template" date="1309276075" username="Pitchoune" version="2.2.0"><![CDATA[<li class="threadbit" id="project_{vb:raw project.projectid}">
+		<template name="search_results_ptproject" templatetype="template" date="1309716182" username="Pitchoune" version="2.2.0"><![CDATA[<li class="threadbit" id="project_{vb:raw project.projectid}">
 	<div class="nonsticky">
 		<div class="threadinfo thread">
 			<!--  status icon block -->
@@ -10085,7 +10131,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 				<vb:each from="type_counts" value="type">
 					<li>
 						<a href="{vb:link issuelist, {vb:raw project}}&amp;issuetypeid={vb:raw type.issuetypeid}">{vb:raw type.name}</a>: 
-						<span id="{vb:raw type.countid}" class="smallfont" <vb:if condition="$type['newflag']">style=" font-weight:bold;"</vb:if>>
+						<span id="{vb:raw type.countid}" class="smallfont<vb:if condition="$type['newflag']"> boldtext</vb:if>">
 							{vb:raw type.issuecountactive}&nbsp;/&nbsp;{vb:raw type.issuecount}
 						</span>
 					</li>
