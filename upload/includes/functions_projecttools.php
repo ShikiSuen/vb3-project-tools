@@ -1237,7 +1237,7 @@ function build_issue_bit($issue, $project, $issueperms)
 
 		$curpage = 0;
 
-		$issue['pagenav'] = array();
+		$issue['pagenav'] = $issuepagenav = array();
 		$show['pagenavmore'] = false;
 
 		while ($curpage++ < $issue['totalpages'])
@@ -1250,8 +1250,6 @@ function build_issue_bit($issue, $project, $issueperms)
 				break;
 			}
 
-			$pagenumbers = fetch_start_end_total_array($curpage, $vbulletin->options['pt_notesperpage'], $issue['totalnotes']);
-
 			$issuepagenav['pageinfo'] = array('pagenumber' => $curpage);
 			$issuepagenav['curpage'] = $curpage;
 
@@ -1260,7 +1258,7 @@ function build_issue_bit($issue, $project, $issueperms)
 	}
 	else
 	{
-		$issue['pagenav'] = '';
+		$issue['pagenav']	 = '';
 	}
 
 	$show['statuscolor'] = false;
