@@ -3918,7 +3918,7 @@ legend {
 		{vb:rawphrase edited_by_x, {vb:raw history.username}}, <span class="shade">{vb:rawphrase reason}</span> {vb:raw history.reason}
 	</div>
 </div>]]></template>
-		<template name="pt_import_content" templatetype="template" date="1303573039" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content" templatetype="template" date="1309812736" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -3965,7 +3965,13 @@ legend {
 				<ul class="group rightcol">
 					<li>
 						<select id="project-issuetype" name="project-issuetype" style="display: block; width: 100%">
-							{vb:raw project_type_select}
+							<vb:each from="project_type_select" value="optiongroup">
+								<optgroup label="{vb:raw optiongroup.label}">
+									<vb:each from="optiongroup[group]" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
+								</optgroup>
+							</vb:each>
 						</select>
 					</li>
 				</ul>
@@ -3984,7 +3990,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1309725415" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1309813950" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4151,7 +4157,13 @@ legend {
 							<li>
 								<select class="primary" name="appliesversionid" tabindex="1">
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
-									{vb:raw applies_versions}
+										<vb:each from="applies_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							</li>
 						</ul>
@@ -4167,7 +4179,13 @@ legend {
 								<select class="primary" name="addressedversionid" tabindex="1">
 									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-									{vb:raw addressed_versions}
+										<vb:each from="addressed_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.addressedversion}
@@ -4344,7 +4362,13 @@ legend {
 							<li>
 								<select class="primary" name="appliesversionid" tabindex="2">
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
-									{vb:raw applies_versions}
+										<vb:each from="applies_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							</li>
 						</ul>
@@ -4360,7 +4384,13 @@ legend {
 								<select class="primary" name="addressedversionid" tabindex="2">
 									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-									{vb:raw addressed_versions}
+										<vb:each from="addressed_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.addressedversion}
@@ -6537,7 +6567,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue" templatetype="template" date="1291146799" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue" templatetype="template" date="1309813624" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6584,7 +6614,13 @@ init_project_readmarker_system();
 				<ul class="group rightcol">
 					<li>
 						<select id="project-issuetype" name="project-issuetype" style="display:block; width:100%">
-							{vb:raw project_type_select}
+							<vb:each from="project_type_select" value="optiongroup">
+								<optgroup label="{vb:raw optiongroup.label}">
+									<vb:each from="optiongroup[group]" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
+								</optgroup>
+							</vb:each>
 						</select>
 					</li>
 				</ul>
@@ -6602,7 +6638,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1309725459" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1309813053" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6758,7 +6794,13 @@ init_project_readmarker_system();
 							<li>
 								<select class="primary" name="appliesversionid" tabindex="1">
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
-									{vb:raw applies_versions}
+										<vb:each from="applies_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							</li>
 						</ul>
@@ -6774,7 +6816,13 @@ init_project_readmarker_system();
 								<select class="primary" name="addressedversionid" tabindex="1">
 									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-									{vb:raw addressed_versions}
+										<vb:each from="addressed_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.addressedversion}
@@ -6951,7 +6999,13 @@ init_project_readmarker_system();
 							<li>
 								<select class="primary" name="appliesversionid" tabindex="2">
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
-									{vb:raw applies_versions}
+										<vb:each from="applies_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							</li>
 						</ul>
@@ -6967,7 +7021,13 @@ init_project_readmarker_system();
 								<select class="primary" name="addressedversionid" tabindex="2">
 									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-									{vb:raw addressed_versions}
+										<vb:each from="addressed_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.addressedversion}
@@ -7347,7 +7407,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1309719930" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1309812992" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7564,7 +7624,13 @@ init_project_readmarker_system();
 							<li>
 								<select class="primary" name="appliesversionid" tabindex="1">
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
-									{vb:raw applies_versions}
+										<vb:each from="applies_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							</li>
 						</ul>
@@ -7579,7 +7645,13 @@ init_project_readmarker_system();
 								<select class="primary" name="addressedversionid" tabindex="1">
 									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-									{vb:raw addressed_versions}
+										<vb:each from="addressed_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup[group]" value="option">
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.addressedversion}
@@ -7756,7 +7828,13 @@ init_project_readmarker_system();
 							<li>
 								<select class="primary" name="appliesversionid" tabindex="2">
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
-									{vb:raw applies_versions}
+									<vb:each from="applies_versions" value="optiongroup">
+										<optgroup label="{vb:raw optiongroup.label}">
+											<vb:each from="optiongroup[group]" value="option">
+												<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+											</vb:each>
+										</optgroup>
+									</vb:each>
 								</select>
 							</li>
 						</ul>
@@ -7772,7 +7850,13 @@ init_project_readmarker_system();
 								<select class="primary" name="addressedversionid" tabindex="2">
 									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-									{vb:raw addressed_versions}
+									<vb:each from="addressed_versions" value="optiongroup">
+										<optgroup label="{vb:raw optiongroup.label}">
+											<vb:each from="optiongroup[group]" value="option">
+												<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+											</vb:each>
+										</optgroup>
+									</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.addressedversion}

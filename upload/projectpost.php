@@ -1985,35 +1985,37 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
 	}
 
-	$applies_versions = '';
-	$addressed_versions = '';
+	$applies_versions = array();
+	$addressed_versions = array();
 
 	foreach ($version_groups AS $optgroup_label => $versions)
 	{
-		$group_applies = '';
-		$group_addressed = '';
+		$option = array();
+		$optiongroup = array();
+		$group_applies = array();
+		$group_addressed = array();
 
 		foreach ($versions AS $optionvalue => $optiontitle)
 		{
-			$group_applies .= render_option_template($optiontitle, $optionvalue, ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : ''));
-			$group_addressed .= render_option_template($optiontitle, $optionvalue, (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : ''));
+			$option['title'] = $optiontitle;
+			$option['value'] = $optionvalue;
+			$option['selected'] = ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : '');
+
+			$group_applies[] = $option;
+
+			$option['selected'] = (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : '');
+
+			$group_addressed[] = $option;
 		}
 
-		$optgroup_options = $group_applies;
+		$optiongroup['group'] = $group_applies;
+		$optiongroup['label'] = $optgroup_label;
 
-		$templater = vB_Template::create('optgroup');
-			$templater->register('optgroup_extra', $optgroup_extra);
-			$templater->register('optgroup_label', $optgroup_label);
-			$templater->register('optgroup_options', $optgroup_options);
-		$applies_versions .= $templater->render();
+		$applies_versions[] = $optiongroup;
 
-		$optgroup_options = $group_addressed;
+		$optiongroup['group'] = $group_addressed;
 
-		$templater = vB_Template::create('optgroup');
-			$templater->register('optgroup_extra', $optgroup_extra);
-			$templater->register('optgroup_label', $optgroup_label);
-			$templater->register('optgroup_options', $optgroup_options);
-		$addressed_versions .= $templater->render();
+		$addressed_versions[] = $optiongroup;
 	}
 
 	$applies_unknown_selected = ($issue['appliesversionid'] == 0 ? ' selected="selected"' : '');
@@ -3406,31 +3408,37 @@ if ($_POST['do'] == 'moveissue2')
 		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
 	}
 
-	$applies_versions = '';
-	$addressed_versions = '';
+	$applies_versions = array();
+	$addressed_versions = array();
 
 	foreach ($version_groups AS $optgroup_label => $versions)
 	{
-		$group_applies = '';
-		$group_addressed = '';
+		$option = array();
+		$optiongroup = array();
+		$group_applies = array();
+		$group_addressed = array();
 
 		foreach ($versions AS $optionvalue => $optiontitle)
 		{
-			$group_applies .= render_option_template($optiontitle, $optionvalue, ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : ''));
-			$group_addressed .= render_option_template($optiontitle, $optionvalue, (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : ''));
+			$option['title'] = $optiontitle;
+			$option['value'] = $optionvalue;
+			$option['selected'] = ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : '');
+
+			$group_applies[] = $option;
+
+			$option['selected'] = (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : '');
+
+			$group_addressed[] = $option;
 		}
 
-		$templater = vB_Template::create('optgroup');
-			$templater->register('optgroup_extra', $optgroup_extra);
-			$templater->register('optgroup_label', $optgroup_label);
-			$templater->register('optgroup_options', $group_applies);
-		$applies_versions .= $templater->render();
+		$optiongroup['group'] = $group_applies;
+		$optiongroup['label'] = $optgroup_label;
 
-		$templater = vB_Template::create('optgroup');
-			$templater->register('optgroup_extra', $optgroup_extra);
-			$templater->register('optgroup_label', $optgroup_label);
-			$templater->register('optgroup_options', $group_addressed);
-		$addressed_versions .= $templater->render();
+		$applies_versions[] = $optiongroup;
+
+		$optiongroup['group'] = $group_addressed;
+
+		$addressed_versions[] = $optiongroup;
 	}
 
 	$applies_unknown_selected = ($issue['appliesversionid'] == 0 ? ' selected="selected"' : '');
@@ -3591,14 +3599,14 @@ if ($_REQUEST['do'] == 'moveissue')
 		print_no_permission();
 	}
 
-	$project_type_select = '';
-	$optionclass = '';
+	$project_type_select = array();
 
 	foreach ($vbulletin->pt_projects AS $projectid => $projectinfo)
 	{
 		$project_perms["$projectid"] = fetch_project_permissions($vbulletin->userinfo, $projectid);
 
-		$optgroup_options = '';
+		$optgroup = $optiongroup = $option = array();
+
 		foreach (array_keys($projectinfo['types']) AS $type)
 		{
 			// Check we can both view and post the target issue type
@@ -3607,23 +3615,22 @@ if ($_REQUEST['do'] == 'moveissue')
 				continue;
 			}
 
-			$optionvalue = $projectinfo['projectid'] . '-' . $type;
-			$optiontitle = $vbphrase["issuetype_{$type}_singular"];
-			$optionselected = (($issue['issuetypeid'] == $type AND $issue['projectid'] == $projectid) ? ' selected="selected"' : '');
-			$optgroup_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$option['value'] = $projectinfo['projectid'] . '-' . $type;
+			$option['title'] = $vbphrase["issuetype_{$type}_singular"];
+			$option['selected'] = (($issue['issuetypeid'] == $type AND $issue['projectid'] == $projectid) ? ' selected="selected"' : '');
+
+			$optgroup[] = $option;
 		}
 
-		if (empty($optgroup_options))
+		if (empty($optgroup))
 		{
 			continue;
 		}
 
-		$optgroup_label = $projectinfo['title'];
-		$templater = vB_Template::create('optgroup');
-			$templater->register('optgroup_extra', $optgroup_extra);
-			$templater->register('optgroup_label', $optgroup_label);
-			$templater->register('optgroup_options', $optgroup_options);
-		$project_type_select .= $templater->render();
+		$optiongroup['label'] = $projectinfo['title'];
+		$optiongroup['group'] = $optgroup;
+
+		$project_type_select[] = $optiongroup;
 	}
 
 	$navbits = array(
@@ -4367,31 +4374,29 @@ if ($_POST['do'] == 'importcontent2')
 		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
 	}
 
-	$applies_versions = '';
-	$addressed_versions = '';
+	$applies_versions = $addressed_versions = array();
 
 	foreach ($version_groups AS $optgroup_label => $versions)
 	{
-		$group_applies = '';
-		$group_addressed = '';
+		$group_applies = $group_addressed = array();
 
 		foreach ($versions AS $optionvalue => $optiontitle)
 		{
-			$group_applies .= render_option_template($optiontitle, $optionvalue);
-			$group_addressed .= render_option_template($optiontitle, $optionvalue);
+			$option['title'] = $optiontitle;
+			$option['value'] = $optionvalue;
+
+			$group_applies[] = $option;
+			$group_addressed[] = $option;
 		}
 
-		$templater = vB_Template::create('optgroup');
-			$templater->register('optgroup_extra', $optgroup_extra);
-			$templater->register('optgroup_label', $optgroup_label);
-			$templater->register('optgroup_options', $group_applies);
-		$applies_versions .= $templater->render();
+		$optiongroup['label'] = $optgroup_label;
+		$optiongroup['group'] = $group_applies;
 
-		$templater = vB_Template::create('optgroup');
-			$templater->register('optgroup_extra', $optgroup_extra);
-			$templater->register('optgroup_label', $optgroup_label);
-			$templater->register('optgroup_options', $group_addressed);
-		$addressed_versions .= $templater->render();
+		$applies_versions[] = $optiongroup;
+
+		$optiongroup['group'] = $group_addressed;
+
+		$addressed_versions[] = $optiongroup;
 	}
 
 	$applies_unknown_selected = '';
@@ -4597,13 +4602,13 @@ if ($_REQUEST['do'] == 'importcontent')
 {
 	$vbulletin->input->clean_gpc('r', 'type', TYPE_NOHTML);
 
-	$project_type_select = '';
+	$project_type_select = array();
 
 	foreach ($vbulletin->pt_projects AS $projectid => $projectinfo)
 	{
 		$project_perms["$projectid"] = fetch_project_permissions($vbulletin->userinfo, $projectid);
 
-		$optgroup_options = '';
+		$optiongroup = $optgroup = $option = array();
 
 		foreach (array_keys($projectinfo['types']) AS $type)
 		{
@@ -4613,19 +4618,21 @@ if ($_REQUEST['do'] == 'importcontent')
 				continue;
 			}
 
-			$optgroup_options .= render_option_template($vbphrase["issuetype_{$type}_singular"], $projectinfo['projectid'] . '-' . $type);
+			$option['title'] = $vbphrase["issuetype_{$type}_singular"];
+			$option['value'] = $projectinfo['projectid'] . '-' . $type;
+
+			$optiongroup[] = $option;
 		}
 
-		if (empty($optgroup_options))
+		if (empty($optiongroup))
 		{
 			continue;
 		}
 
-		$templater = vB_Template::create('optgroup');
-			$templater->register('optgroup_extra', '');
-			$templater->register('optgroup_label', $projectinfo['title']);
-			$templater->register('optgroup_options', $optgroup_options);
-		$project_type_select .= $templater->render();
+		$optgroup['label'] = $projectinfo['title'];
+		$optgroup['group'] = $optiongroup;
+
+		$project_type_select[] = $optgroup;
 	}
 
 	switch ($vbulletin->GPC['type'])
