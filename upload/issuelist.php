@@ -366,7 +366,7 @@ foreach ($vbulletin->pt_versions AS $version)
 	$version_cache["$version[projectversiongroupid]"][] = $version;
 }
 
-$appliesversion_options = '';
+$appliesversion_options = array();
 $appliesversion_printable = ($vbulletin->GPC['appliesversionid'] == -1 ? $vbphrase['unknown'] : '');
 $version_groups = $db->query_read("
 	SELECT projectversiongroup.projectversiongroupid, projectversiongroup.groupname
@@ -375,21 +375,20 @@ $version_groups = $db->query_read("
 	ORDER BY projectversiongroup.displayorder DESC
 ");
 
-$optionclass = '';
-
 while ($version_group = $db->fetch_array($version_groups))
 {
-	// To be used in a vb:each
-	//$option['value'] = 'g' . $version_group['projectversiongroupid'];
-	//$option['title'] = $version_group['groupname'];
-	//$option['selected'] = ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
+	$option = array();
+
+	$option['value'] = 'g' . $version_group['projectversiongroupid'];
+	$option['title'] = $version_group['groupname'];
+	$option['selected'] = ($option['value'] == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
 
 	if ($optionselected)
 	{
 		$appliesversion_printable = $version_group['groupname'];
 	}
 
-	$appliesversion_options .= render_option_template($version_group['groupname'], 'g' . $version_group['projectversiongroupid'], ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : ''));
+	$appliesversion_options[] = $option;
 
 	if (!is_array($version_cache["$version_group[projectversiongroupid]"]))
 	{
@@ -398,17 +397,18 @@ while ($version_group = $db->fetch_array($version_groups))
 
 	foreach ($version_cache["$version_group[projectversiongroupid]"] AS $version)
 	{
-		// To be used in a vb:each
-		//$option['value'] = 'v' . $version['projectversionid'];
-		//$option['title'] = '-- ' . $version['versionname'];
-		//$option['selected'] = ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
+		$option = array();
+
+		$option['value'] = 'v' . $version['projectversionid'];
+		$option['title'] = '-- ' . $version['versionname'];
+		$option['selected'] = ($option['value'] == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
 
 		if ($optionselected)
 		{
 			$appliesversion_printable = $version['versionname'];
 		}
 
-		$appliesversion_options .= render_option_template('-- ' . $version['versionname'], 'v' . $version['projectversionid'], ($optionvalue == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : ''));
+		$appliesversion_options[] = $option;
 	}
 }
 
