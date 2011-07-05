@@ -5047,7 +5047,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1309815185" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1309882799" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5163,12 +5163,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 							<div class="text">{vb:rawphrase status}</div>
 							<select name="issuestatusid[]" style="display: block; width: 200px">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
-									<vb:each from="status_options" value="optgroup_options">
-										<optgroup label="{vb:raw optgroup_options.issuetype_singular}">
-											<vb:each from="optgroup_options" value="option">
-												<vb:if condition="is_numeric($option['value'])">
-													<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
-												</vb:if>
+									<vb:each from="search_status_options" value="optiongroup">
+										<optgroup label="{vb:raw optiongroup.label}" id="{vb:raw optiongroup.id}">
+											<vb:each from="optiongroup[group]" value="option">
+												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 											</vb:each>
 										</optgroup>
 									</vb:each>
@@ -5177,7 +5175,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 							<div class="text">{vb:rawphrase assigned_users}</div>
 							<select name="assigneduser[]" style="display: block; width: 200px">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
-								{vb:raw assignable_users}
+								<vb:each from="assignable_users" value="option">
+									<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+								</vb:each>
 							</select>
 							<div class="text"><input type="submit" class="button" style="float: {vb:stylevar left}; margin-top: 2px" value="{vb:rawphrase search}" /></div>
 						</li>
@@ -5263,7 +5263,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 				</ol>
 			<vb:else />
 				<div class="blockrow">
-					<div align="center">{vb:rawphrase no_issues_matching_criteria}</div>
+					<div class="section">
+						{vb:rawphrase no_issues_matching_criteria}
+					</div>
 				</div>
 			</vb:if>
 		</div>
@@ -5272,7 +5274,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 				<label style="white-space: nowrap">{vb:rawphrase issue_type}
 					<select name="issuetypeid" tabindex="1">
 						<option value=""{vb:raw any_issuetype_selected}>{vb:rawphrase any_meta}</option>
-						{vb:raw issuetype_options}
+						<vb:each from="issuetype_options" value="option">
+							<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+						</vb:each>
 					</select>
 				</label>
 				&nbsp; &nbsp;
@@ -5290,12 +5294,10 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					<select name="issuestatusid" tabindex="1">
 						<option value="0" {vb:raw anystatus_selected}>{vb:rawphrase any_meta}</option>
 						<option value="-1" {vb:raw activestatus_selected}>{vb:rawphrase any_active_meta}</option>
-							<vb:each from="status_options" value="optgroup_options">
-								<optgroup label="{vb:raw optgroup_options.issuetype_singular}">
-									<vb:each from="optgroup_options" value="option">
-										<vb:if condition="is_numeric($option['value'])">
-											<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
-										</vb:if>
+							<vb:each from="status_options" value="optiongroup">
+								<optgroup label="{vb:raw optiongroup.label}">
+									<vb:each from="optiongroup[group]" value="option">
+										<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</optgroup>
 							</vb:each>
@@ -6091,7 +6093,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1309712343" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1309882831" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6180,13 +6182,21 @@ init_project_readmarker_system();
 							<div class="text">{vb:rawphrase status}</div>
 							<select name="issuestatusid[]" style="display: block; width: 200px; clear: {vb:stylevar left}">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
-								{vb:raw status_options}
+								<vb:each from="search_status_options" value="optiongroup">
+									<optgroup label="{vb:raw optiongroup.label}" id="{vb:raw optiongroup.id}">
+										<vb:each from="optiongroup[group]" value="option">
+											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+										</vb:each>
+									</optgroup>
+								</vb:each>
 							</select>
 
 							<div class="text">{vb:rawphrase assigned_users}</div>
 							<select name="assigneduser[]" style="display: block; width: 200px; clear: {vb:stylevar left}">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
-								{vb:raw assignable_users}
+								<vb:each from="assignable_users" value="option">
+									<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+								</vb:each>
 							</select>
 							<div class="text"><input type="submit" class="button" style="float: {vb:stylevar left}; margin-top: 2px" value="{vb:rawphrase search}" /></div>
 						</li>
@@ -6328,7 +6338,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_milestonebit" templatetype="template" date="1295221806" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockbody settings_form_border">
+		<template name="pt_milestonebit" templatetype="template" date="1309882845" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockbody settings_form_border">
 	<div class="blocksubhead">
 		<img src="{vb:raw vboptions.cleargifurl}" width="1" height="1" alt="" />
 	</div>
@@ -6347,11 +6357,11 @@ init_project_readmarker_system();
 		</span>
 
 		<div class="bigtext">
-			<a href="{vb:link milestone, {vb:raw milestone}}" class="boldtext">{vb:raw title}</a>
+			<a href="{vb:link milestone, {vb:raw milestone}}" class="boldtext">{vb:raw milestone.title}</a>
 		</div>
 
-		<vb:if condition="$description">
-			{vb:raw description}
+		<vb:if condition="$milestone['description']">
+			{vb:raw milestone.description}
 		</vb:if>
 
 		<hr />
@@ -6383,7 +6393,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1309712385" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1309882861" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6453,13 +6463,21 @@ init_project_readmarker_system();
 							<div class="text">{vb:rawphrase status}</div>
 							<select name="issuestatusid[]" style="display: block; width: 200px">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
-								{vb:raw status_options}
+								<vb:each from="search_status_options" value="optiongroup">
+									<optgroup label="{vb:raw optiongroup.label}" id="{vb:raw optiongroup.id}">
+										<vb:each from="optiongroup[group]" value="option">
+											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+										</vb:each>
+									</optgroup>
+								</vb:each>
 							</select>
 
 							<div class="text">{vb:rawphrase assigned_users}</div>
 							<select name="assigneduser[]" style="display: block; width: 200px">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
-								{vb:raw assignable_users}
+								<vb:each from="assignable_users" value="option">
+									<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+								</vb:each>
 							</select>
 							<div class="text"><input type="submit" class="button" style="float: {vb:stylevar left}; margin-top: 2px" value="{vb:rawphrase search}" /></div>
 						</li>
@@ -6533,7 +6551,11 @@ init_project_readmarker_system();
 				{vb:raw issuebits}
 			</ol>
 		<vb:else />
-			<div class="blockrow">{vb:rawphrase no_issues_matching_criteria}</div>
+			<div class="blockrow">
+				<div class="section">
+					{vb:rawphrase no_issues_matching_criteria}
+				</div>
+			</div>
 		</vb:if>
 	</div>
 	<div class="blockfoot actionbuttons">
@@ -8202,7 +8224,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1309712438" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1309892019" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8324,13 +8346,21 @@ init_project_readmarker_system();
 							<div class="text">{vb:rawphrase status}</div>
 							<select name="issuestatusid[]" style="display: block; width: 200px; clear: {vb:stylevar left}">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
-								{vb:raw status_options}
+								<vb:each from="search_status_options" value="optiongroup">
+									<optgroup label="{vb:raw optiongroup.label}" id="{vb:raw optiongroup.id}">
+										<vb:each from="optiongroup[group]" value="option">
+											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+										</vb:each>
+									</optgroup>
+								</vb:each>
 							</select>
 
 							<div class="text">{vb:rawphrase assigned_users}</div>
 							<select name="assigneduser[]" style="display: block; width: 200px; clear: {vb:stylevar left}">
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
-								{vb:raw assignable_users}
+								<vb:each from="assignable_users" value="option">
+									<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+								</vb:each>
 							</select>
 							<div class="text"><input type="submit" class="button" style="float: {vb:stylevar left}; margin-top: 2px" value="{vb:rawphrase search}" /></div>
 						</li>
@@ -8368,7 +8398,7 @@ init_project_readmarker_system();
 			<div class="stats td">
 				<ul>
 					<vb:each from="type_counts" value="type">
-						<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px">
+						<li class="smallfont">
 							<a href="{vb:link issuelist, {vb:raw project}, {vb:raw type.pageinfo}}" class="shade"><span class="underline">{vb:raw type.name}</span></a>
 							<span <vb:if condition="$type['newflag']">style="font-weight: bold"</vb:if>>{vb:raw type.issuecountactive} / {vb:raw type.issuecount}</span>
 						</li>
@@ -8376,12 +8406,12 @@ init_project_readmarker_system();
 
 
 					<vb:if condition="$show['milestones']">
-						<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px"><a href="projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="shade"><span class="underline">{vb:rawphrase milestones}</span></a> {vb:raw project.milestonecount_formatted}</li>
+						<li class="smallfont"><a href="{vb:link projectmilestone, {vb:raw project}}" class="shade"><span class="underline">{vb:rawphrase milestones}</span></a> {vb:raw project.milestonecount_formatted}</li>
 					</vb:if>
 					<vb:if condition="$petitionbits">
-						<li class="smallfont" style="margin-bottom:{vb:stylevar cellpadding}px"><a href="{vb:raw relpath}#petitions" class="shade"><span class="underline">{vb:rawphrase pending_petitions}</span></a> {vb:raw project.petitioncount}</li>
+						<li class="smallfont"><a href="{vb:raw relpath}#petitions" class="shade"><span class="underline">{vb:rawphrase pending_petitions}</span></a> {vb:raw project.petitioncount}</li>
 					</vb:if>
-					<li class="smallfont" style="margin-bottom:8px">
+					<li class="smallfont" style="margin-bottom: 8px">
 						<a href="{vb:link projecttimeline, {vb:raw project}}" class="shade"><span class="underline">{vb:rawphrase last_activity}</span></a>
 						<vb:if condition="$show['private_lastactivity']">
 							{vb:rawphrase private}
@@ -8398,7 +8428,7 @@ init_project_readmarker_system();
 	<div class="blockfoot actionbuttons">
 		<div class="group">
 			<vb:if condition="$show['milestones']">
-				<span class="pt_milestonelist"><a href="<vb:comment>{vb:link projectmilestone, {vb:raw project}}</vb:comment>projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="button" style="float: {vb:stylevar left}">{vb:rawphrase view_milestones}</a></span>
+				<span class="pt_milestonelist"><a href="{vb:link projectmilestone, {vb:raw project}}" class="button" style="float: {vb:stylevar left}">{vb:rawphrase view_milestones}</a></span>
 			</vb:if>
 			<a href="{vb:link issuelist, {vb:raw project}}" class="button">{vb:rawphrase view_complete_issue_list}</a>
 		</div>

@@ -741,7 +741,7 @@ $templater = vB_Template::create('pt_project');
 	$templater->register('project', $project);
 	$templater->register('pt_ptlist', $pt_ptlist);
 	$templater->register('reportbits', $reportbits);
-	$templater->register('search_status_options', $status_options);
+	$templater->register('search_status_options', $search_status_options);
 	$templater->register('timeline', $timeline);
 	$templater->register('type_counts', $type_counts);
 	$templater->register('contenttypeid', $issue_contenttypeid);
