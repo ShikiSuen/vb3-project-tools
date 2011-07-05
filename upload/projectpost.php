@@ -4164,11 +4164,13 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 	if ($threadid)
 	{	
 		$threadinfo = verify_id('thread', $threadid, 1, 1);
+		$foruminfo = verify_id('forum', $threadinfo['forumid']);
 	}
 
 	if ($postid)
 	{
 		$threadinfo = verify_id('thread', $threadid, 1, 1);
+		$foruminfo = verify_id('forum', $threadinfo['forumid']);
 		$postinfo = verify_id('post', $postid, 1, 1);
 	}
 
@@ -4601,6 +4603,11 @@ if ($_POST['do'] == 'importcontent2')
 if ($_REQUEST['do'] == 'importcontent')
 {
 	$vbulletin->input->clean_gpc('r', 'type', TYPE_NOHTML);
+
+	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND $foruminfo['canimportintoissues']))
+	{
+		print_no_permission();
+	}
 
 	$project_type_select = array();
 
