@@ -112,7 +112,6 @@ else
 
 $milestone_types = fetch_viewable_milestone_types($projectperms);
 
-
 if (!$milestone_types)
 {
 	print_no_permission();
@@ -163,8 +162,8 @@ $raw_counts = fetch_milestone_counts($counts["$milestone[milestoneid]"], $projec
 $stats = prepare_milestone_stats($milestone, $raw_counts);
 
 // Needed for links inside each milestone summary
-$pageinfo_filteractive = $pageinfo + array('filter' => 'active');
-$pageinfo_filtercompleted = $pageinfo + array('filter' => 'completed');
+$pageinfo_filteractive = array('filter' => 'active');
+$pageinfo_filtercompleted = array('filter' => 'completed');
 
 require_once(DIR . '/includes/class_pt_issuelist.php');
 $issue_list = new vB_Pt_IssueList($project, $vbulletin);
