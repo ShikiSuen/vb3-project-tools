@@ -162,6 +162,10 @@ $counts = fetch_milestone_count_data("milestonetypecount.milestoneid = $mileston
 $raw_counts = fetch_milestone_counts($counts["$milestone[milestoneid]"], $projectperms);
 $stats = prepare_milestone_stats($milestone, $raw_counts);
 
+// Needed for links inside each milestone summary
+$pageinfo_filteractive = $pageinfo + array('filter' => 'active');
+$pageinfo_filtercompleted = $pageinfo + array('filter' => 'completed');
+
 require_once(DIR . '/includes/class_pt_issuelist.php');
 $issue_list = new vB_Pt_IssueList($project, $vbulletin);
 $issue_list->calc_total_rows = false;
@@ -196,6 +200,8 @@ $templater = vB_Template::create('pt_milestone');
 	$templater->register_page_templates();
 	$templater->register('assignable_users', $assignable_users);
 	$templater->register('columns', $columns);
+	$templater->register('pageinfo_filteractive', $pageinfo_filteractive);
+	$templater->register('pageinfo_filtercompleted', $pageinfo_filtercompleted);
 	$templater->register('post_issue_options', $post_issue_options);
 	$templater->register('postable_types', $postable_types);
 	$templater->register('issuebits', $issuebits);
