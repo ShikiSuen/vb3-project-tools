@@ -4164,13 +4164,13 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 	if ($threadid)
 	{	
 		$threadinfo = verify_id('thread', $threadid, 1, 1);
-		$foruminfo = verify_id('forum', $threadinfo['forumid']);
+		$foruminfo = verify_id('forum', $threadinfo['forumid'], 1, 1);
 	}
 
 	if ($postid)
 	{
 		$threadinfo = verify_id('thread', $threadid, 1, 1);
-		$foruminfo = verify_id('forum', $threadinfo['forumid']);
+		$foruminfo = verify_id('forum', $threadinfo['forumid'], 1, 1);
 		$postinfo = verify_id('post', $postid, 1, 1);
 	}
 
@@ -4206,6 +4206,11 @@ if ($_POST['do'] == 'processimportcontent')
 		'originaltitle' => TYPE_NOHTML,
 		'private' => TYPE_BOOL,
 	));
+
+	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND !$foruminfo['canimportintoissues']))
+	{
+		print_no_permission();
+	}
 
 	// Do our own checking to make sure we have all permissions needed to create issues
 	$project = ptimporter_verify_issuetypeid($vbulletin->GPC['issuetypeid'], $vbulletin->GPC['projectid']);
@@ -4281,7 +4286,7 @@ if ($_POST['do'] == 'importcontent2')
 		'preview' => TYPE_NOHTML,
 	));
 
-	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND $foruminfo['canimportintoissues']))
+	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND !$foruminfo['canimportintoissues']))
 	{
 		print_no_permission();
 	}
@@ -4624,7 +4629,7 @@ if ($_REQUEST['do'] == 'importcontent')
 {
 	$vbulletin->input->clean_gpc('r', 'type', TYPE_NOHTML);
 
-	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND $foruminfo['canimportintoissues']))
+	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND !$foruminfo['canimportintoissues']))
 	{
 		print_no_permission();
 	}
