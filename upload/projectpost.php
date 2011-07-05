@@ -4281,6 +4281,11 @@ if ($_POST['do'] == 'importcontent2')
 		'preview' => TYPE_NOHTML,
 	));
 
+	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND $foruminfo['canimportintoissues']))
+	{
+		print_no_permission();
+	}
+
 	list($projectid, $issuetypeid) = explode('-', $vbulletin->GPC['project-issuetype']);
 
 	$project = verify_project($projectid);
@@ -4505,9 +4510,9 @@ if ($_POST['do'] == 'importcontent2')
 	{
 		$assigned_user_list["$assignment[userid]"] = $assignment['userid'];
 	}
-
+echo '<div>Temp debug:<br />Assigned user list:<pre>';print_r($assigned_user_list);echo '</pre></div>';
 	$unassigned_users = $assigned_users = $option = array();
-
+echo '<div>Temp debug:<br />Assignable (vbulletin->pt_assignable):<pre>';print_r($vbulletin->pt_assignable["$project[projectid]"]["$issuetypeid"]);echo '</pre></div>';
 	foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issuetypeid"] AS $optionvalue => $optiontitle)
 	{
 		$option['title'] = $optiontitle;

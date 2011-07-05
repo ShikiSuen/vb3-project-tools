@@ -2381,7 +2381,7 @@ build_project_cache();]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1308945687" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1309894360" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2914,6 +2914,12 @@ a.firstunread, a.firstunread:hover
 	margin-top: -5px;
 	text-align: {vb:stylevar left};
 	float: {vb:stylevar right};
+}
+
+.pt_issuelist .actionbuttons .group {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	padding-{vb:stylevar right}: 0px;
 }
 
 /* Project issue content definitions */
@@ -3990,7 +3996,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1309815117" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1309896867" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4160,7 +4166,7 @@ legend {
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup[group]" value="option">
-													<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -4182,7 +4188,7 @@ legend {
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup[group]" value="option">
-													<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -4203,7 +4209,9 @@ legend {
 						<li>
 							<vb:if condition="$show['milestone_edit']">
 								<select class="primary" name="milestoneid" tabindex="1">
-									{vb:raw milestone_options}
+									<vb:each from="milestone_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.milestonetitle}
@@ -4299,7 +4307,7 @@ legend {
 							<vb:if condition="$show['status_edit']">
 								<select name="issuestatusid" class="primary" tabindex="2">
 									<vb:each from="status_options" value="option">
-										<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</select>
 							<vb:else />
@@ -6093,7 +6101,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1309882831" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1309894390" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6242,18 +6250,18 @@ init_project_readmarker_system();
 
 			<div class="milestone_total">
 				<span class="milestone_total_content">
-					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=completed" class="shade">{vb:rawphrase total_completed}</a>
-					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=completed">{vb:raw stats.total_completed}</a>
+					<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_filtercompleted}}" class="shade">{vb:rawphrase total_completed}</a>
+					<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_filtercompleted}}">{vb:raw stats.total_completed}</a>
 				</span>
 
 				<span class="milestone_total_content">
-					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=active" class="shade">{vb:rawphrase total_active}</a>
-					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}&amp;filter=active">{vb:raw stats.total_active}</a>
+					<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_filteractive}}" class="shade">{vb:rawphrase total_active}</a>
+					<a href="{vb:link msissuelist, {vb:raw milestone}, {vb:raw pageinfo_filteractive}}">{vb:raw stats.total_active}</a>
 				</span>
 
 				<span>
-					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}" class="shade">{vb:rawphrase total_issues}</a>
-					<a href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}">{vb:raw stats.total_issues}</a>
+					<a href="{vb:link msissuelist, {vb:raw milestone}}" class="shade">{vb:rawphrase total_issues}</a>
+					<a href="{vb:link msissuelist, {vb:raw milestone}}">{vb:raw stats.total_issues}</a>
 				</span>
 			</div>
 
@@ -6323,7 +6331,7 @@ init_project_readmarker_system();
 	<vb:if condition="$issuebits">
 		<div class="blockfoot actionbuttons">
 			<div class="group">
-				<span style="float: {vb:stylevar left}; padding-{vb:stylevar left}: 10px">
+				<span style="float: {vb:stylevar left}">
 					<a class="button" href="projectmilestone.php?{vb:raw session.sessionurl}do=issuelist&amp;milestoneid={vb:raw milestone.milestoneid}">{vb:rawphrase view_all_issues_in_this_milestone}</a>
 				</span>
 				<vb:if condition="$show['search_options']">
@@ -6661,7 +6669,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1309815274" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1309896853" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6754,7 +6762,7 @@ init_project_readmarker_system();
 						<li>
 							<select class="primary" name="priority" tabindex="1">
 								<vb:each from="priority_options" value="option">
-									<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 								</vb:each>
 							</select>
 						</li>
@@ -6771,7 +6779,7 @@ init_project_readmarker_system();
 							<select class="primary" name="projectcategoryid" tabindex="1">
 								<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
 								<vb:each from="category_options" value="option">
-									<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 								</vb:each>
 							</select>
 						</li>
@@ -6797,7 +6805,7 @@ init_project_readmarker_system();
 							<vb:if condition="$show['status_edit']">
 								<select class="primary" name="issuestatusid" tabindex="1">
 									<vb:each from="status_options" value="option">
-										<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</select>
 							<vb:else />
@@ -6820,7 +6828,7 @@ init_project_readmarker_system();
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup[group]" value="option">
-													<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -6842,7 +6850,7 @@ init_project_readmarker_system();
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup[group]" value="option">
-													<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -6863,7 +6871,9 @@ init_project_readmarker_system();
 						<li>
 							<vb:if condition="$show['milestone_edit']">
 								<select class="primary" name="milestoneid" tabindex="1">
-									{vb:raw milestone_options}
+									<vb:each from="milestone_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.milestonetitle}
@@ -6914,7 +6924,7 @@ init_project_readmarker_system();
 								<li>
 									<select class="primary" name="unassigned[]" size="6" id="usrassgn_select_n" tabindex="2" multiple="multiple">
 										<vb:each from="unassigned_users" value="option">
-											<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 										</vb:each>
 									</select>
 								</li>
@@ -6931,7 +6941,7 @@ init_project_readmarker_system();
 								<li>
 									<select class="primary" name="assigned[]" size="6" id="usrassgn_select_y"tabindex="2" multiple="multiple" >
 										<vb:each from="assigned_users" value="option">
-											<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 										</vb:each>
 									</select>
 								</li>
@@ -6959,7 +6969,7 @@ init_project_readmarker_system();
 							<vb:if condition="$show['status_edit']">
 								<select name="issuestatusid" class="primary" tabindex="2">
 									<vb:each from="status_options" value="option">
-										<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</select>
 							<vb:else />
@@ -6982,7 +6992,7 @@ init_project_readmarker_system();
 								<li>
 									<select class="primary" name="unappliedtags[]" size="<vb:if condition="$show['can_custom_tag']">4<vb:else />6</vb:if>" id="tags_select_n" tabindex="2" multiple="multiple">
 										<vb:each from="unapplied_tags" value="option">
-											<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 										</vb:each>
 									</select>
 								</li>
@@ -7004,7 +7014,7 @@ init_project_readmarker_system();
 								<li>
 									<select class="primary" name="appliedtags[]" size="6" id="tags_select_y" multiple="multiple" tabindex="2">
 										<vb:each from="applied_tags" value="option">
-											<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 										</vb:each>
 									</select>
 								</li>
@@ -7025,7 +7035,7 @@ init_project_readmarker_system();
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup[group]" value="option">
-													<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -7047,7 +7057,7 @@ init_project_readmarker_system();
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup[group]" value="option">
-													<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -7430,7 +7440,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1309815354" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1309896726" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7585,7 +7595,7 @@ init_project_readmarker_system();
 						<li>
 							<select class="primary" name="priority" tabindex="1">
 								<vb:each from="priority_options" value="option">
-									<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 								</vb:each>
 							</select>
 						</li>
@@ -7602,7 +7612,7 @@ init_project_readmarker_system();
 							<select class="primary" name="projectcategoryid" tabindex="1">
 								<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
 								<vb:each from="category_options" value="option">
-									<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 								</vb:each>
 							</select>
 						</li>
@@ -7627,7 +7637,7 @@ init_project_readmarker_system();
 							<vb:if condition="$show['status_edit']">
 								<select class="primary" name="issuestatusid" tabindex="1">
 									<vb:each from="status_options" value="option">
-										<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</select>
 							<vb:else />
@@ -7650,7 +7660,7 @@ init_project_readmarker_system();
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup[group]" value="option">
-													<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -7671,7 +7681,7 @@ init_project_readmarker_system();
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup[group]" value="option">
-													<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -7692,7 +7702,9 @@ init_project_readmarker_system();
 						<li>
 							<vb:if condition="$show['milestone_edit']">
 								<select class="primary" name="milestoneid" tabindex="1">
-									{vb:raw milestone_options}
+									<vb:each from="milestone_options" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
 								</select>
 							<vb:else />
 								{vb:raw issue.milestonetitle}
@@ -7743,7 +7755,7 @@ init_project_readmarker_system();
 								<li>
 									<select class="primary" name="unassigned[]" size="6" id="usrassgn_select_n" tabindex="2" multiple="multiple">
 										<vb:each from="unassigned_users" value="option">
-											<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 										</vb:each>
 									</select>
 								</li>
@@ -7760,7 +7772,7 @@ init_project_readmarker_system();
 								<li>
 									<select class="primary" name="assigned[]" size="6" id="usrassgn_select_y"tabindex="2" multiple="multiple" >
 										<vb:each from="assigned_users" value="option">
-											<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 										</vb:each>
 									</select>
 								</li>
@@ -7788,7 +7800,7 @@ init_project_readmarker_system();
 							<vb:if condition="$show['status_edit']">
 								<select name="issuestatusid" class="primary" tabindex="2">
 									<vb:each from="status_options" value="option">
-										<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</select>
 							<vb:else />
@@ -7811,7 +7823,7 @@ init_project_readmarker_system();
 								<li>
 									<select class="primary" name="unappliedtags[]" size="<vb:if condition="$show['can_custom_tag']">4<vb:else />6</vb:if>" id="tags_select_n" tabindex="2" multiple="multiple">
 										<vb:each from="unapplied_tags" value="option">
-											<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 										</vb:each>
 									</select>
 								</li>
@@ -7833,7 +7845,7 @@ init_project_readmarker_system();
 								<li>
 									<select class="primary" name="appliedtags[]" size="6" id="tags_select_y" multiple="multiple" tabindex="2">
 									<vb:each from="applied_tags" value="option">
-										<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 									</select>
 								</li>
@@ -7854,7 +7866,7 @@ init_project_readmarker_system();
 									<vb:each from="applies_versions" value="optiongroup">
 										<optgroup label="{vb:raw optiongroup.label}">
 											<vb:each from="optiongroup[group]" value="option">
-												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+												<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 											</vb:each>
 										</optgroup>
 									</vb:each>
@@ -7876,7 +7888,7 @@ init_project_readmarker_system();
 									<vb:each from="addressed_versions" value="optiongroup">
 										<optgroup label="{vb:raw optiongroup.label}">
 											<vb:each from="optiongroup[group]" value="option">
-												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+												<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 											</vb:each>
 										</optgroup>
 									</vb:each>
