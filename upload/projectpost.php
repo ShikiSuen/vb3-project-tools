@@ -4498,32 +4498,47 @@ if ($_POST['do'] == 'importcontent2')
 	// assignments
 	$assignments = '';
 
-	$assignment_data = $db->query_read("
-		SELECT user.userid
-		FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
-			INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid)
-		" . ($vbulletin->GPC['type'] == 'issuenote' ? "WHERE issueassign.issueid = $issue[issueid]" : '') . "
-		ORDER BY user.username
-	");
-
-	while ($assignment = $db->fetch_array($assignment_data))
+	if ($vbulletin->GPC['type'] == 'issuenote')
 	{
-		$assigned_user_list["$assignment[userid]"] = $assignment['userid'];
-	}
-echo '<div>Temp debug:<br />Assigned user list:<pre>';print_r($assigned_user_list);echo '</pre></div>';
-	$unassigned_users = $assigned_users = $option = array();
-echo '<div>Temp debug:<br />Assignable (vbulletin->pt_assignable):<pre>';print_r($vbulletin->pt_assignable["$project[projectid]"]["$issuetypeid"]);echo '</pre></div>';
-	foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issuetypeid"] AS $optionvalue => $optiontitle)
-	{
-		$option['title'] = $optiontitle;
-		$option['value'] = $optionvalue;
+		$assignment_data = $db->query_read("
+			SELECT user.userid
+			FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
+				INNER JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issueassign.userid)
+			" . ($vbulletin->GPC['type'] == 'issuenote' ? "WHERE issueassign.issueid = $issue[issueid]" : '') . "
+			ORDER BY user.username
+		");
 
-		if (isset($assigned_user_list["$optionvalue"]))
+		while ($assignment = $db->fetch_array($assignment_data))
 		{
-			$assigned_users[] = $option;
+			$assigned_user_list["$assignment[userid]"] = $assignment['userid'];
 		}
-		else
+
+		$unassigned_users = $assigned_users = $option = array();
+
+		foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issuetypeid"] AS $optionvalue => $optiontitle)
 		{
+			$option['title'] = $optiontitle;
+			$option['value'] = $optionvalue;
+
+			if (isset($assigned_user_list["$optionvalue"]))
+			{
+				$assigned_users[] = $option;
+			}
+			else
+			{
+				$unassigned_users[] = $option;
+			}
+		}
+	}
+	else
+	{
+		$unassigned_users = $assigned_users = $option = array();
+
+		foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issuetypeid"] AS $optionvalue => $optiontitle)
+		{
+			$option['title'] = $optiontitle;
+			$option['value'] = $optionvalue;
+
 			$unassigned_users[] = $option;
 		}
 	}
