@@ -96,7 +96,7 @@ verify_seo_url('projectmilestone', $project, $pageinfo);
 $milestone_data = $vbulletin->db->query_read("
 	SELECT *
 	FROM " . TABLE_PREFIX . "pt_milestone
-	WHERE projectid = $project[projectid]
+	WHERE projectid = " . $project['projectid'] . "
 	ORDER BY completeddate DESC, targetdate
 ");
 
@@ -105,7 +105,7 @@ if (!$db->num_rows($milestone_data))
 	standard_error(fetch_error('invalidid', $vbphrase['project'], $vbulletin->options['contactuslink']));
 }
 
-$counts = fetch_milestone_count_data("milestone.projectid = $project[projectid] AND milestonetypecount.issuetypeid IN ('" . implode("','", $milestone_types) . "')");
+$counts = fetch_milestone_count_data("milestone.projectid = " . $project['projectid'] . " AND milestonetypecount.issuetypeid IN ('" . implode("','", $milestone_types) . "')");
 $active_milestones = '';
 $no_target_milestones = '';
 $completed_milestones = '';
@@ -121,37 +121,41 @@ while ($milestone = $db->fetch_array($milestone_data))
 
 	$raw_counts = fetch_milestone_counts($counts["$milestone[milestoneid]"], $projectperms);
 	$stats = prepare_milestone_stats($milestone, $raw_counts);
-	$title = $vbphrase['milestone_' . $milestone['milestoneid'] . '_name'];
-	$description = $vbphrase['milestone_' . $milestone['milestoneid'] . '_description'];
+	$milestone['title'] = $vbphrase['milestone_' . $milestone['milestoneid'] . '_name'];
+	$milestone['description'] = $vbphrase['milestone_' . $milestone['milestoneid'] . '_description'];
+
+	// Needed for links inside each milestone summary
+	$pageinfo_filteractive = $pageinfo + array('filter' => 'active');
+	$pageinfo_filtercompleted = $pageinfo + array('filter' => 'completed');
 
 	if ($milestone['completeddate'])
 	{
 		$templater = vB_Template::create('pt_milestonebit');
-			$templater->register('description', $description);
 			$templater->register('milestone', $milestone);
+			$templater->register('pageinfo_filteractive', $pageinfo_filteractive);
+			$templater->register('pageinfo_filtercompleted', $pageinfo_filtercompleted);
 			$templater->register('raw_counts', $raw_counts);
 			$templater->register('stats', $stats);
-			$templater->register('title', $title);
 		$completed_milestones .= $templater->render();
 	}
 	else if ($milestone['targetdate'])
 	{
 		$templater = vB_Template::create('pt_milestonebit');
-			$templater->register('description', $description);
 			$templater->register('milestone', $milestone);
+			$templater->register('pageinfo_filteractive', $pageinfo_filteractive);
+			$templater->register('pageinfo_filtercompleted', $pageinfo_filtercompleted);
 			$templater->register('raw_counts', $raw_counts);
 			$templater->register('stats', $stats);
-			$templater->register('title', $title);
 		$active_milestones .= $templater->render();
 	}
 	else
 	{
 		$templater = vB_Template::create('pt_milestonebit');
-			$templater->register('description', $description);
 			$templater->register('milestone', $milestone);
+			$templater->register('pageinfo_filteractive', $pageinfo_filteractive);
+			$templater->register('pageinfo_filtercompleted', $pageinfo_filtercompleted);
 			$templater->register('raw_counts', $raw_counts);
 			$templater->register('stats', $stats);
-			$templater->register('title', $title);
 		$no_target_milestones .= $templater->render();
 	}
 }

@@ -550,32 +550,35 @@ function fetch_milestone_select($projectid, $selected_milestone = 0, $skip_ids =
 	global $vbulletin, $vbphrase, $show;
 
 	$milestone_array = fetch_milestone_select_list($projectid, $skip_ids);
-	$milestone_options = '';
+	$milestone_options = array();
 
 	foreach ($milestone_array AS $optgroup_label => $option_container)
 	{
+		$option = array();
+
 		if (!is_array($option_container))
 		{
-			$optionvalue = $optgroup_label;
-			$optiontitle = $option_container;
-			$optionselected = ($selected_milestone == $optionvalue ? ' selected="selected"' : '');
-			$milestone_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			$option['value'] = $optgroup_label;
+			$option['title'] = $option_container;
+			$option['selected'] = ($selected_milestone == $option['value'] ? ' selected="selected"' : '');
+			$milestone_options[] = $option;
 		}
 		else if (!empty($option_container))
 		{
-			$optgroup_options = '';
+			$optgroup = $option = array();
 
 			foreach ($option_container AS $optionvalue => $optiontitle)
 			{
-				$optionselected = ($selected_milestone == $optionvalue ? ' selected="selected"' : '');
-				$optgroup_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+				$option['title'] = $optiontitle;
+				$option['value'] = $optionvalue;
+				$option['selected'] = ($selected_milestone == $option['value'] ? ' selected="selected"' : '');
+				$optgroup[] = $option;
 			}
 
-			$templater = vB_Template::create('optgroup');
-				$templater->register('optgroup_extra', $optgroup_extra);
-				$templater->register('optgroup_label', $optgroup_label);
-				$templater->register('optgroup_options', $optgroup_options);
-			$milestone_options .= $templater->render();
+			$optiongroup['label'] = $optgroup_label;
+			$optiongroup['group'] = $optgroup;
+
+			$milestone_options[] = $option;
 		}
 	}
 

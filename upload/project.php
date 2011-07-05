@@ -670,7 +670,7 @@ while ($pending = $db->fetch_array($pending_petition_data))
 
 // search box data
 $assignable_users = fetch_assignable_users_select($project['projectid']);
-$status_options = fetch_issue_status_search_select($projectperms);
+$search_status_options = fetch_issue_status_search_select($projectperms);
 
 // report list
 $reportbits = prepare_subscribed_reports();
@@ -741,7 +741,7 @@ $templater = vB_Template::create('pt_project');
 	$templater->register('project', $project);
 	$templater->register('pt_ptlist', $pt_ptlist);
 	$templater->register('reportbits', $reportbits);
-	$templater->register('status_options', $status_options);
+	$templater->register('search_status_options', $status_options);
 	$templater->register('timeline', $timeline);
 	$templater->register('type_counts', $type_counts);
 	$templater->register('contenttypeid', $issue_contenttypeid);

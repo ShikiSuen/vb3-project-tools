@@ -417,7 +417,7 @@ $unknownversion_selected = ($vbulletin->GPC['appliesversionid'] == -1 ? ' select
 
 // status options / posting options drop down
 $status_options = array();
-$optgroup_options = array();
+$optiongroup = array();
 $post_issue_options = '';
 
 foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
@@ -436,10 +436,10 @@ foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
 		continue;
 	}
 
-	$optgroup_options = build_issuestatus_select($typeinfo['statuses'], $vbulletin->GPC['issuestatusid']);
-	$optgroup_options['issuetype_singular'] = $vbphrase["issuetype_" . $issuetypeid . "_singular"];
+	$optiongroup['label'] = $vbphrase["issuetype_" . $issuetypeid . "_singular"];
+	$optiongroup['group'] = build_issuestatus_select($typeinfo['statuses'], $vbulletin->GPC['issuestatusid']);
 
-	$status_options[] = $optgroup_options;
+	$status_options[] = $optiongroup;
 }
 
 if (sizeof($postable_types) == 1)

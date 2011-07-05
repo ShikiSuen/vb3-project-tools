@@ -1337,8 +1337,8 @@ function build_issuetype_select($projectperms, $types, $selectedid = '')
 {
 	global $vbulletin, $vbphrase, $show;
 
-	$options = '';
-	$optionclass = '';
+	$options = array();
+
 	foreach ($types AS $type)
 	{
 		if (!($projectperms["$type"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
@@ -1346,10 +1346,10 @@ function build_issuetype_select($projectperms, $types, $selectedid = '')
 			continue;
 		}
 
-		$optionvalue = $type;
-		$optiontitle = $vbphrase["issuetype_{$type}_singular"];
-		$optionselected = ($selectedid == $type ? ' selected="selected"' : '');
-		$options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$option['value'] = $type;
+		$option['title'] = $vbphrase["issuetype_{$type}_singular"];
+		$option['selected'] = ($selectedid == $type ? ' selected="selected"' : '');
+		$options[] = $option;
 	}
 
 	return $options;
@@ -1630,8 +1630,7 @@ function fetch_assignable_users_select($projectid)
 		return '';
 	}
 
-	$assignable_users = '';
-	$assignable = array();
+	$assignable_users = $option = $assignable = array();
 
 	// loop through the array once to remove duplicates
 	foreach ($vbulletin->pt_assignable["$projectid"] AS $assign)
@@ -1641,7 +1640,10 @@ function fetch_assignable_users_select($projectid)
 
 	foreach ($assignable AS $optionvalue => $optiontitle)
 	{
-		$assignable_users .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$option['title'] = $optiontitle;
+		$option['value'] = $optionvalue;
+
+		$assignable_users[] = $option;
 	}
 
 	return $assignable_users;
@@ -1659,17 +1661,20 @@ function fetch_issue_status_search_select($projectperms)
 {
 	global $vbulletin, $vbphrase;
 
-	$status_options = '';
+	$status_options = $optiongroup = array();
+
 	foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
 	{
-		if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview'])
-			OR !($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch']))
+		if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch']))
 		{
 			continue;
 		}
 
-		$optgroup_options = build_issuestatus_select($typeinfo['statuses'], $issue['issuestatusid']);
-		$status_options .= "<optgroup label=\"" . $vbphrase["issuetype_{$issuetypeid}_singular"] . "\" id=\"issuestatus_group_$issuetypeid\">$optgroup_options</optgroup>";
+		$optiongroup['label'] = $vbphrase["issuetype_{$issuetypeid}_singular"];
+		$optiongroup['id'] = 'issuestatus_group_' . $issuetypeid;
+		$optiongroup['group'] = build_issuestatus_select($typeinfo['statuses'], $issue['issuestatusid']);
+
+		$status_options[] = $optiongroup;
 	}
 
 	return $status_options;

@@ -92,38 +92,6 @@ if (empty($perms_query["$project[projectid]"]))
 // Definition to display selected columns
 $columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
 
-// status options / posting options drop down
-$postable_types = array();
-$status_options = '';
-$post_issue_options = '';
-
-foreach ($vbulletin->pt_issuetype AS $issuetypeid => $type)
-{
-	if (($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) AND ($projectperms["$issuetypeid"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
-	{
-		$postable_types[] = $issuetypeid;
-
-		$type['name'] = $vbphrase["issuetype_{$issuetypeid}_singular"];
-		$type['milestoneid'] = $milestone['milestoneid'];
-		$type['projectid'] = $project['projectid'];
-
-		$post_issue_options[] = $type;
-	}
-
-	if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
-	{
-		continue;
-	}
-
-	$optgroup_options = build_issuestatus_select($type['statuses'], $vbulletin->GPC['issuestatusid']);
-	$status_options .= "<optgroup label=\"" . $vbphrase["issuetype_{$issuetypeid}_singular"] . "\">$optgroup_options</optgroup>";
-}
-
-if (sizeof($postable_types) == 1)
-{
-	$vbphrase['post_new_issue_issuetype'] = $vbphrase["post_new_issue_$postable_types[0]"];
-}
-
 $anystatus_selected = '';
 $activestatus_selected = '';
 
@@ -144,9 +112,49 @@ else
 
 $milestone_types = fetch_viewable_milestone_types($projectperms);
 
+
 if (!$milestone_types)
 {
 	print_no_permission();
+}
+
+// search box data
+$show['search_options'] = false;
+
+foreach ($milestone_types AS $milestone_typeid)
+{
+	if ($projectperms["$milestone_typeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch'])
+	{
+		$show['search_options'] = true;
+		break;
+	}
+}
+
+// status options / posting options drop down
+$postable_types = $status_options = $post_issue_options = array();
+
+foreach ($vbulletin->pt_issuetype AS $issuetypeid => $type)
+{
+	if (($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) AND ($projectperms["$issuetypeid"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
+	{
+		$postable_types[] = $issuetypeid;
+
+		$type['name'] = $vbphrase["issuetype_{$issuetypeid}_singular"];
+		$type['milestoneid'] = $milestone['milestoneid'];
+		$type['projectid'] = $project['projectid'];
+
+		$post_issue_options[] = $type;
+	}
+
+	if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
+	{
+		continue;
+	}
+}
+
+if (sizeof($postable_types) == 1)
+{
+	$vbphrase['post_new_issue_issuetype'] = $vbphrase["post_new_issue_$postable_types[0]"];
 }
 
 $counts = fetch_milestone_count_data("milestonetypecount.milestoneid = $milestone[milestoneid] AND milestonetypecount.issuetypeid IN ('" . implode("','", $milestone_types) . "')");
@@ -167,18 +175,6 @@ $issuebits = '';
 while ($issue = $db->fetch_array($issue_list->result))
 {
 	$issuebits .= build_issue_bit($issue, $project, $projectperms["$issue[issuetypeid]"]);
-}
-
-// search box data
-$show['search_options'] = false;
-
-foreach ($milestone_types AS $milestone_typeid)
-{
-	if ($projectperms["$milestone_typeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch'])
-	{
-		$show['search_options'] = true;
-		break;
-	}
 }
 
 if ($show['search_options'])

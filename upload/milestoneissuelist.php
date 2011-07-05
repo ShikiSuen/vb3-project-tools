@@ -260,8 +260,8 @@ $templater = vB_Template::create('pt_milestone_issuelist');
 	$templater->register('pageinfo_replies', $pageinfo_replies);
 	$templater->register('pageinfo_lastpost', $pageinfo_lastpost);
 	$templater->register('pagenav', $pagenav);
-	$templater->register('search_status_options', $search_status_options);
 	$templater->register('sort_arrow', $sort_arrow);
+	$templater->register('search_status_options', $search_status_options);
 print_output($templater->render());
 
 ?>
