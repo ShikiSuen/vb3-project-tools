@@ -10934,6 +10934,15 @@ if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 		$show['pt_separator'] = true;
 	}
 
+	// Querying the issue title for the link...
+	$issuetitle = $this->registry->db->query_first("
+		SELECT title
+		FROM " . TABLE_PREFIX . "pt_issue
+		WHERE issueid = " . intval($issueinfos['pt_issueid']) . "
+	");
+
+	$issueinfos['title'] = $issuetitle['title'];
+
 	$templater = vB_Template::create('pt_postbit_link_issue');
 		$templater->register('post', $post);
 		$templater->register('issueinfos', $issueinfos);
