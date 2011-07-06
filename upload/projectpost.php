@@ -4147,6 +4147,7 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 
 	$vbulletin->input->clean_array_gpc('r', array(
 		'issuenote' => TYPE_UINT,
+		'type' => TYPE_NOHTML
 	));
 
 	if (
@@ -4186,6 +4187,22 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 		$issue = verify_issue($issuenoteinfo['issueid']);
 		$project = verify_project($issue['projectid']);
 	}
+
+	// Permission check
+	if ($vbulletin->GPC['type'] != 'issuenote')
+	{
+		if (!(($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND $foruminfo['canimportintoissues']))
+		{
+			print_no_permission();
+		}
+	}
+	else
+	{
+		if (!$vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues'])
+		{
+			print_no_permission();
+		}
+	}
 }
 
 // #######################################################################
@@ -4202,15 +4219,9 @@ if ($_POST['do'] == 'processimportcontent')
 		'addressedversionid' => TYPE_INT,
 		'issuestatusid' => TYPE_UINT,
 		'milestoneid' => TYPE_UINT,
-		'type' => TYPE_NOHTML,
 		'originaltitle' => TYPE_NOHTML,
 		'private' => TYPE_BOOL,
 	));
-
-	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND !$foruminfo['canimportintoissues']))
-	{
-		print_no_permission();
-	}
 
 	// Do our own checking to make sure we have all permissions needed to create issues
 	$project = ptimporter_verify_issuetypeid($vbulletin->GPC['issuetypeid'], $vbulletin->GPC['projectid']);
@@ -4282,14 +4293,8 @@ if ($_POST['do'] == 'importcontent2')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'project-issuetype' => TYPE_NOHTML,
-		'type' => TYPE_NOHTML,
 		'preview' => TYPE_NOHTML,
 	));
-
-	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND !$foruminfo['canimportintoissues']))
-	{
-		print_no_permission();
-	}
 
 	list($projectid, $issuetypeid) = explode('-', $vbulletin->GPC['project-issuetype']);
 
@@ -4629,13 +4634,6 @@ if ($_POST['do'] == 'importcontent2')
 // #######################################################################
 if ($_REQUEST['do'] == 'importcontent')
 {
-	$vbulletin->input->clean_gpc('r', 'type', TYPE_NOHTML);
-
-	if ((($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND !$foruminfo['canimportintoissues']))
-	{
-		print_no_permission();
-	}
-
 	$project_type_select = array();
 
 	foreach ($vbulletin->pt_projects AS $projectid => $projectinfo)
