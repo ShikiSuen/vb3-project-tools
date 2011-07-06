@@ -4280,7 +4280,7 @@ if ($_POST['do'] == 'processimportcontent')
 // #######################################################################
 if ($_POST['do'] == 'importcontent2')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
+	$vbulletin->input->clean_array_gpc('p', array(
 		'project-issuetype' => TYPE_NOHTML,
 		'type' => TYPE_NOHTML,
 		'preview' => TYPE_NOHTML,
@@ -4426,11 +4426,11 @@ if ($_POST['do'] == 'importcontent2')
 			" . ($vbulletin->GPC['type'] == 'issuenote' ? "LEFT JOIN " . TABLE_PREFIX . "pt_issuetag AS issuetag ON (issuetag.tagid = tag.tagid AND issuetag.issueid = $issue[issueid])" : '') . "
 		ORDER BY tag.tagtext
 	");
-echo '<div>Some debug:</div>';
+
 	while ($tag = $db->fetch_array($tag_data))
 	{
 		$option['title'] = $option['value'] = $tag['tagtext'];
-echo $tag['tagtext'] . '<br />';
+
 		if ($vbulletin->GPC['type'] == 'issuenote')
 		{
 			if ($tag['isapplied'])
@@ -4601,6 +4601,7 @@ echo $tag['tagtext'] . '<br />';
 		$templater->register('addressed_next_selected', $addressed_next_selected);
 		$templater->register('addressed_unaddressed_selected', $addressed_unaddressed_selected);
 		$templater->register('addressed_versions', $addressed_versions);
+		$templater->register('applied_tags', $applied_tags);
 		$templater->register('applies_unknown_selected', $applies_unknown_selected);
 		$templater->register('applies_versions', $applies_versions);
 		$templater->register('assign_checkbox_checked', $assign_checkbox_checked);
@@ -4621,6 +4622,7 @@ echo $tag['tagtext'] . '<br />';
 		$templater->register('status_options', $status_options);
 		$templater->register('subscribe_selected', $subscribe_selected);
 		$templater->register('unassigned_users', $unassigned_users);
+		$templater->register('unapplied_tags', $unapplied_tags);
 	print_output($templater->render());
 }
 
