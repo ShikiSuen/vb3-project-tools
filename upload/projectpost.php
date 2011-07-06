@@ -4426,11 +4426,11 @@ if ($_POST['do'] == 'importcontent2')
 			" . ($vbulletin->GPC['type'] == 'issuenote' ? "LEFT JOIN " . TABLE_PREFIX . "pt_issuetag AS issuetag ON (issuetag.tagid = tag.tagid AND issuetag.issueid = $issue[issueid])" : '') . "
 		ORDER BY tag.tagtext
 	");
-
+echo '<div>Some debug:</div>';
 	while ($tag = $db->fetch_array($tag_data))
 	{
 		$option['title'] = $option['value'] = $tag['tagtext'];
-
+echo $tag['tagtext'] . '<br />';
 		if ($vbulletin->GPC['type'] == 'issuenote')
 		{
 			if ($tag['isapplied'])
@@ -4444,7 +4444,7 @@ if ($_POST['do'] == 'importcontent2')
 		}
 		else
 		{
-			$applied_tags[] = $option;
+			$unapplied_tags[] = $option;
 		}
 	}
 
