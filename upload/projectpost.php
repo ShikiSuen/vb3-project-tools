@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ï¿½2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -673,6 +673,24 @@ if ($_POST['do'] == 'postreply')
 				$factory->issue =& $issue;
 				$factory->project =& $project;
 				$factory->browsing_perms = $issueperms;
+
+				// trying to change the status while replying -- ensure we can actually do that
+				if ($vbulletin->GPC['changestatusid'])
+				{
+					if ($posting_perms['status_edit'])
+					{
+						// changing status - make sure the type is right
+						$status = $vbulletin->pt_issuestatus[$vbulletin->GPC['changestatusid']];
+						if ($status AND $issue['issuetypeid'] == $status['issuetypeid'])
+						{
+							$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_SILENT);
+							$issuedata->set_info('project', $project);
+							$issuedata->set_existing($issue);
+							$issuedata->set('issuestatusid', $vbulletin->GPC['changestatusid']);
+							$issuedata->save();
+						}
+					}
+				}
 
 				$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
 				$xml->add_group('issuenotes');

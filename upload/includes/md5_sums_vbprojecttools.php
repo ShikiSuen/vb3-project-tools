@@ -11,7 +11,7 @@ $md5_sums = array(
 		'projectattachment.php' => '082bd4253cf4399a5ed58f7e37ca8900',
 		'projectexternal.php' => '7826107f3e6e17dc2145d5f52d74b3b9',
 		'projectmilestone.php' => '5b884685a2482f78eefb1bdccafdad59',
-		'projectpost.php' => '4d20970162cee4a1933baa130a0052ed',
+		'projectpost.php' => '63b33c21522b79b242d61e066114f485',
 		'projectsearch.php' => 'a83fe1a62ffc42a2c59e2e9a7e3cef4f',
 		'projecttimeline.php' => '98516262c1363a7182a334a360755360',
 	),
