@@ -196,11 +196,9 @@ function fetch_issue_info($issueid, $extra_info = array())
 	global $db, $vbulletin, $vbphrase;
 
 	$version_join = empty($vbulletin->pt_versions);
-	$category_join = empty($vbulletin->pt_categories);
 	$browsing_user_joins = ($vbulletin->userinfo['userid'] > 0);
 	$avatar_join = ($vbulletin->options['avatarenabled'] AND in_array('avatar', $extra_info));
 	$vote_join = ($vbulletin->userinfo['userid'] > 0 AND in_array('vote', $extra_info));
-	$milestone_join = in_array('milestone', $extra_info);
 	$marking = ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid']);
 
 	$hook_query_fields = $hook_query_joins = $hook_query_where = '';
@@ -209,7 +207,6 @@ function fetch_issue_info($issueid, $extra_info = array())
 	$issue = $db->query_first("
 		SELECT issuenote.*, issue.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
 			" . ($version_join ? "appliesversion.versionname AS appliesversion, addressedversion.versionname AS addressedversion," : '') . "
-			" . ($category_join ? "projectcategory.projectcategoryid AS categorytitle," : '') . "
 			" . ($avatar_join ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
 			user.*, userfield.*, usertextfield.*, pt_user.*,
 			IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
@@ -218,7 +215,6 @@ function fetch_issue_info($issueid, $extra_info = array())
 			issue.visible, issue.lastactivity, issue.lastpost,
 			user.lastactivity AS user_lastactivity
 			" . ($marking ? ", issueread.readtime AS issueread, projectread.readtime AS projectread" : '') . "
-			" . ($milestone_join ? ", milestone.milestoneid AS milestonetitle" : '') . "
 			$hook_query_fields
 		FROM " . TABLE_PREFIX . "pt_issue AS issue
 		INNER JOIN " . TABLE_PREFIX . "pt_issuenote AS issuenote ON
@@ -228,10 +224,6 @@ function fetch_issue_info($issueid, $extra_info = array())
 				(appliesversion.projectversionid = issue.appliesversionid)
 			LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS addressedversion ON
 				(addressedversion.projectversionid = issue.addressedversionid)
-		" : '') . "
-		" . ($category_join ? "
-			LEFT JOIN " . TABLE_PREFIX . "pt_projectcategory AS projectcategory ON
-				(projectcategory.projectcategoryid = issue.projectcategoryid)
 		" : '') . "
 		LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
 		LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
@@ -253,9 +245,6 @@ function fetch_issue_info($issueid, $extra_info = array())
 			LEFT JOIN " . TABLE_PREFIX . "pt_issueread AS issueread ON (issueread.issueid = issue.issueid AND issueread.userid = " . $vbulletin->userinfo['userid'] . ")
 			LEFT JOIN " . TABLE_PREFIX . "pt_projectread AS projectread ON (projectread.projectid = issue.projectid AND projectread.userid = " . $vbulletin->userinfo['userid'] . " AND projectread.issuetypeid = issue.issuetypeid)
 		" : '') . "
-		" . ($milestone_join ? "
-			LEFT JOIN " . TABLE_PREFIX . "pt_milestone AS milestone ON (issue.milestoneid = milestone.milestoneid)
-		" : '') . "
 		$hook_query_joins
 		WHERE issue.issueid = " . intval($issueid) . "
 		 $hook_query_where
@@ -269,11 +258,6 @@ function fetch_issue_info($issueid, $extra_info = array())
 	{
 		$issue['appliesversion'] = ($issue['appliesversionid'] ? $vbulletin->pt_versions["$issue[appliesversionid]"]['versionname'] : '');
 		$issue['addressedversion'] = ($issue['addressedversionid'] ? $vbulletin->pt_versions["$issue[addressedversionid]"]['versionname'] : '');
-	}
-
-	if (!$category_join)
-	{
-		$issue['categorytitle'] = ($issue['projectcategoryid'] ? $vbphrase['category' . $issue['projectcategoryid'] . ''] : '');
 	}
 
 	if (!$browsing_user_joins)
@@ -452,7 +436,11 @@ function prepare_issue($issue)
 
 	$issue['priority_text'] = $vbphrase["priority$issue[priority]"];
 
-	if (!$issue['milestoneid'])
+	if ($issue['milestoneid'])
+	{
+		$issue['milestonetitle'] = $vbphrase["milestone_$issue[milestoneid]_name"];
+	}
+	else
 	{
 		$issue['milestonetitle'] = $vbphrase['none_meta'];
 	}

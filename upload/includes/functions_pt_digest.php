@@ -29,7 +29,10 @@ function exec_pt_digest($type = 'daily')
 
 	if (empty($vbulletin->pt_permissions))
 	{
-		$vbulletin->datastore->do_db_fetch("'pt_bitfields','pt_permissions'");
+		$vbulletin->datastore->fetch(array(
+			'pt_bitfields',
+			'pt_permissions'
+		));
 	}
 
 	$lastdate = mktime(0, 0); // midnight today

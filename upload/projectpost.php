@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*======================================================================*\
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
@@ -3375,7 +3375,7 @@ if ($_POST['do'] == 'moveissue2')
 			continue;
 		}
 
-		$option['title'] = $vbphrase['category' . $category['projectcategoryid'] . ''];
+		$option['title'] = $vbphrase['category' . $category['projectcategoryid']];
 		$option['value'] = $category['projectcategoryid'];
 		$option['selected'] = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
 
@@ -3390,7 +3390,7 @@ if ($_POST['do'] == 'moveissue2')
 	$priorities = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectpriority
-		WHERE projectid = " . $project['projectid'] . "
+		WHERE projectid = $new_project[projectid]
 	");
 
 	while ($prioritys = $db->fetch_array($priorities))

@@ -83,7 +83,8 @@ catch(vBPT_Api_Exception $e)
 {
 	die($e->displayError());
 }
-finally
+// there is no 'finally' in PHP 5
+if ($api)
 {
 	die($api->displayResponse());
 }
