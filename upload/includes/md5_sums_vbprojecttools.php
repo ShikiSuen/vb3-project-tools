@@ -63,7 +63,7 @@ $md5_sums = array(
 		'functions_ptimporter.php' => '953e6b6b33565ed4deaf010b011a2f2f',
 	),
 	'/includes/block' => array(
-		'ptissues.php' => 'd55bcbefbdd4833219e744c31b49de35',
+		'ptissues.php' => 'c0a092ed90db3be216eb737e2934414f',
 	),
 	'/includes/cron' => array(
 		'pt_cleanup.php' => '5dc921bc76c5afa4efcfadb99850e0ef',
@@ -75,7 +75,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'ab3876ae66973c4d737cd36b5c8b67bb',
-		'product-vbprojecttools.xml' => 'c2140d7848289135955b794e1434b298',
+		'product-vbprojecttools.xml' => '24a0cb17318c45cbc3b9c75c26976de3',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'dc13b9cdef27ffec0c2f60c45d9bcff4',
