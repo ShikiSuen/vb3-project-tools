@@ -187,7 +187,7 @@ $options = construct_project_chooser_options(0, fetch_phrase("all_projects", "vb
 			// query last threads from visible / chosen projects
 			$issues = $this->registry->db->query_read_slave("
 				SELECT issue.issueid, issue.title,
-					issue.submitusername, issue.submitdate AS dateline, issue.lastnoteid, issue.lastpost, issue.lastpostuserid, issue.lastpostusername AS lastposter, issue.replycount,
+					issue.submitusername, issue.submitdate AS dateline, issue.lastnoteid, issue.lastpost AS issuelastpost, issue.lastpostuserid, issue.lastpostusername AS lastposter, issue.replycount,
 					project.projectid, project.title_clean AS projecttitle,
 					issuenote.pagetext AS message, issuenote.issuenoteid,
 					user.*
@@ -222,8 +222,8 @@ $options = construct_project_chooser_options(0, fetch_phrase("all_projects", "vb
 				$issue['date'] = vbdate($this->registry->options['dateformat'], $issue['dateline'], true);
 				$issue['time'] = vbdate($this->registry->options['timeformat'], $issue['dateline']);
 
-				$issue['lastpostdate'] = vbdate($this->registry->options['dateformat'], $issue['lastpost'], true);
-				$issue['lastposttime'] = vbdate($this->registry->options['timeformat'], $issue['lastpost']);
+				$issue['lastpostdate'] = vbdate($this->registry->options['dateformat'], $issue['issuelastpost'], true);
+				$issue['lastposttime'] = vbdate($this->registry->options['timeformat'], $issue['issuelastpost']);
 
 				// get avatar
 				$this->fetch_avatarinfo($issue);

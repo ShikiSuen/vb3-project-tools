@@ -11,7 +11,7 @@ $md5_sums = array(
 		'projectattachment.php' => '082bd4253cf4399a5ed58f7e37ca8900',
 		'projectexternal.php' => '7826107f3e6e17dc2145d5f52d74b3b9',
 		'projectmilestone.php' => '5b884685a2482f78eefb1bdccafdad59',
-		'projectpost.php' => '63b33c21522b79b242d61e066114f485',
+		'projectpost.php' => '2e1261e05412ab549bc4f0f704d6ed02',
 		'projectsearch.php' => 'a83fe1a62ffc42a2c59e2e9a7e3cef4f',
 		'projecttimeline.php' => '98516262c1363a7182a334a360755360',
 	),
@@ -61,8 +61,8 @@ $md5_sums = array(
 		'class_reportitem_pt.php' => '495bda8f28fbfac1513af5da9d27778e',
 		'class_upload_pt.php' => '8f0bdebdccd046b4bbf766ed1ad823e8',
 		'class_upload_ptimporter.php' => '973c5a881e2cbdb3856554e8d43324e4',
-		'functions_projecttools.php' => '8d098320e62b95f394db9e0e25be479d',
-		'functions_pt_digest.php' => 'c7dfa7169a02cac2290a8678ee9251ef',
+		'functions_projecttools.php' => '3bd747241ee6e3358f53ae88a0816f6e',
+		'functions_pt_digest.php' => '561ae0aea43555ed72100e96f4b85ca6',
 		'functions_pt_forumbit.php' => 'e4bbcf4d40162165c9b1e091c197bf8c',
 		'functions_pt_impex.php' => '69f652b740e23f916387da5f2c81c8c7',
 		'functions_pt_milestone.php' => 'fcdd2139c9e7addf7b8d2c9192aac76b',
@@ -75,7 +75,7 @@ $md5_sums = array(
 		'functions_pt_usertools.php' => '532d7c51aee18bc33aeaa79523fd6f30',
 	),
 	'/includes/block' => array(
-		'ptissues.php' => '6beeff68ac85b3358cf7b690706e8854',
+		'ptissues.php' => 'ec2d1b7adf281ab4556c7894ab0dc605',
 	),
 	'/includes/cron' => array(
 		'pt_cleanup.php' => '906c62215cc0a11906054a3b9a303c57',
@@ -87,7 +87,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'e2c1f3ee296a1f5853fedec834798d1f',
-		'product-vbprojecttools.xml' => '3ae0ab574e2965f04b3813e79f91fc32',
+		'product-vbprojecttools.xml' => '911c402b17dbac4d82ec0bc75a99c0c9',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'b3b48fe8595c439439a95343f927cae1',

@@ -1894,7 +1894,7 @@ build_project_cache();]]></installcode>
 	</codes>
 	<templates>
 		<template name="assetmanager_usage_issue" templatetype="template" date="1301174021" username="Pitchoune" version="2.2.0"><![CDATA[<div class="{vb:raw usagerow}">{vb:rawphrase issue}: <a href="{vb:link issue, {vb:raw issue}}" target="_blank">{vb:raw issue.title}</a></div>]]></template>
-		<template name="block_issues" templatetype="template" date="1309711351" username="Pitchoune" version="2.2.0"><![CDATA[<li>
+		<template name="block_issues" templatetype="template" date="1311798854" username="Pitchoune" version="2.2.0"><![CDATA[<li>
 	<div class="block smaller">
 		<div class="blocksubhead">
 			<a class="collapse" id="collapse_block_newissues_{vb:raw blockinfo.blockid}" href="{vb:raw relpath}#top"><img alt="" src="{vb:stylevar imgdir_button}/collapse_40b.png" id="collapseimg_newissues_{vb:raw blockinfo.blockid}"/></a>
@@ -1922,12 +1922,12 @@ build_project_cache();]]></installcode>
 						<h5 class="widget_post_header"><a href="{vb:link issue, {vb:raw issue}}" class="title">{vb:raw issue.title}</a></h5>
 						<div class="meta">
 							<vb:if condition="$issuestype == 0">
-							{vb:rawphrase posted_by} <a href="{vb:link member, {vb:raw issue}}">{vb:raw issue.submitusername}</a> {vb:stylevar dirmark}({vb:rawphrase x_replies, {vb:raw issue.replycount}})
-							<br />{vb:raw issue.date} <span class="time">{vb:raw issue.time}</span> {vb:rawphrase in_x, {vb:raw issue.url}, {vb:raw issue.projecttitle}}
+								{vb:rawphrase posted_by} <a href="{vb:link member, {vb:raw issue}}">{vb:raw issue.submitusername}</a> {vb:stylevar dirmark}({vb:rawphrase x_replies, {vb:raw issue.replycount}})
+								<br />{vb:raw issue.date} <span class="time">{vb:raw issue.time}</span> {vb:rawphrase in_x, {vb:raw issue.url}, {vb:raw issue.projecttitle}}
 							<vb:else />
-							{vb:rawphrase last_post_by} <a href="{vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}">{vb:raw thread.lastpostuser}</a> {vb:stylevar dirmark}({vb:rawphrase x_replies, {vb:raw issue.replycount}})
-							<br />
-							{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span> {vb:rawphrase in_x, {vb:raw issue.url}, {vb:raw issue.projecttitle}}
+								{vb:rawphrase last_post_by} <a href="{vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastposter'}">{vb:raw issue.lastposter}</a> {vb:stylevar dirmark}({vb:rawphrase x_replies, {vb:raw issue.replycount}})
+								<br />
+								{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span> {vb:rawphrase in_x, {vb:raw issue.url}, {vb:raw issue.projecttitle}}
 							</vb:if>
 						</div>
 					</div>
