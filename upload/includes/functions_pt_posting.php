@@ -550,7 +550,7 @@ function fetch_milestone_select($projectid, $selected_milestone = 0, $skip_ids =
 	global $vbulletin, $vbphrase, $show;
 
 	$milestone_array = fetch_milestone_select_list($projectid, $skip_ids);
-	$milestone_options = array();
+	$milestone_options = $milestone_none = array();
 
 	foreach ($milestone_array AS $optgroup_label => $option_container)
 	{
@@ -558,14 +558,13 @@ function fetch_milestone_select($projectid, $selected_milestone = 0, $skip_ids =
 
 		if (!is_array($option_container))
 		{
-			$option['value'] = $optgroup_label;
-			$option['title'] = $option_container;
-			$option['selected'] = ($selected_milestone == $option['value'] ? ' selected="selected"' : '');
-			$milestone_options[] = $option;
+			// Here, it corresponds only to the '(none)' milestone
+			// All others options are 'Active Milestones' and 'Completed Milestones'
+			// This is now hardcoded in template 'pt_postissue'
 		}
 		else if (!empty($option_container))
 		{
-			$optgroup = $option = array();
+			$optgroup = $option = $optiongroup = array();
 
 			foreach ($option_container AS $optionvalue => $optiontitle)
 			{
@@ -578,7 +577,7 @@ function fetch_milestone_select($projectid, $selected_milestone = 0, $skip_ids =
 			$optiongroup['label'] = $optgroup_label;
 			$optiongroup['group'] = $optgroup;
 
-			$milestone_options[] = $option;
+			$milestone_options[] = $optiongroup;
 		}
 	}
 

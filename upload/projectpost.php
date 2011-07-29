@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright �2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -2165,6 +2165,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$templater->register('human_verify', $human_verify);
 		$templater->register('issue', $issue);
 		$templater->register('messagearea', $messagearea);
+		$templater->register('milestone_none', $milestone_none);
 		$templater->register('milestone_options', $milestone_options);
 		$templater->register('navbar', $navbar);
 		$templater->register('preview', $preview);

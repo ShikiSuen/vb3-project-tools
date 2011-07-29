@@ -7440,7 +7440,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1309896726" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1311931541" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7702,8 +7702,13 @@ init_project_readmarker_system();
 						<li>
 							<vb:if condition="$show['milestone_edit']">
 								<select class="primary" name="milestoneid" tabindex="1">
-									<vb:each from="milestone_options" value="option">
-										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									<option value="0"{vb:raw option.selected}>{vb:rawphrase none}</option>
+									<vb:each from="milestone_options" value="optiongroup">
+										<optgroup label="{vb:raw optiongroup.label}">
+											<vb:each from="optiongroup[group]" value="option">
+												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											</vb:each>
+										</optgroup>
 									</vb:each>
 								</select>
 							<vb:else />
