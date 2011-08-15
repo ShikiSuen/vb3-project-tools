@@ -228,16 +228,16 @@ if ($_POST['do'] == 'postreply')
 
 	if ($vbulletin->GPC['wysiwyg'])
 	{
-		if ($vbulletin->options['templateversion'] < '4.1.4')
-		{
-			require_once(DIR . '/includes/functions_wysiwyg.php');
-			$vbulletin->GPC['message'] = convert_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
-		}
-		else
+		if (is_newer_version(SIMPLE_VERSION, '4.1.4')
 		{
 			require_once(DIR . '/includes/class_wysiwygparser.php');
 			$html_parser = new vB_WysiwygHtmlParser($vbulletin);
 			$vbulletin->GPC['message'] = $html_parser->parse_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
+		}
+		else
+		{
+			require_once(DIR . '/includes/functions_wysiwyg.php');
+			$vbulletin->GPC['message'] = convert_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
 		}
 	}
 
