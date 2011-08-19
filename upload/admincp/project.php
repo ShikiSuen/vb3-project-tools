@@ -2005,7 +2005,7 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 		);
 
 		$projectver = $db->query_first("
-			SELECT *
+			SELECT projectid
 			FROM " . TABLE_PREFIX . "pt_projectversion
 			WHERE projectversiongroupid = " . $vbulletin->GPC['projectversiongroupid']
 		);
