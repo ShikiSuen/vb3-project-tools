@@ -1852,6 +1852,7 @@ if ($_POST['do'] == 'projectversionupdate')
 		'default' => TYPE_BOOL
 	));
 
+	// Edit
 	if ($vbulletin->GPC['projectversionid'])
 	{
 		$projectversion = $db->query_first("
@@ -1889,6 +1890,7 @@ if ($_POST['do'] == 'projectversionupdate')
 	// effective order means that sorting just the version table will return versions ordered by group first
 	if ($projectversion['projectversionid'])
 	{
+		// Edit
 		// Check first if the default value is already defined for this project
 		// If yes, remove it and save the actual form
 		$defaultvalue = $db->query_first("
@@ -1921,6 +1923,7 @@ if ($_POST['do'] == 'projectversionupdate')
 	}
 	else
 	{
+		// Add
 		// Check first if the default value is already defined for this project
 		// If yes, remove it and save the actual form
 		$defaultvalue = $db->query_first("
@@ -1983,6 +1986,7 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 
 	if ($vbulletin->GPC['projectversionid'])
 	{
+		// Edit
 		$projectversion = $db->query_first("
 			SELECT *
 			FROM " . TABLE_PREFIX . "pt_projectversion
@@ -1993,8 +1997,15 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 	}
 	else
 	{
+		// Add
 		$maxorder = $db->query_first("
 			SELECT MAX(displayorder) AS maxorder
+			FROM " . TABLE_PREFIX . "pt_projectversiongroup
+			WHERE projectversiongroupid = " . $vbulletin->GPC['projectversiongroupid']
+		);
+
+		$projectver = $db->query_first("
+			SELECT *
 			FROM " . TABLE_PREFIX . "pt_projectversion
 			WHERE projectversiongroupid = " . $vbulletin->GPC['projectversiongroupid']
 		);
@@ -2003,7 +2014,7 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 			'projectversionid' => 0,
 			'displayorder' => $maxorder['maxorder'] + 10,
 			'defaultvalue' => 0,
-			'projectid' => 0
+			'projectid' => $projectver['projectid']
 		);
 	}
 
