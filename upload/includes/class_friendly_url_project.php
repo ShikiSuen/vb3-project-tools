@@ -2,7 +2,7 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.0                   # ||
+|| #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
 || # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
 || #  This is file is subject to the vBulletin Open Source License.   # ||
@@ -14,7 +14,7 @@
 /**
  * Friendly URL for project.php
  */
-class vB_Friendly_Url_Project extends vB_Friendly_Url_Paged
+class vB_Friendly_Url_Project extends vB_Friendly_Url
 {
 	/**
 	 * The request variable for the resource id.
@@ -158,7 +158,7 @@ class vB_Friendly_Url_Issue extends vB_Friendly_Url_Paged
 /**
 * Friendly URL for projecttimeline.php
 */
-class vB_Friendly_Url_ProjectTimeline extends vB_Friendly_Url
+class vB_Friendly_Url_ProjectTimeline extends vB_Friendly_Url_Paged
 {
 	/**
 	* The request variable for the resource id.
@@ -302,7 +302,7 @@ class vB_Friendly_Url_Milestone extends vB_Friendly_Url
 /**
 * Friendly URL for milestone.php (milestone contents)
 */
-class vB_Friendly_Url_Msissuelist extends vB_Friendly_Url
+class vB_Friendly_Url_Msissuelist extends vB_Friendly_Url_Paged
 {
 	/**
 	* The request variable for the resource id.
