@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 /*======================================================================*\
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -1277,7 +1277,7 @@ if ($_POST['do'] == 'postissue')
 	// determine what they can actually do
 	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 
-	if ($posting_perms['status_edit'] AND $vbulletin->GPC['issuestatusid'])
+	if ($posting_perms['status_edit'] AND $vbulletin->GPC_exists['issuestatusid'])
 	{
 		// changing status - make sure the type is right
 		$status = $vbulletin->pt_issuestatus[$vbulletin->GPC['issuestatusid']];
@@ -1331,7 +1331,7 @@ if ($_POST['do'] == 'postissue')
 		}
 	}
 
-	if (!$vbulletin->GPC['advanced'])
+	if (!$vbulletin->GPC['ajax'] AND !$vbulletin->GPC['advanced'])
 	{
 		$issuedata->set('title', $vbulletin->GPC['title']);
 		$issuedata->set('summary', $vbulletin->GPC['summary']);
@@ -1597,8 +1597,11 @@ if ($_POST['do'] == 'postissue')
 			$log_assignment_changes = false;
 		}
 
-		// user assignments
-		process_assignment_changes($vbulletin->GPC, $posting_perms, $existing_assignments, $project, $issue, $log_assignment_changes);
+		if (!$vbulletin->GPC['ajax'])
+		{
+			// user assignments
+			process_assignment_changes($vbulletin->GPC, $posting_perms, $existing_assignments, $project, $issue, $log_assignment_changes);
+		}
 
 		// done
 		if ($vbulletin->GPC['issueid'])
