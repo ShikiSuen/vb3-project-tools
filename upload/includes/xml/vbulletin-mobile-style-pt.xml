@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<style name="Mobile Style" vbversion="2.2.0" product="vbprojecttools" type="custom">
+	<templategroup name="Project Tools">
+		<template name="pt_forumbit_project" templatetype="template" date="1315002542" username="Pitchoune" version="2.2.0"><![CDATA[<li class="forumbit_post L2">
+	<img id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon ui-li-icon" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>_16.png" alt="" border="0" />
+	<vb:if condition="$project['forumtitle']">
+		<h3><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.forumtitle}</a></h3>
+	<vb:else />
+		<h3><span>{vb:rawphrase project}</span> <a href="{vb:link project, {vb:raw project}}"><strong>{vb:raw project.title}</strong></a></h3>
+	</vb:if>
+	<vb:if condition="$project['summary']"><p>{vb:raw project.summary}</p></vb:if>
+</li>]]></template>
+		<template name="pt_issue" templatetype="template" date="1315003357" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
+
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
+
+	<vb:if condition="$show['lightbox']">
+		<vb:if condition="$vboptions['storecssasfile']">
+			{vb:cssfile showthread-rollup.css}
+		<vb:else />
+			{vb:cssfile postlist.css,showthread.css,postbit.css,attachment.css,poll.css,lightbox.css}
+		</vb:if>
+	</vb:if>
+
+	<title>{vb:raw issue.title} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
+	<vb:if condition="$vboptions['externalrss']">
+		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="projectexternal.php?projectid={vb:raw project.projectid}" />
+	</vb:if>
+
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+
+{vb:raw navbar}
+
+<div id="pt_issue_content" style="margin-bottom: 10px;">
+	<div class="issue_content">
+		<div class="block">
+			<div class="blockhead">
+				{vb:raw issue.title}
+			</div>
+			<div class="blockbody settings_form_border">
+				<div class="blocksubhead">
+					<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$issue['newflag']">new<vb:else />old</vb:if>.png" alt="issueid={vb:raw issue.issueid}" class="inlineimg" />
+					{vb:raw issue.submitdate} {vb:raw issue.submittime}
+				</div>
+				<div class="blockrow">
+					<div class="floatcontainer">
+						<vb:if condition="$show['avatar']"><a href="{vb:link member, {vb:raw issue}, null, 'userid', 'musername'}"><img class="author_avatar" src="{vb:raw issue.avatarurl}" {vb:raw issue.avwidth} {vb:raw issue.avheight} alt="{vb:rawphrase xs_avatar, {vb:raw issue.username}}" border="0" /></a></vb:if>
+
+						<div id="notemenu_{vb:raw issue.issuenoteid}">
+						<vb:if condition="$show['profile']">
+							<a class="bigtext" href="{vb:link member, {vb:raw issue}, null, 'userid', 'musername'}">{vb:raw issue.musername}</a>
+							<vb:if condition="$show['onlinestatus']">
+								<vb:if condition="$issue['onlinestatus'] == 0"><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw issue.username}}" border="0" />
+								<vb:elseif condition="$issue['onlinestatus'] == 1" /><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw issue.username}}" border="0" />
+								<vb:elseif condition="$issue['onlinestatus'] == 2" /><img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw issue.username}}" border="0" /></vb:if>
+							</vb:if>
+						<vb:else />
+							{vb:raw issue.musername}
+						</vb:if>
+						</div>
+
+						<vb:if condition="$issue['usertitle']"><div class="smallfont">{vb:raw issue.usertitle}</div></vb:if>
+						<vb:if condition="$vbulletin->options['pt_profile_issue_counters']"><div class="smallfont">{vb:rawphrase number_reported_issues_by_x, {vb:raw issue.username}}: {vb:raw issue.totalissues}</div></vb:if>
+
+					</div>
+				</div>
+				<div class="blockrow issuetext">
+
+				<div class="issue_message">
+					<div style="font-size:14pt">{vb:raw issue.title}</div>
+					<vb:if condition="$issue['summary']"><div><strong>{vb:raw issue.summary}</strong></div></vb:if>
+
+					<vb:if condition="$issue['visible'] == 'private'">
+						<div class="shade" style="font-size: 11px"><img src="{vb:stylevar imgdir_misc}/issue_private.png" class="inlineimg" alt="" /> {vb:rawphrase this_is_private_issue}</div>
+					</vb:if>
+					<vb:if condition="$issue['visible'] == 'deleted'">
+						<div class="shade" style="font-size: 11px"><img src="{vb:stylevar imgdir_misc}/trashcan_small.gif" class="inlineimg" alt="" /> {vb:rawphrase issue_has_been_deleted}</div>
+					</vb:if>
+
+					<hr style="border:0px; height:1px; color: #D1D1E1; background-color: #D1D1E1" />
+					<div class="restore">{vb:raw issue.message}</div>
+				</div>
+
+				<vb:if condition="$show['vote_option']">
+				<vb:if condition="$template_hook['issue_vote']">
+					{vb:raw template_hook.issue_vote}
+				<vb:else />
+				<div class="blockrow issuevote">
+				<a name="voteform"></a>
+				<vb:if condition="$issue['vote']">
+					{vb:rawphrase vote_question_issuetype} &nbsp; <strong><vb:if condition="$issue['vote'] == 'positive'">{vb:rawphrase yes}<vb:else />{vb:rawphrase no}</vb:if></strong> ({vb:rawphrase you_have_voted_issue})
+				<vb:else />
+					<form action="project.php?do=vote" method="post">
+						{vb:rawphrase vote_question_issuetype}
+						<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+						<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+						<input type="hidden" name="do" value="vote" />
+						<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
+						<input type="submit" class="button" name="vote[positive]" id="votepositive_button" value="{vb:rawphrase yes}" style="width:50px; font-size:10px" tabindex="1" />
+						<input type="submit" class="button" name="vote[negative]" id="votenegative_button" value="{vb:rawphrase no}" style="width:50px; font-size:10px" tabindex="1" />
+					</form>
+				</vb:if>
+				</div>
+				</vb:if>
+				</vb:if>
+				<div class="issuefoot">
+					<div class="textcontrols">
+						<span class="issuecontrols">
+						<vb:if condition="$show['edit_issue']">
+							<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editissue&amp;issueid={vb:raw issue.issueid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
+						<vb:elseif condition="$show['edit_note']" />
+							<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw issue.issuenoteid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
+						</vb:if>
+
+						<vb:if condition="($show['reply_issue'] AND !$show['issue_closed']) AND ($show['edit_issue'] OR $show['edit_note'])">
+							<span class="separator">&nbsp;</span>
+						</vb:if>
+
+						<vb:if condition="$show['reply_issue'] AND !$show['issue_closed']">
+							<a class="replyissue" href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase reply}" /> {vb:rawphrase reply}</a>
+						</vb:if>
+						</span>
+
+						<span class="issuelinking">
+						<vb:if condition="$show['edit_history']">
+							<a class="issuehistory" href="project.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw issue.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw issue.lastedit_date}, {vb:raw issue.lastedit_time}}</a>
+						</vb:if>
+
+						<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'])">
+							<span class="separator">&nbsp;</span>
+						</vb:if>
+
+						<vb:if condition="$show['reportlink']">
+							<a class="reportissue" href="project.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw issue.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
+						</vb:if>
+						<vb:if condition="$issue['noteipaddress']">
+							<a class="ipissue" href="project.php?do=viewip&amp;issuenoteid={vb:raw issue.issuenoteid}" title="{vb:raw issue.noteipaddress}">&nbsp;</a>
+						</vb:if>
+						</span>
+					</div>
+				</div>
+
+				</div>
+
+				<vb:if condition="$show['issue_closed']">
+				<div class="blockrow" style="text-align: center">
+					<img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="" class="inlineimg" /> {vb:rawphrase this_issue_is_closed}
+					<vb:if condition="!$posting_perms['issue_close']">{vb:rawphrase no_more_replies_may_be_made}</vb:if>
+				</div>
+				</vb:if>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="pt_issue_details">
+	<div class="block">
+		<div class="blockhead">
+			{vb:rawphrase issue_details}
+		</div>
+	</div>
+	<div class="blockbody settings_form_border smallfont" style="padding: 5px">
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin">
+			<span class="shade">{vb:rawphrase issue_number}</span>
+			{vb:raw issue.issueid}
+		</div>
+
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin">
+			<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issue.issuetypeid}" class="shade">{vb:rawphrase issue_type}</a>
+			{vb:raw issue.issuetype}
+		</div>
+
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin">
+			<a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="shade">{vb:rawphrase project}</a>
+			{vb:raw project.title_clean}
+		</div>
+
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_projectcategoryid"><span class="shade">{vb:rawphrase category}</span> {vb:raw issue.categorytitle}</div>
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_issuestatusid"><span class="shade">{vb:rawphrase status}</span> {vb:raw issue.status}</div>
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_priority"><span class="shade">{vb:rawphrase priority}</span> {vb:raw issue.priority_text}</div>
+
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_appliesversionid"><span class="shade">{vb:rawphrase applies_version_issuetype}</span> {vb:raw issue.appliesversion}</div>
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_addressedversionid"><span class="shade">{vb:rawphrase addressed_version_issuetype}</span> {vb:raw issue.addressedversion}</div>
+
+		<vb:if condition="$show['milestone']">
+			<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_milestoneid"><span class="shade">{vb:rawphrase milestone}</span> {vb:raw issue.milestonetitle}</div>
+		</vb:if>
+
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin">
+			<vb:if condition="$show['vote_option']">
+				<a class="shade" href="{vb:raw relpath}#voteform">{vb:rawphrase vote_count_positive_issuetype}</a>
+			<vb:else />
+				<span class="shade">{vb:rawphrase vote_count_positive_issuetype}</span>
+			</vb:if>
+			{vb:raw issue.votepositive}
+		</div>
+
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin">
+			<vb:if condition="$show['vote_option']">
+				<a class="shade" href="{vb:raw relpath}#voteform">{vb:rawphrase vote_count_negative_issuetype}</a>
+			<vb:else />
+				<span class="shade">{vb:rawphrase vote_count_negative_issuetype}</span>
+			</vb:if>
+			{vb:raw issue.votenegative}
+		</div>
+
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin">
+			<a class="shade" href="{vb:raw relpath}#attachments">{vb:rawphrase attachments}</a>
+			{vb:raw issue.attachcount}
+			<vb:if condition="$attachmentbits"><a href="{vb:raw relpath}#attachments" class="smallfont">({vb:rawphrase view})</a></vb:if>
+		</div>
+
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin vB_MagicSelect_wrappable">
+			<span class="shade">{vb:rawphrase assigned_users}</span>
+			<span id="assignusers"><span id="assignusers_display"><vb:if condition="$assignments">{vb:raw assignments}<vb:else />{vb:rawphrase none_meta}</vb:if></span></span>
+		</div>
+
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin vB_MagicSelect_wrappable">
+			<span class="shade">{vb:rawphrase tags}</span>
+			<span id="tags"><span id="tags_display"><vb:if condition="$tags">{vb:raw tags}<vb:else />{vb:rawphrase none_meta}</vb:if></span></span>
+		</div>
+	</div>
+	<br />
+</div>
+
+<br />
+
+<div class="pt_popup">
+	<vb:if condition="$pagenav">
+		<div class="pagenav">{vb:raw pagenav}</div>
+	</vb:if>
+	<div>
+		<!-- note filter -->
+		<form action="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}" method="get">
+		<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+		<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
+		<label class="smallfont">{vb:rawphrase filter_responses_to_show}
+		<select name="filter" tabindex="1" onchange="this.form.submit()">
+			<option value="comments"{vb:raw selected_filter.comments}>{vb:rawphrase comments} ({vb:raw display_type_counts.comments})</option>
+			<option value="petitions"{vb:raw selected_filter.petitions}>{vb:rawphrase petitions} ({vb:raw display_type_counts.petitions})</option>
+			<option value="changes"{vb:raw selected_filter.changes}>{vb:rawphrase changes} ({vb:raw display_type_counts.changes})</option>
+			<option value="all"{vb:raw selected_filter.all}>{vb:rawphrase all}</option>
+		</select></label>
+		<input type="submit" class="button" value="{vb:rawphrase go}" tabindex="1" />
+		</form>
+	</div>
+</div>
+
+<br /><br />
+
+<!-- notes -->
+<a name="notestart"></a>
+{vb:raw notebits}
+<!-- end notes -->
+
+<div class="pt_popup">
+	<vb:if condition="$pagenav">
+		<div class="pagenav">{vb:raw pagenav}</div>
+	</vb:if>
+	<div>
+	<vb:if condition="$show['issue_closed']">
+		<a href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}" rel="nofollow" class="newcontent_textcontrol<vb:if condition="!$pagenav"> pagenav_button</vb:if>" id="newthreadlink_bottom">{vb:rawphrase closed}</a>
+	<vb:else />
+		<a href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}" rel="nofollow" class="newcontent_textcontrol<vb:if condition="!$pagenav"> pagenav_button</vb:if>" id="newthreadlink_bottom"><span>+</span> {vb:rawphrase reply}</a>
+	</vb:if>
+	</div>
+<br />
+</div>
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
+		<template name="pt_issuebit" templatetype="template" date="1315002579" username="Pitchoune" version="2.2.0"><![CDATA[<li class="ui-li-has-icon">
+	<div class="ui-li-icon" style="margin-top: 6px">
+	<vb:if condition="$issue['typeicon']">
+		<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
+	<vb:else />
+		&nbsp;
+	</vb:if>
+	</div>
+	<h3>
+	<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>
+		{vb:raw issue.title}
+	</a>
+	<vb:if condition="$issue['isassigned']">
+		<img src="{vb:stylevar imgdir_misc}/issue_assigned.png" alt="{vb:rawphrase you_assigned_issue}" />
+	</vb:if>
+	<vb:if condition="$issue['state'] == 'closed'">
+		<img src="{vb:stylevar imgdir_misc}/issue_closed.png" alt="{vb:rawphrase closed}" />
+	</vb:if>
+	<vb:if condition="$issue['visible'] == 'private'">
+		<img src="{vb:stylevar imgdir_misc}/issue_private.png" alt="{vb:rawphrase private}" />
+	</vb:if>
+	<vb:if condition="$issue['subscribetype']">
+		<img src="{vb:stylevar imgdir_misc}/subscribed.png" alt="{vb:rawphrase you_subscribed_issue}" />
+	</vb:if>
+	<vb:if condition="$issue['pendingpetitions']">
+		<img src="{vb:stylevar imgdir_misc}/issue_petition.png" alt="{vb:rawphrase has_pending_petitions}" />
+	</vb:if>
+	</h3>
+	<p>{vb:rawphrase last_post_by} {vb:raw memberaction_dropdown} <em class="time">{vb:raw issue.lastposttime}</em></p>
+</li>]]></template>
+		<template name="pt_issuelist" templatetype="template" date="1315003634" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
+
+	<title>{vb:raw project.title_clean} - {vb:rawphrase issue_list} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+{vb:raw navbar}
+
+<div id="pagetitle" class="pagetitle ui-bar-b">
+	<h1 class="pagetitle">{vb:raw project.title_clean}</h1>
+</div>
+
+<div data-role="content">
+	<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}" rel="nofollow" data-role="button" data-icon="plus" data-inline="true"> {vb:rawphrase post_new_issue}</a>
+
+	<div id="threadlist">
+	{vb:raw pagenav}
+	<vb:if condition="$issuebits">
+		<ul data-role="listview" id="threads" class="threads">
+			<li data-role="list-divider">
+				{vb:rawphrase issue_list}
+			</li>
+			{vb:raw issuebits}
+		</ul>
+	<vb:else />
+		<div class="threadbit">
+			<p class="nonthread">
+				<strong>{vb:rawphrase no_issues_matching_criteria}</strong>
+			</p>
+		</div>
+	</vb:if>
+	{vb:raw pagenav}
+	</div>
+
+	<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}" rel="nofollow" data-role="button" data-icon="plus" data-inline="true"> {vb:rawphrase post_new_issue}</a>
+</div>
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
+		<template name="pt_issuenotebit_user" templatetype="template" date="1315003406" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+<li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
+	<div class="blockhead">
+		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
+	</div>
+	<div class="blockbody settings_form_border">
+		<div class="blockrow">
+			<div class="floatcontainer">
+				<vb:if condition="$show['avatar']"><a href="{vb:link member, {vb:raw note}}"><img class="author_avatar" src="{vb:raw note.avatarurl}" {vb:raw note.avwidth} {vb:raw note.avheight} alt="{vb:rawphrase xs_avatar, {vb:raw note.username}}" border="0" /></a></vb:if>
+
+				<div id="notemenu_{vb:raw note.issuenoteid}">
+					<vb:if condition="$show['profile']">
+						<a class="bigtext" href="{vb:link member, {vb:raw note}}">{vb:raw note.musername}</a>
+						<vb:if condition="$show['onlinestatus']">
+							<vb:if condition="$note['onlinestatus'] == 0">
+								<img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw note.username}}" border="0" />
+							<vb:elseif condition="$note['onlinestatus'] == 1" />
+								<img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw note.username}}" border="0" />
+							<vb:elseif condition="$note['onlinestatus'] == 2" />
+								<img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw note.username}}" border="0" />
+							</vb:if>
+						</vb:if>
+					<vb:else />
+						{vb:raw note.musername}
+					</vb:if>
+				</div>
+				<vb:if condition="$note['usertitle']"><div class="smallfont">{vb:raw note.usertitle}</div></vb:if>
+
+				<vb:if condition="$note['import_issueid']"><div class="smallfont"><a href="{vb:raw note.import_seo}">{vb:rawphrase issuenote_made_as_issue}</a></div></vb:if>
+			</div>
+		</div>
+		<div class="blockrow issuetext">
+			<div class="issue_message" id="issuenote_message_{vb:raw note.issuenoteid}">
+				<div class="restore">{vb:raw note.message}</div>
+
+				<vb:if condition="$note['visible'] == 'private'">
+					<div class="smallfont" style="margin-top: 10px"><img src="{vb:stylevar imgdir_misc}/issue_private.png" class="inlineimg" alt="" /> {vb:rawphrase private_message_keep_in_mind}</div>
+				</vb:if>
+
+				<vb:if condition="$note['visible'] == 'deleted'">
+					<div class="smallfont" style="margin-top: 10px">
+						<vb:if condition="$show['edit_note']">
+							<div style="float:{vb:stylevar right}">
+								<a href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw note.issuenoteid}">{vb:rawphrase undelete_ellipsis}</a>
+							</div>
+						</vb:if>
+						<img src="{vb:stylevar imgdir_misc}/trashcan_small.gif" class="inlineimg" alt="" /> {vb:rawphrase message_has_been_deleted}
+					</div>
+				</vb:if>
+			</div>
+
+			<div class="issuefoot">
+				<div class="textcontrols">
+					<span class="issuecontrols">
+
+					<img style="margin: 0; padding: 0;" class="hidden" id="issuenote_progress_{vb:raw note.issuenoteid}" src="images/misc/progress.gif" alt="" />
+
+					<vb:if condition="$show['edit_note']">
+						<a class="editissue" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw note.issuenoteid}" id="issuenote_edit_{vb:raw note.issuenoteid}"><img alt="{vb:rawphrase edit}" src="clear.gif" title="{vb:rawphrase edit}" /> {vb:rawphrase edit}</a>
+					</vb:if>
+
+					<vb:if condition="$show['reply_note'] AND $show['edit_note']">
+						<span class="separator">&nbsp;</span>
+					</vb:if>
+
+					<vb:if condition="$show['reply_note']">
+						<a class="replyissue" href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}&amp;quotenoteid={vb:raw note.issuenoteid}"><img alt="{vb:rawphrase reply}" src="clear.gif" title="{vb:rawphrase reply}" /> {vb:rawphrase reply}</a>
+					</vb:if>
+
+					<vb:if condition="$show['export_note']">
+						<span class="separator">&nbsp;</span>
+						<a class="replyissue" href="projectpost.php?{vb:raw session.sessionurl}do=export&amp;issuenoteid={vb:raw note.issuenoteid}"><img alt="{vb:rawphrase export}" src="clear.gif" title="{vb:rawphrase export}" /> {vb:rawphrase export}</a>
+					</vb:if>
+					</span>
+
+					<span class="issuelinking">
+						<vb:if condition="$show['edit_history']">
+							<a class="issuehistory" href="issue.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw note.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw note.lastedit_date}, {vb:raw note.lastedit_time}}</a>
+						</vb:if>
+
+						<vb:if condition="$show['edit_history'] AND ($show['reportlink'] OR $issue['noteipaddress'] OR $show['import_note'])">
+							<span class="separator">&nbsp;</span>
+						</vb:if>
+
+						<vb:if condition="$show['import_note']">
+							<a href="projectpost.php?{vb:raw session.sessionurl}do=importcontent&amp;issuenote={vb:raw note.issuenoteid}&amp;type=issuenote" class="promoteissue">{vb:rawphrase promote_to_ptissue}</a>
+						</vb:if>
+
+						<vb:if condition="($show['edit_history'] OR $show['import_note']) AND ($show['reportlink'] OR $issue['noteipaddress'])">
+							<span class="separator">&nbsp;</span>
+						</vb:if>
+
+						<vb:if condition="$show['reportlink']">
+							<a class="reportissue" href="issue.php?{vb:raw session.sessionurl}do=report&amp;issuenoteid={vb:raw note.issuenoteid}" rel="nofollow" title="{vb:rawphrase report_issue_note}">&nbsp;</a>
+						</vb:if>
+						<vb:if condition="$issue['noteipaddress']">
+							<a class="ipissue" href="issue.php?do=viewip&amp;issuenoteid={vb:raw note.issuenoteid}" title="{vb:raw note.noteipaddress}">&nbsp;</a>
+						</vb:if>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</li>]]></template>
+		<template name="pt_overview" templatetype="template" date="1315002921" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
+
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
+
+	<vb:if condition="$vboptions['externalrss']">
+		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed}" href="projectexternal.php" />
+	</vb:if>
+
+	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+
+{vb:raw navbar}
+
+<div data-role="content">
+	<ul data-role="listview">
+		<li data-role="list-divider">{vb:rawphrase project}</li>
+		{vb:raw projectbits}
+	</ul>
+</div>
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
+		<template name="pt_project" templatetype="template" date="1315002878" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
+
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile forumdisplay-rollup.css}
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
+
+	<vb:if condition="$vboptions['externalrss']">
+		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="{vb:raw vboptions.bburl}/projectexternal.php?projectid={vb:raw project.projectid}" />
+	</vb:if>
+
+	<title>{vb:raw project.title_clean} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+
+{vb:raw navbar}
+
+<div id="pagetitle" class="pagetitle ui-bar-b">
+	<h1 class="pagetitle">{vb:raw project.title}</h1>
+</div>
+
+<div class="ui-content" data-role="content">
+	<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}" rel="nofollow" id="newthreadlink_top" data-role="button" data-icon="plus" data-inline="true">{vb:rawphrase post_new_issue}</a>
+	<div id="threadlist">
+		<ul id="threads" class="threads ui-listview ui-grid-a" data-role="listview" role="listbox">
+			<li class="ui-li ui-li-divider ui-bar-b" data-role="list-divider" role="heading" tabindex="0">
+				{vb:rawphrase summary}
+				<vb:if condition="$project['summary']">
+					: {vb:raw project.summary}
+				</vb:if>
+			</li>
+			<li class="threadbit dot ui-li" role="option" tabindex="-1" data-theme="c">{vb:raw project.description}</li>
+		</ul>
+	</div>
+
+	<vb:if condition="$show['milestones']">
+		<a href="projectmilestone.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" rel="nofollow" id="newthreadlink_bottom" data-role="button" data-icon="plus" data-inline="true">{vb:rawphrase view_milestones}</a>
+	</vb:if>
+
+	<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}" rel="nofollow" id="newthreadlink_bottom" data-role="button" data-icon="plus" data-inline="true">{vb:rawphrase view_complete_issue_list}</a>
+
+	<vb:if condition="$issuebits">
+		<div id="threadlist">
+			<ul id="threads" class="threads ui-listview" data-role="listview" role="listbox">
+				<li class="ui-li ui-li-divider ui-bar-b" data-role="list-divider" role="heading" tabindex="0"> {vb:rawphrase title} </li>
+				{vb:raw issuebits}
+			</ul>
+		</div>
+	</vb:if>
+</div> <!-- // end ui-content  -->
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
+		<template name="pt_projectbit" templatetype="template" date="1315002903" username="Pitchoune" version="2.2.0"><![CDATA[<li class="ui-li-has-icon">
+	<div class="ui-li-icon">
+		<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" style="background-size: 100% auto; height: 16px; width: 16px; float: left; margin-top: 6px; margin-right: 10px" />
+	</div>
+	<h3>
+		<a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title}</a>
+	</h3>
+	<p>
+		<vb:if condition="$show['private_lastpost']">
+			{vb:rawphrase private}
+		<vb:elseif condition="$project['lastpostdate']" />
+			{vb:rawphrase last_post_by} {vb:raw project.lastpostusername} {vb:raw project.lastpostdate} <em class="time">{vb:raw project.lastposttime}</em>&nbsp;
+		<vb:else />
+			{vb:rawphrase n_a}
+		</vb:if>
+	</p>
+</li>]]></template>
+		<template name="pt_project_milestones" templatetype="template" date="1315002981" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
+
+	<vb:if condition="$vboptions['storecssasfile']">
+		{vb:cssfile projecttools-rollup.css}
+	<vb:else />
+		{vb:cssfile projecttools.css,toolsmenu.css}
+	</vb:if>
+
+	<!--[if lt IE 8]>
+	{vb:cssfile projecttools-ie.css}
+	<![endif]-->
+
+	<vb:if condition="$vboptions['externalrss']">
+		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="projectexternal.php?projectid={vb:raw project.projectid}" />
+	</vb:if>
+
+	<title>{vb:raw project.title_clean} - {vb:rawphrase milestones} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
+
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+
+{vb:raw navbar}
+
+<div id="pagetitle" class="pagetitle ui-bar-b">
+	<h1 class="pagetitle">{vb:rawphrase vbulletin_message}</h1>
+</div>
+
+<div data-role="content">	
+	<div class="ui-body ui-body-e">{vb:rawphrase content_not_supported_by_mobile_style, {vb:link forumhome}}</div>
+</div>
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
+	</templategroup>
+	<stylevardfns>
+	</stylevardfns>
+	<stylevars>
+		<stylevar name="htmldoctype" value="YToxOntzOjY6InN0cmluZyI7czoxNToiPCFET0NUWVBFIGh0bWw+Ijt9" />
+		<stylevar name="titleimage" value="YToxOntzOjM6InVybCI7czozMjoiaW1hZ2VzL21vYmlsZS92YnVsbGV0aW4tbG9nby5wbmciO30=" />
+	</stylevars>
+</style>
