@@ -1466,6 +1466,14 @@ $db->query_write("
 // Reload
 $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
+		<code version="2.1.3">
+			<installcode><![CDATA[// Issue #163 fix
+$db->query_write("
+	ALTER TABLE " . TABLE_PREFIX . "pt_user
+	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT '0'
+");]]></installcode>
+			<uninstallcode />
+		</code>
 		<code version="2.2.0">
 			<installcode><![CDATA[// For new phrases
 $full_product_info = fetch_product_list(true);
@@ -1861,7 +1869,7 @@ $db->query_write("
 		1,
 		'project.php',
 		'updateattachments',
-		'project.php?do=updateattachments&pp=25',
+		'projectattachment.php?do=updateattachments&pp=25',
 		'get',
 		'undone')
 ");
@@ -1871,12 +1879,6 @@ $db->query_write("
 || #			Final			# ||
 || ############################## ||
 \*================================*/
-
-// Issue #163 fix
-$db->query_write("
-	ALTER TABLE " . TABLE_PREFIX . "pt_user
-	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT '0'
-");
 
 // Ensure phrases will be rebuilt
 $rebuild['phrases'] = true;
@@ -4428,7 +4430,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1309815130" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1314997436" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4683,6 +4685,9 @@ legend {
 		<form action="{vb:link issue, {vb:raw issue}}" method="get">
 		<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
 		<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
+		<vb:if condition="$issue['page']">
+			<input type="hidden" name="page" value="{vb:raw issue.page}"/>
+		</vb:if>
 		<label class="smallfont">{vb:rawphrase filter_responses_to_show}
 		<select name="filter" tabindex="1" onchange="this.form.submit()">
 			<option value="comments"{vb:raw selected_filter.comments}>{vb:rawphrase comments} ({vb:raw display_type_counts.comments})</option>
@@ -6101,7 +6106,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1309894390" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1315127712" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6233,7 +6238,7 @@ init_project_readmarker_system();
 			<vb:elseif condition="$milestone['targetdate']" />
 				{vb:rawphrase target_date}: {vb:raw stats.target_date}
 					<vb:if condition="$stats['milestone_overdue']">
-						<span class="boldtext">({vb:rawphrase overdue})
+						<span class="boldtext">({vb:rawphrase overdue})</span>
 					</vb:if>
 			<vb:else />
 					{vb:rawphrase no_target_date}
@@ -6319,7 +6324,9 @@ init_project_readmarker_system();
 			</vb:if>
 		</div>
 		<vb:if condition="$issuebits">
-			{vb:raw issuebits}
+			<ol class="issuecontent" id="issuecontent">
+				{vb:raw issuebits}
+			</ol>
 		<vb:else />
 			<div class="section">
 				<div class="blockrow">
