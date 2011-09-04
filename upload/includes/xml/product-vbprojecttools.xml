@@ -1265,8 +1265,10 @@ rebuild_profile_issue_counters();
 * CMS Widgets
 */
 
+$products = fetch_product_list(true);
+
 // Adding some infos for CMS widgets
-if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
+if (file_exists(DIR . "/includes/xml/product-vbcms.xml") AND $products['vbcms']['active'] == '1')
 {
 	// We need to have the packageid of vbcms
 	$packageid = $db->query_first("
@@ -1479,7 +1481,7 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 			<installcode><![CDATA[// Issue #163 fix
 $db->query_write("
 	ALTER TABLE " . TABLE_PREFIX . "pt_user
-	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT 0
+	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT '0'
 ");]]></installcode>
 			<uninstallcode />
 		</code>
