@@ -572,7 +572,7 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 		false,
 		'fe',
 		'',
-		'', // attachments - handled differently in PT
+		array(), // attachments - handled differently in PT
 		'content', // default value
 		'vBProjectTools_IssueNote', // Content type - needed for auto-save
 		$issuenote['issuenoteid'], // ID of the content
@@ -1450,7 +1450,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		false,
 		'fe',
 		'',
-		'', // attachments - handled differently in PT
+		array(), // attachments - handled differently in PT
 		'content', // default value
 		'vBProjectTools_Issue', // Content type - needed for auto-save
 		$issue['issueid'] // ID of the content

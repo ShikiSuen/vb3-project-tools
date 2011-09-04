@@ -978,7 +978,8 @@ if ($_REQUEST['do'] == 'issue')
 			true,
 			false,
 			'qr',
-			'', // attachments - handled differently in PT
+			'',
+			array(), // attachments - handled differently in PT
 			'content', // default value
 			'vBProjectTools_Issue', // Content type - needed for auto-save
 			$issue['issueid'] // ID of the content

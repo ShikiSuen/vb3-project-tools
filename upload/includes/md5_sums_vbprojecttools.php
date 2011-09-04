@@ -2,12 +2,12 @@
 // vbprojecttools 2.1.3
 $md5_sums = array(
 	'/' => array(
-		'project.php' => '9e12dca04c3bc24b96ae2aa1fea1b79e',
+		'project.php' => 'f4bd58e5390910c7d56d9cdd94a6e5dc',
 		'projectajax.php' => '5f4f3ee822dbe8bf3419f19af5609a2d',
 		'projectattachment.php' => '97e72427e6954b35366329e82175d0e7',
 		'projectexternal.php' => '7ada923d62014d8203c0ee7eb0f69083',
 		'projectmilestone.php' => 'b14799fb4fb78bda48421ba6fc0b4f8e',
-		'projectpost.php' => '7e8c86e29c3c3a3a9ac8765ba34a50bb',
+		'projectpost.php' => '2ba15a2ffc1eb131d5092e2514f72a26',
 		'projectsearch.php' => 'd5390d44fd127da35d669f110eb01c2b',
 	),
 	'/admincp' => array(
