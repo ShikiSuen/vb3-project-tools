@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Français" vbversion="4.1.0" product="vbprojecttools" type="phrases">
+<language name="Français ANSI (#28+)" vbversion="4.1.4" product="vbprojecttools" type="phrases">
 	<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 		<phrase name="project_projectadd_projectedit_afterforumids_text" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Cette option vous permet d'afficher les informations du projet dans la liste des forums sur la page d'accueil de vBulletin.<br />
 <br />
@@ -850,10 +850,10 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="setting_issues_projectids_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Projets d'où viennent les demandes]]></phrase>
 		<phrase name="setting_issues_titlemaxchars_desc" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Ce paramètre vous permet de spécifier le nombre de caractères de chaque intitulé à afficher dans le bloc.]]></phrase>
 		<phrase name="setting_issues_titlemaxchars_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Longueur de l'intitulé des demandes]]></phrase>
-		<phrase name="setting_issues_type_desc" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Choisissez quels type de demandes vous souhaitez afficher :
+		<phrase name="setting_issues_type_desc" date="1316116805" username="Pitchoune" version="2.1.3"><![CDATA[Choisissez quels type de demandes vous souhaitez afficher :
 <br />
-<strong>Nouvelles créations</strong> - Les nouvelles demandes seront affichées en premier
-<strong>Nouvelles réponses</strong> - Les demandes avec les nouvelles réponses seront affichées en premier
+<strong>Nouvelles créations</strong> - Les nouvelles demandes seront affichées en premier<br />
+<strong>Nouvelles réponses</strong> - Les demandes avec les nouvelles réponses seront affichées en premier<br />
 <strong>Plus de réponses</strong> - Les demandes avec les dernières réponses seront affichées en premier]]></phrase>
 		<phrase name="setting_issues_type_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Type de demande]]></phrase>
 	</phrasetype>
