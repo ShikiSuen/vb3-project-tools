@@ -1973,7 +1973,7 @@ $db->query_write("
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1292530284" username="Pitchoune" version="2.1.2"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1316107661" username="Pitchoune" version="2.1.3"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2360,6 +2360,7 @@ a.firstunread, a.firstunread:hover
 	padding: 0 5px;
 	vertical-align: middle;
 	width: 10%;
+	margin-top: 5px;
 	text-align: center;
 	float: {vb:stylevar right};
 }
@@ -2376,7 +2377,6 @@ a.firstunread, a.firstunread:hover
 	padding: 0 5px;
 	vertical-align: middle;
 	width: 15%;
-	margin-top: -5px;
 	text-align: {vb:stylevar left};
 	float: {vb:stylevar right};
 }
@@ -2838,10 +2838,6 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuepopup .navpopupbody {
 	overflow: visible;
-}
-
-.pt_issuepopup .navpopupbody.popupbody {
-	min-width: 0;
 }
 
 .pt_issuepopup .pagenav {
@@ -4108,7 +4104,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</div>
 </div>]]></template>
 		<template name="pt_issuebit_pagelink" templatetype="template" date="1276105979" username="Pitchoune" version="2.1.2"><![CDATA[<span><a href="project.php?{vb:raw session.sessionurl}issueid={vb:raw issue.issueid}<vb:if condition="$curpage > 1">&amp;page={vb:raw curpage}</vb:if>">{vb:raw curpage}</a></span>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1292872445" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1316107431" username="Pitchoune" version="2.1.3"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4274,7 +4270,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			{vb:raw issuebits}
 		<vb:else />
 			<div class="blockrow">
-				<div align="center">{vb:rawphrase no_issues_matching_criteria}</div>
+				<div class="section">
+					{vb:rawphrase no_issues_matching_criteria}
+				</div>
 			</div>
 		</vb:if>
 	</div>
@@ -5185,7 +5183,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1302401455" username="Pitchoune" version="2.1.3"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1316107410" username="Pitchoune" version="2.1.3"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5302,7 +5300,11 @@ init_project_readmarker_system();
 		<vb:if condition="$issuebits">
 			{vb:raw issuebits}
 		<vb:else />
-			<div class="blockrow">{vb:rawphrase no_issues_matching_criteria}</div>
+			<div class="blockrow">
+				<div class="section">
+					{vb:rawphrase no_issues_matching_criteria}
+				</div>
+			</div>
 		</vb:if>
 	</div>
 	<div class="blockfoot actionbuttons">
@@ -7029,7 +7031,7 @@ init_project_readmarker_system();
 		</div>
 	</vb:if>
 </div>]]></template>
-		<template name="pt_reportlist" templatetype="template" date="1291147036" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_reportlist" templatetype="template" date="1316107380" username="Pitchoune" version="2.1.3"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7107,9 +7109,11 @@ init_project_readmarker_system();
 		{vb:rawphrase public_reports}
 	</div>
 	<div class="blockbody settings_form_border">
-		<p class="blockrow">
-			{vb:rawphrase no_reports_defined, {vb:raw session.sessionurl}}
-		</p>
+		<div class="blockrow">
+			<div class="section">
+				{vb:rawphrase no_reports_defined, {vb:raw session.sessionurl}}
+			</div>
+		</div>
 	</div>
 </div>
 <vb:else />
@@ -8767,10 +8771,12 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 		<plugin active="1" executionorder="5">
 			<title>Admin Global: Fix for afterforumids help entry</title>
 			<hookname>admin_global</hookname>
-			<phpcode><![CDATA[if ($_REQUEST['do'] == 'answer' AND $_REQUEST['page'] == 'project' AND $_REQUEST['option'] == 'afterforumids[]')
+			<phpcode><![CDATA[require_once(DIR . '/includes/adminfunctions_projecttools.php');
+
+if ($_REQUEST['do'] == 'answer' AND $_REQUEST['page'] == 'project' AND $_REQUEST['option'] == 'afterforumids[]')
 {
 	// fetch just the script out of the path, and see if it's help.php
-	$sp = preg_replace('#^([^/]*/)*([^/?]+)(\?.*)?$#siU', '$2', $vbulletin->input->fetch_scriptpath());
+	$sp = preg_replace('#^([^/]*/)*([^/?]+)(\?.*)?$#siU', '$2', fetch_scriptpath());
 	if (substr($sp, 0, 5) == 'help.')
 	{
 		$_REQUEST['option'] = 'afterforumids';
