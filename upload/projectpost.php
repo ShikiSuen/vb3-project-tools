@@ -398,6 +398,9 @@ if ($_POST['do'] == 'postreply')
 				}
 			}
 
+			// Remove auto-saved content
+			clear_autosave_text('vBProjectTools_IssueNote', 0, $issue['issueid'], $vbulletin->userinfo['userid']);
+
 			($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
 
 			$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
@@ -406,6 +409,9 @@ if ($_POST['do'] == 'postreply')
 		else
 		{
 			$issuenotedata->save();
+
+			// Remove auto-saved content
+			clear_autosave_text('vBProjectTools_IssueNote', 0, $issue['issueid'], $vbulletin->userinfo['userid']);
 
 			($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
 
@@ -576,8 +582,8 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 		array(), // attachments - handled differently in PT
 		'content', // default value
 		'vBProjectTools_IssueNote', // Content type - needed for auto-save
-		$issuenote['issuenoteid'], // ID of the content
-		$issue['issueid'] // Parent ID of the content
+		0, // ID of the content
+		$issue['issueid'] // ID of the parent content
 	);
 
 	$private_checked = ($issuenote['visible'] == 'private' ? ' checked="checked"' : '');
@@ -1078,10 +1084,12 @@ if ($_POST['do'] == 'postissue')
 		if ($issue['issueid'])
 		{
 			$issuedata->save();
+
 			if ($vbulletin->GPC['message'] != $issue['pagetext'])
 			{
 				$issuenote->save();
 			}
+
 			$log_assignment_changes = true;
 		}
 		else
@@ -1090,7 +1098,10 @@ if ($_POST['do'] == 'postissue')
 			$issuenote->set('issueid', $issue['issueid']);
 			$issue['issuenoteid'] = $issuenote->save();
 			$log_assignment_changes = false;
-		}
+		}	
+
+		// Remove auto-saved content
+		clear_autosave_text('vBProjectTools_Issue', 0, 0, $vbulletin->userinfo['userid']);
 
 		// user assignments
 		process_assignment_changes($vbulletin->GPC, $posting_perms, $existing_assignments, $project, $issue, $log_assignment_changes);
@@ -1455,7 +1466,11 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		array(), // attachments - handled differently in PT
 		'content', // default value
 		'vBProjectTools_Issue', // Content type - needed for auto-save
-		$issue['issueid'] // ID of the content
+		0, // ID of the content
+		$issue['issueid'], // ID of the parent content
+		false, // Preview
+		true, // Auto load auto-saved content
+		'title' // ID of the title
 	);
 
 	$private_checked = ($issue['visible'] == 'private' ? ' checked="checked"' : '');
