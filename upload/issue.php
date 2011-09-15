@@ -1020,8 +1020,9 @@ if ($show['quick_reply'])
 		'',
 		array(), // attachments - handled differently in PT
 		'content', // default value
-		'vBProjectTools_Issue', // Content type - needed for auto-save
-		$issue['issueid'] // ID of the content
+		'vBProjectTools_IssueNote', // Content type - needed for auto-save
+		0, // ID of the content
+		$issue['issueid'] // ID of the parent content
 	);
 
 	$messagearea = "

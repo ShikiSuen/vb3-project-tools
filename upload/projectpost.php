@@ -233,16 +233,16 @@ if ($_POST['do'] == 'quickedit')
 		htmlspecialchars_uni($issuenote['pagetext']),
 		false,
 		'pt',
-		true,
+		$vbulletin->options['pt_allowsmilies'],
 		true,
 		false,
 		'qe',
 		$vbulletin->GPC['editorid'],
-		'', // attachments - handled differently in PT
+		array(), // attachments - handled differently in PT
 		'content', // default value
 		'vBProjectTools_IssueNote', // Content type - needed for auto-save
 		$issuenote['issuenoteid'], // ID of the content
-		$issueinfo['issueid'] // Parent ID of the content
+		0 // Parent ID of the content
 	);
 
 	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
@@ -542,9 +542,13 @@ if ($_POST['do'] == 'postreply')
 	{
 		if (!$issuenote['issuenoteid'])
 		{
+			// Add reply
 			$issuenoteid = $issuenotedata->save();
 			$issuenote = $issuenotedata->pt_issuenote;
 			$issuenote['issuenoteid'] = $issuenoteid;
+
+			// Remove auto-saved content
+			clear_autosave_text('vBProjectTools_IssueNote', 0, $issue['issueid'], $vbulletin->userinfo['userid']);
 
 			if ($vbulletin->GPC['ajax'])
 			{
@@ -736,7 +740,11 @@ if ($_POST['do'] == 'postreply')
 		}
 		else
 		{
+			// Edit reply
 			$issuenotedata->save();
+
+			// Remove auto-saved content
+			clear_autosave_text('vBProjectTools_IssueNote', $issuenote['issuenoteid'], 0, $vbulletin->userinfo['userid']);
 
 			$issuenote['issuenoteid'] = $vbulletin->GPC['issuenoteid'];
 
@@ -987,6 +995,23 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 		{
 			$issuenote['pagetext'] = '';
 		}
+
+		// editor
+		$editorid = construct_edit_toolbar(
+			htmlspecialchars_uni($issuenote['pagetext']),
+			false,
+			'pt',
+			$vbulletin->options['pt_allowsmilies'],
+			true,
+			false,
+			'fe',
+			'',
+			array(), // attachments - handled differently in PT
+			'content', // default value
+			'vBProjectTools_IssueNote', // Content type - needed for auto-save
+			0, // ID of the content
+			$issue['issueid'] // ID of the parent content
+		);
 	}
 	else
 	{
@@ -1022,10 +1047,28 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 		require_once(DIR . '/includes/functions_pt_notehistory.php');
 
 		$previous_edits =& fetch_note_history($issuenote['issuenoteid']);
+
 		while ($history = $db->fetch_array($previous_edits))
 		{
 			$edit_history .= build_history_bit($history, $bbcode);
 		}
+
+		// editor
+		$editorid = construct_edit_toolbar(
+			htmlspecialchars_uni($issuenote['pagetext']),
+			false,
+			'pt',
+			$vbulletin->options['pt_allowsmilies'],
+			true,
+			false,
+			'fe',
+			'',
+			array(), // attachments - handled differently in PT
+			'content', // default value
+			'vBProjectTools_IssueNote', // Content type - needed for auto-save
+			$issuenote['issuenoteid'], // ID of the content
+			0 // ID of the parent content
+		);
 	}
 
 	// issue status for petition
@@ -1606,6 +1649,10 @@ if ($_POST['do'] == 'postissue')
 		// done
 		if ($vbulletin->GPC['issueid'])
 		{
+			// Edit
+			// Remove auto-saved content
+			clear_autosave_text('vBProjectTools_Issue', intval($vbulletin->GPC['issueid']), 0, $vbulletin->userinfo['userid']);
+
 			if ($vbulletin->GPC['ajax'])
 			{
 				// Quick edit
@@ -1755,6 +1802,10 @@ if ($_POST['do'] == 'postissue')
 			}
 			else
 			{
+				// Add
+				// Remove auto-saved content
+				clear_autosave_text('vBProjectTools_Issue', 0, 0, $vbulletin->userinfo['userid']);
+
 				($hook = vBulletinHook::fetch_hook('projectpost_postissue_complete')) ? eval($hook) : false;
 
 				$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
@@ -2131,20 +2182,50 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 
 	// editor
 	require_once(DIR . '/includes/functions_editor.php');
-	$editorid = construct_edit_toolbar(
-		htmlspecialchars_uni($issue['pagetext']),
-		false,
-		'pt',
-		$vbulletin->options['pt_allowsmilies'],
-		true,
-		false,
-		'fe',
-		'',
-		'', // attachments - handled differently in PT
-		'content', // default value
-		'vBProjectTools_Issue', // Content type - needed for auto-save
-		$issue['issueid'] // ID of the content
-	);
+	if (!$issue['issueid'])
+	{
+		// Add
+		$editorid = construct_edit_toolbar(
+			htmlspecialchars_uni($issue['pagetext']),
+			false,
+			'pt',
+			$vbulletin->options['pt_allowsmilies'],
+			true,
+			false,
+			'fe',
+			'',
+			array(), // attachments - handled differently in PT
+			'content', // default value
+			'vBProjectTools_Issue', // Content type - needed for auto-save
+			0, // ID of the content
+			$issue['issueid'], // ID of the parent content
+			false, // Preview
+			true, // Auto load auto-saved content
+			'title' // ID of the title
+		);
+	}
+	else
+	{
+		// Edit
+		$editorid = construct_edit_toolbar(
+			htmlspecialchars_uni($issue['pagetext']),
+			false,
+			'pt',
+			$vbulletin->options['pt_allowsmilies'],
+			true,
+			false,
+			'fe',
+			'',
+			array(), // attachments - handled differently in PT
+			'content', // default value
+			'vBProjectTools_Issue', // Content type - needed for auto-save
+			$issue['issueid'], // ID of the content
+			0, // ID of the parent content
+			false, // Preview
+			true, // Auto load auto-saved content
+			'title' // ID of the title
+		);
+	}
 
 	$private_checked = ($issue['visible'] == 'private' ? ' checked="checked"' : '');
 
