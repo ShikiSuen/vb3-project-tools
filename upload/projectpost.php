@@ -228,7 +228,8 @@ if ($_POST['do'] == 'postreply')
 
 	if ($vbulletin->GPC['wysiwyg'])
 	{
-		if (is_newer_version(SIMPLE_VERSION, '4.1.4')
+		// Added check for 4.1.4+ due to WYSIWYG file changes
+		if (SIMPLE_VERSION >= '4.1.4')
 		{
 			require_once(DIR . '/includes/class_wysiwygparser.php');
 			$html_parser = new vB_WysiwygHtmlParser($vbulletin);
@@ -770,16 +771,17 @@ if ($_POST['do'] == 'postissue')
 
 	if ($vbulletin->GPC['wysiwyg'])
 	{
-		if ($vbulletin->options['templateversion'] < '4.1.4')
-		{
-			require_once(DIR . '/includes/functions_wysiwyg.php');
-			$vbulletin->GPC['message'] = convert_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
-		}
-		else
+		// Added check for 4.1.4+ due to WYSIWYG file changes
+		if (SIMPLE_VERSION >= '4.1.4')
 		{
 			require_once(DIR . '/includes/class_wysiwygparser.php');
 			$html_parser = new vB_WysiwygHtmlParser($vbulletin);
 			$vbulletin->GPC['message'] = $html_parser->parse_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
+		}
+		else
+		{
+			require_once(DIR . '/includes/functions_wysiwyg.php');
+			$vbulletin->GPC['message'] = convert_wysiwyg_html_to_bbcode($vbulletin->GPC['message'], $vbulletin->options['pt_allowhtml']);
 		}
 	}
 
