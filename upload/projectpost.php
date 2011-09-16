@@ -997,6 +997,7 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 		}
 
 		// editor
+		require_once(DIR . '/includes/functions_editor.php');
 		$editorid = construct_edit_toolbar(
 			htmlspecialchars_uni($issuenote['pagetext']),
 			false,
@@ -1054,6 +1055,7 @@ if ($_REQUEST['do'] == 'addreply' OR $_REQUEST['do'] == 'editreply')
 		}
 
 		// editor
+		require_once(DIR . '/includes/functions_editor.php');
 		$editorid = construct_edit_toolbar(
 			htmlspecialchars_uni($issuenote['pagetext']),
 			false,
