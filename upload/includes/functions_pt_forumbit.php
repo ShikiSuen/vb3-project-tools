@@ -217,14 +217,20 @@ function pt_subforumbit_display(&$forum)
 
 			$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 			$project['lastactivity'] = 0;
+			$project['newflag'] = false;
 
 			$can_view = false;
+			$project['counter'] = 0;
+
 			foreach ($project_types["$project[projectid]"] AS $type)
 			{
 				if (!($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
 				{
 					continue;
 				}
+
+				$type['issuecount'] = vb_number_format($type['issuecount']);
+				$project['counter'] += $type['issuecount'];
 
 				if ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid'])
 				{
@@ -238,6 +244,7 @@ function pt_subforumbit_display(&$forum)
 						$projettypeview = $vbulletin->userinfo['lastvisit'];
 					}
 				}
+
 				if ($type['lastpost'] > $projettypeview)
 				{
 					$type['newflag'] = true;
