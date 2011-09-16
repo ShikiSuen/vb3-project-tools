@@ -99,7 +99,13 @@ function process_new_subscribed_issues()
 	$templater = vB_Template::create('pt_usercp_subscriptions');
 		$templater->register('subscriptionbits', $subscriptionbits);
 	$return = $templater->render();
-	return $return;
+
+	// Add a defined value for CSS template parsing
+	if (!empty($return))
+	{
+		define('PT_SUBSCRIPTION', '1');
+		return $return;
+	}
 }
 
 ?>
