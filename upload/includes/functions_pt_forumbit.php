@@ -109,6 +109,7 @@ function pt_forumbit_display(&$forum)
 			$project['lastpost'] = 0;
 			$show['private_lastpost'] = false;
 			$project['newflag'] = false;
+			$project['counter'] = 0;
 
 			$type_counts = array();
 			foreach ($project_types["$project[projectid]"] AS $type)
@@ -137,6 +138,7 @@ function pt_forumbit_display(&$forum)
 
 				$type['name'] = $vbphrase["issuetype_$type[issuetypeid]_plural"];
 				$type['issuecount'] = vb_number_format($type['issuecount']);
+				$project['counter'] += $type['issuecount'];
 
 				if ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid'])
 				{
