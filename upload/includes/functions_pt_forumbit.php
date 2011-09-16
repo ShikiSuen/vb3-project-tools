@@ -226,6 +226,24 @@ function pt_subforumbit_display(&$forum)
 					continue;
 				}
 
+				if ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid'])
+				{
+					$projettypeview = max($type['projectread'], TIMENOW - ($vbulletin->options['markinglimit'] * 86400));
+				}
+				else
+				{
+					$projettypeview = intval(fetch_bbarray_cookie('project_lastview', $project['projectid'] . $type['issuetypeid']));
+					if (!$projettypeview)
+					{
+						$projettypeview = $vbulletin->userinfo['lastvisit'];
+					}
+				}
+				if ($type['lastpost'] > $projettypeview)
+				{
+					$type['newflag'] = true;
+					$project['newflag'] = true;
+				}
+
 				$can_view = true;
 				break;
 			}
