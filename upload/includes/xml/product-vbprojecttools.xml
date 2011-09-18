@@ -2383,7 +2383,7 @@ build_project_cache();]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1309894360" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1316365422" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2845,7 +2845,7 @@ a.firstunread, a.firstunread:hover
 .pt_issuelist .blockrow .ptissuelist_emptylastpost {
 	padding: 0 5px;
 	vertical-align: middle;
-	width: 15%;
+	width: 10%;
 	text-align: {vb:stylevar left};
 	float: {vb:stylevar right};
 }
@@ -4430,7 +4430,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1314997436" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1316213487" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -9375,8 +9375,8 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_subforumbit_project" templatetype="template" date="1289121263" username="Pitchoune" version="2.1.2"><![CDATA[<li class="subforum">
-	<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/subforum_old-48.png" alt="" border="0" id="project_statusicon_{vb:raw project.projectid}" />
+		<template name="pt_subforumbit_project" templatetype="template" date="1316209222" username="Pitchoune" version="2.2.0"><![CDATA[<li class="subforum">
+	<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/subforum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>-48.png" alt="" border="0" id="project_statusicon_{vb:raw project.projectid}" />
 	<vb:if condition="$project['forumtitle']">
 		<a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.forumtitle}</a>
 	<vb:else />
@@ -9605,7 +9605,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 </ul>
 </li>
 ]]></template>
-		<template name="pt_usercp_subscriptions" templatetype="template" date="1278750348" username="Pitchoune" version="2.1.2"><![CDATA[<div class="pt_issuelist block">
+		<template name="pt_usercp_subscriptions" templatetype="template" date="1316365332" username="Pitchoune" version="2.2.0"><![CDATA[<div class="pt_issuelist block">
 	<div class="blockhead collapse">
 		<a id="collapse_usercp_pt_issues" class="collapse" style="float: {vb:stylevar right}; top: 5px" href="{vb:raw relpath}#top"><img src="{vb:stylevar imgdir_button}/collapse_40b.png" alt="" /></a>
 		{vb:rawphrase new_subscribed_issues}
@@ -9628,7 +9628,9 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 				{vb:rawphrase status}
 			</div>
 		</div>
-		{vb:raw subscriptionbits}
+		<ol class="issuecontent" id="issuecontent">
+			{vb:raw subscriptionbits}
+		</ol>
 	</div>
 	<div class="blockfoot controlbar textpad">
 		<a class="textcontrol" href="projectpost.php?{vb:raw session.sessionurl}do=managesubscriptions">{vb:rawphrase issue_subscriptions}</a>
@@ -10912,7 +10914,37 @@ else if ($userinfo['activity'] == 'archive_project')
 			<title>Adding PT CSS Template in various places</title>
 			<hookname>parse_templates</hookname>
 			<phpcode><![CDATA[// In search.php & projectpost.php?do=managesubscriptions, projecttools.css is not automatically added - do it here
-if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))) OR (THIS_SCRIPT == 'projectpost' AND in_array($_REQUEST['do'], array('managesubscriptions'))) OR (THIS_SCRIPT == 'showthread') OR (THIS_SCRIPT == 'usercp'))
+if (
+	(
+		THIS_SCRIPT == 'search'
+		AND
+		in_array($_REQUEST['do'], array('intro', 'process'))
+	)
+	OR
+	(
+		THIS_SCRIPT == 'projectpost'
+		AND
+		in_array($_REQUEST['do'], array('managesubscriptions'))
+	)
+	OR
+	(
+		THIS_SCRIPT == 'showthread'
+	)
+	OR
+	(
+		THIS_SCRIPT == 'usercp'
+		AND
+		defined('PT_SUBSCRIPTION')
+	)
+	OR
+	(
+		THIS_SCRIPT == 'index'
+		AND
+		$vbulletin->options['pt_hasprojectforums']
+		AND
+		$vbulletin->options['mobilestyleid_advanced'] == $vbulletin->userinfo['styleid']
+	)
+)
 {
 	$template_hook['headinclude_bottom_css'] .= vB_Template::create('pt_headinclude')->render();
 }
