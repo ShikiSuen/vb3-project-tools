@@ -67,7 +67,7 @@ log_admin_action(
 // ######################### START MAIN SCRIPT ############################
 // ########################################################################
 
-print_cp_header($vbphrase['project_tools'], iif(in_array($_REQUEST['do'], array('statusedit', 'statusadd') , 'init_color_preview()'));
+print_cp_header($vbphrase['project_tools'], iif(in_array($_REQUEST['do'], array('statusedit', 'statusadd')) , 'init_color_preview()'));
 
 if (empty($_REQUEST['do']))
 {
