@@ -112,6 +112,7 @@ if ($_POST['do'] == 'insert')
 		'text'			=> TYPE_STR,
 		'displayorder'	=> TYPE_UINT,
 		'projects'		=> TYPE_ARRAY_UINT,
+		'htmlcode'		=> TYPE_STR
 	));
 
 	// Serialize the array
@@ -121,6 +122,7 @@ if ($_POST['do'] == 'insert')
 	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
 	$dataman->set_info('text', $vbulletin->GPC['text']);
 	$dataman->set('projects', $vbulletin->GPC['projects']);
+	$dataman->set('htmlcode', $vbulletin->GPC['htmlcode']);
 
 	$dataman->save();
 
@@ -149,12 +151,6 @@ if ($_REQUEST['do'] == 'add')
 	}
 	print_label_row($vbphrase['projects'], '<table cellspacing="2" cellpadding="0" border="0">' . $projecttext . '</tr></table>', '', 'top', 'projects');
 
-	print_description_row('<label for="rb_itemtype_label"><input type="radio" name="itemtype" value="label" id="rb_itemtype_label"' . $checked['itemtype']['label'] . "  />$vbphrase[use_labels]</label>", false, 2, 'thead', 'left', 'itemtype');
-
-	print_description_row('<div align="center">Not developed - soon</div>');
-
-	print_description_row('<label for="rb_itemtype_custom"><input type="radio" name="itemtype" value="custom" id="rb_itemtype_custom"' . $checked['itemtype']['custom'] . "  />$vbphrase[use_your_own_code]</label>", false, 2, 'thead', 'left', 'itemtype');
-
 	print_textarea_row(
 		"$vbphrase[magicselect_html_code] <dfn>$vbphrase[magicselect_code_desc]</dfn>",
 		'htmlcode',
@@ -177,6 +173,7 @@ if ($_POST['do'] == 'update')
 		'text'			=> TYPE_STR,
 		'displayorder'	=> TYPE_UINT,
 		'projects'		=> TYPE_ARRAY_UINT,
+		'htmlcode'		=> TYPE_STR
 	));
 
 	// Serialize the array
@@ -193,6 +190,7 @@ if ($_POST['do'] == 'update')
 	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
 	$dataman->set_info('text', $vbulletin->GPC['text']);
 	$dataman->set('projects', $vbulletin->GPC['projects']);
+	$dataman->set('htmlcode', $vbulletin->GPC['htmlcode']);
 
 	$dataman->save();
 
@@ -243,12 +241,6 @@ if ($_REQUEST['do'] == 'edit')
 	}
 	print_label_row($vbphrase['projects'], '<table cellspacing="2" cellpadding="0" border="0">' . $projecttext . '</tr></table>', '', 'top', 'projects');
 
-	print_description_row('<label for="rb_itemtype_label"><input type="radio" name="itemtype" value="label" id="rb_itemtype_label"' . ($magicselect['itemtype'] == 'label' ? ' checked="checked"' : '') . "  />$vbphrase[use_labels]</label>", false, 2, 'thead', 'left', 'itemtype');
-
-	print_description_row('<div align="center">Not developed - soon</div>');
-
-	print_description_row('<label for="rb_itemtype_custom"><input type="radio" name="itemtype" value="custom" id="rb_itemtype_custom"' . ($magicselect['itemtype'] == 'custom' ? ' checked="checked"' : '') . "  />$vbphrase[use_your_own_code]</label>", false, 2, 'thead', 'left', 'itemtype');
-
 	print_textarea_row(
 		"$vbphrase[magicselect_html_code] <dfn>$vbphrase[magicselect_code_desc]</dfn>",
 		'htmlcode',
@@ -280,8 +272,8 @@ if ($_POST['do'] == 'saveorder')
 	if ($case)
 	{
 		$db->query_write("
-			UPDATE " . TABLE_PREFIX . "pt_issuestatus SET
-				displayorder = CASE issuestatusid $case ELSE displayorder END
+			UPDATE " . TABLE_PREFIX . "pt_magicselect SET
+				displayorder = CASE magicselectid $case ELSE displayorder END
 		");
 	}
 

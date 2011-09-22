@@ -37,8 +37,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		'text'					=> array(TYPE_STR,	REQ_NO),
 		'displayorder'			=> array(TYPE_UINT,	REQ_NO),
 		'projects'				=> array(TYPE_STR,	REQ_NO),
-		'itemtype'				=> array(TYPE_STR,	REQ_NO),
-		'data'					=> array(TYPE_STR,	REQ_NO)
+		'htmlcode'				=> array(TYPE_STR,	REQ_NO)
 	);
 
 	/**
