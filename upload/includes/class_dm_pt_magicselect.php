@@ -33,10 +33,12 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	* @var	array
 	*/
 	var $validfields = array(
-		'pt_magicselectid'		=> array(TYPE_UINT,	REQ_INCR),
+		'magicselectid'			=> array(TYPE_UINT,	REQ_INCR),
 		'text'					=> array(TYPE_STR,	REQ_NO),
 		'displayorder'			=> array(TYPE_UINT,	REQ_NO),
-		'projects'				=> array(TYPE_STR,	REQ_NO)
+		'projects'				=> array(TYPE_STR,	REQ_NO),
+		'itemtype'				=> array(TYPE_STR,	REQ_NO),
+		'data'					=> array(TYPE_STR,	REQ_NO)
 	);
 
 	/**
@@ -58,7 +60,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	*
 	* @var	array
 	*/
-	var $condition_construct = array('pt_magicselectid = %1$d', 'pt_magicselectid');
+	var $condition_construct = array('magicselectid = %1$d', 'magicselectid');
 
 	/**
 	* Constructor - checks that the registry object has been passed correctly.
@@ -146,105 +148,18 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	*/
 	function post_delete($doquery = true)
 	{
-		$projectid = intval($this->fetch_field('pt_magicselectid'));
+		$magicselectid = intval($this->fetch_field('magicselectid'));
 		$db =& $this->registry->db;
 
-		// project related data
+		// Phrase
 		$db->query_write("
-			DELETE FROM " . TABLE_PREFIX . "pt_projecttype
-			WHERE projectid = $projectid
-		");
-		$db->query_write("
-			DELETE FROM " . TABLE_PREFIX . "pt_projecttypeprivatelastpost
-			WHERE projectid = $projectid
-		");
-		$db->query_write("
-			DELETE FROM " . TABLE_PREFIX . "pt_projectpermission
-			WHERE projectid = $projectid
-		");
-		$db->query_write("
-			DELETE FROM " . TABLE_PREFIX . "pt_projectversion
-			WHERE projectid = $projectid
-		");
-		$db->query_write("
-			DELETE FROM " . TABLE_PREFIX . "pt_projectversiongroup
-			WHERE projectid = $projectid
-		");
-		$db->query_write("
-			DELETE FROM " . TABLE_PREFIX . "pt_projectcategory
-			WHERE projectid = $projectid
+			DELETE FROM " . TABLE_PREFIX . "phrase
+			WHERE varname = 'magicselect" . $magicselectid . "'
 		");
 
-		// MySQL 4 needs to use the non-aliased tables in multi-table deletes (#23024)
-		// No longer needed as of PT 2.1.x/vB 4.0.x. (#100)
-		// $mysqlversion = $db->query_first("SELECT version() AS version");
-		// $include_prefix = version_compare($mysqlversion['version'], '4.1.0', '<');
-
-		// clear out all the issue data
-		$db->query_write("
-			DELETE issueassign
-			FROM " . TABLE_PREFIX . "pt_issueassign AS issueassign
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issueassign.issueid)
-			WHERE issue.projectid = $projectid
-		");
-		$db->query_write("
-			DELETE issueattach
-			FROM " . TABLE_PREFIX . "pt_issueattach AS issueattach
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issueattach.issueid)
-			WHERE issue.projectid = $projectid
-		");
-		$db->query_write("
-			DELETE issuechange
-			FROM " . TABLE_PREFIX . "pt_issuechange AS issuechange
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuechange.issueid)
-			WHERE issue.projectid = $projectid
-		");
-		$db->query_write("
-			DELETE issuesubscribe
-			FROM " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuesubscribe.issueid)
-			WHERE issue.projectid = $projectid
-		");
-		$db->query_write("
-			DELETE issuetag
-			FROM " . TABLE_PREFIX . "pt_issuetag AS issuetag
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuetag.issueid)
-			WHERE issue.projectid = $projectid
-		");
-		$db->query_write("
-			DELETE issuevote
-			FROM " . TABLE_PREFIX . "pt_issuevote AS issuevote
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuevote.issueid)
-			WHERE issue.projectid = $projectid
-		");
-		$db->query_write("
-			DELETE issuedeletionlog
-			FROM " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuedeletionlog.primaryid AND issuedeletionlog.type = 'issue')
-			WHERE issue.projectid = $projectid
-		");
-		$db->query_write("
-			DELETE issuenote
-			FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuenote.issueid)
-			WHERE issue.projectid = $projectid
-		");
-		$db->query_write("
-			DELETE issueprivatelastpost
-			FROM " . TABLE_PREFIX . "pt_issueprivatelastpost AS issueprivatelastpost
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issueprivatelastpost.issueid)
-			WHERE issue.projectid = $projectid
-		");
-		$db->query_write("
-			DELETE FROM " . TABLE_PREFIX . "pt_issue
-			WHERE projectid = $projectid
-		");
-
-		require_once(DIR . '/includes/adminfunctions_projecttools.php');
-		build_project_cache();
-		build_version_cache();
-		build_assignable_users(); // builds bitfields and perms as well
-		build_pt_user_list('pt_report_users', 'pt_report_user_cache');
+		// Rebuild language
+		require_once(DIR . '/includes/adminfunctions_language.php');
+		build_language();
 
 		($hook = vBulletinHook::fetch_hook('pt_magicselect_delete')) ? eval($hook) : false;
 		return true;
