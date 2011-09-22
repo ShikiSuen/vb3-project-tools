@@ -122,7 +122,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 				(
 					0,
 					'projecttools',
-					'magicselect" . $this->fetch_field('pt_magicselectid') . "',
+					'magicselect" . $this->fetch_field('magicselectid') . "',
 					'" . $db->escape_string($this->info['text']) . "',
 					'vbprojecttools',
 					'" . $db->escape_string($this->registry->userinfo['username']) . "',

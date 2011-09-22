@@ -209,7 +209,7 @@ if ($_REQUEST['do'] == 'edit')
 		WHERE magicselectid = " . intval($vbulletin->GPC['magicselectid']) . "
 	");
 
-	if ($db->num_rows($magicselect) == 0)
+	if (empty($magicselect['magicselectid']))
 	{
 		print_stop_message('no_magic_select_matched_your_query');
 	}
