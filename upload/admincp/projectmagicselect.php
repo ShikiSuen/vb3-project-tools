@@ -23,7 +23,9 @@ $phrasegroups = array(
 	'projecttoolsadmin'
 );
 
-$specialtemplates = array();
+$specialtemplates = array(
+	'pt_projects'
+);
 
 // ########################## REQUIRE BACK-END ############################
 require_once('./global.php');
@@ -56,6 +58,201 @@ log_admin_action();
 // ######################### START MAIN SCRIPT ############################
 // ########################################################################
 
+print_cp_header($vbphrase['project_tools']);
 
+if (empty($_REQUEST['do']))
+{
+	$_REQUEST['do'] = 'list';
+}
+
+// Specs:
+// Text - text for the Magic Select in various places (string)
+// Display order - allows anyone to choose the order displayed (integer)
+// Projects - select in which project(s) the magic select is displayed (array)
+
+// #############################################################################
+if ($_POST['do'] == 'kill')
+{
+    // 'kill'
+}
+
+// #############################################################################
+if ($_REQUEST['do'] == 'delete')
+{
+    // 'delete'
+}
+
+// ########################################################################
+if ($_POST['do'] == 'insert')
+{
+	// 'insert'
+	$vbulletin->input->clean_array_gpc('p', array(
+		'text'			=> TYPE_STR,
+		'displayorder'	=> TYPE_UINT,
+		'projects'		=> TYPE_ARRAY_UINT,
+	));
+
+	// Serialize the array
+	$vbulletin->GPC['projects'] = serialize($vbulletin->GPC['projects']);
+
+	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
+	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
+	$dataman->set_info('text', $vbulletin->GPC['text']);
+	$dataman->set('projects', $vbulletin->GPC['projects']);
+
+	$dataman->save();
+
+	define('CP_REDIRECT', 'projectmagicselect.php?do=list');
+	print_stop_message('project_magic_select_saved');
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'add')
+{
+	print_form_header('projectmagicselect', 'insert');
+	print_table_header($vbphrase['add_project_magic_select']);
+
+	print_input_row($vbphrase['text'], 'text');
+	print_input_row($vbphrase['display_order'], 'displayorder');
+
+	// Project list
+	$endtable = 0;
+
+	foreach ($vbulletin->pt_projects AS $projectlist)
+	{
+		$projecttext .= iif(!$endtable, "<tr>\n");
+		$projecttext .= "<td><label><input type=\"checkbox\" name=\"projects[$projectlist[projectid]]\" value=\"1\" />$projectlist[title]</label></td>\n";
+		$projecttext .= iif($endtable, "</tr>\n");
+		$endtable = iif($endtable, 0, 1);
+	}
+	print_label_row($vbphrase['projects'], '<table cellspacing="2" cellpadding="0" border="0">' . $projecttext . '</tr></table>', '', 'top', 'holidays');
+
+	print_submit_row();
+}
+
+// #############################################################################
+if ($_POST['do'] == 'update')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'magicselectid'	=> TYPE_UINT,
+		'text'			=> TYPE_STR,
+		'displayorder'	=> TYPE_UINT,
+		'projects'		=> TYPE_ARRAY_UINT,
+	));
+
+	// Serialize the array
+	$vbulletin->GPC['projects'] = serialize($vbulletin->GPC['projects']);
+
+	$magicselect = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_magicselect
+		WHERE pt_magicselectid = " . intval($vbulletin->GPC['magicselectid']) . "
+	");
+
+	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
+	$dataman->set_existing($magicselect);
+	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
+	$dataman->set_info('text', $vbulletin->GPC['text']);
+	$dataman->set('projects', $vbulletin->GPC['projects']);
+
+	$dataman->save();
+
+	define('CP_REDIRECT', 'projectmagicselect.php?do=list');
+	print_stop_message('project_magic_select_saved');
+}
+
+// #############################################################################
+if ($_REQUEST['do'] == 'edit')
+{
+	$vbulletin->input->clean_gpc('r', 'magicselectid', TYPE_UINT);
+
+	$magicselect = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_magicselect
+		WHERE pt_magicselectid = " . intval($vbulletin->GPC['magicselectid']) . "
+	");
+
+	print_form_header('projectmagicselect', 'update');
+	print_table_header(construct_phrase($vbphrase['edit_project_magic_select'], $vbphrase['magicselect' . $magicselect['pt_magicselectid'] . '']));
+
+	print_input_row($vbphrase['text'], 'text', $vbphrase['magicselect' . $magicselect['pt_magicselectid'] . '']);
+	print_input_row($vbphrase['display_order'], 'displayorder', $magicselect['displayorder']);
+
+	// Project list
+	$selected = array();
+	$projectselected = unserialize($magicselect['projects']);
+
+	foreach ($projectselected AS $key =>$value)
+	{
+		$selected[] = $value;
+	}
+
+	$endtable = 0;
+
+	foreach ($vbulletin->pt_projects AS $projectlist)
+	{
+		$projecttext .= iif(!$endtable, "<tr>\n");
+		$checked = iif(in_array($projectlist['projectid'], $selected), 'checked="checked"');
+		$projecttext .= "<td><label><input type=\"checkbox\" name=\"projects[$projectlist[projectid]]\" value=\"1\" $checked />$projectlist[title]</label></td>\n";
+		$projecttext .= iif($endtable, "</tr>\n");
+		$endtable = iif($endtable, 0, 1);
+	}
+	print_label_row($vbphrase['projects'], '<table cellspacing="2" cellpadding="0" border="0">' . $projecttext . '</tr></table>', '', 'top', 'holidays');
+
+	construct_hidden_code('magicselectid', $magicselect['pt_magicselectid']);
+
+	print_submit_row();
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'list')
+{
+	$mslist = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_magicselect
+		ORDER BY displayorder
+	");
+
+	print_form_header('projectmagicselect', '');
+	print_table_header($vbphrase['project_magic_select_list'], 3);
+
+	print_cells_row(array(
+		$vbphrase['project_magic_select'],
+		$vbphrase['display_order'],
+		$vbphrase['controls']
+	), true);
+
+	if ($db->num_rows($mslist) > 0)
+	{
+		while ($magicselect = $db->fetch_array($mslist))
+		{
+			print_cells_row(array(
+				$vbphrase['magicselect' . $magicselect['pt_magicselectid'] . ''],
+				'<input type="text" name="displayorder[' . $magicselect['pt_magicselectid'] . ']" value="' . $magicselect['displayorder'] . '" size="3" />',
+				"<div align=\"" . vB_Template_Runtime::fetchStyleVar('right') . "\" class=\"smallfont\">" .
+					construct_link_code($vbphrase['edit'], 'projectmagicselect.php?do=edit&amp;magicselectid=' . $magicselect['pt_magicselectid']) .
+					construct_link_code($vbphrase['edit_settings'], 'projectmagicselect.php?do=editsettings&amp;magicselectid=' . $magicselect['pt_magicselectid']) .
+					construct_link_code($vbphrase['delete'], 'projectmagicselect.php?do=delete&amp;magicselectid=' . $magicselect['pt_magicselectid']) .
+				'</div>'
+			));
+		}
+	}
+	else
+	{
+		print_description_row(
+			$vbphrase['no_project_magic_select_defined_click_here_to_add_one'],
+			false,
+			3,
+			'',
+			'center'
+		);
+	}
+
+	print_submit_row($vbphrase['save_display_order'], '', 3);
+
+	echo '<p align="center">' . construct_link_code($vbphrase['add_project_magic_select'], 'projectmagicselect.php?do=add') . '</p>';
+}
+
+print_cp_footer();
 
 ?>
