@@ -211,6 +211,11 @@ if ($_REQUEST['do'] == 'edit')
 		WHERE magicselectid = " . intval($vbulletin->GPC['magicselectid']) . "
 	");
 
+	if ($db->num_rows($magicselect) == 0)
+	{
+		print_stop_message('no_magic_select_matched_your_query');
+	}
+
 	print_form_header('projectmagicselect', 'update');
 	print_table_header(construct_phrase($vbphrase['edit_project_magic_select'], $vbphrase['magicselect' . $magicselect['magicselectid'] . '']));
 
