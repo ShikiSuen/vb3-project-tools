@@ -37,7 +37,9 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		'text'					=> array(TYPE_STR,	REQ_NO),
 		'displayorder'			=> array(TYPE_UINT,	REQ_NO),
 		'projects'				=> array(TYPE_STR,	REQ_NO),
-		'htmlcode'				=> array(TYPE_STR,	REQ_NO)
+		'htmlcode'				=> array(TYPE_STR,	REQ_NO),
+		'savecode'				=> array(TYPE_STR,	REQ_NO),
+		'activationcode'		=> array(TYPE_STR,	REQ_NO)
 	);
 
 	/**
@@ -91,6 +93,12 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		if (empty($this->info['text']))
 		{
 			$this->error('missing_text');
+			return false;
+		}
+
+		if ($this->fetch_field('projects') == 'a:0:{}')
+		{
+			$this->error('no_selected_project');
 			return false;
 		}
 

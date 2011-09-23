@@ -109,10 +109,12 @@ if ($_POST['do'] == 'insert')
 {
 	// 'insert'
 	$vbulletin->input->clean_array_gpc('p', array(
-		'text'			=> TYPE_STR,
-		'displayorder'	=> TYPE_UINT,
-		'projects'		=> TYPE_ARRAY_UINT,
-		'htmlcode'		=> TYPE_STR
+		'text'				=> TYPE_STR,
+		'displayorder'		=> TYPE_UINT,
+		'projects'			=> TYPE_ARRAY_UINT,
+		'htmlcode'			=> TYPE_STR,
+		'savecode'			=> TYPE_STR,
+		'activationcode'	=> TYPE_STR
 	));
 
 	// Serialize the array
@@ -123,6 +125,8 @@ if ($_POST['do'] == 'insert')
 	$dataman->set_info('text', $vbulletin->GPC['text']);
 	$dataman->set('projects', $vbulletin->GPC['projects']);
 	$dataman->set('htmlcode', $vbulletin->GPC['htmlcode']);
+	$dataman->set('savecode', $vbulletin->GPC['savecode']);
+	$dataman->set('activationcode', $vbulletin->GPC['activationcode']);
 
 	$dataman->save();
 
@@ -152,9 +156,31 @@ if ($_REQUEST['do'] == 'add')
 	print_label_row($vbphrase['projects'], '<table cellspacing="2" cellpadding="0" border="0">' . $projecttext . '</tr></table>', '', 'top', 'projects');
 
 	print_textarea_row(
-		"$vbphrase[magicselect_html_code] <dfn>$vbphrase[magicselect_code_desc]</dfn>",
+		"$vbphrase[magicselect_html_code] <dfn>$vbphrase[magicselect_html_code_desc]</dfn>",
 		'htmlcode',
 		htmlspecialchars($magicselect['htmlcode']),
+		10, '45" style="width:100%',
+		false,
+		true,
+		'ltr',
+		'code'
+	);
+
+	print_textarea_row(
+		"$vbphrase[magicselect_save_code] <dfn>$vbphrase[magicselect_save_code_desc]</dfn>",
+		'savecode',
+		htmlspecialchars($magicselect['savecode']),
+		10, '45" style="width:100%',
+		false,
+		true,
+		'ltr',
+		'code'
+	);
+
+	print_textarea_row(
+		"$vbphrase[magicselect_activation_code] <dfn>$vbphrase[magicselect_activation_code_desc]</dfn>",
+		'activationcode',
+		htmlspecialchars($magicselect['activationcode']),
 		10, '45" style="width:100%',
 		false,
 		true,
@@ -169,11 +195,13 @@ if ($_REQUEST['do'] == 'add')
 if ($_POST['do'] == 'update')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'magicselectid'	=> TYPE_UINT,
-		'text'			=> TYPE_STR,
-		'displayorder'	=> TYPE_UINT,
-		'projects'		=> TYPE_ARRAY_UINT,
-		'htmlcode'		=> TYPE_STR
+		'magicselectid'		=> TYPE_UINT,
+		'text'				=> TYPE_STR,
+		'displayorder'		=> TYPE_UINT,
+		'projects'			=> TYPE_ARRAY_UINT,
+		'htmlcode'			=> TYPE_STR,
+		'savecode'			=> TYPE_STR,
+		'activationcode'	=> TYPE_STR
 	));
 
 	// Serialize the array
@@ -191,6 +219,8 @@ if ($_POST['do'] == 'update')
 	$dataman->set_info('text', $vbulletin->GPC['text']);
 	$dataman->set('projects', $vbulletin->GPC['projects']);
 	$dataman->set('htmlcode', $vbulletin->GPC['htmlcode']);
+	$dataman->set('savecode', $vbulletin->GPC['savecode']);
+	$dataman->set('activationcode', $vbulletin->GPC['activationcode']);
 
 	$dataman->save();
 
@@ -242,9 +272,31 @@ if ($_REQUEST['do'] == 'edit')
 	print_label_row($vbphrase['projects'], '<table cellspacing="2" cellpadding="0" border="0">' . $projecttext . '</tr></table>', '', 'top', 'projects');
 
 	print_textarea_row(
-		"$vbphrase[magicselect_html_code] <dfn>$vbphrase[magicselect_code_desc]</dfn>",
+		"$vbphrase[magicselect_html_code] <dfn>$vbphrase[magicselect_html_code_desc]</dfn>",
 		'htmlcode',
 		htmlspecialchars($magicselect['htmlcode']),
+		10, '45" style="width:100%',
+		false,
+		true,
+		'ltr',
+		'code'
+	);
+
+	print_textarea_row(
+		"$vbphrase[magicselect_save_code] <dfn>$vbphrase[magicselect_save_code_desc]</dfn>",
+		'savecode',
+		htmlspecialchars($magicselect['savecode']),
+		10, '45" style="width:100%',
+		false,
+		true,
+		'ltr',
+		'code'
+	);
+
+	print_textarea_row(
+		"$vbphrase[magicselect_activation_code] <dfn>$vbphrase[magicselect_activation_code_desc]</dfn>",
+		'activationcode',
+		htmlspecialchars($magicselect['activationcode']),
 		10, '45" style="width:100%',
 		false,
 		true,
