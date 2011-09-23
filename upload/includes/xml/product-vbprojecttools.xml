@@ -11471,6 +11471,7 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 			<phrase name="issue_type_already_exists" date="1176210640" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[An issue type with this key already exists.]]></phrase>
 			<phrase name="issue_type_deleted" date="1176299939" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Type Deleted]]></phrase>
 			<phrase name="issue_type_saved" date="1176299904" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Type Saved]]></phrase>
+			<phrase name="missing_text" date="1316815716" username="Pitchoune" version="2.2.0"><![CDATA[You did not specified any text for the magic select.]]></phrase>
 			<phrase name="must_have_one_type" date="1176211010" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[At least one issue type must be available at all times.]]></phrase>
 			<phrase name="no_magic_select_matched_your_query" date="1316725369" username="Pitchoune" version="2.2.0"><![CDATA[No Magic Select Matched Your Query]]></phrase>
 			<phrase name="no_selected_project" date="1316814180" username="Pitchoune" version="2.2.0"><![CDATA[You didn't selected any project. Please select a project to use this magic select.]]></phrase>
