@@ -34,6 +34,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	*/
 	var $validfields = array(
 		'magicselectid'			=> array(TYPE_UINT,	REQ_INCR),
+		'varname'				=> array(TYPE_STR,	REQ_NO),
 		'text'					=> array(TYPE_STR,	REQ_NO),
 		'displayorder'			=> array(TYPE_UINT,	REQ_NO),
 		'projects'				=> array(TYPE_STR,	REQ_NO),

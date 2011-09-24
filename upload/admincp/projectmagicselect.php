@@ -109,6 +109,7 @@ if ($_POST['do'] == 'insert')
 {
 	// 'insert'
 	$vbulletin->input->clean_array_gpc('p', array(
+		'varname'			=> TYPE_STR,
 		'text'				=> TYPE_STR,
 		'displayorder'		=> TYPE_UINT,
 		'projects'			=> TYPE_ARRAY_UINT,
@@ -140,6 +141,7 @@ if ($_REQUEST['do'] == 'add')
 	print_form_header('projectmagicselect', 'insert');
 	print_table_header($vbphrase['add_project_magic_select']);
 
+	print_input_row($vbphrase['varname'], 'varname');
 	print_input_row($vbphrase['text'], 'text');
 	print_input_row($vbphrase['display_order'], 'displayorder');
 
@@ -195,6 +197,7 @@ if ($_REQUEST['do'] == 'add')
 if ($_POST['do'] == 'update')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
+		'varname'			=> TYPE_STR,
 		'magicselectid'		=> TYPE_UINT,
 		'text'				=> TYPE_STR,
 		'displayorder'		=> TYPE_UINT,
@@ -247,6 +250,7 @@ if ($_REQUEST['do'] == 'edit')
 	print_form_header('projectmagicselect', 'update');
 	print_table_header(construct_phrase($vbphrase['edit_project_magic_select'], $vbphrase['magicselect' . $magicselect['magicselectid'] . '']));
 
+	print_input_row($vbphrase['varname'], 'varname', $magicselect['varname']);
 	print_input_row($vbphrase['text'], 'text', $vbphrase['magicselect' . $magicselect['magicselectid'] . '']);
 	print_input_row($vbphrase['display_order'], 'displayorder', $magicselect['displayorder']);
 
