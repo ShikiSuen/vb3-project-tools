@@ -122,6 +122,7 @@ if ($_POST['do'] == 'insert')
 	$vbulletin->GPC['projects'] = serialize($vbulletin->GPC['projects']);
 
 	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
+	$dataman->set('varname', $vbulletin->GPC['varname']);
 	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
 	$dataman->set_info('text', $vbulletin->GPC['text']);
 	$dataman->set('projects', $vbulletin->GPC['projects']);
