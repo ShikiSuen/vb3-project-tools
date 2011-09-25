@@ -103,6 +103,45 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 			return false;
 		}
 
+		$protectedvalues = array(
+			'issueid',
+			'projectid',
+			'issuestatusid',
+			'issuetypeid',
+			'title',
+			'summary',
+			'submituserid',
+			'submitusername',
+			'submitdate',
+			'appliesversionid',
+			'isaddressed',
+			'addressedversionid',
+			'priority',
+			'visible',
+			'lastpost',
+			'lastactivity',
+			'lastpostuserid',
+			'lastpostusername',
+			'firstnoteid',
+			'lastnoteid',
+			'attachcount',
+			'pendingpetitions',
+			'replycount',
+			'votepositive',
+			'votenegative',
+			'projectcategoryid',
+			'assignedusers',
+			'privatecount',
+			'state',
+			'milestoneid'
+		);
+
+		if (in_array($this->fetch_field('varname'), $protectedvalues))
+		{
+			$this->error('magic_select_varname_cant_be_used');
+			return false;
+		}
+
 		$return_value = true;
 		($hook = vBulletinHook::fetch_hook('pt_magicselect_presave')) ? eval($hook) : false;
 
@@ -120,10 +159,13 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	{
 		// create automatically the corresponding column in pt_issue table
 		$db =& $this->registry->db;
+
+		$db->hide_errors();
 		$db->query_write("
 			ALTER TABLE " . TABLE_PREFIX . "pt_issue
 			ADD " . $this->fetch_field('varname') . " INT(10) UNSIGNED NOT NULL DEFAULT '0'
 		");
+		$db->show_errors();
 
 		// replace (master) phrase entry
 		require_once(DIR . '/includes/adminfunctions.php');
