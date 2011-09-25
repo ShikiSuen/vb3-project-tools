@@ -692,8 +692,8 @@ $show['assign_dropdown'] = $posting_perms['assign_dropdown'];
 
 $show['move_issue'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canmoveissue']);
 $show['edit_issue_private'] = ($posting_perms['issue_edit'] AND $posting_perms['private_edit']);
-$show['newflag'] = ($issue['newflag'] ? TRUE : FALSE);
-$show['assigntoself'] = (($show['assign_dropdown'] AND isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"])) ? TRUE : FALSE);
+$show['newflag'] = ($issue['newflag'] ? true : false);
+$show['assigntoself'] = (($show['assign_dropdown'] AND isset($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"]["$userid"])) ? true : false);
 	
 // get voting phrases
 $vbphrase['vote_question_issuetype'] = $vbphrase["vote_question_$issue[issuetypeid]"];
@@ -701,6 +701,43 @@ $vbphrase['vote_count_positive_issuetype'] = $vbphrase["vote_count_positive_$iss
 $vbphrase['vote_count_negative_issuetype'] = $vbphrase["vote_count_negative_$issue[issuetypeid]"];
 $vbphrase['applies_version_issuetype'] = $vbphrase["applies_version_$issue[issuetypeid]"];
 $vbphrase['addressed_version_issuetype'] = $vbphrase["addressed_version_$issue[issuetypeid]"];
+
+// Custom Magic Selects
+$issue['headcode'] = array();
+$magicselects = $db->query_read("
+	SELECT *
+	FROM " . TABLE_PREFIX . "pt_magicselect
+	WHERE projects IN (" . $project['projectid'] . ")
+		AND active = 1
+	ORDER BY displayorder ASC
+");
+
+while ($magicselect = $db->fetch_array($magicselects))
+{
+	// I don't have a real choice here... -_-
+	eval($magicselect['htmlcode']);
+
+	$selected = '';
+
+	foreach ($arrayoutput AS $id => $text)
+	{
+		if ($id == $issue["$magicselect[varname]"])
+		{
+			$selected = $text;
+		}
+	}
+
+	// HTML Code to display the menu
+	$issue['menucode'] = '<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_' . $magicselect['varname'] . '"><span class="shade">' . $vbphrase['magicselect' . $magicselect['magicselectid'] . ''] . '</span>' .	$selected . '</div>';
+
+	// PHP Code to activate the menu
+	$issue['activationcode'] = 'vBulletin.register_control("vB_MagicSelect", "magicselect_' . $magicselect['varname'] . '", "' . $magicselect['varname'] . '", "' . $issue['issueid'] . '");';
+
+	// Varname list to initialize the menu
+	$issue['headcode'][] = $magicselect['varname'];
+}
+
+$issue['headcode'] = implode('", "', $issue['headcode']);
 
 if (!$vbulletin->options['pt_notesperpage'])
 {

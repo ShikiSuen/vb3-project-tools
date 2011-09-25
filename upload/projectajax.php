@@ -178,6 +178,13 @@ $posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 
 $can_edit_issue = $posting_perms['issue_edit'];
 
+$magicselect = $db->query_first("
+	SELECT varname, fetchcode, savecode
+	FROM " . TABLE_PREFIX . "pt_magicselect
+	WHERE varname = '" . $vbulletin->GPC['field'] . "'
+		AND active = 1
+");
+
 ($hook = vBulletinHook::fetch_hook('projectajax_start')) ? eval($hook) : false;
 
 // #######################################################################
@@ -367,6 +374,9 @@ if ($_POST['do'] == 'save')
 				$assign->set_existing($data);
 				$assign->delete();
 			}
+			break;
+		default:
+			eval($magicselect['savecode']);
 			break;
 	}
 
@@ -682,6 +692,10 @@ if ($_POST['do'] == 'fetch')
 
 				$xml->add_tag('noneword', $vbphrase['none_meta']);
 			}
+			break;
+		default:
+			eval($magicselect['fetchcode']);
+
 			break;
 		// #### END SWITCH ####
 	}

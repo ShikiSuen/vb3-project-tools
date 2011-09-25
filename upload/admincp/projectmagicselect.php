@@ -112,27 +112,38 @@ if ($_POST['do'] == 'insert')
 		'varname'			=> TYPE_STR,
 		'text'				=> TYPE_STR,
 		'displayorder'		=> TYPE_UINT,
+		'active'			=> TYPE_BOOL,
 		'projects'			=> TYPE_ARRAY_UINT,
 		'htmlcode'			=> TYPE_STR,
+		'fetchcode'			=> TYPE_STR,
 		'savecode'			=> TYPE_STR,
-		'activationcode'	=> TYPE_STR
+		'return'			=> TYPE_STR
 	));
 
 	// Serialize the array
-	$vbulletin->GPC['projects'] = serialize($vbulletin->GPC['projects']);
+	$vbulletin->GPC['projects'] = implode(',', $vbulletin->GPC['projects']);
 
 	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
 	$dataman->set('varname', $vbulletin->GPC['varname']);
-	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
 	$dataman->set_info('text', $vbulletin->GPC['text']);
+	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
+	$dataman->set('active', $vbulletin->GPC['active']);
 	$dataman->set('projects', $vbulletin->GPC['projects']);
 	$dataman->set('htmlcode', $vbulletin->GPC['htmlcode']);
+	$dataman->set('fetchcode', $vbulletin->GPC['fetchcode']);
 	$dataman->set('savecode', $vbulletin->GPC['savecode']);
-	$dataman->set('activationcode', $vbulletin->GPC['activationcode']);
 
 	$dataman->save();
 
-	define('CP_REDIRECT', 'projectmagicselect.php?do=list');
+	// stuff to handle the redirect
+	if ($vbulletin->GPC['return'])
+	{
+		define('CP_REDIRECT', "projectmagicselect.php?do=edit&amp;magicselectid=" . $vbulletin->GPC['magicselectid']);
+	}
+	else
+	{
+		define('CP_REDIRECT', 'projectmagicselect.php?do=list');
+	}
 	print_stop_message('project_magic_select_saved');
 }
 
@@ -145,6 +156,7 @@ if ($_REQUEST['do'] == 'add')
 	print_input_row($vbphrase['varname'], 'varname');
 	print_input_row($vbphrase['text'], 'text');
 	print_input_row($vbphrase['display_order'], 'displayorder');
+	print_yes_no_row($vbphrase['active'], 'active');
 
 	// Project list
 	$endtable = 0;
@@ -170,9 +182,9 @@ if ($_REQUEST['do'] == 'add')
 	);
 
 	print_textarea_row(
-		"$vbphrase[magicselect_save_code] <dfn>$vbphrase[magicselect_save_code_desc]</dfn>",
-		'savecode',
-		htmlspecialchars($magicselect['savecode']),
+		"$vbphrase[magicselect_fetch_code] <dfn>$vbphrase[magicselect_fetch_code_desc]</dfn>",
+		'fetchcode',
+		htmlspecialchars($magicselect['fetchcode']),
 		10, '45" style="width:100%',
 		false,
 		true,
@@ -181,9 +193,9 @@ if ($_REQUEST['do'] == 'add')
 	);
 
 	print_textarea_row(
-		"$vbphrase[magicselect_activation_code] <dfn>$vbphrase[magicselect_activation_code_desc]</dfn>",
-		'activationcode',
-		htmlspecialchars($magicselect['activationcode']),
+		"$vbphrase[magicselect_save_code] <dfn>$vbphrase[magicselect_save_code_desc]</dfn>",
+		'savecode',
+		htmlspecialchars($magicselect['savecode']),
 		10, '45" style="width:100%',
 		false,
 		true,
@@ -198,18 +210,20 @@ if ($_REQUEST['do'] == 'add')
 if ($_POST['do'] == 'update')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'varname'			=> TYPE_STR,
 		'magicselectid'		=> TYPE_UINT,
+		'varname'			=> TYPE_STR,
 		'text'				=> TYPE_STR,
 		'displayorder'		=> TYPE_UINT,
+		'active'			=> TYPE_BOOL,
 		'projects'			=> TYPE_ARRAY_UINT,
 		'htmlcode'			=> TYPE_STR,
+		'fetchcode'			=> TYPE_STR,
 		'savecode'			=> TYPE_STR,
-		'activationcode'	=> TYPE_STR
+		'return'			=> TYPE_STR
 	));
 
 	// Serialize the array
-	$vbulletin->GPC['projects'] = serialize($vbulletin->GPC['projects']);
+	$vbulletin->GPC['projects'] = implode(',', $vbulletin->GPC['projects']);
 
 	$magicselect = $db->query_first("
 		SELECT *
@@ -219,16 +233,26 @@ if ($_POST['do'] == 'update')
 
 	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
 	$dataman->set_existing($magicselect);
-	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
 	$dataman->set_info('text', $vbulletin->GPC['text']);
+	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
+	$dataman->set('active', $vbulletin->GPC['active']);
 	$dataman->set('projects', $vbulletin->GPC['projects']);
 	$dataman->set('htmlcode', $vbulletin->GPC['htmlcode']);
+	$dataman->set('fetchcode', $vbulletin->GPC['fetchcode']);
 	$dataman->set('savecode', $vbulletin->GPC['savecode']);
-	$dataman->set('activationcode', $vbulletin->GPC['activationcode']);
 
 	$dataman->save();
 
-	define('CP_REDIRECT', 'projectmagicselect.php?do=list');
+	// stuff to handle the redirect
+	if ($vbulletin->GPC['return'])
+	{
+		define('CP_REDIRECT', "projectmagicselect.php?do=edit&amp;magicselectid=" . $vbulletin->GPC['magicselectid']);
+	}
+	else
+	{
+		define('CP_REDIRECT', 'projectmagicselect.php?do=list');
+	}
+
 	print_stop_message('project_magic_select_updated');
 }
 
@@ -254,14 +278,15 @@ if ($_REQUEST['do'] == 'edit')
 	print_label_row($vbphrase['varname'], $magicselect['varname']);
 	print_input_row($vbphrase['text'], 'text', $vbphrase['magicselect' . $magicselect['magicselectid'] . '']);
 	print_input_row($vbphrase['display_order'], 'displayorder', $magicselect['displayorder']);
+	print_yes_no_row($vbphrase['active'], 'active', $magicselect['active']);
 
 	// Project list
 	$selected = array();
-	$projectselected = unserialize($magicselect['projects']);
+	$projectselected = explode(',', $magicselect['projects']);
 
-	foreach ($projectselected AS $key =>$value)
+	foreach ($projectselected AS $key => $value)
 	{
-		$selected[] = $key;
+		$selected[] = $value;
 	}
 
 	$endtable = 0;
@@ -288,6 +313,17 @@ if ($_REQUEST['do'] == 'edit')
 	);
 
 	print_textarea_row(
+		"$vbphrase[magicselect_fetch_code] <dfn>$vbphrase[magicselect_fetch_code_desc]</dfn>",
+		'fetchcode',
+		htmlspecialchars($magicselect['fetchcode']),
+		10, '45" style="width:100%',
+		false,
+		true,
+		'ltr',
+		'code'
+	);
+
+	print_textarea_row(
 		"$vbphrase[magicselect_save_code] <dfn>$vbphrase[magicselect_save_code_desc]</dfn>",
 		'savecode',
 		htmlspecialchars($magicselect['savecode']),
@@ -298,20 +334,9 @@ if ($_REQUEST['do'] == 'edit')
 		'code'
 	);
 
-	print_textarea_row(
-		"$vbphrase[magicselect_activation_code] <dfn>$vbphrase[magicselect_activation_code_desc]</dfn>",
-		'activationcode',
-		htmlspecialchars($magicselect['activationcode']),
-		10, '45" style="width:100%',
-		false,
-		true,
-		'ltr',
-		'code'
-	);
-
 	construct_hidden_code('magicselectid', $magicselect['magicselectid']);
 
-	print_submit_row();
+	print_submit_row($vbphrase['save'], '_default_', 2, '', "<input type=\"submit\" class=\"button\" tabindex=\"1\" name=\"return\" value=\"$vbphrase[save_and_reload]\" accesskey=\"e\" />");
 }
 
 // ########################################################################

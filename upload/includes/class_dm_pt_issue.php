@@ -61,7 +61,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		'votenegative'       => array(TYPE_UINT,       REQ_NO),
 		'projectcategoryid'  => array(TYPE_UINT,       REQ_NO),
 		'state'              => array(TYPE_STR,        REQ_NO, 'if (!in_array($data, array("open", "closed"))) { $data = "open"; } return true;'),
-		'milestoneid'        => array(TYPE_UINT,       REQ_NO)
+		'milestoneid'        => array(TYPE_UINT,       REQ_NO),
 	);
 
 	/**
@@ -120,7 +120,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		'addressedversionid',
 		'priority',
 		'projectcategoryid',
-		'milestoneid'
+		'milestoneid',
 	);
 
 	/**
@@ -142,6 +142,17 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 		require_once(DIR . '/includes/class_bootstrap_framework.php');
 		vB_Bootstrap_Framework::init();
+
+		// Custom Magic Selects
+		$magicselects = $this->registry->db->query_read("
+			SELECT varname
+			FROM " . TABLE_PREFIX . "pt_magicselect
+		");
+
+		while ($magicselect = $this->registry->db->fetch_array($magicselects))
+		{
+			$this->validfields["$magicselect[varname]"] = array(TYPE_UINT, REQ_NO);
+		}
 
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_start')) ? eval($hook) : false;
 	}

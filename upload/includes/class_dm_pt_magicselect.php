@@ -37,10 +37,11 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		'varname'				=> array(TYPE_STR,	REQ_NO),
 		'text'					=> array(TYPE_STR,	REQ_NO),
 		'displayorder'			=> array(TYPE_UINT,	REQ_NO),
+		'active'				=> array(TYPE_BOOL,	REQ_NO),
 		'projects'				=> array(TYPE_STR,	REQ_NO),
 		'htmlcode'				=> array(TYPE_STR,	REQ_NO),
-		'savecode'				=> array(TYPE_STR,	REQ_NO),
-		'activationcode'		=> array(TYPE_STR,	REQ_NO)
+		'fetchcode'				=> array(TYPE_STR,	REQ_NO),
+		'savecode'				=> array(TYPE_STR,	REQ_NO)
 	);
 
 	/**
@@ -97,7 +98,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 			return false;
 		}
 
-		if ($this->fetch_field('projects') == 'a:0:{}')
+		if (!$this->fetch_field('projects'))
 		{
 			$this->error('no_selected_project');
 			return false;
@@ -160,6 +161,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		// create automatically the corresponding column in pt_issue table
 		$db =& $this->registry->db;
 
+		// Hide query error on magic select edit
 		$db->hide_errors();
 		$db->query_write("
 			ALTER TABLE " . TABLE_PREFIX . "pt_issue
