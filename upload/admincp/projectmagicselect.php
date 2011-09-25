@@ -251,7 +251,7 @@ if ($_REQUEST['do'] == 'edit')
 	print_form_header('projectmagicselect', 'update');
 	print_table_header(construct_phrase($vbphrase['edit_project_magic_select'], $vbphrase['magicselect' . $magicselect['magicselectid'] . '']));
 
-	print_input_row($vbphrase['varname'], 'varname', $magicselect['varname']);
+	print_label_row($vbphrase['varname'], $magicselect['varname']);
 	print_input_row($vbphrase['text'], 'text', $vbphrase['magicselect' . $magicselect['magicselectid'] . '']);
 	print_input_row($vbphrase['display_order'], 'displayorder', $magicselect['displayorder']);
 
