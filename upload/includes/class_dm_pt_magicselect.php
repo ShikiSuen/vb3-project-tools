@@ -118,12 +118,18 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	*/
 	function post_save_each($doquery = true)
 	{
+		// create automatically the corresponding column in pt_issue table
+		$db =& $this->registry->db;
+		$db->query_write("
+			ALTER TABLE " . TABLE_PREFIX . "pt_issue
+			ADD '" . $this->fetch_field('varname') . "' INT(10) UNSIGNED NOT NULL DEFAULT '0'
+		");
+
 		// replace (master) phrase entry
 		require_once(DIR . '/includes/adminfunctions.php');
 		$full_product_info = fetch_product_list(true);
 		$product_version = $full_product_info['vbprojecttools']['version'];
 
-		$db =& $this->registry->db;
 		$db->query_write("
 			REPLACE INTO " . TABLE_PREFIX . "phrase
 				(languageid, fieldname, varname, text, product, username, dateline, version)
@@ -156,8 +162,14 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	*/
 	function post_delete($doquery = true)
 	{
-		$magicselectid = intval($this->fetch_field('magicselectid'));
+		// create automatically the corresponding column in pt_issue table
 		$db =& $this->registry->db;
+		$db->query_write("
+			ALTER TABLE " . TABLE_PREFIX . "pt_issue
+			DROP '" . $this->fetch_field('varname') . "'
+		");
+
+		$magicselectid = intval($this->fetch_field('magicselectid'));
 
 		// Phrase
 		$db->query_write("
