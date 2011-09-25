@@ -122,7 +122,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		$db =& $this->registry->db;
 		$db->query_write("
 			ALTER TABLE " . TABLE_PREFIX . "pt_issue
-			ADD '" . $this->fetch_field('varname') . "' INT(10) UNSIGNED NOT NULL DEFAULT '0'
+			ADD " . $this->fetch_field('varname') . " INT(10) UNSIGNED NOT NULL DEFAULT '0'
 		");
 
 		// replace (master) phrase entry
@@ -166,7 +166,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		$db =& $this->registry->db;
 		$db->query_write("
 			ALTER TABLE " . TABLE_PREFIX . "pt_issue
-			DROP '" . $this->fetch_field('varname') . "'
+			DROP " . $this->fetch_field('varname') . "
 		");
 
 		$magicselectid = intval($this->fetch_field('magicselectid'));
