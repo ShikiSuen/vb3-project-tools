@@ -1883,11 +1883,13 @@ $db->query_write("
 $db->query_write("
 	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_magicselect (
 		magicselectid INT(10) NOT NULL AUTO_INCREMENT,
+		varname VARCHAR(250) NOT NULL, 
 		displayorder INT(10) NOT NULL,
+		active TINYINT(4) NOT NULL DEFAULT '0'
 		projects MEDIUMTEXT NOT NULL,
 		htmlcode MEDIUMTEXT NOT NULL,
+		fetchcode MEDIUMTEXT NOT NULL,
 		savecode MEDIUMTEXT NOT NULL,
-		activationcode MEDIUMTEXT NOT NULL,
 		PRIMARY KEY (magicselectid)
 	) ENGINE=MyISAM
 ");
@@ -11232,10 +11234,6 @@ If you do not enter a value for this option, the project's default name will be 
 			<phrase name="project_projectadd_projectedit_forumtitle_title" date="1181226807" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Title in Forum List]]></phrase>
 			<phrase name="project_projectadd_projectedit_options_text" date="1181226999" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[This option allows you to specify which fields cannot be left at the default "Unknown" value when an issue is created or edited. For the fields you select, "Unknown" will still be selected by default, but the issue will not be savable until the value is changed.]]></phrase>
 			<phrase name="project_projectadd_projectedit_options_title" date="1181226999" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Required Fields]]></phrase>
-			<phrase name="project_projectcategory_text" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Categories allow a simple way of sub-grouping issues within a project based on what the issue relates to. This can be useful if you have several people working on a project and each person has their own specialty.<br />
-<br />
-Categories are definable per project. If you do not define any categories for a project, the option to select a category will not be displayed when submitting an issue. However, a value of "unknown" will still be shown when viewing an issue.]]></phrase>
-			<phrase name="project_projectcategory_title" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Category Overview]]></phrase>
 			<phrase name="project_projectlist_text" date="1181914808" username="Ed Sullivan" version="1.0.0 Release Candidate 1"><![CDATA[Projects are an organizational unit for a collection of things that need to be completed or analyzed. This can be anything from tracking changes in a piece of software or personal to-do lists to a list of steps to perform a move or build a car.<br />
 <br />
 Issue types let you sub-group tasks/issues in a project into more logical units. A project may have as many custom issue types as you wish. See <a href="help.php?do=answer&amp;page=project&amp;pageaction=typelist">here</a> for more information on issue types.<br />
@@ -11244,40 +11242,28 @@ A project may also utilize categories for additional sub-grouping. Categories ha
 <br />
 Basic version tracking is also provided on a per-project basis. Version tracking is especially useful in a software environment, where the specific revision an issue applies to is very important.]]></phrase>
 			<phrase name="project_projectlist_title" date="1181234881" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Overview]]></phrase>
-			<phrase name="project_projectversion_text" date="1181651120" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[A basic system to track versions is included in the Project Tools. This is especially handy for software projects, where the exact version an issue applies to or is addressed in is important information.<br />
+			<phrase name="projectcategory_projectcategory_text" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Categories allow a simple way of sub-grouping issues within a project based on what the issue relates to. This can be useful if you have several people working on a project and each person has their own specialty.<br />
 <br />
-Versions are split into version groups and individual versions. A version can only exist within a version group. This allows users to make searches on entire groups more easily. Using vBulletin's releases as an example, "3.6.x" would be a version group and "3.6.7" would be a version within that group.<br />
+Categories are definable per project. If you do not define any categories for a project, the option to select a category will not be displayed when submitting an issue. However, a value of "unknown" will still be shown when viewing an issue.]]></phrase>
+			<phrase name="projectcategory_projectcategory_title" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Category Overview]]></phrase>
+			<phrase name="projectmagicselect_add_edit_displayorder_text" date="1316907571" username="Pitchoune" version="2.2.0"><![CDATA[This is the display order of magic selects. This is used in the Macig Select overview page and in issues if more than 1 magic select is defined for a project.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_displayorder_title" date="1316907571" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="projectmagicselect_add_edit_fetchcode_text" date="1316948419" username="Pitchoune" version="2.2.0"><![CDATA[This is the PHP code used in projectajax.php?do=fetch to define the drop-down menu.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_fetchcode_title" date="1316948419" username="Pitchoune" version="2.2.0"><![CDATA[PHP Fetch Code]]></phrase>
+			<phrase name="projectmagicselect_add_edit_htmlcode_text" date="1316907727" username="Pitchoune" version="2.2.0"><![CDATA[The "HTML Code" option is used to create the HTML code of the drop-down menu in "Issue Details" and in issue creation or edition forms.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_htmlcode_title" date="1316907727" username="Pitchoune" version="2.2.0"><![CDATA[HTML Code]]></phrase>
+			<phrase name="projectmagicselect_add_edit_projects_text" date="1316907633" username="Pitchoune" version="2.2.0"><![CDATA[This option allows you to select every project the magic select is used. You need to check at least 1 project.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_projects_title" date="1316907633" username="Pitchoune" version="2.2.0"><![CDATA[Projects]]></phrase>
+			<phrase name="projectmagicselect_add_edit_savecode_text" date="1316907804" username="Pitchoune" version="2.2.0"><![CDATA[This option contains the code used in projectajax.php?do=save page to save your choice from the drop-down menu.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_savecode_title" date="1316907804" username="Pitchoune" version="2.2.0"><![CDATA[PHP Save Code]]></phrase>
+			<phrase name="projectmagicselect_add_edit_text_text" date="1316907256" username="Pitchoune" version="2.2.0"><![CDATA[This is the name of the magic select. This is displayed every time the magic select is displayed.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_text_title" date="1316907256" username="Pitchoune" version="2.2.0"><![CDATA[Text]]></phrase>
+			<phrase name="projectmagicselect_add_varname_text" date="1316906966" username="Pitchoune" version="2.2.0"><![CDATA[The varname is used to activate the magic select in various locations.<br />
 <br />
-Note that the versions you create need to cover two situations: applicable versions and addressed versions. In addition to any versions you have explicitly created, the addressed version will always include an option for "Next Release". This allows you to only create the next version when it's actually needed. When creating the version, you will have the option to denote it as the next version. If you choose to do this, all issues that were listed as being addressed in the next release will be updated to show as being addressed in the version you are just created.<br />
-<br />
-<strong>A Note about Version Display Orders</strong><br />
-In all other areas of vBulletin and the Project Tools, a lower display order will be displayed before a higher one. This is <em>not</em> the case with version and version group display orders. Higher display orders will be shown first!<br />
-<br />
-This was done because you will generally be adding newer releases over time. With the "lower is first" option, placing the new releases first would require renumbering all of the existing releases.]]></phrase>
-			<phrase name="project_projectversion_title" date="1181302369" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Version Overview]]></phrase>
-			<phrase name="project_statusadd_statusedit_canpetitionfrom_text" date="1181233223" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[The issue petition system is a powerful system that allows users to ask for an issue's status to be changed. For example, the fix for a problem may not work for them, so they may request a change to "confirmed" rather than "fixed". This request will then appear on the project overview page until it is handled by someone with the appropriate permissions.<br />
-<br />
-However, there are some cases where you don't want users to have this power when an issue is in a specific status. A common choice is to set this option to "no" for a type's starting status.]]></phrase>
-			<phrase name="project_statusadd_statusedit_canpetitionfrom_title" date="1181233223" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Can Create Petitions from this Status?]]></phrase>
-			<phrase name="project_taglist_text" date="1181651220" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Tags are a way of defining flexible meta-data about an issue in a searchable way. How they are used is entirely up to you. They could be used to help categorize issues or could be used when certain types of follow ups are needed.<br />
-<br />
-Depending on permissions, tags may be able to be defined on the fly via the front-end.]]></phrase>
-			<phrase name="project_taglist_title" date="1181310979" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Tags Overview]]></phrase>
-			<phrase name="project_typeadd_typeedit_iconfile_text" date="1181233763" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[This allows you to display a small icon representing this issue type next to issues of this type. An icon allows for quicker identification than simple text. Leave this field blank and no icon will be displayed.<br />
-<br />
-You must manually upload this icon to your "Item Status Icon" folder. By default this is images/statusicon.<br />
-<br />
-The included icons for bugs, features, and tasks are 16 pixels by 16 pixels.]]></phrase>
-			<phrase name="project_typeadd_typeedit_iconfile_title" date="1181233763" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Filename for Icon]]></phrase>
-			<phrase name="project_typelist_text" date="1181232524" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Issue types allow you to group issues based on their purpose. For example, you may want to keep feature suggestions separate from bug reports; "features" and "bugs" would become separate issue types.<br />
-<br />
-While different issue types do not cause different fields to be displayed, they do have the following advantages:
-<ul>
-<li><strong>Specific wordings</strong> - all issues have 2 version fields: "applicable" and "addressed". You can choose different, more appropriate wordings for these fields that fit with your types.</li>
-<li><strong>Custom issue statuses</strong> - issue statuses are defined per type.</li>
-<li><strong>Distinct permissions</strong> - a wide range usergroup permissions are definable per project and issue type.</li>
-</ul>]]></phrase>
-			<phrase name="project_typelist_title" date="1181232524" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[What are Issue Types?]]></phrase>
+You need to use the same varname in every PHP/HTML code when this is required!]]></phrase>
+			<phrase name="projectmagicselect_add_varname_title" date="1316906966" username="Pitchoune" version="2.2.0"><![CDATA[Varname]]></phrase>
+			<phrase name="projectmagicselect_list_text" date="1316907432" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects are a way to add drop-down menus in issue details. Each user can select (if permissions allows it) 1 option in each menu related to the issue to define some actions or have a better definition of the issue.]]></phrase>
+			<phrase name="projectmagicselect_list_title" date="1316907432" username="Pitchoune" version="2.2.0"><![CDATA[Project Magic Select Overview]]></phrase>
 			<phrase name="projectpermission_edit_about_reports_text" date="1181231154" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[(This topic is also detailed <a href="../faq.php?faq=pt_faq#faq_pt_faq_report" target="_blank">here</a>.)<br />
 <br />
 Reports allow you to save searches for easy access at a later time. Reports are available via the "My Reports" dropdown shown on several Project Tools pages.<br />
@@ -11292,6 +11278,40 @@ Permissions are not only definable per usergroup and per project, but per issue 
 <br />
 There are also several permissions that are not definable per project or issue type. Generally, these permissions would not make sense to be defined more than once. These are only editable when you edit the global project permissions for a group.]]></phrase>
 			<phrase name="projectpermission_edit_list_title" date="1181311652" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Tools Permissions Overview]]></phrase>
+			<phrase name="projecttag_taglist_text" date="1181651220" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Tags are a way of defining flexible meta-data about an issue in a searchable way. How they are used is entirely up to you. They could be used to help categorize issues or could be used when certain types of follow ups are needed.<br />
+<br />
+Depending on permissions, tags may be able to be defined on the fly via the front-end.]]></phrase>
+			<phrase name="projecttag_taglist_title" date="1181310979" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Tags Overview]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_canpetitionfrom_text" date="1181233223" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[The issue petition system is a powerful system that allows users to ask for an issue's status to be changed. For example, the fix for a problem may not work for them, so they may request a change to "confirmed" rather than "fixed". This request will then appear on the project overview page until it is handled by someone with the appropriate permissions.<br />
+<br />
+However, there are some cases where you don't want users to have this power when an issue is in a specific status. A common choice is to set this option to "no" for a type's starting status.]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_canpetitionfrom_title" date="1181233223" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Can Create Petitions from this Status?]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_iconfile_text" date="1181233763" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[This allows you to display a small icon representing this issue type next to issues of this type. An icon allows for quicker identification than simple text. Leave this field blank and no icon will be displayed.<br />
+<br />
+You must manually upload this icon to your "Item Status Icon" folder. By default this is images/statusicon.<br />
+<br />
+The included icons for bugs, features, and tasks are 16 pixels by 16 pixels.]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_iconfile_title" date="1181233763" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Filename for Icon]]></phrase>
+			<phrase name="projecttype_typelist_text" date="1181232524" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Issue types allow you to group issues based on their purpose. For example, you may want to keep feature suggestions separate from bug reports; "features" and "bugs" would become separate issue types.<br />
+<br />
+While different issue types do not cause different fields to be displayed, they do have the following advantages:
+<ul>
+<li><strong>Specific wordings</strong> - all issues have 2 version fields: "applicable" and "addressed". You can choose different, more appropriate wordings for these fields that fit with your types.</li>
+<li><strong>Custom issue statuses</strong> - issue statuses are defined per type.</li>
+<li><strong>Distinct permissions</strong> - a wide range usergroup permissions are definable per project and issue type.</li>
+</ul>]]></phrase>
+			<phrase name="projecttype_typelist_title" date="1181232524" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[What are Issue Types?]]></phrase>
+			<phrase name="projectversion_projectversion_text" date="1181651120" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[A basic system to track versions is included in the Project Tools. This is especially handy for software projects, where the exact version an issue applies to or is addressed in is important information.<br />
+<br />
+Versions are split into version groups and individual versions. A version can only exist within a version group. This allows users to make searches on entire groups more easily. Using vBulletin's releases as an example, "3.6.x" would be a version group and "3.6.7" would be a version within that group.<br />
+<br />
+Note that the versions you create need to cover two situations: applicable versions and addressed versions. In addition to any versions you have explicitly created, the addressed version will always include an option for "Next Release". This allows you to only create the next version when it's actually needed. When creating the version, you will have the option to denote it as the next version. If you choose to do this, all issues that were listed as being addressed in the next release will be updated to show as being addressed in the version you are just created.<br />
+<br />
+<strong>A Note about Version Display Orders</strong><br />
+In all other areas of vBulletin and the Project Tools, a lower display order will be displayed before a higher one. This is <em>not</em> the case with version and version group display orders. Higher display orders will be shown first!<br />
+<br />
+This was done because you will generally be adding newer releases over time. With the "lower is first" option, placing the new releases first would require renumbering all of the existing releases.]]></phrase>
+			<phrase name="projectversion_projectversion_title" date="1181302369" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Version Overview]]></phrase>
 		</phrasetype>
 		<phrasetype name="Control Panel Home Pages" fieldname="cphome">
 			<phrase name="edit_issue" date="1173195635" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Edit Issue]]></phrase>
@@ -11471,6 +11491,7 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 			<phrase name="issue_type_already_exists" date="1176210640" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[An issue type with this key already exists.]]></phrase>
 			<phrase name="issue_type_deleted" date="1176299939" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Type Deleted]]></phrase>
 			<phrase name="issue_type_saved" date="1176299904" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Type Saved]]></phrase>
+			<phrase name="magic_select_varname_cant_be_used" date="1316948525" username="Pitchoune" version="2.2.0"><![CDATA[This varname is already used. Please define an other varname for this magic select.]]></phrase>
 			<phrase name="missing_text" date="1316815716" username="Pitchoune" version="2.2.0"><![CDATA[You did not specified any text for the magic select.]]></phrase>
 			<phrase name="must_have_one_type" date="1176211010" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[At least one issue type must be available at all times.]]></phrase>
 			<phrase name="no_magic_select_matched_your_query" date="1316725369" username="Pitchoune" version="2.2.0"><![CDATA[No Magic Select Matched Your Query]]></phrase>
@@ -11960,8 +11981,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="issue_type_key_alphanumeric_only" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Issue Type Key<dfn>A-Z, 0-9, and underscore only</dfn>]]></phrase>
 			<phrase name="issue_type_manager" date="1181310424" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Issue Type Manager]]></phrase>
 			<phrase name="issue_types_deleted_for_project_x" date="1213804832" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Issue Types Deleted for Project <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="magicselect_activation_code" date="1316813584" username="Pitchoune" version="2.2.0"><![CDATA[HTML Activation Code]]></phrase>
-			<phrase name="magicselect_activation_code_desc" date="1316813544" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the HTML code that you would like to be run.
+			<phrase name="magicselect_fetch_code" date="1316948481" username="Pitchoune" version="2.2.0"><![CDATA[PHP Fetch Code]]></phrase>
+			<phrase name="magicselect_fetch_code_desc" date="1316948463" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the PHP code that you would like to be run.
 <br />
 <br />
 This is the code which will activate the menu (allowing the corresponding user to edit it) on the issue page.]]></phrase>
@@ -12077,6 +12098,7 @@ This is the code which will save your selection in the magic select.]]></phrase>
 			<phrase name="required_requirepriority" date="1178899329" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Priority]]></phrase>
 			<phrase name="revert_to_default_permissions" date="1176816686" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Revert to default permissions?
 <dfn>If you choose this option, the selected permission sets will be deleted and the users in this group will use their global project permissions.</dfn>]]></phrase>
+			<phrase name="save_and_reload" date="1316953263" username="Pitchoune" version="2.2.0"><![CDATA[Save and Reload]]></phrase>
 			<phrase name="select_start_status_for_types_available" date="1176208980" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Select the start status for the issue types you wish to be available for this project.]]></phrase>
 			<phrase name="send_email_on_issueassignment" date="1213893639" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Send Email on Issue Assignment
 <dfn>Choose this option if you want users to receive an email when they are assigned to an issue by another user.</dfn>]]></phrase>
@@ -12458,17 +12480,35 @@ diff</defaultvalue>
 			<helptopic disp="20" act="projectadd,projectedit" opt="afterforumids" />
 			<helptopic disp="30" act="projectadd,projectedit" opt="forumtitle" />
 			<helptopic disp="40" act="projectadd,projectedit" opt="available_issue_types" />
-			<helptopic disp="1" act="projectcategory" />
 			<helptopic disp="1" act="projectlist" />
-			<helptopic disp="1" act="projectversion" />
-			<helptopic disp="1" act="statusadd,statusedit" opt="canpetitionfrom" />
-			<helptopic disp="1" act="taglist" />
-			<helptopic disp="1" act="typeadd,typeedit" opt="iconfile" />
-			<helptopic disp="1" act="typelist" />
+		</helpscript>
+		<helpscript name="projectcategory">
+			<helptopic disp="1" act="projectcategory" />
+		</helpscript>
+		<helpscript name="projectmagicselect">
+			<helptopic disp="1" act="add" opt="varname" />
+			<helptopic disp="1" act="add,edit" opt="displayorder" />
+			<helptopic disp="1" act="add,edit" opt="fetchcode" />
+			<helptopic disp="1" act="add,edit" opt="htmlcode" />
+			<helptopic disp="1" act="add,edit" opt="projects" />
+			<helptopic disp="1" act="add,edit" opt="savecode" />
+			<helptopic disp="1" act="add,edit" opt="text" />
+			<helptopic disp="1" act="list" />
 		</helpscript>
 		<helpscript name="projectpermission">
 			<helptopic disp="10" act="edit" opt="about_reports" />
 			<helptopic disp="1" act="edit,list" />
+		</helpscript>
+		<helpscript name="projecttag">
+			<helptopic disp="1" act="taglist" />
+		</helpscript>
+		<helpscript name="projecttype">
+			<helptopic disp="1" act="statusadd,statusedit" opt="canpetitionfrom" />
+			<helptopic disp="1" act="typeadd,typeedit" opt="iconfile" />
+			<helptopic disp="1" act="typelist" />
+		</helpscript>
+		<helpscript name="projectversion">
+			<helptopic disp="1" act="projectversion" />
 		</helpscript>
 	</helptopics>
 	<cronentries>
