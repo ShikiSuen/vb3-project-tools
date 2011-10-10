@@ -1498,12 +1498,18 @@ $db->query_write("
 || ############################## ||
 \*================================*/
 
+// Hide errors if columns are already present
+$db->hide_errors();
+
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requireappliesversion INT UNSIGNED NOT NULL DEFAULT 0");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirecategory INT UNSIGNED NOT NULL DEFAULT 0");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirepriority INT UNSIGNED NOT NULL DEFAULT 0");
 
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversion ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
+
+// Show future errors now
+$db->show_errors();
 
 $options = 0;
 $required = 0;
@@ -4451,7 +4457,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1316213487" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1316969323" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4498,7 +4504,7 @@ legend {
 	vbphrase['request_timed_out_refresh'] = '{vb:rawphrase request_timed_out_refresh}';
 	vbphrase['reply_text_sure_submit_attach'] = '{vb:rawphrase reply_text_sure_submit_attach}';
 
-	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("projectcategoryid", "appliesversionid", "addressedversionid", "issuestatusid", "priority", "milestoneid"));
+	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("projectcategoryid", "appliesversionid", "addressedversionid", "issuestatusid", "priority", "milestoneid", "{vb:raw issue.headcode}"));
 	vBulletin.register_ajax_urls("projectajax.php?issueid={vb:raw issue.issueid}&do=fetch&field={1:field}", "projectajax.php?issueid={vb:raw issue.issueid}&do=save&field={1:field}{2:submitstring}", Array("assignusers", "tags"))
 //-->
 	</script>
@@ -4627,6 +4633,8 @@ legend {
 			<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_milestoneid"><span class="shade">{vb:rawphrase milestone}</span> {vb:raw issue.milestonetitle}</div>
 		</vb:if>
 
+		{vb:raw issue.menucode}
+
 		<div class="vB_MagicSelect_preload vB_MagicSelect_margin">
 			<vb:if condition="$show['vote_option']">
 				<a class="shade" href="{vb:raw relpath}#voteform">{vb:rawphrase vote_count_positive_issuetype}</a>
@@ -4692,6 +4700,8 @@ legend {
 	vBulletin.register_control("vB_MagicSelect", "magicselect_addressedversionid", "addressedversionid", "{vb:raw issue.issueid}");
 	vBulletin.register_control("vB_MagicSelect", "magicselect_issuestatusid", "issuestatusid", "{vb:raw issue.issueid}");
 </vb:if>
+
+{vb:raw issue.activationcode}
 //-->
 </script>
 
@@ -7468,7 +7478,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1311931541" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1318281154" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7747,6 +7757,8 @@ init_project_readmarker_system();
 				</fieldset>
 			</vb:if>
 
+			{vb:raw issue.magicselectcode}
+
 			<vb:if condition="$show['subscribe_option']">
 				<!-- subscription -->
 				<fieldset class="blockrow">
@@ -7955,6 +7967,18 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
+		<template name="pt_postissue_magicselect" templatetype="template" date="1318281083" username="Pitchoune" version="2.2.0"><![CDATA[<fieldset class="blockrow">
+	<legend>{vb:raw magicselect.text}</legend>
+	<ul class="rightcol">
+		<li>
+			<select class="primary" name="{vb:raw magicselect.varname}" tabindex="1">
+				<vb:each from="magicselect[options]" value="option">
+					<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+				</vb:each>
+			</select>
+		</li>
+	</ul>
+</fieldset>]]></template>
 		<template name="pt_postissue_short" templatetype="template" date="1309716367" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
@@ -11248,13 +11272,43 @@ Categories are definable per project. If you do not define any categories for a 
 			<phrase name="projectcategory_projectcategory_title" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Category Overview]]></phrase>
 			<phrase name="projectmagicselect_add_edit_displayorder_text" date="1316907571" username="Pitchoune" version="2.2.0"><![CDATA[This is the display order of magic selects. This is used in the Macig Select overview page and in issues if more than 1 magic select is defined for a project.]]></phrase>
 			<phrase name="projectmagicselect_add_edit_displayorder_title" date="1316907571" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
-			<phrase name="projectmagicselect_add_edit_fetchcode_text" date="1316948419" username="Pitchoune" version="2.2.0"><![CDATA[This is the PHP code used in projectajax.php?do=fetch to define the drop-down menu.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_fetchcode_text" date="1318282297" username="Pitchoune" version="2.2.0"><![CDATA[This is the PHP code used in projectajax.php?do=fetch to define the drop-down menu.<br />
+<br />
+Be careful to adapt the code to your own 'Varname' and 'HTML Code' values!<br />
+<br />
+Example:<br />
+<br />
+if ($magicselect['varname'] == 'test' AND $magicselect['varname'] == $vbulletin->GPC['field'])<br />
+{<br />
+	$xml->add_group('items');<br />
+		$xml->add_tag('item', 'Some text', array('itemid' => 1, 'selected' => ($issue['test'] == 1 ? 'yes' : 'no')));<br />
+		$xml->add_tag('item', 'Other text', array('itemid' => 2, 'selected' => ($issue['test'] == 2 ? 'yes' : 'no')));<br />
+	$xml->close_group();<br />
+}]]></phrase>
 			<phrase name="projectmagicselect_add_edit_fetchcode_title" date="1316948419" username="Pitchoune" version="2.2.0"><![CDATA[PHP Fetch Code]]></phrase>
-			<phrase name="projectmagicselect_add_edit_htmlcode_text" date="1316907727" username="Pitchoune" version="2.2.0"><![CDATA[The "HTML Code" option is used to create the HTML code of the drop-down menu in "Issue Details" and in issue creation or edition forms.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_htmlcode_text" date="1318281972" username="Pitchoune" version="2.2.0"><![CDATA[The "HTML Code" option is used to create the HTML code of the drop-down menu in "Issue Details", in issue creation or edition forms.<br />
+<br />
+The code must be an array in the <b>$arrayoutput</b> variable. It's very important to do like this or the magic select will never be created.<br />
+<br />
+Example:<br />
+<br />
+$arrayoutput = array(<br />
+	'1' => 'Some text',<br />
+	'2' => 'Other text'<br />
+);]]></phrase>
 			<phrase name="projectmagicselect_add_edit_htmlcode_title" date="1316907727" username="Pitchoune" version="2.2.0"><![CDATA[HTML Code]]></phrase>
 			<phrase name="projectmagicselect_add_edit_projects_text" date="1316907633" username="Pitchoune" version="2.2.0"><![CDATA[This option allows you to select every project the magic select is used. You need to check at least 1 project.]]></phrase>
 			<phrase name="projectmagicselect_add_edit_projects_title" date="1316907633" username="Pitchoune" version="2.2.0"><![CDATA[Projects]]></phrase>
-			<phrase name="projectmagicselect_add_edit_savecode_text" date="1316907804" username="Pitchoune" version="2.2.0"><![CDATA[This option contains the code used in projectajax.php?do=save page to save your choice from the drop-down menu.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_savecode_text" date="1318282579" username="Pitchoune" version="2.2.0"><![CDATA[This option contains the code used in projectajax.php?do=save page to save your choice from the drop-down menu.<br />
+<br />
+Be careful to adapt the code to your own 'Varname' value!<br />
+<br />
+Example:<br />
+<br />
+if ($magicselect['varname'] == 'test' AND $magicselect['varname'] == $vbulletin->GPC['field'])<br />
+{<br />
+$issuedata->set('test', $vbulletin->GPC['value']);<br />
+}]]></phrase>
 			<phrase name="projectmagicselect_add_edit_savecode_title" date="1316907804" username="Pitchoune" version="2.2.0"><![CDATA[PHP Save Code]]></phrase>
 			<phrase name="projectmagicselect_add_edit_text_text" date="1316907256" username="Pitchoune" version="2.2.0"><![CDATA[This is the name of the magic select. This is displayed every time the magic select is displayed.]]></phrase>
 			<phrase name="projectmagicselect_add_edit_text_title" date="1316907256" username="Pitchoune" version="2.2.0"><![CDATA[Text]]></phrase>

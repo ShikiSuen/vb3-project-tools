@@ -642,6 +642,41 @@ function translate_system_note($data)
 				break;
 
 			default:
+				$mslist = array();
+
+				$magicselects = $vbulletin->db->query_read("
+					SELECT varname, htmlcode
+					FROM " . TABLE_PREFIX . "pt_magicselect
+					WHERE varname = '" . $entry['field'] . "'
+				");
+
+				while ($magicselect = $vbulletin->db->fetch_array($magicselects))
+				{
+					$mslist[$magicselect['varname']] = $magicselect['htmlcode'];
+				}
+
+				foreach ($mslist AS $varname => $htmlcode)
+				{
+					// I don't have an other choice -_-
+					eval($htmlcode);
+
+					$selectedold = '';
+					$selectednew = '';
+
+					foreach ($arrayoutput AS $id => $text)
+					{
+						if ($id == $entry['oldvalue'])
+						{
+							$entry['oldvalue'] = $text;
+						}
+
+						if ($id == $entry['newvalue'])
+						{
+							$entry['newvalue'] = $text;
+						}
+					}
+				}
+
 				($hook = vBulletinHook::fetch_hook('project_system_note_translate')) ? eval($hook) : false;
 		}
 		$output[] = construct_phrase($vbphrase["$phrase"], $fieldname, $entry['oldvalue'], $entry['newvalue']);

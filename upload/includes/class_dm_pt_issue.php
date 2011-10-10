@@ -152,6 +152,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		while ($magicselect = $this->registry->db->fetch_array($magicselects))
 		{
 			$this->validfields["$magicselect[varname]"] = array(TYPE_UINT, REQ_NO);
+			$this->track_changes[] = $magicselect['varname'];
 		}
 
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_start')) ? eval($hook) : false;

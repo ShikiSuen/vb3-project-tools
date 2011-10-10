@@ -169,7 +169,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		");
 		$db->show_errors();
 
-		// replace (master) phrase entry
+		// replace (master) phrases entry
 		require_once(DIR . '/includes/adminfunctions.php');
 		$full_product_info = fetch_product_list(true);
 		$product_version = $full_product_info['vbprojecttools']['version'];
@@ -182,6 +182,22 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 					0,
 					'projecttools',
 					'magicselect" . $this->fetch_field('magicselectid') . "',
+					'" . $db->escape_string($this->info['text']) . "',
+					'vbprojecttools',
+					'" . $db->escape_string($this->registry->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $db->escape_string($product_version) . "'
+				)
+		");
+
+		$db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'field_" . $this->fetch_field('varname') . "',
 					'" . $db->escape_string($this->info['text']) . "',
 					'vbprojecttools',
 					'" . $db->escape_string($this->registry->userinfo['username']) . "',
@@ -215,10 +231,15 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 
 		$magicselectid = intval($this->fetch_field('magicselectid'));
 
-		// Phrase
+		// Phrases
 		$db->query_write("
 			DELETE FROM " . TABLE_PREFIX . "phrase
 			WHERE varname = 'magicselect" . $magicselectid . "'
+		");
+
+		$db->query_write("
+			DELETE FROM " . TABLE_PREFIX . "phrase
+			WHERE varname = 'field_" . $this->fetch_field('varname') . "'
 		");
 
 		// Rebuild language

@@ -2,7 +2,7 @@
 // vbprojecttools 2.2.0
 $md5_sums = array(
 	'/' => array(
-		'issue.php' => 'fd559026d5043139fb632e394feabf15',
+		'issue.php' => '89cfa074d33d785757c5a145bf91cad8',
 		'issuelist.php' => '2dc683f08311b207a4d54c981e8c8457',
 		'milestone.php' => 'bfea272fd4987b4ee506c2015642a1b5',
 		'milestoneissuelist.php' => 'e9547f87b6ac64d725a8418897c55d8a',
@@ -11,7 +11,7 @@ $md5_sums = array(
 		'projectattachment.php' => '082bd4253cf4399a5ed58f7e37ca8900',
 		'projectexternal.php' => '7826107f3e6e17dc2145d5f52d74b3b9',
 		'projectmilestone.php' => '5b884685a2482f78eefb1bdccafdad59',
-		'projectpost.php' => '016cf9f08ede42cabb1037820caf591a',
+		'projectpost.php' => '921bb34f21bea60a8c4573edbc7df4d4',
 		'projectsearch.php' => 'a83fe1a62ffc42a2c59e2e9a7e3cef4f',
 		'projecttimeline.php' => '98516262c1363a7182a334a360755360',
 	),
@@ -48,7 +48,7 @@ $md5_sums = array(
 		'adminfunctions_projecttools.php' => 'fcdf1e4db889cd0973646fe0099689fa',
 		'class_bbcode_pt.php' => 'da659940d554bc179ebe4ed11185b071',
 		'class_dm_attachment_pt.php' => 'a6be6ce730ff808d58fbdbdbfd81eb58',
-		'class_dm_pt_issue.php' => 'a8ba567a884609911cbac6707884bd34',
+		'class_dm_pt_issue.php' => 'd2bbec6140e71265a0ae28c6825c9b6e',
 		'class_dm_pt_issueassign.php' => '4578af4a8dfc573bfe1666e2bb8c36e0',
 		'class_dm_pt_issuechange.php' => '9c80954f809343eaa3f138ecf02e950d',
 		'class_dm_pt_issuenote.php' => '7c564401afdaf96430f16341fb4a7927',
@@ -69,7 +69,7 @@ $md5_sums = array(
 		'class_reportitem_pt.php' => '495bda8f28fbfac1513af5da9d27778e',
 		'class_upload_pt.php' => '8f0bdebdccd046b4bbf766ed1ad823e8',
 		'class_upload_ptimporter.php' => '973c5a881e2cbdb3856554e8d43324e4',
-		'functions_projecttools.php' => '3bd747241ee6e3358f53ae88a0816f6e',
+		'functions_projecttools.php' => '29478ec280a1232adebfda388d1d3886',
 		'functions_pt_digest.php' => '561ae0aea43555ed72100e96f4b85ca6',
 		'functions_pt_forumbit.php' => 'f5e954f9273ac03c6f0421a5ac38a4e9',
 		'functions_pt_impex.php' => '69f652b740e23f916387da5f2c81c8c7',

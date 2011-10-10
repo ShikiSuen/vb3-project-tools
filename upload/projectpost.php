@@ -1296,6 +1296,26 @@ if ($_POST['do'] == 'postissue')
 		'advanced' => TYPE_BOOL
 	));
 
+	// Custom Magic Selects
+	$mslist = array();
+	$magicselects = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_magicselect
+		WHERE projects IN (" . $project['projectid'] . ")
+			AND active = 1
+		ORDER BY displayorder ASC
+	");
+
+	while ($magicselect = $db->fetch_array($magicselects))
+	{
+		$mslist[] = $magicselect['varname'];
+	}
+
+	foreach ($mslist AS $magicselectlist)
+	{
+		$vbulletin->input->clean_gpc('p', $magicselectlist, TYPE_UINT);
+	}
+
 	if ($vbulletin->GPC['wysiwyg'])
 	{
 		require_once(DIR . '/includes/class_wysiwygparser.php');
@@ -1345,6 +1365,13 @@ if ($_POST['do'] == 'postissue')
 	// prepare issue
 	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_ARRAY);
 	$issuedata->set_info('project', $project);
+
+	// Custom Magic Selects
+	foreach ($mslist AS $magicselectlist)
+	{
+		$issuedata->set($magicselectlist, $vbulletin->GPC[$magicselectlist]);
+	}
+
 	if ($issue['issueid'])
 	{
 		$issuedata->set_existing($issue);
@@ -1976,6 +2003,47 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	);
 
 	$show['subscribe_option'] = (!$issue['issueid'] AND $vbulletin->userinfo['userid'] > 0);
+
+	// Custom Magic Selects
+	$issue['magicselectcode'] = '';
+	$magicselects = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_magicselect
+		WHERE projects IN (" . $project['projectid'] . ")
+			AND active = 1
+		ORDER BY displayorder ASC
+	");
+
+	while ($magicselect = $db->fetch_array($magicselects))
+	{
+		// I don't have a real choice here... -_-
+		eval($magicselect['htmlcode']);
+
+		$selected = '';
+
+		$magicselect['text'] = $vbphrase['magicselect' . $magicselect['magicselectid'] . ''];
+
+		foreach ($arrayoutput AS $id => $text)
+		{
+			$options = array();
+
+			if ($id == $issue["$magicselect[varname]"])
+			{
+				$selected = $text;
+			}
+
+			$options['value'] = $id;
+			$options['title'] = $text;
+			$options['selected'] = $selected;
+
+			$magicselect['options'][] = $options;
+		}
+
+		$templater = vB_Template::create('pt_postissue_magicselect');
+			$templater->register('magicselect', $magicselect);
+			$templater->register('issue', $issue);
+		$issue['magicselectcode'] .= $templater->render();
+	}
 
 	// setup milestones
 	$show['milestone'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $project['milestonecount']);
