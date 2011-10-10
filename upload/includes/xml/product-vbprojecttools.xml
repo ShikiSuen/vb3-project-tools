@@ -10792,7 +10792,14 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 			<hookname>forumhome_complete</hookname>
 			<phpcode><![CDATA[if ($vbulletin->options['pt_hasprojectforums'])
 {
-	$forumhome_markread_script .= vB_Template::create('pt_markread_script')->render();
+	if (SIMPLE_VERSION >= '4.1.8')
+	{
+		$template_hook['forumhome_below_forums'] .= vB_Template::create('pt_markread_script')->render();
+	}
+	else
+	{
+		$forumhome_markread_script .= vB_Template::create('pt_markread_script')->render();
+	}
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
