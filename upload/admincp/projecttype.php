@@ -625,7 +625,7 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 		print_select_row($vbphrase['bass_permissions_off_existing_type'], 'permissionbase', array('' => $vbphrase['none_meta']) + $types);
 	}
 
-	print_description_row($vbphrase['phrases'], false, 2, 'thead');
+	print_description_row($vbphrase['phrases'], false, 2, 'thead', 'left', 'phrases');
 
 	print_input_row(
 		$vbphrase['singular_form_example'] .
