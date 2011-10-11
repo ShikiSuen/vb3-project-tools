@@ -238,7 +238,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 
 	if (isset($issuetype_options["$issuestatus[issuetypeid]"]))
 	{
-		print_label_row($vbphrase['issue_type'], $issuetype_options["$issuestatus[issuetypeid]"]);
+		print_label_row($vbphrase['issue_type'], $issuetype_options["$issuestatus[issuetypeid]"], '', 'top', 'issuetypeid');
 		construct_hidden_code('issuetypeid', $issuestatus['issuetypeid']);
 	}
 	else
