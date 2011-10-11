@@ -58,6 +58,7 @@ $md5_sums = array(
 		'class_dm_pt_issuesubscribe.php' => '7100422ad776f8f9af2c479136939be2',
 		'class_dm_pt_issuetype.php' => '043545ef54be30e9a41e80e6d1221116',
 		'class_dm_pt_issuevote.php' => 'fcb2f6488554e7257fa747286230fe31',
+		'class_dm_pt_magicselect.php' => 'be9664ca147c137d31c96b181c0090e7',
 		'class_dm_pt_milestone.php' => '8d1546bf47ab66562e184d78ecf8c8d9',
 		'class_dm_pt_project.php' => '067084824673d0b332654630eb2de6e6',
 		'class_friendly_url_project.php' => '7f2c10651c3b19eae6d514ca03acac67',
@@ -96,6 +97,9 @@ $md5_sums = array(
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'e2c1f3ee296a1f5853fedec834798d1f',
 		'product-vbprojecttools.xml' => 'd6999dda446f6f9869793f73c9d15495',
+	),
+	'/install' => array(
+		'vbulletin-mobile-style-pt.xml' => '8c28d05f332f8846cead11db3a72b1cb',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'b3b48fe8595c439439a95343f927cae1',
