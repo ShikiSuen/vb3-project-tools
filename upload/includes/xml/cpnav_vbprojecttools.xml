@@ -25,7 +25,7 @@
 
 		<navoption displayorder="50">
 			<phrase>update_counters</phrase>
-			<link>project.php?do=counters</link>
+			<link>projectcounters.php?do=counters</link>
 		</navoption>
 
 		<navoption displayorder="60">
