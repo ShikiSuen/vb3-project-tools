@@ -257,10 +257,11 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 	echo "<tr>
 		<td class=\"alt2\">" . $vbphrase['status_color_dark_styles'] . "</td>
 		<td class=\"alt2\">
-			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
+			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">
 			<tr>
-				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$issuestatus['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
+				<td width=\"160px\"><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$issuestatus['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
 				<td><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
+				<td align=\"" . vB_Template_Runtime::fetchStyleVar('right') . "\" style=\"padding-" . vB_Template_Runtime::fetchStyleVar('left') . ":4px\">" . construct_table_help_button('statuscolor') . "</td>
 			</tr>
 			</table>
 		</td>
@@ -270,10 +271,11 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 	echo "<tr>
 		<td class=\"alt1\">" . $vbphrase['status_color_light_styles'] . "</td>
 		<td class=\"alt1\">
-			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
+			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">
 			<tr>
-				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor2\" id=\"color_1\" value=\"{$issuestatus['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(1)\" dir=\"ltr\" />&nbsp;</td>
+				<td width=\"160px\"><input type=\"text\" class=\"bginput\" name=\"statuscolor2\" id=\"color_1\" value=\"{$issuestatus['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(1)\" dir=\"ltr\" />&nbsp;</td>
 				<td><div id=\"preview_1\" class=\"colorpreview\" onclick=\"open_color_picker(1, event)\"></div></td>
+				<td align=\"" . vB_Template_Runtime::fetchStyleVar('right') . "\" style=\"padding-" . vB_Template_Runtime::fetchStyleVar('left') . ":4px\">" . construct_table_help_button('statuscolor2') . "</td>
 			</tr>
 			</table>
 		</td>

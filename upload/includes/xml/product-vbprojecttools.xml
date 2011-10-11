@@ -10525,7 +10525,7 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 			<hookname>admin_global</hookname>
 			<phpcode><![CDATA[require_once(DIR . '/includes/adminfunctions_projecttools.php');
 
-if ($_REQUEST['do'] == 'answer' AND $_REQUEST['page'] == 'project' AND $_REQUEST['option'] == 'afterforumids[]')
+if ($_REQUEST['do'] == 'answer' AND in_array($_REQUEST['page'], array('project', 'projecttype')) AND in_array($_REQUEST['option'], array('afterforumids[]', 'projectset[]')))
 {
 	// fetch just the script out of the path, and see if it's help.php
 	$sp = preg_replace('#^([^/]*/)*([^/?]+)(\?.*)?$#siU', '$2', fetch_scriptpath());
@@ -11253,18 +11253,16 @@ The following caveats apply:
 <li>The project's information will be displayed after any child forums for the forum you select.</li>
 </ol>]]></phrase>
 			<phrase name="project_projectadd_projectedit_afterforumids_title" date="1181226553" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Display After Forums]]></phrase>
-			<phrase name="project_projectadd_projectedit_available_issue_types_text" date="1181227338" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Not all issue types are applicable for all projects, so you may choose to use only those types that apply for this specific project. Each project may use different types, which enables very deep and powerful permission control.<br />
+			<phrase name="project_projectadd_projectedit_available_issue_types_text" date="1318371490" username="Pitchoune" version="2.2.0"><![CDATA[Not all issue types are applicable for all projects, so you may choose to use only those types that apply for this specific project. Each project may use different types, which enables very deep and powerful permission control.<br />
 <br />
 To make an issue type available to a project, you must select a start status. When users that cannot change the status of an issue submit a new issue, it will start in this state.<br />
 <br />
-To manage issue types and statuses, click <a href="project.php?do=typelist" target="_blank">here</a>.]]></phrase>
+To manage issue types and statuses, click <a href="projecttype.php?do=typelist" target="_blank">here</a>.]]></phrase>
 			<phrase name="project_projectadd_projectedit_available_issue_types_title" date="1181227338" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Available Issue Types]]></phrase>
 			<phrase name="project_projectadd_projectedit_forumtitle_text" date="1181226807" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[If you choose to use the "Display After Forums", this option allows you to override the project name when the project is displayed in the forum list. This is helpful if the project's name does not provide enough context when surrounded by forums.<br />
 <br />
 If you do not enter a value for this option, the project's default name will be used but preceded by the word "Project".]]></phrase>
 			<phrase name="project_projectadd_projectedit_forumtitle_title" date="1181226807" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Title in Forum List]]></phrase>
-			<phrase name="project_projectadd_projectedit_options_text" date="1181226999" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[This option allows you to specify which fields cannot be left at the default "Unknown" value when an issue is created or edited. For the fields you select, "Unknown" will still be selected by default, but the issue will not be savable until the value is changed.]]></phrase>
-			<phrase name="project_projectadd_projectedit_options_title" date="1181226999" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Required Fields]]></phrase>
 			<phrase name="project_projectlist_text" date="1181914808" username="Ed Sullivan" version="1.0.0 Release Candidate 1"><![CDATA[Projects are an organizational unit for a collection of things that need to be completed or analyzed. This can be anything from tracking changes in a piece of software or personal to-do lists to a list of steps to perform a move or build a car.<br />
 <br />
 Issue types let you sub-group tasks/issues in a project into more logical units. A project may have as many custom issue types as you wish. See <a href="help.php?do=answer&amp;page=project&amp;pageaction=typelist">here</a> for more information on issue types.<br />
@@ -11273,6 +11271,24 @@ A project may also utilize categories for additional sub-grouping. Categories ha
 <br />
 Basic version tracking is also provided on a per-project basis. Version tracking is especially useful in a software environment, where the specific revision an issue applies to is very important.]]></phrase>
 			<phrase name="project_projectlist_title" date="1181234881" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Overview]]></phrase>
+			<phrase name="project_projetadd_projectedit_description_text" date="1318370799" username="Pitchoune" version="2.2.0"><![CDATA[Define here the description of the project. You can use HTML code.]]></phrase>
+			<phrase name="project_projetadd_projectedit_description_title" date="1318370799" username="Pitchoune" version="2.2.0"><![CDATA[Description]]></phrase>
+			<phrase name="project_projetadd_projectedit_displayorder_text" date="1318371269" username="Pitchoune" version="2.2.0"><![CDATA[Define here the order of the project in the project list.]]></phrase>
+			<phrase name="project_projetadd_projectedit_displayorder_title" date="1318371269" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="project_projetadd_projectedit_emailonassignment_text" date="1318370986" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the assigned user must receive an email when he/she is assigned to an issue.]]></phrase>
+			<phrase name="project_projetadd_projectedit_emailonassignment_title" date="1318370986" username="Pitchoune" version="2.2.0"><![CDATA[Send Email on Issue Assignment]]></phrase>
+			<phrase name="project_projetadd_projectedit_pmonassignment_text" date="1318371215" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the assigned user must receive aprivate message when he/she is assigned to an issue.]]></phrase>
+			<phrase name="project_projetadd_projectedit_pmonassignment_title" date="1318371215" username="Pitchoune" version="2.2.0"><![CDATA[Send PM on Issue Assignment]]></phrase>
+			<phrase name="project_projetadd_projectedit_requireappliesversion_text" date="1318371358" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the applicable version is required or not, if there is a default value or not.]]></phrase>
+			<phrase name="project_projetadd_projectedit_requireappliesversion_title" date="1318371358" username="Pitchoune" version="2.2.0"><![CDATA[Applicable Version]]></phrase>
+			<phrase name="project_projetadd_projectedit_requirecategory_text" date="1318371382" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the category is required or not, if there is a default value or not.]]></phrase>
+			<phrase name="project_projetadd_projectedit_requirecategory_title" date="1318371382" username="Pitchoune" version="2.2.0"><![CDATA[Category]]></phrase>
+			<phrase name="project_projetadd_projectedit_requirepriority_text" date="1318371408" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the priority is required or not, if there is a default value or not.]]></phrase>
+			<phrase name="project_projetadd_projectedit_requirepriority_title" date="1318371408" username="Pitchoune" version="2.2.0"><![CDATA[Priority]]></phrase>
+			<phrase name="project_projetadd_projectedit_summary_text" date="1318370779" username="Pitchoune" version="2.2.0"><![CDATA[Define here the summary of the project. You can use HTML code.]]></phrase>
+			<phrase name="project_projetadd_projectedit_summary_title" date="1318370779" username="Pitchoune" version="2.2.0"><![CDATA[Summary]]></phrase>
+			<phrase name="project_projetadd_projectedit_title_text" date="1318370717" username="Pitchoune" version="2.2.0"><![CDATA[Define here the title of the project. You can use HTML code.]]></phrase>
+			<phrase name="project_projetadd_projectedit_title_title" date="1318370717" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
 			<phrase name="projectcategory_projectcategory_text" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Categories allow a simple way of sub-grouping issues within a project based on what the issue relates to. This can be useful if you have several people working on a project and each person has their own specialty.<br />
 <br />
 Categories are definable per project. If you do not define any categories for a project, the option to select a category will not be displayed when submitting an issue. However, a value of "unknown" will still be shown when viewing an issue.]]></phrase>
@@ -11347,12 +11363,51 @@ Depending on permissions, tags may be able to be defined on the fly via the fron
 <br />
 However, there are some cases where you don't want users to have this power when an issue is in a specific status. A common choice is to set this option to "no" for a type's starting status.]]></phrase>
 			<phrase name="projecttype_statusadd_statusedit_canpetitionfrom_title" date="1181233223" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Can Create Petitions from this Status?]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_displayorder_text" date="1318374294" username="Pitchoune" version="2.2.0"><![CDATA[This is the display order in the status list. This is used in the status list in various forms.]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_displayorder_title" date="1318374294" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_issuecompleted_text" date="1318374866" username="Pitchoune" version="2.2.0"><![CDATA[You can define if the status marks the issue as completed.]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_issuecompleted_title" date="1318374866" username="Pitchoune" version="2.2.0"><![CDATA[Status Represents a Completed Issue?]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_issuetypeid_text" date="1318374163" username="Pitchoune" version="2.2.0"><![CDATA[This is the issue type which the status is assigned. You can not edit or define it.]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_issuetypeid_title" date="1318374163" username="Pitchoune" version="2.2.0"><![CDATA[Issue Type]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_projectset_text" date="1318375381" username="Pitchoune" version="2.2.0"><![CDATA[You can select here which project to use the status color feature.]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_projectset_title" date="1318375381" username="Pitchoune" version="2.2.0"><![CDATA[Use Selected Project Sets]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_statuscolor2_text" date="1318375317" username="Pitchoune" version="2.2.0"><![CDATA[You can define here the color used as background with light styles on issues listing.]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_statuscolor2_title" date="1318375317" username="Pitchoune" version="2.2.0"><![CDATA[Status Color - Light Styles]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_statuscolor_text" date="1318375296" username="Pitchoune" version="2.2.0"><![CDATA[You can define here the color used as background with dark styles on issues listing.]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_statuscolor_title" date="1318375296" username="Pitchoune" version="2.2.0"><![CDATA[Status Color - Dark Styles]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_title_text" date="1318374028" username="Pitchoune" version="2.2.0"><![CDATA[Define here the title of the status.]]></phrase>
+			<phrase name="projecttype_statusadd_statusedit_title_title" date="1318374028" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_displayorder_text" date="1318371852" username="Pitchoune" version="2.2.0"><![CDATA[You can define the order of the issue type. This is used in the new issue dropdown and various forms.]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_displayorder_title" date="1318371852" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
 			<phrase name="projecttype_typeadd_typeedit_iconfile_text" date="1181233763" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[This allows you to display a small icon representing this issue type next to issues of this type. An icon allows for quicker identification than simple text. Leave this field blank and no icon will be displayed.<br />
 <br />
 You must manually upload this icon to your "Item Status Icon" folder. By default this is images/statusicon.<br />
 <br />
 The included icons for bugs, features, and tasks are 16 pixels by 16 pixels.]]></phrase>
 			<phrase name="projecttype_typeadd_typeedit_iconfile_title" date="1181233763" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Filename for Icon]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_issuetypeid_text" date="1318372719" username="Pitchoune" version="2.2.0"><![CDATA[You can define here the key of the issue type. It is better to keep it as simple as possible.<br />
+<br />
+Examples:
+<ul>
+<li>bugs</li>
+<li>tasks</li>
+<li>features</li>
+<ul>]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_issuetypeid_title" date="1318371717" username="Pitchoune" version="2.2.0"><![CDATA[Issue Type Key]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_permissionbase_text" date="1318372869" username="Pitchoune" version="2.2.0"><![CDATA[Select here from which issue type you can use the default permission for this new issue type.]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_permissionbase_title" date="1318372869" username="Pitchoune" version="2.2.0"><![CDATA[Base Permissions off of Existing Type]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_phrases_text" date="1318372668" username="Pitchoune" version="2.2.0"><![CDATA[These are the phrases you can custom to each issue type. This includes:<br />
+<ul>
+<li>The singular form of the issue type</li>
+<li>The plural form of the issue type</li>
+<li>The question for voting on issues which are using this issue type</li>
+<li>The phrase which describe the positive votes</li>
+<li>The phrase which describe the negative votes</li>
+<li>The applicable version text</li>
+<li>The addressed version text</li>
+<li>The text for the 'Post New Issue' button in pages which there is only 1 issue type listed</li>
+</ul>]]></phrase>
+			<phrase name="projecttype_typeadd_typeedit_phrases_title" date="1318372648" username="Pitchoune" version="2.2.0"><![CDATA[Phrases]]></phrase>
 			<phrase name="projecttype_typelist_text" date="1181232524" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Issue types allow you to group issues based on their purpose. For example, you may want to keep feature suggestions separate from bug reports; "features" and "bugs" would become separate issue types.<br />
 <br />
 While different issue types do not cause different fields to be displayed, they do have the following advantages:
@@ -12537,11 +12592,19 @@ diff</defaultvalue>
 	</options>
 	<helptopics>
 		<helpscript name="project">
-			<helptopic disp="10" act="projectadd,projectedit" opt="options" />
-			<helptopic disp="20" act="projectadd,projectedit" opt="afterforumids" />
-			<helptopic disp="30" act="projectadd,projectedit" opt="forumtitle" />
-			<helptopic disp="40" act="projectadd,projectedit" opt="available_issue_types" />
+			<helptopic disp="100" act="projectadd,projectedit" opt="afterforumids" />
+			<helptopic disp="110" act="projectadd,projectedit" opt="forumtitle" />
+			<helptopic disp="120" act="projectadd,projectedit" opt="available_issue_types" />
 			<helptopic disp="1" act="projectlist" />
+			<helptopic disp="10" act="projetadd,projectedit" opt="title" />
+			<helptopic disp="20" act="projetadd,projectedit" opt="summary" />
+			<helptopic disp="30" act="projetadd,projectedit" opt="description" />
+			<helptopic disp="40" act="projetadd,projectedit" opt="emailonassignment" />
+			<helptopic disp="50" act="projetadd,projectedit" opt="pmonassignment" />
+			<helptopic disp="60" act="projetadd,projectedit" opt="displayorder" />
+			<helptopic disp="70" act="projetadd,projectedit" opt="requireappliesversion" />
+			<helptopic disp="80" act="projetadd,projectedit" opt="requirecategory" />
+			<helptopic disp="90" act="projetadd,projectedit" opt="requirepriority" />
 		</helpscript>
 		<helpscript name="projectcategory">
 			<helptopic disp="1" act="projectcategory" />
@@ -12564,8 +12627,19 @@ diff</defaultvalue>
 			<helptopic disp="1" act="taglist" />
 		</helpscript>
 		<helpscript name="projecttype">
-			<helptopic disp="1" act="statusadd,statusedit" opt="canpetitionfrom" />
-			<helptopic disp="1" act="typeadd,typeedit" opt="iconfile" />
+			<helptopic disp="10" act="statusadd,statusedit" opt="title" />
+			<helptopic disp="20" act="statusadd,statusedit" opt="issuetypeid" />
+			<helptopic disp="30" act="statusadd,statusedit" opt="displayorder" />
+			<helptopic disp="40" act="statusadd,statusedit" opt="issuecompleted" />
+			<helptopic disp="50" act="statusadd,statusedit" opt="canpetitionfrom" />
+			<helptopic disp="60" act="statusadd,statusedit" opt="statuscolor" />
+			<helptopic disp="70" act="statusadd,statusedit" opt="statuscolor2" />
+			<helptopic disp="80" act="statusadd,statusedit" opt="projectset" />
+			<helptopic disp="10" act="typeadd,typeedit" opt="issuetypeid" />
+			<helptopic disp="20" act="typeadd,typeedit" opt="displayorder" />
+			<helptopic disp="30" act="typeadd,typeedit" opt="iconfile" />
+			<helptopic disp="40" act="typeadd,typeedit" opt="permissionbase" />
+			<helptopic disp="50" act="typeadd,typeedit" opt="phrases" />
 			<helptopic disp="1" act="typelist" />
 		</helpscript>
 		<helpscript name="projectversion">
