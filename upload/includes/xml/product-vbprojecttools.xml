@@ -9420,6 +9420,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
+		<template name="pt_showthread_adminoptions" templatetype="template" date="1318556222" username="Pitchoune" version="2.2.0"><![CDATA[<li><label><input type="radio" name="do" value="createptissue" /> {vb:rawphrase pt_create_issue}&hellip;</label></li>]]></template>
 		<template name="pt_subforumbit_project" templatetype="template" date="1316209222" username="Pitchoune" version="2.2.0"><![CDATA[<li class="subforum">
 	<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/subforum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>-48.png" alt="" border="0" id="project_statusicon_{vb:raw project.projectid}" />
 	<vb:if condition="$project['forumtitle']">
@@ -11071,8 +11072,14 @@ $show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];
 
 if ($show['createptissue'])
 {
-	$vbulletin->templatecache['SHOWTHREAD'] = preg_replace('#postings\.php" method="post">[\r\n\t]+<ul class="popupbody popuphover">#s', '\0<li><label><input type="radio" name="do" value="createptissue" /> ' . $vbphrase['pt_create_issue'] . '&hellip;</label></li>', $vbulletin->templatecache['SHOWTHREAD']);
-
+	if (SIMPLE_VERSION >= '418')
+	{
+		$template_hook['showthread_adminoptions'] .= vB_Template::create('pt_showthread_adminoptions')->render();
+	}
+	else
+	{
+		$vbulletin->templatecache['SHOWTHREAD'] = preg_replace('#postings\.php" method="post">[\r\n\t]+<ul class="popupbody popuphover">#s', '\0<li><label><input type="radio" name="do" value="createptissue" /> ' . $vbphrase['pt_create_issue'] . '&hellip;</label></li>', $vbulletin->templatecache['SHOWTHREAD']);
+	}
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -11242,6 +11249,14 @@ if (!$this->condition)
 	</plugins>
 	<phrases>
 		<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
+			<phrase name="project_editissue1_editissue2_text" date="1318377928" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
+			<phrase name="project_editissue1_editissue2_title" date="1318377928" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
+			<phrase name="project_issue_editissue1_editissue2_text" date="1318377858" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
+			<phrase name="project_issue_editissue1_editissue2_title" date="1318377858" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
+			<phrase name="project_issue_editissue_editissue2_text" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
+			<phrase name="project_issue_editissue_editissue2_title" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
+			<phrase name="project_issue_text" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
+			<phrase name="project_issue_title" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
 			<phrase name="project_projectadd_projectedit_afterforumids_text" date="1185885194" username="Ed Sullivan" version="1.0.1"><![CDATA[This option allows you to display project information within the forum list on the vBulletin main page.<br />
 <br />
 You may select one or more forums after which to display information about this project, including last activity time and number of issues.<br />
@@ -11293,6 +11308,17 @@ Basic version tracking is also provided on a per-project basis. Version tracking
 <br />
 Categories are definable per project. If you do not define any categories for a project, the option to select a category will not be displayed when submitting an issue. However, a value of "unknown" will still be shown when viewing an issue.]]></phrase>
 			<phrase name="projectcategory_projectcategory_title" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Category Overview]]></phrase>
+			<phrase name="projectcounters_counters_text" date="1318377608" username="Pitchoune" version="2.2.0"><![CDATA[This page contains several counters that you can update.<br />
+<br />
+<b>Rebuild Issue Counters</b><br />
+Rebuilding issue counters will update various fields related to an issue that might become out of date but can be rebuilt.<br /><br />
+<b>Rebuild Project Counters</b><br />
+Rebuilding project counters will update various fields related to an project that might become out of date but can be rebuilt. Run this once you know your issue counters are up to date.<br /><br />
+<b>Rebuild Milestone Counters</b><br />
+Rebuilding milestone counters will update various fields related to a milestone that might become out of date but can be rebuilt.<br /><br />
+<b>Rebuild Profile Issue Counters</b><br />
+Rebuilding profile issue counters will update the number of issues every user have made.<br /><br />]]></phrase>
+			<phrase name="projectcounters_counters_title" date="1318377071" username="Pitchoune" version="2.2.0"><![CDATA[Update Counters]]></phrase>
 			<phrase name="projectmagicselect_add_edit_displayorder_text" date="1316907571" username="Pitchoune" version="2.2.0"><![CDATA[This is the display order of magic selects. This is used in the Macig Select overview page and in issues if more than 1 magic select is defined for a project.]]></phrase>
 			<phrase name="projectmagicselect_add_edit_displayorder_title" date="1316907571" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
 			<phrase name="projectmagicselect_add_edit_fetchcode_text" date="1318282297" username="Pitchoune" version="2.2.0"><![CDATA[This is the PHP code used in projectajax.php?do=fetch to define the drop-down menu.<br />
@@ -12592,6 +12618,8 @@ diff</defaultvalue>
 	</options>
 	<helptopics>
 		<helpscript name="project">
+			<helptopic disp="1" act="editissue1,editissue2" />
+			<helptopic disp="1" act="issue" />
 			<helptopic disp="100" act="projectadd,projectedit" opt="afterforumids" />
 			<helptopic disp="110" act="projectadd,projectedit" opt="forumtitle" />
 			<helptopic disp="120" act="projectadd,projectedit" opt="available_issue_types" />
@@ -12608,6 +12636,9 @@ diff</defaultvalue>
 		</helpscript>
 		<helpscript name="projectcategory">
 			<helptopic disp="1" act="projectcategory" />
+		</helpscript>
+		<helpscript name="projectcounters">
+			<helptopic disp="1" act="counters" />
 		</helpscript>
 		<helpscript name="projectmagicselect">
 			<helptopic disp="1" act="add" opt="varname" />
