@@ -2,36 +2,20 @@
 
 <style name="Mobile Style" vbversion="2.2.0" product="vbprojecttools" type="custom">
 	<templategroup name="Project Tools">
-		<template name="pt_forumbit_project" templatetype="template" date="1315002542" username="Pitchoune" version="2.2.0"><![CDATA[<li class="forumbit_post L2">
+		<template name="pt_forumbit_project" templatetype="template" date="1318288513" username="Pitchoune" version="2.2.0"><![CDATA[<li class="forumbit_post L2">
 	<img id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon ui-li-icon" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>_16.png" alt="" border="0" />
 	<vb:if condition="$project['forumtitle']">
 		<h3><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.forumtitle}</a></h3>
 	<vb:else />
-		<h3><span>{vb:rawphrase project}</span> <a href="{vb:link project, {vb:raw project}}"><strong>{vb:raw project.title}</strong></a></h3>
+		<h3><span style="vertical-align: middle; margin-bottom: 7px; display: inline-block">{vb:rawphrase project}</span> <a href="{vb:link project, {vb:raw project}}"><strong>{vb:raw project.title}</strong></a></h3>
 	</vb:if>
 	<vb:if condition="$project['summary']"><p>{vb:raw project.summary}</p></vb:if>
 </li>]]></template>
-		<template name="pt_issue" templatetype="template" date="1315062746" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1318771343" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
-
-	<vb:if condition="$vboptions['storecssasfile']">
-		{vb:cssfile projecttools-rollup.css}
-	<vb:else />
-		{vb:cssfile projecttools.css,toolsmenu.css}
-	</vb:if>
-
-	<!--[if lt IE 8]>
-	{vb:cssfile projecttools-ie.css}
-	<![endif]-->
-
 	<title>{vb:raw issue.title} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
-
-	<vb:if condition="$vboptions['externalrss']">
-		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="projectexternal.php?projectid={vb:raw project.projectid}" />
-	</vb:if>
-
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -47,6 +31,66 @@
 
 <div data-role="content">
 	<a href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}" rel="nofollow" class="newreplylink" id="newreplylink" data-role="button" data-icon="plus" data-inline="true"><vb:if condition="$show['issue_closed']">{vb:rawphrase closed}<vb:else />{vb:rawphrase reply}</vb:if></a>
+
+	<div class="ui-bar ui-bar-b" style="margin: 5px -15px 0">
+		<h3>{vb:rawphrase issue_details}</h3>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase issue_number}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.issueid}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase issue_type}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.issuetype}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase project}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw project.title_clean}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase category}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.categorytitle}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase status}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.status}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase priority}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.priority_text}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase applies_version_issuetype}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.appliesversion}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase addressed_version_issuetype}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.addressedversion}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase milestone}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e"><vb:if condition="$issue['milestonetitle']">{vb:raw issue.milestonetitle}<vb:else />{vb:rawphrase none}</vb:if></div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase vote_count_positive_issuetype}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.votepositive}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase vote_count_negative_issuetype}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.votenegative}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase attachments}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.attachcount}</div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase assigned_users}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e"><vb:if condition="$assignments">{vb:raw assignments}<vb:else />{vb:rawphrase none_meta}</vb:if></div></div>
+	</div>
+	<div class="ui-grid-a" style="margin: 0px -15px">
+		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase tags}</strong></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-e"><vb:if condition="$tags">{vb:raw tags}<vb:else />{vb:rawphrase none_meta}</vb:if></div></div>
+	</div>
 
 	<div id="postlist">
 		{vb:raw pagenav}
@@ -65,7 +109,7 @@
 
 	<vb:if condition="$show['quick_reply'] OR $show['ajax_js']">
 		<div id="qr_defaultcontainer" class="quickreplycontainer qr_defaultcontainer ui-body ui-body-c">
-			<form class="vbform" name="quick_reply" id="quick_reply" method="post" action="newreply.php?do=postreply&amp;t={vb:raw threadid}">
+			<form class="vbform" name="quick_reply" id="quick_reply" method="post" action="projectpost.php?{vb:raw session.sessionurl}do=postreply">
 				{vb:raw messagearea}
 
 				<button type="submit" name="sbutton" data-theme="a">{vb:rawphrase post_quick_reply}</button>
@@ -92,55 +136,8 @@
 {vb:raw footer}
 
 </body>
-</html>
-
-<vb:comment>
-<div id="pt_issue_details">
-	<div class="block">
-		<div class="blockhead">
-			{vb:rawphrase issue_details}
-		</div>
-	</div>
-	<div class="blockbody settings_form_border smallfont" style="padding: 5px">
-		<div>
-			<span class="shade">{vb:rawphrase issue_number}</span>
-			{vb:raw issue.issueid}
-		</div>
-
-		<div>
-			<a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issue.issuetypeid}" class="shade">{vb:rawphrase issue_type}</a>
-			{vb:raw issue.issuetype}
-		</div>
-
-		<div>
-			<a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}" class="shade">{vb:rawphrase project}</a>
-			{vb:raw project.title_clean}
-		</div>
-
-		<div><span class="shade">{vb:rawphrase category}</span> {vb:raw issue.categorytitle}</div>
-		<div><span class="shade">{vb:rawphrase status}</span> {vb:raw issue.status}</div>
-		<div><span class="shade">{vb:rawphrase priority}</span> {vb:raw issue.priority_text}</div>
-
-		<div><span class="shade">{vb:rawphrase applies_version_issuetype}</span> {vb:raw issue.appliesversion}</div>
-		<div><span class="shade">{vb:rawphrase addressed_version_issuetype}</span> {vb:raw issue.addressedversion}</div>
-
-		<vb:if condition="$show['milestone']">
-			<div><span class="shade">{vb:rawphrase milestone}</span> {vb:raw issue.milestonetitle}</div>
-		</vb:if>
-
-		<div>
-			<span class="shade">{vb:rawphrase assigned_users}</span>
-			<span id="assignusers"><span id="assignusers_display"><vb:if condition="$assignments">{vb:raw assignments}<vb:else />{vb:rawphrase none_meta}</vb:if></span></span>
-		</div>
-
-		<div>
-			<span class="shade">{vb:rawphrase tags}</span>
-			<span id="tags"><span id="tags_display"><vb:if condition="$tags">{vb:raw tags}<vb:else />{vb:rawphrase none_meta}</vb:if></span></span>
-		</div>
-	</div>
-</div>
-</vb:comment>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1315002579" username="Pitchoune" version="2.2.0"><![CDATA[<li class="ui-li-has-icon">
+</html>]]></template>
+		<template name="pt_issuebit" templatetype="template" date="1318764549" username="Pitchoune" version="2.2.0"><![CDATA[<li id="thread_{vb:raw issue.issueid}" class="threadbit dot ui-li-has-icon">
 	<div class="ui-li-icon" style="margin-top: 6px">
 	<vb:if condition="$issue['typeicon']">
 		<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -149,7 +146,7 @@
 	</vb:if>
 	</div>
 	<h3>
-	<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> style="font-weight:bold"</vb:if>>
+	<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" class="title<vb:if condition="$issue['newflag']"> unread</vb:if>">
 		{vb:raw issue.title}
 	</a>
 	<vb:if condition="$issue['isassigned']">
@@ -168,9 +165,11 @@
 		<img src="{vb:stylevar imgdir_misc}/issue_petition.png" alt="{vb:rawphrase has_pending_petitions}" />
 	</vb:if>
 	</h3>
-	<p>{vb:rawphrase last_post_by} {vb:raw memberaction_dropdown} <em class="time">{vb:raw issue.lastposttime}</em></p>
+	<p>{vb:rawphrase last_post_by} {vb:raw memberaction_dropdown} <span class="time">{vb:raw issue.lastposttime}</span></p>
+	<span class="ui-li-count">{vb:raw issue.replycount}</span>
+	<a href="{vb:link issue, {vb:raw issue}, {vb:raw issue.pageinfo_newpost}}" id="thread_gotonew_{vb:raw issue.issueid}" class="splitlink" title="{vb:rawphrase go_to_first_new_post}"> </a>
 </li>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1315003634" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1318770875" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -189,7 +188,11 @@
 </div>
 
 <div data-role="content">
-	<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}" rel="nofollow" data-role="button" data-icon="plus" data-inline="true"> {vb:rawphrase post_new_issue}</a>
+	<vb:if condition="$vbphrase['post_new_issue_issuetype']">
+		<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw postable_types.0}" rel="nofollow" data-role="button" data-icon="plus" data-inline="true"> {vb:rawphrase post_new_issue_issuetype}</a>
+	<vb:else />
+		<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}" rel="nofollow" data-role="button" data-icon="plus" data-inline="true"> {vb:rawphrase post_new_issue}</a>
+	</vb:if>
 
 	<div id="threadlist">
 	{vb:raw pagenav}
@@ -217,6 +220,7 @@
 
 </body>
 </html>]]></template>
+		<template name="pt_issuenotebit_system" templatetype="template" date="1318765899" username="Pitchoune" version="2.2.0" />
 		<template name="pt_issuenotebit_user" templatetype="template" date="1315062525" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li class="postbit postbitim postcontainer" id="issue_{vb:raw note.issuenoteid}">
 	<div class="posthead ui-bar-c">
@@ -391,29 +395,546 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_project" templatetype="template" date="1315002878" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1318773041" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 
-	<vb:if condition="$vboptions['storecssasfile']">
-		{vb:cssfile forumdisplay-rollup.css}
-		{vb:cssfile projecttools-rollup.css}
-	<vb:else />
-		{vb:cssfile toolsmenu.css,forumbits.css,forumdisplay.css,threadlist.css,options.css}
-		{vb:cssfile projecttools.css,toolsmenu.css}
+	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - <vb:if condition="$issue['issueid']">{vb:rawphrase edit_issue}<vb:else />{vb:rawphrase post_new_issue}</vb:if></title>
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+
+{vb:raw navbar}
+
+<div id="pagetitle" class="pagetitle ui-bar-b">
+	<h1 class="pagetitle"><vb:if condition="$issue['issueid']">{vb:rawphrase edit_issue}<vb:else />{vb:rawphrase post_new_issue}</vb:if></h1>
+	<p class="description">{vb:rawphrase issue_type}: {vb:raw issuetype_printable} | {vb:rawphrase project}: {vb:raw project.title_clean}</p>
+</div>
+
+<div data-role="content">
+	<form class="vbform block" action="projectpost.php?{vb:raw session.sessionurl}do=postissue" method="post" name="vbform" onsubmit="return vB_Editor['{vb:raw editorid}'].prepare_submit(0, 0);">
+
+<vb:comment>
+	<vb:if condition="$issue['issueid']">
+	<h2 class="blockhead">{vb:rawphrase delete_this_issue}</h2>
+
+	<div class="blockbody formcontrols">
+		<h3 class="blocksubhead">{vb:rawphrase delete_issue_note_check_appropriate_option}</h3>
+		<div class="section">
+			<div class="blockrow">
+				<vb:if condition="$show['delete_option']">
+				<dl class="dep_group">
+
+					<dt><label for="delete"><input type="checkbox" class="dep_ctrl" id="delete" name="dodelete" value="1" tabindex="1" /> {vb:rawphrase delete_post_in_manner}:</label></dt>
+					<dd id="delete_deps">
+						<ul class="group checkradio">
+ 							<li>
+								<label for="deltype_hard"><input type="radio" id="deltype_hard" class="dep_ctrl" name="delete" value="hard" tabindex="1" /> {vb:rawphrase hard_delete}</label>
+							</li>
+							<li>
+								<label for="deltype_soft"><input type="radio" id="deltype_soft" class="dep_ctrl" name="delete" value="soft" tabindex="1" /> {vb:rawphrase soft_delete}</label>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+				</vb:if>
+
+				<vb:if condition="$show['undelete_option']">
+					<label>{vb:rawphrase issue_been_deleted}</label>
+					<ul class="rightcol">
+						<li>
+							<input type="checkbox" name="undelete" value="1" tabindex="1" />&nbsp;{vb:rawphrase undelete}
+						</li>
+					</ul>
+				</vb:if>
+			</div>
+
+			<div class="blockrow">
+				<label class="full">
+					<vb:if condition="$show['delete_option']">
+						{vb:rawphrase reason_for_edit_delete}
+					<vb:else />
+						{vb:rawphrase reason_for_editing}
+					</vb:if>
+				</label>
+				<input type="text" name="reason" class="textbox primary" value="{vb:raw issue.reason}" tabindex="1" />
+			</div>
+		</div>
+	</div>
 	</vb:if>
+</vb:comment>
 
-	<!--[if lt IE 8]>
-	{vb:cssfile projecttools-ie.css}
-	<![endif]-->
 
-	<vb:if condition="$vboptions['externalrss']">
-		<link rel="alternate" type="application/rss+xml" title="{vb:raw vboptions.bbtitle} - {vb:rawphrase project_rss_feed} - {vb:raw project.title_clean}" href="{vb:raw vboptions.bburl}/projectexternal.php?projectid={vb:raw project.projectid}" />
+
+
+		{vb:raw preview}
+
+		{vb:raw usernamecode}
+
+		<div data-role="fieldcontain">
+			<label for="title">{vb:rawphrase title}:</label>
+			<input type="text" class="primary full textbox" name="title" id="title" value="{vb:raw issue.title}" tabindex="1" />
+		</div>
+
+		<div data-role="fieldcontain">
+			<label for="summary">{vb:rawphrase summary}:</label>
+			<input type="text" class="primary full textbox" name="summary" id="summary" value="{vb:raw issue.summary}" tabindex="2" />
+		</div>
+
+		{vb:raw messagearea}
+
+		{vb:raw human_verify}
+
+		<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+		<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+		<input type="hidden" name="do" value="postissue" />
+		<input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
+		<input type="hidden" name="issuetypeid" value="{vb:raw issue.issuetypeid}" />
+		<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
+
+		<div class="ui-bar ui-bar-b" style="margin: -5px -15px">
+			{vb:rawphrase additional_options}
+		</div>
+
+		<vb:if condition="$show['private_edit']">
+			<div data-role="fieldcontain">
+				<label for="cb_private">{vb:rawphrase private}</label>
+				<input type="checkbox" name="private" value="1" id="cb_private" tabindex="1"{vb:raw private_checked} /> 
+			</div>
+		</vb:if>
+
+		<vb:if condition="$show['close_issue']">
+			<div data-role="fieldcontain">
+				<label for="cb_close_issue">{vb:rawphrase close_this_issue}</label>
+				<input type="checkbox" name="close_issue" value="1" id="cb_close_issue" tabindex="1"{vb:raw close_issue_checked} />
+				<input type="hidden" name="original_state" value="{vb:raw issue.state}" />
+			</div>
+		</vb:if>
+
+		<vb:if condition="$show['assign_checkbox'] AND !$show['assign_dropdown']">
+			<div data-role="fieldcontain">
+				<label for="cb_assign_self">{vb:rawphrase assign_yourself_to_issue}</label>
+				<input type="checkbox" id="cb_assign_self" name="assignself" value="1" tabindex="1"{vb:raw assign_checkbox_checked} />
+			</div>
+		</vb:if>
+
+		<vb:if condition="$priority_options">
+			<!-- priority -->
+			<div data-role="fieldcontain">
+				<label for="priority">{vb:rawphrase priority}</label>
+				<select name="priority" id="priority" class="full" tabindex="1">
+					<vb:each from="priority_options" value="option">
+						<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+					</vb:each>
+				</select>
+			</div>
+		</vb:if>
+
+		<vb:if condition="$category_options">
+			<!-- category -->
+			<div data-role="fieldcontain">
+				<label for="projectcategory">{vb:rawphrase category}</label>
+				<select name="projectcategoryid" id="projectcategory" class="full" tabindex="1">
+					<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
+					<vb:each from="category_options" value="option">
+						<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+					</vb:each>
+				</select>
+			</div>
+		</vb:if>
+
+		<vb:if condition="$show['assign_dropdown']">
+			<div data-role="fieldcontain">
+				<label for="issuestatusid">{vb:rawphrase status}</label>
+				<vb:if condition="$show['status_edit']">
+					<select name="issuestatusid" id="issuestatusid" class="full" tabindex="1">
+						<vb:each from="status_options" value="option">
+							<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+						</vb:each>
+					</select>
+				<vb:else />
+					{vb:raw issue.issuestatus}
+				</vb:if>
+			</div>
+		</vb:if>
+
+		<vb:if condition="$show['tags_edit']">
+			<vb:if condition="$applies_versions">
+				<!-- applies to version -->
+				<div data-role="fieldcontain">
+					<label for="appliesversionid">{vb:rawphrase applies_version_issuetype}</label>
+					<select name="appliesversionid" id="appliesversionid" class="full" tabindex="1">
+						<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
+							<vb:each from="applies_versions" value="optiongroup">
+								<optgroup label="{vb:raw optiongroup.label}">
+									<vb:each from="optiongroup[group]" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
+								</optgroup>
+							</vb:each>
+					</select>
+				</div>
+			</vb:if>
+
+			<div data-role="fieldcontain">
+				<label for="addressedversionid">{vb:rawphrase addressed_version_issuetype}</label>
+				<vb:if condition="$show['status_edit']">
+					<select name="addressedversionid" id="addressedversionid" class="full" tabindex="1">
+						<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
+						<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+							<vb:each from="addressed_versions" value="optiongroup">
+								<optgroup label="{vb:raw optiongroup.label}">
+									<vb:each from="optiongroup[group]" value="option">
+										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									</vb:each>
+								</optgroup>
+							</vb:each>
+					</select>
+				<vb:else />
+					{vb:raw issue.addressedversion}
+				</vb:if>
+			</div>
+		</vb:if>
+
+		<vb:if condition="$show['milestone_edit'] OR $issue['milestonetitle']">
+			<!-- milestone -->
+			<div data-role="fieldcontain">
+				<label for="milestoneid">{vb:rawphrase milestone}:</label>
+				<vb:if condition="$show['milestone_edit']">
+					<select name="milestoneid" id="milestoneid" class="full" tabindex="1">
+						<option value="0"{vb:raw option.selected}>{vb:rawphrase none}</option>
+						<vb:each from="milestone_options" value="optiongroup">
+							<optgroup label="{vb:raw optiongroup.label}">
+								<vb:each from="optiongroup[group]" value="option">
+									<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+								</vb:each>
+							</optgroup>
+						</vb:each>
+					</select>
+				<vb:else />
+					{vb:raw issue.milestonetitle}
+				</vb:if>
+			</div>
+		</vb:if>
+
+		{vb:raw issue.magicselectcode}
+
+		<vb:if condition="$show['subscribe_option']">
+			<!-- subscription -->
+			<div data-role="fieldcontain">
+				<label for="subscribetype">{vb:rawphrase subscribe_to_this_issue}</label>
+				<select name="subscribetype" id="subscribetype" class="full" tabindex="1">
+					<option value=""{vb:raw subscribe_selected.donot}>{vb:rawphrase do_not_subscribe}</option>
+					<option value="none"{vb:raw subscribe_selected.none}>{vb:rawphrase no_email_notification}</option>
+					<option value="instant"{vb:raw subscribe_selected.instant}>{vb:rawphrase instant_email_notification}</option>
+					<option value="daily"{vb:raw subscribe_selected.daily}>{vb:rawphrase daily_email_notification}</option>
+					<option value="weekly"{vb:raw subscribe_selected.weekly}>{vb:rawphrase weekly_email_notification}</option>
+				</select>
+			</div>
+		</vb:if>
+
+		<vb:if condition="!$show['assign_dropdown']">
+			<!-- issue type -->
+			<div data-role="fieldcontain">
+				<label>{vb:rawphrase issue_type}</label>
+				{vb:raw issue.issuetype}
+			</div>
+
+			<!-- status -->
+			<div data-role="fieldcontain">
+				<label for="issuestatusid">{vb:rawphrase status}</label>
+				<vb:if condition="$show['status_edit']">
+					<select name="issuestatusid" id="issuestatusid" class="full" tabindex="2">
+						<vb:each from="status_options" value="option">
+							<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+						</vb:each>
+					</select>
+				<vb:else />
+					{vb:raw issue.issuestatus}
+				</vb:if>
+			</div>
+		</vb:if>
+
+		<vb:if condition="!$show['tags_edit']">
+			<vb:if condition="$applies_versions">
+				<!-- applies to version -->
+				<div data-role="fieldcontain">
+					<label for="appliesversionid">{vb:rawphrase applies_version_issuetype}</label>
+					<select name="appliesversionid" id="appliesversionid" class="full" tabindex="2">
+						<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
+						<vb:each from="applies_versions" value="optiongroup">
+							<optgroup label="{vb:raw optiongroup.label}">
+								<vb:each from="optiongroup[group]" value="option">
+									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+								</vb:each>
+							</optgroup>
+						</vb:each>
+					</select>
+				</div>
+			</vb:if>
+
+			<!-- addressed in version -->
+			<div data-role="fieldcontain">
+				<label for="addressedversionid">{vb:rawphrase addressed_version_issuetype}</label>
+				<vb:if condition="$show['status_edit']">
+					<select name="addressedversionid" id="addressedversionid" class="full" tabindex="1">
+						<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
+						<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+						<vb:each from="addressed_versions" value="optiongroup">
+							<optgroup label="{vb:raw optiongroup.label}">
+								<vb:each from="optiongroup[group]" value="option">
+									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+								</vb:each>
+							</optgroup>
+						</vb:each>
+					</select>
+				<vb:else />
+					{vb:raw issue.addressedversion}
+				</vb:if>
+			</div>
+		</vb:if>
+
+		<fieldset class="ui-grid-a"> 
+			<div class="ui-block-a"><button type="submit" name="sbutton" data-theme="a">{vb:rawphrase save}</button></div>
+			<div class="ui-block-b"><button type="submit" name="preview" data-theme="d">{vb:rawphrase preview}</button></div>
+		</fieldset>
+
+	</form>
+</div>
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
+		<template name="pt_postissue_magicselect" templatetype="template" date="1318768857" username="Pitchoune" version="2.2.0"><![CDATA[<div data-role="fieldcontain">
+	<label for="{vb:raw magicselect.varname}">{vb:raw magicselect.text}</label>
+	<select name="{vb:raw magicselect.varname}" id="{vb:raw magicselect.varname}" class="full" tabindex="1">
+		<vb:each from="magicselect[options]" value="option">
+			<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+		</vb:each>
+	</select>
+</div>]]></template>
+		<template name="pt_postissue_short" templatetype="template" date="1318772576" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
+	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - {vb:rawphrase post_new_issue}</title>
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+
+{vb:raw navbar}
+
+<div id="pagetitle" class="pagetitle ui-bar-b">
+	<h1 class="pagetitle">{vb:rawphrase post_new_issue}</h1>
+	<p class="description">{vb:rawphrase project}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a></p>
+</div>
+
+<div data-role="content">
+	<form class="vbform block" method="post" action="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}">
+
+		<div data-role="fieldcontain">
+			<label for="title">{vb:rawphrase title}:</label>
+			<input type="text" class="primary full textbox" name="title" id="title" value="{vb:raw issue.title}" tabindex="1" />
+		</div>
+
+		<div data-role="fieldcontain">
+			<label for="summary">{vb:rawphrase summary}:</label>
+			<input type="text" class="primary full textbox" name="summary" id="summary" value="{vb:raw issue.summary}" tabindex="2" />
+		</div>
+
+		<div data-role="fieldcontain">
+			<label for="issuetypeid">{vb:rawphrase issue_type}</label>
+			<select name="issuetypeid" id="issuetypeid" class="full" tabindex="1">
+				<vb:each from="issuetype_options" value="option">
+					<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+				</vb:each>
+			</select>
+		</div>
+
+		<fieldset class="ui-grid-a"> 
+			<div class="ui-block-a" style="width: 100%"><button type="submit" name="sbutton" data-theme="a">{vb:rawphrase continue}</button></div>
+		</fieldset>
+
+		<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+		<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+		<input type="hidden" name="do" value="addissue" />
+		<input type="hidden" name="projectid" value="{vb:raw project.projectid}" />
+
+	</form>
+</div>
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
+		<template name="pt_postreply" templatetype="template" date="1318772415" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
+	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - <vb:if condition="$show['editnote']">{vb:rawphrase edit_reply}<vb:else />{vb:rawphrase post_reply}</vb:if></title>
+	{vb:raw headinclude_bottom}
+</head>
+<body>
+
+{vb:raw header}
+
+{vb:raw navbar}
+
+<div id="pagetitle" class="pagetitle ui-bar-b">
+	<h1 class="pagetitle"><vb:if condition="$show['editnote']">{vb:rawphrase edit_reply_to_issue_x}<vb:else />{vb:rawphrase reply_to_issue_x}</vb:if></h1>
+	<p class="description">{vb:rawphrase issue_type}: {vb:raw issue.issuetype} | {vb:rawphrase project}: {vb:raw project.title_clean}</p>
+</div>
+
+<div data-role="content">
+	<form class="vbform block" action="projectpost.php?{vb:raw session.sessionurl}do=postreply&amp;issueid={vb:raw issue.issueid}" method="post" name="vbform" onsubmit="return vB_Editor['{vb:raw editorid}'].prepare_submit(0, 0);">
+
+
+
+
+<vb:comment>
+	<vb:if condition="$issuenote['issuenoteid']">
+
+		<h2 class="blockhead">{vb:rawphrase delete_this_note}</h2>
+		<h3 class="blocksubhead">{vb:rawphrase delete_issue_note_check_appropriate_option}</h3>
+		<div class="section">
+			<div class="blockrow">
+				<vb:if condition="$show['delete_option']">
+				<dl class="dep_group">
+
+					<dt><label for="delete"><input type="checkbox" class="dep_ctrl" id="delete" name="dodelete" value="1" tabindex="1" />&nbsp;{vb:rawphrase delete_post_in_manner}</label></dt>
+					<dd id="delete_deps">
+						<ul class="group checkradio">
+ 							<li><label for="deltype_hard"><input type="radio" id="deltype_hard" class="dep_ctrl" name="delete" value="hard" tabindex="1" /> {vb:rawphrase hard_delete}</label></li>
+							<li><label for="deltype_soft"><input type="radio" id="deltype_soft" class="dep_ctrl" name="delete" value="soft" tabindex="1" /> {vb:rawphrase soft_delete}</label>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+				</vb:if>
+
+				<vb:if condition="$show['undelete_option']">
+					<label for="undelete">{vb:rawphrase issue_been_deleted}</label>
+					<input type="checkbox" name="undelete" id="undelete" value="1" tabindex="1" />&nbsp;{vb:rawphrase undelete}
+				</vb:if>
+			</div>
+
+			<div class="blockrow">
+				<label class="full">
+					<vb:if condition="$show['delete_option']">
+						{vb:rawphrase reason_for_edit_delete}
+					<vb:else />
+						{vb:rawphrase reason_for_editing}
+					</vb:if>
+				</label>
+				<input type="text" name="reason" class="textbox primary" value="{vb:raw issue.reason}" tabindex="1" />
+			</div>
+		</div>
 	</vb:if>
+</vb:comment>
 
+
+
+
+		{vb:raw preview}
+
+		{vb:raw usernamecode}
+		
+		{vb:raw messagearea}
+
+		{vb:raw human_verify}
+
+		<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
+		<input type="hidden" name="securitytoken" value="{vb:raw bbuserinfo.securitytoken}" />
+		<input type="hidden" name="do" value="postreply" />
+		<input type="hidden" name="issueid" value="{vb:raw issue.issueid}" />
+		<input type="hidden" name="issuenoteid" value="{vb:raw issuenote.issuenoteid}" />
+		<input type="hidden" name="edit" value="{vb:raw issuenote.isedit}" />
+
+		<vb:if condition="$show['private_edit'] OR !$issuenote['issuenoteid']">
+			<div class="ui-bar ui-bar-b" style="margin: -5px -15px">
+				{vb:rawphrase additional_options}
+			</div>
+
+			<vb:if condition="$show['private_edit']">
+			<div data-role="fieldcontain">
+				<label for="cb_private">{vb:rawphrase private}</label>
+				<input type="checkbox" name="private" value="1" id="cb_private" tabindex="1"{vb:raw private_checked} />
+			</div>
+			</vb:if>
+
+			<vb:if condition="!$issuenote['issuenoteid']">
+				<vb:if condition="$posting_perms['status_edit']">
+					<div data-role="fieldcontain">
+						<label for="changestatusid">{vb:rawphrase change_status_to}</label>
+						<select name="changestatusid" id="changestatusid" class="full" tabindex="1">
+							<option value="0">{vb:rawphrase none_meta}</option>
+							<vb:each from="petition_options" value="option">
+								<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+							</vb:each>
+						</select>
+					</div>
+				<vb:elseif condition="$show['status_petition']" />
+					<div data-role="fieldcontain">
+						<label for="petitionstatusid">{vb:rawphrase petition_for_status_change_to}</label>
+						<select name="petitionstatusid" id="petitionstatusid" class="full" tabindex="1">
+							<option value="0">{vb:rawphrase none_meta}</option>
+							<vb:each from="petition_options" value="option">
+								<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+							</vb:each>
+						</select>
+					</div>
+				</vb:if>
+
+				<vb:if condition="$show['subscribe_option']">
+					<div data-role="fieldcontainer">
+						<label for="subscribetype">{vb:rawphrase subscribe_to_this_issue}</label>
+						<select name="subscribetype" id="subscribetype" class="full" tabindex="1">
+							<option value=""{vb:raw subscribe_selected.donot}>{vb:rawphrase do_not_subscribe}</option>
+							<option value="none"{vb:raw subscribe_selected.none}>{vb:rawphrase no_email_notification}</option>
+							<option value="instant"{vb:raw subscribe_selected.instant}>{vb:rawphrase instant_email_notification}</option>
+							<option value="daily"{vb:raw subscribe_selected.daily}>{vb:rawphrase daily_email_notification}</option>
+							<option value="weekly"{vb:raw subscribe_selected.weekly}>{vb:rawphrase weekly_email_notification}</option>
+						</select>
+					</div>
+				</vb:if>
+			</vb:if>
+		</vb:if>
+		<fieldset class="ui-grid-a"> 
+			<div class="ui-block-a"><button type="submit" name="sbutton" data-theme="a">{vb:rawphrase save}</button></div>
+			<div class="ui-block-b"><button type="submit" name="preview" data-theme="d">{vb:rawphrase preview}</button></div>
+		</fieldset>
+</form>
+</div>
+
+<vb:if condition="$edit_history">
+<br />
+
+<div class="block">
+	<div class="blockhead">
+		{vb:rawphrase edit_history}
+	</div>
+	<div class="blockbody formcontrols">
+		{vb:raw edit_history}
+	</div>
+</div>
+
+</vb:if>
+
+{vb:raw footer}
+
+</body>
+</html>]]></template>
+		<template name="pt_project" templatetype="template" date="1318763861" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+<head>
+	{vb:raw headinclude}
 	<title>{vb:raw project.title_clean} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
-
 	{vb:raw headinclude_bottom}
 </head>
 <body>
@@ -426,17 +947,22 @@
 	<h1 class="pagetitle">{vb:raw project.title}</h1>
 </div>
 
-<div class="ui-content" data-role="content">
+<div data-role="content">
 	<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}" rel="nofollow" id="newthreadlink_top" data-role="button" data-icon="plus" data-inline="true">{vb:rawphrase post_new_issue}</a>
 	<div id="threadlist">
-		<ul id="threads" class="threads ui-listview ui-grid-a" data-role="listview" role="listbox">
-			<li class="ui-li ui-li-divider ui-bar-b" data-role="list-divider" role="heading" tabindex="0">
-				{vb:rawphrase summary}
+		<ul id="threads" class="threads" data-role="listview">
+			<li data-role="list-divider">
 				<vb:if condition="$project['summary']">
-					: {vb:raw project.summary}
+					{vb:rawphrase summary}: {vb:raw project.summary}
+				<vb:else />
+					{vb:rawphrase description}
 				</vb:if>
 			</li>
-			<li class="threadbit dot ui-li" role="option" tabindex="-1" data-theme="c">{vb:raw project.description}</li>
+			<li id="thread_{vb:raw project.projectid}" class="threadbit dot ui-li-has-icon" style="padding-{vb:stylevar left}: 15px">
+				<div class="title">
+					{vb:raw project.description}
+				</div>
+			</li>
 		</ul>
 	</div>
 
@@ -448,8 +974,8 @@
 
 	<vb:if condition="$issuebits">
 		<div id="threadlist">
-			<ul id="threads" class="threads ui-listview" data-role="listview" role="listbox">
-				<li class="ui-li ui-li-divider ui-bar-b" data-role="list-divider" role="heading" tabindex="0"> {vb:rawphrase title} </li>
+			<ul data-role="listview" id="threads" class="threads">
+				<li data-role="list-divider"> {vb:rawphrase title} </li>
 				{vb:raw issuebits}
 			</ul>
 		</div>
@@ -522,7 +1048,5 @@
 	<stylevardfns>
 	</stylevardfns>
 	<stylevars>
-		<stylevar name="htmldoctype" value="YToxOntzOjY6InN0cmluZyI7czoxNToiPCFET0NUWVBFIGh0bWw+Ijt9" />
-		<stylevar name="titleimage" value="YToxOntzOjM6InVybCI7czozMjoiaW1hZ2VzL21vYmlsZS92YnVsbGV0aW4tbG9nby5wbmciO30=" />
 	</stylevars>
 </style>

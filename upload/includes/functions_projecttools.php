@@ -413,6 +413,10 @@ function prepare_issue($issue)
 		$issue['submittime'] = '';
 	}
 
+	// Member dropdown feature
+	$issue['lastposter'] = $issue['lastpostusername'];
+	$issue['lastposterid'] = $issue['lastpostuserid'];
+
 	$issue['replycount'] = vb_number_format($issue['replycount']);
 	$issue['attachcount'] = vb_number_format($issue['attachcount']);
 
@@ -1240,6 +1244,11 @@ function build_issue_bit($issue, $project, $issueperms)
 
 	$issue = prepare_issue($issue);
 
+	$issue['pageinfo_newpost'] = array('goto' => 'newpost', 'do' => 'gotonote');
+
+	// prepare the member action drop-down menu
+	$memberaction_dropdown = construct_memberaction_dropdown(fetch_lastposter_userinfo($issue));
+
 	// Columns to show
 	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
 
@@ -1311,6 +1320,7 @@ function build_issue_bit($issue, $project, $issueperms)
 
 	$templater = vB_Template::create('pt_issuebit');
 		$templater->register('issue', $issue);
+		$templater->register('memberaction_dropdown', $memberaction_dropdown);
 	$issuelist = $templater->render();
 
 	return $issuelist;
