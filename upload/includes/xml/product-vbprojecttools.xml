@@ -1875,7 +1875,7 @@ $db->query_write("
 		1,
 		'project.php',
 		'updateattachments',
-		'projectattachment.php?do=updateattachments&pp=25',
+		'project.php?do=updateattachments&pp=25',
 		'get',
 		'undone')
 ");
