@@ -7143,7 +7143,7 @@ init_project_readmarker_system();
 <vb:else />
 	<li><a class="navtab" href="project.php{vb:raw session.sessionurl_q}">{vb:rawphrase projects}</a></li>
 </vb:if>]]></template>
-		<template name="pt_newpost_attachment" templatetype="template" date="1301261978" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" id="attachfiles">
+		<template name="pt_newpost_attachment" templatetype="template" date="1318873796" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" id="attachfiles">
 	<div class="smallfont"><span class="shade">{vb:rawphrase manage_attachments}</span> <a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_attach" target="_blank">[?]</a></div>
 	<div class="rightcol">
 		<a href="newattachment.php?{vb:raw session.sessionurl}{vb:raw values}&amp;poststarttime={vb:raw poststarttime}&amp;posthash={vb:raw posthash}&amp;contenttypeid={vb:raw contenttypeid}" class="uploadlaunchfallback" target="manageattach" title="{vb:rawphrase add_edit_files_attached}" tabindex="1">{vb:rawphrase manage_attachments}</a>
@@ -7155,6 +7155,7 @@ init_project_readmarker_system();
 		</ul>			
 	</div>
 	<p class="description">{vb:rawphrase valid_file_extensions}: {vb:raw bbuserinfo.attachmentextensions}</p>
+	<p class="description">{vb:rawphrase pt_explanation_attachment_system}</p>
 </div>
 		
 <script type="text/javascript" src="clientscript/vbulletin_attachment.js?v={vb:raw vboptions.simpleversion}"></script>
@@ -11674,7 +11675,7 @@ If you wish to continue this action, <a href="{1}">click here to try again</a>.]
 		</phrasetype>
 		<phrasetype name="FAQ Text" fieldname="faqtext">
 			<phrase name="pt_faq" date="1185887224" username="Ed Sullivan" version="1.0.1"><![CDATA[The Project Tools system adds project management capabilities to the $vboptions[bbtitle]. Depending on how the administrator has configured this system, you will likely be using it to report bugs or make suggestions.]]></phrase>
-			<phrase name="pt_faq_attach" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[The Project Tools attachment system is rather similar to the standard vBulletin attachment system, though the exact file types and sizes that you are allowed to attach will likely differ.<br />
+			<phrase name="pt_faq_attach" date="1318880247" username="Pitchoune" version="2.2.0"><![CDATA[The Project Tools attachment system is rather similar to the standard vBulletin attachment system, though the system to upload files will likely differ.<br />
 <br />
 The unique aspect relates to its handling of patch files. A patch file is a specially formatted text document that can instruct a computer on how to make specific changes to another text document without destroying the rest of the content.<br />
 <br />
@@ -11711,7 +11712,7 @@ To create your own report, make a search with the criteria that you want and cli
 		</phrasetype>
 		<phrasetype name="FAQ Title" fieldname="faqtitle">
 			<phrase name="pt_faq" date="1185887224" username="Ed Sullivan" version="1.0.1"><![CDATA[Project Tools FAQ]]></phrase>
-			<phrase name="pt_faq_attach" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[What is unique about the Project Tools' attachment system?]]></phrase>
+			<phrase name="pt_faq_attach" date="1318880247" username="Pitchoune" version="2.2.0"><![CDATA[What is unique about the Project Tools' attachment system?]]></phrase>
 			<phrase name="pt_faq_how_post" date="1176396643" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What makes a good issue description?]]></phrase>
 			<phrase name="pt_faq_private" date="1176396652" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What does it mean to make something private? When should I do this?]]></phrase>
 			<phrase name="pt_faq_report" date="1176812007" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What are reports? How do I use them?]]></phrase>
@@ -11937,6 +11938,9 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="projects_list" date="1281875205" username="Pitchoune" version="2.1.2"><![CDATA[Project lists. Separate each project ID with a comma.]]></phrase>
 			<phrase name="promote_to_ptissue" date="1299657660" username="Pitchoune" version="2.2.0"><![CDATA[Promote to Issue]]></phrase>
 			<phrase name="pt_create_issue" date="1274869090" username="Pitchoune" version="2.1.1"><![CDATA[Create issue]]></phrase>
+			<phrase name="pt_explanation_attachment_system" date="1318879557" username="Pitchoune" version="2.2.0"><![CDATA[To upload attachments, you need to select attachments by clicking on the 'Manage Attachments' button, and when you finished, click on the 'Upload' button above on the right.<br />
+<br />
+This is needed because Project Tools have a particular attachment system and needed to be compatible with the vBulletin 4 attachment system.]]></phrase>
 			<phrase name="pt_managesubscriptions" date="1275163644" username="Pitchoune" version="2.1.1"><![CDATA[Manage Subscriptions]]></phrase>
 			<phrase name="public_reports" date="1175173202" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Public Reports]]></phrase>
 			<phrase name="quick_reply" date="1175076770" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Quick Reply]]></phrase>
@@ -12315,14 +12319,6 @@ This is the code which will save your selection in the magic select.]]></phrase>
 			<phrase name="setting_pt_allowstartervote_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Allow Issue Starter to Vote on Issue?]]></phrase>
 			<phrase name="setting_pt_attachfile_desc" date="1216216839" username="Ed Sullivan" version="2.0.0 Beta 1" />
 			<phrase name="setting_pt_attachfile_title" date="1216216839" username="Ed Sullivan" version="2.0.0 Beta 1"><![CDATA[Project Tools Attachments as Files?]]></phrase>
-			<phrase name="setting_pt_attachmentextensions_desc" date="1307024065" username="Pitchoune" version="2.2.0"><![CDATA[The Project Tools allow different file types to be attached than the forum. Enter the file extensions that users will be allowed to attach to issues here.<br />
-<br />
-Put each extension on a separate line.<br />
-<br />
-Making this blank will allow all extensions. To disable attachments in the project tools, set the "Maximum Issue Attachment Size" to 0 or use permissions.]]></phrase>
-			<phrase name="setting_pt_attachmentextensions_title" date="1307024065" username="Pitchoune" version="2.2.0"><![CDATA[Allowed Issue Attachment Extensions - Deprecated]]></phrase>
-			<phrase name="setting_pt_attachmentsize_desc" date="1307024081" username="Pitchoune" version="2.2.0"><![CDATA[The maximum allowed attachment size, <em>in kilobytes</em>.]]></phrase>
-			<phrase name="setting_pt_attachmentsize_title" date="1307024081" username="Pitchoune" version="2.2.0"><![CDATA[Maximum Issue Attachment Size - Deprecated]]></phrase>
 			<phrase name="setting_pt_attachpath_desc" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1" />
 			<phrase name="setting_pt_attachpath_title" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1"><![CDATA[Project Tools Attachment File Path]]></phrase>
 			<phrase name="setting_pt_groupsearchissuespergroup_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[When performing a grouped search, how many issues should be displayed in each group on the first page?<br />
@@ -12472,24 +12468,6 @@ Separate each style ID with a comma.<br />
 			<setting varname="pt_overview_timelineentries" displayorder="110">
 				<datatype>number</datatype>
 				<defaultvalue>15</defaultvalue>
-			</setting>
-			<setting varname="pt_attachmentextensions" displayorder="120">
-				<datatype>free</datatype>
-				<optioncode>textarea</optioncode>
-				<defaultvalue>gif
-jpe
-jpeg
-jpg
-png
-xml
-zip
-txt
-patch
-diff</defaultvalue>
-			</setting>
-			<setting varname="pt_attachmentsize" displayorder="130">
-				<datatype>number</datatype>
-				<defaultvalue>1024</defaultvalue>
 			</setting>
 			<setting varname="pt_allowstartervote" displayorder="140">
 				<datatype>boolean</datatype>
