@@ -34,11 +34,6 @@
 		</navoption>
 
 		<navoption displayorder="70">
-			<phrase>attachment_storage_type</phrase>
-			<link>projectattachment.php?do=storage</link>
-		</navoption>
-
-		<navoption displayorder="80">
 			<phrase>project_magic_select_manager</phrase>
 			<link>projectmagicselect.php</link>
 		</navoption>
