@@ -12153,7 +12153,6 @@ This is the code which will save your selection in the magic select.]]></phrase>
 			<phrase name="no_versions_groups_defined_project" date="1181310460" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[No versions or groups defined for this project!]]></phrase>
 			<phrase name="note_a_larger_value_will_be_displayed_first" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Note: a larger value will be displayed first!]]></phrase>
 			<phrase name="note_higer_display_orders_first" date="1181310491" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Note: Higher display orders will be shown first here!]]></phrase>
-			<phrase name="note_pt_attachments_diff_dir_vb" date="1181225872" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Note: Your Project Tools' attachments must be stored in a different directory than your vBulletin attachments!]]></phrase>
 			<phrase name="permission_apply_all_projects_unless_custom" date="1176819290" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[These permissions will apply to all projects unless you specify a custom set of permissions for a specific project and user group.]]></phrase>
 			<phrase name="permissions_for_project_x" date="1213805602" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Permissions for Project <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="plural_form_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Plural Form<dfn>Example: Bugs</dfn>]]></phrase>
@@ -12162,7 +12161,6 @@ This is the code which will save your selection in the magic select.]]></phrase>
 <dfn>Example: Post New Bug</dfn>]]></phrase>
 			<phrase name="priorities" date="1295124480" username="Pitchoune" version="2.2.0"><![CDATA[Priorities]]></phrase>
 			<phrase name="priorities_for_x" date="1295124492" username="Pitchoune" version="2.2.0"><![CDATA[Priorities for <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="project_attachment_manager" date="1274390165" username="Pitchoune" version="2.1.1"><![CDATA[Project Attachment Manager]]></phrase>
 			<phrase name="project_list" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project List]]></phrase>
 			<phrase name="project_magic_select" date="1316724625" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select]]></phrase>
 			<phrase name="project_magic_select_list" date="1316724595" username="Pitchoune" version="2.2.0"><![CDATA[Project Magic Select]]></phrase>
@@ -12170,7 +12168,6 @@ This is the code which will save your selection in the magic select.]]></phrase>
 			<phrase name="project_permission_values_do_not_apply" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Project permission values do not apply. This user's access to the Project Tools has been globally disabled.]]></phrase>
 			<phrase name="project_permissions" date="1176203371" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project Permissions]]></phrase>
 			<phrase name="project_specific_permissions" date="1176203371" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project-Specific Permissions]]></phrase>
-			<phrase name="project_tools_attachments" date="1274390190" username="Pitchoune" version="2.1.1"><![CDATA[Project Tools Attachments]]></phrase>
 			<phrase name="project_tools_install_info" date="1179502481" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You have successfully installed vBulletin Project Tools, version <em>{1}</em>.]]></phrase>
 			<phrase name="project_tools_installed_successfully" date="1179502402" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[vBulletin Project Tools Installed Successfully!]]></phrase>
 			<phrase name="project_tools_options" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project Tools' Options]]></phrase>
