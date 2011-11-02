@@ -69,6 +69,11 @@ log_admin_action(
 
 print_cp_header($vbphrase['project_tools']);
 
+$vbulletin->input->clean_array_gpc('r', array(
+	'perpage' => TYPE_UINT,
+	'startat' => TYPE_UINT
+));
+
 if (empty($_REQUEST['do']))
 {
 	$_REQUEST['do'] = 'projectlist';
@@ -134,28 +139,21 @@ if ($_REQUEST['do'] == 'updateattachments')
 	require_once(DIR . '/includes/class_dbalter.php');
 	$db_alter = new vB_Database_Alter_MySQL($db);
 
-	if ($db_alter->fetch_table_info('pt_issueattach'))
+	$continue = $db_alter->fetch_table_info('pt_issueattach');
+	if (!$continue)
 	{
-		$fields = $db_alter->fetch_field_info();
-
-		if ($fields)
-		{
-			if (!$fields->table_field_data['filesize'])
-			{
-				define('CP_REDIRECT', 'project.php');
-				print_stop_message('updated_pt_attachments_successfully');
-			}
-		}
-
-		// Add a temp column we can delete after
-		$db_alter->add_field(array(
-			'name' => 'oldattachmentid',
-			'type' => 'int',
-			'attributes' => 'unsigned',
-			'null' => false,
-			'default' => 0
-		));
+		define('CP_REDIRECT', 'project.php');
+		print_stop_message('updated_pt_attachments_successfully');
 	}
+
+	// Add a temp column we can delete after
+	$db_alter->add_field(array(
+		'name' => 'oldattachmentid',
+		'type' => 'int',
+		'attributes' => 'unsigned',
+		'null' => false,
+		'default' => 0
+	));
 
 	$finishat = $vbulletin->GPC['startat'] + $vbulletin->GPC['perpage'];
 	echo '<p>' . $vbphrase['updating_pt_attachments'] . '</p>';
