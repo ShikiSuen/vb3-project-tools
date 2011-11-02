@@ -513,8 +513,8 @@ if ($_REQUEST['do'] == 'projectpriority')
 				$vbphrase['priority' . $priority['projectpriorityid'] . ''],
 				"<input type=\"text\" class=\"bginput\" name=\"order[$priority[projectpriorityid]]\" value=\"$priority[displayorder]\" tabindex=\"1\" size=\"3\" />",
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
-					construct_link_code($vbphrase['edit'], 'project.php?do=projectpriorityedit&amp;projectpriorityid=' . $priority['projectpriorityid']) .
-					construct_link_code($vbphrase['delete'], 'project.php?do=projectprioritydelete&amp;projectpriorityid=' . $priority['projectpriorityid']) .
+					construct_link_code($vbphrase['edit'], 'projectpriority.php?do=projectpriorityedit&amp;projectpriorityid=' . $priority['projectpriorityid']) .
+					construct_link_code($vbphrase['delete'], 'projectpriority.php?do=projectprioritydelete&amp;projectpriorityid=' . $priority['projectpriorityid']) .
 				'</div>'
 			));
 		}
