@@ -612,7 +612,7 @@ if ($_POST['do'] == 'projectupdate')
 		'afterforumids' => TYPE_ARRAY_UINT,
 		'forumtitle' => TYPE_STR,
 		'requireappliesversion' => TYPE_UINT,
-		'requirecategry' => TYPE_UINT,
+		'requirecategory' => TYPE_UINT,
 		'requirepriority' => TYPE_UINT
 	));
 
