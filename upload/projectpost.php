@@ -2068,50 +2068,57 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$issue['issuestatus'] =  $vbphrase["issuestatus$issue[issuestatusid]"];
 	}
 
+	// Categories
 	$category_options = array();
 
-	foreach ($vbulletin->pt_categories AS $category)
+	if (!in_array($project['requirecategory'], array(0, 1)))
 	{
-		$option = array();
-
-		if ($category['projectid'] != $project['projectid'])
+		foreach ($vbulletin->pt_categories AS $category)
 		{
-			continue;
+			$option = array();
+
+			if ($category['projectid'] != $project['projectid'])
+			{
+				continue;
+			}
+
+			$option['title'] = $vbphrase['category' . $category['projectcategoryid']];
+			$option['value'] = $category['projectcategoryid'];
+			$option['selected'] = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
+
+			$category_options[] = $option;
 		}
-
-		$option['title'] = $vbphrase['category' . $category['projectcategoryid']];
-		$option['value'] = $category['projectcategoryid'];
-		$option['selected'] = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
-
-		$category_options[] = $option;
 	}
 
-	// setup priority options
+	// Priorities
 	$priority = $priority_options = array();
 
-	$priorities = $db->query_read("
-		SELECT *
-		FROM " . TABLE_PREFIX . "pt_projectpriority
-		WHERE projectid = " . $project['projectid'] . "
-	");
-
-	while ($prioritys = $db->fetch_array($priorities))
+	if (!in_array($project['requirepriority'], array(0, 1)))
 	{
-		$priority["$prioritys[projectpriorityid]"] = $prioritys;
+		$priorities = $db->query_read("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_projectpriority
+			WHERE projectid = " . $project['projectid'] . "
+		");
+
+		while ($prioritys = $db->fetch_array($priorities))
+		{
+			$priority["$prioritys[projectpriorityid]"] = $prioritys;
+		}
+
+		foreach ($priority AS $optionvalue => $options)
+		{
+			$option = array();
+
+			$option['title'] = $vbphrase['priority' . $optionvalue . ''];
+			$option['value'] = $optionvalue;
+			$option['selected'] = ($issue['priority'] == $optionvalue ? ' selected="selected"' : '');
+
+			$priority_options[] = $option;
+		}
 	}
 
-	foreach ($priority AS $optionvalue => $options)
-	{
-		$option = array();
-
-		$option['title'] = $vbphrase['priority' . $optionvalue . ''];
-		$option['value'] = $optionvalue;
-		$option['selected'] = ($issue['priority'] == $optionvalue ? ' selected="selected"' : '');
-
-		$priority_options[] = $option;
-	}
-
-	// setup versions
+	// Versions
 	$version_groups = array();
 
 	$version_query = $db->query_read("
@@ -2119,7 +2126,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
 		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
 			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
-		WHERE projectversion.projectid = $project[projectid]
+		WHERE projectversion.projectid = " . $project['projectid'] . "
 		ORDER BY projectversion.effectiveorder DESC
 	");
 
@@ -2154,7 +2161,10 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$optiongroup['group'] = $group_applies;
 		$optiongroup['label'] = $optgroup_label;
 
-		$applies_versions[] = $optiongroup;
+		if (!in_array($project['requireappliesversion'], array(0, 1)))
+		{
+			$applies_versions[] = $optiongroup;
+		}
 
 		$optiongroup['group'] = $group_addressed;
 

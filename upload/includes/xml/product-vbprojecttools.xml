@@ -11295,11 +11295,11 @@ Basic version tracking is also provided on a per-project basis. Version tracking
 			<phrase name="project_projetadd_projectedit_emailonassignment_title" date="1318370986" username="Pitchoune" version="2.2.0"><![CDATA[Send Email on Issue Assignment]]></phrase>
 			<phrase name="project_projetadd_projectedit_pmonassignment_text" date="1318371215" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the assigned user must receive aprivate message when he/she is assigned to an issue.]]></phrase>
 			<phrase name="project_projetadd_projectedit_pmonassignment_title" date="1318371215" username="Pitchoune" version="2.2.0"><![CDATA[Send PM on Issue Assignment]]></phrase>
-			<phrase name="project_projetadd_projectedit_requireappliesversion_text" date="1318371358" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the applicable version is required or not, if there is a default value or not.]]></phrase>
+			<phrase name="project_projetadd_projectedit_requireappliesversion_text" date="1323366995" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the applicable version is required or not, if there is a default value or not. If there is no default value defined in the versions manager, the value 'Unknown' will be set when an user will create a new issue.]]></phrase>
 			<phrase name="project_projetadd_projectedit_requireappliesversion_title" date="1318371358" username="Pitchoune" version="2.2.0"><![CDATA[Applicable Version]]></phrase>
-			<phrase name="project_projetadd_projectedit_requirecategory_text" date="1318371382" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the category is required or not, if there is a default value or not.]]></phrase>
+			<phrase name="project_projetadd_projectedit_requirecategory_text" date="1323366980" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the category is required or not, if there is a default value or not. If there is no default value defined in the category manager, the value 'Unknown' will be set when an user will create a new issue.]]></phrase>
 			<phrase name="project_projetadd_projectedit_requirecategory_title" date="1318371382" username="Pitchoune" version="2.2.0"><![CDATA[Category]]></phrase>
-			<phrase name="project_projetadd_projectedit_requirepriority_text" date="1318371408" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the priority is required or not, if there is a default value or not.]]></phrase>
+			<phrase name="project_projetadd_projectedit_requirepriority_text" date="1323367060" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the priority is required or not, if there is a default value or not. If there is no default value defined in the priority manager, the first value in the priority list will be set when an user will create a new issue.]]></phrase>
 			<phrase name="project_projetadd_projectedit_requirepriority_title" date="1318371408" username="Pitchoune" version="2.2.0"><![CDATA[Priority]]></phrase>
 			<phrase name="project_projetadd_projectedit_summary_text" date="1318370779" username="Pitchoune" version="2.2.0"><![CDATA[Define here the summary of the project. You can use HTML code.]]></phrase>
 			<phrase name="project_projetadd_projectedit_summary_title" date="1318370779" username="Pitchoune" version="2.2.0"><![CDATA[Summary]]></phrase>
@@ -11624,8 +11624,10 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 		<phrasetype name="Error Messages" fieldname="error">
 			<phrase name="after_upgrade_40_update_pt_attachment" date="1303579053" username="Pitchoune" version="2.2.0"><![CDATA[<strong>vBulletin Project Tools 2.2 Post Upgrade</strong>
 <p>You must update your Project Tools attachments to vBulletin 4 format.</p>]]></phrase>
-			<phrase name="applicable_version_required" date="1178898662" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You must select an applicable version for this issue.]]></phrase>
-			<phrase name="category_required" date="1178898704" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You must select a category for this issue.]]></phrase>
+			<phrase name="applicable_version_missing_contact_administrator" date="1323361621" username="Pitchoune" version="2.2.0"><![CDATA[The applicable version is missing and is required. Please contact the <a href="{1}">administrator</a>.]]></phrase>
+			<phrase name="applicable_version_required" date="1323365011" username="Pitchoune" version="2.2.0"><![CDATA[You must select an applicable version for this issue. If there is no applicable version to select, please contact the <a href="{1}">administrator</a>.]]></phrase>
+			<phrase name="category_missing_contact_administrator" date="1323361590" username="Pitchoune" version="2.2.0"><![CDATA[The category is missing and is required. Please contact the <a href="{1}">administrator</a>.]]></phrase>
+			<phrase name="category_required" date="1323365050" username="Pitchoune" version="2.2.0"><![CDATA[You must select a category for this issue. If there is no category to select, please contact the <a href="{1}">administrator</a>.]]></phrase>
 			<phrase name="counters_rebuilt" date="1170954293" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Counters Rebuilt]]></phrase>
 			<phrase name="invalid_issue_specified" date="1176210291" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Invalid issue specified.]]></phrase>
 			<phrase name="issue_saved" date="1173195623" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Saved]]></phrase>
@@ -11640,7 +11642,8 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 			<phrase name="no_magic_select_matched_your_query" date="1316725369" username="Pitchoune" version="2.2.0"><![CDATA[No Magic Select Matched Your Query]]></phrase>
 			<phrase name="no_selected_project" date="1316814180" username="Pitchoune" version="2.2.0"><![CDATA[You didn't selected any project. Please select a project to use this magic select.]]></phrase>
 			<phrase name="one_type_must_be_available" date="1176210769" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[At least one issue type must be available for this project.]]></phrase>
-			<phrase name="priority_required" date="1178898723" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You must select a priority for this issue.]]></phrase>
+			<phrase name="priority_missing_contact_administrator" date="1323361605" username="Pitchoune" version="2.2.0"><![CDATA[The priority is missing and is required. Please contact the <a href="{1}">administrator</a>.]]></phrase>
+			<phrase name="priority_required" date="1323365071" username="Pitchoune" version="2.2.0"><![CDATA[You must select a priority for this issue. If there is no priority to select, please contact the <a href="{1}">administrator</a>.]]></phrase>
 			<phrase name="project_category_deleted" date="1173188557" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Category Deleted]]></phrase>
 			<phrase name="project_category_saved" date="1173188543" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Category Saved]]></phrase>
 			<phrase name="project_deleted" date="1168607282" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Deleted]]></phrase>

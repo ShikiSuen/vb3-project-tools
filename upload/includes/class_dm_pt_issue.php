@@ -233,66 +233,6 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	}
 
 	/**
-	* Validates that the specified priority is valid for this issue.
-	* Project come from the DM's settings.
-	*
-	* @param	string	Priority ID
-	*
-	* @param	bool	Whether the priority is valid
-	*/
-	function validate_priority($priority)
-	{
-		$priority_result = $this->registry->db->query_first("
-			SELECT projectpriorityid
-			FROM " . TABLE_PREFIX . "pt_projectpriority
-			WHERE projectpriorityid = " . intval($priority) . "
-				AND projectid = " . intval($this->fetch_field('projectid')) . "
-		");
-
-		return ($priority_result ? true : false);
-	}
-
-	/**
-	* Validates that the specified issue status is valid for this issue.
-	* Issue type come from the DM's settings.
-	*
-	* @param	integer	Issue status ID
-	*
-	* @return	boolean
-	*/
-	function validate_issuestatusid($issuestatusid)
-	{
-		$status_result = $this->registry->db->query_first("
-			SELECT issuestatusid
-			FROM " . TABLE_PREFIX . "pt_issuestatus
-			WHERE issuestatusid = " . intval($issuestatusid) . "
-				AND issuetypeid = '" . $this->registry->db->escape_string($this->fetch_field('issuetypeid')) . "'
-		");
-
-		return ($status_result ? true : false);
-	}
-
-	/**
-	* Validates that the specified milestone is valid for this issue.
-	* Project come from the DM's settings.
-	*
-	* @param	integer	Milestone ID
-	*
-	* @return	boolean
-	*/
-	function validate_milestoneid($milestoneid)
-	{
-		$milestone_result = $this->registry->db->query_first("
-			SELECT milestoneid
-			FROM " . TABLE_PREFIX . "pt_milestone
-			WHERE milestoneid = " . intval($milestoneid) . "
-				AND projectid = " . intval($this->fetch_field('projectid')) . "
-		");
-
-		return ($milestone_result ? true : false);
-	}
-
-	/**
 	* Any checks to run immediately before saving. If returning false, the save will not take place.
 	*
 	* @param	boolean	Do the query?
@@ -334,21 +274,15 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
-		// confirm that the priority is valid
-		if (isset($this->pt_issue['priority']))
-		{
-			if (!$this->validate_priority($this->pt_issue['priority']))
-			{
-				global $vbphrase;
-				$this->error('invalidid', $vbphrase['priority'], $this->registry->options['contactuslink']);
-				return false;
-			}
-		}
-
 		// confirm that the status is valid for this type
-		if (isset($this->pt_issue['issuestatusid']))
+		if (!empty($this->pt_issue['issuestatusid']))
 		{
-			if (!$this->validate_issuestatusid($this->pt_issue['issuestatusid']))
+			if (!$this->registry->db->query_first("
+				SELECT issuestatusid
+				FROM " . TABLE_PREFIX . "pt_issuestatus
+				WHERE issuestatusid = " . intval($this->pt_issue['issuestatusid']) . "
+					AND issuetypeid = '" . $this->registry->db->escape_string($this->fetch_field('issuetypeid')) . "'
+			"))
 			{
 				global $vbphrase;
 				$this->error('invalidid', $vbphrase['issue_status'], $this->registry->options['contactuslink']);
@@ -356,7 +290,23 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
-		// confirm that the category is valid for this type
+		// confirm that the priority is valid for this project
+		if (!empty($this->pt_issue['priority']))
+		{
+			if (!$this->registry->db->query_first("
+				SELECT projectpriorityid
+				FROM " . TABLE_PREFIX . "pt_projectpriority
+				WHERE projectpriorityid = " . intval($this->pt_issue['priority']) . "
+					AND projectid = " . intval($this->fetch_field('projectid')) . "
+			"))
+			{
+				global $vbphrase;
+				$this->error('invalidid', $vbphrase['priority'], $this->registry->options['contactuslink']);
+				return false;
+			}
+		}
+
+		// confirm that the category is valid for this project
 		if (!empty($this->pt_issue['projectcategoryid']))
 		{
 			if (!$this->registry->db->query_first("
@@ -372,7 +322,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
-		// confirm that the versions are valid for this project
+		// confirm that the aplies version is valid for this project
 		if (!empty($this->pt_issue['appliesversionid']))
 		{
 			if (!$this->registry->db->query_first("
@@ -388,6 +338,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
+		// confirm that the addressed version is valid for this project
 		if (!empty($this->pt_issue['addressedversionid']))
 		{
 			if (!$this->registry->db->query_first("
@@ -403,9 +354,15 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
+		// confirm that the milestone is valid for this project
 		if (!empty($this->pt_issue['milestoneid']))
 		{
-			if (!$this->validate_milestoneid($this->pt_issue['milestoneid']))
+			if (!$this->registry->db->query_first("
+				SELECT milestoneid
+				FROM " . TABLE_PREFIX . "pt_milestone
+				WHERE milestoneid = " . intval($this->pt_issue['milestoneid']) . "
+					AND projectid = " . intval($this->fetch_field('projectid')) . "
+			"))
 			{
 				global $vbphrase;
 				$this->error('invalidid', $vbphrase['milestone'], $this->registry->options['contactuslink']);
@@ -425,6 +382,12 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			// 2 = On, not required
 			// 3 = On, required
 
+			// Specs:
+			// If On, apply some more checks:
+			// - If auto-set, check if it exixts at least 1 item. If not, error
+			// - If required and not defined, error
+
+			// Applies version
 			if (in_array($project_requiredappliesversion, array(1, 2, 3)) AND !$this->fetch_field('appliesversionid'))
 			{
 				if ($project_requiredappliesversion == 1)
@@ -436,22 +399,35 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
 							AND defaultvalue = 1
 					");
-					$this->do_set('appliesversionid', $appliesversionid['projectversionid']);
+
+					if (!$appliesversionid)
+					{
+						$this->error('applicable_version_missing_contact_administrator', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('appliesversionid', $appliesversionid['projectversionid']);
+					}
 				}
 				else if ($project_requiredappliesversion == 3)
 				{
-					if ($this->registry->db->query_first("
+					if (!$this->registry->db->query_first("
 						SELECT projectversionid
 						FROM " . TABLE_PREFIX . "pt_projectversion
 						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
 						LIMIT 1
 						"))
 					{
-						$this->error('applicable_version_required');
+						$this->error('applicable_version_required', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('appliesversionid', $appliesversionid['projectversionid']);
 					}
 				}
 			}
 
+			// Category
 			if (in_array($project_requiredcategory, array(1, 2, 3)) AND !$this->fetch_field('projectcategoryid'))
 			{
 				if ($project_requiredcategory == 1)
@@ -463,45 +439,70 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
 							AND defaultvalue = 1
 					");
-					$this->do_set('projectcategoryid', $projectcategoryid['projectcategoryid']);
+
+					if (!$projectcategoryid)
+					{
+						$this->error('category_missing_contact_administrator', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('projectcategoryid', $projectcategoryid['projectcategoryid']);
+					}
 				}
 				else if ($project_requiredcategory == 3)
 				{
-					if ($this->registry->db->query_first("
+					if (!$this->registry->db->query_first("
 						SELECT projectcategoryid
 						FROM " . TABLE_PREFIX . "pt_projectcategory
 						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
 						LIMIT 1
 					"))
 					{
-						$this->error('category_required');
+						$this->error('category_required', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('projectcategoryid', $projectcategoryid['projectcategoryid']);
 					}
 				}
 			}
 
+			// Priority
 			if (in_array($project_requiredpriority, array(1, 2, 3)) AND !$this->fetch_field('priority'))
 			{
 				if ($project_requiredpriority == 1)
 				{
 					// Defining one automatically
-					$priority = $this->registry->db->query_first("
-						SELECT projectcategoryid
+					$priorityid = $this->registry->db->query_first("
+						SELECT projectpriorityid
 						FROM " . TABLE_PREFIX . "pt_projectpriority
 						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
 							AND defaultvalue = 1
 					");
-					$this->do_set('priority', $priority['projectpriorityid']);
+
+					if (!$priorityid)
+					{
+						$this->error('priority_missing_contact_administrator', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('priority', $priorityid['projectpriorityid']);
+					}
 				}
 				else if ($project_requiredpriority == 3)
 				{
-					if ($this->registry->db->query_first("
+					if (!$this->registry->db->query_first("
 						SELECT projectpriorityid
 						FROM " . TABLE_PREFIX . "pt_projectpriority
 						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
 						LIMIT 1
 					"))
 					{
-						$this->error('priority_required');
+						$this->error('priority_required', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('priority', $priorityid['projectpriorityid']);
 					}
 				}
 			}
