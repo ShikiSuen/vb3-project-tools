@@ -460,8 +460,8 @@ if ($_REQUEST['do'] == 'projectcategory')
 				$vbphrase['category' . $category['projectcategoryid'] . ''],
 				"<input type=\"text\" class=\"bginput\" name=\"order[$category[projectcategoryid]]\" value=\"$category[displayorder]\" tabindex=\"1\" size=\"3\" />",
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
-					construct_link_code($vbphrase['edit'], 'project.php?do=projectcategoryedit&amp;projectcategoryid=' . $category['projectcategoryid']) .
-					construct_link_code($vbphrase['delete'], 'project.php?do=projectcategorydelete&amp;projectcategoryid=' . $category['projectcategoryid']) .
+					construct_link_code($vbphrase['edit'], 'projectcategory.php?do=projectcategoryedit&amp;projectcategoryid=' . $category['projectcategoryid']) .
+					construct_link_code($vbphrase['delete'], 'projectcategory.php?do=projectcategorydelete&amp;projectcategoryid=' . $category['projectcategoryid']) .
 				'</div>'
 			));
 		}
