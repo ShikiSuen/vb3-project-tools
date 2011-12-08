@@ -1684,7 +1684,7 @@ if ($_POST['do'] == 'postissue')
 
 			if ($vbulletin->GPC['ajax'])
 			{
-				// Quick edit
+				// AJAX Edit (Quick edit)
 				$issue = verify_issue($vbulletin->GPC['issueid'], true, array('avatar', 'vote', 'milestone'));
 				$project = verify_project($issue['projectid']);
 
@@ -1831,10 +1831,7 @@ if ($_POST['do'] == 'postissue')
 			}
 			else
 			{
-				// Add
-				// Remove auto-saved content
-				clear_autosave_text('vBProjectTools_Issue', 0, 0, $vbulletin->userinfo['userid']);
-
+				// Non-AJAX Edit
 				($hook = vBulletinHook::fetch_hook('projectpost_postissue_complete')) ? eval($hook) : false;
 
 				$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
@@ -1843,6 +1840,10 @@ if ($_POST['do'] == 'postissue')
 		}
 		else
 		{
+			// Add new issue
+			// Remove auto-saved content
+			clear_autosave_text('vBProjectTools_Issue', 0, 0, $vbulletin->userinfo['userid']);
+
 			handle_issue_subscription_change($issue['issueid'], '', $vbulletin->GPC['subscribetype']);
 
 			($hook = vBulletinHook::fetch_hook('projectpost_postissue_complete')) ? eval($hook) : false;
@@ -2257,21 +2258,21 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		// Add
 		$editorid = construct_edit_toolbar(
 			htmlspecialchars_uni($issue['pagetext']),
-			false,
-			'pt',
-			$vbulletin->options['pt_allowsmilies'],
-			true,
-			false,
-			'fe',
-			'',
-			array(), // attachments - handled differently in PT
-			'content', // default value
-			'vBProjectTools_Issue', // Content type - needed for auto-save
-			0, // ID of the content
-			$issue['issueid'], // ID of the parent content
-			false, // Preview
-			true, // Auto load auto-saved content
-			'title' // ID of the title
+			false,									// Initial text in HTML?
+			'pt',									// Project ID
+			$vbulletin->options['pt_allowsmilies'], // Smilies
+			true,									// Parse smilies in text?
+			false,									// attachments - handled differently in PT
+			'fe',									// Full editor
+			'',										// Forced editorid
+			array(),								// attachments - handled differently in PT
+			'content',								// default value
+			'vBProjectTools_Issue',					// Content type - needed for auto-save
+			0,										// ID of the content
+			$issue['issueid'],						// ID of the parent content
+			false,									// Preview
+			true,									// Auto load auto-saved content
+			'title'									// ID of the title
 		);
 	}
 	else
