@@ -55,13 +55,10 @@ if (!can_administer('canpt'))
 // ############################# LOG ACTION ###############################
 $vbulletin->input->clean_array_gpc('r', array(
 	'projectid' => TYPE_UINT,
-	'issuestatusid' => TYPE_UINT,
+	'projectpriorityid' => TYPE_UINT
 ));
 
-log_admin_action(
-	(!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') .
-	(!empty($vbulletin->GPC['issuestatusid']) ? ' status id = ' . $vbulletin->GPC['issuestatusid'] : '')
-);
+log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') . (!empty($vbulletin->GPC['projectpriorityid']) ? ' status id = ' . $vbulletin->GPC['projectpriorityid'] : ''));
 
 // ########################################################################
 // ######################### START MAIN SCRIPT ############################
@@ -96,8 +93,6 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 if ($_POST['do'] == 'projectpriorityupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'projectpriorityid' => TYPE_UINT,
-		'projectid' => TYPE_UINT,
 		'title' => TYPE_NOHTML,
 		'displayorder' => TYPE_UINT,
 		'default' => TYPE_BOOL,
@@ -245,11 +240,6 @@ if ($_POST['do'] == 'projectpriorityupdate')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriorityedit')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid' => TYPE_UINT,
-		'projectpriorityid' => TYPE_UINT
-	));
-
 	if ($vbulletin->GPC['projectpriorityid'])
 	{
 		$projectpriority = $db->query_first("
@@ -288,7 +278,7 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 	if ($projectpriority['projectpriorityid'])
 	{
-		print_table_header($vbphrase['edit_project_priority']);
+		print_table_header(construct_phrase($vbphrase['edit_project_priority'], $vbphrase['priority' . $projectpriority['projectpriorityid'] . '']));
 		print_input_row($vbphrase['title'] . '<dfn>' . construct_link_code($vbphrase['translations'], 'phrase.php?' . $vbulletin->session->vars['sessionurl'] . 'do=edit&amp;fieldname=projecttools&amp;t=1&amp;varname=priority' . $projectpriority['projectpriorityid'], true) . '</dfn>', 'title', $vbphrase['priority' . $projectpriority['projectpriorityid'] . ''], false);
 	}
 	else
@@ -354,10 +344,7 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 // ########################################################################
 if ($_POST['do'] == 'projectprioritykill')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'projectpriorityid' => TYPE_UINT,
-		'destpriorityid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('p', 'destpriorityid', TYPE_UINT);
 
 	$projectpriority = $db->query_first("
 		SELECT *
@@ -397,8 +384,6 @@ if ($_POST['do'] == 'projectprioritykill')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectprioritydelete')
 {
-	$vbulletin->input->clean_gpc('r', 'projectpriorityid', TYPE_UINT);
-
 	$projectpriority = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectpriority
@@ -435,8 +420,7 @@ if ($_REQUEST['do'] == 'projectprioritydelete')
 		'projectpriority', 'projectpriorirykill',
 		'',
 		0,
-		$vbphrase['existing_affected_issues_updated_delete_select_priority'] .
-			'&nbsp;<select name="destpriorityid">' . construct_select_options($priorities) . '</select>',
+		$vbphrase['existing_affected_issues_updated_delete_select_priority'] . '&nbsp;<select name="destpriorityid">' . construct_select_options($priorities) . '</select>',
 		'title'
 	);
 }
@@ -444,10 +428,7 @@ if ($_REQUEST['do'] == 'projectprioritydelete')
 // ########################################################################
 if ($_POST['do'] == 'projectprioritydisplayorder')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'order' => TYPE_ARRAY_UINT,
-		'projectid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('p', 'order', TYPE_ARRAY_UINT);
 
 	$case = '';
 
@@ -473,8 +454,6 @@ if ($_POST['do'] == 'projectprioritydisplayorder')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectpriority')
 {
-	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
-
 	$project = fetch_project_info($vbulletin->GPC['projectid'], true);
 
 	if (!$project)

@@ -53,15 +53,9 @@ if (!can_administer('canpt'))
 }
 
 // ############################# LOG ACTION ###############################
-$vbulletin->input->clean_array_gpc('r', array(
-	'projectid' => TYPE_UINT,
-	'issuestatusid' => TYPE_UINT,
-));
+$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
 
-log_admin_action(
-	(!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') .
-	(!empty($vbulletin->GPC['issuestatusid']) ? ' status id = ' . $vbulletin->GPC['issuestatusid'] : '')
-);
+log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : ''));
 
 // ########################################################################
 // ######################### START MAIN SCRIPT ############################
@@ -321,7 +315,6 @@ if ($_POST['do'] == 'editissue2')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'issueid' => TYPE_UINT,
-		'projectid' => TYPE_UINT,
 		'issuetypeid' => TYPE_NOHTML
 	));
 
@@ -429,7 +422,6 @@ if ($_POST['do'] == 'updateissue')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'issueid' => TYPE_UINT,
-		'projectid' => TYPE_UINT,
 		'issuetypeid' => TYPE_NOHTML,
 		'projectcategoryid' => TYPE_UINT,
 		'appliesversionid' => TYPE_UINT,
@@ -491,10 +483,7 @@ if ($_POST['do'] == 'updateissue')
 // ########################################################################
 if ($_POST['do'] == 'projecttypedel_commit')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'projectid' => TYPE_UINT,
-		'delstatus' => TYPE_ARRAY_UINT
-	));
+	$vbulletin->input->clean_gpc('p', 'delstatus', TYPE_ARRAY_UINT);
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
 
@@ -538,10 +527,7 @@ if ($_POST['do'] == 'projecttypedel_commit')
 // ########################################################################
 if ($_REQUEST['do'] == 'projecttypedel')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid' => TYPE_UINT,
-		'issuetypeids' => TYPE_ARRAY_NOHTML
-	));
+	$vbulletin->input->clean_gpc('r', 'issuetypeids', TYPE_ARRAY_NOHTML);
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
 
@@ -554,10 +540,7 @@ if ($_REQUEST['do'] == 'projecttypedel')
 	print_table_header(construct_phrase($vbphrase['issue_types_deleted_for_project_x'], $project['title_clean']));
 	print_description_row($vbphrase['chose_delete_types_project']);
 
-	print_cells_row(array(
-		$vbphrase['deleted_issue_type'],
-		$vbphrase['move_issues_into']
-	), true);
+	print_cells_row(array($vbphrase['deleted_issue_type'], $vbphrase['move_issues_into']), true);
 
 	$del_types = array();
 
@@ -601,7 +584,6 @@ if ($_REQUEST['do'] == 'projecttypedel')
 if ($_POST['do'] == 'projectupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'projectid' => TYPE_UINT,
 		'displayorder' => TYPE_UINT,
 		'title' => TYPE_STR,
 		'summary' => TYPE_STR,
@@ -767,8 +749,6 @@ if ($_POST['do'] == 'projectupdate')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectadd' OR $_REQUEST['do'] == 'projectedit')
 {
-	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
-
 	if ($vbulletin->GPC['projectid'])
 	{
 		$project = fetch_project_info($vbulletin->GPC['projectid'], false);
@@ -906,12 +886,7 @@ if ($_REQUEST['do'] == 'projectadd' OR $_REQUEST['do'] == 'projectedit')
 			$typestatus += $statuses["$type[issuetypeid]"];
 		}
 
-		print_select_row(
-			$vbphrase["issuetype_$type[issuetypeid]_plural"],
-			"startstatus[$type[issuetypeid]]",
-			$typestatus,
-			$type['startstatusid']
-		);
+		print_select_row($vbphrase["issuetype_$type[issuetypeid]_plural"], "startstatus[$type[issuetypeid]]", $typestatus, $type['startstatusid']);
 	}
 
 	construct_hidden_code('projectid', $project['projectid']);
@@ -921,8 +896,6 @@ if ($_REQUEST['do'] == 'projectadd' OR $_REQUEST['do'] == 'projectedit')
 // ########################################################################
 if ($_POST['do'] == 'projectkill')
 {
-	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
-
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
 
 	if (!$project)
@@ -941,8 +914,6 @@ if ($_POST['do'] == 'projectkill')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectdelete')
 {
-	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
-
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
 
 	if (!$project)
@@ -991,11 +962,7 @@ if ($_REQUEST['do'] == 'projectlist')
 	print_form_header('project', 'projectdisplayorder');
 	print_table_header($vbphrase['project_list'], 3);
 
-	print_cells_row(array(
-		$vbphrase['project'],
-		$vbphrase['display_order'],
-		'&nbsp;'
-	), true);
+	print_cells_row(array($vbphrase['project'], $vbphrase['display_order'], '&nbsp;'), true);
 
 	if ($db->num_rows($projects))
 	{
@@ -1017,13 +984,7 @@ if ($_REQUEST['do'] == 'projectlist')
 	}
 	else
 	{
-		print_description_row(
-			$vbphrase['no_projects_defined_click_here_to_add_one'],
-			false,
-			3,
-			'',
-			'center'
-		);
+		print_description_row($vbphrase['no_projects_defined_click_here_to_add_one'], false, 3, '', 'center');
 	}
 
 	print_submit_row($vbphrase['save_display_order'], '', 3);

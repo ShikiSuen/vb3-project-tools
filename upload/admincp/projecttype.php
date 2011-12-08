@@ -56,12 +56,10 @@ if (!can_administer('canpt'))
 $vbulletin->input->clean_array_gpc('r', array(
 	'projectid' => TYPE_UINT,
 	'issuestatusid' => TYPE_UINT,
+	'issuetypeid' => TYPE_NOHTML
 ));
 
-log_admin_action(
-	(!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') .
-	(!empty($vbulletin->GPC['issuestatusid']) ? ' status id = ' . $vbulletin->GPC['issuestatusid'] : '')
-);
+log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') . (!empty($vbulletin->GPC['issuestatusid']) ? ' status id = ' . $vbulletin->GPC['issuestatusid'] : '') . (!empty($vbulletin->GPC['issuetypeid']) ? ' status id = ' . $vbulletin->GPC['issuetypeid'] : ''));
 
 // ########################################################################
 // ######################### START MAIN SCRIPT ############################
@@ -96,9 +94,7 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 if ($_POST['do'] == 'statusupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'issuestatusid' => TYPE_UINT,
 		'title' => TYPE_STR,
-		'issuetypeid' => TYPE_STR,
 		'displayorder' => TYPE_UINT,
 		'canpetitionfrom' => TYPE_UINT,
 		'issuecompleted' => TYPE_UINT,
@@ -178,10 +174,7 @@ if ($_POST['do'] == 'statusupdate')
 // ########################################################################
 if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuestatusid' => TYPE_UINT,
-		'type' => TYPE_STR
-	));
+	$vbulletin->input->clean_gpc('r', 'type', TYPE_STR);
 
 	if ($vbulletin->GPC['issuestatusid'])
 	{
@@ -326,10 +319,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 // ########################################################################
 if ($_POST['do'] == 'statuskill')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'issuestatusid' => TYPE_UINT,
-		'deststatusid' => TYPE_UINT,
-	));
+	$vbulletin->input->clean_gpc('p', 'deststatusid', TYPE_UINT);
 
 	$issuestatus = $db->query_first("
 		SELECT *
@@ -354,8 +344,6 @@ if ($_POST['do'] == 'statuskill')
 // ########################################################################
 if ($_REQUEST['do'] == 'statusdelete')
 {
-	$vbulletin->input->clean_gpc('r', 'issuestatusid', TYPE_UINT);
-
 	$issuestatus = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_issuestatus
@@ -428,7 +416,6 @@ if ($_REQUEST['do'] == 'statusdelete')
 if ($_POST['do'] == 'typeupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'issuetypeid' => TYPE_NOHTML,
 		'exists' => TYPE_BOOL,
 
 		'title_singular' => TYPE_STR,
@@ -527,8 +514,6 @@ if ($_POST['do'] == 'typeupdate')
 // ########################################################################
 if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 {
-	$vbulletin->input->clean_gpc('r', 'issuetypeid', TYPE_NOHTML);
-
 	if ($vbulletin->GPC['issuetypeid'])
 	{
 		$issuetype = $db->query_first("
@@ -697,10 +682,7 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 // ########################################################################
 if ($_POST['do'] == 'typekill')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuetypeid' => TYPE_NOHTML,
-		'deststatusid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'deststatusid', TYPE_UINT);
 
 	$issuetype = $db->query_first("
 		SELECT *
@@ -725,8 +707,6 @@ if ($_POST['do'] == 'typekill')
 // ########################################################################
 if ($_REQUEST['do'] == 'typedelete')
 {
-	$vbulletin->input->clean_gpc('r', 'issuetypeid', TYPE_NOHTML);
-
 	$issuetype = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_issuetype
@@ -884,13 +864,7 @@ if ($_REQUEST['do'] == 'typelist')
 		}
 		else
 		{
-			print_description_row(
-				construct_phrase($vbphrase['no_statuses_of_this_type_defined_click_here_to_add'], $type['issuetypeid']),
-				false,
-				4,
-				'',
-				'center'
-			);
+			print_description_row(construct_phrase($vbphrase['no_statuses_of_this_type_defined_click_here_to_add'], $type['issuetypeid']), false, 4, '', 'center');
 		}
 	}
 

@@ -55,13 +55,11 @@ if (!can_administer('canpt'))
 // ############################# LOG ACTION ###############################
 $vbulletin->input->clean_array_gpc('r', array(
 	'projectid' => TYPE_UINT,
-	'issuestatusid' => TYPE_UINT,
+	'projectversionid' => TYPE_UINT,
+	'projectversiongroupid' => TYPE_UINT,
 ));
 
-log_admin_action(
-	(!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') .
-	(!empty($vbulletin->GPC['issuestatusid']) ? ' status id = ' . $vbulletin->GPC['issuestatusid'] : '')
-);
+log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') . (!empty($vbulletin->GPC['projectversiongroupid']) ? ' version group id = ' . $vbulletin->GPC['projectversiongroupid'] : '') . (!empty($vbulletin->GPC['projectversionid']) ? ' version id = ' . $vbulletin->GPC['projectversionid'] : ''));
 
 // ########################################################################
 // ######################### START MAIN SCRIPT ############################
@@ -96,9 +94,6 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 if ($_POST['do'] == 'projectversionupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'projectversionid' => TYPE_UINT,
-		'projectversiongroupid' => TYPE_UINT,
-		'projectid' => TYPE_UINT,
 		'versionname' => TYPE_NOHTML,
 		'displayorder' => TYPE_UINT,
 		'nextversion' => TYPE_BOOL,
@@ -232,11 +227,6 @@ if ($_POST['do'] == 'projectversionupdate')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversionedit')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectversiongroupid' => TYPE_UINT,
-		'projectversionid' => TYPE_UINT,
-	));
-
 	if ($vbulletin->GPC['projectversionid'])
 	{
 		// Edit
@@ -287,7 +277,7 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 
 	if ($projectversion['projectversionid'])
 	{
-		print_table_header($vbphrase['edit_project_version']);
+		print_table_header(construct_phrase($vbphrase['edit_project_version'], $projectversion['versionname']));
 	}
 	else
 	{
@@ -314,7 +304,6 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 if ($_POST['do'] == 'projectversionkill')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'projectversionid' => TYPE_UINT,
 		'appliesversionid' => TYPE_UINT,
 		'addressedversionid' => TYPE_INT
 	));
@@ -382,8 +371,6 @@ if ($_POST['do'] == 'projectversionkill')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectversiondelete')
 {
-	$vbulletin->input->clean_gpc('r', 'projectversionid', TYPE_UINT);
-
 	$projectversion = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectversion
@@ -435,8 +422,6 @@ if ($_REQUEST['do'] == 'projectversiondelete')
 if ($_POST['do'] == 'projectversiongroupupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'projectversiongroupid' => TYPE_UINT,
-		'projectid' => TYPE_UINT,
 		'groupname' => TYPE_NOHTML,
 		'displayorder' => TYPE_UINT
 	));
@@ -498,11 +483,6 @@ if ($_POST['do'] == 'projectversiongroupupdate')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectversiongroupedit')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid' => TYPE_UINT,
-		'projectversiongroupid' => TYPE_UINT
-	));
-
 	if ($vbulletin->GPC['projectversiongroupid'])
 	{
 		$projectversiongroup = $db->query_first("
@@ -538,7 +518,7 @@ if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectve
 
 	if ($projectversiongroup['projectversiongroupid'])
 	{
-		print_table_header($vbphrase['edit_project_version_group']);
+		print_table_header(construct_phrase($vbphrase['edit_project_version_group'], $projectversiongroup['groupname']));
 	}
 	else
 	{
@@ -556,7 +536,6 @@ if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectve
 if ($_POST['do'] == 'projectversiongroupkill')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'projectversiongroupid' => TYPE_UINT,
 		'appliesversionid' => TYPE_UINT,
 		'addressedversionid' => TYPE_INT
 	));
@@ -645,8 +624,6 @@ if ($_POST['do'] == 'projectversiongroupkill')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectversiongroupdelete')
 {
-	$vbulletin->input->clean_gpc('r', 'projectversiongroupid', TYPE_UINT);
-
 	$projectversiongroup = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectversiongroup
@@ -683,13 +660,11 @@ if ($_REQUEST['do'] == 'projectversiongroupdelete')
 	print_delete_confirmation(
 		'pt_projectversiongroup',
 		$projectversiongroup['projectversiongroupid'],
-		'project', 'projectversiongroupkill',
+		'project',
+		'projectversiongroupkill',
 		'',
 		0,
-		construct_phrase($vbphrase['existing_affected_issues_updated_delete_select_versions_x_y'],
-			'<select name="appliesversionid">' . construct_select_options($applies_version, 0) . '</select>',
-			'<select name="addressedversionid">' . construct_select_options($addressed_version, -1) . '</select>'
-		),
+		construct_phrase($vbphrase['existing_affected_issues_updated_delete_select_versions_x_y'], '<select name="appliesversionid">' . construct_select_options($applies_version, 0) . '</select>', '<select name="addressedversionid">' . construct_select_options($addressed_version, -1) . '</select>'),
 		'groupname'
 	);
 }
@@ -699,8 +674,7 @@ if ($_POST['do'] == 'projectversiondisplayorder')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'versionorder' => TYPE_ARRAY_UINT,
-		'grouporder' => TYPE_ARRAY_UINT,
-		'projectid' => TYPE_UINT
+		'grouporder' => TYPE_ARRAY_UINT
 	));
 
 	$groupcase = '';
@@ -746,8 +720,6 @@ if ($_POST['do'] == 'projectversiondisplayorder')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectversion')
 {
-	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
-
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
 
 	if (!$project)
@@ -816,13 +788,7 @@ if ($_REQUEST['do'] == 'projectversion')
 			}
 			else
 			{
-				print_description_row(
-					$vbphrase['no_versions_defined_in_this_group'],
-					false,
-					3,
-					'',
-					'center'
-				);
+				print_description_row($vbphrase['no_versions_defined_in_this_group'], false, 3, '', 'center');
 			}
 		}
 

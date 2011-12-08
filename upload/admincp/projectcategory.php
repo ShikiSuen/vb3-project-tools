@@ -55,13 +55,10 @@ if (!can_administer('canpt'))
 // ############################# LOG ACTION ###############################
 $vbulletin->input->clean_array_gpc('r', array(
 	'projectid' => TYPE_UINT,
-	'issuestatusid' => TYPE_UINT,
+	'projectcategoryid' => TYPE_UINT
 ));
 
-log_admin_action(
-	(!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') .
-	(!empty($vbulletin->GPC['issuestatusid']) ? ' status id = ' . $vbulletin->GPC['issuestatusid'] : '')
-);
+log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') . (!empty($vbulletin->GPC['projectcategoryid']) ? ' category id = ' . $vbulletin->GPC['projectcategoryid'] : ''));
 
 // ########################################################################
 // ######################### START MAIN SCRIPT ############################
@@ -96,8 +93,6 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 if ($_POST['do'] == 'projectcategoryupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'projectcategoryid' => TYPE_UINT,
-		'projectid' => TYPE_UINT,
 		'title' => TYPE_NOHTML,
 		'displayorder' => TYPE_UINT,
 		'default' => TYPE_BOOL
@@ -241,11 +236,6 @@ if ($_POST['do'] == 'projectcategoryupdate')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectcategoryadd' OR $_REQUEST['do'] == 'projectcategoryedit')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'projectid' => TYPE_UINT,
-		'projectcategoryid' => TYPE_UINT
-	));
-
 	if ($vbulletin->GPC['projectcategoryid'])
 	{
 		$projectcategory = $db->query_first("
@@ -281,7 +271,7 @@ if ($_REQUEST['do'] == 'projectcategoryadd' OR $_REQUEST['do'] == 'projectcatego
 
 	if ($projectcategory['projectcategoryid'])
 	{
-		print_table_header($vbphrase['edit_project_category']);
+		print_table_header(construct_phrase($vbphrase['edit_project_category'], $vbphrase['category' . $projectcategory['projectcategoryid'] . '']));
 		$trans_link = "phrase.php?" . $vbulletin->session->vars['sessionurl'] . "do=edit&fieldname=projecttools&t=1&varname=category";
 	}
 	else
@@ -301,10 +291,7 @@ if ($_REQUEST['do'] == 'projectcategoryadd' OR $_REQUEST['do'] == 'projectcatego
 // ########################################################################
 if ($_POST['do'] == 'projectcategorykill')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'projectcategoryid' => TYPE_UINT,
-		'destcategoryid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('p', 'destcategoryid', TYPE_UINT);
 
 	$projectcategory = $db->query_first("
 		SELECT *
@@ -344,8 +331,6 @@ if ($_POST['do'] == 'projectcategorykill')
 // ########################################################################
 if ($_REQUEST['do'] == 'projectcategorydelete')
 {
-	$vbulletin->input->clean_gpc('r', 'projectcategoryid', TYPE_UINT);
-
 	$projectcategory = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectcategory
@@ -382,8 +367,7 @@ if ($_REQUEST['do'] == 'projectcategorydelete')
 		'projectcategory', 'projectcategorykill',
 		'',
 		0,
-		$vbphrase['existing_affected_issues_updated_delete_select_category'] .
-			'<select name="destcategoryid">' . construct_select_options($categories) . '</select>',
+		$vbphrase['existing_affected_issues_updated_delete_select_category'] . '<select name="destcategoryid">' . construct_select_options($categories) . '</select>',
 		'title'
 	);
 }
@@ -391,10 +375,7 @@ if ($_REQUEST['do'] == 'projectcategorydelete')
 // ########################################################################
 if ($_POST['do'] == 'projectcategorydisplayorder')
 {
-	$vbulletin->input->clean_array_gpc('p', array(
-		'order' => TYPE_ARRAY_UINT,
-		'projectid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('p', 'order', TYPE_ARRAY_UINT);
 
 	$case = '';
 
@@ -434,7 +415,7 @@ if ($_REQUEST['do'] == 'projectcategory')
 	$category_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectcategory
-		WHERE projectid = $project[projectid]
+		WHERE projectid = " . $project['projectid'] . "
 		ORDER BY displayorder
 	");
 
@@ -448,11 +429,7 @@ if ($_REQUEST['do'] == 'projectcategory')
 
 	if ($categories)
 	{
-		print_cells_row(array(
-			$vbphrase['category'],
-			$vbphrase['display_order'],
-			'&nbsp;'
-		), true);
+		print_cells_row(array($vbphrase['category'], $vbphrase['display_order'], '&nbsp;'), true);
 
 		foreach ($categories AS $category)
 		{

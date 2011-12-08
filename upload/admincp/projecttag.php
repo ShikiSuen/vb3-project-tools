@@ -53,15 +53,7 @@ if (!can_administer('canpt'))
 }
 
 // ############################# LOG ACTION ###############################
-$vbulletin->input->clean_array_gpc('r', array(
-	'projectid' => TYPE_UINT,
-	'issuestatusid' => TYPE_UINT,
-));
-
-log_admin_action(
-	(!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') .
-	(!empty($vbulletin->GPC['issuestatusid']) ? ' status id = ' . $vbulletin->GPC['issuestatusid'] : '')
-);
+log_admin_action();
 
 // ########################################################################
 // ######################### START MAIN SCRIPT ############################

@@ -52,7 +52,9 @@ if (!can_administer('canpt'))
 }
 
 // ############################# LOG ACTION ###############################
-log_admin_action();
+$vbulletin->input->clean_gpc('r', 'magicselectid', TYPE_UINT);
+
+log_admin_action((!empty($vbulletin->GPC['magicselectid']) ? ' magic select id = ' . $vbulletin->GPC['magicselectid'] : ''));
 
 // ########################################################################
 // ######################### START MAIN SCRIPT ############################
@@ -68,8 +70,6 @@ if (empty($_REQUEST['do']))
 // #############################################################################
 if ($_POST['do'] == 'kill')
 {
-	$vbulletin->input->clean_gpc('p', 'magicselectid', TYPE_UINT);
-
 	$magicselect = $db->query_first("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_magicselect
@@ -375,11 +375,7 @@ if ($_REQUEST['do'] == 'list')
 	print_form_header('projectmagicselect', 'saveorder');
 	print_table_header($vbphrase['project_magic_select_list'], 3);
 
-	print_cells_row(array(
-		$vbphrase['project_magic_select'],
-		$vbphrase['display_order'],
-		$vbphrase['controls']
-	), true);
+	print_cells_row(array($vbphrase['project_magic_select'], $vbphrase['display_order'], $vbphrase['controls']), true);
 
 	if ($db->num_rows($mslist) > 0)
 	{
@@ -399,13 +395,7 @@ if ($_REQUEST['do'] == 'list')
 	}
 	else
 	{
-		print_description_row(
-			$vbphrase['no_project_magic_select_defined_click_here_to_add_one'],
-			false,
-			3,
-			'',
-			'center'
-		);
+		print_description_row($vbphrase['no_project_magic_select_defined_click_here_to_add_one'], false, 3, '', 'center');
 
 		print_table_footer();
 	}
