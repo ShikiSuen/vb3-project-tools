@@ -609,7 +609,7 @@ if ($_REQUEST['do'] == 'typeadd' OR $_REQUEST['do'] == 'typeedit')
 			$types["$type[issuetypeid]"] = $vbphrase["issuetype_$type[issuetypeid]_singular"];
 		}
 
-		print_select_row($vbphrase['bass_permissions_off_existing_type'], 'permissionbase', array('' => $vbphrase['none_meta']) + $types);
+		print_select_row($vbphrase['base_permissions_off_existing_type'], 'permissionbase', array('' => $vbphrase['none_meta']) + $types);
 	}
 
 	print_description_row($vbphrase['phrases'], false, 2, 'thead', 'left', 'phrases');
