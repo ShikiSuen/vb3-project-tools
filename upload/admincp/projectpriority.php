@@ -302,6 +302,7 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 			<tr>
 				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$projectpriority['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
 				<td><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
+				" . ($projectpriority['projectpriorityid'] ? construct_help_button('statuscolor', 'edit', 'projectpriority') : construct_help_button('statuscolor', 'add', 'projectpriority')) . "
 			</tr>
 			</table>
 		</td>
@@ -315,6 +316,7 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 			<tr>
 				<td><input type=\"text\" class=\"bginput\" name=\"statuscolor2\" id=\"color_1\" value=\"{$projectpriority['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(1)\" dir=\"ltr\" />&nbsp;</td>
 				<td><div id=\"preview_1\" class=\"colorpreview\" onclick=\"open_color_picker(1, event)\"></div></td>
+				" . ($projectpriority['projectpriorityid'] ? construct_help_button('statuscolor2', 'edit', 'projectpriority') : construct_help_button('statuscolor2', 'add', 'projectpriority')) . "
 			</tr>
 			</table>
 		</td>
