@@ -68,7 +68,7 @@ print_cp_header($vbphrase['project_tools']);
 
 if (empty($_REQUEST['do']))
 {
-	$_REQUEST['do'] = 'projectmilestone';
+	$_REQUEST['do'] = 'list';
 }
 
 $issuetype_options = array();
@@ -90,7 +90,7 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 // ########################################################################
 // ######################## MILESTONE MANAGEMENT ##########################
 // ########################################################################
-if ($_POST['do'] == 'projectmilestoneupdate')
+if ($_POST['do'] == 'update')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'title' => TYPE_STR,
@@ -143,12 +143,12 @@ if ($_POST['do'] == 'projectmilestoneupdate')
 	$milestonedata->set('completeddate', $vbulletin->GPC['completeddate']);
 	$milestonedata->save();	
 
-	define('CP_REDIRECT', 'projectmilestone.php?do=projectmilestone&projectid=' . $project['projectid']);
+	define('CP_REDIRECT', 'projectmilestone.php?do=list&projectid=' . $project['projectid']);
 	print_stop_message('project_milestone_saved');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmilestoneedit')
+if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 {
 	if ($vbulletin->GPC['milestoneid'])
 	{
@@ -173,12 +173,15 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
 
+	$trans_link_name = '';
+	$trans_link_desc = '';
+
 	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
 	}
 
-	print_form_header('projectmilestone', 'projectmilestoneupdate');
+	print_form_header('projectmilestone', 'update');
 
 	if ($milestone['milestoneid'])
 	{
@@ -189,8 +192,6 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 	else
 	{
 		print_table_header($vbphrase['add_milestone']);
-		$trans_link_name = '';
-		$trans_link_desc = '';
 	}
 
 	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>" . ($trans_link_name ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_name, true) . '</dfn>' : '') . "", 'title', $vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
@@ -204,7 +205,7 @@ if ($_REQUEST['do'] == 'projectmilestoneadd' OR $_REQUEST['do'] == 'projectmiles
 }
 
 // ########################################################################
-if ($_POST['do'] == 'projectmilestonekill')
+if ($_POST['do'] == 'kill')
 {
 	$vbulletin->input->clean_gpc('p', 'destmilestoneid', TYPE_UINT);
 
@@ -246,12 +247,12 @@ if ($_POST['do'] == 'projectmilestonekill')
 		$milestonedata->save();
 	}
 
-	define('CP_REDIRECT', 'projectmilestone.php?do=projectmilestone&projectid=' . $project['projectid']);
+	define('CP_REDIRECT', 'projectmilestone.php?do=list&projectid=' . $project['projectid']);
 	print_stop_message('project_milestone_deleted');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectmilestonedelete')
+if ($_REQUEST['do'] == 'delete')
 {
 	$milestone = $db->query_first("
 		SELECT *
@@ -272,7 +273,7 @@ if ($_REQUEST['do'] == 'projectmilestonedelete')
 	print_delete_confirmation(
 		'pt_milestone',
 		$milestone['milestoneid'],
-		'projectmilestone', 'projectmilestonekill',
+		'projectmilestone', 'kill',
 		'',
 		0,
 		$vbphrase['existing_affected_issues_updated_delete_select_milestone'] . '<select name="destmilestoneid">' . construct_select_options($milestones) . '</select>',
@@ -281,7 +282,7 @@ if ($_REQUEST['do'] == 'projectmilestonedelete')
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectmilestone')
+if ($_REQUEST['do'] == 'list')
 {
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
 
@@ -344,8 +345,8 @@ if ($_REQUEST['do'] == 'projectmilestone')
 				$vbphrase['milestone_' . $milestone['milestoneid'] . '_name'],
 				$formatted_date,
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
-					construct_link_code($vbphrase['edit'], 'projectmilestone.php?do=projectmilestoneedit&amp;milestoneid=' . $milestone['milestoneid']) .
-					construct_link_code($vbphrase['delete'], 'projectmilestone.php?do=projectmilestonedelete&amp;milestoneid=' . $milestone['milestoneid']) .
+					construct_link_code($vbphrase['edit'], 'projectmilestone.php?do=edit&amp;milestoneid=' . $milestone['milestoneid']) .
+					construct_link_code($vbphrase['delete'], 'projectmilestone.php?do=delete&amp;milestoneid=' . $milestone['milestoneid']) .
 				'</div>'
 			));
 		}
@@ -359,7 +360,7 @@ if ($_REQUEST['do'] == 'projectmilestone')
 
 	print_table_footer();
 
-	echo '<p align="center">' . construct_link_code($vbphrase['add_milestone'], 'projectmilestone.php?do=projectmilestoneadd&amp;projectid=' . $project['projectid']) . '</p>';
+	echo '<p align="center">' . construct_link_code($vbphrase['add_milestone'], 'projectmilestone.php?do=add&amp;projectid=' . $project['projectid']) . '</p>';
 
 }
 
