@@ -297,14 +297,14 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 	// Construct_color_row reworked just for here
 	echo "<tr>
 		<td class=\"alt2\">" . $vbphrase['severitycolor_darkstyles'] . "</td>
-		<td class=\"alt2\">
-			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">
+		<td class=\"alt2\" align=\"left\">
+			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
 			<tr>
-				<td align=\"left\" width=\"38%\"><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$projectpriority['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
-				<td align=\"left\" width=\"38%\"><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
-				" . ($projectpriority['projectpriorityid'] ? construct_help_button('statuscolor', 'edit', 'projectpriority') : construct_help_button('statuscolor', 'add', 'projectpriority')) . "
+				<td align=\"left\"><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$projectpriority['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
+				<td align=\"left\"><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
 			</tr>
 			</table>
+			<table align=\"right\" width=\"10%\" style=\"margin-top: -28px; margin-right: -3px\"><tr><td align=\"right\" width=\"10%\">" . ($projectpriority['projectpriorityid'] ? construct_help_button('statuscolor', 'edit', 'projectpriority') : construct_help_button('statuscolor', 'add', 'projectpriority')) . "</td></tr></table>
 		</td>
 	</tr>\n";
 
@@ -312,13 +312,13 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 	echo "<tr>
 		<td class=\"alt1\">" . $vbphrase['severitycolor_lightstyles'] . "</td>
 		<td class=\"alt1\">
-			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">
+			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">
 			<tr>
-				<td align=\"left\" width=\"38%\"><input type=\"text\" class=\"bginput\" name=\"statuscolor2\" id=\"color_1\" value=\"{$projectpriority['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(1)\" dir=\"ltr\" />&nbsp;</td>
-				<td align=\"left\" width=\"38%\"><div id=\"preview_1\" class=\"colorpreview\" onclick=\"open_color_picker(1, event)\"></div></td>
-				" . ($projectpriority['projectpriorityid'] ? construct_help_button('statuscolor2', 'edit', 'projectpriority') : construct_help_button('statuscolor2', 'add', 'projectpriority')) . "
+				<td align=\"left\"><input type=\"text\" class=\"bginput\" name=\"statuscolor2\" id=\"color_1\" value=\"{$projectpriority['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(1)\" dir=\"ltr\" />&nbsp;</td>
+				<td align=\"left\"><div id=\"preview_1\" class=\"colorpreview\" onclick=\"open_color_picker(1, event)\"></div></td>
 			</tr>
 			</table>
+			<table align=\"right\" width=\"10%\" style=\"margin-top: -28px; margin-right: -3px\"><tr><td align=\"right\" width=\"10%\">" . ($projectpriority['projectpriorityid'] ? construct_help_button('statuscolor2', 'edit', 'projectpriority') : construct_help_button('statuscolor2', 'add', 'projectpriority')) . "</td></tr></table>
 		</td>
 	</tr>\n";
 
