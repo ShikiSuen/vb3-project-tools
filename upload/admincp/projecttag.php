@@ -63,7 +63,7 @@ print_cp_header($vbphrase['project_tools']);
 
 if (empty($_REQUEST['do']))
 {
-	$_REQUEST['do'] = 'taglist';
+	$_REQUEST['do'] = 'list';
 }
 
 $issuetype_options = array();
@@ -85,7 +85,7 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 // ########################################################################
 // ########################### TAG MANAGEMENT #############################
 // ########################################################################
-if ($_POST['do'] == 'taginsert')
+if ($_POST['do'] == 'insert')
 {
 	$vbulletin->input->clean_gpc('p', 'tagtext', TYPE_STR);
 
@@ -105,12 +105,12 @@ if ($_POST['do'] == 'taginsert')
 			('" . $db->escape_string($vbulletin->GPC['tagtext']) . "')
 	");
 
-	define('CP_REDIRECT', 'projecttag.php?do=taglist');
+	define('CP_REDIRECT', 'projecttag.php?do=list');
 	print_stop_message('tag_saved');
 }
 
 // ########################################################################
-if ($_POST['do'] == 'tagkill')
+if ($_POST['do'] == 'kill')
 {
 	$vbulletin->input->clean_gpc('p', 'tag', TYPE_ARRAY_KEYS_INT);
 
@@ -127,12 +127,12 @@ if ($_POST['do'] == 'tagkill')
 		");
 	}
 
-	define('CP_REDIRECT', 'projecttag.php?do=taglist');
+	define('CP_REDIRECT', 'projecttag.php?do=list');
 	print_stop_message('tags_deleted');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'taglist')
+if ($_REQUEST['do'] == 'list')
 {
 	$vbulletin->input->clean_gpc('r', 'pagenumber', TYPE_UINT);
 
@@ -156,7 +156,7 @@ if ($_REQUEST['do'] == 'taglist')
 
 	list($tag_count) = $db->query_first("SELECT FOUND_ROWS()", DBARRAY_NUM);
 
-	print_form_header('projecttag', 'tagkill');
+	print_form_header('projecttag', 'kill');
 	print_table_header($vbphrase['tag_list'], 3);
 
 	if ($db->num_rows($tags))
@@ -179,7 +179,7 @@ if ($_REQUEST['do'] == 'taglist')
 				}
 				else
 				{
-					$pagenav .= " <a href=\"project.php?$session[sessionurl]do=taglist&amp;page=$thispage\" class=\"normal\">$thispage</a> ";
+					$pagenav .= " <a href=\"project.php?$session[sessionurl]do=list&amp;page=$thispage\" class=\"normal\">$thispage</a> ";
 				}
 			}
 
@@ -222,7 +222,7 @@ if ($_REQUEST['do'] == 'taglist')
 		print_table_footer();
 	}
 
-	print_form_header('projecttag', 'taginsert');
+	print_form_header('projecttag', 'insert');
 	print_input_row($vbphrase['add_tag'], 'tagtext');
 	print_submit_row();
 }

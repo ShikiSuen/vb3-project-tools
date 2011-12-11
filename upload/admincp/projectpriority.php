@@ -64,11 +64,11 @@ log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbu
 // ######################### START MAIN SCRIPT ############################
 // ########################################################################
 
-print_cp_header($vbphrase['project_tools'], iif(in_array($_REQUEST['do'], array('projectpriorityedit', 'projectpriorityadd')) , 'init_color_preview()'));
+print_cp_header($vbphrase['project_tools'], iif(in_array($_REQUEST['do'], array('edit', 'add')) , 'init_color_preview()'));
 
 if (empty($_REQUEST['do']))
 {
-	$_REQUEST['do'] = 'projectpriority';
+	$_REQUEST['do'] = 'list';
 }
 
 $issuetype_options = array();
@@ -90,7 +90,7 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 // ########################################################################
 // ################### PROJECT PRIORITY MANAGEMENT ########################
 // ########################################################################
-if ($_POST['do'] == 'projectpriorityupdate')
+if ($_POST['do'] == 'update')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'title' => TYPE_NOHTML,
@@ -233,12 +233,12 @@ if ($_POST['do'] == 'projectpriorityupdate')
 
 	build_project_priority_cache();
 
-	define('CP_REDIRECT', 'projectpriority.php?do=projectpriority&projectid=' . $project['projectid']);
+	define('CP_REDIRECT', 'projectpriority.php?do=list&projectid=' . $project['projectid']);
 	print_stop_message('project_priority_saved');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriorityedit')
+if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 {
 	if ($vbulletin->GPC['projectpriorityid'])
 	{
@@ -274,7 +274,7 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 
 	echo '<script type="text/javascript" src="../clientscript/vbulletin_cpcolorpicker.js"></script>';
 
-	print_form_header('projectpriority', 'projectpriorityupdate');
+	print_form_header('projectpriority', 'update');
 
 	if ($projectpriority['projectpriorityid'])
 	{
@@ -342,7 +342,7 @@ if ($_REQUEST['do'] == 'projectpriorityadd' OR $_REQUEST['do'] == 'projectpriori
 }
 
 // ########################################################################
-if ($_POST['do'] == 'projectprioritykill')
+if ($_POST['do'] == 'kill')
 {
 	$vbulletin->input->clean_gpc('p', 'destpriorityid', TYPE_UINT);
 
@@ -377,7 +377,7 @@ if ($_POST['do'] == 'projectprioritykill')
 
 	build_project_priority_cache();
 
-	define('CP_REDIRECT', 'projectpriority.php?do=projectpriority&projectid=' . $project['projectid']);
+	define('CP_REDIRECT', 'projectpriority.php?do=list&projectid=' . $project['projectid']);
 	print_stop_message('project_priority_deleted');
 }
 
@@ -417,7 +417,8 @@ if ($_REQUEST['do'] == 'projectprioritydelete')
 	print_delete_confirmation(
 		'pt_projectpriority',
 		$projectpriority['projectpriorityid'],
-		'projectpriority', 'projectpriorirykill',
+		'projectpriority',
+		'kill',
 		'',
 		0,
 		$vbphrase['existing_affected_issues_updated_delete_select_priority'] . '&nbsp;<select name="destpriorityid">' . construct_select_options($priorities) . '</select>',
@@ -426,7 +427,7 @@ if ($_REQUEST['do'] == 'projectprioritydelete')
 }
 
 // ########################################################################
-if ($_POST['do'] == 'projectprioritydisplayorder')
+if ($_POST['do'] == 'order')
 {
 	$vbulletin->input->clean_gpc('p', 'order', TYPE_ARRAY_UINT);
 
@@ -447,12 +448,12 @@ if ($_POST['do'] == 'projectprioritydisplayorder')
 
 	build_project_priority_cache();
 
-	define('CP_REDIRECT', 'projectpriority.php?do=projectpriority&projectid=' . $vbulletin->GPC['projectid']);
+	define('CP_REDIRECT', 'projectpriority.php?do=list&projectid=' . $vbulletin->GPC['projectid']);
 	print_stop_message('saved_display_order_successfully');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectpriority')
+if ($_REQUEST['do'] == 'list')
 {
 	$project = fetch_project_info($vbulletin->GPC['projectid'], true);
 
@@ -475,7 +476,7 @@ if ($_REQUEST['do'] == 'projectpriority')
 		$priorities["$priority[projectpriorityid]"] = $priority;
 	}
 
-	print_form_header('projectpriority', 'projectprioritydisplayorder');
+	print_form_header('projectpriority', 'order');
 	print_table_header(construct_phrase($vbphrase['priorities_for_x'], $project['title_clean']), 3);
 
 	if ($priorities)
@@ -492,8 +493,8 @@ if ($_REQUEST['do'] == 'projectpriority')
 				$vbphrase['priority' . $priority['projectpriorityid'] . ''],
 				"<input type=\"text\" class=\"bginput\" name=\"order[$priority[projectpriorityid]]\" value=\"$priority[displayorder]\" tabindex=\"1\" size=\"3\" />",
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
-					construct_link_code($vbphrase['edit'], 'projectpriority.php?do=projectpriorityedit&amp;projectpriorityid=' . $priority['projectpriorityid']) .
-					construct_link_code($vbphrase['delete'], 'projectpriority.php?do=projectprioritydelete&amp;projectpriorityid=' . $priority['projectpriorityid']) .
+					construct_link_code($vbphrase['edit'], 'projectpriority.php?do=edit&amp;projectpriorityid=' . $priority['projectpriorityid']) .
+					construct_link_code($vbphrase['delete'], 'projectpriority.php?do=delete&amp;projectpriorityid=' . $priority['projectpriorityid']) .
 				'</div>'
 			));
 		}
@@ -507,7 +508,7 @@ if ($_REQUEST['do'] == 'projectpriority')
 		print_table_footer();
 	}
 
-	echo '<p align="center">' . construct_link_code($vbphrase['add_project_priority'], 'projectpriority.php?do=projectpriorityadd&amp;projectid=' . $project['projectid']) . '</p>';
+	echo '<p align="center">' . construct_link_code($vbphrase['add_project_priority'], 'projectpriority.php?do=add&amp;projectid=' . $project['projectid']) . '</p>';
 }
 
 print_cp_footer();
