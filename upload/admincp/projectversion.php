@@ -69,7 +69,7 @@ print_cp_header($vbphrase['project_tools']);
 
 if (empty($_REQUEST['do']))
 {
-	$_REQUEST['do'] = 'projectversion';
+	$_REQUEST['do'] = 'list';
 }
 
 $issuetype_options = array();
@@ -91,7 +91,7 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 // ########################################################################
 // ################### PROJECT VERSION MANAGEMENT #########################
 // ########################################################################
-if ($_POST['do'] == 'projectversionupdate')
+if ($_POST['do'] == 'update')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'versionname' => TYPE_NOHTML,
@@ -220,12 +220,12 @@ if ($_POST['do'] == 'projectversionupdate')
 
 	build_version_cache();
 
-	define('CP_REDIRECT', 'projectversion.php?do=projectversion&projectid=' . $projectversiongroup['projectid']);
+	define('CP_REDIRECT', 'projectversion.php?do=list&projectid=' . $projectversiongroup['projectid']);
 	print_stop_message('project_version_saved');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversionedit')
+if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 {
 	if ($vbulletin->GPC['projectversionid'])
 	{
@@ -273,7 +273,7 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 		print_stop_message('invalid_action_specified');
 	}
 
-	print_form_header('projectversion', 'projectversionupdate');
+	print_form_header('projectversion', 'update');
 
 	if ($projectversion['projectversionid'])
 	{
@@ -301,7 +301,7 @@ if ($_REQUEST['do'] == 'projectversionadd' OR $_REQUEST['do'] == 'projectversion
 }
 
 // ########################################################################
-if ($_POST['do'] == 'projectversionkill')
+if ($_POST['do'] == 'kill')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'appliesversionid' => TYPE_UINT,
@@ -364,12 +364,12 @@ if ($_POST['do'] == 'projectversionkill')
 
 	build_version_cache();
 
-	define('CP_REDIRECT', 'projectversion.php?do=projectversion&projectid=' . $project['projectid']);
+	define('CP_REDIRECT', 'projectversion.php?do=list&projectid=' . $project['projectid']);
 	print_stop_message('project_version_deleted');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectversiondelete')
+if ($_REQUEST['do'] == 'delete')
 {
 	$projectversion = $db->query_first("
 		SELECT *
@@ -407,7 +407,7 @@ if ($_REQUEST['do'] == 'projectversiondelete')
 		'pt_projectversion',
 		$projectversion['projectversionid'],
 		'project',
-		'projectversionkill',
+		'kill',
 		'',
 		0,
 		construct_phrase($vbphrase['existing_affected_issues_updated_delete_select_versions_x_y'],
@@ -419,7 +419,7 @@ if ($_REQUEST['do'] == 'projectversiondelete')
 }
 
 // ########################################################################
-if ($_POST['do'] == 'projectversiongroupupdate')
+if ($_POST['do'] == 'groupupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'groupname' => TYPE_NOHTML,
@@ -476,12 +476,12 @@ if ($_POST['do'] == 'projectversiongroupupdate')
 
 	build_version_cache();
 
-	define('CP_REDIRECT', 'projectversion.php?do=projectversion&projectid=' . $project['projectid']);
+	define('CP_REDIRECT', 'projectversion.php?do=list&projectid=' . $project['projectid']);
 	print_stop_message('project_version_saved');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectversiongroupedit')
+if ($_REQUEST['do'] == 'groupadd' OR $_REQUEST['do'] == 'groupedit')
 {
 	if ($vbulletin->GPC['projectversiongroupid'])
 	{
@@ -514,7 +514,7 @@ if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectve
 		print_stop_message('invalid_action_specified');
 	}
 
-	print_form_header('projectversion', 'projectversiongroupupdate');
+	print_form_header('projectversion', 'groupupdate');
 
 	if ($projectversiongroup['projectversiongroupid'])
 	{
@@ -533,7 +533,7 @@ if ($_REQUEST['do'] == 'projectversiongroupadd' OR $_REQUEST['do'] == 'projectve
 }
 
 // ########################################################################
-if ($_POST['do'] == 'projectversiongroupkill')
+if ($_POST['do'] == 'groupkill')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'appliesversionid' => TYPE_UINT,
@@ -617,12 +617,12 @@ if ($_POST['do'] == 'projectversiongroupkill')
 
 	build_version_cache();
 
-	define('CP_REDIRECT', 'projectversion.php?do=projectversion&projectid=' . $project['projectid']);
+	define('CP_REDIRECT', 'projectversion.php?do=list&projectid=' . $project['projectid']);
 	print_stop_message('project_version_deleted');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectversiongroupdelete')
+if ($_REQUEST['do'] == 'groupdelete')
 {
 	$projectversiongroup = $db->query_first("
 		SELECT *
@@ -661,7 +661,7 @@ if ($_REQUEST['do'] == 'projectversiongroupdelete')
 		'pt_projectversiongroup',
 		$projectversiongroup['projectversiongroupid'],
 		'project',
-		'projectversiongroupkill',
+		'groupkill',
 		'',
 		0,
 		construct_phrase($vbphrase['existing_affected_issues_updated_delete_select_versions_x_y'], '<select name="appliesversionid">' . construct_select_options($applies_version, 0) . '</select>', '<select name="addressedversionid">' . construct_select_options($addressed_version, -1) . '</select>'),
@@ -670,7 +670,7 @@ if ($_REQUEST['do'] == 'projectversiongroupdelete')
 }
 
 // ########################################################################
-if ($_POST['do'] == 'projectversiondisplayorder')
+if ($_POST['do'] == 'order')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'versionorder' => TYPE_ARRAY_UINT,
@@ -713,12 +713,12 @@ if ($_POST['do'] == 'projectversiondisplayorder')
 		");
 	}
 
-	define('CP_REDIRECT', 'projectversion.php?do=projectversion&projectid=' . $vbulletin->GPC['projectid']);
+	define('CP_REDIRECT', 'projectversion.php?do=list&projectid=' . $vbulletin->GPC['projectid']);
 	print_stop_message('saved_display_order_successfully');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectversion')
+if ($_REQUEST['do'] == 'list')
 {
 	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
 
@@ -755,7 +755,7 @@ if ($_REQUEST['do'] == 'projectversion')
 		$versions["$version[projectversiongroupid]"][] = $version;
 	}
 
-	print_form_header('projectversion', 'projectversiondisplayorder');
+	print_form_header('projectversion', 'order');
 	print_table_header(construct_phrase($vbphrase['project_versions_for_x'], $project['title_clean']), 3);
 
 	if ($groups)
@@ -766,9 +766,9 @@ if ($_REQUEST['do'] == 'projectversion')
 				$group['groupname'],
 				"<input type=\"text\" class=\"bginput\" name=\"grouporder[$group[projectversiongroupid]]\" value=\"$group[displayorder]\" tabindex=\"1\" size=\"3\" />",
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="normal smallfont">' .
-					construct_link_code($vbphrase['edit'], 'projectversion.php?do=projectversiongroupedit&amp;projectversiongroupid=' . $group['projectversiongroupid']) .
-					construct_link_code($vbphrase['delete'], 'projectversion.php?do=projectversiongroupdelete&amp;projectversiongroupid=' . $group['projectversiongroupid']) .
-					construct_link_code($vbphrase['add_version'], 'projectversion.php?do=projectversionadd&amp;projectversiongroupid=' . $group['projectversiongroupid']) .
+					construct_link_code($vbphrase['edit'], 'projectversion.php?do=groupedit&amp;projectversiongroupid=' . $group['projectversiongroupid']) .
+					construct_link_code($vbphrase['delete'], 'projectversion.php?do=groupdelete&amp;projectversiongroupid=' . $group['projectversiongroupid']) .
+					construct_link_code($vbphrase['add_version'], 'projectversion.php?do=add&amp;projectversiongroupid=' . $group['projectversiongroupid']) .
 					'</div>',
 			), 'thead');
 
@@ -780,8 +780,8 @@ if ($_REQUEST['do'] == 'projectversion')
 						$version['versionname'],
 						"<input type=\"text\" class=\"bginput\" name=\"versionorder[$version[projectversionid]]\" value=\"$version[displayorder]\" tabindex=\"1\" size=\"3\" />",
 						'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
-							construct_link_code($vbphrase['edit'], 'projectversion.php?do=projectversionedit&amp;projectversionid=' . $version['projectversionid']) .
-							construct_link_code($vbphrase['delete'], 'projectversion.php?do=projectversiondelete&amp;projectversionid=' . $version['projectversionid']) .
+							construct_link_code($vbphrase['edit'], 'projectversion.php?do=edit&amp;projectversionid=' . $version['projectversionid']) .
+							construct_link_code($vbphrase['delete'], 'projectversion.php?do=delete&amp;projectversionid=' . $version['projectversionid']) .
 						'</div>'
 					));
 				}
@@ -801,7 +801,7 @@ if ($_REQUEST['do'] == 'projectversion')
 		print_table_footer();
 	}
 
-	echo '<p align="center">' . construct_link_code($vbphrase['add_project_version_group'], 'projectversion.php?do=projectversiongroupadd&amp;projectid=' . $project['projectid']) . '</p>';
+	echo '<p align="center">' . construct_link_code($vbphrase['add_project_version_group'], 'projectversion.php?do=groupadd&amp;projectid=' . $project['projectid']) . '</p>';
 	echo '<p align="center" class="smallfont">' . $vbphrase['note_higer_display_orders_first'] . '</p>';
 }
 
