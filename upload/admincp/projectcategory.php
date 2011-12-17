@@ -68,7 +68,7 @@ print_cp_header($vbphrase['project_tools']);
 
 if (empty($_REQUEST['do']))
 {
-	$_REQUEST['do'] = 'projectcategory';
+	$_REQUEST['do'] = 'list';
 }
 
 $issuetype_options = array();
@@ -90,7 +90,7 @@ $helpcache['project']['projectedit']['afterforumids[]'] = 1;
 // ########################################################################
 // ################### PROJECT CATEGORY MANAGEMENT ########################
 // ########################################################################
-if ($_POST['do'] == 'projectcategoryupdate')
+if ($_POST['do'] == 'update')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'title' => TYPE_NOHTML,
@@ -229,12 +229,12 @@ if ($_POST['do'] == 'projectcategoryupdate')
 
 	build_project_category_cache();
 
-	define('CP_REDIRECT', 'projectcategory.php?do=projectcategory&projectid=' . $project['projectid']);
+	define('CP_REDIRECT', 'projectcategory.php?do=list&projectid=' . $project['projectid']);
 	print_stop_message('project_category_saved');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectcategoryadd' OR $_REQUEST['do'] == 'projectcategoryedit')
+if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 {
 	if ($vbulletin->GPC['projectcategoryid'])
 	{
@@ -267,7 +267,7 @@ if ($_REQUEST['do'] == 'projectcategoryadd' OR $_REQUEST['do'] == 'projectcatego
 		print_stop_message('invalid_action_specified');
 	}
 
-	print_form_header('projectcategory', 'projectcategoryupdate');
+	print_form_header('projectcategory', 'update');
 
 	if ($projectcategory['projectcategoryid'])
 	{
@@ -289,7 +289,7 @@ if ($_REQUEST['do'] == 'projectcategoryadd' OR $_REQUEST['do'] == 'projectcatego
 }
 
 // ########################################################################
-if ($_POST['do'] == 'projectcategorykill')
+if ($_POST['do'] == 'kill')
 {
 	$vbulletin->input->clean_gpc('p', 'destcategoryid', TYPE_UINT);
 
@@ -324,12 +324,12 @@ if ($_POST['do'] == 'projectcategorykill')
 
 	build_project_category_cache();
 
-	define('CP_REDIRECT', 'projectcategory.php?do=projectcategory&projectid=' . $project['projectid']);
+	define('CP_REDIRECT', 'projectcategory.php?do=list&projectid=' . $project['projectid']);
 	print_stop_message('project_category_deleted');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectcategorydelete')
+if ($_REQUEST['do'] == 'delete')
 {
 	$projectcategory = $db->query_first("
 		SELECT *
@@ -364,7 +364,8 @@ if ($_REQUEST['do'] == 'projectcategorydelete')
 	print_delete_confirmation(
 		'pt_projectcategory',
 		$projectcategory['projectcategoryid'],
-		'projectcategory', 'projectcategorykill',
+		'projectcategory',
+		'kill',
 		'',
 		0,
 		$vbphrase['existing_affected_issues_updated_delete_select_category'] . '<select name="destcategoryid">' . construct_select_options($categories) . '</select>',
@@ -373,7 +374,7 @@ if ($_REQUEST['do'] == 'projectcategorydelete')
 }
 
 // ########################################################################
-if ($_POST['do'] == 'projectcategorydisplayorder')
+if ($_POST['do'] == 'order')
 {
 	$vbulletin->input->clean_gpc('p', 'order', TYPE_ARRAY_UINT);
 
@@ -394,12 +395,12 @@ if ($_POST['do'] == 'projectcategorydisplayorder')
 
 	build_project_category_cache();
 
-	define('CP_REDIRECT', 'projectcategory.php?do=projectcategory&projectid=' . $vbulletin->GPC['projectid']);
+	define('CP_REDIRECT', 'projectcategory.php?do=list&projectid=' . $vbulletin->GPC['projectid']);
 	print_stop_message('saved_display_order_successfully');
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectcategory')
+if ($_REQUEST['do'] == 'list')
 {
 	$vbulletin->input->clean_gpc('r', 'projectid', TYPE_UINT);
 
@@ -424,7 +425,7 @@ if ($_REQUEST['do'] == 'projectcategory')
 		$categories["$category[projectcategoryid]"] = $category;
 	}
 
-	print_form_header('projectcategory', 'projectcategorydisplayorder');
+	print_form_header('projectcategory', 'order');
 	print_table_header(construct_phrase($vbphrase['categories_for_x'], $project['title_clean']), 3);
 
 	if ($categories)
@@ -437,8 +438,8 @@ if ($_REQUEST['do'] == 'projectcategory')
 				$vbphrase['category' . $category['projectcategoryid'] . ''],
 				"<input type=\"text\" class=\"bginput\" name=\"order[$category[projectcategoryid]]\" value=\"$category[displayorder]\" tabindex=\"1\" size=\"3\" />",
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
-					construct_link_code($vbphrase['edit'], 'projectcategory.php?do=projectcategoryedit&amp;projectcategoryid=' . $category['projectcategoryid']) .
-					construct_link_code($vbphrase['delete'], 'projectcategory.php?do=projectcategorydelete&amp;projectcategoryid=' . $category['projectcategoryid']) .
+					construct_link_code($vbphrase['edit'], 'projectcategory.php?do=edit&amp;projectcategoryid=' . $category['projectcategoryid']) .
+					construct_link_code($vbphrase['delete'], 'projectcategory.php?do=delete&amp;projectcategoryid=' . $category['projectcategoryid']) .
 				'</div>'
 			));
 		}
@@ -452,7 +453,7 @@ if ($_REQUEST['do'] == 'projectcategory')
 		print_table_footer();
 	}
 
-	echo '<p align="center">' . construct_link_code($vbphrase['add_project_category'], 'projectcategory.php?do=projectcategoryadd&amp;projectid=' . $project['projectid']) . '</p>';
+	echo '<p align="center">' . construct_link_code($vbphrase['add_project_category'], 'projectcategory.php?do=add&amp;projectid=' . $project['projectid']) . '</p>';
 }
 
 print_cp_footer();
