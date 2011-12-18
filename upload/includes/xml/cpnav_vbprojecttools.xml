@@ -20,7 +20,7 @@
 
 		<navoption displayorder="40">
 			<phrase>tag_manager</phrase>
-			<link>projecttag.php?do=list</link>
+			<link>projecttag.php?do=typelist</link>
 		</navoption>
 
 		<navoption displayorder="50">
