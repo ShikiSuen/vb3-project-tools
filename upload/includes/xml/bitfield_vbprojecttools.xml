@@ -68,7 +68,7 @@
 				<bitfield name="post">1</bitfield>
 			</group>
 			<group name="forumoptions">
-				<bitfield name="canimportintoissues">262144</bitfield>
+				<bitfield name="canimportintoissues">524288</bitfield>
 			</group>
 			<group name="pt_columns">
 				<bitfield name="last_post">1</bitfield>
