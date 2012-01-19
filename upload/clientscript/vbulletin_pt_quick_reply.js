@@ -32,7 +32,14 @@ if (typeof(vB_XHTML_Ready) != "undefined")
 
 function qr_pt_init()
 {
-	if (SIMPLEVERSION >= '414')
+	// can't just compare SIMPLEVERSION
+	// unreliable for vB betas and > 4.1.10
+	var ver_split = [];
+	ver_split[0] = SIMPLEVERSION[0];
+	ver_split[1] = SIMPLEVERSION[1];
+	ver_split[2] = parseInt(SIMPLEVERSION.substr(2));
+
+	if (ver_split[0] >= 4 && ver_split[1] >= 1 && ver_split[2] >= 4)
 	{
 		QR_EditorID = 'vB_Editor_QR';
 	}
