@@ -243,6 +243,16 @@ function qr_pt_prepare_submit(formobj, minchars)
 		return true;
 	}
 
+	// it's possible to submit before qr_pt_init completes
+	// so need attachinfo check here
+	if (typeof(vBulletin.attachinfo) == "undefined")
+	{
+		vBulletin.attachinfo = {
+			posthash : "",
+			poststarttime : ""
+		};
+	}
+
 	if (!allow_ajax_qr || !AJAX_Compatible)
 	{
 		// not last page, or threaded mode - do not attempt to use AJAX
