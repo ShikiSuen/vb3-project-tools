@@ -13,6 +13,7 @@
 // This code could really use a restructuring into OOP
 
 var qr_pt_repost = false;
+var qr_inited = false;
 var qr_pt_errors_shown = false;
 var qr_pt_active = false;
 var qr_pt_ajax = null;
@@ -32,6 +33,13 @@ if (typeof(vB_XHTML_Ready) != "undefined")
 
 function qr_pt_init()
 {
+	if (qr_inited)
+	{
+		return true;
+	}
+
+	qr_inited = true;
+
 	// can't just compare SIMPLEVERSION
 	// unreliable for vB betas and > 4.1.10
 	var ver_split = [];
@@ -244,13 +252,9 @@ function qr_pt_prepare_submit(formobj, minchars)
 	}
 
 	// it's possible to submit before qr_pt_init completes
-	// so need attachinfo check here
-	if (typeof(vBulletin.attachinfo) == "undefined")
+	if (!qr_inited)
 	{
-		vBulletin.attachinfo = {
-			posthash : "",
-			poststarttime : ""
-		};
+		qr_pt_init();
 	}
 
 	if (!allow_ajax_qr || !AJAX_Compatible)
