@@ -55,7 +55,7 @@ if (!can_administer('canpt'))
 // ############################# LOG ACTION ###############################
 $vbulletin->input->clean_array_gpc('r', array(
 	'projectid' => TYPE_UINT,
-	'milestoneidid' => TYPE_UINT
+	'milestoneid' => TYPE_UINT
 ));
 
 log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') . (!empty($vbulletin->GPC['milestoneid']) ? ' milestone id = ' . $vbulletin->GPC['milestoneid'] : ''));
