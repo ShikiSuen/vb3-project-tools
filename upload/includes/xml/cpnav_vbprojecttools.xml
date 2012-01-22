@@ -15,12 +15,12 @@
 
 		<navoption displayorder="30">
 			<phrase>issue_type_manager</phrase>
-			<link>projecttype.php?do=list</link>
+			<link>projecttype.php?do=typelist</link>
 		</navoption>
 
 		<navoption displayorder="40">
 			<phrase>tag_manager</phrase>
-			<link>projecttag.php?do=typelist</link>
+			<link>projecttag.php?do=list</link>
 		</navoption>
 
 		<navoption displayorder="50">
