@@ -11250,15 +11250,88 @@ if (!$this->condition)
 	</plugins>
 	<phrases>
 		<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
-			<phrase name="project_editissue1_editissue2_text" date="1318377928" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
-			<phrase name="project_editissue1_editissue2_title" date="1318377928" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
-			<phrase name="project_issue_editissue1_editissue2_text" date="1318377858" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
-			<phrase name="project_issue_editissue1_editissue2_title" date="1318377858" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
-			<phrase name="project_issue_editissue_editissue2_text" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
-			<phrase name="project_issue_editissue_editissue2_title" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
-			<phrase name="project_issue_text" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
-			<phrase name="project_issue_title" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
-			<phrase name="project_projectadd_projectedit_afterforumids_text" date="1185885194" username="Ed Sullivan" version="1.0.1"><![CDATA[This option allows you to display project information within the forum list on the vBulletin main page.<br />
+			<phrase name="options_options_issuelist_columns_text" date="1327190138" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to select which content columns in any issue list.<br />
+<br />
+<b>Note:</b> Be careful with this setting, adding too much columns in issue listings can <b>alter the render</b> of the issue list.]]></phrase>
+			<phrase name="options_options_issuelist_columns_title" date="1327190138" username="Pitchoune" version="2.2.0"><![CDATA[Columns to show in issue list]]></phrase>
+			<phrase name="options_options_pt_allowbbcode_text" date="1324252589" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to enable and disable all the built-in BB codes in Project Tools.]]></phrase>
+			<phrase name="options_options_pt_allowbbcode_title" date="1324252589" username="Pitchoune" version="2.2.0"><![CDATA[Allow BB Code in Issues?]]></phrase>
+			<phrase name="options_options_pt_allowbbimagecode_text" date="1324252971" username="Pitchoune" version="2.2.0"><![CDATA[If you enable this, users will be able to use the [IMG] tag to show images in Project Tools.]]></phrase>
+			<phrase name="options_options_pt_allowbbimagecode_title" date="1324252971" username="Pitchoune" version="2.2.0"><![CDATA[Allow [IMG] BB Code in Issues?]]></phrase>
+			<phrase name="options_options_pt_allowhtml_text" date="1324769601" username="Pitchoune" version="2.2.0"><![CDATA[It is <b>strongly</b> recommended that you do not enable this setting. It will allow users to use HTML in Project Tools, which could be used maliciously.]]></phrase>
+			<phrase name="options_options_pt_allowhtml_title" date="1324769601" username="Pitchoune" version="2.2.0"><![CDATA[Allow HTML in Issues?]]></phrase>
+			<phrase name="options_options_pt_allowsmilies_text" date="1324253085" username="Pitchoune" version="2.2.0"><![CDATA[If you enable this setting, users can type such text as :) and :( and they will be converted into smilie images in Project Tools. Otherwise, the text will be displayed as text.]]></phrase>
+			<phrase name="options_options_pt_allowsmilies_title" date="1324253085" username="Pitchoune" version="2.2.0"><![CDATA[Allow Smilies in Issues?]]></phrase>
+			<phrase name="options_options_pt_allowstartervote_text" date="1327189520" username="Pitchoune" version="2.2.0"><![CDATA[If you set this to yes, the issue starter will be able to vote on the issue (such as to confirm that they can reproduce the issue).]]></phrase>
+			<phrase name="options_options_pt_allowstartervote_title" date="1327189520" username="Pitchoune" version="2.2.0"><![CDATA[Allow Issue Starter to Vote on Issue?]]></phrase>
+			<phrase name="options_options_pt_groupsearchissuespergroup_text" date="1324771006" username="Pitchoune" version="2.2.0"><![CDATA[When performing a grouped search, this setting defines how many issues should be displayed in each group on the first page.<br />
+<br />
+<b>Note: </b> This number should be at least 1.]]></phrase>
+			<phrase name="options_options_pt_groupsearchissuespergroup_title" date="1324771006" username="Pitchoune" version="2.2.0"><![CDATA[Grouped Search Issues Per Group]]></phrase>
+			<phrase name="options_options_pt_humancheck_text" date="1327189733" username="Pitchoune" version="2.2.0"><![CDATA[If you define this setting to 'Yes', the human verification will follow rules per usergroup.<br />
+If you define this setting to 'No', the human verification will follow the setting below.]]></phrase>
+			<phrase name="options_options_pt_humancheck_title" date="1327189733" username="Pitchoune" version="2.2.0"><![CDATA[Human Verification by usergroup]]></phrase>
+			<phrase name="options_options_pt_hvcheck_text" date="1327189907" username="Pitchoune" version="2.2.0"><![CDATA[Setting any of the options will require users with the usergroup permission <strong>Require Human Verification on Configured Actions</strong> to pass the Human Verification test when performing the selected actions.<br />
+<br />
+If you select the "Post" action, the Quick Reply editor will be disabled when viewing issues.]]></phrase>
+			<phrase name="options_options_pt_hvcheck_title" date="1327189907" username="Pitchoune" version="2.2.0"><![CDATA[Human Verification Options]]></phrase>
+			<phrase name="options_options_pt_issuesperpage_text" date="1324771021" username="Pitchoune" version="2.2.0"><![CDATA[If a project has 40 issues and this is set to 10, then the issues will be split over 4 pages.<br />
+<br />
+<b>Note: </b>This number should be at least 1.]]></phrase>
+			<phrase name="options_options_pt_issuesperpage_title" date="1324770872" username="Pitchoune" version="2.2.0"><![CDATA[Issues Displayed Per Page]]></phrase>
+			<phrase name="options_options_pt_listprojects_activate_text" date="1327231087" username="Pitchoune" version="2.2.0"><![CDATA[If this setting is enabled, this allows you to display a drop-down menu (in various selected locations) to navigate quickly between all of your projects.<br />
+<br />
+Please check others settings to define locations you want to display the drop-down menu.]]></phrase>
+			<phrase name="options_options_pt_listprojects_activate_title" date="1327230714" username="Pitchoune" version="2.2.0"><![CDATA[Enable]]></phrase>
+			<phrase name="options_options_pt_listprojects_locations_text" date="1327230865" username="Pitchoune" version="2.2.0"><![CDATA[This settings allows you to select which pages must display the drop-down menu.]]></phrase>
+			<phrase name="options_options_pt_listprojects_locations_title" date="1327231097" username="Pitchoune" version="2.2.0"><![CDATA[Location of the drop-down menu]]></phrase>
+			<phrase name="options_options_pt_listprojects_position_issue_text" date="1327231058" username="Pitchoune" version="2.2.0"><![CDATA[This allows you to select the place of the drop-down menu in each project issue.]]></phrase>
+			<phrase name="options_options_pt_listprojects_position_issue_title" date="1327231058" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project issue]]></phrase>
+			<phrase name="options_options_pt_listprojects_position_issuelist_text" date="1327231023" username="Pitchoune" version="2.2.0"><![CDATA[This allows you to select the place of the drop-down menu in each project issue list.<br />
+<br />
+<strong>Note:</strong> if you have no issue in some project, this option is not used and will be placed before footer.]]></phrase>
+			<phrase name="options_options_pt_listprojects_position_issuelist_title" date="1327231023" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project issue list]]></phrase>
+			<phrase name="options_options_pt_listprojects_position_projects_text" date="1327230976" username="Pitchoune" version="2.2.0"><![CDATA[This allows you to select the place of the drop-down menu in each project overview.<br />
+<br />
+<strong>Note:</strong> if you have no issue in some project, this option is not used and will be placed before footer.]]></phrase>
+			<phrase name="options_options_pt_listprojects_position_projects_title" date="1327230976" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project overview]]></phrase>
+			<phrase name="options_options_pt_notesperpage_text" date="1324771036" username="Pitchoune" version="2.2.0"><![CDATA[If an issue has 40 notes and this is set to 10, then the notes will be split over 4 pages.<br />
+<br />
+<b>Note: </b>This number should be at least 1.]]></phrase>
+			<phrase name="options_options_pt_notesperpage_title" date="1324770517" username="Pitchoune" version="2.2.0"><![CDATA[Notes Displayed Per Page]]></phrase>
+			<phrase name="options_options_pt_overview_timelineentries_text" date="1327189473" username="Pitchoune" version="2.2.0"><![CDATA[If the timeline of all projects has 40 entries and this is set to 10, then the 10 first entries will be displayed.]]></phrase>
+			<phrase name="options_options_pt_overview_timelineentries_title" date="1327189473" username="Pitchoune" version="2.2.0"><![CDATA[Overview: Timeline Entries]]></phrase>
+			<phrase name="options_options_pt_profile_issue_counters_text" date="1327189994" username="Pitchoune" version="2.2.0"><![CDATA[This settings allows you to display the number of issues an user reported in various locations (profile, issues, etc.).]]></phrase>
+			<phrase name="options_options_pt_profile_issue_counters_title" date="1327189994" username="Pitchoune" version="2.2.0"><![CDATA[Display profile issue counters]]></phrase>
+			<phrase name="options_options_pt_project_recentissues_text" date="1327188450" username="Pitchoune" version="2.2.0"><![CDATA[If a project has 40 issues and this is set to 10, then the 10 first issues will be displayed.]]></phrase>
+			<phrase name="options_options_pt_project_recentissues_title" date="1327188450" username="Pitchoune" version="2.2.0"><![CDATA[Project View: Recent Issue Count]]></phrase>
+			<phrase name="options_options_pt_project_timelineentries_text" date="1327188396" username="Pitchoune" version="2.2.0"><![CDATA[If a timeline has 40 entries and this is set to 10, then the 10 first entries will be displayed.]]></phrase>
+			<phrase name="options_options_pt_project_timelineentries_title" date="1327188396" username="Pitchoune" version="2.2.0"><![CDATA[Project View: Timeline Entries]]></phrase>
+			<phrase name="options_options_pt_statuscolor_text" date="1327230472" username="Pitchoune" version="2.2.0"><![CDATA[This allows you to select if you want to put some background color on issues. If yes, this setting allows you to choose if you want to use these colors by severity or status.]]></phrase>
+			<phrase name="options_options_pt_statuscolor_title" date="1327230472" username="Pitchoune" version="2.2.0"><![CDATA[Issue Color]]></phrase>
+			<phrase name="options_options_pt_timelineperpage_text" date="1324771195" username="Pitchoune" version="2.2.0"><![CDATA[If a timeline has 40 entries and this is set to 10, then the entries will be split over 4 pages.<br />
+<br />
+<b>Note: </b>This number should be at least 1.]]></phrase>
+			<phrase name="options_options_pt_timelineperpage_title" date="1324771195" username="Pitchoune" version="2.2.0"><![CDATA[Timeline Entries Per Page]]></phrase>
+			<phrase name="options_options_pt_wordwrap_text" date="1327189607" username="Pitchoune" version="2.2.0"><![CDATA[This is useful in preventing long words from stretching your project layout.<br />
+<br />
+Remember that, unless you are using preformatted text, X number of characters does not equal a specific width because different characters are different widths.]]></phrase>
+			<phrase name="options_options_pt_wordwrap_title" date="1327189607" username="Pitchoune" version="2.2.0"><![CDATA[Number of Characters Before Wrapping Text]]></phrase>
+			<phrase name="options_options_ptimporter_createnotice_text" date="1327230331" username="Pitchoune" version="2.2.0"><![CDATA[If this setting is enabled, this will display a notice in the issue from which content the issue come from.]]></phrase>
+			<phrase name="options_options_ptimporter_createnotice_title" date="1327230331" username="Pitchoune" version="2.2.0"><![CDATA[Create import notice]]></phrase>
+			<phrase name="options_options_ptimporter_extendedthreadprefix_text" date="1327230112" username="Pitchoune" version="2.2.0"><![CDATA[If enabled, this allows you to use the thread prefix via the <strong>pt_importhread_threadprefix_extended</strong> phrase which can contain project title and issue type.<br />
+<br />
+Otherwise, the <strong>pt_importhread_threadprefix</strong> phrase will be used.<br />]]></phrase>
+			<phrase name="options_options_ptimporter_extendedthreadprefix_title" date="1327230112" username="Pitchoune" version="2.2.0"><![CDATA[Show dynamic content prefix]]></phrase>
+			<phrase name="options_options_ptimporter_ignoreattachlimits_text" date="1327230189" username="Pitchoune" version="2.2.0"><![CDATA[If this setting is enabled, this allows you to not check for attachment limits on an importation.]]></phrase>
+			<phrase name="options_options_ptimporter_ignoreattachlimits_title" date="1327230189" username="Pitchoune" version="2.2.0"><![CDATA[Ignore Attachment Limits]]></phrase>
+			<phrase name="options_options_ptimporter_keepthreads_text" date="1327226312" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to define if clicking on a thread must close it and redirects to the corresponding issue or if you want to keep the thread open, as a duplicate of the issue.]]></phrase>
+			<phrase name="options_options_ptimporter_keepthreads_title" date="1327226312" username="Pitchoune" version="2.2.0"><![CDATA[Keep original content intact]]></phrase>
+			<phrase name="options_options_statuscolor_darkstyles_text" date="1327230564" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to define which styles are dark-dominant colors. Separate each style ID by a comma.]]></phrase>
+			<phrase name="options_options_statuscolor_darkstyles_title" date="1327230564" username="Pitchoune" version="2.2.0"><![CDATA[Dark Styles]]></phrase>
+			<phrase name="options_options_statuscolor_lightstyles_text" date="1327230585" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to define which styles are light-dominant colors. Separate each style ID by a comma.]]></phrase>
+			<phrase name="options_options_statuscolor_lightstyles_title" date="1327230585" username="Pitchoune" version="2.2.0"><![CDATA[Light Styles]]></phrase>
+			<phrase name="project_add_edit_afterforumids_text" date="1185885194" username="Ed Sullivan" version="1.0.1"><![CDATA[This option allows you to display project information within the forum list on the vBulletin main page.<br />
 <br />
 You may select one or more forums after which to display information about this project, including last activity time and number of issues.<br />
 <br />
@@ -11268,48 +11341,78 @@ The following caveats apply:
 <li>A user must have permission to view at least one of the selected issue types for this project.</li>
 <li>The project's information will be displayed after any child forums for the forum you select.</li>
 </ol>]]></phrase>
-			<phrase name="project_projectadd_projectedit_afterforumids_title" date="1181226553" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Display After Forums]]></phrase>
-			<phrase name="project_projectadd_projectedit_available_issue_types_text" date="1318371490" username="Pitchoune" version="2.2.0"><![CDATA[Not all issue types are applicable for all projects, so you may choose to use only those types that apply for this specific project. Each project may use different types, which enables very deep and powerful permission control.<br />
+			<phrase name="project_add_edit_afterforumids_title" date="1181226553" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Display After Forums]]></phrase>
+			<phrase name="project_add_edit_available_issue_types_text" date="1318371490" username="Pitchoune" version="2.2.0"><![CDATA[Not all issue types are applicable for all projects, so you may choose to use only those types that apply for this specific project. Each project may use different types, which enables very deep and powerful permission control.<br />
 <br />
 To make an issue type available to a project, you must select a start status. When users that cannot change the status of an issue submit a new issue, it will start in this state.<br />
 <br />
 To manage issue types and statuses, click <a href="projecttype.php?do=typelist" target="_blank">here</a>.]]></phrase>
-			<phrase name="project_projectadd_projectedit_available_issue_types_title" date="1181227338" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Available Issue Types]]></phrase>
-			<phrase name="project_projectadd_projectedit_forumtitle_text" date="1181226807" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[If you choose to use the "Display After Forums", this option allows you to override the project name when the project is displayed in the forum list. This is helpful if the project's name does not provide enough context when surrounded by forums.<br />
+			<phrase name="project_add_edit_available_issue_types_title" date="1181227338" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Available Issue Types]]></phrase>
+			<phrase name="project_add_edit_description_text" date="1318370799" username="Pitchoune" version="2.2.0"><![CDATA[Define here the description of the project. You can use HTML code.]]></phrase>
+			<phrase name="project_add_edit_description_title" date="1318370799" username="Pitchoune" version="2.2.0"><![CDATA[Description]]></phrase>
+			<phrase name="project_add_edit_displayorder_text" date="1318371269" username="Pitchoune" version="2.2.0"><![CDATA[Define here the order of the project in the project list.]]></phrase>
+			<phrase name="project_add_edit_displayorder_title" date="1318371269" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="project_add_edit_emailonassignment_text" date="1318370986" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the assigned user must receive an email when he/she is assigned to an issue.]]></phrase>
+			<phrase name="project_add_edit_emailonassignment_title" date="1318370986" username="Pitchoune" version="2.2.0"><![CDATA[Send Email on Issue Assignment]]></phrase>
+			<phrase name="project_add_edit_forumtitle_text" date="1181226807" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[If you choose to use the "Display After Forums", this option allows you to override the project name when the project is displayed in the forum list. This is helpful if the project's name does not provide enough context when surrounded by forums.<br />
 <br />
 If you do not enter a value for this option, the project's default name will be used but preceded by the word "Project".]]></phrase>
-			<phrase name="project_projectadd_projectedit_forumtitle_title" date="1181226807" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Title in Forum List]]></phrase>
-			<phrase name="project_projectlist_text" date="1181914808" username="Ed Sullivan" version="1.0.0 Release Candidate 1"><![CDATA[Projects are an organizational unit for a collection of things that need to be completed or analyzed. This can be anything from tracking changes in a piece of software or personal to-do lists to a list of steps to perform a move or build a car.<br />
+			<phrase name="project_add_edit_forumtitle_title" date="1181226807" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Title in Forum List]]></phrase>
+			<phrase name="project_add_edit_pmonassignment_text" date="1318371215" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the assigned user must receive aprivate message when he/she is assigned to an issue.]]></phrase>
+			<phrase name="project_add_edit_pmonassignment_title" date="1318371215" username="Pitchoune" version="2.2.0"><![CDATA[Send PM on Issue Assignment]]></phrase>
+			<phrase name="project_add_edit_requireappliesversion_text" date="1323366995" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the applicable version is required or not, if there is a default value or not. If there is no default value defined in the versions manager, the value 'Unknown' will be set when an user will create a new issue.]]></phrase>
+			<phrase name="project_add_edit_requireappliesversion_title" date="1318371358" username="Pitchoune" version="2.2.0"><![CDATA[Applicable Version]]></phrase>
+			<phrase name="project_add_edit_requirecategory_text" date="1323366980" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the category is required or not, if there is a default value or not. If there is no default value defined in the category manager, the value 'Unknown' will be set when an user will create a new issue.]]></phrase>
+			<phrase name="project_add_edit_requirecategory_title" date="1318371382" username="Pitchoune" version="2.2.0"><![CDATA[Category]]></phrase>
+			<phrase name="project_add_edit_requirepriority_text" date="1323367060" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the priority is required or not, if there is a default value or not. If there is no default value defined in the priority manager, the first value in the priority list will be set when an user will create a new issue.]]></phrase>
+			<phrase name="project_add_edit_requirepriority_title" date="1318371408" username="Pitchoune" version="2.2.0"><![CDATA[Priority]]></phrase>
+			<phrase name="project_add_edit_summary_text" date="1318370779" username="Pitchoune" version="2.2.0"><![CDATA[Define here the summary of the project. You can use HTML code.]]></phrase>
+			<phrase name="project_add_edit_summary_title" date="1318370779" username="Pitchoune" version="2.2.0"><![CDATA[Summary]]></phrase>
+			<phrase name="project_add_edit_title_text" date="1318370717" username="Pitchoune" version="2.2.0"><![CDATA[Define here the title of the project. You can use HTML code.]]></phrase>
+			<phrase name="project_add_edit_title_title" date="1318370717" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="project_editissue1_editissue2_text" date="1318377928" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
+			<phrase name="project_editissue1_editissue2_title" date="1318377928" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
+			<phrase name="project_editissue1_issuetypeid_text" date="1327241920" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available issue types.]]></phrase>
+			<phrase name="project_editissue1_issuetypeid_title" date="1327241920" username="Pitchoune" version="2.2.0"><![CDATA[Issue Type]]></phrase>
+			<phrase name="project_editissue1_projectid_text" date="1327241900" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available projects.]]></phrase>
+			<phrase name="project_editissue1_projectid_title" date="1327241900" username="Pitchoune" version="2.2.0"><![CDATA[Project]]></phrase>
+			<phrase name="project_editissue2_addressedversionid_text" date="1327242396" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available addressed versions for this project.]]></phrase>
+			<phrase name="project_editissue2_addressedversionid_title" date="1327242396" username="Pitchoune" version="2.2.0"><![CDATA[Addressed Version]]></phrase>
+			<phrase name="project_editissue2_appliesversionid_text" date="1327242722" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available applicable versions for this project.]]></phrase>
+			<phrase name="project_editissue2_appliesversionid_title" date="1327242722" username="Pitchoune" version="2.2.0"><![CDATA[Applicable Version]]></phrase>
+			<phrase name="project_editissue2_issuestatusid_text" date="1327242628" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available statuses for this project.]]></phrase>
+			<phrase name="project_editissue2_issuestatusid_title" date="1327242628" username="Pitchoune" version="2.2.0"><![CDATA[Status]]></phrase>
+			<phrase name="project_editissue2_milestoneid_text" date="1327242663" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available milestones for this project.]]></phrase>
+			<phrase name="project_editissue2_milestoneid_title" date="1327242663" username="Pitchoune" version="2.2.0"><![CDATA[Milestone]]></phrase>
+			<phrase name="project_editissue2_projectcategoryid_text" date="1327242511" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available categories for this project.]]></phrase>
+			<phrase name="project_editissue2_projectcategoryid_title" date="1327242511" username="Pitchoune" version="2.2.0"><![CDATA[Category]]></phrase>
+			<phrase name="project_issue_editissue1_editissue2_text" date="1318377858" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
+			<phrase name="project_issue_editissue1_editissue2_title" date="1318377858" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
+			<phrase name="project_issue_editissue_editissue2_text" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
+			<phrase name="project_issue_editissue_editissue2_title" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
+			<phrase name="project_issue_issueid_text" date="1327241858" username="Pitchoune" version="2.2.0"><![CDATA[This is the Issue ID you must specify to edit it.]]></phrase>
+			<phrase name="project_issue_issueid_title" date="1327241858" username="Pitchoune" version="2.2.0"><![CDATA[ID of Issue]]></phrase>
+			<phrase name="project_issue_text" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
+			<phrase name="project_issue_title" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
+			<phrase name="project_list_text" date="1181914808" username="Ed Sullivan" version="1.0.0 Release Candidate 1"><![CDATA[Projects are an organizational unit for a collection of things that need to be completed or analyzed. This can be anything from tracking changes in a piece of software or personal to-do lists to a list of steps to perform a move or build a car.<br />
 <br />
 Issue types let you sub-group tasks/issues in a project into more logical units. A project may have as many custom issue types as you wish. See <a href="help.php?do=answer&amp;page=project&amp;pageaction=typelist">here</a> for more information on issue types.<br />
 <br />
 A project may also utilize categories for additional sub-grouping. Categories have no functional changes except for grouping issues into logical sub-components, allowing for quicker searching. Categories differ from issue types in that they group based on "where" the issue is accomplished instead of "what" the issue is to accomplish.<br />
 <br />
 Basic version tracking is also provided on a per-project basis. Version tracking is especially useful in a software environment, where the specific revision an issue applies to is very important.]]></phrase>
-			<phrase name="project_projectlist_title" date="1181234881" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Overview]]></phrase>
-			<phrase name="project_projetadd_projectedit_description_text" date="1318370799" username="Pitchoune" version="2.2.0"><![CDATA[Define here the description of the project. You can use HTML code.]]></phrase>
-			<phrase name="project_projetadd_projectedit_description_title" date="1318370799" username="Pitchoune" version="2.2.0"><![CDATA[Description]]></phrase>
-			<phrase name="project_projetadd_projectedit_displayorder_text" date="1318371269" username="Pitchoune" version="2.2.0"><![CDATA[Define here the order of the project in the project list.]]></phrase>
-			<phrase name="project_projetadd_projectedit_displayorder_title" date="1318371269" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
-			<phrase name="project_projetadd_projectedit_emailonassignment_text" date="1318370986" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the assigned user must receive an email when he/she is assigned to an issue.]]></phrase>
-			<phrase name="project_projetadd_projectedit_emailonassignment_title" date="1318370986" username="Pitchoune" version="2.2.0"><![CDATA[Send Email on Issue Assignment]]></phrase>
-			<phrase name="project_projetadd_projectedit_pmonassignment_text" date="1318371215" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the assigned user must receive aprivate message when he/she is assigned to an issue.]]></phrase>
-			<phrase name="project_projetadd_projectedit_pmonassignment_title" date="1318371215" username="Pitchoune" version="2.2.0"><![CDATA[Send PM on Issue Assignment]]></phrase>
-			<phrase name="project_projetadd_projectedit_requireappliesversion_text" date="1323366995" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the applicable version is required or not, if there is a default value or not. If there is no default value defined in the versions manager, the value 'Unknown' will be set when an user will create a new issue.]]></phrase>
-			<phrase name="project_projetadd_projectedit_requireappliesversion_title" date="1318371358" username="Pitchoune" version="2.2.0"><![CDATA[Applicable Version]]></phrase>
-			<phrase name="project_projetadd_projectedit_requirecategory_text" date="1323366980" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the category is required or not, if there is a default value or not. If there is no default value defined in the category manager, the value 'Unknown' will be set when an user will create a new issue.]]></phrase>
-			<phrase name="project_projetadd_projectedit_requirecategory_title" date="1318371382" username="Pitchoune" version="2.2.0"><![CDATA[Category]]></phrase>
-			<phrase name="project_projetadd_projectedit_requirepriority_text" date="1323367060" username="Pitchoune" version="2.2.0"><![CDATA[You can define here if the priority is required or not, if there is a default value or not. If there is no default value defined in the priority manager, the first value in the priority list will be set when an user will create a new issue.]]></phrase>
-			<phrase name="project_projetadd_projectedit_requirepriority_title" date="1318371408" username="Pitchoune" version="2.2.0"><![CDATA[Priority]]></phrase>
-			<phrase name="project_projetadd_projectedit_summary_text" date="1318370779" username="Pitchoune" version="2.2.0"><![CDATA[Define here the summary of the project. You can use HTML code.]]></phrase>
-			<phrase name="project_projetadd_projectedit_summary_title" date="1318370779" username="Pitchoune" version="2.2.0"><![CDATA[Summary]]></phrase>
-			<phrase name="project_projetadd_projectedit_title_text" date="1318370717" username="Pitchoune" version="2.2.0"><![CDATA[Define here the title of the project. You can use HTML code.]]></phrase>
-			<phrase name="project_projetadd_projectedit_title_title" date="1318370717" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
-			<phrase name="projectcategory_projectcategory_text" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Categories allow a simple way of sub-grouping issues within a project based on what the issue relates to. This can be useful if you have several people working on a project and each person has their own specialty.<br />
+			<phrase name="project_list_title" date="1181234881" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Overview]]></phrase>
+			<phrase name="projectcategory_add_edit_default_text" date="1324248575" username="Pitchoune" version="2.2.0"><![CDATA[If selected, the category defined as default value will be used automatically if the user can't defined any category and is required.]]></phrase>
+			<phrase name="projectcategory_add_edit_default_title" date="1324248575" username="Pitchoune" version="2.2.0"><![CDATA[Default value]]></phrase>
+			<phrase name="projectcategory_add_edit_displayorder_text" date="1324248204" username="Pitchoune" version="2.2.0"><![CDATA[This is the display order of the category in the category list. The category list is displayed in various places.]]></phrase>
+			<phrase name="projectcategory_add_edit_displayorder_title" date="1324248204" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="projectcategory_add_edit_title_text" date="1324248099" username="Pitchoune" version="2.2.0"><![CDATA[This is the text which describe the category.]]></phrase>
+			<phrase name="projectcategory_add_edit_title_title" date="1324248099" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="projectcategory_list_text" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Categories allow a simple way of sub-grouping issues within a project based on what the issue relates to. This can be useful if you have several people working on a project and each person has their own specialty.<br />
 <br />
 Categories are definable per project. If you do not define any categories for a project, the option to select a category will not be displayed when submitting an issue. However, a value of "unknown" will still be shown when viewing an issue.]]></phrase>
-			<phrase name="projectcategory_projectcategory_title" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Category Overview]]></phrase>
-			<phrase name="projectcounters_counters_text" date="1318377608" username="Pitchoune" version="2.2.0"><![CDATA[This page contains several counters that you can update.<br />
+			<phrase name="projectcategory_list_title" date="1181301429" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Category Overview]]></phrase>
+			<phrase name="projectcounters_counters_text" date="1323383105" username="Pitchoune" version="2.2.0"><![CDATA[This page contains several counters that you can update.<br />
 <br />
 <b>Rebuild Issue Counters</b><br />
 Rebuilding issue counters will update various fields related to an issue that might become out of date but can be rebuilt.<br /><br />
@@ -11318,56 +11421,20 @@ Rebuilding project counters will update various fields related to an project tha
 <b>Rebuild Milestone Counters</b><br />
 Rebuilding milestone counters will update various fields related to a milestone that might become out of date but can be rebuilt.<br /><br />
 <b>Rebuild Profile Issue Counters</b><br />
-Rebuilding profile issue counters will update the number of issues every user have made.<br /><br />]]></phrase>
+Rebuilding profile issue counters will update the number of issues every user have made.]]></phrase>
 			<phrase name="projectcounters_counters_title" date="1318377071" username="Pitchoune" version="2.2.0"><![CDATA[Update Counters]]></phrase>
-			<phrase name="projectmagicselect_add_edit_displayorder_text" date="1316907571" username="Pitchoune" version="2.2.0"><![CDATA[This is the display order of magic selects. This is used in the Macig Select overview page and in issues if more than 1 magic select is defined for a project.]]></phrase>
-			<phrase name="projectmagicselect_add_edit_displayorder_title" date="1316907571" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
-			<phrase name="projectmagicselect_add_edit_fetchcode_text" date="1318282297" username="Pitchoune" version="2.2.0"><![CDATA[This is the PHP code used in projectajax.php?do=fetch to define the drop-down menu.<br />
+			<phrase name="projectmilestone_add_edit_completeddate_text" date="1327241266" username="Pitchoune" version="2.2.0"><![CDATA[This is the date the milestone is finished.]]></phrase>
+			<phrase name="projectmilestone_add_edit_completeddate_title" date="1327241266" username="Pitchoune" version="2.2.0"><![CDATA[Completed Date]]></phrase>
+			<phrase name="projectmilestone_add_edit_targetdate_text" date="1327241242" username="Pitchoune" version="2.2.0"><![CDATA[This is the date the milestone should be finished.]]></phrase>
+			<phrase name="projectmilestone_add_edit_targetdate_title" date="1327241242" username="Pitchoune" version="2.2.0"><![CDATA[Target Date]]></phrase>
+			<phrase name="projectmilestone_add_edit_title_text" date="1327241174" username="Pitchoune" version="2.2.0"><![CDATA[This is the title of the milestone.]]></phrase>
+			<phrase name="projectmilestone_add_edit_title_title" date="1327241174" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="projectmilestone_list_text" date="1327236853" username="Pitchoune" version="2.2.0"><![CDATA[A basic system to manage issues is included in Project Tools. This is especially handy for software projects, where the exact version an issue applies to or is addressed in is important information.<br />
 <br />
-Be careful to adapt the code to your own 'Varname' and 'HTML Code' values!<br />
+Milestones allows you to group issues per applied version, allowing easy reviews for issues in these milestones.<br />
 <br />
-Example:<br />
-<br />
-if ($magicselect['varname'] == 'test' AND $magicselect['varname'] == $vbulletin->GPC['field'])<br />
-{<br />
-	$xml->add_group('items');<br />
-		$xml->add_tag('item', 'Some text', array('itemid' => 1, 'selected' => ($issue['test'] == 1 ? 'yes' : 'no')));<br />
-		$xml->add_tag('item', 'Other text', array('itemid' => 2, 'selected' => ($issue['test'] == 2 ? 'yes' : 'no')));<br />
-	$xml->close_group();<br />
-}]]></phrase>
-			<phrase name="projectmagicselect_add_edit_fetchcode_title" date="1316948419" username="Pitchoune" version="2.2.0"><![CDATA[PHP Fetch Code]]></phrase>
-			<phrase name="projectmagicselect_add_edit_htmlcode_text" date="1318281972" username="Pitchoune" version="2.2.0"><![CDATA[The "HTML Code" option is used to create the HTML code of the drop-down menu in "Issue Details", in issue creation or edition forms.<br />
-<br />
-The code must be an array in the <b>$arrayoutput</b> variable. It's very important to do like this or the magic select will never be created.<br />
-<br />
-Example:<br />
-<br />
-$arrayoutput = array(<br />
-	'1' => 'Some text',<br />
-	'2' => 'Other text'<br />
-);]]></phrase>
-			<phrase name="projectmagicselect_add_edit_htmlcode_title" date="1316907727" username="Pitchoune" version="2.2.0"><![CDATA[HTML Code]]></phrase>
-			<phrase name="projectmagicselect_add_edit_projects_text" date="1316907633" username="Pitchoune" version="2.2.0"><![CDATA[This option allows you to select every project the magic select is used. You need to check at least 1 project.]]></phrase>
-			<phrase name="projectmagicselect_add_edit_projects_title" date="1316907633" username="Pitchoune" version="2.2.0"><![CDATA[Projects]]></phrase>
-			<phrase name="projectmagicselect_add_edit_savecode_text" date="1318282579" username="Pitchoune" version="2.2.0"><![CDATA[This option contains the code used in projectajax.php?do=save page to save your choice from the drop-down menu.<br />
-<br />
-Be careful to adapt the code to your own 'Varname' value!<br />
-<br />
-Example:<br />
-<br />
-if ($magicselect['varname'] == 'test' AND $magicselect['varname'] == $vbulletin->GPC['field'])<br />
-{<br />
-$issuedata->set('test', $vbulletin->GPC['value']);<br />
-}]]></phrase>
-			<phrase name="projectmagicselect_add_edit_savecode_title" date="1316907804" username="Pitchoune" version="2.2.0"><![CDATA[PHP Save Code]]></phrase>
-			<phrase name="projectmagicselect_add_edit_text_text" date="1316907256" username="Pitchoune" version="2.2.0"><![CDATA[This is the name of the magic select. This is displayed every time the magic select is displayed.]]></phrase>
-			<phrase name="projectmagicselect_add_edit_text_title" date="1316907256" username="Pitchoune" version="2.2.0"><![CDATA[Text]]></phrase>
-			<phrase name="projectmagicselect_add_varname_text" date="1316906966" username="Pitchoune" version="2.2.0"><![CDATA[The varname is used to activate the magic select in various locations.<br />
-<br />
-You need to use the same varname in every PHP/HTML code when this is required!]]></phrase>
-			<phrase name="projectmagicselect_add_varname_title" date="1316906966" username="Pitchoune" version="2.2.0"><![CDATA[Varname]]></phrase>
-			<phrase name="projectmagicselect_list_text" date="1316907432" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects are a way to add drop-down menus in issue details. Each user can select (if permissions allows it) 1 option in each menu related to the issue to define some actions or have a better definition of the issue.]]></phrase>
-			<phrase name="projectmagicselect_list_title" date="1316907432" username="Pitchoune" version="2.2.0"><![CDATA[Project Magic Select Overview]]></phrase>
+You can define a target and a completed date for each milestone. A target date can be marked as obsolete automatically when this date is not respected. The completed date overwrite the target date, indicating you made the release of all the milestone content (issues).]]></phrase>
+			<phrase name="projectmilestone_list_title" date="1327232355" username="Pitchoune" version="2.2.0"><![CDATA[Project Milestone Overview]]></phrase>
 			<phrase name="projectpermission_edit_about_reports_text" date="1181231154" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[(This topic is also detailed <a href="../faq.php?faq=pt_faq#faq_pt_faq_report" target="_blank">here</a>.)<br />
 <br />
 Reports allow you to save searches for easy access at a later time. Reports are available via the "My Reports" dropdown shown on several Project Tools pages.<br />
@@ -11382,10 +11449,26 @@ Permissions are not only definable per usergroup and per project, but per issue 
 <br />
 There are also several permissions that are not definable per project or issue type. Generally, these permissions would not make sense to be defined more than once. These are only editable when you edit the global project permissions for a group.]]></phrase>
 			<phrase name="projectpermission_edit_list_title" date="1181311652" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Tools Permissions Overview]]></phrase>
-			<phrase name="projecttag_taglist_text" date="1181651220" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Tags are a way of defining flexible meta-data about an issue in a searchable way. How they are used is entirely up to you. They could be used to help categorize issues or could be used when certain types of follow ups are needed.<br />
+			<phrase name="projectpriority_add_edit_default_text" date="1323601609" username="Pitchoune" version="2.2.0"><![CDATA[You can define if this is the default value for the priority list. This option is useful if you don't want your uses choose a priority but you require a priority for each issue.]]></phrase>
+			<phrase name="projectpriority_add_edit_default_title" date="1323601609" username="Pitchoune" version="2.2.0"><![CDATA[Default value]]></phrase>
+			<phrase name="projectpriority_add_edit_displayorder_text" date="1323600585" username="Pitchoune" version="2.2.0"><![CDATA[The display order of the priority. This is needed to define the place of the priority in priority lists displayed in various places.]]></phrase>
+			<phrase name="projectpriority_add_edit_displayorder_title" date="1323600585" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="projectpriority_add_edit_statuscolor2_text" date="1323601736" username="Pitchoune" version="2.2.0"><![CDATA[You can choose the color applied in background of issues in various issue lists to be shown on your light styles. A dark style is a style with a light background or a light dominent color for all the system.]]></phrase>
+			<phrase name="projectpriority_add_edit_statuscolor2_title" date="1323601736" username="Pitchoune" version="2.2.0"><![CDATA[Severity Color - Light Styles]]></phrase>
+			<phrase name="projectpriority_add_edit_statuscolor_text" date="1323601710" username="Pitchoune" version="2.2.0"><![CDATA[You can choose the color applied in background of issues in various issue lists to be shown on your dark styles. A dark style is a style with a dark background or a dark dominent color for all the system.]]></phrase>
+			<phrase name="projectpriority_add_edit_statuscolor_title" date="1323601710" username="Pitchoune" version="2.2.0"><![CDATA[Severity Color - Dark Styles]]></phrase>
+			<phrase name="projectpriority_add_edit_title_text" date="1323600595" username="Pitchoune" version="2.2.0"><![CDATA[The title of the priority displayed in various places.]]></phrase>
+			<phrase name="projectpriority_add_edit_title_title" date="1323600595" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="projectpriority_list_text" date="1323600240" username="Pitchoune" version="2.2.0"><![CDATA[Priorities are a way to define the level of importance about issues. You can order them from their importance, like from highest to lowest, per project.]]></phrase>
+			<phrase name="projectpriority_list_title" date="1323435431" username="Pitchoune" version="2.2.0"><![CDATA[Priority Overview]]></phrase>
+			<phrase name="projectpriority_projectpriorityadd_projectpriorityedit_displayorder_text" date="1323600456" username="Pitchoune" version="2.2.0"><![CDATA[The display order of the priority. This is needed to define the place of the priority in priority lists displayed in various places.]]></phrase>
+			<phrase name="projectpriority_projectpriorityadd_projectpriorityedit_displayorder_title" date="1323600456" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="projectpriority_projectpriorityadd_projectpriorityedit_title_text" date="1323600347" username="Pitchoune" version="2.2.0"><![CDATA[The title of the priority displayed in various places.]]></phrase>
+			<phrase name="projectpriority_projectpriorityadd_projectpriorityedit_title_title" date="1323600347" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="projecttag_list_text" date="1181651220" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Tags are a way of defining flexible meta-data about an issue in a searchable way. How they are used is entirely up to you. They could be used to help categorize issues or could be used when certain types of follow ups are needed.<br />
 <br />
 Depending on permissions, tags may be able to be defined on the fly via the front-end.]]></phrase>
-			<phrase name="projecttag_taglist_title" date="1181310979" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Tags Overview]]></phrase>
+			<phrase name="projecttag_list_title" date="1181310979" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Tags Overview]]></phrase>
 			<phrase name="projecttype_statusadd_statusedit_canpetitionfrom_text" date="1181233223" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[The issue petition system is a powerful system that allows users to ask for an issue's status to be changed. For example, the fix for a problem may not work for them, so they may request a change to "confirmed" rather than "fixed". This request will then appear on the project overview page until it is handled by someone with the appropriate permissions.<br />
 <br />
 However, there are some cases where you don't want users to have this power when an issue is in a specific status. A common choice is to set this option to "no" for a type's starting status.]]></phrase>
@@ -11444,7 +11527,23 @@ While different issue types do not cause different fields to be displayed, they 
 <li><strong>Distinct permissions</strong> - a wide range usergroup permissions are definable per project and issue type.</li>
 </ul>]]></phrase>
 			<phrase name="projecttype_typelist_title" date="1181232524" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[What are Issue Types?]]></phrase>
-			<phrase name="projectversion_projectversion_text" date="1181651120" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[A basic system to track versions is included in the Project Tools. This is especially handy for software projects, where the exact version an issue applies to or is addressed in is important information.<br />
+			<phrase name="projectversion_add_edit_default_text" date="1327231641" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to define if this setting is the default value if you required a version on the new issue form and the user can't select one version.]]></phrase>
+			<phrase name="projectversion_add_edit_default_title" date="1327231641" username="Pitchoune" version="2.2.0"><![CDATA[Default value]]></phrase>
+			<phrase name="projectversion_add_edit_displayorder_text" date="1327231554" username="Pitchoune" version="2.2.0"><![CDATA[This is the display order of the version.<br />
+<br />
+<b>Note:</b> a larger value will be displayed first!]]></phrase>
+			<phrase name="projectversion_add_edit_displayorder_title" date="1327231554" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="projectversion_add_edit_versionname_text" date="1327231506" username="Pitchoune" version="2.2.0"><![CDATA[This is the version name displayed in various locations.]]></phrase>
+			<phrase name="projectversion_add_edit_versionname_title" date="1327231506" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="projectversion_add_nextversion_text" date="1327231797" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to indicate to the system that this version must be defined for issues which have "next version" as actual addressed version.<br />
+<br />
+This is configurable per project.]]></phrase>
+			<phrase name="projectversion_add_nextversion_title" date="1327231797" username="Pitchoune" version="2.2.0"><![CDATA[Denote as next version?]]></phrase>
+			<phrase name="projectversion_groupadd_groupedit_displayorder_text" date="1327231356" username="Pitchoune" version="2.2.0"><![CDATA[This is the display order of the version group.]]></phrase>
+			<phrase name="projectversion_groupadd_groupedit_displayorder_title" date="1327231356" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="projectversion_groupadd_groupedit_groupname_text" date="1327231322" username="Pitchoune" version="2.2.0"><![CDATA[This is the title which will be displayed in various locations.]]></phrase>
+			<phrase name="projectversion_groupadd_groupedit_groupname_title" date="1327231322" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="projectversion_list_text" date="1181651120" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[A basic system to track versions is included in the Project Tools. This is especially handy for software projects, where the exact version an issue applies to or is addressed in is important information.<br />
 <br />
 Versions are split into version groups and individual versions. A version can only exist within a version group. This allows users to make searches on entire groups more easily. Using vBulletin's releases as an example, "3.6.x" would be a version group and "3.6.7" would be a version within that group.<br />
 <br />
@@ -11454,7 +11553,7 @@ Note that the versions you create need to cover two situations: applicable versi
 In all other areas of vBulletin and the Project Tools, a lower display order will be displayed before a higher one. This is <em>not</em> the case with version and version group display orders. Higher display orders will be shown first!<br />
 <br />
 This was done because you will generally be adding newer releases over time. With the "lower is first" option, placing the new releases first would require renumbering all of the existing releases.]]></phrase>
-			<phrase name="projectversion_projectversion_title" date="1181302369" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Version Overview]]></phrase>
+			<phrase name="projectversion_list_title" date="1181302369" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Project Version Overview]]></phrase>
 		</phrasetype>
 		<phrasetype name="Control Panel Home Pages" fieldname="cphome">
 			<phrase name="edit_issue" date="1173195635" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Edit Issue]]></phrase>
@@ -11503,9 +11602,9 @@ This was done because you will generally be adding newer releases over time. Wit
 			<phrase name="ptperm_group_issue_post" date="1178028562" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Posting Permissions]]></phrase>
 		</phrasetype>
 		<phrasetype name="Scheduled Tasks" fieldname="cron">
-			<phrase name="task_pt_cleanup_desc" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Cleanup stale Project Tools data]]></phrase>
-			<phrase name="task_pt_cleanup_log" date="1172593743" username="Ed Sullivan" version="1.0.0 Alpha 1" />
-			<phrase name="task_pt_cleanup_title" date="1172593743" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools Cleanup]]></phrase>
+			<phrase name="task_pt_cleanup_desc" date="1324249036" username="Pitchoune" version="2.2.0"><![CDATA[Cleanup stale Project Tools data]]></phrase>
+			<phrase name="task_pt_cleanup_log" date="1324249036" username="Pitchoune" version="2.2.0"><![CDATA[Cleanup Completed]]></phrase>
+			<phrase name="task_pt_cleanup_title" date="1324249036" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools Cleanup]]></phrase>
 			<phrase name="task_pt_dailydigest_desc" date="1202382250" username="admin" version="1.0.2"><![CDATA[Sends out daily digest notifications for the Project Tools.]]></phrase>
 			<phrase name="task_pt_dailydigest_log" date="1202382250" username="admin" version="1.0.2"><![CDATA[Project tools daily digest run.]]></phrase>
 			<phrase name="task_pt_dailydigest_title" date="1202382250" username="admin" version="1.0.2"><![CDATA[Project Tools Daily Digest]]></phrase>
@@ -11827,7 +11926,6 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="export_as_post" date="1298644800" username="Pitchoune" version="2.2.0"><![CDATA[Export as Post]]></phrase>
 			<phrase name="export_as_thread" date="1298644788" username="Pitchoune" version="2.2.0"><![CDATA[Export as thread]]></phrase>
 			<phrase name="export_issue" date="1297614681" username="Pitchoune" version="2.2.0"><![CDATA[Export issue]]></phrase>
-			<phrase name="export_issue_issuethread" date="1299560073" username="Pitchoune" version="2.2.0"><![CDATA[Issue as Thread]]></phrase>
 			<phrase name="export_issue_post" date="1297615903" username="Pitchoune" version="2.2.0"><![CDATA[Post]]></phrase>
 			<phrase name="export_issue_thread" date="1297615892" username="Pitchoune" version="2.2.0"><![CDATA[Thread]]></phrase>
 			<phrase name="export_this_issue" date="1299560044" username="Pitchoune" version="2.2.0"><![CDATA[Export this Issue]]></phrase>
@@ -11931,8 +12029,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="private_message_keep_in_mind" date="1175092015" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[This is a private message. Keep this in mind when replying!]]></phrase>
 			<phrase name="project" date="1174406316" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project]]></phrase>
 			<phrase name="project_information" date="1175174027" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Information]]></phrase>
-			<phrase name="project_new_issue_notes" date="1302902774" username="Pitchoune" version="2.2.0"><![CDATA[Project which contains unread issue notes]]></phrase>
-			<phrase name="project_no_new_issue_notes" date="1302902790" username="Pitchoune" version="2.2.0"><![CDATA[Project which contains no unread issue notes]]></phrase>
+			<phrase name="project_new_issue_notes" date="1323368497" username="Pitchoune" version="2.2.0"><![CDATA[Contains unread issue notes]]></phrase>
+			<phrase name="project_no_new_issue_notes" date="1323368497" username="Pitchoune" version="2.2.0"><![CDATA[Contains no unread issue notes]]></phrase>
 			<phrase name="project_rss_feed" date="1214316638" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project RSS Feed]]></phrase>
 			<phrase name="project_statistics" date="1174490381" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Statistics]]></phrase>
 			<phrase name="project_subscriptions" date="1211555542" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Subscriptions]]></phrase>
@@ -12077,7 +12175,7 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="are_you_sure_want_to_delete_projectversiongroup_x" date="1213021452" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project version group called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="available_issue_types" date="1176208980" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Available Issue Types]]></phrase>
 			<phrase name="base_permissions_off_existing_project" date="1176819312" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Base Permissions off of Existing Project]]></phrase>
-			<phrase name="bass_permissions_off_existing_type" date="1176739036" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Base Permissions off of Existing Type<dfn>If you select "none", no one will have permission to use this type by default.</dfn>]]></phrase>
+			<phrase name="base_permissions_off_existing_type" date="1323431517" username="Pitchoune" version="2.2.0"><![CDATA[Base Permissions off of Existing Type<dfn>If you select "none", no one will have permission to use this type by default.</dfn>]]></phrase>
 			<phrase name="can_create_petitions_from_this_status" date="1181232691" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Can Create Petitions from this Status?]]></phrase>
 			<phrase name="categories" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Categories]]></phrase>
 			<phrase name="categories_for_x" date="1213804730" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Categories for <span class="normal">'{1}'</span>]]></phrase>
@@ -12098,14 +12196,14 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="do_not_use_meta" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[(do not use)]]></phrase>
 			<phrase name="double_click_permission_quick_set" date="1181838059" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[<em>Tip</em>: You can double-click a permission name to quickly grant or revoke that permission for all issue types!]]></phrase>
 			<phrase name="edit_link_colored_custom_permissions" date="1176817614" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[The edit link will be colored this way if custom permissions exist.]]></phrase>
-			<phrase name="edit_milestone" date="1213799669" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Milestone]]></phrase>
+			<phrase name="edit_milestone" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Milestone <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_permissions_for_x" date="1213804739" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_permissions_for_x_in_y" date="1213804793" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span> in <span class="normal">'{2}'</span>]]></phrase>
-			<phrase name="edit_project_category" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Edit Project Category]]></phrase>
+			<phrase name="edit_project_category" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Category <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_magic_select" date="1316814271" username="Pitchoune" version="2.2.0"><![CDATA[Edit Magic Select <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="edit_project_priority" date="1296047654" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Priority]]></phrase>
-			<phrase name="edit_project_version" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Edit Project Version]]></phrase>
-			<phrase name="edit_project_version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Edit Project Version Group]]></phrase>
+			<phrase name="edit_project_priority" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Priority <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="edit_project_version" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Version <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="edit_project_version_group" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Version Group <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_x" date="1213804805" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Project <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_status_x" date="1213804816" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Status <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_type_x" date="1213804823" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Type <span class="normal">'{1}'</span>]]></phrase>
@@ -12131,15 +12229,15 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="issue_type_manager" date="1181310424" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Issue Type Manager]]></phrase>
 			<phrase name="issue_types_deleted_for_project_x" date="1213804832" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Issue Types Deleted for Project <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="magicselect_fetch_code" date="1316948481" username="Pitchoune" version="2.2.0"><![CDATA[PHP Fetch Code]]></phrase>
-			<phrase name="magicselect_fetch_code_desc" date="1316948463" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the PHP code that you would like to be run.
+			<phrase name="magicselect_fetch_code_desc" date="1323375510" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the PHP code that you would like to be run.
 <br />
 <br />
-This is the code which will activate the menu (allowing the corresponding user to edit it) on the issue page.]]></phrase>
+This is the code which will activate the menu (allowing the corresponding user to edit it) on the issue page. This code will be executed in projectajax.php?do=fetch.]]></phrase>
 			<phrase name="magicselect_html_code" date="1316729902" username="Pitchoune" version="2.2.0"><![CDATA[HTML Code ]]></phrase>
-			<phrase name="magicselect_html_code_desc" date="1316812998" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the HTML code that you would like to be run.
+			<phrase name="magicselect_html_code_desc" date="1323375568" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the HTML code that you would like to be run.
 <br />
 <br />
-This is the code which will be in the magic select drop-down.]]></phrase>
+This is the code which will be used to construct the drop-down menu.]]></phrase>
 			<phrase name="magicselect_save_code" date="1316813565" username="Pitchoune" version="2.2.0"><![CDATA[PHP Save Code]]></phrase>
 			<phrase name="magicselect_save_code_desc" date="1316813535" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the PHP code that you would like to be run.
 <br />
@@ -12151,13 +12249,13 @@ This is the code which will save your selection in the magic select.]]></phrase>
 			<phrase name="negative_vote_count_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Negative Vote Count<dfn>Example: Users unable to reproduce bug</dfn>]]></phrase>
 			<phrase name="no_categories_defined_project" date="1181310525" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[No categories defined for this project!]]></phrase>
 			<phrase name="no_milestones_defined_for_this_project" date="1213799816" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[No milestones defined for this project!]]></phrase>
-			<phrase name="no_priorities_defined_project" date="1295124442" username="Pitchoune" version="2.2.0"><![CDATA[No priorities defined for this project!]]></phrase>
+			<phrase name="no_priorities_defined_project" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no priority defined. <a href="projectpriority.php?do=projectpriorityadd">Click here to add one!</a>]]></phrase>
 			<phrase name="no_project_magic_select_defined_click_here_to_add_one" date="1316724664" username="Pitchoune" version="2.2.0"><![CDATA[There is no magic select defined. <a href="projectmagicselect.php?do=add">Click here to add one!</a>]]></phrase>
-			<phrase name="no_projects_defined_click_here_to_add_one" date="1275171222" username="Pitchoune" version="2.1.1"><![CDATA[No projects defined. Click <a href="project.php?do=projectadd">here</a> to add one!]]></phrase>
-			<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1176736972" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[No statuses of this type defined. This type will not be usable until you add at least one status. <a href="project.php?do=statusadd&amp;type={1}">Click here to add one!</a>]]></phrase>
-			<phrase name="no_tags_defined" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[No tags defined.]]></phrase>
-			<phrase name="no_versions_defined_in_this_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[No versions defined in this group.]]></phrase>
-			<phrase name="no_versions_groups_defined_project" date="1181310460" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[No versions or groups defined for this project!]]></phrase>
+			<phrase name="no_projects_defined_click_here_to_add_one" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no projects defined. <a href="project.php?do=projectadd">Click here to add one!</a>]]></phrase>
+			<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1324052046" username="Pitchoune" version="2.2.0"><![CDATA[There is no statuses of this type defined. This type will not be usable until you add at least one status. <a href="projecttype.php?do=add&amp;type={1}">Click here to add one!</a>]]></phrase>
+			<phrase name="no_tags_defined" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no tags defined.]]></phrase>
+			<phrase name="no_versions_defined_in_this_group" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no versions defined in this group.]]></phrase>
+			<phrase name="no_versions_groups_defined_project" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no versions or groups defined for this project!]]></phrase>
 			<phrase name="note_a_larger_value_will_be_displayed_first" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Note: a larger value will be displayed first!]]></phrase>
 			<phrase name="note_higer_display_orders_first" date="1181310491" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Note: Higher display orders will be shown first here!]]></phrase>
 			<phrase name="permission_apply_all_projects_unless_custom" date="1176819290" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[These permissions will apply to all projects unless you specify a custom set of permissions for a specific project and user group.]]></phrase>
@@ -12170,7 +12268,7 @@ This is the code which will save your selection in the magic select.]]></phrase>
 			<phrase name="priorities_for_x" date="1295124492" username="Pitchoune" version="2.2.0"><![CDATA[Priorities for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="project_list" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project List]]></phrase>
 			<phrase name="project_magic_select" date="1316724625" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select]]></phrase>
-			<phrase name="project_magic_select_list" date="1316724595" username="Pitchoune" version="2.2.0"><![CDATA[Project Magic Select]]></phrase>
+			<phrase name="project_magic_select_list" date="1323376125" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects]]></phrase>
 			<phrase name="project_permission_values_apply" date="1176738932" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project permission values apply as expected.]]></phrase>
 			<phrase name="project_permission_values_do_not_apply" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Project permission values do not apply. This user's access to the Project Tools has been globally disabled.]]></phrase>
 			<phrase name="project_permissions" date="1176203371" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project Permissions]]></phrase>
@@ -12340,8 +12438,8 @@ A value of 0 will display all issues on one page.]]></phrase>
 			<phrase name="setting_pt_issuesperpage_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Issues Displayed Per Page]]></phrase>
 			<phrase name="setting_pt_listprojects_activate_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Do you want to activate this system?]]></phrase>
 			<phrase name="setting_pt_listprojects_activate_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Enable]]></phrase>
-			<phrase name="setting_pt_listprojects_locations_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display this dropdown menu.]]></phrase>
-			<phrase name="setting_pt_listprojects_locations_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Location of the dropdown menu]]></phrase>
+			<phrase name="setting_pt_listprojects_locations_desc" date="1327231115" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display this drop-down menu.]]></phrase>
+			<phrase name="setting_pt_listprojects_locations_title" date="1327231115" username="Pitchoune" version="2.2.0"><![CDATA[Location of the drop-down menu]]></phrase>
 			<phrase name="setting_pt_listprojects_position_issue_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues pages of Project Tools.]]></phrase>
 			<phrase name="setting_pt_listprojects_position_issue_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project issue]]></phrase>
 			<phrase name="setting_pt_listprojects_position_issuelist_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues list page of Project Tools.<br />
@@ -12382,12 +12480,12 @@ To disable word wrap, enter 0.]]></phrase>
 			<phrase name="setting_pt_wordwrap_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Number of Characters Before Wrapping Text]]></phrase>
 			<phrase name="setting_ptimporter_createnotice_desc" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[If true, a notice will be created showing the title of the original content, the user and the date the content was imported.]]></phrase>
 			<phrase name="setting_ptimporter_createnotice_title" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[Create import notice]]></phrase>
-			<phrase name="setting_ptimporter_extendedthreadprefix_desc" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[If you enable this option, the thread prefix will be generated using the <strong>pt_importhread_threadprefix_extended</strong> phrase which can contain project title and issue type. This currently requires one additional query per visible redirector.<br />
+			<phrase name="setting_ptimporter_extendedthreadprefix_desc" date="1327230043" username="Pitchoune" version="2.2.0"><![CDATA[If you enable this option, the thread prefix will be generated using the <strong>pt_importhread_threadprefix_extended</strong> phrase which can contain project title and issue type. This currently requires one additional query per visible redirection.<br />
 <br />
 If disabled, the <strong>pt_importhread_threadprefix</strong> phrase will be used.<br />
 <br />
 <strong>Note:</strong> This setting affect only threads actually.]]></phrase>
-			<phrase name="setting_ptimporter_extendedthreadprefix_title" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[Show dynamic content prefix]]></phrase>
+			<phrase name="setting_ptimporter_extendedthreadprefix_title" date="1327230043" username="Pitchoune" version="2.2.0"><![CDATA[Show dynamic content prefix]]></phrase>
 			<phrase name="setting_ptimporter_ignoreattachlimits_desc" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[If this is set to true, attachments which do not comply to the limits set in the project tools options will be imported.]]></phrase>
 			<phrase name="setting_ptimporter_ignoreattachlimits_title" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[Ignore Attachment Limits]]></phrase>
 			<phrase name="setting_ptimporter_keepthreads_desc" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[If you set this to yes, the content will be copied to the project tools, but will not be touched otherwise. If you set this to no, the content will be closed. The content will still be shown in its original location, but forward to the project tools issue.<br />
@@ -12595,64 +12693,116 @@ Separate each style ID with a comma.<br />
 		</settinggroup>
 	</options>
 	<helptopics>
+		<helpscript name="options">
+			<helptopic disp="63001" act="options" opt="pt_allowbbcode" />
+			<helptopic disp="63002" act="options" opt="pt_allowbbimagecode" />
+			<helptopic disp="63003" act="options" opt="pt_allowsmilies" />
+			<helptopic disp="63004" act="options" opt="pt_allowhtml" />
+			<helptopic disp="63005" act="options" opt="pt_notesperpage" />
+			<helptopic disp="63006" act="options" opt="pt_issuesperpage" />
+			<helptopic disp="63007" act="options" opt="pt_groupsearchissuespergroup" />
+			<helptopic disp="63008" act="options" opt="pt_timelineperpage" />
+			<helptopic disp="63009" act="options" opt="pt_project_timelineentries" />
+			<helptopic disp="63010" act="options" opt="pt_project_recentissues" />
+			<helptopic disp="63011" act="options" opt="pt_overview_timelineentries" />
+			<helptopic disp="63012" act="options" opt="pt_allowstartervote" />
+			<helptopic disp="63013" act="options" opt="pt_wordwrap" />
+			<helptopic disp="63014" act="options" opt="pt_humancheck" />
+			<helptopic disp="63015" act="options" opt="pt_hvcheck" />
+			<helptopic disp="63016" act="options" opt="pt_profile_issue_counters" />
+			<helptopic disp="63017" act="options" opt="issuelist_columns" />
+			<helptopic disp="63101" act="options" opt="ptimporter_keepthreads" />
+			<helptopic disp="63102" act="options" opt="ptimporter_extendedthreadprefix" />
+			<helptopic disp="63103" act="options" opt="ptimporter_ignoreattachlimits" />
+			<helptopic disp="63104" act="options" opt="ptimporter_createnotice" />
+			<helptopic disp="63201" act="options" opt="pt_statuscolor" />
+			<helptopic disp="63202" act="options" opt="statuscolor_darkstyles" />
+			<helptopic disp="63203" act="options" opt="statuscolor_lightstyles" />
+			<helptopic disp="63301" act="options" opt="pt_listprojects_activate" />
+			<helptopic disp="63302" act="options" opt="pt_listprojects_locations" />
+			<helptopic disp="63303" act="options" opt="pt_listprojects_position_projects" />
+			<helptopic disp="63304" act="options" opt="pt_listprojects_position_issuelist" />
+			<helptopic disp="63305" act="options" opt="pt_listprojects_position_issue" />
+		</helpscript>
 		<helpscript name="project">
+			<helptopic disp="10" act="add,edit" opt="title" />
+			<helptopic disp="20" act="add,edit" opt="summary" />
+			<helptopic disp="30" act="add,edit" opt="description" />
+			<helptopic disp="40" act="add,edit" opt="emailonassignment" />
+			<helptopic disp="50" act="add,edit" opt="pmonassignment" />
+			<helptopic disp="60" act="add,edit" opt="displayorder" />
+			<helptopic disp="70" act="add,edit" opt="requireappliesversion" />
+			<helptopic disp="80" act="add,edit" opt="requirecategory" />
+			<helptopic disp="90" act="add,edit" opt="requirepriority" />
+			<helptopic disp="100" act="add,edit" opt="afterforumids" />
+			<helptopic disp="110" act="add,edit" opt="forumtitle" />
+			<helptopic disp="120" act="add,edit" opt="available_issue_types" />
+			<helptopic disp="1" act="editissue1" opt="projectid" />
+			<helptopic disp="2" act="editissue1" opt="issuetypeid" />
 			<helptopic disp="1" act="editissue1,editissue2" />
+			<helptopic disp="1" act="editissue2" opt="projectcategoryid" />
+			<helptopic disp="2" act="editissue2" opt="appliesversionid" />
+			<helptopic disp="3" act="editissue2" opt="addressedversionid" />
+			<helptopic disp="4" act="editissue2" opt="issuestatusid" />
+			<helptopic disp="5" act="editissue2" opt="milestoneid" />
 			<helptopic disp="1" act="issue" />
-			<helptopic disp="100" act="projectadd,projectedit" opt="afterforumids" />
-			<helptopic disp="110" act="projectadd,projectedit" opt="forumtitle" />
-			<helptopic disp="120" act="projectadd,projectedit" opt="available_issue_types" />
-			<helptopic disp="1" act="projectlist" />
-			<helptopic disp="10" act="projetadd,projectedit" opt="title" />
-			<helptopic disp="20" act="projetadd,projectedit" opt="summary" />
-			<helptopic disp="30" act="projetadd,projectedit" opt="description" />
-			<helptopic disp="40" act="projetadd,projectedit" opt="emailonassignment" />
-			<helptopic disp="50" act="projetadd,projectedit" opt="pmonassignment" />
-			<helptopic disp="60" act="projetadd,projectedit" opt="displayorder" />
-			<helptopic disp="70" act="projetadd,projectedit" opt="requireappliesversion" />
-			<helptopic disp="80" act="projetadd,projectedit" opt="requirecategory" />
-			<helptopic disp="90" act="projetadd,projectedit" opt="requirepriority" />
+			<helptopic disp="1" act="issue" opt="issueid" />
+			<helptopic disp="1" act="list" />
 		</helpscript>
 		<helpscript name="projectcategory">
-			<helptopic disp="1" act="projectcategory" />
+			<helptopic disp="1" act="add,edit" opt="title" />
+			<helptopic disp="2" act="add,edit" opt="displayorder" />
+			<helptopic disp="3" act="add,edit" opt="default" />
+			<helptopic disp="1" act="list" />
 		</helpscript>
 		<helpscript name="projectcounters">
 			<helptopic disp="1" act="counters" />
 		</helpscript>
-		<helpscript name="projectmagicselect">
-			<helptopic disp="1" act="add" opt="varname" />
-			<helptopic disp="1" act="add,edit" opt="displayorder" />
-			<helptopic disp="1" act="add,edit" opt="fetchcode" />
-			<helptopic disp="1" act="add,edit" opt="htmlcode" />
-			<helptopic disp="1" act="add,edit" opt="projects" />
-			<helptopic disp="1" act="add,edit" opt="savecode" />
-			<helptopic disp="1" act="add,edit" opt="text" />
+		<helpscript name="projectmilestone">
+			<helptopic disp="1" act="add,edit" opt="title" />
+			<helptopic disp="3" act="add,edit" opt="targetdate" />
+			<helptopic disp="4" act="add,edit" opt="completeddate" />
 			<helptopic disp="1" act="list" />
 		</helpscript>
 		<helpscript name="projectpermission">
 			<helptopic disp="10" act="edit" opt="about_reports" />
 			<helptopic disp="1" act="edit,list" />
 		</helpscript>
+		<helpscript name="projectpriority">
+			<helptopic disp="1" act="add,edit" opt="title" />
+			<helptopic disp="2" act="add,edit" opt="displayorder" />
+			<helptopic disp="3" act="add,edit" opt="default" />
+			<helptopic disp="4" act="add,edit" opt="statuscolor" />
+			<helptopic disp="5" act="add,edit" opt="statuscolor2" />
+			<helptopic disp="1" act="list" />
+		</helpscript>
 		<helpscript name="projecttag">
-			<helptopic disp="1" act="taglist" />
+			<helptopic disp="1" act="list" />
 		</helpscript>
 		<helpscript name="projecttype">
-			<helptopic disp="10" act="statusadd,statusedit" opt="title" />
-			<helptopic disp="20" act="statusadd,statusedit" opt="issuetypeid" />
-			<helptopic disp="30" act="statusadd,statusedit" opt="displayorder" />
-			<helptopic disp="40" act="statusadd,statusedit" opt="issuecompleted" />
-			<helptopic disp="50" act="statusadd,statusedit" opt="canpetitionfrom" />
-			<helptopic disp="60" act="statusadd,statusedit" opt="statuscolor" />
-			<helptopic disp="70" act="statusadd,statusedit" opt="statuscolor2" />
-			<helptopic disp="80" act="statusadd,statusedit" opt="projectset" />
-			<helptopic disp="10" act="typeadd,typeedit" opt="issuetypeid" />
-			<helptopic disp="20" act="typeadd,typeedit" opt="displayorder" />
-			<helptopic disp="30" act="typeadd,typeedit" opt="iconfile" />
-			<helptopic disp="40" act="typeadd,typeedit" opt="permissionbase" />
-			<helptopic disp="50" act="typeadd,typeedit" opt="phrases" />
+			<helptopic disp="1" act="statusadd,statusedit" opt="title" />
+			<helptopic disp="2" act="statusadd,statusedit" opt="issuetypeid" />
+			<helptopic disp="3" act="statusadd,statusedit" opt="displayorder" />
+			<helptopic disp="4" act="statusadd,statusedit" opt="issuecompleted" />
+			<helptopic disp="5" act="statusadd,statusedit" opt="canpetitionfrom" />
+			<helptopic disp="6" act="statusadd,statusedit" opt="statuscolor" />
+			<helptopic disp="7" act="statusadd,statusedit" opt="statuscolor2" />
+			<helptopic disp="8" act="statusadd,statusedit" opt="projectset" />
+			<helptopic disp="1" act="typeadd,typeedit" opt="issuetypeid" />
+			<helptopic disp="2" act="typeadd,typeedit" opt="displayorder" />
+			<helptopic disp="3" act="typeadd,typeedit" opt="iconfile" />
+			<helptopic disp="4" act="typeadd,typeedit" opt="permissionbase" />
+			<helptopic disp="5" act="typeadd,typeedit" opt="phrases" />
 			<helptopic disp="1" act="typelist" />
 		</helpscript>
 		<helpscript name="projectversion">
-			<helptopic disp="1" act="projectversion" />
+			<helptopic disp="4" act="add" opt="nextversion" />
+			<helptopic disp="1" act="add,edit" opt="versionname" />
+			<helptopic disp="2" act="add,edit" opt="displayorder" />
+			<helptopic disp="3" act="add,edit" opt="default" />
+			<helptopic disp="1" act="groupadd,groupedit" opt="groupname" />
+			<helptopic disp="2" act="groupadd,groupedit" opt="displayorder" />
+			<helptopic disp="1" act="list" />
 		</helpscript>
 	</helptopics>
 	<cronentries>
