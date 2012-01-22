@@ -1891,11 +1891,7 @@ $db->query_write("
 		magicselectid INT(10) NOT NULL AUTO_INCREMENT,
 		varname VARCHAR(250) NOT NULL, 
 		displayorder INT(10) NOT NULL,
-		active TINYINT(4) NOT NULL DEFAULT '0',
-		projects MEDIUMTEXT NOT NULL,
-		htmlcode MEDIUMTEXT NOT NULL,
-		fetchcode MEDIUMTEXT NOT NULL,
-		savecode MEDIUMTEXT NOT NULL,
+		projectid INT(10) NOT NULL,
 		PRIMARY KEY (magicselectid)
 	) ENGINE=MyISAM
 ");
@@ -12243,6 +12239,7 @@ This is the code which will be used to construct the drop-down menu.]]></phrase>
 <br />
 <br />
 This is the code which will save your selection in the magic select.]]></phrase>
+			<phrase name="magicselects" date="1327245999" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects]]></phrase>
 			<phrase name="milestones_for_x_html" date="1213805585" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Milestones for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="move_issues_into" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[Move Issues Into]]></phrase>
 			<phrase name="need_manually_select_projects_type" date="1176739131" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Remember that you will need to manually select the projects that will use this type after it is created!]]></phrase>

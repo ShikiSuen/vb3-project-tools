@@ -32,11 +32,6 @@
 			<phrase>edit_issue</phrase>
 			<link>project.php?do=issue</link>
 		</navoption>
-
-		<navoption displayorder="70">
-			<phrase>project_magic_select_manager</phrase>
-			<link>projectmagicselect.php</link>
-		</navoption>
 	</navgroup>
 
 </navgroups>

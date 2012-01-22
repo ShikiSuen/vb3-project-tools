@@ -978,6 +978,7 @@ if ($_REQUEST['do'] == 'list')
 					construct_link_code($vbphrase['categories'], 'projectcategory.php?do=list&amp;projectid=' . $project['projectid']) .
 					construct_link_code($vbphrase['versions'], 'projectversion.php?do=list&amp;projectid=' . $project['projectid']) .
 					construct_link_code($vbphrase['milestones'], 'projectmilestone.php?do=list&amp;projectid=' . $project['projectid']) .
+					construct_link_code($vbphrase['magicselects'], 'projectmagicselect.php?do=list&amp;projectid=' . $project['projectid']) .
 				'</div>'
 			));
 		}
