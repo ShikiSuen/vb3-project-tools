@@ -10515,6 +10515,28 @@ vbphrase["december"]  = "{vb:rawphrase december}";
 			$item['title'] = $vbphrase["priority$itemid"];
 			$handled = true;
 			break;
+
+		case 'pt_projectmagicselectgroup':
+			$item = $vbulletin->db->query_first("
+				SELECT projectmagicselectgroupid, projectmagicselectgroupid AS title
+				FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
+				WHERE projectmagicselectgroupid = $itemid
+			");
+
+			$item['title'] = $vbphrase["magicselectgroup$itemid"];
+			$handled = true;
+			break;
+
+		case 'pt_projectmagicselect':
+			$item = $vbulletin->db->query_first("
+				SELECT projectmagicselectid, projectmagicselectid AS title
+				FROM " . TABLE_PREFIX . "pt_projectmagicselect
+				WHERE projectmagicselectid = $itemid
+			");
+
+			$item['title'] = $vbphrase["magicselect$itemid"];
+			$handled = true;
+			break;
 	}
 }]]></phpcode>
 		</plugin>
@@ -11554,7 +11576,6 @@ This was done because you will generally be adding newer releases over time. Wit
 		<phrasetype name="Control Panel Home Pages" fieldname="cphome">
 			<phrase name="edit_issue" date="1173195635" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Edit Issue]]></phrase>
 			<phrase name="issue_type_manager" date="1175003161" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Issue Type Manager]]></phrase>
-			<phrase name="project_magic_select_manager" date="1316724548" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select Manager]]></phrase>
 			<phrase name="project_manager" date="1168604837" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Manager]]></phrase>
 			<phrase name="project_permissions" date="1168604880" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Permissions]]></phrase>
 			<phrase name="project_tools" date="1168604824" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Tools]]></phrase>
@@ -11870,7 +11891,7 @@ To create your own report, make a search with the criteria that you want and cli
 		</phrasetype>
 		<phrasetype name="Project Tools" fieldname="projecttools">
 			<phrase name="accept_petition_change_status_x" date="1175092309" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[<span class="shade">Accept petition and change status to</span> {1}<span class="shade">?</span>]]></phrase>
-			<phrase name="active" date="1213615019" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Active]]></phrase>
+			<phrase name="active" date="1327321071" username="Pitchoune" version="2.2.0"><![CDATA[Active]]></phrase>
 			<phrase name="active_issues" date="1213202153" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Active Issues]]></phrase>
 			<phrase name="active_issues_in_milestone_x_html" date="1213805631" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Active Issues in Milestone <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="active_milestones" date="1213614741" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Active Milestones]]></phrase>
@@ -12224,21 +12245,6 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="issue_type_key_alphanumeric_only" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Issue Type Key<dfn>A-Z, 0-9, and underscore only</dfn>]]></phrase>
 			<phrase name="issue_type_manager" date="1181310424" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Issue Type Manager]]></phrase>
 			<phrase name="issue_types_deleted_for_project_x" date="1213804832" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Issue Types Deleted for Project <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="magicselect_fetch_code" date="1316948481" username="Pitchoune" version="2.2.0"><![CDATA[PHP Fetch Code]]></phrase>
-			<phrase name="magicselect_fetch_code_desc" date="1323375510" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the PHP code that you would like to be run.
-<br />
-<br />
-This is the code which will activate the menu (allowing the corresponding user to edit it) on the issue page. This code will be executed in projectajax.php?do=fetch.]]></phrase>
-			<phrase name="magicselect_html_code" date="1316729902" username="Pitchoune" version="2.2.0"><![CDATA[HTML Code ]]></phrase>
-			<phrase name="magicselect_html_code_desc" date="1323375568" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the HTML code that you would like to be run.
-<br />
-<br />
-This is the code which will be used to construct the drop-down menu.]]></phrase>
-			<phrase name="magicselect_save_code" date="1316813565" username="Pitchoune" version="2.2.0"><![CDATA[PHP Save Code]]></phrase>
-			<phrase name="magicselect_save_code_desc" date="1316813535" username="Pitchoune" version="2.2.0"><![CDATA[Use this field to enter the PHP code that you would like to be run.
-<br />
-<br />
-This is the code which will save your selection in the magic select.]]></phrase>
 			<phrase name="magicselects" date="1327245999" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects]]></phrase>
 			<phrase name="milestones_for_x_html" date="1213805585" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Milestones for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="move_issues_into" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[Move Issues Into]]></phrase>

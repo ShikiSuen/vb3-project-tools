@@ -372,6 +372,34 @@ function build_version_cache()
 }
 
 /**
+* Builds the cache of magic select cache into $vbulletin->pt_magicselects.
+* Accessed as [projectmagicselectid] => <info>.
+*
+* @return	array	Magic select cache
+*/
+function build_magicselect_cache()
+{
+	global $db, $vbulletin;
+
+	$magicselects = array();
+
+	$magicselect_data = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectmagicselect
+		ORDER BY projectid, displayorder DESC
+	");
+	while ($magicselect = $db->fetch_array($magicselect_data))
+	{
+		$magicselects["$magicselect[projectmagicselectid]"] = $magicselect;
+	}
+
+	build_datastore('pt_magicselects', serialize($magicselects), 1);
+
+	return $magicselects;
+}
+
+
+/**
 * Rebuilds all project counters.
 *
 * @param	boolean	True if you want to echo a "." for each project

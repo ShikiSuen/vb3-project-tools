@@ -33,15 +33,12 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	* @var	array
 	*/
 	var $validfields = array(
-		'magicselectid'			=> array(TYPE_UINT,	REQ_INCR),
-		'varname'				=> array(TYPE_STR,	REQ_NO),
-		'text'					=> array(TYPE_STR,	REQ_NO),
-		'displayorder'			=> array(TYPE_UINT,	REQ_NO),
-		'active'				=> array(TYPE_BOOL,	REQ_NO),
-		'projects'				=> array(TYPE_STR,	REQ_NO),
-		'htmlcode'				=> array(TYPE_STR,	REQ_NO),
-		'fetchcode'				=> array(TYPE_STR,	REQ_NO),
-		'savecode'				=> array(TYPE_STR,	REQ_NO)
+		'projectmagicselectid'		=> array(TYPE_UINT,		REQ_INCR),
+		'text'						=> array(TYPE_NOHTML,	REQ_NO),
+		'displayorder'				=> array(TYPE_UINT,		REQ_NO),
+		'projectid'					=> array(TYPE_UINT,		REQ_NO),
+		'value'						=> array(TYPE_UINT,		REQ_NO),
+		'projectmagicselectgroupid'	=> array(TYPE_UINT,		REQ_NO)
 	);
 
 	/**
@@ -56,14 +53,14 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	*
 	* @var	string
 	*/
-	var $table = 'pt_magicselect';
+	var $table = 'pt_projectmagicselect';
 
 	/**
 	* Condition for update query
 	*
 	* @var	array
 	*/
-	var $condition_construct = array('magicselectid = %1$d', 'magicselectid');
+	var $condition_construct = array('projectmagicselectid = %1$d', 'projectmagicselectid');
 
 	/**
 	* Constructor - checks that the registry object has been passed correctly.
@@ -94,52 +91,13 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 
 		if (empty($this->info['text']))
 		{
-			$this->error('missing_text');
+			$this->error('please_complete_required_fields');
 			return false;
 		}
 
-		if (!$this->fetch_field('projects'))
+		if ($this->fetch_field('value') == 0)
 		{
-			$this->error('no_selected_project');
-			return false;
-		}
-
-		$protectedvalues = array(
-			'issueid',
-			'projectid',
-			'issuestatusid',
-			'issuetypeid',
-			'title',
-			'summary',
-			'submituserid',
-			'submitusername',
-			'submitdate',
-			'appliesversionid',
-			'isaddressed',
-			'addressedversionid',
-			'priority',
-			'visible',
-			'lastpost',
-			'lastactivity',
-			'lastpostuserid',
-			'lastpostusername',
-			'firstnoteid',
-			'lastnoteid',
-			'attachcount',
-			'pendingpetitions',
-			'replycount',
-			'votepositive',
-			'votenegative',
-			'projectcategoryid',
-			'assignedusers',
-			'privatecount',
-			'state',
-			'milestoneid'
-		);
-
-		if (in_array($this->fetch_field('varname'), $protectedvalues))
-		{
-			$this->error('magic_select_varname_cant_be_used');
+			$this->error('value_must_be_higher_than_zero');
 			return false;
 		}
 
@@ -161,14 +119,6 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		// create automatically the corresponding column in pt_issue table
 		$db =& $this->registry->db;
 
-		// Hide query error on magic select edit
-		$db->hide_errors();
-		$db->query_write("
-			ALTER TABLE " . TABLE_PREFIX . "pt_issue
-			ADD " . $this->fetch_field('varname') . " INT(10) UNSIGNED NOT NULL DEFAULT '0'
-		");
-		$db->show_errors();
-
 		// replace (master) phrases entry
 		require_once(DIR . '/includes/adminfunctions.php');
 		$full_product_info = fetch_product_list(true);
@@ -181,23 +131,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 				(
 					0,
 					'projecttools',
-					'magicselect" . $this->fetch_field('magicselectid') . "',
-					'" . $db->escape_string($this->info['text']) . "',
-					'vbprojecttools',
-					'" . $db->escape_string($this->registry->userinfo['username']) . "',
-					" . TIMENOW . ",
-					'" . $db->escape_string($product_version) . "'
-				)
-		");
-
-		$db->query_write("
-			REPLACE INTO " . TABLE_PREFIX . "phrase
-				(languageid, fieldname, varname, text, product, username, dateline, version)
-			VALUES
-				(
-					0,
-					'projecttools',
-					'field_" . $this->fetch_field('varname') . "',
+					'magicselect" . $this->fetch_field('projectmagicselectid') . "',
 					'" . $db->escape_string($this->info['text']) . "',
 					'vbprojecttools',
 					'" . $db->escape_string($this->registry->userinfo['username']) . "',
@@ -222,24 +156,14 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	*/
 	function post_delete($doquery = true)
 	{
-		// create automatically the corresponding column in pt_issue table
 		$db =& $this->registry->db;
-		$db->query_write("
-			ALTER TABLE " . TABLE_PREFIX . "pt_issue
-			DROP " . $this->fetch_field('varname') . "
-		");
 
-		$magicselectid = intval($this->fetch_field('magicselectid'));
+		$magicselectid = intval($this->fetch_field('projectmagicselectid'));
 
 		// Phrases
 		$db->query_write("
 			DELETE FROM " . TABLE_PREFIX . "phrase
 			WHERE varname = 'magicselect" . $magicselectid . "'
-		");
-
-		$db->query_write("
-			DELETE FROM " . TABLE_PREFIX . "phrase
-			WHERE varname = 'field_" . $this->fetch_field('varname') . "'
 		");
 
 		// Rebuild language
