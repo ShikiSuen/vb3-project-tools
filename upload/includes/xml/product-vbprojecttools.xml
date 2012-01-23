@@ -1886,13 +1886,35 @@ $db->query_write("
 || ############################## ||
 \*================================*/
 
+// For value for every issue
 $db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_magicselect (
-		magicselectid INT(10) NOT NULL AUTO_INCREMENT,
-		varname VARCHAR(250) NOT NULL, 
-		displayorder INT(10) NOT NULL,
-		projectid INT(10) NOT NULL,
-		PRIMARY KEY (magicselectid)
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuemagicselect (
+		issueid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY (issueid)
+	) ENGINE=MyISAM
+");
+
+// Every option of all drop-down menus will be stored in this table
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselect (
+		projectmagicselectid INT(10) NOT NULL AUTO_INCREMENT,
+		projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		projectmagicselectgroupid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		`value` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY (projectmagicselectid),
+		KEY projectid (projectid)
+	) ENGINE=MyISAM
+");
+
+// Every magic select informations will be stored in this table
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup (
+		projectmagicselectgroupid INT(10) NOT NULL AUTO_INCREMENT,
+		projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY (projectmagicselectgroupid),
+		KEY projectid (projectid)
 	) ENGINE=MyISAM
 ");
 
@@ -12170,10 +12192,11 @@ This is needed because Project Tools have a particular attachment system and nee
 		<phrasetype name="Project Tools (Admin)" fieldname="projecttoolsadmin">
 			<phrase name="add_issue_status" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Issue Status]]></phrase>
 			<phrase name="add_issue_type" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Issue Type]]></phrase>
+			<phrase name="add_magic_select" date="1327326274" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select]]></phrase>
 			<phrase name="add_milestone" date="1213799689" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Add Milestone]]></phrase>
 			<phrase name="add_project" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project]]></phrase>
 			<phrase name="add_project_category" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Category]]></phrase>
-			<phrase name="add_project_magic_select" date="1316724759" username="Pitchoune" version="2.2.0"><![CDATA[Add a Magic Select]]></phrase>
+			<phrase name="add_project_magic_select_group" date="1327326148" username="Pitchoune" version="2.2.0"><![CDATA[Add Project Magic Select Group]]></phrase>
 			<phrase name="add_project_priority" date="1295124315" username="Pitchoune" version="2.2.0"><![CDATA[Add Project Priority]]></phrase>
 			<phrase name="add_project_version" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Version]]></phrase>
 			<phrase name="add_project_version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Version Group]]></phrase>
@@ -12187,6 +12210,8 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="are_you_sure_want_to_delete_milestone_x" date="1213021483" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the milestone called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_project_x" date="1213021416" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectcategory_x" date="1213021424" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project category called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
+			<phrase name="are_you_sure_want_to_delete_projectmagicselect_x" date="1327326572" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the magic select called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
+			<phrase name="are_you_sure_want_to_delete_projectmagicselectgroup_x" date="1327326589" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the magic select group called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectpriority_x" date="1295124347" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the project priority called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectversion_x" date="1213021442" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project version called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectversiongroup_x" date="1213021452" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project version group called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
@@ -12251,9 +12276,10 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="need_manually_select_projects_type" date="1176739131" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Remember that you will need to manually select the projects that will use this type after it is created!]]></phrase>
 			<phrase name="negative_vote_count_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Negative Vote Count<dfn>Example: Users unable to reproduce bug</dfn>]]></phrase>
 			<phrase name="no_categories_defined_project" date="1181310525" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[No categories defined for this project!]]></phrase>
+			<phrase name="no_magic_selects_defined_in_this_group" date="1327326304" username="Pitchoune" version="2.2.0"><![CDATA[There is no magic select defined in this group.]]></phrase>
 			<phrase name="no_milestones_defined_for_this_project" date="1213799816" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[No milestones defined for this project!]]></phrase>
 			<phrase name="no_priorities_defined_project" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no priority defined. <a href="projectpriority.php?do=projectpriorityadd">Click here to add one!</a>]]></phrase>
-			<phrase name="no_project_magic_select_defined_click_here_to_add_one" date="1316724664" username="Pitchoune" version="2.2.0"><![CDATA[There is no magic select defined. <a href="projectmagicselect.php?do=add">Click here to add one!</a>]]></phrase>
+			<phrase name="no_project_magic_select_defined_click_here_to_add_one" date="1327326219" username="Pitchoune" version="2.2.0"><![CDATA[There is no magic select defined. <a href="projectmagicselect.php?do=groupadd&amp;projectid={1}">Click here to add one!</a>]]></phrase>
 			<phrase name="no_projects_defined_click_here_to_add_one" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no projects defined. <a href="project.php?do=projectadd">Click here to add one!</a>]]></phrase>
 			<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1324052046" username="Pitchoune" version="2.2.0"><![CDATA[There is no statuses of this type defined. This type will not be usable until you add at least one status. <a href="projecttype.php?do=add&amp;type={1}">Click here to add one!</a>]]></phrase>
 			<phrase name="no_tags_defined" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no tags defined.]]></phrase>
@@ -12271,7 +12297,7 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="priorities_for_x" date="1295124492" username="Pitchoune" version="2.2.0"><![CDATA[Priorities for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="project_list" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project List]]></phrase>
 			<phrase name="project_magic_select" date="1316724625" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select]]></phrase>
-			<phrase name="project_magic_select_list" date="1323376125" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects]]></phrase>
+			<phrase name="project_magic_select_list" date="1327326496" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects for '<span class="normal">{1}</span>']]></phrase>
 			<phrase name="project_permission_values_apply" date="1176738932" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project permission values apply as expected.]]></phrase>
 			<phrase name="project_permission_values_do_not_apply" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Project permission values do not apply. This user's access to the Project Tools has been globally disabled.]]></phrase>
 			<phrase name="project_permissions" date="1176203371" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project Permissions]]></phrase>
@@ -12365,6 +12391,8 @@ This is needed because Project Tools have a particular attachment system and nee
 <dfn>If you display this project in the forum list, you can use this to override the project's name in the list.</dfn>]]></phrase>
 			<phrase name="use_selected_project_sets" date="1276120817" username="Pitchoune" version="2.1.2"><![CDATA[Use Selected Project Sets]]></phrase>
 			<phrase name="usergroups_access_globally_disabled" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This usergroup's access to the Project Tools is globally disabled. The changes you make here will not be applied until that is changed.]]></phrase>
+			<phrase name="value" date="1327326380" username="Pitchoune" version="2.2.0"><![CDATA[Value
+<dfn>The value must be a integer near from 0 <b>and</b> higher than 0.</dfn>]]></phrase>
 			<phrase name="version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Version Group]]></phrase>
 			<phrase name="versions" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Versions]]></phrase>
 			<phrase name="vote_question_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Vote Question<dfn>Example: Can you reproduce this bug?</dfn>]]></phrase>
