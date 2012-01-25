@@ -246,12 +246,6 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 			return $this->presave_called;
 		}
 
-		if (empty($this->fetch_field('issueid')))
-		{
-			$this->error('issue_cant_be_empty');
-			return false;
-		}
-
 		$return_value = true;
 		($hook = vBulletinHook::fetch_hook('pt_issue_magicselect_presave')) ? eval($hook) : false;
 
