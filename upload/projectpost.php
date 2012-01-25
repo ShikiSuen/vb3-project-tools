@@ -1179,10 +1179,10 @@ if ($_POST['do'] == 'postissue' OR $_REQUEST['do'] == 'addissue' OR $_REQUEST['d
 		$type_choices = array_keys($vbulletin->pt_projects["$project[projectid]"]['types']);
 
 		$can_post = array();
+
 		foreach ($type_choices AS $issuetype)
 		{
-			if ($projectperms["$issuetype"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']
-				AND $projectperms["$issuetype"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview'])
+			if ($projectperms["$issuetype"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew'] AND $projectperms["$issuetype"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview'])
 			{
 				if (!$vbulletin->GPC['issuetypeid'] OR $vbulletin->GPC['issuetypeid'] == $issuetype)
 				{
@@ -1236,8 +1236,8 @@ if ($_POST['do'] == 'postissue' OR $_REQUEST['do'] == 'addissue' OR $_REQUEST['d
 			}
 
 			$issueperms = $projectperms["$issue[issuetypeid]"];
-			if (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew'])
-				OR !($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
+
+			if (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']) OR !($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
 			{
 				print_no_permission();
 			}
@@ -1298,22 +1298,21 @@ if ($_POST['do'] == 'postissue')
 
 	// Custom Magic Selects
 	$mslist = array();
+
 	$magicselects = $db->query_read("
-		SELECT *
-		FROM " . TABLE_PREFIX . "pt_magicselect
-		WHERE projects IN (" . $project['projectid'] . ")
-			AND active = 1
-		ORDER BY displayorder ASC
+		SELECT projectmagicselectgroupid
+		FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
+		WHERE projectid = " . $project['projectid'] . "
 	");
 
 	while ($magicselect = $db->fetch_array($magicselects))
 	{
-		$mslist[] = $magicselect['varname'];
+		$mslist[] = $magicselect['projectmagicselectgroupid'];
 	}
 
 	foreach ($mslist AS $magicselectlist)
 	{
-		$vbulletin->input->clean_gpc('p', $magicselectlist, TYPE_UINT);
+		$vbulletin->input->clean_gpc('p', 'magicselect' . $magicselectlist, TYPE_UINT);
 	}
 
 	if ($vbulletin->GPC['wysiwyg'])
@@ -1369,7 +1368,7 @@ if ($_POST['do'] == 'postissue')
 	// Custom Magic Selects
 	foreach ($mslist AS $magicselectlist)
 	{
-		$issuedata->set($magicselectlist, $vbulletin->GPC[$magicselectlist]);
+		$issuedata->set_info('magicselect' . $magicselectlist, $vbulletin->GPC['magicselect' . $magicselectlist]);
 	}
 
 	if ($issue['issueid'])
@@ -2007,35 +2006,34 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 
 	// Custom Magic Selects
 	$issue['magicselectcode'] = '';
-	$magicselects = $db->query_read("
-		SELECT *
-		FROM " . TABLE_PREFIX . "pt_magicselect
-		WHERE projects IN (" . $project['projectid'] . ")
-			AND active = 1
-		ORDER BY displayorder ASC
+	$magicselectlist = array();
+
+	$magicselect_query = $db->query_read("
+		SELECT projectmagicselect.*, projectmagicselectgroup.*
+		FROM " . TABLE_PREFIX . "pt_projectmagicselect AS projectmagicselect
+			INNER JOIN " . TABLE_PREFIX . "pt_projectmagicselectgroup AS projectmagicselectgroup ON (projectmagicselect.projectmagicselectgroupid = projectmagicselectgroup.projectmagicselectgroupid)
+		WHERE projectmagicselectgroup.projectid = " . $project['projectid'] . "
+		ORDER BY projectmagicselectgroup.displayorder ASC
 	");
 
-	while ($magicselect = $db->fetch_array($magicselects))
+	while ($magicselects = $db->fetch_array($magicselect_query))
 	{
-		// I don't have a real choice here... -_-
-		eval($magicselect['htmlcode']);
+		$magicselectlist["$magicselects[projectmagicselectgroupid]"]["$magicselects[projectmagicselectid]"] = $magicselects;
+	}
 
+	foreach ($magicselectlist AS $projectmagicselectgroupid => $magicselectcontent)
+	{
 		$selected = '';
+		$options = array();
 
-		$magicselect['text'] = $vbphrase['magicselect' . $magicselect['magicselectid'] . ''];
+		$magicselect['text'] = $vbphrase['magicselectgroup' . $projectmagicselectgroupid . ''];
+		$magicselect['projectmagicselectgroupid'] = $projectmagicselectgroupid;
 
-		foreach ($arrayoutput AS $id => $text)
+		foreach ($magicselectcontent AS $msid => $magicselectdata)
 		{
-			$options = array();
-
-			if ($id == $issue["$magicselect[varname]"])
-			{
-				$selected = $text;
-			}
-
-			$options['value'] = $id;
-			$options['title'] = $text;
-			$options['selected'] = $selected;
+			$options['value'] = $magicselectdata['value'];
+			$options['title'] = $vbphrase['magicselect' . $msid];
+			$options['selected'] = ($magicselectdata['value'] == $issue['magicselect' . $magicselectdata['projectmagicselectgroupid']] ? ' selected="selected"' : '');
 
 			$magicselect['options'][] = $options;
 		}

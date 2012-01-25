@@ -1918,6 +1918,22 @@ $db->query_write("
 	) ENGINE=MyISAM
 ");
 
+// Add all existing issue in the pt_issuemagicselect or viewing each issue will fail
+$issueidlist = $db->query_read("
+	SELECT issueid
+	FROM " . TABLE_PREFIX . "pt_issue
+");
+
+while ($issue = $db->fetch_array($issueidlist))
+{
+	$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "pt_issuemagicselect
+			(issueid)
+		VALUES
+			(" . $issue['issueid'] . ")
+	");
+}
+
 /*================================*\
 || ############################## ||
 || #			Final			# ||
@@ -7497,7 +7513,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1318281154" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1327456064" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7716,7 +7732,7 @@ init_project_readmarker_system();
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -7737,7 +7753,7 @@ init_project_readmarker_system();
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -7762,7 +7778,7 @@ init_project_readmarker_system();
 									<option value="0"{vb:raw option.selected}>{vb:rawphrase none}</option>
 									<vb:each from="milestone_options" value="optiongroup">
 										<optgroup label="{vb:raw optiongroup.label}">
-											<vb:each from="optiongroup[group]" value="option">
+											<vb:each from="optiongroup.group" value="option">
 												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 											</vb:each>
 										</optgroup>
@@ -7929,7 +7945,7 @@ init_project_readmarker_system();
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 									<vb:each from="applies_versions" value="optiongroup">
 										<optgroup label="{vb:raw optiongroup.label}">
-											<vb:each from="optiongroup[group]" value="option">
+											<vb:each from="optiongroup.group" value="option">
 												<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 											</vb:each>
 										</optgroup>
@@ -7951,7 +7967,7 @@ init_project_readmarker_system();
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 									<vb:each from="addressed_versions" value="optiongroup">
 										<optgroup label="{vb:raw optiongroup.label}">
-											<vb:each from="optiongroup[group]" value="option">
+											<vb:each from="optiongroup.group" value="option">
 												<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 											</vb:each>
 										</optgroup>
@@ -7986,13 +8002,13 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postissue_magicselect" templatetype="template" date="1318281083" username="Pitchoune" version="2.2.0"><![CDATA[<fieldset class="blockrow">
+		<template name="pt_postissue_magicselect" templatetype="template" date="1327456051" username="Pitchoune" version="2.2.0"><![CDATA[<fieldset class="blockrow">
 	<legend>{vb:raw magicselect.text}</legend>
 	<ul class="rightcol">
 		<li>
-			<select class="primary" name="{vb:raw magicselect.varname}" tabindex="1">
-				<vb:each from="magicselect[options]" value="option">
-					<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+			<select class="primary" name="magicselect{vb:raw magicselect.projectmagicselectgroupid}" tabindex="1">
+				<vb:each from="magicselect.options" value="option">
+					<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 				</vb:each>
 			</select>
 		</li>

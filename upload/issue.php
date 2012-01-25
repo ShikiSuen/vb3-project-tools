@@ -703,38 +703,47 @@ $vbphrase['applies_version_issuetype'] = $vbphrase["applies_version_$issue[issue
 $vbphrase['addressed_version_issuetype'] = $vbphrase["addressed_version_$issue[issuetypeid]"];
 
 // Custom Magic Selects
+$magicselect = array();
+$selected = '';
 $issue['headcode'] = array();
-$magicselects = $db->query_read("
+
+$magicselect_query = $db->query_read("
 	SELECT *
-	FROM " . TABLE_PREFIX . "pt_magicselect
-	WHERE projects IN (" . $project['projectid'] . ")
-		AND active = 1
+	FROM " . TABLE_PREFIX . "pt_projectmagicselect
+	WHERE projectid = " . $project['projectid'] . "
 	ORDER BY displayorder ASC
 ");
 
-while ($magicselect = $db->fetch_array($magicselects))
+while ($magicselects = $db->fetch_array($magicselect_query))
 {
-	// I don't have a real choice here... -_-
-	eval($magicselect['htmlcode']);
+	$magicselect["$magicselects[projectmagicselectgroupid]"][] = $magicselects;
+}
 
-	$selected = '';
-
-	foreach ($arrayoutput AS $id => $text)
+foreach ($magicselect AS $id => $fields)
+{
+	foreach ($fields AS $null => $infos)
 	{
-		if ($id == $issue["$magicselect[varname]"])
+		// Create all the needed code to build the magic select
+		if ($infos['value'] == $issue['magicselect' . $id])
 		{
-			$selected = $text;
+			$selected = $vbphrase['magicselect' . $infos['projectmagicselectid']];
+		}
+
+		// If the magic select have no selected value, define the first value as default
+		if ($selected == '')
+		{
+			$selected = $vbphrase['magicselect' . $infos['projectmagicselectid']];
 		}
 	}
 
 	// HTML Code to display the menu
-	$issue['menucode'] = '<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_' . $magicselect['varname'] . '"><span class="shade">' . $vbphrase['magicselect' . $magicselect['magicselectid'] . ''] . '</span>' .	$selected . '</div>';
+	$issue['menucode'] = '<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_' . $infos['projectmagicselectgroupid'] . '"><span class="shade">' . $vbphrase['magicselectgroup' . $infos['projectmagicselectgroupid'] . ''] . '</span>' .	$selected . '</div>';
 
 	// PHP Code to activate the menu
-	$issue['activationcode'] = 'vBulletin.register_control("vB_MagicSelect", "magicselect_' . $magicselect['varname'] . '", "' . $magicselect['varname'] . '", "' . $issue['issueid'] . '");';
+	$issue['activationcode'] = 'vBulletin.register_control("vB_MagicSelect", "magicselect_' . $infos['projectmagicselectgroupid'] . '", "' . $infos['projectmagicselectgroupid'] . '", "' . $issue['issueid'] . '");';
 
 	// Varname list to initialize the menu
-	$issue['headcode'][] = $magicselect['varname'];
+	$issue['headcode'][] = $infos['projectmagicselectgroupid'];
 }
 
 $issue['headcode'] = implode('", "', $issue['headcode']);

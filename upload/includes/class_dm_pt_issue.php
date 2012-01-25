@@ -145,14 +145,14 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 		// Custom Magic Selects
 		$magicselects = $this->registry->db->query_read("
-			SELECT varname
-			FROM " . TABLE_PREFIX . "pt_magicselect
+			SELECT projectmagicselectgroupid
+			FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
 		");
 
 		while ($magicselect = $this->registry->db->fetch_array($magicselects))
 		{
-			$this->validfields["$magicselect[varname]"] = array(TYPE_UINT, REQ_NO);
-			$this->track_changes[] = $magicselect['varname'];
+			$this->validfields['magicselect' . $magicselect['projectmagicselectgroupid']] = array(TYPE_UINT, REQ_NO);
+			$this->track_changes[] = $magicselect['projectmagicselectgroupid'];
 		}
 
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_start')) ? eval($hook) : false;
@@ -696,12 +696,52 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 		if (!$this->condition)
 		{
-			// Insert new issue - increase 'totalissues' counter in pt_user table for the original user
+			// Insert new issue
+			//Increase 'totalissues' counter in pt_user table for the original user
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "pt_user SET
 					totalissues = totalissues + 1
 				WHERE userid = " . $this->fetch_field('submituserid') . "
 			");
+
+			// Add the corresponding line in pt_issuemagicselect table
+			$issuems =& datamanager_init('Pt_Issue_MagicSelect', $this->registry, ERRTYPE_ARRAY, 'pt_magicselect');
+				$issuems->set('issueid', $this->fetch_field('issueid'));
+
+				$magicselects = $this->registry->db->query_read("
+					SELECT projectmagicselectgroupid
+					FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
+				");
+
+				while ($magicselect = $this->registry->db->fetch_array($magicselects))
+				{
+					$issuems->set('magicselect' . $magicselect['projectmagicselectgroupid'], $this->info[$magicselect['projectmagicselectgroupid']]);
+				}
+
+			$issuems->save();
+		}
+		else
+		{
+			// Edit the corresponding line in pt_issuemagicselect table
+			$mslist = array();
+
+			$magicselects = $this->registry->db->query_read("
+				SELECT projectmagicselectgroupid
+				FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
+				WHERE projectid = " . $this->fetch_field('projectid') . "
+			");
+
+			while ($magicselect = $this->registry->db->fetch_array($magicselects))
+			{
+				if ($this->info['magicselect' . $magicselect['projectmagicselectgroupid']])
+				{
+					$this->registry->db->query_write("
+						UPDATE " . TABLE_PREFIX . "pt_issuemagicselect SET
+							magicselect" . $magicselect['projectmagicselectgroupid'] . " = " . $this->info['magicselect' . $magicselect['projectmagicselectgroupid']] . "
+						WHERE issueid = " . $this->fetch_field('issueid') . "
+					");
+				}
+			}
 		}
 
 		if (!$rebuild_project)
@@ -797,6 +837,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueattach WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuechange WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuedeletionlog WHERE primaryid = $issueid AND type = 'issue'");
+			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuemagicselect WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuenote WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueprivatelastpost WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuesubscribe WHERE issueid = $issueid");

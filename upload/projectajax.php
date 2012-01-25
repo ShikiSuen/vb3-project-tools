@@ -178,13 +178,6 @@ $posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 
 $can_edit_issue = $posting_perms['issue_edit'];
 
-$magicselect = $db->query_first("
-	SELECT varname, fetchcode, savecode
-	FROM " . TABLE_PREFIX . "pt_magicselect
-	WHERE varname = '" . $vbulletin->GPC['field'] . "'
-		AND active = 1
-");
-
 ($hook = vBulletinHook::fetch_hook('projectajax_start')) ? eval($hook) : false;
 
 // #######################################################################
@@ -376,7 +369,12 @@ if ($_POST['do'] == 'save')
 			}
 			break;
 		default:
-			eval($magicselect['savecode']);
+			// Magic Select
+			$db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_issuemagicselect SET
+					magicselect" . $vbulletin->GPC['field'] . " = " . $vbulletin->GPC['value'] . "
+				WHERE issueid = " . $issue['issueid'] . "
+			");
 			break;
 	}
 
@@ -694,7 +692,21 @@ if ($_POST['do'] == 'fetch')
 			}
 			break;
 		default:
-			eval($magicselect['fetchcode']);
+			$magicselects = $db->query_read("
+				SELECT *
+				FROM " . TABLE_PREFIX . "pt_projectmagicselect
+				WHERE projectid = " . intval($project['projectid']) . "
+					AND projectmagicselectgroupid = " . $vbulletin->GPC['field'] . "
+			");
+
+			$xml->add_group('items');
+
+			while ($magicselect = $db->fetch_array($magicselects))
+			{
+				$xml->add_tag('item', $vbphrase['magicselect' . $magicselect['projectmagicselectid']], array('itemid' => $magicselect['value'], 'selected' => ($issue['magicselect' . $magicselect['projectmagicselectgroupid']] == $magicselect['value'] ? 'yes' : 'no')));
+			}
+
+			$xml->close_group();
 
 			break;
 		// #### END SWITCH ####

@@ -205,7 +205,7 @@ function fetch_issue_info($issueid, $extra_info = array())
 	($hook = vBulletinHook::fetch_hook('project_issue_fetch')) ? eval($hook) : false;
 
 	$issue = $db->query_first("
-		SELECT issuenote.*, issue.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
+		SELECT issuenote.*, issue.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress, issuemagicselect.*,
 			" . ($version_join ? "appliesversion.versionname AS appliesversion, addressedversion.versionname AS addressedversion," : '') . "
 			" . ($avatar_join ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
 			user.*, userfield.*, usertextfield.*, pt_user.*,
@@ -219,6 +219,8 @@ function fetch_issue_info($issueid, $extra_info = array())
 		FROM " . TABLE_PREFIX . "pt_issue AS issue
 		INNER JOIN " . TABLE_PREFIX . "pt_issuenote AS issuenote ON
 			(issuenote.issuenoteid = issue.firstnoteid)
+		INNER JOIN " . TABLE_PREFIX . "pt_issuemagicselect AS issuemagicselect ON
+			(issuemagicselect.issueid = issue.issueid)
 		" . ($version_join ? "
 			LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS appliesversion ON
 				(appliesversion.projectversionid = issue.appliesversionid)
