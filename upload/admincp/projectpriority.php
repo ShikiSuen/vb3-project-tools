@@ -58,7 +58,7 @@ $vbulletin->input->clean_array_gpc('r', array(
 	'projectpriorityid' => TYPE_UINT
 ));
 
-log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') . (!empty($vbulletin->GPC['projectpriorityid']) ? ' status id = ' . $vbulletin->GPC['projectpriorityid'] : ''));
+log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbulletin->GPC['projectid'] : '') . (!empty($vbulletin->GPC['projectpriorityid']) ? ' priority id = ' . $vbulletin->GPC['projectpriorityid'] : ''));
 
 // ########################################################################
 // ######################### START MAIN SCRIPT ############################
@@ -70,22 +70,6 @@ if (empty($_REQUEST['do']))
 {
 	$_REQUEST['do'] = 'list';
 }
-
-$issuetype_options = array();
-
-$types = $db->query_read("
-	SELECT *
-	FROM " . TABLE_PREFIX . "pt_issuetype
-	ORDER BY displayorder
-");
-
-while ($type = $db->fetch_array($types))
-{
-	$issuetype_options["$type[issuetypeid]"] = $vbphrase["issuetype_$type[issuetypeid]_singular"];
-}
-
-$helpcache['project']['projectadd']['afterforumids[]'] = 1;
-$helpcache['project']['projectedit']['afterforumids[]'] = 1;
 
 // ########################################################################
 // ################### PROJECT PRIORITY MANAGEMENT ########################
@@ -384,7 +368,7 @@ if ($_POST['do'] == 'kill')
 }
 
 // ########################################################################
-if ($_REQUEST['do'] == 'projectprioritydelete')
+if ($_REQUEST['do'] == 'delete')
 {
 	$projectpriority = $db->query_first("
 		SELECT *
@@ -506,7 +490,7 @@ if ($_REQUEST['do'] == 'list')
 	}
 	else
 	{
-		print_description_row($vbphrase['no_priorities_defined_project'], false, 3, '', 'center');
+		print_description_row(construct_phrase($vbphrase['no_priorities_defined_project'], $project['projectid']), false, 3, '', 'center');
 		print_table_footer();
 	}
 
