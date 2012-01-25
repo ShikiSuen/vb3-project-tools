@@ -7513,7 +7513,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1327456064" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1327456686" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7636,7 +7636,7 @@ init_project_readmarker_system();
 	<div class="blockbody formcontrols">
 		<div class="section">
 			<div class="blockrow">
-				<label>{vb:rawphrase additional_options}:</label>
+				<label>{vb:rawphrase miscellaneous_options}:</label>
 				<ul class="checkradio group rightcol">
 					<li>
 						<label>{vb:rawphrase project}<br />{vb:raw project.title_clean}</label>
@@ -7770,7 +7770,7 @@ init_project_readmarker_system();
 			<vb:if condition="$show['milestone_edit'] OR $issue['milestonetitle']">
 				<!-- milestone -->
 				<fieldset class="blockrow">
-					<legend>{vb:rawphrase milestone}:</legend>
+					<legend>{vb:rawphrase milestone}</legend>
 					<ul class="rightcol">
 						<li>
 							<vb:if condition="$show['milestone_edit']">
