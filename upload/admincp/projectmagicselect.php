@@ -314,13 +314,13 @@ if ($_REQUEST['do'] == 'groupdelete')
 if ($_POST['do'] == 'groupinsert')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'text' => TYPE_NOHTML,
+		'title' => TYPE_NOHTML,
 		'displayorder' => TYPE_UINT
 	));
 
 	$projectmagicselectgroup = array();
 
-	if (empty($vbulletin->GPC['text']))
+	if (empty($vbulletin->GPC['title']))
 	{
 		print_stop_message('please_complete_required_fields');
 	}
@@ -349,7 +349,7 @@ if ($_POST['do'] == 'groupinsert')
 			(0,
 			'projecttools',
 			'magicselectgroup" . intval($projectmagicselectgroupid) . "',
-			'" . $vbulletin->db->escape_string($vbulletin->GPC['text']) . "',
+			'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
 			'vbprojecttools',
 			'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
 			" . TIMENOW . ",
@@ -385,7 +385,7 @@ if ($_REQUEST['do'] == 'groupadd')
 
 	print_table_header($vbphrase['add_project_magic_select_group']);
 
-	print_input_row($vbphrase['title'], 'text');
+	print_input_row($vbphrase['title'], 'title');
 	print_input_row($vbphrase['display_order'], 'displayorder', '', true, 5);
 	construct_hidden_code('projectid', $project['projectid']);
 	print_submit_row();
@@ -395,7 +395,7 @@ if ($_REQUEST['do'] == 'groupadd')
 if ($_POST['do'] == 'groupupdate')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'text' => TYPE_NOHTML,
+		'title' => TYPE_NOHTML,
 		'displayorder' => TYPE_UINT
 	));
 
@@ -414,7 +414,7 @@ if ($_POST['do'] == 'groupupdate')
 		print_stop_message('invalid_action_specified');
 	}
 
-	if (empty($vbulletin->GPC['text']))
+	if (empty($vbulletin->GPC['title']))
 	{
 		print_stop_message('please_complete_required_fields');
 	}
@@ -433,7 +433,7 @@ if ($_POST['do'] == 'groupupdate')
 			(0,
 			'projecttools',
 			'magicselectgroup" . intval($projectmagicselectgroup['projectmagicselectgroupid']) . "',
-			'" . $vbulletin->db->escape_string($vbulletin->GPC['text']) . "',
+			'" . $vbulletin->db->escape_string($vbulletin->GPC['title']) . "',
 			'vbprojecttools',
 			'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
 			" . TIMENOW . ",
@@ -471,7 +471,7 @@ if ($_REQUEST['do'] == 'groupedit')
 
 	print_form_header('projectmagicselect', 'groupupdate');
 	print_table_header(construct_phrase($vbphrase['edit_project_magic_select_group'], $vbphrase['magicselectgroup' . $projectmagicselectgroup['projectmagicselectgroupid'] . '']));
-	print_input_row($vbphrase['text'], 'text', $vbphrase['magicselectgroup' . $projectmagicselectgroup['projectmagicselectgroupid'] . ''], false);
+	print_input_row($vbphrase['title'], 'title', $vbphrase['magicselectgroup' . $projectmagicselectgroup['projectmagicselectgroupid'] . ''], false);
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectmagicselectgroup['displayorder'], true, 5);
 	construct_hidden_code('projectid', $project['projectid']);
 	construct_hidden_code('projectmagicselectgroupid', $projectmagicselectgroup['projectmagicselectgroupid']);
