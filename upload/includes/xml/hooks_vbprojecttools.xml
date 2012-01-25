@@ -212,6 +212,20 @@
 		<hook>pt_issuevotedata_delete</hook>
 	</hooktype>
 
+	<hooktype type="pt_project_magicselect">
+		<hook>pt_project_magicselect_start</hook>
+		<hook>pt_project_magicselect_presave</hook>
+		<hook>pt_project_magicselect_postsave</hook>
+		<hook>pt_project_magicselect_delete</hook>
+	</hooktype>
+
+	<hooktype type="pt_issue_magicselect">
+		<hook>pt_issue_magicselect_start</hook>
+		<hook>pt_issue_magicselect_presave</hook>
+		<hook>pt_issue_magicselect_postsave</hook>
+		<hook>pt_issue_magicselect_delete</hook>
+	</hooktype>
+
 	<hooktype type="pt_projectdata">
 		<hook>pt_projectdata_start</hook>
 		<hook>pt_projectdata_presave</hook>

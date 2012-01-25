@@ -34,7 +34,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	*/
 	var $validfields = array(
 		'projectmagicselectid'		=> array(TYPE_UINT,		REQ_INCR),
-		'text'						=> array(TYPE_NOHTML,	REQ_NO),
+		'title'						=> array(TYPE_NOHTML,	REQ_NO),
 		'displayorder'				=> array(TYPE_UINT,		REQ_NO),
 		'projectid'					=> array(TYPE_UINT,		REQ_NO),
 		'value'						=> array(TYPE_UINT,		REQ_NO),
@@ -72,7 +72,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	{
 		parent::vB_DataManager($registry, $errtype);
 
-		($hook = vBulletinHook::fetch_hook('pt_magicselect_start')) ? eval($hook) : false;
+		($hook = vBulletinHook::fetch_hook('pt_project_magicselect_start')) ? eval($hook) : false;
 	}
 
 	/**
@@ -89,20 +89,20 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 			return $this->presave_called;
 		}
 
-		if (empty($this->info['text']))
+		if (empty($this->info['title']))
 		{
 			$this->error('please_complete_required_fields');
 			return false;
 		}
 
-		if ($this->fetch_field('value') == 0)
+		if ($this->fetch_field('value') == 0 OR empty($this->fetch_field('value')))
 		{
 			$this->error('value_must_be_higher_than_zero');
 			return false;
 		}
 
 		$return_value = true;
-		($hook = vBulletinHook::fetch_hook('pt_magicselect_presave')) ? eval($hook) : false;
+		($hook = vBulletinHook::fetch_hook('pt_project_magicselect_presave')) ? eval($hook) : false;
 
 		$this->presave_called = $return_value;
 		return $return_value;
@@ -144,7 +144,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		require_once(DIR . '/includes/adminfunctions_language.php');
 		build_language();
 
-		($hook = vBulletinHook::fetch_hook('pt_magicselect_postsave')) ? eval($hook) : false;
+		($hook = vBulletinHook::fetch_hook('pt_project_magicselect_postsave')) ? eval($hook) : false;
 
 		return true;
 	}
@@ -170,7 +170,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		require_once(DIR . '/includes/adminfunctions_language.php');
 		build_language();
 
-		($hook = vBulletinHook::fetch_hook('pt_magicselect_delete')) ? eval($hook) : false;
+		($hook = vBulletinHook::fetch_hook('pt_project_magicselect_delete')) ? eval($hook) : false;
 		return true;
 	}
 }
