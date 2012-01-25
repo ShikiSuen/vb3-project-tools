@@ -11,17 +11,6 @@
 || #################################################################### ||
 \*======================================================================*/
 
-/*
-delete -
-$vbphrase[active]
-$vbphrase[magicselect_html_code]
-$vbphrase[magicselect_html_code_desc]
-$vbphrase[magicselect_fetch_code]
-$vbphrase[magicselect_fetch_code_desc]
-$vbphrase[magicselect_save_code]
-$vbphrase[magicselect_save_code_desc]
-*/
-
 // ####################### SET PHP ENVIRONMENT ###########################
 error_reporting(E_ALL & ~E_NOTICE);
 
@@ -177,7 +166,7 @@ if ($_REQUEST['do'] == 'add')
 	}
 
 	print_form_header('projectmagicselect', 'insert');
-	print_table_header($vbphrase['add_magic_select']);
+	print_table_header($vbphrase['add_project_magic_select']);
 
 	print_input_row($vbphrase['text'], 'text');
 	print_input_row($vbphrase['display_order'], 'displayorder');
@@ -481,7 +470,7 @@ if ($_REQUEST['do'] == 'groupedit')
 	}
 
 	print_form_header('projectmagicselect', 'groupupdate');
-	print_table_header(construct_phrase($vbphrase['edit_project_magic_select'], $vbphrase['magicselectgroup' . $projectmagicselectgroup['projectmagicselectgroupid'] . '']));
+	print_table_header(construct_phrase($vbphrase['edit_project_magic_select_group'], $vbphrase['magicselectgroup' . $projectmagicselectgroup['projectmagicselectgroupid'] . '']));
 	print_input_row($vbphrase['text'], 'text', $vbphrase['magicselectgroup' . $projectmagicselectgroup['projectmagicselectgroupid'] . ''], false);
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectmagicselectgroup['displayorder'], true, 5);
 	construct_hidden_code('projectid', $project['projectid']);
@@ -580,7 +569,7 @@ if ($_REQUEST['do'] == 'list')
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="normal smallfont">' .
 					construct_link_code($vbphrase['edit'], 'projectmagicselect.php?do=groupedit&amp;projectmagicselectgroupid=' . $group['projectmagicselectgroupid']) .
 					construct_link_code($vbphrase['delete'], 'projectmagicselect.php?do=groupdelete&amp;projectmagicselectgroupid=' . $group['projectmagicselectgroupid']) .
-					construct_link_code($vbphrase['add_magic_select'], 'projectmagicselect.php?do=add&amp;projectmagicselectgroupid=' . $group['projectmagicselectgroupid']) .
+					construct_link_code($vbphrase['add_project_magic_select'], 'projectmagicselect.php?do=add&amp;projectmagicselectgroupid=' . $group['projectmagicselectgroupid']) .
 					'</div>',
 			), 'thead');
 

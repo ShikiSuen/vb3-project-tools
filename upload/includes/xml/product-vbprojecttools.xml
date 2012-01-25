@@ -11489,6 +11489,12 @@ Rebuilding milestone counters will update various fields related to a milestone 
 <b>Rebuild Profile Issue Counters</b><br />
 Rebuilding profile issue counters will update the number of issues every user have made.]]></phrase>
 			<phrase name="projectcounters_counters_title" date="1318377071" username="Pitchoune" version="2.2.0"><![CDATA[Update Counters]]></phrase>
+			<phrase name="projectmagicselect_list_text" date="1327516432" username="Pitchoune" version="2.2.0"><![CDATA[Magic selects is a way to add some specific content to have a better definition of issues. These menus are available over the post new issue page and in the 'Issue Details' block.<br />
+<br />
+A basic system to track magic selects is included in the Project Tools. This allows you to provide users more options to help you to track issues and make their description better.<br />
+<br />
+Magic selects are split into magic select menus (groups) and individual magic select options. A magic select option can only exist within a magic select.]]></phrase>
+			<phrase name="projectmagicselect_list_title" date="1327461827" username="Pitchoune" version="2.2.0"><![CDATA[Project Magic System Overview]]></phrase>
 			<phrase name="projectmilestone_add_edit_completeddate_text" date="1327241266" username="Pitchoune" version="2.2.0"><![CDATA[This is the date the milestone is finished.]]></phrase>
 			<phrase name="projectmilestone_add_edit_completeddate_title" date="1327241266" username="Pitchoune" version="2.2.0"><![CDATA[Completed Date]]></phrase>
 			<phrase name="projectmilestone_add_edit_targetdate_text" date="1327241242" username="Pitchoune" version="2.2.0"><![CDATA[This is the date the milestone should be finished.]]></phrase>
@@ -12218,10 +12224,10 @@ This is needed because Project Tools have a particular attachment system and nee
 		<phrasetype name="Project Tools (Admin)" fieldname="projecttoolsadmin">
 			<phrase name="add_issue_status" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Issue Status]]></phrase>
 			<phrase name="add_issue_type" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Issue Type]]></phrase>
-			<phrase name="add_magic_select" date="1327326274" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select]]></phrase>
 			<phrase name="add_milestone" date="1213799689" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Add Milestone]]></phrase>
 			<phrase name="add_project" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project]]></phrase>
 			<phrase name="add_project_category" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Category]]></phrase>
+			<phrase name="add_project_magic_select" date="1327516787" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select]]></phrase>
 			<phrase name="add_project_magic_select_group" date="1327326148" username="Pitchoune" version="2.2.0"><![CDATA[Add Project Magic Select Group]]></phrase>
 			<phrase name="add_project_priority" date="1295124315" username="Pitchoune" version="2.2.0"><![CDATA[Add Project Priority]]></phrase>
 			<phrase name="add_project_version" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Version]]></phrase>
@@ -12269,6 +12275,7 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="edit_permissions_for_x_in_y" date="1213804793" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span> in <span class="normal">'{2}'</span>]]></phrase>
 			<phrase name="edit_project_category" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Category <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_magic_select" date="1316814271" username="Pitchoune" version="2.2.0"><![CDATA[Edit Magic Select <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="edit_project_magic_select_group" date="1327516843" username="Pitchoune" version="2.2.0"><![CDATA[Edit Magic Select Group <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_priority" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Priority <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_version" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Version <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_version_group" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Version Group <span class="normal">'{1}'</span>]]></phrase>
@@ -12814,6 +12821,9 @@ Separate each style ID with a comma.<br />
 		</helpscript>
 		<helpscript name="projectcounters">
 			<helptopic disp="1" act="counters" />
+		</helpscript>
+		<helpscript name="projectmagicselect">
+			<helptopic disp="1" act="list" />
 		</helpscript>
 		<helpscript name="projectmilestone">
 			<helptopic disp="1" act="add,edit" opt="title" />
