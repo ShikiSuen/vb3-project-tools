@@ -1952,7 +1952,9 @@ build_project_category_cache();
 build_project_priority_cache();
 build_project_cache();]]></installcode>
 			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_magicselect");]]></uninstallcode>
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuemagicselect");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup");]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
