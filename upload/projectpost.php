@@ -62,6 +62,7 @@ $actiontemplates = array(
 	'addissue' => array(
 		'humanverify',
 		'pt_postissue',
+		'pt_postissue_magicselect',
 		'pt_postissue_short',
 		'pt_preview',
 		'newpost_usernamecode',
