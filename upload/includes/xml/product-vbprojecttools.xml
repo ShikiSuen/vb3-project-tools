@@ -2446,7 +2446,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1316365422" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1327458156" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2493,6 +2493,14 @@ a.toolbar_text{
 	float: {vb:stylevar right};
 	clear: {vb:stylevar right};
 	width: 48%;
+}
+
+.formsubmit .newissueslink a {
+	background: transparent;
+}
+
+.toolsmenu .popupgroup .popupbody .advancedsearchlink a {
+	text-align: {vb:stylevar right};
 }
 
 a.firstunread, a.firstunread:hover
