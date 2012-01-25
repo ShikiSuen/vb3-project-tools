@@ -11489,6 +11489,16 @@ Rebuilding milestone counters will update various fields related to a milestone 
 <b>Rebuild Profile Issue Counters</b><br />
 Rebuilding profile issue counters will update the number of issues every user have made.]]></phrase>
 			<phrase name="projectcounters_counters_title" date="1318377071" username="Pitchoune" version="2.2.0"><![CDATA[Update Counters]]></phrase>
+			<phrase name="projectmagicselect_add_edit_displayorder_text" date="1327523055" username="Pitchoune" version="2.2.0"><![CDATA[Display order of the magic select option.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_displayorder_title" date="1327523055" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="projectmagicselect_add_edit_title_text" date="1327523108" username="Pitchoune" version="2.2.0"><![CDATA[Title of the magic select option.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_title_title" date="1327522693" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="projectmagicselect_add_edit_value_text" date="1327523099" username="Pitchoune" version="2.2.0"><![CDATA[Value of the magic select option. This must be at least 1.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_value_title" date="1327523099" username="Pitchoune" version="2.2.0"><![CDATA[Value]]></phrase>
+			<phrase name="projectmagicselect_groupadd_groupedit_displayorder_text" date="1327517110" username="Pitchoune" version="2.2.0"><![CDATA[Display order of the magic select menu.]]></phrase>
+			<phrase name="projectmagicselect_groupadd_groupedit_displayorder_title" date="1327517110" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
+			<phrase name="projectmagicselect_groupadd_groupedit_title_text" date="1327517069" username="Pitchoune" version="2.2.0"><![CDATA[Title of the magic select menu.]]></phrase>
+			<phrase name="projectmagicselect_groupadd_groupedit_title_title" date="1327517069" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
 			<phrase name="projectmagicselect_list_text" date="1327516432" username="Pitchoune" version="2.2.0"><![CDATA[Magic selects is a way to add some specific content to have a better definition of issues. These menus are available over the post new issue page and in the 'Issue Details' block.<br />
 <br />
 A basic system to track magic selects is included in the Project Tools. This allows you to provide users more options to help you to track issues and make their description better.<br />
@@ -12228,7 +12238,7 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="add_project" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project]]></phrase>
 			<phrase name="add_project_category" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Category]]></phrase>
 			<phrase name="add_project_magic_select" date="1327516787" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select]]></phrase>
-			<phrase name="add_project_magic_select_group" date="1327326148" username="Pitchoune" version="2.2.0"><![CDATA[Add Project Magic Select Group]]></phrase>
+			<phrase name="add_project_magic_select_group" date="1327516997" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select Group]]></phrase>
 			<phrase name="add_project_priority" date="1295124315" username="Pitchoune" version="2.2.0"><![CDATA[Add Project Priority]]></phrase>
 			<phrase name="add_project_version" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Version]]></phrase>
 			<phrase name="add_project_version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Version Group]]></phrase>
@@ -12823,6 +12833,11 @@ Separate each style ID with a comma.<br />
 			<helptopic disp="1" act="counters" />
 		</helpscript>
 		<helpscript name="projectmagicselect">
+			<helptopic disp="1" act="add,edit" opt="title" />
+			<helptopic disp="2" act="add,edit" opt="displayorder" />
+			<helptopic disp="3" act="add,edit" opt="value" />
+			<helptopic disp="1" act="groupadd,groupedit" opt="title" />
+			<helptopic disp="2" act="groupadd,groupedit" opt="displayorder" />
 			<helptopic disp="1" act="list" />
 		</helpscript>
 		<helpscript name="projectmilestone">
