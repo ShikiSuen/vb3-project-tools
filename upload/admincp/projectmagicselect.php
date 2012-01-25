@@ -548,6 +548,13 @@ if ($_POST['do'] == 'order')
 // ########################################################################
 if ($_REQUEST['do'] == 'list')
 {
+	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
 	$groups_data = array();
 
 	$group_data = $db->query_read("
