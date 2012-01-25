@@ -71,16 +71,6 @@ if (empty($_REQUEST['do']))
 	$_REQUEST['do'] = 'list';
 }
 
-if ($vbulletin->GPC['projectid'])
-{
-	$project = fetch_project_info($vbulletin->GPC['projectid']);
-
-	if (!$project)
-	{
-		print_stop_message('invalid_action_specified');
-	}
-}
-
 // #############################################################################
 if ($_POST['do'] == 'kill')
 {
@@ -90,7 +80,9 @@ if ($_POST['do'] == 'kill')
 		WHERE projectmagicselectid = " . $vbulletin->GPC['projectmagicselectid']
 	);
 
-	if (!$magicselect)
+	$project = fetch_project_info($magicselect['projectid'], false);
+
+	if (!$project)
 	{
 		print_stop_message('invalid_action_specified');
 	}
@@ -106,13 +98,13 @@ if ($_POST['do'] == 'kill')
 // #############################################################################
 if ($_REQUEST['do'] == 'delete')
 {
-	$projectmagicselect = $db->query_first("
+	$magicselect = $db->query_first("
 		SELECT projectmagicselectid, projectid
 		FROM " . TABLE_PREFIX . "pt_projectmagicselect
 		WHERE projectmagicselectid = " . $vbulletin->GPC['projectmagicselectid']
 	);
 
-	$project = fetch_project_info($projectmagicselect['projectid'], false);
+	$project = fetch_project_info($magicselect['projectid'], false);
 
 	if (!$project)
 	{
@@ -131,13 +123,20 @@ if ($_REQUEST['do'] == 'delete')
 if ($_POST['do'] == 'insert')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'text'			=> TYPE_NOHTML,
+		'title'			=> TYPE_NOHTML,
 		'displayorder'	=> TYPE_UINT,
 		'value'			=> TYPE_UINT
 	));
 
+	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
 	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
-	$dataman->set_info('text', $vbulletin->GPC['text']);
+	$dataman->set_info('title', $vbulletin->GPC['title']);
 	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
 	$dataman->set('projectid', $project['projectid']);
 	$dataman->set('value', $vbulletin->GPC['value']);
@@ -158,7 +157,7 @@ if ($_REQUEST['do'] == 'add')
 		WHERE projectmagicselectgroupid = " . intval($vbulletin->GPC['projectmagicselectgroupid']) . "
 	");
 
-	$project = fetch_project_info($magicselect['projectid']);
+	$project = fetch_project_info($magicselect['projectid'], false);
 
 	if (!$project)
 	{
@@ -168,7 +167,7 @@ if ($_REQUEST['do'] == 'add')
 	print_form_header('projectmagicselect', 'insert');
 	print_table_header($vbphrase['add_project_magic_select']);
 
-	print_input_row($vbphrase['text'], 'text');
+	print_input_row($vbphrase['title'], 'title');
 	print_input_row($vbphrase['display_order'], 'displayorder');
 	print_input_row($vbphrase['value'], 'value');
 
@@ -182,7 +181,7 @@ if ($_REQUEST['do'] == 'add')
 if ($_POST['do'] == 'update')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
-		'text'			=> TYPE_STR,
+		'title'			=> TYPE_STR,
 		'displayorder'	=> TYPE_UINT,
 		'value'			=> TYPE_UINT
 	));
@@ -193,9 +192,16 @@ if ($_POST['do'] == 'update')
 		WHERE projectmagicselectid = " . intval($vbulletin->GPC['projectmagicselectid']) . "
 	");
 
+	$project = fetch_project_info($magicselect['projectid'], false);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
 	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
 	$dataman->set_existing($magicselect);
-	$dataman->set_info('text', $vbulletin->GPC['text']);
+	$dataman->set_info('title', $vbulletin->GPC['title']);
 	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
 	$dataman->set('value', $vbulletin->GPC['value']);
 	$dataman->set('projectmagicselectgroupid', $vbulletin->GPC['projectmagicselectgroupid']);
@@ -230,7 +236,7 @@ if ($_REQUEST['do'] == 'edit')
 	print_form_header('projectmagicselect', 'update');
 	print_table_header(construct_phrase($vbphrase['edit_project_magic_select'], $vbphrase['magicselect' . $magicselect['projectmagicselectid'] . '']));
 
-	print_input_row($vbphrase['text'], 'text', $vbphrase['magicselect' . $magicselect['projectmagicselectid'] . '']);
+	print_input_row($vbphrase['title'], 'title', $vbphrase['magicselect' . $magicselect['projectmagicselectid'] . '']);
 	print_input_row($vbphrase['display_order'], 'displayorder', $magicselect['displayorder']);
 	print_input_row($vbphrase['value'], 'value', $magicselect['value']);
 
@@ -318,6 +324,13 @@ if ($_POST['do'] == 'groupinsert')
 		'displayorder' => TYPE_UINT
 	));
 
+	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
 	$projectmagicselectgroup = array();
 
 	if (empty($vbulletin->GPC['title']))
@@ -370,6 +383,13 @@ if ($_POST['do'] == 'groupinsert')
 // ########################################################################
 if ($_REQUEST['do'] == 'groupadd')
 {
+	$project = fetch_project_info($vbulletin->GPC['projectid'], false);
+
+	if (!$project)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
 	$maxorder = $db->query_first("
 		SELECT MAX(displayorder) AS maxorder
 		FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
