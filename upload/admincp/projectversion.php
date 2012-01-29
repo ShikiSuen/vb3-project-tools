@@ -297,7 +297,7 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 
 	if ($projectversion['projectversionid'])
 	{
-		print_table_header(construct_phrase($vbphrase['edit_project_version'], $projectversion['versionname']));
+		print_table_header(construct_phrase($vbphrase['edit_project_version'], $vbphrase['version' . $projectversion['projectversionid'] . '']));
 		print_label_row($vbphrase['version_group'], $vbphrase['versiongroup' . $projectversiongroup['projectversiongroupid'] . '']);
 		print_input_row($vbphrase['title'] . '<dfn>' . construct_link_code($vbphrase['translations'], 'phrase.php?' . $vbulletin->session->vars['sessionurl'] . 'do=edit&amp;fieldname=projecttools&amp;t=1&amp;varname=version' . $projectversion['projectversionid'], true) . '</dfn>', 'versionname', $vbphrase['version'. $projectversion['projectversionid'] . ''], false);
 	}
@@ -582,7 +582,7 @@ if ($_REQUEST['do'] == 'groupadd' OR $_REQUEST['do'] == 'groupedit')
 
 	if ($projectversiongroup['projectversiongroupid'])
 	{
-		print_table_header(construct_phrase($vbphrase['edit_project_version_group'], $projectversiongroup['groupname']));
+		print_table_header(construct_phrase($vbphrase['edit_project_version_group'], $vbphrase['versiongroup' . $projectversiongroup['projectversiongroupid'] . '']));
 		print_input_row($vbphrase['title'] . '<dfn>' . construct_link_code($vbphrase['translations'], 'phrase.php?' . $vbulletin->session->vars['sessionurl'] . 'do=edit&amp;fieldname=projecttools&amp;t=1&amp;varname=versiongroup' . $projectversiongroup['projectversiongroupid'], true) . '</dfn>', 'groupname', $vbphrase['versiongroup' . $projectversiongroup['projectversiongroupid'] . ''], false);
 	}
 	else

@@ -1611,6 +1611,9 @@ while ($project = $db->fetch_array($projects))
 	$projectdata->save();
 }
 
+// Delete useless table field in pt_project table
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project DROP options");
+
 /*================================*\
 || ############################## ||
 || #		  Versions			# ||
@@ -1650,7 +1653,7 @@ if ($dataversiongroup)
 	}
 
 	// Delete useless table fields in pt_projectversiongroup table
-	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversiongroupid DROP groupname");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversiongroup DROP groupname");
 }
 
 // Move versions into phrase system
@@ -1686,7 +1689,7 @@ if ($dataversion)
 	}
 
 	// Delete useless table fields in pt_projectversion table
-	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversionid DROP versionname");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversion DROP versionname");
 }
 
 /*================================*\
@@ -1722,8 +1725,6 @@ if ($datamilestone)
 	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title_clean");
 	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP description");
 }
-
-
 
 /*================================*\
 || ############################## ||
@@ -2028,6 +2029,7 @@ require_once(DIR . '/includes/adminfunctions_attachment.php');
 build_attachment_permissions();
 
 require_once(DIR . '/includes/adminfunctions_projecttools.php');
+build_version_cache();
 build_project_category_cache();
 build_project_priority_cache();
 build_project_cache();]]></installcode>
