@@ -206,7 +206,7 @@ function fetch_issue_info($issueid, $extra_info = array())
 
 	$issue = $db->query_first("
 		SELECT issuenote.*, issue.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress, issuemagicselect.*,
-			" . ($version_join ? "appliesversion.versionname AS appliesversion, addressedversion.versionname AS addressedversion," : '') . "
+			" . ($version_join ? "appliesversion.projectversionid AS appliesversion, addressedversion.projectversionid AS addressedversion," : '') . "
 			" . ($avatar_join ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
 			user.*, userfield.*, usertextfield.*, pt_user.*,
 			IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
@@ -258,8 +258,8 @@ function fetch_issue_info($issueid, $extra_info = array())
 
 	if (!$version_join)
 	{
-		$issue['appliesversion'] = ($issue['appliesversionid'] ? $vbulletin->pt_versions["$issue[appliesversionid]"]['versionname'] : '');
-		$issue['addressedversion'] = ($issue['addressedversionid'] ? $vbulletin->pt_versions["$issue[addressedversionid]"]['versionname'] : '');
+		$issue['appliesversion'] = ($issue['appliesversionid'] ? $vbphrase['version' . $vbulletin->pt_versions["$issue[appliesversionid]"]['projectversionid'] . ''] : '');
+		$issue['addressedversion'] = ($issue['addressedversionid'] ? $vbphrase['version' . $vbulletin->pt_versions["$issue[addressedversionid]"]['projectversionid'] . ''] : '');
 	}
 
 	if (!$browsing_user_joins)
@@ -578,11 +578,14 @@ function translate_system_note($data)
 		{
 			case 'issuestatusid':
 				$entry['oldvalue'] = $vbphrase["issuestatus$entry[oldvalue]"];
+
 				if (empty($entry['oldvalue']))
 				{
 					$entry['oldvalue'] = $vbphrase['unknown'];
 				}
+
 				$entry['newvalue'] = $vbphrase["issuestatus$entry[newvalue]"];
+
 				if (empty($entry['newvalue']))
 				{
 					$entry['newvalue'] = $vbphrase['unknown'];
@@ -605,12 +608,15 @@ function translate_system_note($data)
 
 			case 'appliesversionid':
 			case 'addressedversionid':
-				$entry['oldvalue'] = $vbulletin->pt_versions["$entry[oldvalue]"]['versionname'];
+				$entry['oldvalue'] = $vbphrase['version' . $vbulletin->pt_versions["$entry[oldvalue]"]['projectversionid'] . ''];
+
 				if (empty($entry['oldvalue']))
 				{
 					$entry['oldvalue'] = $vbphrase['unknown'];
 				}
-				$entry['newvalue'] = $vbulletin->pt_versions["$entry[newvalue]"]['versionname'];
+
+				$entry['newvalue'] = $vbphrase['version' . $vbulletin->pt_versions["$entry[newvalue]"]['projectversionid'] . ''];
+
 				if (empty($entry['newvalue']))
 				{
 					$entry['newvalue'] = $vbphrase['unknown'];
@@ -618,12 +624,15 @@ function translate_system_note($data)
 				break;
 
 			case 'projectcategoryid':
-				$entry['oldvalue'] = $vbulletin->pt_categories["$entry[oldvalue]"]['title'];
+				$entry['oldvalue'] = $vbphrase['category' . $vbulletin->pt_categories["$entry[oldvalue]"]['projectcategoryid'] . ''];
+
 				if (empty($entry['oldvalue']))
 				{
 					$entry['oldvalue'] = $vbphrase['unknown'];
 				}
-				$entry['newvalue'] = $vbulletin->pt_categories["$entry[newvalue]"]['title'];
+
+				$entry['newvalue'] = $vbphrase['category' . $vbulletin->pt_categories["$entry[newvalue]"]['projectcategoryid'] . ''];
+
 				if (empty($entry['newvalue']))
 				{
 					$entry['newvalue'] = $vbphrase['unknown'];
