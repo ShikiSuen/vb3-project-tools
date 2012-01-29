@@ -1613,6 +1613,84 @@ while ($project = $db->fetch_array($projects))
 
 /*================================*\
 || ############################## ||
+|| #		  Versions			# ||
+|| ############################## ||
+\*================================*/
+
+// Move version groups into phrase system
+$db->hide_errors();
+$dataversiongroup = $db->query_read("SELECT groupname FROM " . TABLE_PREFIX . "pt_projectversiongroup");
+$db->show_errors();
+
+if ($dataversiongroup)
+{
+	$versiongroup_data = $db->query_read("
+		SELECT projectversiongroupid, groupname
+		FROM " . TABLE_PREFIX . "pt_projectversiongroup
+		ORDER BY projectversiongroupid ASC
+	");
+
+	while ($versiongroup = $db->fetch_array($versiongroup_data))
+	{
+		$vbulletin->db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'versiongroup" . intval($versiongroup['projectversiongroupid']) . "',
+					'" . $vbulletin->db->escape_string($versiongroup['groupname']) . "',
+					'vbprojecttools',
+					'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+	}
+
+	// Delete useless table fields in pt_projectversiongroup table
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversiongroupid DROP groupname");
+}
+
+// Move versions into phrase system
+$db->hide_errors();
+$dataversion = $db->query_read("SELECT versionname FROM " . TABLE_PREFIX . "pt_projectversion");
+$db->show_errors();
+
+if ($dataversion)
+{
+	$version_data = $db->query_read("
+		SELECT projectversionid, versionname
+		FROM " . TABLE_PREFIX . "pt_projectversion
+		ORDER BY projectversionid ASC
+	");
+
+	while ($version = $db->fetch_array($version_data))
+	{
+		$vbulletin->db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(
+					0,
+					'projecttools',
+					'version" . intval($version['projectversionid']) . "',
+					'" . $vbulletin->db->escape_string($version['versionname']) . "',
+					'vbprojecttools',
+					'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+					" . TIMENOW . ",
+					'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+	}
+
+	// Delete useless table fields in pt_projectversion table
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversionid DROP versionname");
+}
+
+/*================================*\
+|| ############################## ||
 || #		Milestones			# ||
 || ############################## ||
 \*================================*/
@@ -1644,6 +1722,8 @@ if ($datamilestone)
 	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP title_clean");
 	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_milestone DROP description");
 }
+
+
 
 /*================================*\
 || ############################## ||
@@ -11865,26 +11945,29 @@ The unique aspect relates to its handling of patch files. A patch file is a spec
 In the Project Tools, if you upload a ".patch", ".diff", or ".txt" file in <em>unified diff</em> format, we will automatically display a highlighted version of the patch with the attachment. This allows less technical users to apply your changes, but still allowing you to use a computer program to generate the file.<br />
 <br />
 Remember that only patches in the <em>unified diff</em> format will be highlighted. If you upload any other kind of attachment, it will be processed like any other file.]]></phrase>
-			<phrase name="pt_faq_how_post" date="1201019023" username="Ed Sullivan" version="1.0.2"><![CDATA[Posting into the Project Tools should look similar to other areas in vBulletin. However, you generally need to concentrate more on the content. The key to posting a good issue is to make your point clearly and try to answer any possible questions before they come up. Remember to:
+			<phrase name="pt_faq_how_post" date="1327534283" username="Pitchoune" version="2.2.0"><![CDATA[Posting into the Project Tools should look similar to other areas in vBulletin. However, you generally need to concentrate more on the content. The key to posting a good issue is to make your point clearly and try to answer any possible questions before they come up. Remember to:
+<br />
 <ol>
 	<li><strong>Search before posting</strong></li>
 	<li><strong>Include what you did, what happened, and what you expected</strong></li>
 	<li><strong>Only include one item per issue</strong></li>
 </ol>
-
 <h4>Search before posting</h4>
-Before posting, it is very important to <a href="search.php?search_type=1&contenttypeid=$contenttypeid">search</a> the Project Tools. If you've found a problem or have an idea, it's quite possible someone else has too.
-
+<br />
+Before posting, it is very important to <a href="projectsearch.php?do=search">search</a> the Project Tools. If you've found a problem or have an idea, it's quite possible someone else has too.<br />
+<br />
 <h4>Include what you did, what happened, and what you expected</h4>
+<br />
 It is very important to layout exactly what you did, in a step-by-step manner if necessary. Try to include all the information that you think would be helpful, but don't be overly verbose.<br />
 <br />
 Now try to explain what happened the best you can. If you received an error message, it is always important to include the full, specific message. The people in charge of managing the project will be able to make use of this. If you're having trouble explaining it, pictures can be better than 1000 words. Use the attachment option whenever reasonable.<br />
 <br />
 Finally, try to explain what you expected to happen. This helps everyone understand what you were thinking and will often lead to improvements.<br />
 <br />
-Remember that it is always better to provide too much information than too little. Think about the type of questions that might come up regarding your issue. If you had a problem with something in your web browser, including information on your browser and operating system would most certainly be needed.
-
+Remember that it is always better to provide too much information than too little. Think about the type of questions that might come up regarding your issue. If you had a problem with something in your web browser, including information on your browser and operating system would most certainly be needed.<br />
+<br />
 <h4>Only include one item per issue</h4>
+<br />
 This helps organization. If you explain multiple problems in one issue, then it makes it hard to categorize them. Some might be the correct behavior while others are legitimate issues. It gives everyone a better sense of what's going on and helps encourage more people to handle the issues.]]></phrase>
 			<phrase name="pt_faq_private" date="1176396652" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[If you make an issue or a reply private, only a limited selection of people will be able to see it. You should use this when discussing things of a sensitive nature, such as security or information covered by an NDA.<br />
 <br />
@@ -11896,7 +11979,7 @@ To create your own report, make a search with the criteria that you want and cli
 		<phrasetype name="FAQ Title" fieldname="faqtitle">
 			<phrase name="pt_faq" date="1185887224" username="Ed Sullivan" version="1.0.1"><![CDATA[Project Tools FAQ]]></phrase>
 			<phrase name="pt_faq_attach" date="1318880247" username="Pitchoune" version="2.2.0"><![CDATA[What is unique about the Project Tools' attachment system?]]></phrase>
-			<phrase name="pt_faq_how_post" date="1176396643" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What makes a good issue description?]]></phrase>
+			<phrase name="pt_faq_how_post" date="1327534283" username="Pitchoune" version="2.2.0"><![CDATA[What makes a good issue description?]]></phrase>
 			<phrase name="pt_faq_private" date="1176396652" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What does it mean to make something private? When should I do this?]]></phrase>
 			<phrase name="pt_faq_report" date="1176812007" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[What are reports? How do I use them?]]></phrase>
 		</phrasetype>
@@ -12321,10 +12404,10 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="no_categories_defined_project" date="1181310525" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[No categories defined for this project!]]></phrase>
 			<phrase name="no_magic_selects_defined_in_this_group" date="1327326304" username="Pitchoune" version="2.2.0"><![CDATA[There is no magic select defined in this group.]]></phrase>
 			<phrase name="no_milestones_defined_for_this_project" date="1213799816" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[No milestones defined for this project!]]></phrase>
-			<phrase name="no_priorities_defined_project" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no priority defined. <a href="projectpriority.php?do=projectpriorityadd">Click here to add one!</a>]]></phrase>
+			<phrase name="no_priorities_defined_project" date="1327528911" username="Pitchoune" version="2.2.0"><![CDATA[There is no priority defined. <a href="projectpriority.php?do=add&amp:projectid={1}">Click here to add one!</a>]]></phrase>
 			<phrase name="no_project_magic_select_defined_click_here_to_add_one" date="1327326219" username="Pitchoune" version="2.2.0"><![CDATA[There is no magic select defined. <a href="projectmagicselect.php?do=groupadd&amp;projectid={1}">Click here to add one!</a>]]></phrase>
-			<phrase name="no_projects_defined_click_here_to_add_one" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no projects defined. <a href="project.php?do=projectadd">Click here to add one!</a>]]></phrase>
-			<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1324052046" username="Pitchoune" version="2.2.0"><![CDATA[There is no statuses of this type defined. This type will not be usable until you add at least one status. <a href="projecttype.php?do=add&amp;type={1}">Click here to add one!</a>]]></phrase>
+			<phrase name="no_projects_defined_click_here_to_add_one" date="1327528959" username="Pitchoune" version="2.2.0"><![CDATA[There is no projects defined. <a href="project.php?do=add">Click here to add one!</a>]]></phrase>
+			<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1327529050" username="Pitchoune" version="2.2.0"><![CDATA[There is no statuses of this type defined. This type will not be usable until you add at least one status. <a href="projecttype.php?do=statusadd&amp;type={1}">Click here to add one!</a>]]></phrase>
 			<phrase name="no_tags_defined" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no tags defined.]]></phrase>
 			<phrase name="no_versions_defined_in_this_group" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no versions defined in this group.]]></phrase>
 			<phrase name="no_versions_groups_defined_project" date="1323376095" username="Pitchoune" version="2.2.0"><![CDATA[There is no versions or groups defined for this project!]]></phrase>

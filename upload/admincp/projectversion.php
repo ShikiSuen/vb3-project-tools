@@ -72,22 +72,6 @@ if (empty($_REQUEST['do']))
 	$_REQUEST['do'] = 'list';
 }
 
-$issuetype_options = array();
-
-$types = $db->query_read("
-	SELECT *
-	FROM " . TABLE_PREFIX . "pt_issuetype
-	ORDER BY displayorder
-");
-
-while ($type = $db->fetch_array($types))
-{
-	$issuetype_options["$type[issuetypeid]"] = $vbphrase["issuetype_$type[issuetypeid]_singular"];
-}
-
-$helpcache['project']['projectadd']['afterforumids[]'] = 1;
-$helpcache['project']['projectedit']['afterforumids[]'] = 1;
-
 // ########################################################################
 // ################### PROJECT VERSION MANAGEMENT #########################
 // ########################################################################
@@ -162,12 +146,28 @@ if ($_POST['do'] == 'update')
 		// Perform the save
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectversion SET
-				versionname = '" . $db->escape_string($vbulletin->GPC['versionname']) . "',
 				displayorder = " . $vbulletin->GPC['displayorder'] . ",
 				effectiveorder = " . ($vbulletin->GPC['displayorder'] + $projectversiongroup['displayorder'] * 100000) . ",
 				defaultvalue = " . ($vbulletin->GPC['default'] ? 1 : 0) . "
 			WHERE projectversionid = " . $projectversion['projectversionid'] . "
 		");
+
+		// Add the text in a phrase
+		$db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(0,
+				'projecttools',
+				'version" . intval($projectversion['projectversionid']) . "',
+				'" . $vbulletin->db->escape_string($vbulletin->GPC['versionname']) . "',
+				'vbprojecttools',
+				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+				" . TIMENOW . ",
+				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+
 	}
 	else
 	{
@@ -195,16 +195,32 @@ if ($_POST['do'] == 'update')
 		// Perform the save
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_projectversion
-				(projectid, versionname, projectversiongroupid, displayorder, effectiveorder)
+				(projectid, projectversiongroupid, displayorder, effectiveorder)
 			VALUES
 				(" . $projectversiongroup['projectid'] . ",
-				'" . $db->escape_string($vbulletin->GPC['versionname']) . "',
 				" . $projectversiongroup['projectversiongroupid'] . ",
 				" . $vbulletin->GPC['displayorder'] . ",
 				" . ($vbulletin->GPC['displayorder'] + $projectversiongroup['displayorder'] * 100000) . ")
 		");
 
 		$projectversionid = $db->insert_id();
+
+		// Add the text in a phrase
+		$db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(0,
+				'projecttools',
+				'version" . $projectversionid . "',
+				'" . $vbulletin->db->escape_string($vbulletin->GPC['versionname']) . "',
+				'vbprojecttools',
+				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+				" . TIMENOW . ",
+				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+
 
 		if ($vbulletin->GPC['nextversion'])
 		{
@@ -285,7 +301,7 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 	}
 
 	print_label_row($vbphrase['version_group'], $projectversiongroup['groupname']);
-	print_input_row($vbphrase['title'], 'versionname', $projectversion['versionname'], false);
+	print_input_row($vbphrase['title'], 'versionname', $vbphrase['version'. $projectversion['versionname'] . ''], false);
 	print_input_row($vbphrase['display_order'] . '<dfn>' . $vbphrase['note_a_larger_value_will_be_displayed_first'] . '</dfn>', 'displayorder', $projectversion['displayorder'], true, 5);
 	print_yes_no_row($vbphrase['default_value'], 'default', $projectversion['defaultvalue']);
 
@@ -457,21 +473,55 @@ if ($_POST['do'] == 'groupupdate')
 	{
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectversiongroup SET
-				groupname = '" . $db->escape_string($vbulletin->GPC['groupname']) . "',
 				displayorder = " . $vbulletin->GPC['displayorder'] . "
 			WHERE projectversiongroupid = $projectversiongroup[projectversiongroupid]
 		");
+
+		// Add the text in a phrase
+		$db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(0,
+				'projecttools',
+				'versiongroup" . intval($projectversiongroup['projectversiongroupid']) . "',
+				'" . $vbulletin->db->escape_string($vbulletin->GPC['groupname']) . "',
+				'vbprojecttools',
+				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+				" . TIMENOW . ",
+				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+		
 	}
 	else
 	{
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_projectversiongroup
-				(projectid, groupname, displayorder)
+				(projectid, displayorder)
 			VALUES
 				($project[projectid],
-				'" . $db->escape_string($vbulletin->GPC['groupname']) . "',
 				" . $vbulletin->GPC['displayorder'] . ")
 		");
+
+		$projectversiongroupid = $db->insert_id();
+
+		// Add the text in a phrase
+		$db->query_write("
+			REPLACE INTO " . TABLE_PREFIX . "phrase
+				(languageid, fieldname, varname, text, product, username, dateline, version)
+			VALUES
+				(0,
+				'projecttools',
+				'versiongroup" . intval($projectversiongroupid) . "',
+				'" . $vbulletin->db->escape_string($vbulletin->GPC['groupname']) . "',
+				'vbprojecttools',
+				'" . $vbulletin->db->escape_string($vbulletin->userinfo['username']) . "',
+				" . TIMENOW . ",
+				'" . $vbulletin->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+				)
+		");
+
 	}
 
 	build_version_cache();
@@ -525,7 +575,7 @@ if ($_REQUEST['do'] == 'groupadd' OR $_REQUEST['do'] == 'groupedit')
 		print_table_header($vbphrase['add_project_version_group']);
 	}
 
-	print_input_row($vbphrase['title'], 'groupname', $projectversiongroup['groupname'], false);
+	print_input_row($vbphrase['title'], 'groupname', $vbphrase['versiongroup' . $projectversiongroup['projectversiongroupid'] . ''], false);
 	print_input_row($vbphrase['display_order'] . '<dfn>' . $vbphrase['note_a_larger_value_will_be_displayed_first'] . '</dfn>', 'displayorder', $projectversiongroup['displayorder'], true, 5);
 	construct_hidden_code('projectid', $project['projectid']);
 	construct_hidden_code('projectversiongroupid', $projectversiongroup['projectversiongroupid']);
@@ -763,7 +813,7 @@ if ($_REQUEST['do'] == 'list')
 		foreach ($groups AS $group)
 		{
 			print_cells_row(array(
-				$group['groupname'],
+				$vbphrase['versiongroup' . $group['projectversiongroupid'] . ''],
 				"<input type=\"text\" class=\"bginput\" name=\"grouporder[$group[projectversiongroupid]]\" value=\"$group[displayorder]\" tabindex=\"1\" size=\"3\" />",
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="normal smallfont">' .
 					construct_link_code($vbphrase['edit'], 'projectversion.php?do=groupedit&amp;projectversiongroupid=' . $group['projectversiongroupid']) .
@@ -777,7 +827,7 @@ if ($_REQUEST['do'] == 'list')
 				foreach ($versions["$group[projectversiongroupid]"] AS $version)
 				{
 					print_cells_row(array(
-						$version['versionname'],
+						$vbphrase['version' . $version['projectversionid'] . ''],
 						"<input type=\"text\" class=\"bginput\" name=\"versionorder[$version[projectversionid]]\" value=\"$version[displayorder]\" tabindex=\"1\" size=\"3\" />",
 						'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
 							construct_link_code($vbphrase['edit'], 'projectversion.php?do=edit&amp;projectversionid=' . $version['projectversionid']) .
