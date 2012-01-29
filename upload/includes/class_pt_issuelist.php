@@ -300,7 +300,7 @@ class vB_Pt_IssueList
 				SELECT
 					" . ($this->calc_total_rows ? "SQL_CALC_FOUND_ROWS" : '') . "
 					issue.*, issuedeletionlog.reason AS deletionreason
-					" . ($this->registry->pt_versions ? ", appliesversion.versionname AS appliesversion, addressedversion.versionname AS addressedversion" : '') . "
+					" . ($this->registry->pt_versions ? ", appliesversion.projectversionid AS appliesversion, addressedversion.projectversionid AS addressedversion" : '') . "
 					" . ($this->registry->userinfo['userid'] ? ", issuesubscribe.subscribetype, IF(issueassign.issueid IS NULL, 0, 1) AS isassigned" : '') . "
 					" . ($marking ? ", issueread.readtime AS issueread, projectread.readtime AS projectread" : '') . "
 					" . ($private_lastpost_fields ? ", $private_lastpost_fields" : '') . "
