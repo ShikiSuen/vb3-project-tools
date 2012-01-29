@@ -234,6 +234,10 @@ if ($_POST['do'] == 'update')
 		}
 	}
 
+	// Rebuild language
+	require_once(DIR . '/includes/adminfunctions_language.php');
+	build_language();
+
 	build_version_cache();
 
 	define('CP_REDIRECT', 'projectversion.php?do=list&projectid=' . $projectversiongroup['projectid']);
@@ -294,14 +298,16 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 	if ($projectversion['projectversionid'])
 	{
 		print_table_header(construct_phrase($vbphrase['edit_project_version'], $projectversion['versionname']));
+		print_label_row($vbphrase['version_group'], $vbphrase['versiongroup' . $projectversiongroup['projectversiongroupid'] . '']);
+		print_input_row($vbphrase['title'] . '<dfn>' . construct_link_code($vbphrase['translations'], 'phrase.php?' . $vbulletin->session->vars['sessionurl'] . 'do=edit&amp;fieldname=projecttools&amp;t=1&amp;varname=version' . $projectversion['projectversionid'], true) . '</dfn>', 'versionname', $vbphrase['version'. $projectversion['projectversionid'] . ''], false);
 	}
 	else
 	{
 		print_table_header($vbphrase['add_project_version']);
+		print_label_row($vbphrase['version_group'], $vbphrase['versiongroup' . $projectversiongroup['projectversiongroupid'] . '']);
+		print_input_row($vbphrase['title'], 'versionname', $vbphrase['version'. $projectversion['projectversionid'] . ''], false);
 	}
 
-	print_label_row($vbphrase['version_group'], $projectversiongroup['groupname']);
-	print_input_row($vbphrase['title'], 'versionname', $vbphrase['version'. $projectversion['versionname'] . ''], false);
 	print_input_row($vbphrase['display_order'] . '<dfn>' . $vbphrase['note_a_larger_value_will_be_displayed_first'] . '</dfn>', 'displayorder', $projectversion['displayorder'], true, 5);
 	print_yes_no_row($vbphrase['default_value'], 'default', $projectversion['defaultvalue']);
 
@@ -377,6 +383,10 @@ if ($_POST['do'] == 'kill')
 			WHERE addressedversionid = " . $projectversion['projectversionid'] . "
 		");
 	}
+
+	// Rebuild language
+	require_once(DIR . '/includes/adminfunctions_language.php');
+	build_language();
 
 	build_version_cache();
 
@@ -524,6 +534,10 @@ if ($_POST['do'] == 'groupupdate')
 
 	}
 
+	// Rebuild language
+	require_once(DIR . '/includes/adminfunctions_language.php');
+	build_language();
+
 	build_version_cache();
 
 	define('CP_REDIRECT', 'projectversion.php?do=list&projectid=' . $project['projectid']);
@@ -569,13 +583,14 @@ if ($_REQUEST['do'] == 'groupadd' OR $_REQUEST['do'] == 'groupedit')
 	if ($projectversiongroup['projectversiongroupid'])
 	{
 		print_table_header(construct_phrase($vbphrase['edit_project_version_group'], $projectversiongroup['groupname']));
+		print_input_row($vbphrase['title'] . '<dfn>' . construct_link_code($vbphrase['translations'], 'phrase.php?' . $vbulletin->session->vars['sessionurl'] . 'do=edit&amp;fieldname=projecttools&amp;t=1&amp;varname=versiongroup' . $projectversiongroup['projectversiongroupid'], true) . '</dfn>', 'groupname', $vbphrase['versiongroup' . $projectversiongroup['projectversiongroupid'] . ''], false);
 	}
 	else
 	{
 		print_table_header($vbphrase['add_project_version_group']);
+		print_input_row($vbphrase['title'], 'groupname', $vbphrase['versiongroup' . $projectversiongroup['projectversiongroupid'] . ''], false);
 	}
 
-	print_input_row($vbphrase['title'], 'groupname', $vbphrase['versiongroup' . $projectversiongroup['projectversiongroupid'] . ''], false);
 	print_input_row($vbphrase['display_order'] . '<dfn>' . $vbphrase['note_a_larger_value_will_be_displayed_first'] . '</dfn>', 'displayorder', $projectversiongroup['displayorder'], true, 5);
 	construct_hidden_code('projectid', $project['projectid']);
 	construct_hidden_code('projectversiongroupid', $projectversiongroup['projectversiongroupid']);
