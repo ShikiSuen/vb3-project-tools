@@ -258,8 +258,8 @@ function fetch_issue_info($issueid, $extra_info = array())
 
 	if (!$version_join)
 	{
-		$issue['appliesversion'] = ($issue['appliesversionid'] ? $vbphrase['version' . $vbulletin->pt_versions["$issue[appliesversionid]"]['projectversionid'] . ''] : '');
-		$issue['addressedversion'] = ($issue['addressedversionid'] ? $vbphrase['version' . $vbulletin->pt_versions["$issue[addressedversionid]"]['projectversionid'] . ''] : '');
+		$issue['appliesversion'] = ($issue['appliesversionid'] ? $issue['appliesversionid'] : '');
+		$issue['addressedversion'] = ($issue['addressedversionid'] ? $issue['addressedversionid'] : '');
 	}
 
 	if (!$browsing_user_joins)
@@ -506,6 +506,10 @@ function fetch_issue_version_text($issue)
 	{
 		$issue['appliesversion'] = $vbphrase['unknown'];
 	}
+	else
+	{
+		$issue['appliesversion'] = $vbphrase['version' . $issue['appliesversion'] . ''];
+	}
 
 	if (!$issue['isaddressed'])
 	{
@@ -514,6 +518,10 @@ function fetch_issue_version_text($issue)
 	else if ($issue['addressedversionid'] == 0)
 	{
 		$issue['addressedversion'] = $vbphrase['next_release'];
+	}
+	else
+	{
+		$issue['addressedversion'] = $vbphrase['version' . $issue['addressedversion'] . ''];
 	}
 
 	return $issue;

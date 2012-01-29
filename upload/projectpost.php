@@ -2121,7 +2121,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	$version_groups = array();
 
 	$version_query = $db->query_read("
-		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
+		SELECT projectversion.projectversionid, projectversiongroup.projectversiongroupid
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
 		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
 			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
@@ -2131,7 +2131,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 
 	while ($version = $db->fetch_array($version_query))
 	{
-		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
+		$version_groups["$version[projectversiongroupid]"]["$version[projectversionid]"] = $version['projectversionid'];
 	}
 
 	$applies_versions = array();
@@ -2146,7 +2146,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 
 		foreach ($versions AS $optionvalue => $optiontitle)
 		{
-			$option['title'] = $optiontitle;
+			$option['title'] = $vbphrase['version' . $optiontitle . ''];
 			$option['value'] = $optionvalue;
 			$option['selected'] = ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : '');
 
@@ -2158,7 +2158,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		}
 
 		$optiongroup['group'] = $group_applies;
-		$optiongroup['label'] = $optgroup_label;
+		$optiongroup['label'] = $vbphrase['versiongroup' . $optgroup_label . ''];
 
 		if (!in_array($project['requireappliesversion'], array(0, 1)))
 		{

@@ -138,7 +138,7 @@ function fetch_pt_search_versions(&$appliesversion_options, &$addressedversion_o
 	$version_groups = array();
 	$version_group_names = array();
 	$version_query = $db->query_read("
-		SELECT projectversiongroup.projectversiongroupid, projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname,
+		SELECT projectversiongroup.projectversiongroupid, projectversion.projectversionid,
 			project.title_clean, project.projectid
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
 		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
@@ -149,8 +149,8 @@ function fetch_pt_search_versions(&$appliesversion_options, &$addressedversion_o
 	");
 	while ($version = $db->fetch_array($version_query))
 	{
-		$version_groups["$version[projectid]"]["$version[projectversiongroupid]"]["$version[projectversionid]"] = $version['versionname'];
-		$version_group_names["$version[projectversiongroupid]"] = $version['groupname'];
+		$version_groups["$version[projectid]"]["$version[projectversiongroupid]"]["$version[projectversionid]"] = $vbphrase['version' . $version['projectversionid'] . ''];
+		$version_group_names["$version[projectversiongroupid]"] = $vbphrase['versiongroup' . $version['projectversiongroupid'] . ''];
 	}
 
 	$appliesversion_options = '';

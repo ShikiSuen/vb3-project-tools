@@ -369,7 +369,7 @@ foreach ($vbulletin->pt_versions AS $version)
 $appliesversion_options = array();
 $appliesversion_printable = ($vbulletin->GPC['appliesversionid'] == -1 ? $vbphrase['unknown'] : '');
 $version_groups = $db->query_read("
-	SELECT projectversiongroup.projectversiongroupid, projectversiongroup.groupname
+	SELECT projectversiongroup.projectversiongroupid
 	FROM " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup
 	WHERE projectversiongroup.projectid = $project[projectid]
 	ORDER BY projectversiongroup.displayorder DESC
@@ -380,12 +380,12 @@ while ($version_group = $db->fetch_array($version_groups))
 	$option = array();
 
 	$option['value'] = 'g' . $version_group['projectversiongroupid'];
-	$option['title'] = $version_group['groupname'];
+	$option['title'] = $vbphrase['versiongroup' . $version_group['projectversiongroupid'] . ''];
 	$option['selected'] = ($option['value'] == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
 
 	if ($optionselected)
 	{
-		$appliesversion_printable = $version_group['groupname'];
+		$appliesversion_printable = $vbphrase['versiongroup' . $version_group['projectversiongroupid'] . ''];
 	}
 
 	$appliesversion_options[] = $option;
@@ -400,12 +400,12 @@ while ($version_group = $db->fetch_array($version_groups))
 		$option = array();
 
 		$option['value'] = 'v' . $version['projectversionid'];
-		$option['title'] = '-- ' . $version['versionname'];
+		$option['title'] = '-- ' . $vbphrase['version' . $version['projectversionid']. ''];
 		$option['selected'] = ($option['value'] == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
 
 		if ($optionselected)
 		{
-			$appliesversion_printable = $version['versionname'];
+			$appliesversion_printable = $vbphrase['version' . $version['projectversionid']. ''];
 		}
 
 		$appliesversion_options[] = $option;
