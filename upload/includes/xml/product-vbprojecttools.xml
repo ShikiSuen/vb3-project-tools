@@ -1858,8 +1858,14 @@ foreach ($project_array AS $projects)
 || ############################## ||
 \*================================*/
 
+// Hide errors if column is already present
+$db->hide_errors();
+
 // Add field for 'PT color titles by status' feature
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_issuestatus ADD statuscolor2 VARCHAR(20) NOT NULL");
+
+// Show future errors now
+$db->show_errors();
 
 /*================================*\
 || ############################## ||
@@ -2008,7 +2014,7 @@ $issueidlist = $db->query_read("
 while ($issue = $db->fetch_array($issueidlist))
 {
 	$db->query_write("
-		INSERT INTO " . TABLE_PREFIX . "pt_issuemagicselect
+		INSERT IGNORE INTO " . TABLE_PREFIX . "pt_issuemagicselect
 			(issueid)
 		VALUES
 			(" . $issue['issueid'] . ")
@@ -4004,7 +4010,7 @@ legend {
 		</div>
 	</div>
 </form>]]></template>
-		<template name="pt_forumbit_project" templatetype="template" date="1309716073" username="Pitchoune" version="2.2.0"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
+		<template name="pt_forumbit_project" templatetype="template" date="1328984029" username="Pitchoune" version="2.2.0"><![CDATA[<li id="project_statusicon_{vb:raw project.projectid}" class="forumbit_post L2">
 	<div class="forumrow table">
         <div class="foruminfo td">
 		<img id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" />
