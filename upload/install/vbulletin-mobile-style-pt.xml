@@ -2,16 +2,17 @@
 
 <style name="Mobile Style" vbversion="2.2.0" product="vbprojecttools" type="custom">
 	<templategroup name="Project Tools">
-		<template name="pt_forumbit_project" templatetype="template" date="1318288513" username="Pitchoune" version="2.2.0"><![CDATA[<li class="forumbit_post L2">
-	<img id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon ui-li-icon" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>_16.png" alt="" border="0" />
+		<template name="pt_forumbit_project" templatetype="template" date="1328992526" username="Pitchoune" version="2.2.0"><![CDATA[<li class="forumbit_post L2">
+	<img src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>_16.png" id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon ui-li-icon" alt="" />
 	<vb:if condition="$project['forumtitle']">
 		<h3><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.forumtitle}</a></h3>
 	<vb:else />
-		<h3><span style="vertical-align: middle; margin-bottom: 7px; display: inline-block">{vb:rawphrase project}</span> <a href="{vb:link project, {vb:raw project}}"><strong>{vb:raw project.title}</strong></a></h3>
+		<h3><a href="{vb:link project, {vb:raw project}}">{vb:rawphrase project}: {vb:raw project.title}</a></h3>
 	</vb:if>
 	<vb:if condition="$project['summary']"><p>{vb:raw project.summary}</p></vb:if>
+	<span class="ui-li-count">{vb:raw project.counter}</span>
 </li>]]></template>
-		<template name="pt_issue" templatetype="template" date="1318771343" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1328992540" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -31,66 +32,69 @@
 
 <div data-role="content">
 	<a href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}" rel="nofollow" class="newreplylink" id="newreplylink" data-role="button" data-icon="plus" data-inline="true"><vb:if condition="$show['issue_closed']">{vb:rawphrase closed}<vb:else />{vb:rawphrase reply}</vb:if></a>
+	<h2>{vb:rawphrase issue_details}</h2>
+	<ul data-role="listview">
+		<li class="ui-body-c">
+			{vb:rawphrase issue_number}
+			<span class="ui-li-count">{vb:raw issue.issueid}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase issue_type}
+			<span class="ui-li-count">{vb:raw issue.issuetype}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase project}
+			<span class="ui-li-count">{vb:raw project.title_clean}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase category}
+			<span class="ui-li-count">{vb:raw issue.categorytitle}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase status}
+			<span class="ui-li-count">{vb:raw issue.status}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase priority}
+			<span class="ui-li-count">{vb:raw issue.priority_text}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase applies_version_issuetype}
+			<span class="ui-li-count">{vb:raw issue.appliesversion}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase addressed_version_issuetype}
+			<span class="ui-li-count">{vb:raw issue.addressedversion}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase milestone}
+			<span class="ui-li-count"><vb:if condition="$issue['milestonetitle']">{vb:raw issue.milestonetitle}<vb:else />{vb:rawphrase none}</vb:if></span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase vote_count_positive_issuetype}
+			<span class="ui-li-count">{vb:raw issue.votepositive}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase vote_count_negative_issuetype}
+			<span class="ui-li-count">{vb:raw issue.votenegative}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase attachments}
+			<span class="ui-li-count">{vb:raw issue.attachcount}</span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase assigned_users}
+			<span class="ui-li-count"><vb:if condition="$assignments">{vb:raw assignments}<vb:else />{vb:rawphrase none_meta}</vb:if></span>
+		</li>
+		<li class="ui-body-c">
+			{vb:rawphrase tags}
+			<span class="ui-li-count"><vb:if condition="$tags">{vb:raw tags}<vb:else />{vb:rawphrase none_meta}</vb:if></span>
+		</li>
+	</ul>
 
-	<div class="ui-bar ui-bar-b" style="margin: 5px -15px 0">
-		<h3>{vb:rawphrase issue_details}</h3>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase issue_number}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.issueid}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase issue_type}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.issuetype}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase project}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw project.title_clean}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase category}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.categorytitle}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase status}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.status}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase priority}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.priority_text}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase applies_version_issuetype}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.appliesversion}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase addressed_version_issuetype}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.addressedversion}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase milestone}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e"><vb:if condition="$issue['milestonetitle']">{vb:raw issue.milestonetitle}<vb:else />{vb:rawphrase none}</vb:if></div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase vote_count_positive_issuetype}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.votepositive}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase vote_count_negative_issuetype}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.votenegative}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase attachments}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e">{vb:raw issue.attachcount}</div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase assigned_users}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e"><vb:if condition="$assignments">{vb:raw assignments}<vb:else />{vb:rawphrase none_meta}</vb:if></div></div>
-	</div>
-	<div class="ui-grid-a" style="margin: 0px -15px">
-		<div class="ui-block-a"><div class="ui-bar ui-bar-e"><strong>{vb:rawphrase tags}</strong></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-e"><vb:if condition="$tags">{vb:raw tags}<vb:else />{vb:rawphrase none_meta}</vb:if></div></div>
-	</div>
+	<br />
+
+	<h2>{vb:raw issue.title}</h2>
 
 	<div id="postlist">
 		{vb:raw pagenav}
@@ -2308,7 +2312,5 @@ ul.forumbits .ui-li .ui-btn-text a.pt_mobile_subforum {
 	<stylevardfns>
 	</stylevardfns>
 	<stylevars>
-		<stylevar name="htmldoctype" value="YToxOntzOjY6InN0cmluZyI7czoxNToiPCFET0NUWVBFIGh0bWw+Ijt9" />
-		<stylevar name="titleimage" value="YToxOntzOjM6InVybCI7czozMjoiaW1hZ2VzL21vYmlsZS92YnVsbGV0aW4tbG9nby5wbmciO30=" />
 	</stylevars>
 </style>
