@@ -590,7 +590,6 @@ if ($_POST['do'] == 'update')
 		'description' => TYPE_STR,
 		'startstatus' => TYPE_ARRAY_UINT,
 		'permissionbase' => TYPE_UINT,
-		'options' => TYPE_ARRAY_UINT,
 		'afterforumids' => TYPE_ARRAY_UINT,
 		'forumtitle' => TYPE_STR,
 		'requireappliesversion' => TYPE_UINT,
@@ -637,18 +636,6 @@ if ($_POST['do'] == 'update')
 	$projectdata->set('description', $vbulletin->GPC['description']);
 	$projectdata->set('afterforumids', implode(',', $vbulletin->GPC['afterforumids']));
 	$projectdata->set('forumtitle', $vbulletin->GPC['forumtitle']);
-
-	$options = 0;
-
-	foreach ($vbulletin->GPC['options'] AS $bitname => $bitvalue)
-	{
-		if ($bitvalue > 0)
-		{
-			$options += $vbulletin->bf_misc['pt_projectoptions']["$bitname"];
-		}
-	}
-
-	$projectdata->set('options', $options);
 	$projectdata->set('requireappliesversion', $vbulletin->GPC['requireappliesversion']);
 	$projectdata->set('requirecategory', $vbulletin->GPC['requirecategory']);
 	$projectdata->set('requirepriority', $vbulletin->GPC['requirepriority']);
