@@ -40,6 +40,7 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 		'summary'				=> array(TYPE_STR, REQ_NO),
 		'summary_clean'			=> array(TYPE_NOHTMLCOND, REQ_AUTO),
 		'description'			=> array(TYPE_STR, REQ_NO),
+		'options'				=> array(TYPE_UINT, REQ_NO), 
 		'requireappliesversion'	=> array(TYPE_UINT, REQ_NO),
 		'requirecategory'		=> array(TYPE_UINT, REQ_NO),
 		'requirepriority'		=> array(TYPE_UINT, REQ_NO),
