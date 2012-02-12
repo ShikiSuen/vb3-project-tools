@@ -2534,7 +2534,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1327458156" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1329084663" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3160,10 +3160,16 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issue_content .issuefoot .textcontrols span.separator {
-	border-right: {vb:stylevar postfoot_separator_width} solid {vb:stylevar postfoot_separator_color};
-	display: inline;
-	width: {vb:stylevar postfoot_separator_width};
-	margin: 0 5px;
+	<vb:if condition="$vbulletin->options['simpleversion'] <= '419'">
+		border-right: {vb:stylevar postfoot_separator_width} solid {vb:stylevar postfoot_separator_color};
+		display: inline;
+		width: {vb:stylevar postfoot_separator_width};
+		margin: 0 5px;
+	<vb:else />
+		border-right: {vb:stylevar postbit_foot_separator};
+		display: inline;
+		margin: 0 5px;
+	</vb:if>
 }
 
 .pt_issue_content .issuefoot .textcontrols a.editissue {
@@ -3309,10 +3315,16 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issue_note .issuefoot .textcontrols span.separator {
-	border-right: {vb:stylevar postfoot_separator_width} solid {vb:stylevar postfoot_separator_color};
-	display: inline;
-	width: {vb:stylevar postfoot_separator_width};
-	margin: 0 5px;
+	<vb:if condition="$vbulletin->options['simpleversion'] <= '419'">
+		border-right: {vb:stylevar postfoot_separator_width} solid {vb:stylevar postfoot_separator_color};
+		display: inline;
+		width: {vb:stylevar postfoot_separator_width};
+		margin: 0 5px;
+	<vb:else />
+		border-right: {vb:stylevar postbit_foot_separator};
+		display: inline;
+		margin: 0 5px;
+	</vb:if>
 }
 
 .pt_issue_note .issuefoot .textcontrols a {
