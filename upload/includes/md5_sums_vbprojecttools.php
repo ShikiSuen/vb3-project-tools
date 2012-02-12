@@ -17,7 +17,6 @@ $md5_sums = array(
 	),
 	'/admincp' => array(
 		'project.php' => '03543703fd5a3be2eac696e6b12d6989',
-		'projectattachment.php' => '6a18edbba06ee47fe6996355333087f9',
 		'projectcategory.php' => 'cedda84dbe9bd998e4d65ef878b451d1',
 		'projectcounters.php' => '22afb90a81f3186b7bb0d5d88432b5a0',
 		'projectmagicselect.php' => '01ed6d7ed84a5f53e712d7737780c729',
