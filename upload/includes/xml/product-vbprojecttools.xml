@@ -2534,7 +2534,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1329084663" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1329086036" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3750,9 +3750,7 @@ div.checkbox_multiselect {
 }
 
 .pt_project .actionbuttons .group {
-	padding-top: 10px;
-	padding-bottom: 5px;
-	padding-{vb:stylevar right}: 0px;
+	padding: 10px 0 5px 0;
 }
 
 .pagination span.prev_next a, .pagination span.first_last a {
@@ -7623,7 +7621,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1329083370" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1329085948" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7654,6 +7652,8 @@ init_project_readmarker_system();
 	<h1><vb:if condition="$issue['issueid']">{vb:rawphrase edit_issue}<vb:else />{vb:rawphrase post_new_issue}</vb:if></h1>
 	<p class="description">{vb:rawphrase issue_type}: <a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issue.issuetypeid}">{vb:raw issuetype_printable}</a> | {vb:rawphrase project}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a></p>
 </div>
+
+<br />
 
 <form class="vbform block" action="projectpost.php?{vb:raw session.sessionurl}do=postissue" method="post" name="vbform" onsubmit="return vB_Editor['{vb:raw editorid}'].prepare_submit(0, 0);">
 
@@ -8198,7 +8198,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1309815383" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postreply" templatetype="template" date="1329085817" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8228,6 +8228,8 @@ init_project_readmarker_system();
 	<h1><vb:if condition="$show['editnote']">{vb:rawphrase edit_reply_to_issue_x}<vb:else />{vb:rawphrase reply_to_issue_x}</vb:if></h1>
 	<p class="description">{vb:rawphrase issue_type}: <a href="project.php?{vb:raw session.sessionurl}do=issuelist&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw issue.issuetypeid}">{vb:raw issue.issuetype}</a> | {vb:rawphrase project}: <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title_clean}</a></p>
 </div>
+
+<br />
 
 <form class="vbform block" action="projectpost.php?{vb:raw session.sessionurl}do=postreply&amp;issueid={vb:raw issue.issueid}" method="post" name="vbform" onsubmit="return vB_Editor['{vb:raw editorid}'].prepare_submit(0, 0);">
 
