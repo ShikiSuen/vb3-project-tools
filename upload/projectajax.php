@@ -370,11 +370,40 @@ if ($_POST['do'] == 'save')
 			break;
 		default:
 			// Magic Select
-			$db->query_write("
-				UPDATE " . TABLE_PREFIX . "pt_issuemagicselect SET
-					magicselect" . $vbulletin->GPC['field'] . " = " . $vbulletin->GPC['value'] . "
-				WHERE issueid = " . $issue['issueid'] . "
+			// Select all existing magic select and make a simple array
+			$ms_all = $db->query_read("
+				SELECT projectmagicselectgroupid
+				FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
+				ORDER BY projectmagicselectgroupid ASC
 			");
+
+			while ($msgroupid = $db->fetch_array($ms_all))
+			{
+				if ($msgroupid['projectmagicselectgroupid'] == $vbulletin->GPC['field'])
+				{
+					$ms_result = $db->query_first("
+						SELECT issueid, magicselect" . $vbulletin->GPC['field'] . "
+						FROM " . TABLE_PREFIX . "pt_issuemagicselect
+						WHERE issueid = " . $vbulletin->GPC['issueid'] . "
+					");
+
+					$magicselect =& datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_SILENT, 'pt_magicselect');
+
+					if ($ms_result)
+					{
+						$magicselect->set_existing($ms_result);
+					}
+					else
+					{
+						$magicselect->set('issueid', $issue['issueid']);
+					}
+					$magicselect->set('magicselect' . $vbulletin->GPC['field'], $vbulletin->GPC['value']);
+					$magicselect->set('fieldid', $vbulletin->GPC['field']); // Required to track changes
+					$magicselect->set('valueid', $vbulletin->GPC['value']); // Required to track changes
+					$magicselect->save();
+				}
+			}
+
 			break;
 	}
 

@@ -17,7 +17,7 @@ if (!class_exists('vB_DataManager'))
 }
 
 /**
-* Class to do data save/delete operations for PT issue assignments.
+* Class to do data save/delete operations for PT Magic Select Management - AdminCP
 *
 * @package 		vBulletin Project Tools
 * @author		$Author$
@@ -132,7 +132,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 					0,
 					'projecttools',
 					'magicselect" . $this->fetch_field('projectmagicselectid') . "',
-					'" . $db->escape_string($this->info['text']) . "',
+					'" . $db->escape_string($this->info['title']) . "',
 					'vbprojecttools',
 					'" . $db->escape_string($this->registry->userinfo['username']) . "',
 					" . TIMENOW . ",
@@ -175,6 +175,16 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	}
 }
 
+/**
+* Class to do data save/delete operations for PT Magic Select Use - Front-end
+*
+* @package 		vBulletin Project Tools
+* @author		$Author$
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
+
 class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 {
 	/**
@@ -183,7 +193,9 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 	* @var	array
 	*/
 	var $validfields = array(
-		'issueid'		=> array(TYPE_UINT,		REQ_YES),
+		'issueid'		=> array(TYPE_UINT,		REQ_NO),
+		'fieldid'		=> array(TYPE_UINT,		REQ_NO),
+		'valueid'		=> array(TYPE_UINT,		REQ_NO),
 	);
 
 	/**
@@ -246,6 +258,14 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 			return $this->presave_called;
 		}
 
+		// Needed to track changes
+		$this->fieldid = $this->fetch_field('fieldid');
+		$this->valueid = $this->fetch_field('valueid');
+
+		// Remove 'fieldid' & 'valueid' from $this->info aka $this->pt_issuemagicselect as their values are
+		// in others variables, avoiding database errors
+		$this->pt_issuemagicselect = array_splice($this->pt_issuemagicselect, 0, 1);
+
 		$return_value = true;
 		($hook = vBulletinHook::fetch_hook('pt_issue_magicselect_presave')) ? eval($hook) : false;
 
@@ -263,6 +283,32 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 	{
 		// create automatically the corresponding column in pt_issue table
 		$db =& $this->registry->db;
+
+		// insert issue change
+		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change->set('issueid', $this->fetch_field('issueid'));
+		$change->set('userid', $this->registry->userinfo['userid']);
+		$change->set('field', 'magicselect' . $this->fieldid);
+		$change->set('newvalue', $this->valueid);
+
+		// Select the old value
+		$oldvalue = $db->query_first("
+			SELECT newvalue
+			FROM " . TABLE_PREFIX . "pt_issuechange
+			WHERE issueid = " . $this->fetch_field('issueid') . "
+				AND field = 'magicselect" . $this->fieldid . "'
+		");
+
+		if (!empty($oldvalue))
+		{
+			$change->set('oldvalue', $oldvalue['newvalue']);
+		}
+		else
+		{
+			$change->set('oldvalue', 0);
+		}
+
+		$change->save();
 
 		($hook = vBulletinHook::fetch_hook('pt_issue_magicselect_postsave')) ? eval($hook) : false;
 

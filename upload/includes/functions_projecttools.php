@@ -618,14 +618,14 @@ function translate_system_note($data)
 			case 'addressedversionid':
 				$entry['oldvalue'] = $vbphrase['version' . $vbulletin->pt_versions["$entry[oldvalue]"]['projectversionid'] . ''];
 
-				if (empty($entry['oldvalue']))
+				if ($entry['oldvalue'] == $vbphrase['version'])
 				{
 					$entry['oldvalue'] = $vbphrase['unknown'];
 				}
 
 				$entry['newvalue'] = $vbphrase['version' . $vbulletin->pt_versions["$entry[newvalue]"]['projectversionid'] . ''];
 
-				if (empty($entry['newvalue']))
+				if ($entry['newvalue'] == $vbphrase['version'])
 				{
 					$entry['newvalue'] = $vbphrase['unknown'];
 				}
@@ -634,14 +634,14 @@ function translate_system_note($data)
 			case 'projectcategoryid':
 				$entry['oldvalue'] = $vbphrase['category' . $vbulletin->pt_categories["$entry[oldvalue]"]['projectcategoryid'] . ''];
 
-				if (empty($entry['oldvalue']))
+				if ($entry['oldvalue'] == $vbphrase['category'])
 				{
 					$entry['oldvalue'] = $vbphrase['unknown'];
 				}
 
 				$entry['newvalue'] = $vbphrase['category' . $vbulletin->pt_categories["$entry[newvalue]"]['projectcategoryid'] . ''];
 
-				if (empty($entry['newvalue']))
+				if ($entry['newvalue'] == $vbphrase['category'])
 				{
 					$entry['newvalue'] = $vbphrase['unknown'];
 				}
@@ -667,36 +667,26 @@ function translate_system_note($data)
 			default:
 				$mslist = array();
 
-				$magicselects = $vbulletin->db->query_read("
-					SELECT varname, htmlcode
-					FROM " . TABLE_PREFIX . "pt_magicselect
-					WHERE varname = '" . $entry['field'] . "'
-				");
+				$checkmagicselect = $entry['field'];
 
-				while ($magicselect = $vbulletin->db->fetch_array($magicselects))
+				if (substr($checkmagicselect, 0, 11) == 'magicselect' AND strlen($checkmagicselect) >= 11)
 				{
-					$mslist[$magicselect['varname']] = $magicselect['htmlcode'];
-				}
+					$fieldid = substr($entry['field'], 11);
 
-				foreach ($mslist AS $varname => $htmlcode)
-				{
-					// I don't have an other choice -_-
-					eval($htmlcode);
+					$fieldname = $vbphrase['magicselectgroup' . $fieldid . ''];
 
-					$selectedold = '';
-					$selectednew = '';
+					$entry['oldvalue'] = $vbphrase['magicselect' . $entry['oldvalue']];
 
-					foreach ($arrayoutput AS $id => $text)
+					if ($entry['oldvalue'] == $vbphrase['magicselect'] OR $entry['oldvalue'] == $vbphrase['magicselect0'])
 					{
-						if ($id == $entry['oldvalue'])
-						{
-							$entry['oldvalue'] = $text;
-						}
+						$entry['oldvalue'] = $vbphrase['unknown'];
+					}
 
-						if ($id == $entry['newvalue'])
-						{
-							$entry['newvalue'] = $text;
-						}
+					$entry['newvalue'] = $vbphrase['magicselect' . $entry['newvalue']];
+
+					if ($entry['newvalue'] == $vbphrase['magicselect'] OR $entry['newvalue'] == $vbphrase['magicselect0'])
+					{
+						$entry['newvalue'] = $vbphrase['unknown'];
 					}
 				}
 
