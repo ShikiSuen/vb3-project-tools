@@ -4599,7 +4599,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1316969323" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1329468081" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4976,7 +4976,9 @@ legend {
 						<label class="smallfont">{vb:rawphrase petition_for_status_change_to}
 							<select name="petitionstatusid">
 								<option value="0">{vb:rawphrase none_meta}</option>
-								{vb:raw petition_options}
+								<vb:each from="petition_options" value="option">
+									<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+								</vb:each>
 							</select>
 						</label>
 					</div>

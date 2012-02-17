@@ -141,7 +141,7 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1318764549" username="Pitchoune" version="2.2.0"><![CDATA[<li id="thread_{vb:raw issue.issueid}" class="threadbit dot ui-li-has-icon">
+		<template name="pt_issuebit" templatetype="template" date="1329167861" username="Pitchoune" version="2.2.0"><![CDATA[<li id="thread_{vb:raw issue.issueid}" class="threadbit dot ui-li-has-icon">
 	<div class="ui-li-icon" style="margin-top: 6px">
 	<vb:if condition="$issue['typeicon']">
 		<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -171,7 +171,7 @@
 	</h3>
 	<p>{vb:rawphrase last_post_by} {vb:raw memberaction_dropdown} <span class="time">{vb:raw issue.lastposttime}</span></p>
 	<span class="ui-li-count">{vb:raw issue.replycount}</span>
-	<a href="{vb:link issue, {vb:raw issue}, {vb:raw issue.pageinfo_newpost}}" id="thread_gotonew_{vb:raw issue.issueid}" class="splitlink" title="{vb:rawphrase go_to_first_new_post}"> </a>
+	<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew" id="thread_gotonew_{vb:raw issue.issueid}" class="splitlink" alt="{vb:rawphrase go_to_first_new_post}"> </a>
 </li>]]></template>
 		<template name="pt_issuelist" templatetype="template" date="1318770875" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
@@ -225,8 +225,9 @@
 </body>
 </html>]]></template>
 		<template name="pt_issuenotebit_system" templatetype="template" date="1318765899" username="Pitchoune" version="2.2.0" />
-		<template name="pt_issuenotebit_user" templatetype="template" date="1315062525" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
-<li class="postbit postbitim postcontainer" id="issue_{vb:raw note.issuenoteid}">
+		<template name="pt_issuenotebit_user" templatetype="template" date="1329168215" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+<a name="note{vb:raw note.issuenoteid}"></a>
+<li class="postbit postbitim postcontainer" id="issuenote_{vb:raw note.issuenoteid}">
 	<div class="posthead ui-bar-c">
 		<a class="postuseravatarlink" href="{vb:link member, {vb:raw note}}" title="{vb:rawphrase {vb:raw note.onlinestatusphrase}, {vb:raw note.username}}">
 			<p>
