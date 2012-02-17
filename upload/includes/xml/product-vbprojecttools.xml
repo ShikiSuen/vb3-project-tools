@@ -5541,7 +5541,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </body>
 </html>]]></template>
 		<template name="pt_issuelist_arrow" templatetype="template" date="1294664144" username="Pitchoune" version="2.2.0"><![CDATA[<img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" />]]></template>
-		<template name="pt_issuenotebit_petition" templatetype="template" date="1297291048" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_petition" templatetype="template" date="1329468894" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="blockhead">
 		<div style="float:{vb:stylevar right}" class="smallfont">
@@ -5558,11 +5558,11 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 					<a class="bigtext" href="{vb:link member, {vb:raw note}}">{vb:raw note.musername}</a>
 					<vb:if condition="$show['onlinestatus']">
 						<vb:if condition="$note['onlinestatus'] == 0">
-							<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw note.username}}" border="0" />
+							<img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-offline.png" alt="{vb:rawphrase x_is_offline, {vb:raw note.username}}" border="0" />
 						<vb:elseif condition="$note['onlinestatus'] == 1" />
-							<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw note.username}}" border="0" />
+							<img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-online.png" alt="{vb:rawphrase x_is_online_now, {vb:raw note.username}}" border="0" />
 						<vb:elseif condition="$note['onlinestatus'] == 2" />
-							<img class="inlineimg" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw note.username}}" border="0" />
+							<img class="inlineimg onlinestatus" src="{vb:stylevar imgdir_statusicon}/user-invisible.png" alt="{vb:rawphrase x_is_invisible, {vb:raw note.username}}" border="0" />
 						</vb:if>
 					</vb:if>
 				<vb:else />
