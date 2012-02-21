@@ -706,17 +706,24 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 			// Add the corresponding line in pt_issuemagicselect table
 			$issuems =& datamanager_init('Pt_Issue_MagicSelect', $this->registry, ERRTYPE_ARRAY, 'pt_magicselect');
-				$issuems->set('issueid', $this->fetch_field('issueid'));
+			$issuems->set('issueid', $this->fetch_field('issueid'));
 
-				$magicselects = $this->registry->db->query_read("
-					SELECT projectmagicselectgroupid
-					FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
-				");
+			// We need to tell the DM to not track the change
+			$issuems->set_info('create_system_note', false);
 
+			$magicselects = $this->registry->db->query_read("
+				SELECT projectmagicselectgroupid
+				FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
+				WHERE projectid = " . $this->fetch_field('projectid') . "
+			");
+
+			if ($this->registry->db->num_rows($magicselects) > 0)
+			{
 				while ($magicselect = $this->registry->db->fetch_array($magicselects))
 				{
 					$issuems->set('magicselect' . $magicselect['projectmagicselectgroupid'], $this->info[$magicselect['projectmagicselectgroupid']]);
 				}
+			}
 
 			$issuems->save();
 		}

@@ -284,31 +284,34 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 		// create automatically the corresponding column in pt_issue table
 		$db =& $this->registry->db;
 
-		// insert issue change
-		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
-		$change->set('issueid', $this->fetch_field('issueid'));
-		$change->set('userid', $this->registry->userinfo['userid']);
-		$change->set('field', 'magicselect' . $this->fieldid);
-		$change->set('newvalue', $this->valueid);
-
-		// Select the old value
-		$oldvalue = $db->query_first("
-			SELECT newvalue
-			FROM " . TABLE_PREFIX . "pt_issuechange
-			WHERE issueid = " . $this->fetch_field('issueid') . "
-				AND field = 'magicselect" . $this->fieldid . "'
-		");
-
-		if (!empty($oldvalue))
+		// insert issue change only if the issue already exists
+		if ($this->condition)
 		{
-			$change->set('oldvalue', $oldvalue['newvalue']);
-		}
-		else
-		{
-			$change->set('oldvalue', 0);
-		}
+			$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+			$change->set('issueid', $this->fetch_field('issueid'));
+			$change->set('userid', $this->registry->userinfo['userid']);
+			$change->set('field', 'magicselect' . $this->fieldid);
+			$change->set('newvalue', $this->valueid);
 
-		$change->save();
+			// Select the old value
+			$oldvalue = $db->query_first("
+				SELECT newvalue
+				FROM " . TABLE_PREFIX . "pt_issuechange
+				WHERE issueid = " . $this->fetch_field('issueid') . "
+					AND field = 'magicselect" . $this->fieldid . "'
+			");
+
+			if (!empty($oldvalue))
+			{
+				$change->set('oldvalue', $oldvalue['newvalue']);
+			}
+			else
+			{
+				$change->set('oldvalue', 0);
+			}
+
+			$change->save();
+		}
 
 		($hook = vBulletinHook::fetch_hook('pt_issue_magicselect_postsave')) ? eval($hook) : false;
 
