@@ -3578,7 +3578,7 @@ if ($_POST['do'] == 'moveissue2')
 	$version_groups = array();
 
 	$version_query = $db->query_read("
-		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
+		SELECT projectversion.projectversionid, projectversiongroup.projectversiongroupid
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
 		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
 			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
@@ -3588,7 +3588,7 @@ if ($_POST['do'] == 'moveissue2')
 
 	while ($version = $db->fetch_array($version_query))
 	{
-		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
+		$version_groups["$version[projectversiongroupid]"]["$version[projectversionid]"] = $vbphrase['version' . $version['projectversionid'] . ''];
 	}
 
 	$applies_versions = array();
@@ -3615,7 +3615,7 @@ if ($_POST['do'] == 'moveissue2')
 		}
 
 		$optiongroup['group'] = $group_applies;
-		$optiongroup['label'] = $optgroup_label;
+		$optiongroup['label'] = $vbphrase['versiongroup' . $optgroup_label . ''];
 
 		$applies_versions[] = $optiongroup;
 
