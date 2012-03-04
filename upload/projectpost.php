@@ -3745,6 +3745,7 @@ if ($_POST['do'] == 'moveissue2')
 		$templater->register('addressed_next_selected', $addressed_next_selected);
 		$templater->register('addressed_unaddressed_selected', $addressed_unaddressed_selected);
 		$templater->register('addressed_versions', $addressed_versions);
+		$templater->register('applied_tags', $applied_tags);
 		$templater->register('applies_unknown_selected', $applies_unknown_selected);
 		$templater->register('applies_versions', $applies_versions);
 		$templater->register('assign_checkbox_checked', $assign_checkbox_checked);
@@ -3761,6 +3762,7 @@ if ($_POST['do'] == 'moveissue2')
 		$templater->register('priority_options', $priority_options);
 		$templater->register('status_options', $status_options);
 		$templater->register('subscribe_selected', $subscribe_selected);
+		$templater->register('unapplied_tags', $unapplied_tags);
 		$templater->register('unassigned_users', $unassigned_users);
 	print_output($templater->render());
 
