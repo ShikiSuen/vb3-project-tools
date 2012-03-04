@@ -3712,7 +3712,7 @@ if ($_POST['do'] == 'moveissue2')
 
 	$unassigned_users = $assigned_users = $option = array();
 
-	foreach ($vbulletin->pt_assignable["$project[projectid]"]["$issue[issuetypeid]"] AS $optionvalue => $optiontitle)
+	foreach ($vbulletin->pt_assignable["$new_project[projectid]"]["$issue[issuetypeid]"] AS $optionvalue => $optiontitle)
 	{
 		$option['title'] = $optiontitle;
 		$option['value'] = $optionvalue;
