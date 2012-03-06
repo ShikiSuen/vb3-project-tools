@@ -695,6 +695,7 @@ if ($_REQUEST['do'] == 'searchresults')
 		($hook = vBulletinHook::fetch_hook('projectsearch_results_groupbit')) ? eval($hook) : false;
 
 		$templater = vB_Template::create('pt_searchresultgroupbit');
+			$templater->register('columns', $columns);
 			$templater->register('group', $group);
 			$templater->register('groupid', $groupid);
 			$templater->register('group_header', $group_header);
@@ -726,7 +727,6 @@ if ($_REQUEST['do'] == 'searchresults')
 
 	$templater = vB_Template::create('pt_searchresults');
 		$templater->register_page_templates();
-		$templater->register('columns', $columns);
 		$templater->register('navbar', $navbar);
 		$templater->register('repeat_search_link', $repeat_search_link);
 		$templater->register('resultgroupbits', $resultgroupbits);
