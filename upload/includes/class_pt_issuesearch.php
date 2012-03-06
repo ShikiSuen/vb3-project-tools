@@ -228,7 +228,7 @@ class vB_Pt_IssueSearch
 				(userid, ipaddress, criteria, sortby, sortorder, groupby, searchtime, resultcount, dateline, completed, issuereportid)
 			VALUES
 				(" . $this->registry->userinfo['userid'] . ",
-				'" . $db->escape_string(IPADDRESS) . "',
+				'" . ($this->registry->options['logip'] ? $db->escape_string(IPADDRESS) : '') . "',
 				'" . $db->escape_string(serialize($this->criteria_raw)) . "',
 				'" . $db->escape_string($this->sort_raw) . "',
 				'" . $db->escape_string($this->sortorder_raw) . "',

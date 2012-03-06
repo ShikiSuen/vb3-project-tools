@@ -210,9 +210,9 @@ if ($_REQUEST['do'] == 'viewip')
 
 	$ipaddress = ($issuenote['ipaddress'] ? htmlspecialchars_uni(long2ip($issuenote['ipaddress'])) : '');
 
-	if ($ipaddress === '')
+	if ($ipaddress === '' OR !$vbulletin->options['logip'])
 	{
-		exec_header_redirect("project.php?issueid=$issue[issueid]");
+		exec_header_redirect("issue.php?issueid=$issue[issueid]");
 	}
 
 	$hostname = htmlspecialchars_uni(gethostbyaddr($ipaddress));
@@ -354,7 +354,7 @@ if ($_POST['do'] == 'vote')
 	}
 	else
 	{
-		$votedata->set('ipaddress', ip2long(IPADDRESS));
+		$votedata->set('ipaddress', ($vbulletin->options['logip'] ? ip2long(IPADDRESS) : ''));
 	}
 
 	($hook = vBulletinHook::fetch_hook('project_vote')) ? eval($hook) : false;

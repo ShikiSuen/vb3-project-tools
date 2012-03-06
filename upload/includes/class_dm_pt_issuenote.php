@@ -114,8 +114,18 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	*/
 	function verify_ipaddress(&$ipaddress)
 	{
-		// need to run it through sprintf to get the integer representation
-		$ipaddress = sprintf('%u', ip2long($ipaddress));
+		// Log IP Address only if defined in the corresponding vB option
+		if ($this->registry->options['logip'])
+		{
+			// need to run it through sprintf to get the integer representation
+			$ipaddress = sprintf('%u', ip2long($ipaddress));
+		}
+		else
+		{
+			// Do not save IP address - define $ipaddress as an empty variable
+			$ipaddress = '';
+		}
+
 		return true;
 	}
 
