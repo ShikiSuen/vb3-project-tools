@@ -342,15 +342,26 @@ class vBCms_Widget_RecentPTComments extends vBCms_Widget
 
 			while ($issueresult = vB::$db->fetch_array($issueids))
 			{
-				$issueid = verify_issue($issueresult['issueid'], true, array('avatar', 'vote', 'milestone'));
+				$issueid = fetch_issue_info($issueresult['issueid'], array('avatar', 'vote', 'milestone'));
+
+				if (!$issueid)
+				{
+					standard_error(fetch_error('invalidid', $vbphrase['issue'], $vbulletin->options['contactuslink']));
+				}
+
+				if (verify_issue_perms($issueid, $vbulletin->userinfo) === false)
+				{
+					// If some permission is not allowed, remove the issue from the list
+					$issueresult['issueid'] == '';
+				}
 
 				$issueperms = fetch_project_permissions(vB::$vbulletin->userinfo, $project['projectid'], $issueid['issuetypeid']);
 
 				$viewable_note_types = fetch_viewable_note_types($issueperms, $private_text);
 
 				// Create code for permissions settings of the query
-				$issuelist[] = "issuenote.issueid = $issueid[issueid]
-					AND issuenote.issuenoteid <> $issueid[firstnoteid]
+				$issuelist[] = "issuenote.issueid = " . $issueid['issueid'] . "
+					AND issuenote.issuenoteid <> " . $issueid['firstnoteid'] . "
 					AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)";
 			}
 		}
