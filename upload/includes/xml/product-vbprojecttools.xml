@@ -2534,7 +2534,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1329086036" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1331070507" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2887,7 +2887,7 @@ a.firstunread, a.firstunread:hover
 	padding: 0 5px;
 	vertical-align: middle;
 	display: inline-block;
-	max-width: 45%;
+	max-width: 35%;
 }
 
 .pt_issuelist .blockrow .ptissuelist_title .pagination {
@@ -3039,7 +3039,7 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuelist .blockrow .ptissuelist_icons_search {
 	padding: 0 5px;
-	width: 15%;
+	width: 5%;
 	text-align: {vb:stylevar right};
 	float: {vb:stylevar right};
 }
@@ -6851,7 +6851,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1309896853" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1330895908" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7053,8 +7053,13 @@ init_project_readmarker_system();
 						<li>
 							<vb:if condition="$show['milestone_edit']">
 								<select class="primary" name="milestoneid" tabindex="1">
-									<vb:each from="milestone_options" value="option">
-										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									<option value="0"{vb:raw option.selected}>{vb:rawphrase none}</option>
+									<vb:each from="milestone_options" value="optiongroup">
+										<optgroup label="{vb:raw optiongroup.label}">
+											<vb:each from="optiongroup[group]" value="option">
+												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											</vb:each>
+										</optgroup>
 									</vb:each>
 								</select>
 							<vb:else />
@@ -9386,7 +9391,7 @@ init_project_readmarker_system();
 {vb:raw errorbits}
 </ul>]]></template>
 		<template name="pt_searcherrorbit" templatetype="template" date="1273444813" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw error}</li>]]></template>
-		<template name="pt_searchresultbit" templatetype="template" date="1309716145" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
+		<template name="pt_searchresultbit" templatetype="template" date="1331070364" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
 	</div>
@@ -9435,7 +9440,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_searchresultgroupbit" templatetype="template" date="1276796181" username="Pitchoune" version="2.1.2"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
+		<template name="pt_searchresultgroupbit" templatetype="template" date="1331070734" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
 
 <vb:if condition="$pagenav">
 <div class="pt_issuepopup">
@@ -9448,7 +9453,7 @@ init_project_readmarker_system();
 </vb:if>
 
 <vb:if condition="$show['first_group']">
-<div id="above_project_controls" class="above_project_controls">
+<div id="above_project_controls" class="above_project_controls toolsmenu">
 	<div>
 		<ul id="projectpopups" class="popupgroup projectpopups">
 			<li id="search_tools" class="popupmenu nohovermenu searchprojects">
@@ -9488,18 +9493,48 @@ init_project_readmarker_system();
 				<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort=title&amp;sortorder=asc<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>">{vb:rawphrase title}</a> {vb:raw sort_arrow.title} /
 				{vb:rawphrase submitted_by}
 			</div>
-			<div class="ptissuelist_lastpost">
-				<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort=lastpost&amp;sortorder=desc<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}
-			</div>
-			<div class="ptissuelist_replies">
-				<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort=replies&amp;sortorder=desc<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replies}
-			</div>
-			<div class="ptissuelist_priority">
-				<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort=priority&amp;sortorder=desc<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}
-			</div>
-			<div class="ptissuelist_status">
-				{vb:rawphrase status}
-			</div>
+
+			<vb:if condition="$columns['lastpost']">
+				<div class="ptissuelist_lastpost">
+					<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort=lastpost&amp;sortorder=desc<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>">{vb:rawphrase last_post}</a> {vb:raw sort_arrow.lastpost}
+				</div>
+			</vb:if>
+
+			<vb:if condition="$columns['replies']">
+				<div class="ptissuelist_replies">
+					<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort=replies&amp;sortorder=desc<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>">{vb:rawphrase replies}</a> {vb:raw sort_arrow.replies}
+				</div>
+			</vb:if>
+
+			<vb:if condition="$columns['priority']">
+				<div class="ptissuelist_priority">
+					<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort=priority&amp;sortorder=desc<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}
+				</div>
+			</vb:if>
+
+			<vb:if condition="$columns['status']">
+				<div class="ptissuelist_status">
+					{vb:rawphrase status}
+				</div>
+			</vb:if>
+
+			<vb:if condition="$columns['category']">
+				<div class="ptissuelist_category">
+					{vb:rawphrase category}
+				</div>
+			</vb:if>
+
+			<vb:if condition="$columns['addressversion']">
+				<div class="ptissuelist_addressversion">
+					{vb:rawphrase addressversion}
+				</div>
+			</vb:if>
+
+			<vb:if condition="$columns['applyversion']">
+				<div class="ptissuelist_applyversion">
+					{vb:rawphrase applyversion}
+				</div>
+			</vb:if>
 		</div>
 		{vb:raw resultbits}
 	</div>

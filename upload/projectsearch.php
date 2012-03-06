@@ -565,6 +565,9 @@ if ($_REQUEST['do'] == 'searchresults')
 
 	($hook = vBulletinHook::fetch_hook('projectsearch_results_start')) ? eval($hook) : false;
 
+	// Definition to display selected columns
+	$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+
 	$groups = prepare_group_filter($search, $vbulletin->GPC['groupid'], $perpage);
 	$request_groupid = urlencode($vbulletin->GPC['groupid']);
 
@@ -723,6 +726,7 @@ if ($_REQUEST['do'] == 'searchresults')
 
 	$templater = vB_Template::create('pt_searchresults');
 		$templater->register_page_templates();
+		$templater->register('columns', $columns);
 		$templater->register('navbar', $navbar);
 		$templater->register('repeat_search_link', $repeat_search_link);
 		$templater->register('resultgroupbits', $resultgroupbits);
