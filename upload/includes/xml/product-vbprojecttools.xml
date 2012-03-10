@@ -11647,7 +11647,7 @@ If you do not enter a value for this option, the project's default name will be 
 			<phrase name="project_issue_editissue1_editissue2_title" date="1318377858" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
 			<phrase name="project_issue_editissue_editissue2_text" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
 			<phrase name="project_issue_editissue_editissue2_title" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
-			<phrase name="project_issue_issueid_text" date="1327241858" username="Pitchoune" version="2.2.0"><![CDATA[This is the Issue ID you must specify to edit it.]]></phrase>
+			<phrase name="project_issue_issueid_text" date="1331411465" username="Pitchoune" version="2.2.0"><![CDATA[This is the Issue ID you must specify to edit.]]></phrase>
 			<phrase name="project_issue_issueid_title" date="1327241858" username="Pitchoune" version="2.2.0"><![CDATA[ID of Issue]]></phrase>
 			<phrase name="project_issue_text" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
 			<phrase name="project_issue_title" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
@@ -11698,6 +11698,8 @@ Magic selects are split into magic select menus (groups) and individual magic se
 			<phrase name="projectmagicselect_list_title" date="1327461827" username="Pitchoune" version="2.2.0"><![CDATA[Project Magic System Overview]]></phrase>
 			<phrase name="projectmilestone_add_edit_completeddate_text" date="1327241266" username="Pitchoune" version="2.2.0"><![CDATA[This is the date the milestone is finished.]]></phrase>
 			<phrase name="projectmilestone_add_edit_completeddate_title" date="1327241266" username="Pitchoune" version="2.2.0"><![CDATA[Completed Date]]></phrase>
+			<phrase name="projectmilestone_add_edit_description_text" date="1331411395" username="Pitchoune" version="2.2.0"><![CDATA[This is the description of the milestone.]]></phrase>
+			<phrase name="projectmilestone_add_edit_description_title" date="1331411395" username="Pitchoune" version="2.2.0"><![CDATA[Description]]></phrase>
 			<phrase name="projectmilestone_add_edit_targetdate_text" date="1327241242" username="Pitchoune" version="2.2.0"><![CDATA[This is the date the milestone should be finished.]]></phrase>
 			<phrase name="projectmilestone_add_edit_targetdate_title" date="1327241242" username="Pitchoune" version="2.2.0"><![CDATA[Target Date]]></phrase>
 			<phrase name="projectmilestone_add_edit_title_text" date="1327241174" username="Pitchoune" version="2.2.0"><![CDATA[This is the title of the milestone.]]></phrase>
@@ -13052,6 +13054,7 @@ Separate each style ID with a comma.<br />
 		</helpscript>
 		<helpscript name="projectmilestone">
 			<helptopic disp="1" act="add,edit" opt="title" />
+			<helptopic disp="2" act="add,edit" opt="description" />
 			<helptopic disp="3" act="add,edit" opt="targetdate" />
 			<helptopic disp="4" act="add,edit" opt="completeddate" />
 			<helptopic disp="1" act="list" />
