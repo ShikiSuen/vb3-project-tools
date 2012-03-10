@@ -2534,7 +2534,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1331070507" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1331406694" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3249,7 +3249,8 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issue_content .issuevote, #pt_issue_content .issueclosed {
-	background: none repeat scroll 0 0 #FFFFFF;
+	/*background: none repeat scroll 0 0 #FFFFFF;*/
+	background:{vb:stylevar blockrow_background};
 	border-top: 1px solid #D1D1E1; 
 	margin-top: 3px; 
 	padding: 4px;
@@ -4599,7 +4600,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1329468081" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1331407891" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4666,6 +4667,15 @@ legend {
 
 {vb:raw header}
 {vb:raw navbar}
+
+<div id="pagetitle" class="pagetitle">
+	<h1>
+		{vb:rawphrase issue}: <span class="threadtitle"><a href="{vb:link issue, {vb:raw issue}}" title="{vb:rawphrase reload_this_page}">{vb:raw issue.title}</a></span>
+	</h1>
+	<vb:if condition="$show['fb_likebutton']">
+		{vb:raw fblikebutton}
+	</vb:if>
+</div>
 
 <div id="above_project_controls" class="above_project_controls toolsmenu">
 	<div>
@@ -4952,7 +4962,6 @@ legend {
 		</div>
 		<vb:if condition="$show['private_edit'] OR $show['status_edit'] OR $show['status_petition']">
 			<div class="blockrow">
-		</vb:if>
 				<vb:if condition="$show['private_edit']">
 					<div style="margin-top: 6px" class="smallfont">
 						<label for="cb_private_note" style="display: inline-block"><input type="checkbox" id="cb_private_note" name="private" value="1" style="margin-right: 5px" />{vb:rawphrase private}</label>
@@ -4983,13 +4992,17 @@ legend {
 						</label>
 					</div>
 				</vb:if>
-
-		<vb:if condition="$show['private_edit'] OR $show['status_edit'] OR $show['status_petition']">
 			</div>
 		</vb:if>
 	</div>
 	<div class="blockfoot actionbuttons">
 		<div class="group">
+			<span id="qr_posting_msg" class="hidden">
+				<img src="{vb:stylevar imgdir_misc}/progress.gif" alt="{vb:rawphrase posting_quick_reply_please_wait}" />&nbsp;<strong>{vb:rawphrase posting_quick_reply_please_wait}</strong>
+			</span>
+			<vb:if condition="$show['fb_publishcheckbox']">
+				{vb:raw fbpublishcheckbox}
+			</vb:if>
 			<input type="submit" class="button" value="{vb:rawphrase post_reply}" accesskey="s" title="(Alt + S)" name="sbutton" tabindex="1" id="qr_submit" onclick="clickedelm = this.value" />
 			<input type="submit" class="button" value="{vb:rawphrase go_advanced}" accesskey="x" title="(Alt + X)" name="preview" tabindex="1" id="qr_preview" onclick="clickedelm = this.value" style="display: none" />
 			<input type="reset" id="qr_cancelbutton" class="button" style="display:none;" value="{vb:rawphrase cancel}" accesskey="c" title="(Alt + C)" name="cancel" tabindex="4" onclick="qr_pt_reset();" />
@@ -5792,17 +5805,14 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	//--> 
 	</script> 
 </li>]]></template>
-		<template name="pt_issue_firstnote" templatetype="template" date="1298665517" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="pt_issue_content" style="margin-bottom: 10px;">
+		<template name="pt_issue_firstnote" templatetype="template" date="1331403774" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="pt_issue_content" style="margin-bottom: 10px;">
 	<div class="issue_content">
 		<div class="block">
 			<div class="blockhead">
-				{vb:raw issue.title}
+				<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$issue['newflag']">new<vb:else />old</vb:if>.png" alt="issueid={vb:raw issue.issueid}" class="inlineimg" />
+				{vb:raw issue.submitdate} {vb:raw issue.submittime}
 			</div>
 			<div class="blockbody settings_form_border">
-				<div class="blocksubhead">
-					<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$issue['newflag']">new<vb:else />old</vb:if>.png" alt="issueid={vb:raw issue.issueid}" class="inlineimg" />
-					{vb:raw issue.submitdate} {vb:raw issue.submittime}
-				</div>
 				<div class="blockrow">
 					<div class="floatcontainer">
 						<vb:if condition="$show['avatar']">
@@ -10933,6 +10943,48 @@ foreach($do AS $field)
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
+			<title>Facebook Like Button in issues</title>
+			<hookname>fb_like_button</hookname>
+			<phpcode><![CDATA[if (THIS_SCRIPT == 'issue' AND $vbulletin->options['facebooklikeissues'])
+{
+	$show['fb_likebutton'] = true;
+	$show['loadfbroot'] = !is_facebookenabled();
+	$templater = vB_Template::create('facebook_likebutton');
+	$templater->register('appid', urlencode($vbulletin->options['facebookappid']));
+
+	if(is_browser('ie') || is_browser('opera'))
+	{
+		$templater->register('href', urlencode(get_fbcanonicalurl()));
+	}
+	else
+	{
+		$templater->register('href', get_fbcanonicalurl());
+	}
+	$retval .= $templater->render();
+}
+else
+{
+	$retval .= '';
+	$show['fb_likebutton'] = false;
+}]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
+			<title>Facebook Publish Checkbox on issue notes</title>
+			<hookname>fb_publish_checkbox</hookname>
+			<phpcode><![CDATA[if (THIS_SCRIPT == 'issue' AND $vbulletin->options['fbfeedissuenote'])
+{
+	$show['fb_publishcheckbox'] = true;
+	$templater = vB_Template::create('facebook_publishcheckbox');
+		$templater->register('checked', check_fbpublishcheckbox());
+	$retval .= $templater->render();
+}
+else
+{
+	$retval .= '';
+	$show['fb_publishcheckbox'] = false;
+}]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
 			<title>fetch_userinfo(): Add PT Fields/Joins</title>
 			<hookname>fetch_userinfo_query</hookname>
 			<phpcode><![CDATA[$hook_query_fields .= ", ptuser.userid AS pt_userid, ptuser.totalissues AS pt_totalissues";
@@ -12620,6 +12672,10 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="setting_issues_type_title" date="1284669686" username="Pitchoune" version="2.1.2"><![CDATA[Issue Type]]></phrase>
 		</phrasetype>
 		<phrasetype name="vBulletin Settings" fieldname="vbsettings">
+			<phrase name="setting_facebooklikeissues_desc" date="1331404805" username="Pitchoune" version="2.2.0"><![CDATA[Enabling this option will make a "Like" button appear on all issues. Users will then be able to "Like" individual issues. Note: users do not have to have Facebook linked accounts to use this feature.]]></phrase>
+			<phrase name="setting_facebooklikeissues_title" date="1331404805" username="Pitchoune" version="2.2.0"><![CDATA[Like Button - Issues]]></phrase>
+			<phrase name="setting_fbfeedissuenote_desc" date="1331407174" username="Pitchoune" version="2.2.0"><![CDATA[Enabling this feature will allow users to publish a notification to their Facebook wall when they post a note on an issue.]]></phrase>
+			<phrase name="setting_fbfeedissuenote_title" date="1331407174" username="Pitchoune" version="2.2.0"><![CDATA[Publish to Facebook - Issue Note]]></phrase>
 			<phrase name="setting_issuelist_columns_desc" date="1307040460" username="Pitchoune" version="2.2.0"><![CDATA[Select here the columns you want to display for your users in every issue lists.<br />
 <br />
 <span class="modlasttendays"><strong>Note:</strong> Select lots of columns can destroy your styles, especially on lower screen resolutions!</span>]]></phrase>
@@ -12737,6 +12793,18 @@ Separate each style ID with a comma.<br />
 		</phrasetype>
 	</phrases>
 	<options>
+		<settinggroup name="facebook" displayorder="35">
+			<setting varname="fbfeedissuenote" displayorder="125">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+			<setting varname="facebooklikeissues" displayorder="155">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
+			</setting>
+		</settinggroup>
 		<settinggroup name="projecttools" displayorder="800">
 			<setting varname="pt_allowbbcode" displayorder="10">
 				<datatype>boolean</datatype>
