@@ -2,7 +2,7 @@
 
 <style name="Mobile Style" vbversion="2.2.0" product="vbprojecttools" type="custom">
 	<templategroup name="Project Tools">
-		<template name="pt_forumbit_project" templatetype="template" date="1328992526" username="Pitchoune" version="2.2.0"><![CDATA[<li class="forumbit_post L2">
+		<template name="pt_forumbit_project" templatetype="template" date="1331413249" username="Pitchoune" version="2.2.0"><![CDATA[<li class="forumbit_post L2">
 	<img src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>_16.png" id="project_statusicon_{vb:raw project.projectid}_{vb:raw forum.forumid}" class="forumicon ui-li-icon" alt="" />
 	<vb:if condition="$project['forumtitle']">
 		<h3><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.forumtitle}</a></h3>
@@ -12,8 +12,8 @@
 	<vb:if condition="$project['summary']"><p>{vb:raw project.summary}</p></vb:if>
 	<span class="ui-li-count">{vb:raw project.counter}</span>
 </li>]]></template>
-		<template name="pt_issue" templatetype="template" date="1328992540" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+		<template name="pt_issue" templatetype="template" date="1331417500" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 	<title>{vb:raw issue.title} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
@@ -32,69 +32,30 @@
 
 <div data-role="content">
 	<a href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}" rel="nofollow" class="newreplylink" id="newreplylink" data-role="button" data-icon="plus" data-inline="true"><vb:if condition="$show['issue_closed']">{vb:rawphrase closed}<vb:else />{vb:rawphrase reply}</vb:if></a>
-	<h2>{vb:rawphrase issue_details}</h2>
-	<ul data-role="listview">
-		<li class="ui-body-c">
-			{vb:rawphrase issue_number}
-			<span class="ui-li-count">{vb:raw issue.issueid}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase issue_type}
-			<span class="ui-li-count">{vb:raw issue.issuetype}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase project}
-			<span class="ui-li-count">{vb:raw project.title_clean}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase category}
-			<span class="ui-li-count">{vb:raw issue.categorytitle}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase status}
-			<span class="ui-li-count">{vb:raw issue.status}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase priority}
-			<span class="ui-li-count">{vb:raw issue.priority_text}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase applies_version_issuetype}
-			<span class="ui-li-count">{vb:raw issue.appliesversion}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase addressed_version_issuetype}
-			<span class="ui-li-count">{vb:raw issue.addressedversion}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase milestone}
-			<span class="ui-li-count"><vb:if condition="$issue['milestonetitle']">{vb:raw issue.milestonetitle}<vb:else />{vb:rawphrase none}</vb:if></span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase vote_count_positive_issuetype}
-			<span class="ui-li-count">{vb:raw issue.votepositive}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase vote_count_negative_issuetype}
-			<span class="ui-li-count">{vb:raw issue.votenegative}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase attachments}
-			<span class="ui-li-count">{vb:raw issue.attachcount}</span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase assigned_users}
-			<span class="ui-li-count"><vb:if condition="$assignments">{vb:raw assignments}<vb:else />{vb:rawphrase none_meta}</vb:if></span>
-		</li>
-		<li class="ui-body-c">
-			{vb:rawphrase tags}
-			<span class="ui-li-count"><vb:if condition="$tags">{vb:raw tags}<vb:else />{vb:rawphrase none_meta}</vb:if></span>
-		</li>
-	</ul>
 
-	<br />
+	<vb:if condition="$show['fb_likebutton']">
+		{vb:raw fblikebutton}
+	</vb:if>
 
-	<h2>{vb:raw issue.title}</h2>
+	<div data-role="collapsible" data-collapsed="true" data-theme="c">
+		<h3>{vb:rawphrase issue_details}</h3>
+		<ul data-role="listview" data-theme="d" class="forumbits">
+			<li>{vb:rawphrase issue_number}<span class="ui-li-count">{vb:raw issue.issueid}</span></li>
+			<li>{vb:rawphrase issue_type}<span class="ui-li-count">{vb:raw issue.issuetype}</span></li>
+			<li>{vb:rawphrase project}<span class="ui-li-count">{vb:raw project.title_clean}</span></li>
+			<li>{vb:rawphrase category}<span class="ui-li-count">{vb:raw issue.categorytitle}</span></li>
+			<li>{vb:rawphrase status}<span class="ui-li-count">{vb:raw issue.status}</span></li>
+			<li>{vb:rawphrase priority}<span class="ui-li-count">{vb:raw issue.priority_text}</span></li>
+			<li>{vb:rawphrase applies_version_issuetype}<span class="ui-li-count">{vb:raw issue.appliesversion}</span></li>
+			<li>{vb:rawphrase addressed_version_issuetype}<span class="ui-li-count">{vb:raw issue.addressedversion}</span></li>
+			<li>{vb:rawphrase milestone}<span class="ui-li-count"><vb:if condition="$issue['milestonetitle']">{vb:raw issue.milestonetitle}<vb:else />{vb:rawphrase none}</vb:if></span></li>
+			<li>{vb:rawphrase vote_count_positive_issuetype}<span class="ui-li-count">{vb:raw issue.votepositive}</span></li>
+			<li>{vb:rawphrase vote_count_negative_issuetype}<span class="ui-li-count">{vb:raw issue.votenegative}</span></li>
+			<li>{vb:rawphrase attachments}<span class="ui-li-count">{vb:raw issue.attachcount}</span></li>
+			<li>{vb:rawphrase assigned_users}<span class="ui-li-count"><vb:if condition="$assignments">{vb:raw assignments}<vb:else />{vb:rawphrase none_meta}</vb:if></span></li>
+			<li>{vb:rawphrase tags}<span class="ui-li-count"><vb:if condition="$tags">{vb:raw tags}<vb:else />{vb:rawphrase none_meta}</vb:if></span></li>
+		</ul>
+	</div>
 
 	<div id="postlist">
 		{vb:raw pagenav}
@@ -141,7 +102,7 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1329167861" username="Pitchoune" version="2.2.0"><![CDATA[<li id="thread_{vb:raw issue.issueid}" class="threadbit dot ui-li-has-icon">
+		<template name="pt_issuebit" templatetype="template" date="1331413313" username="Pitchoune" version="2.2.0"><![CDATA[<li id="thread_{vb:raw issue.issueid}" class="threadbit dot ui-li-has-icon">
 	<div class="ui-li-icon" style="margin-top: 6px">
 	<vb:if condition="$issue['typeicon']">
 		<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -173,8 +134,8 @@
 	<span class="ui-li-count">{vb:raw issue.replycount}</span>
 	<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew" id="thread_gotonew_{vb:raw issue.issueid}" class="splitlink" alt="{vb:rawphrase go_to_first_new_post}"> </a>
 </li>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1318770875" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+		<template name="pt_issuelist" templatetype="template" date="1331417506" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 
@@ -224,8 +185,8 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_issuenotebit_system" templatetype="template" date="1318765899" username="Pitchoune" version="2.2.0" />
-		<template name="pt_issuenotebit_user" templatetype="template" date="1329168215" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_system" templatetype="template" date="1331413353" username="Pitchoune" version="2.2.0" />
+		<template name="pt_issuenotebit_user" templatetype="template" date="1331419449" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <a name="note{vb:raw note.issuenoteid}"></a>
 <li class="postbit postbitim postcontainer" id="issuenote_{vb:raw note.issuenoteid}">
 	<div class="posthead ui-bar-c">
@@ -259,19 +220,15 @@
 					</blockquote>
 				</div>
 			</div>
-
-			<vb:if condition="$show['edit_history']">
-			<!-- edit note -->
-			<blockquote class="postcontent lastedited">
-				<a href="issue.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw note.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw note.lastedit_date}, {vb:raw note.lastedit_time}}</a>
-			</blockquote>
-			<!-- / edit note -->
-			</vb:if>
 		</div>
 	</div>
 
 	<div class="postfoot">
 		<span class="postcontrols">
+			<vb:if condition="$show['edit_note']">
+				<a id="issue_edit_{vb:raw issue.issueid}" class="editpost" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw note.issuenoteid}" rel="external">&nbsp;</a>
+			</vb:if>
+
 			<vb:if condition="$show['reply_note']">
 				<a id="qr_{vb:raw issue.issueid}" class='quickreply' href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}&amp;noquote=1" rel="external">&nbsp;</a>
 			</vb:if>
@@ -292,7 +249,7 @@
 		</span>
 	</div>
 </li>]]></template>
-		<template name="pt_issue_firstnote" templatetype="template" date="1315062590" username="Pitchoune" version="2.2.0"><![CDATA[<li class="postbit postbitim postcontainer" id="issue_{vb:raw issue.issueid}">
+		<template name="pt_issue_firstnote" templatetype="template" date="1331416573" username="Pitchoune" version="2.2.0"><![CDATA[<li class="postbit postbitim postcontainer" id="issue_{vb:raw issue.issueid}">
 	<div class="posthead ui-bar-c">
 		<a class="postuseravatarlink" href="{vb:link member, {vb:raw issue}}" title="{vb:rawphrase {vb:raw issue.onlinestatusphrase}, {vb:raw issue.username}}">
 			<p>
@@ -327,21 +284,19 @@
 					</blockquote>
 				</div>
 			</div>
-
-			<vb:if condition="$show['edit_history']">
-			<!-- edit note -->
-			<blockquote class="postcontent lastedited">
-				<a href="issue.php?{vb:raw session.sessionurl}do=notehistory&amp;issuenoteid={vb:raw issue.issuenoteid}">{vb:rawphrase last_updated_x_at_y, {vb:raw issue.lastedit_date}, {vb:raw issue.lastedit_time}}</a>
-			</blockquote>
-			<!-- / edit note -->
-			</vb:if>
 		</div>
 	</div>
 
 	<div class="postfoot">
 		<span class="postcontrols">
+			<vb:if condition="$show['edit_issue']">
+				<a id="issue_edit_{vb:raw issue.issueid}" class="editpost" href="projectpost.php?{vb:raw session.sessionurl}do=editissue&amp;issueid={vb:raw issue.issueid}" rel="external">&nbsp;</a>
+			<vb:elseif condition="$show['edit_note']" />
+				<a id="issue_edit_{vb:raw issue.issueid}" class="editpost" href="projectpost.php?{vb:raw session.sessionurl}do=editreply&amp;issuenoteid={vb:raw issue.issuenoteid}" rel="external">&nbsp;</a>
+			</vb:if>
+
 			<vb:if condition="$show['quick_reply'] AND !$show['issue_closed']">
-				<a id="qr_{vb:raw issue.issueid}" class='quickreply' href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}&amp;noquote=1" rel="external">&nbsp;</a>
+				<a id="qr_{vb:raw issue.issueid}" class="quickreply" href="projectpost.php?{vb:raw session.sessionurl}do=addreply&amp;issueid={vb:raw issue.issueid}&amp;noquote=1" rel="external">&nbsp;</a>
 			</vb:if>
 
 			<vb:if condition="!$show['issue_closed']">
@@ -360,8 +315,8 @@
 		</span>
 	</div>
 </li>]]></template>
-		<template name="pt_overview" templatetype="template" date="1315002921" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+		<template name="pt_overview" templatetype="template" date="1331417513" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 
@@ -400,8 +355,8 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1318773041" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+		<template name="pt_postissue" templatetype="template" date="1331420101" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 
@@ -422,62 +377,34 @@
 <div data-role="content">
 	<form class="vbform block" action="projectpost.php?{vb:raw session.sessionurl}do=postissue" method="post" name="vbform" onsubmit="return vB_Editor['{vb:raw editorid}'].prepare_submit(0, 0);">
 
-<vb:comment>
-	<vb:if condition="$issue['issueid']">
-	<h2 class="blockhead">{vb:rawphrase delete_this_issue}</h2>
+		<vb:if condition="$issue['issueid']">
+			<h3 class="ui-bar ui-bar-d">{vb:rawphrase delete_this_issue}</h3>
 
-	<div class="blockbody formcontrols">
-		<h3 class="blocksubhead">{vb:rawphrase delete_issue_note_check_appropriate_option}</h3>
-		<div class="section">
-			<div class="blockrow">
-				<vb:if condition="$show['delete_option']">
-				<dl class="dep_group">
+			<p>{vb:rawphrase delete_issue_note_check_appropriate_option}</p>
+			<vb:if condition="$show['delete_option']">
+				<fieldset data-role="controlgroup">
+					<legend>{vb:rawphrase delete_issue_in_manner}...</legend>
 
-					<dt><label for="delete"><input type="checkbox" class="dep_ctrl" id="delete" name="dodelete" value="1" tabindex="1" /> {vb:rawphrase delete_post_in_manner}:</label></dt>
-					<dd id="delete_deps">
-						<ul class="group checkradio">
- 							<li>
-								<label for="deltype_hard"><input type="radio" id="deltype_hard" class="dep_ctrl" name="delete" value="hard" tabindex="1" /> {vb:rawphrase hard_delete}</label>
-							</li>
-							<li>
-								<label for="deltype_soft"><input type="radio" id="deltype_soft" class="dep_ctrl" name="delete" value="soft" tabindex="1" /> {vb:rawphrase soft_delete}</label>
-							</li>
-						</ul>
-					</dd>
-				</dl>
-				</vb:if>
+					<input type="radio" id="deltype_hard" class="dep_ctrl" name="delete" value="hard" tabindex="1" />
+					<label for="deltype_hard">{vb:rawphrase hard_delete}</label>
 
-				<vb:if condition="$show['undelete_option']">
-					<label>{vb:rawphrase issue_been_deleted}</label>
-					<ul class="rightcol">
-						<li>
-							<input type="checkbox" name="undelete" value="1" tabindex="1" />&nbsp;{vb:rawphrase undelete}
-						</li>
-					</ul>
-				</vb:if>
+					<input type="radio" id="deltype_soft" checked="checked" class="dep_ctrl" name="delete" value="soft" tabindex="1" />
+					<label for="deltype_soft">{vb:rawphrase soft_delete}</label>
+
+					<label for="reason">{vb:rawphrase reason_for_edit_delete}:</label>
+					<input type="text" name="reason" class="textbox primary" value="{vb:raw issue.reason}" tabindex="1" />
+				</fieldset>
+			</vb:if>
+
+			<h3 class="ui-bar ui-bar-d">{vb:rawphrase your_message}</h3>
+		</vb:if>
+
+		<vb:if condition="!$show['delete_option']">
+			<div data-role="fieldcontain">
+				<label for="editreason">{vb:rawphrase reason_for_editing}:</label>
+				<input type="text" class="primary textbox" id="editreason" name="reason" value="{vb:raw issue.reason}" tabindex="1" />
 			</div>
-
-			<div class="blockrow">
-				<label class="full">
-					<vb:if condition="$show['delete_option']">
-						{vb:rawphrase reason_for_edit_delete}
-					<vb:else />
-						{vb:rawphrase reason_for_editing}
-					</vb:if>
-				</label>
-				<input type="text" name="reason" class="textbox primary" value="{vb:raw issue.reason}" tabindex="1" />
-			</div>
-		</div>
-	</div>
-	</vb:if>
-</vb:comment>
-
-
-
-
-		{vb:raw preview}
-
-		{vb:raw usernamecode}
+		</vb:if>
 
 		<div data-role="fieldcontain">
 			<label for="title">{vb:rawphrase title}:</label>
@@ -575,7 +502,7 @@
 						<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 							<vb:each from="applies_versions" value="optiongroup">
 								<optgroup label="{vb:raw optiongroup.label}">
-									<vb:each from="optiongroup[group]" value="option">
+									<vb:each from="optiongroup.group" value="option">
 										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</optgroup>
@@ -592,7 +519,7 @@
 						<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 							<vb:each from="addressed_versions" value="optiongroup">
 								<optgroup label="{vb:raw optiongroup.label}">
-									<vb:each from="optiongroup[group]" value="option">
+									<vb:each from="optiongroup.group" value="option">
 										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</optgroup>
@@ -613,7 +540,7 @@
 						<option value="0"{vb:raw option.selected}>{vb:rawphrase none}</option>
 						<vb:each from="milestone_options" value="optiongroup">
 							<optgroup label="{vb:raw optiongroup.label}">
-								<vb:each from="optiongroup[group]" value="option">
+								<vb:each from="optiongroup.group" value="option">
 									<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 								</vb:each>
 							</optgroup>
@@ -672,7 +599,7 @@
 						<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 						<vb:each from="applies_versions" value="optiongroup">
 							<optgroup label="{vb:raw optiongroup.label}">
-								<vb:each from="optiongroup[group]" value="option">
+								<vb:each from="optiongroup.group" value="option">
 									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 								</vb:each>
 							</optgroup>
@@ -690,7 +617,7 @@
 						<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 						<vb:each from="addressed_versions" value="optiongroup">
 							<optgroup label="{vb:raw optiongroup.label}">
-								<vb:each from="optiongroup[group]" value="option">
+								<vb:each from="optiongroup.group" value="option">
 									<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 								</vb:each>
 							</optgroup>
@@ -703,8 +630,7 @@
 		</vb:if>
 
 		<fieldset class="ui-grid-a"> 
-			<div class="ui-block-a"><button type="submit" name="sbutton" data-theme="a">{vb:rawphrase save}</button></div>
-			<div class="ui-block-b"><button type="submit" name="preview" data-theme="d">{vb:rawphrase preview}</button></div>
+			<div><button type="submit" name="sbutton" data-theme="a">{vb:rawphrase save}</button></div>
 		</fieldset>
 
 	</form>
@@ -714,7 +640,7 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_postissue_magicselect" templatetype="template" date="1318768857" username="Pitchoune" version="2.2.0"><![CDATA[<div data-role="fieldcontain">
+		<template name="pt_postissue_magicselect" templatetype="template" date="1331413494" username="Pitchoune" version="2.2.0"><![CDATA[<div data-role="fieldcontain">
 	<label for="{vb:raw magicselect.varname}">{vb:raw magicselect.text}</label>
 	<select name="{vb:raw magicselect.varname}" id="{vb:raw magicselect.varname}" class="full" tabindex="1">
 		<vb:each from="magicselect[options]" value="option">
@@ -722,7 +648,7 @@
 		</vb:each>
 	</select>
 </div>]]></template>
-		<template name="pt_postissue_short" templatetype="template" date="1318772576" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue_short" templatetype="template" date="1331413522" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -778,8 +704,8 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1318772415" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+		<template name="pt_postreply" templatetype="template" date="1331420090" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 	<title>{vb:raw vboptions.bbtitle} - {vb:rawphrase projects} - <vb:if condition="$show['editnote']">{vb:rawphrase edit_reply}<vb:else />{vb:rawphrase post_reply}</vb:if></title>
@@ -798,57 +724,36 @@
 
 <div data-role="content">
 	<form class="vbform block" action="projectpost.php?{vb:raw session.sessionurl}do=postreply&amp;issueid={vb:raw issue.issueid}" method="post" name="vbform" onsubmit="return vB_Editor['{vb:raw editorid}'].prepare_submit(0, 0);">
+		<vb:if condition="$issuenote['issuenoteid']">
 
+			<h3 class="ui-bar ui-bar-d">{vb:rawphrase delete_this_note}</h3>
+			<p>{vb:rawphrase delete_issue_note_check_appropriate_option}</p>
 
+			<fieldset data-role="controlgroup">
+				<legend>{vb:rawphrase delete_issue_note_in_manner}...</legend>
 
-
-<vb:comment>
-	<vb:if condition="$issuenote['issuenoteid']">
-
-		<h2 class="blockhead">{vb:rawphrase delete_this_note}</h2>
-		<h3 class="blocksubhead">{vb:rawphrase delete_issue_note_check_appropriate_option}</h3>
-		<div class="section">
-			<div class="blockrow">
 				<vb:if condition="$show['delete_option']">
-				<dl class="dep_group">
+					<input type="radio" id="deltype_hard" class="dep_ctrl" name="delete" value="hard" tabindex="1" />
+					<label for="deltype_hard">{vb:rawphrase hard_delete}</label>
 
-					<dt><label for="delete"><input type="checkbox" class="dep_ctrl" id="delete" name="dodelete" value="1" tabindex="1" />&nbsp;{vb:rawphrase delete_post_in_manner}</label></dt>
-					<dd id="delete_deps">
-						<ul class="group checkradio">
- 							<li><label for="deltype_hard"><input type="radio" id="deltype_hard" class="dep_ctrl" name="delete" value="hard" tabindex="1" /> {vb:rawphrase hard_delete}</label></li>
-							<li><label for="deltype_soft"><input type="radio" id="deltype_soft" class="dep_ctrl" name="delete" value="soft" tabindex="1" /> {vb:rawphrase soft_delete}</label>
-							</li>
-						</ul>
-					</dd>
-				</dl>
+					<input type="radio" id="deltype_soft" checked="checked" class="dep_ctrl" name="delete" value="soft" tabindex="1" />
+					<label for="deltype_soft">{vb:rawphrase soft_delete}</label>
+
+					<label for="reason">{vb:rawphrase reason_for_edit_delete}:</label>
+					<input type="text" id="reason" name="reason" class="textbox primary" value="{vb:raw issue.reason}" tabindex="1" />
 				</vb:if>
+			</fieldset>
 
-				<vb:if condition="$show['undelete_option']">
-					<label for="undelete">{vb:rawphrase issue_been_deleted}</label>
-					<input type="checkbox" name="undelete" id="undelete" value="1" tabindex="1" />&nbsp;{vb:rawphrase undelete}
-				</vb:if>
+			<h3 class="ui-bar ui-bar-d">{vb:rawphrase your_message}</h3>
+
+		</vb:if>
+
+		<vb:if condition="!$show['delete_option']">
+			<div data-role="fieldcontain">
+				<label for="editreason">{vb:rawphrase reason_for_editing}:</label>
+				<input type="text" class="primary textbox" id="editreason" name="reason" value="{vb:raw issue.reason}" tabindex="1" />
 			</div>
-
-			<div class="blockrow">
-				<label class="full">
-					<vb:if condition="$show['delete_option']">
-						{vb:rawphrase reason_for_edit_delete}
-					<vb:else />
-						{vb:rawphrase reason_for_editing}
-					</vb:if>
-				</label>
-				<input type="text" name="reason" class="textbox primary" value="{vb:raw issue.reason}" tabindex="1" />
-			</div>
-		</div>
-	</vb:if>
-</vb:comment>
-
-
-
-
-		{vb:raw preview}
-
-		{vb:raw usernamecode}
+		</vb:if>
 		
 		{vb:raw messagearea}
 
@@ -910,9 +815,8 @@
 				</vb:if>
 			</vb:if>
 		</vb:if>
-		<fieldset class="ui-grid-a"> 
-			<div class="ui-block-a"><button type="submit" name="sbutton" data-theme="a">{vb:rawphrase save}</button></div>
-			<div class="ui-block-b"><button type="submit" name="preview" data-theme="d">{vb:rawphrase preview}</button></div>
+		<fieldset class="ui-grid-a">
+			<div><button type="submit" name="sbutton" data-theme="a">{vb:rawphrase save}</button></div>
 		</fieldset>
 </form>
 </div>
@@ -935,8 +839,8 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_project" templatetype="template" date="1318773733" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+		<template name="pt_project" templatetype="template" date="1331417532" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 	<title>{vb:raw project.title_clean} - {vb:raw vboptions.bbtitle} - {vb:rawphrase projects}</title>
@@ -998,7 +902,7 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_projectbit" templatetype="template" date="1315002903" username="Pitchoune" version="2.2.0"><![CDATA[<li class="ui-li-has-icon">
+		<template name="pt_projectbit" templatetype="template" date="1331413608" username="Pitchoune" version="2.2.0"><![CDATA[<li class="ui-li-has-icon">
 	<div class="ui-li-icon">
 		<img id="project_statusicon_{vb:raw project.projectid}" src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>.png" alt="" border="0" style="background-size: 100% auto; height: 16px; width: 16px; float: left; margin-top: 6px; margin-right: 10px" />
 	</div>
@@ -1015,8 +919,8 @@
 		</vb:if>
 	</p>
 </li>]]></template>
-		<template name="pt_project_milestones" templatetype="template" date="1315002981" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
-<html xmlns="http://www.w3.org/1999/xhtml" dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
+		<template name="pt_project_milestones" templatetype="template" date="1331417547" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+<html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
 
@@ -1056,7 +960,7 @@
 
 </body>
 </html>]]></template>
-		<template name="pt_subforumbit_project" templatetype="template" date="1316210132" username="Pitchoune" version="2.2.0"><![CDATA[<li class="forumbit subforum">
+		<template name="pt_subforumbit_project" templatetype="template" date="1331413653" username="Pitchoune" version="2.2.0"><![CDATA[<li class="forumbit subforum">
 	<img src="{vb:stylevar imgdir_statusicon}/project_forum_<vb:if condition="$project['newflag']">new<vb:else />old</vb:if>_16.png" class="forumicon ui-li-icon" id="project_statusicon_{vb:raw project.projectid}" alt="" />
 	<h3>
 	<vb:if condition="$project['forumtitle']">
@@ -1069,7 +973,7 @@
 </li>]]></template>
 	</templategroup>
 	<templategroup name="Ungrouped Templates 1">
-		<template name="projecttools.css" templatetype="template" date="1316211827" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1331413688" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
