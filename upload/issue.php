@@ -1190,6 +1190,7 @@ $templater = vB_Template::create('pt_issue');
 	$templater->register('display_type_counts', $display_type_counts);
 	$templater->register('editorid', $editorid);
 	$templater->register('fblikebutton', $fblikebutton);
+	$templater->register('fbpublishcheckbox', $fbpublishcheckbox);
 	$templater->register('issuefirstnote', $issuefirstnote);
 	$templater->register('issue', $issue);
 	$templater->register('messagearea', $messagearea);
