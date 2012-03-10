@@ -279,6 +279,7 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 			SELECT
 				attachment.attachmentid,
 				attachment.userid,
+				attachment.filedataid,
 				issue.issueid,
 				issue.submitdate AS issue_dateline,
 				issue.submituserid AS issue_userid
@@ -288,7 +289,7 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 		");
 		while ($id = $this->registry->db->fetch_array($ids))
 		{
-			$this->lists['idlist']["{$id['attachmentid']}"] = $id['userid'];
+			$this->lists['idlist']["{$id['attachmentid']}"] = $id;
 
 			if ($id['issueid'])
 			{
@@ -329,10 +330,18 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 		{
 			require_once(DIR . '/includes/functions_file.php');
 			// Delete attachments from the FS
-			foreach ($this->lists['idlist'] AS $attachmentid => $userid)
+			foreach ($this->lists['idlist'] AS $attachmentid => $id)
 			{
-				@unlink(fetch_attachment_path($userid, $attachmentid, false, $this->registry->options['attachpath']));
-				@unlink(fetch_attachment_path($userid, $attachmentid, true, $this->registry->options['attachpath']));
+				@unlink(fetch_attachment_path($id['userid'], $attachmentid, false, $this->registry->options['attachpath']));
+				@unlink(fetch_attachment_path($id['userid'], $attachmentid, true, $this->registry->options['attachpath']));
+
+				// We need to decrease refcount in filedata for auto-deletion via cron if refcount = 0
+				// http://tracker.vbulletin.com/browse/VBIV-6994
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "filedata SET
+						refcount = refcount - 1
+					WHERE filedataid = " . $id['filedataid'] . "
+				");
 			}
 		}
 

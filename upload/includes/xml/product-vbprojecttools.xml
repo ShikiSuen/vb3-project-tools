@@ -7302,7 +7302,7 @@ init_project_readmarker_system();
 <vb:else />
 	<li><a class="navtab" href="project.php{vb:raw session.sessionurl_q}">{vb:rawphrase projects}</a></li>
 </vb:if>]]></template>
-		<template name="pt_newpost_attachment" templatetype="template" date="1318873796" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" id="attachfiles">
+		<template name="pt_newpost_attachment" templatetype="template" date="1331422051" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" id="attachfiles">
 	<div class="smallfont"><span class="shade">{vb:rawphrase manage_attachments}</span> <a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_attach" target="_blank">[?]</a></div>
 	<div class="rightcol">
 		<a href="newattachment.php?{vb:raw session.sessionurl}{vb:raw values}&amp;poststarttime={vb:raw poststarttime}&amp;posthash={vb:raw posthash}&amp;contenttypeid={vb:raw contenttypeid}" class="uploadlaunchfallback" target="manageattach" title="{vb:rawphrase add_edit_files_attached}" tabindex="1">{vb:rawphrase manage_attachments}</a>
@@ -7327,7 +7327,7 @@ init_project_readmarker_system();
 			contentid    : '{vb:raw contentid}',
 			userid       : '{vb:raw attachuserid}',
 			contenttypeid: '{vb:raw contenttypeid}',
-			insertinline : '1',
+			insertinline : '0',
 			values       : '{vb:raw values}',
 			enhanced     : '<vb:if condition="$vboptions['vbasset_enable'] AND $bbuserinfo['vbasset_enable']">1</vb:if>'
 	});
