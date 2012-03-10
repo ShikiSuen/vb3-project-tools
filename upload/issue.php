@@ -1153,6 +1153,15 @@ if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_
 	}
 }
 
+// facebook options
+if (is_facebookenabled())
+{
+	// display publish to Facebook checkbox in quick editor?
+	$fbpublishcheckbox = construct_fbpublishcheckbox();
+}
+// display the like button for this issue?
+$fblikebutton = construct_fblikebutton();
+
 $pageinfo = array();
 
 $pageinfo['issuetypeid'] = $issue['issuetypeid'];
@@ -1180,6 +1189,7 @@ $templater = vB_Template::create('pt_issue');
 	$templater->register('attachmentoption', $attachmentoption);
 	$templater->register('display_type_counts', $display_type_counts);
 	$templater->register('editorid', $editorid);
+	$templater->register('fblikebutton', $fblikebutton);
 	$templater->register('issuefirstnote', $issuefirstnote);
 	$templater->register('issue', $issue);
 	$templater->register('messagearea', $messagearea);
