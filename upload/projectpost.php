@@ -2010,11 +2010,11 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	$magicselectlist = array();
 
 	$magicselect_query = $db->query_read("
-		SELECT projectmagicselect.*, projectmagicselectgroup.*
+		SELECT projectmagicselect.*, projectmagicselectgroup.displayorder AS groupdisplayorder
 		FROM " . TABLE_PREFIX . "pt_projectmagicselect AS projectmagicselect
 			INNER JOIN " . TABLE_PREFIX . "pt_projectmagicselectgroup AS projectmagicselectgroup ON (projectmagicselect.projectmagicselectgroupid = projectmagicselectgroup.projectmagicselectgroupid)
 		WHERE projectmagicselectgroup.projectid = " . $project['projectid'] . "
-		ORDER BY projectmagicselectgroup.displayorder ASC
+		ORDER BY projectmagicselectgroup.displayorder, projectmagicselect.displayorder ASC
 	");
 
 	while ($magicselects = $db->fetch_array($magicselect_query))
@@ -2026,6 +2026,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	{
 		$selected = '';
 		$options = array();
+		$magicselect = array();
 
 		$magicselect['text'] = $vbphrase['magicselectgroup' . $projectmagicselectgroupid . ''];
 		$magicselect['projectmagicselectgroupid'] = $projectmagicselectgroupid;
