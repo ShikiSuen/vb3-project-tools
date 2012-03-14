@@ -8129,12 +8129,13 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postissue_magicselect" templatetype="template" date="1329083380" username="Pitchoune" version="2.2.0"><![CDATA[<fieldset class="blockrow">
+		<template name="pt_postissue_magicselect" templatetype="template" date="1331745857" username="Pitchoune" version="2.2.0"><![CDATA[<fieldset class="blockrow">
 	<legend>{vb:raw magicselect.text}</legend>
 	<ul class="rightcol">
 		<li>
 			<select class="primary" name="magicselect{vb:raw magicselect.projectmagicselectgroupid}" tabindex="1">
-				<vb:each from="magicselect[options]" value="option">
+				<option value="0"<vb:if condition="$issue['magicselect{vb:raw magicselect.projectmagicselectgroupid}'] == 0"> selected="selected"</vb:if>>{vb:rawphrase none}</option>
+				<vb:each from="magicselect.options" value="option">
 					<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 				</vb:each>
 			</select>
