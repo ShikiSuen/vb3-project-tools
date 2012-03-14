@@ -729,7 +729,7 @@ if ($_POST['do'] == 'fetch')
 			");
 
 			$xml->add_group('items');
-			$xml->add_tag('item', $vbhrase['none'], array('itemid' => 0, 'selected' => 'yes'));
+			$xml->add_tag('item', $vbphrase['none'], array('itemid' => 0, 'selected' => ($issue['magicselect' . $magicselect['projectmagicselectgroupid']] == 0 ? 'yes' : 'no')));
 
 			while ($magicselect = $db->fetch_array($magicselects))
 			{
