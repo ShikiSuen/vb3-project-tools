@@ -732,9 +732,9 @@ foreach ($magicselect AS $groupid => $fields)
 		}
 
 		// If the magic select have no selected value, define the first value of the group as default
-		if ($selected == '')
+		if ($selected == '' OR $selected == 0)
 		{
-			$selected = $vbphrase['magicselect' . $data['projectmagicselectid']];
+			$selected = $vbphrase['none'];
 		}
 	}
 

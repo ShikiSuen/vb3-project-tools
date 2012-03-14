@@ -729,6 +729,7 @@ if ($_POST['do'] == 'fetch')
 			");
 
 			$xml->add_group('items');
+			$xml->add_tag('item', $vbhrase['none'], array('itemid' => 0, 'selected' => 'yes'));
 
 			while ($magicselect = $db->fetch_array($magicselects))
 			{
