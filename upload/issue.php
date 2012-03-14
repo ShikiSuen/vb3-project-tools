@@ -705,7 +705,7 @@ $vbphrase['addressed_version_issuetype'] = $vbphrase["addressed_version_$issue[i
 // Custom Magic Selects
 $magicselect = array();
 $selected = '';
-$issue['headcode'] = array();
+$issue['menucode'] = $issue['activationcode'] = $issue['headcode'] = array();
 
 $magicselect_query = $db->query_read("
 	SELECT *
@@ -716,36 +716,41 @@ $magicselect_query = $db->query_read("
 
 while ($magicselects = $db->fetch_array($magicselect_query))
 {
-	$magicselect["$magicselects[projectmagicselectgroupid]"][] = $magicselects;
+	$magicselect["$magicselects[projectmagicselectgroupid]"]["$magicselects[projectmagicselectid]"] = $magicselects;
 }
 
-foreach ($magicselect AS $id => $fields)
+foreach ($magicselect AS $groupid => $fields)
 {
-	foreach ($fields AS $null => $infos)
+	foreach ($fields AS $id => $data)
 	{
+		$selected = '';
+
 		// Create all the needed code to build the magic select
-		if ($infos['value'] == $issue['magicselect' . $id])
+		if ($data['value'] == $issue['magicselect' . $groupid])
 		{
-			$selected = $vbphrase['magicselect' . $infos['projectmagicselectid']];
+			$selected = $vbphrase['magicselect' . $data['projectmagicselectid']];
 		}
 
-		// If the magic select have no selected value, define the first value as default
+		// If the magic select have no selected value, define the first value of the group as default
 		if ($selected == '')
 		{
-			$selected = $vbphrase['magicselect' . $infos['projectmagicselectid']];
+			$selected = $vbphrase['magicselect' . $data['projectmagicselectid']];
 		}
 	}
 
 	// HTML Code to display the menu
-	$issue['menucode'] = '<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_' . $infos['projectmagicselectgroupid'] . '"><span class="shade">' . $vbphrase['magicselectgroup' . $infos['projectmagicselectgroupid'] . ''] . '</span>' .	$selected . '</div>';
+	$issue['menucode'][] = '<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_' . $data['projectmagicselectgroupid'] . '"><span class="shade">' . $vbphrase['magicselectgroup' . $data['projectmagicselectgroupid'] . ''] . '</span>' .	$selected . '</div>';
 
 	// PHP Code to activate the menu
-	$issue['activationcode'] = 'vBulletin.register_control("vB_MagicSelect", "magicselect_' . $infos['projectmagicselectgroupid'] . '", "' . $infos['projectmagicselectgroupid'] . '", "' . $issue['issueid'] . '");';
+	$issue['activationcode'][] = 'vBulletin.register_control("vB_MagicSelect", "magicselect_' . $data['projectmagicselectgroupid'] . '", "' . $data['projectmagicselectgroupid'] . '", "' . $issue['issueid'] . '");';
 
 	// Varname list to initialize the menu
-	$issue['headcode'][] = $infos['projectmagicselectgroupid'];
+	$issue['headcode'][] = $data['projectmagicselectgroupid'];
 }
 
+// Merging arrays into strings for templates
+$issue['menucode'] = implode($issue['menucode']);
+$issue['activationcode'] = implode($issue['activationcode']);
 $issue['headcode'] = implode('", "', $issue['headcode']);
 
 if (!$vbulletin->options['pt_notesperpage'])
