@@ -143,18 +143,6 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		require_once(DIR . '/includes/class_bootstrap_framework.php');
 		vB_Bootstrap_Framework::init();
 
-		// Custom Magic Selects
-		$magicselects = $this->registry->db->query_read("
-			SELECT projectmagicselectgroupid
-			FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
-		");
-
-		while ($magicselect = $this->registry->db->fetch_array($magicselects))
-		{
-			$this->validfields['magicselect' . $magicselect['projectmagicselectgroupid']] = array(TYPE_UINT, REQ_NO);
-			$this->track_changes[] = $magicselect['projectmagicselectgroupid'];
-		}
-
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_start')) ? eval($hook) : false;
 	}
 
@@ -703,52 +691,6 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					totalissues = totalissues + 1
 				WHERE userid = " . $this->fetch_field('submituserid') . "
 			");
-
-			// Add the corresponding line in pt_issuemagicselect table
-			$issuems =& datamanager_init('Pt_Issue_MagicSelect', $this->registry, ERRTYPE_ARRAY, 'pt_magicselect');
-			$issuems->set('issueid', $this->fetch_field('issueid'));
-
-			// We need to tell the DM to not track the change
-			$issuems->set_info('create_system_note', false);
-
-			$magicselects = $this->registry->db->query_read("
-				SELECT projectmagicselectgroupid
-				FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
-				WHERE projectid = " . $this->fetch_field('projectid') . "
-			");
-
-			if ($this->registry->db->num_rows($magicselects) > 0)
-			{
-				while ($magicselect = $this->registry->db->fetch_array($magicselects))
-				{
-					$issuems->set('magicselect' . $magicselect['projectmagicselectgroupid'], $this->info[$magicselect['projectmagicselectgroupid']]);
-				}
-			}
-
-			$issuems->save();
-		}
-		else
-		{
-			// Edit the corresponding line in pt_issuemagicselect table
-			$mslist = array();
-
-			$magicselects = $this->registry->db->query_read("
-				SELECT projectmagicselectgroupid
-				FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
-				WHERE projectid = " . $this->fetch_field('projectid') . "
-			");
-
-			while ($magicselect = $this->registry->db->fetch_array($magicselects))
-			{
-				if ($this->info['magicselect' . $magicselect['projectmagicselectgroupid']])
-				{
-					$this->registry->db->query_write("
-						UPDATE " . TABLE_PREFIX . "pt_issuemagicselect SET
-							magicselect" . $magicselect['projectmagicselectgroupid'] . " = " . $this->info['magicselect' . $magicselect['projectmagicselectgroupid']] . "
-						WHERE issueid = " . $this->fetch_field('issueid') . "
-					");
-				}
-			}
 		}
 
 		if (!$rebuild_project)

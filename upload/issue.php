@@ -729,10 +729,11 @@ foreach ($magicselect AS $groupid => $fields)
 		if ($data['value'] == $issue['magicselect' . $groupid])
 		{
 			$selected = $vbphrase['magicselect' . $data['projectmagicselectid']];
+			break;
 		}
 
 		// If the magic select have no selected value, define the first value of the group as default
-		if ($selected == '' OR $selected == 0)
+		if (empty($selected))
 		{
 			$selected = $vbphrase['none'];
 		}

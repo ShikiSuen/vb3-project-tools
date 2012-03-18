@@ -1298,7 +1298,7 @@ if ($_POST['do'] == 'postissue')
 	));
 
 	// Custom Magic Selects
-	$mslist = array();
+	$listmagicselect = array();
 
 	$magicselects = $db->query_read("
 		SELECT projectmagicselectgroupid
@@ -1308,10 +1308,10 @@ if ($_POST['do'] == 'postissue')
 
 	while ($magicselect = $db->fetch_array($magicselects))
 	{
-		$mslist[] = $magicselect['projectmagicselectgroupid'];
+		$listmagicselect[] = $magicselect['projectmagicselectgroupid'];
 	}
 
-	foreach ($mslist AS $magicselectlist)
+	foreach ($listmagicselect AS $magicselectlist)
 	{
 		$vbulletin->input->clean_gpc('p', 'magicselect' . $magicselectlist, TYPE_UINT);
 	}
@@ -1367,9 +1367,13 @@ if ($_POST['do'] == 'postissue')
 	$issuedata->set_info('project', $project);
 
 	// Custom Magic Selects
-	foreach ($mslist AS $magicselectlist)
+	$magiclists = array();
+
+	$issuems =& datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_ARRAY, 'pt_magicselect');
+
+	foreach ($listmagicselect AS $magicselectlist)
 	{
-		$issuedata->set_info('magicselect' . $magicselectlist, $vbulletin->GPC['magicselect' . $magicselectlist]);
+		$issuems->set('magicselect' . $magicselectlist, $vbulletin->GPC['magicselect' . $magicselectlist]);
 	}
 
 	if ($issue['issueid'])
@@ -1666,6 +1670,11 @@ if ($_POST['do'] == 'postissue')
 			$issue['issueid'] = $issuedata->save();
 			$issuenote->set('issueid', $issue['issueid']);
 			$issue['issuenoteid'] = $issuenote->save();
+
+			// Custom Magic Select
+			$issuems->set('issueid', $issue['issueid']);
+			$issuems->save();
+
 			$log_assignment_changes = false;
 		}
 

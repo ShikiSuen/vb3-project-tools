@@ -193,7 +193,7 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 	* @var	array
 	*/
 	var $validfields = array(
-		'issueid'		=> array(TYPE_UINT,		REQ_NO),
+		'issueid'		=> array(TYPE_UINT,		REQ_YES),
 		'fieldid'		=> array(TYPE_UINT,		REQ_NO),
 		'valueid'		=> array(TYPE_UINT,		REQ_NO),
 	);
@@ -238,7 +238,7 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 		while ($magicselect = $this->registry->db->fetch_array($magicselects))
 		{
 			$this->validfields['magicselect' . $magicselect['projectmagicselectgroupid']] = array(TYPE_UINT, REQ_NO);
-			$this->track_changes[] = $magicselect['projectmagicselectgroupid'];
+			//$this->track_changes[] = $magicselect['projectmagicselectgroupid'];
 		}
 
 		($hook = vBulletinHook::fetch_hook('pt_issue_magicselect_start')) ? eval($hook) : false;
@@ -264,7 +264,10 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 
 		// Remove 'fieldid' & 'valueid' from $this->info aka $this->pt_issuemagicselect as their values are
 		// in others variables, avoiding database errors
-		$this->pt_issuemagicselect = array_splice($this->pt_issuemagicselect, 0, 1);
+		if ($this->fieldid OR $this->valueid)
+		{
+			$this->pt_issuemagicselect = array_splice($this->pt_issuemagicselect, 0, 1);
+		}
 
 		$return_value = true;
 		($hook = vBulletinHook::fetch_hook('pt_issue_magicselect_presave')) ? eval($hook) : false;
@@ -299,6 +302,7 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 				FROM " . TABLE_PREFIX . "pt_issuechange
 				WHERE issueid = " . $this->fetch_field('issueid') . "
 					AND field = 'magicselect" . $this->fieldid . "'
+				ORDER BY dateline DESC
 			");
 
 			if (!empty($oldvalue))

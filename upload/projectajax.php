@@ -387,20 +387,12 @@ if ($_POST['do'] == 'save')
 						WHERE issueid = " . $vbulletin->GPC['issueid'] . "
 					");
 
-					$magicselect =& datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_SILENT, 'pt_magicselect');
-
-					if ($ms_result)
-					{
-						$magicselect->set_existing($ms_result);
-					}
-					else
-					{
-						$magicselect->set('issueid', $issue['issueid']);
-					}
-					$magicselect->set('magicselect' . $vbulletin->GPC['field'], $vbulletin->GPC['value']);
-					$magicselect->set('fieldid', $vbulletin->GPC['field']); // Required to track changes
-					$magicselect->set('valueid', $vbulletin->GPC['value']); // Required to track changes
-					$magicselect->save();
+					$issuems =& datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_SILENT, 'pt_magicselect');
+					$issuems->set_existing($ms_result);
+					$issuems->set('magicselect' . $vbulletin->GPC['field'], $vbulletin->GPC['value']);
+					$issuems->set('fieldid', $vbulletin->GPC['field']); // Required to track changes
+					$issuems->set('valueid', $vbulletin->GPC['value']); // Required to track changes
+					$issuems->save();
 				}
 			}
 
@@ -729,7 +721,7 @@ if ($_POST['do'] == 'fetch')
 			");
 
 			$xml->add_group('items');
-			$xml->add_tag('item', $vbphrase['none'], array('itemid' => 0, 'selected' => ($issue['magicselect' . $magicselect['projectmagicselectgroupid']] == 0 ? 'yes' : 'no')));
+			$xml->add_tag('item', $vbphrase['none'], array('itemid' => 0, 'selected' => 'yes')); // Selected set to yes will not disturb following values, latest is used by browsers
 
 			while ($magicselect = $db->fetch_array($magicselects))
 			{
