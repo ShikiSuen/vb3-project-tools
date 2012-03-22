@@ -391,6 +391,9 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			}
 		}
 
+		require_once DIR . '/vb/search/indexcontroller/queue.php';
+		vb_Search_Indexcontroller_Queue::indexQueue('vBProjectTools', 'IssueNote', 'index', intval($this->fetch_field('issuenoteid')) );
+
 		return true;
 	}
 
@@ -498,6 +501,9 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				$projectdata->save();
 			}
 		}
+
+		require_once DIR . '/vb/search/indexcontroller/queue.php';
+		vb_Search_Indexcontroller_Queue::indexQueue('vBProjectTools', 'IssueNote', 'delete', intval($this->fetch_field('issuenoteid')) );
 
 		($hook = vBulletinHook::fetch_hook('pt_issuenotedata_delete')) ? eval($hook) : false;
 		return true;
