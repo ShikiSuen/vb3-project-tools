@@ -534,7 +534,7 @@ if ($_POST['do'] == 'order')
 	{
 		$db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_projectmagicselect AS projectmagicselect
-			INNER JOIN " . TABLE_PREFIX . "pt_projectmagicselectgroup AS projetmagicselectgroup ON
+			INNER JOIN " . TABLE_PREFIX . "pt_projectmagicselectgroup AS projectmagicselectgroup ON
 				(projectmagicselect.projectmagicselectgroupid = projectmagicselectgroup.projectmagicselectgroupid)
 			SET
 				projectmagicselect.displayorder = CASE projectmagicselect.projectmagicselectid $magicselectcase_display ELSE projectmagicselect.displayorder END
