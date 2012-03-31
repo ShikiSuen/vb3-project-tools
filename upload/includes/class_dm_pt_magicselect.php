@@ -95,12 +95,6 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 			return false;
 		}
 
-		/*if ($this->fetch_field('value') != '' AND $this->fetch_field('value') == 0 OR empty($this->fetch_field('value')))
-		{
-			$this->error('value_must_be_higher_than_zero');
-			return false;
-		}*/
-
 		$return_value = true;
 		($hook = vBulletinHook::fetch_hook('pt_project_magicselect_presave')) ? eval($hook) : false;
 
