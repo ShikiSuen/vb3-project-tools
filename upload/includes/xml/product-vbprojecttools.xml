@@ -5554,8 +5554,9 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </body>
 </html>]]></template>
 		<template name="pt_issuelist_arrow" templatetype="template" date="1294664144" username="Pitchoune" version="2.2.0"><![CDATA[<img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" />]]></template>
-		<template name="pt_issuenotebit_petition" templatetype="template" date="1329468894" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_petition" templatetype="template" date="1333202025" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
+	<a name="note{vb:raw note.issuenoteid}"></a>
 	<div class="blockhead">
 		<div style="float:{vb:stylevar right}" class="smallfont">
 			{vb:raw note.petition_text}
@@ -5679,10 +5680,11 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	//--> 
 	</script>
 </li>]]></template>
-		<template name="pt_issuenotebit_system" templatetype="template" date="1295973362" username="Pitchoune" version="2.2.0"><![CDATA[<!-- note system -->
+		<template name="pt_issuenotebit_system" templatetype="template" date="1333203393" username="Pitchoune" version="2.2.0"><![CDATA[<!-- note system -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
+	<a name="note{vb:raw note.issuenoteid}"></a>
 	<div class="blockhead">
-		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
+		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time}
 	</div>
 	<div class="blockbody settings_form_border">
 		<div class="blockrow">
@@ -5690,16 +5692,20 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 		<div class="blockrow issuetext">
 			<div class="restore">
-				<ul style="margin-top: 0px;">{vb:raw note.message}</ul>
+				<ul style="margin-top: 0px;">
+					<vb:each from="note.message" value="entry">
+						<li>{vb:raw entry}</li>
+					</vb:each>
+				</ul>
 			</div>
 		</div>
 	</div>
 </li>]]></template>
-		<template name="pt_issuenotebit_systembit" templatetype="template" date="1273447557" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw entry}</li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1299680880" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1333202002" username="Pitchoune" version="2.2.0"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
+	<a name="note{vb:raw note.issuenoteid}"></a>
 	<div class="blockhead">
-		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time} <a name="note{vb:raw note.issuenoteid}"></a>
+		<img src="{vb:stylevar imgdir_statusicon}/post_<vb:if condition="$note['newflag']">new<vb:else />old</vb:if>.png" alt="" class="inlineimg" hspace="3" vspace="3" /> {vb:raw note.note_date} {vb:raw note.note_time}
 	</div>
 	<div class="blockbody settings_form_border">
 		<div class="blockrow">
