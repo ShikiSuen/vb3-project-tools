@@ -721,7 +721,6 @@ if ($_POST['do'] == 'fetch')
 			");
 
 			$xml->add_group('items');
-			$xml->add_tag('item', $vbphrase['none'], array('itemid' => 0, 'selected' => 'yes')); // Selected set to yes will not disturb following values, latest is used by browsers
 
 			while ($magicselect = $db->fetch_array($magicselects))
 			{

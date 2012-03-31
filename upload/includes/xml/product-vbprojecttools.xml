@@ -8129,12 +8129,11 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postissue_magicselect" templatetype="template" date="1331745857" username="Pitchoune" version="2.2.0"><![CDATA[<fieldset class="blockrow">
+		<template name="pt_postissue_magicselect" templatetype="template" date="1333200775" username="Pitchoune" version="2.2.0"><![CDATA[<fieldset class="blockrow">
 	<legend>{vb:raw magicselect.text}</legend>
 	<ul class="rightcol">
 		<li>
 			<select class="primary" name="magicselect{vb:raw magicselect.projectmagicselectgroupid}" tabindex="1">
-				<option value="0"<vb:if condition="$issue['magicselect{vb:raw magicselect.projectmagicselectgroupid}'] == 0"> selected="selected"</vb:if>>{vb:rawphrase none}</option>
 				<vb:each from="magicselect.options" value="option">
 					<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 				</vb:each>
@@ -14260,6 +14259,7 @@ If you wish to continue this action, <a href="{1}">click here to try again</a>.]
 			<phrase name="there_is_no_type_you_can_create_issues_in" date="1274871359" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no issue type in this project you can create issues in.]]></phrase>
 			<phrase name="type_must_have_one_status" date="1176210879" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Each issue type must have at least one status.]]></phrase>
 			<phrase name="updated_pt_attachments_successfully" date="1304432479" username="Pitchoune" version="2.2.0"><![CDATA[Updated Project Tools Attachments Successfully]]></phrase>
+			<phrase name="value_must_be_a_positive_integer" date="1333201768" username="Pitchoune" version="2.2.0"><![CDATA[Value must be a positive integer.]]></phrase>
 		</phrasetype>
 		<phrasetype name="FAQ Text" fieldname="faqtext">
 			<phrase name="pt_faq" date="1185887224" username="Ed Sullivan" version="1.0.1"><![CDATA[The Project Tools system adds project management capabilities to the $vboptions[bbtitle]. Depending on how the administrator has configured this system, you will likely be using it to report bugs or make suggestions.]]></phrase>
@@ -14844,8 +14844,8 @@ This is needed because Project Tools have a particular attachment system and nee
 <dfn>If you display this project in the forum list, you can use this to override the project's name in the list.</dfn>]]></phrase>
 			<phrase name="use_selected_project_sets" date="1276120817" username="Pitchoune" version="2.1.2"><![CDATA[Use Selected Project Sets]]></phrase>
 			<phrase name="usergroups_access_globally_disabled" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This usergroup's access to the Project Tools is globally disabled. The changes you make here will not be applied until that is changed.]]></phrase>
-			<phrase name="value" date="1327326380" username="Pitchoune" version="2.2.0"><![CDATA[Value
-<dfn>The value must be a integer near from 0 <b>and</b> higher than 0.</dfn>]]></phrase>
+			<phrase name="value" date="1333199502" username="Pitchoune" version="2.2.0"><![CDATA[Value
+<dfn>The value must be a positive integer.</dfn>]]></phrase>
 			<phrase name="version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Version Group]]></phrase>
 			<phrase name="versions" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Versions]]></phrase>
 			<phrase name="vote_question_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Vote Question<dfn>Example: Can you reproduce this bug?</dfn>]]></phrase>
