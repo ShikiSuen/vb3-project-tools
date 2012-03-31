@@ -532,13 +532,11 @@ class vB_Pt_IssueNote_System extends vB_Pt_IssueNote
 			return;
 		}
 
-		$this->note['message'] = '';
+		$this->note['message'] = array();
 
 		foreach (translate_system_note($changes) AS $entry)
 		{
-			$templater = vB_Template::create('pt_issuenotebit_systembit');
-				$templater->register('entry', $entry);
-			$this->note['message'] .= $templater->render();
+			$this->note['message'][] = $entry;
 		}
 	}
 }
