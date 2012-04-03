@@ -4600,7 +4600,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1331407891" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1333487815" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4647,7 +4647,30 @@ legend {
 	vbphrase['request_timed_out_refresh'] = '{vb:rawphrase request_timed_out_refresh}';
 	vbphrase['reply_text_sure_submit_attach'] = '{vb:rawphrase reply_text_sure_submit_attach}';
 
-	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("projectcategoryid", "appliesversionid", "addressedversionid", "issuestatusid", "priority", "milestoneid", "{vb:raw issue.headcode}"));
+	var pt_ajax_ids = ["issuestatusid"];
+
+	<vb:if condition="$show['category']">
+		pt_ajax_ids[pt_ajax_ids.length] = "projectcategoryid";
+	</vb:if>
+
+	<vb:if condition="$show['appliesversionid']">
+		pt_ajax_ids[pt_ajax_ids.length] = "appliesversionid";
+		pt_ajax_ids[pt_ajax_ids.length] = "addressedversionid";
+	</vb:if>
+
+	<vb:if condition="$show['priority']">
+		pt_ajax_ids[pt_ajax_ids.length] = "priority";
+	</vb:if>
+
+	<vb:if condition="$show['milestone']">
+		pt_ajax_ids[pt_ajax_ids.length] = "milestoneid";
+	</vb:if>
+
+	<vb:if condition="$issue['headcode']">
+		pt_ajax_ids[pt_ajax_ids.length] = "{vb:raw issue.headcode}";
+	</vb:if>
+
+	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", pt_ajax_ids);
 	vBulletin.register_ajax_urls("projectajax.php?issueid={vb:raw issue.issueid}&do=fetch&field={1:field}", "projectajax.php?issueid={vb:raw issue.issueid}&do=save&field={1:field}{2:submitstring}", Array("assignusers", "tags"))
 //-->
 	</script>
@@ -4774,12 +4797,19 @@ legend {
 			{vb:raw project.title_clean}
 		</div>
 
-		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_projectcategoryid"><span class="shade">{vb:rawphrase category}</span> {vb:raw issue.categorytitle}</div>
-		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_issuestatusid"><span class="shade">{vb:rawphrase status}</span> {vb:raw issue.status}</div>
-		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_priority"><span class="shade">{vb:rawphrase priority}</span> {vb:raw issue.priority_text}</div>
+		<vb:if condition="$show['category']">
+			<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_projectcategoryid"><span class="shade">{vb:rawphrase category}</span> {vb:raw issue.categorytitle}</div>
+		</vb:if>
 
-		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_appliesversionid"><span class="shade">{vb:rawphrase applies_version_issuetype}</span> {vb:raw issue.appliesversion}</div>
-		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_addressedversionid"><span class="shade">{vb:rawphrase addressed_version_issuetype}</span> {vb:raw issue.addressedversion}</div>
+		<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_issuestatusid"><span class="shade">{vb:rawphrase status}</span> {vb:raw issue.status}</div>
+		<vb:if condition="$show['priority']">
+			<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_priority"><span class="shade">{vb:rawphrase priority}</span> {vb:raw issue.priority_text}</div>
+		</vb:if>
+
+		<vb:if condition="$show['appliesversionid']">
+			<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_appliesversionid"><span class="shade">{vb:rawphrase applies_version_issuetype}</span> {vb:raw issue.appliesversion}</div>
+			<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_addressedversionid"><span class="shade">{vb:rawphrase addressed_version_issuetype}</span> {vb:raw issue.addressedversion}</div>
+		</vb:if>
 
 		<vb:if condition="$show['milestone']">
 			<div class="vB_MagicSelect_preload vB_MagicSelect_margin" id="magicselect_milestoneid"><span class="shade">{vb:rawphrase milestone}</span> {vb:raw issue.milestonetitle}</div>
