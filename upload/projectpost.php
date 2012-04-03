@@ -2137,57 +2137,60 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	// Versions
 	$version_groups = array();
 
-	$version_query = $db->query_read("
-		SELECT projectversion.projectversionid, projectversiongroup.projectversiongroupid
-		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
-		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
-			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
-		WHERE projectversion.projectid = " . $project['projectid'] . "
-		ORDER BY projectversion.effectiveorder DESC
-	");
-
-	while ($version = $db->fetch_array($version_query))
+	if (!in_array($project['requireappliesversion'], array(0, 1)))
 	{
-		$version_groups["$version[projectversiongroupid]"]["$version[projectversionid]"] = $version['projectversionid'];
-	}
+		$version_query = $db->query_read("
+			SELECT projectversion.projectversionid, projectversiongroup.projectversiongroupid
+			FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
+			INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
+				(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
+			WHERE projectversion.projectid = " . $project['projectid'] . "
+			ORDER BY projectversion.effectiveorder DESC
+		");
 
-	$applies_versions = array();
-	$addressed_versions = array();
-
-	foreach ($version_groups AS $optgroup_label => $versions)
-	{
-		$option = array();
-		$optiongroup = array();
-		$group_applies = array();
-		$group_addressed = array();
-
-		foreach ($versions AS $optionvalue => $optiontitle)
+		while ($version = $db->fetch_array($version_query))
 		{
-			$option['title'] = $vbphrase['version' . $optiontitle . ''];
-			$option['value'] = $optionvalue;
-			$option['selected'] = ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : '');
-
-			$group_applies[] = $option;
-
-			$option['selected'] = (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : '');
-
-			$group_addressed[] = $option;
+			$version_groups["$version[projectversiongroupid]"]["$version[projectversionid]"] = $version['projectversionid'];
 		}
 
-		$optiongroup['group'] = $group_applies;
-		$optiongroup['label'] = $vbphrase['versiongroup' . $optgroup_label . ''];
+		$applies_versions = array();
+		$addressed_versions = array();
 
-		if (!in_array($project['requireappliesversion'], array(0, 1)))
+		foreach ($version_groups AS $optgroup_label => $versions)
 		{
-			$applies_versions[] = $optiongroup;
+			$option = array();
+			$optiongroup = array();
+			$group_applies = array();
+			$group_addressed = array();
+
+			foreach ($versions AS $optionvalue => $optiontitle)
+			{
+				$option['title'] = $vbphrase['version' . $optiontitle . ''];
+				$option['value'] = $optionvalue;
+				$option['selected'] = ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : '');
+
+				$group_applies[] = $option;
+
+				$option['selected'] = (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : '');
+
+				$group_addressed[] = $option;
+			}
+
+			$optiongroup['group'] = $group_applies;
+			$optiongroup['label'] = $vbphrase['versiongroup' . $optgroup_label . ''];
+
+			if (!in_array($project['requireappliesversion'], array(0, 1)))
+			{
+				$applies_versions[] = $optiongroup;
+			}
+
+			$optiongroup['group'] = $group_addressed;
+
+			$addressed_versions[] = $optiongroup;
 		}
 
-		$optiongroup['group'] = $group_addressed;
-
-		$addressed_versions[] = $optiongroup;
+		$applies_unknown_selected = ($issue['appliesversionid'] == 0 ? ' selected="selected"' : '');
 	}
-
-	$applies_unknown_selected = ($issue['appliesversionid'] == 0 ? ' selected="selected"' : '');
 
 	if ($posting_perms['status_edit'])
 	{
