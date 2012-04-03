@@ -4168,7 +4168,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1309896867" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1333460374" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4337,7 +4337,7 @@ legend {
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -4359,7 +4359,7 @@ legend {
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -4544,7 +4544,7 @@ legend {
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -4566,7 +4566,7 @@ legend {
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -5109,7 +5109,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1309716100" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit<vb:if condition="$issue['visible'] == 'deleted'"> deleted"<vb:else />"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if></vb:if>>
+		<template name="pt_issuebit" templatetype="template" date="1333460492" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit<vb:if condition="$issue['visible'] == 'deleted'"> deleted"<vb:else />"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if></vb:if>>
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -5124,7 +5124,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 			<vb:if condition="$issue['pagenav']">
 			<dl class="pagination" id="pagination_issuebit_{vb:raw issue.issueid}">
 				<dd>
-					<vb:each from="issue[pagenav]" value="issuepagenav">
+					<vb:each from="issue.pagenav" value="issuepagenav">
 						<span><a href="{vb:link issue, {vb:raw issue}, {vb:raw issuepagenav.pageinfo}}">{vb:raw issuepagenav.curpage}</a></span>
 					</vb:each>
 					<vb:if condition="$show['pagenavmore']"> <span class="separator">...</span> <span><a href="{vb:raw issue.lastpagelink}">{vb:raw issue.totalpages}</a></span></vb:if>
@@ -5248,7 +5248,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1309882799" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1333460529" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5366,7 +5366,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
 									<vb:each from="search_status_options" value="optiongroup">
 										<optgroup label="{vb:raw optiongroup.label}" id="{vb:raw optiongroup.id}">
-											<vb:each from="optiongroup[group]" value="option">
+											<vb:each from="optiongroup.group" value="option">
 												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 											</vb:each>
 										</optgroup>
@@ -5497,7 +5497,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 						<option value="-1" {vb:raw activestatus_selected}>{vb:rawphrase any_active_meta}</option>
 							<vb:each from="status_options" value="optiongroup">
 								<optgroup label="{vb:raw optiongroup.label}">
-									<vb:each from="optiongroup[group]" value="option">
+									<vb:each from="optiongroup.group" value="option">
 										<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</optgroup>
@@ -6297,7 +6297,7 @@ init_project_readmarker_system();
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=all">{vb:rawphrase find_all_issues_with_posts_by_x, {vb:raw userinfo.username}}</a></li>
 	<li><a href="projectsearch.php?{vb:raw session.sessionurl}do=douser&amp;u={vb:raw userinfo.userid}&amp;type=issue">{vb:rawphrase find_all_issues_started_by_x, {vb:raw userinfo.username}}</a></li>
 </ul>]]></template>
-		<template name="pt_milestone" templatetype="template" date="1315127712" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone" templatetype="template" date="1333460577" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6388,7 +6388,7 @@ init_project_readmarker_system();
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
 								<vb:each from="search_status_options" value="optiongroup">
 									<optgroup label="{vb:raw optiongroup.label}" id="{vb:raw optiongroup.id}">
-										<vb:each from="optiongroup[group]" value="option">
+										<vb:each from="optiongroup.group" value="option">
 											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 										</vb:each>
 									</optgroup>
@@ -6599,7 +6599,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_milestone_issuelist" templatetype="template" date="1309882861" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_milestone_issuelist" templatetype="template" date="1333460601" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6671,7 +6671,7 @@ init_project_readmarker_system();
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
 								<vb:each from="search_status_options" value="optiongroup">
 									<optgroup label="{vb:raw optiongroup.label}" id="{vb:raw optiongroup.id}">
-										<vb:each from="optiongroup[group]" value="option">
+										<vb:each from="optiongroup.group" value="option">
 											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 										</vb:each>
 									</optgroup>
@@ -6796,7 +6796,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue" templatetype="template" date="1309815207" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue" templatetype="template" date="1333460648" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6845,7 +6845,7 @@ init_project_readmarker_system();
 						<select id="project-issuetype" name="project-issuetype" style="display:block; width:100%">
 							<vb:each from="project_type_select" value="optiongroup">
 								<optgroup label="{vb:raw optiongroup.label}">
-									<vb:each from="optiongroup[group]" value="option">
+									<vb:each from="optiongroup.group" value="option">
 										<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 									</vb:each>
 								</optgroup>
@@ -6867,7 +6867,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1330895908" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1333460719" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7025,7 +7025,7 @@ init_project_readmarker_system();
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -7047,7 +7047,7 @@ init_project_readmarker_system();
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -7072,7 +7072,7 @@ init_project_readmarker_system();
 									<option value="0"{vb:raw option.selected}>{vb:rawphrase none}</option>
 									<vb:each from="milestone_options" value="optiongroup">
 										<optgroup label="{vb:raw optiongroup.label}">
-											<vb:each from="optiongroup[group]" value="option">
+											<vb:each from="optiongroup.group" value="option">
 												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 											</vb:each>
 										</optgroup>
@@ -7237,7 +7237,7 @@ init_project_readmarker_system();
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -7259,7 +7259,7 @@ init_project_readmarker_system();
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -7644,7 +7644,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1329085948" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1333460770" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7865,7 +7865,7 @@ init_project_readmarker_system();
 									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -7886,7 +7886,7 @@ init_project_readmarker_system();
 									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup[group]" value="option">
+												<vb:each from="optiongroup.group" value="option">
 													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
@@ -7911,7 +7911,7 @@ init_project_readmarker_system();
 									<option value="0"{vb:raw option.selected}>{vb:rawphrase none}</option>
 									<vb:each from="milestone_options" value="optiongroup">
 										<optgroup label="{vb:raw optiongroup.label}">
-											<vb:each from="optiongroup[group]" value="option">
+											<vb:each from="optiongroup.group" value="option">
 												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 											</vb:each>
 										</optgroup>
@@ -8463,7 +8463,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1309892019" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1333460824" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8587,7 +8587,7 @@ init_project_readmarker_system();
 								<option value="" selected="selected">{vb:rawphrase any_meta}</option>
 								<vb:each from="search_status_options" value="optiongroup">
 									<optgroup label="{vb:raw optiongroup.label}" id="{vb:raw optiongroup.id}">
-										<vb:each from="optiongroup[group]" value="option">
+										<vb:each from="optiongroup.group" value="option">
 											<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 										</vb:each>
 									</optgroup>
