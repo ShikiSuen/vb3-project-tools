@@ -724,6 +724,16 @@ if ($_POST['do'] == 'fetch')
 
 			while ($magicselect = $db->fetch_array($magicselects))
 			{
+				$items[$magicselect['value']] = $magicselect;
+			}
+
+			if (!isset($items[0]))
+			{
+				$xml->add_tag('item', $vbphrase['none'], array('itemid' => 0, 'selected' => 'yes')); // Selected set to yes will not disturb following values, latest is used by browsers
+			}
+
+			foreach ($items AS $magicselect)
+			{
 				$xml->add_tag('item', $vbphrase['magicselect' . $magicselect['projectmagicselectid']], array('itemid' => $magicselect['value'], 'selected' => ($issue['magicselect' . $magicselect['projectmagicselectgroupid']] == $magicselect['value'] ? 'yes' : 'no')));
 			}
 

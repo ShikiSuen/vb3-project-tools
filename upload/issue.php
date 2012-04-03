@@ -683,6 +683,10 @@ else
 	$show['vote_option'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canvote']);
 }
 
+$show['category'] = ($project['requirecategory'] > 0);
+$show['appliesversionid'] = ($project['requireappliesversion'] > 0);
+$show['priority'] = ($project['requirepriority'] > 0);
+
 $show['private_edit'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancreateprivate']); // for quick reply
 $show['status_edit'] = $posting_perms['status_edit'];
 $show['milestone'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $project['milestonecount']);

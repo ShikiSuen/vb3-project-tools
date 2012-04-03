@@ -2031,6 +2031,8 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$magicselectlist["$magicselects[projectmagicselectgroupid]"]["$magicselects[projectmagicselectid]"] = $magicselects;
 	}
 
+	$show['magicselect_none'] = true;
+
 	foreach ($magicselectlist AS $projectmagicselectgroupid => $magicselectcontent)
 	{
 		$selected = '';
@@ -2045,6 +2047,11 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 			$options['value'] = $magicselectdata['value'];
 			$options['title'] = $vbphrase['magicselect' . $msid];
 			$options['selected'] = ($magicselectdata['value'] == $issue['magicselect' . $magicselectdata['projectmagicselectgroupid']] ? ' selected="selected"' : '');
+
+			if ($options['value'] == 0)
+			{
+				$show['magicselect_none'] = false;
+			}
 
 			$magicselect['options'][] = $options;
 		}
