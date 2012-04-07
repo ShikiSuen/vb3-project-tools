@@ -271,6 +271,10 @@ $issuenewcount = array();
 $issueoldcount = array();
 $issuebits = '';
 
+$show['category'] = ($project['requirecategory'] > 0);
+$show['appliesversionid'] = ($project['requireappliesversion'] > 0);
+$show['priority'] = ($project['requirepriority'] > 0);
+
 while ($issue = $db->fetch_array($issue_list->result))
 {
 	$issuebits .= build_issue_bit($issue, $project, $projectperms["$issue[issuetypeid]"]);
@@ -354,66 +358,69 @@ $issuetype_options = build_issuetype_select($projectperms, array_keys($vbulletin
 $any_issuetype_selected = (!$vbulletin->GPC['issuetypeid'] ? ' selected="selected"' : '');
 
 // version options
-$version_cache = array();
-
-foreach ($vbulletin->pt_versions AS $version)
+if ($project['requireappliesversion'] > 0)
 {
-	if ($version['projectid'] != $project['projectid'])
+	$version_cache = array();
+
+	foreach ($vbulletin->pt_versions AS $version)
 	{
-		continue;
+		if ($version['projectid'] != $project['projectid'])
+		{
+			continue;
+		}
+
+		$version_cache["$version[projectversiongroupid]"][] = $version;
 	}
 
-	$version_cache["$version[projectversiongroupid]"][] = $version;
-}
+	$appliesversion_options = array();
+	$appliesversion_printable = ($vbulletin->GPC['appliesversionid'] == -1 ? $vbphrase['unknown'] : '');
+	$version_groups = $db->query_read("
+		SELECT projectversiongroup.projectversiongroupid
+		FROM " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup
+		WHERE projectversiongroup.projectid = $project[projectid]
+		ORDER BY projectversiongroup.displayorder DESC
+	");
 
-$appliesversion_options = array();
-$appliesversion_printable = ($vbulletin->GPC['appliesversionid'] == -1 ? $vbphrase['unknown'] : '');
-$version_groups = $db->query_read("
-	SELECT projectversiongroup.projectversiongroupid
-	FROM " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup
-	WHERE projectversiongroup.projectid = $project[projectid]
-	ORDER BY projectversiongroup.displayorder DESC
-");
-
-while ($version_group = $db->fetch_array($version_groups))
-{
-	$option = array();
-
-	$option['value'] = 'g' . $version_group['projectversiongroupid'];
-	$option['title'] = $vbphrase['versiongroup' . $version_group['projectversiongroupid'] . ''];
-	$option['selected'] = ($option['value'] == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
-
-	if ($optionselected)
-	{
-		$appliesversion_printable = $vbphrase['versiongroup' . $version_group['projectversiongroupid'] . ''];
-	}
-
-	$appliesversion_options[] = $option;
-
-	if (!is_array($version_cache["$version_group[projectversiongroupid]"]))
-	{
-		continue;
-	}
-
-	foreach ($version_cache["$version_group[projectversiongroupid]"] AS $version)
+	while ($version_group = $db->fetch_array($version_groups))
 	{
 		$option = array();
 
-		$option['value'] = 'v' . $version['projectversionid'];
-		$option['title'] = '-- ' . $vbphrase['version' . $version['projectversionid']. ''];
+		$option['value'] = 'g' . $version_group['projectversiongroupid'];
+		$option['title'] = $vbphrase['versiongroup' . $version_group['projectversiongroupid'] . ''];
 		$option['selected'] = ($option['value'] == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
 
 		if ($optionselected)
 		{
-			$appliesversion_printable = $vbphrase['version' . $version['projectversionid']. ''];
+			$appliesversion_printable = $vbphrase['versiongroup' . $version_group['projectversiongroupid'] . ''];
 		}
 
 		$appliesversion_options[] = $option;
-	}
-}
 
-$anyversion_selected = ($vbulletin->GPC['appliesversionid'] == 0 ? ' selected="selected"' : '');
-$unknownversion_selected = ($vbulletin->GPC['appliesversionid'] == -1 ? ' selected="selected"' : '');
+		if (!is_array($version_cache["$version_group[projectversiongroupid]"]))
+		{
+			continue;
+		}
+
+		foreach ($version_cache["$version_group[projectversiongroupid]"] AS $version)
+		{
+			$option = array();
+
+			$option['value'] = 'v' . $version['projectversionid'];
+			$option['title'] = '-- ' . $vbphrase['version' . $version['projectversionid']. ''];
+			$option['selected'] = ($option['value'] == $vbulletin->GPC['appliesversionid'] ? ' selected="selected"' : '');
+
+			if ($optionselected)
+			{
+				$appliesversion_printable = $vbphrase['version' . $version['projectversionid']. ''];
+			}
+
+			$appliesversion_options[] = $option;
+		}
+	}
+
+	$anyversion_selected = ($vbulletin->GPC['appliesversionid'] == 0 ? ' selected="selected"' : '');
+	$unknownversion_selected = ($vbulletin->GPC['appliesversionid'] == -1 ? ' selected="selected"' : '');
+}
 
 // status options / posting options drop down
 $status_options = array();
