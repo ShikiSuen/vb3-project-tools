@@ -198,6 +198,10 @@ if ($_REQUEST['do'] == 'search')
 			}
 		}
 
+		$show['category'] = ($project['requirecategory'] > 0);
+		$show['appliesversionid'] = ($project['requireappliesversion'] > 0);
+		$show['priority'] = ($project['requirepriority'] > 0);
+
 		$templater = vB_Template::create('pt_checkbox_option');
 			$templater->register('optionchecked', $optionchecked);
 			$templater->register('optionid', $optionid);
@@ -418,8 +422,7 @@ if ($_REQUEST['do'] == 'dosearch')
 
 	$vbulletin->input->clean_array_gpc('r', $search_fields + $aux_fields);
 
-	if ($vbulletin->GPC['gotoissueinteger'] AND preg_match('#^\d+$#', $vbulletin->GPC['text'])
-		AND $db->query_first("SELECT issueid FROM " . TABLE_PREFIX . "pt_issue WHERE issueid = " . intval($vbulletin->GPC['text'])))
+	if ($vbulletin->GPC['gotoissueinteger'] AND preg_match('#^\d+$#', $vbulletin->GPC['text']) AND $db->query_first("SELECT issueid FROM " . TABLE_PREFIX . "pt_issue WHERE issueid = " . intval($vbulletin->GPC['text'])))
 	{
 		exec_header_redirect("project.php?" . $vbulletin->session->vars['sessionurl_js'] . "issueid=" . intval($vbulletin->GPC['text']));
 		exit;
