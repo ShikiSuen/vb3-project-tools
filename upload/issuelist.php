@@ -271,10 +271,6 @@ $issuenewcount = array();
 $issueoldcount = array();
 $issuebits = '';
 
-$show['category'] = ($project['requirecategory'] > 0);
-$show['appliesversionid'] = ($project['requireappliesversion'] > 0);
-$show['priority'] = ($project['requirepriority'] > 0);
-
 while ($issue = $db->fetch_array($issue_list->result))
 {
 	$issuebits .= build_issue_bit($issue, $project, $projectperms["$issue[issuetypeid]"]);

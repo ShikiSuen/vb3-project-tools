@@ -1247,6 +1247,10 @@ function build_issue_bit($issue, $project, $issueperms)
 
 	$issuelist = '';
 
+	$show['category'] = ($project['requirecategory'] > 0);
+	$show['appliesversionid'] = ($project['requireappliesversion'] > 0);
+	$show['priority'] = ($project['requirepriority'] > 0);
+
 	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 	$show['edit_issue'] = $posting_perms['issue_edit'];
 	$show['status_edit'] = $posting_perms['status_edit'];
