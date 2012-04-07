@@ -267,6 +267,10 @@ verify_seo_url('issuelist', $project, $pageinfo + array('pagenumber' => $vbullet
 
 $projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 
+$show['category'] = ($project['requirecategory'] > 0);
+$show['appliesversionid'] = ($project['requireappliesversion'] > 0);
+$show['priority'] = ($project['requirepriority'] > 0);
+
 $issuenewcount = array();
 $issueoldcount = array();
 $issuebits = '';
