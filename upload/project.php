@@ -434,7 +434,7 @@ $project['description'] = nl2br($project['description']);
 ($hook = vBulletinHook::fetch_hook('project_project_start')) ? eval($hook) : false;
 
 // Definition to display selected columns
-$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
 
 // milestones
 require_once(DIR . '/includes/functions_pt_milestone.php');

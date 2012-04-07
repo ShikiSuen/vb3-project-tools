@@ -80,9 +80,6 @@ $vbulletin->input->clean_array_gpc('r', array(
 	'sortorder' => TYPE_NOHTML
 ));
 
-// Definition to display selected columns
-$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
-
 $milestone = verify_milestone($vbulletin->GPC['milestoneid']);
 $project = verify_project($milestone['projectid']);
 $projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
@@ -100,6 +97,9 @@ if (!$milestone_types)
 {
 	print_no_permission();
 }
+
+// Definition to display selected columns
+$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
 
 // issues per page = 0 means "unlmiited"
 if (!$vbulletin->options['pt_issuesperpage'])

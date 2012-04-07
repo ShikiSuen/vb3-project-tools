@@ -90,7 +90,7 @@ if (empty($perms_query["$project[projectid]"]))
 }
 
 // Definition to display selected columns
-$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
 
 $anystatus_selected = '';
 $activestatus_selected = '';

@@ -1820,7 +1820,7 @@ function fetch_pt_datastore()
 *
 * @return	array	List of columns
 */
-function fetch_issuelist_columns($column)
+function fetch_issuelist_columns($column, $project = array())
 {
 	$columns = array();
 
@@ -1845,7 +1845,7 @@ function fetch_issuelist_columns($column)
 	}
 
 	// Priority
-	if ($column & 4)
+	if (($column & 4) AND $project['requirepriority'] > 0)
 	{
 		$columns['priority'] = true;
 	}
@@ -1857,19 +1857,19 @@ function fetch_issuelist_columns($column)
 	}
 
 	// Category
-	if ($column & 16)
+	if (($column & 16) AND $project['requirecategory'] > 0)
 	{
 		$columns['category'] = true;
 	}
 
 	// Affect version
-	if ($column & 32)
+	if (($column & 32) AND $project['requireappliesversion'] > 0)
 	{
 		$columns['applyversion'] = true;
 	}
 
 	// Address version
-	if ($column & 64)
+	if (($column & 64) AND $project['requireappliesversion'] > 0)
 	{
 		$columns['addressversion'] = true;
 	}

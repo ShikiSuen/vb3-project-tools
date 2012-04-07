@@ -120,7 +120,7 @@ else
 ($hook = vBulletinHook::fetch_hook('project_issuelist_start')) ? eval($hook) : false;
 
 // Definition to display selected columns
-$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
 
 // issues per page = 0 means "unlmiited"
 if (!$vbulletin->options['pt_issuesperpage'])
@@ -358,7 +358,7 @@ $issuetype_options = build_issuetype_select($projectperms, array_keys($vbulletin
 $any_issuetype_selected = (!$vbulletin->GPC['issuetypeid'] ? ' selected="selected"' : '');
 
 // version options
-if ($project['requireappliesversion'] > 0)
+if ($show['appliesversionid'])
 {
 	$version_cache = array();
 
