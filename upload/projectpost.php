@@ -3551,20 +3551,23 @@ if ($_POST['do'] == 'moveissue2')
 	// categories
 	$category_options = array();
 
-	foreach ($vbulletin->pt_categories AS $category)
+	if ($project['requirecategory'] > 0)
 	{
-		$option = array();
-
-		if ($category['projectid'] != $new_project['projectid'])
+		foreach ($vbulletin->pt_categories AS $category)
 		{
-			continue;
+			$option = array();
+
+			if ($category['projectid'] != $new_project['projectid'])
+			{
+				continue;
+			}
+
+			$option['title'] = $vbphrase['category' . $category['projectcategoryid']];
+			$option['value'] = $category['projectcategoryid'];
+			$option['selected'] = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
+
+			$category_options[] = $option;
 		}
-
-		$option['title'] = $vbphrase['category' . $category['projectcategoryid']];
-		$option['value'] = $category['projectcategoryid'];
-		$option['selected'] = ($issue['projectcategoryid'] == $category['projectcategoryid'] ? ' selected="selected"' : '');
-
-		$category_options[] = $option;
 	}
 
 	$category_unknown_selected = ($issue['projectcategoryid'] == 0 ? ' selected="selected"' : '');
@@ -3572,26 +3575,29 @@ if ($_POST['do'] == 'moveissue2')
 	// setup priority options
 	$priority = $priority_options = array();
 
-	$priorities = $db->query_read("
-		SELECT *
-		FROM " . TABLE_PREFIX . "pt_projectpriority
-		WHERE projectid = $new_project[projectid]
-	");
-
-	while ($prioritys = $db->fetch_array($priorities))
+	if ($project['requirepriority'] > 0)
 	{
-		$priority["$prioritys[projectpriorityid]"] = $prioritys;
-	}
+		$priorities = $db->query_read("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_projectpriority
+			WHERE projectid = $new_project[projectid]
+		");
 
-	foreach ($priority AS $optionvalue => $options)
-	{
-		$option = array();
+		while ($prioritys = $db->fetch_array($priorities))
+		{
+			$priority["$prioritys[projectpriorityid]"] = $prioritys;
+		}
 
-		$option['title'] = $vbphrase['priority' . $optionvalue . ''];
-		$option['value'] = $optionvalue;
-		$option['selected'] = ($issue['priority'] == $optionvalue ? ' selected="selected"' : '');
+		foreach ($priority AS $optionvalue => $options)
+		{
+			$option = array();
 
-		$priority_options[] = $option;
+			$option['title'] = $vbphrase['priority' . $optionvalue . ''];
+			$option['value'] = $optionvalue;
+			$option['selected'] = ($issue['priority'] == $optionvalue ? ' selected="selected"' : '');
+
+			$priority_options[] = $option;
+		}
 	}
 
 	// setup versions
@@ -3614,34 +3620,37 @@ if ($_POST['do'] == 'moveissue2')
 	$applies_versions = array();
 	$addressed_versions = array();
 
-	foreach ($version_groups AS $optgroup_label => $versions)
+	if ($project['requireappliesversion'] > 0)
 	{
-		$option = array();
-		$optiongroup = array();
-		$group_applies = array();
-		$group_addressed = array();
-
-		foreach ($versions AS $optionvalue => $optiontitle)
+		foreach ($version_groups AS $optgroup_label => $versions)
 		{
-			$option['title'] = $optiontitle;
-			$option['value'] = $optionvalue;
-			$option['selected'] = ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : '');
+			$option = array();
+			$optiongroup = array();
+			$group_applies = array();
+			$group_addressed = array();
 
-			$group_applies[] = $option;
+			foreach ($versions AS $optionvalue => $optiontitle)
+			{
+				$option['title'] = $optiontitle;
+				$option['value'] = $optionvalue;
+				$option['selected'] = ($issue['appliesversionid'] == $optionvalue ? ' selected="selected"' : '');
 
-			$option['selected'] = (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : '');
+				$group_applies[] = $option;
 
-			$group_addressed[] = $option;
+				$option['selected'] = (($issue['isaddressed'] AND $issue['addressedversionid'] == $optionvalue) ? ' selected="selected"' : '');
+
+				$group_addressed[] = $option;
+			}
+
+			$optiongroup['group'] = $group_applies;
+			$optiongroup['label'] = $vbphrase['versiongroup' . $optgroup_label . ''];
+
+			$applies_versions[] = $optiongroup;
+
+			$optiongroup['group'] = $group_addressed;
+
+			$addressed_versions[] = $optiongroup;
 		}
-
-		$optiongroup['group'] = $group_applies;
-		$optiongroup['label'] = $vbphrase['versiongroup' . $optgroup_label . ''];
-
-		$applies_versions[] = $optiongroup;
-
-		$optiongroup['group'] = $group_addressed;
-
-		$addressed_versions[] = $optiongroup;
 	}
 
 	$applies_unknown_selected = ($issue['appliesversionid'] == 0 ? ' selected="selected"' : '');
@@ -4539,43 +4548,49 @@ if ($_POST['do'] == 'importcontent2')
 	// setup priorities
 	$priority_array = $priority_options = array();
 
-	$priorities = $db->query_read("
-		SELECT *
-		FROM " . TABLE_PREFIX . "pt_projectpriority
-		WHERE projectid = " . intval($project['projectid']) . "
-	");
-
-	while ($priority = $db->fetch_array($priorities))
+	if ($project['requirepriority'] > 0)
 	{
-		$priority_array["$priority[projectpriorityid]"] = $priority;
-	}
+		$priorities = $db->query_read("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_projectpriority
+			WHERE projectid = " . intval($project['projectid']) . "
+		");
 
-	foreach ($priority_array AS $optionvalue => $options)
-	{
-		$option = array();
+		while ($priority = $db->fetch_array($priorities))
+		{
+			$priority_array["$priority[projectpriorityid]"] = $priority;
+		}
 
-		$option['title'] = $vbphrase['priority' . $optionvalue . ''];
-		$option['value'] = $optionvalue;
+		foreach ($priority_array AS $optionvalue => $options)
+		{
+			$option = array();
 
-		$priority_options[] = $option;
+			$option['title'] = $vbphrase['priority' . $optionvalue . ''];
+			$option['value'] = $optionvalue;
+
+			$priority_options[] = $option;
+		}
 	}
 
 	// categories
 	$category_options = array();
 
-	foreach ($vbulletin->pt_categories AS $category)
+	if ($project['requirecategory'] > 0)
 	{
-		$option = array();
-
-		if ($category['projectid'] != $project['projectid'])
+		foreach ($vbulletin->pt_categories AS $category)
 		{
-			continue;
+			$option = array();
+
+			if ($category['projectid'] != $project['projectid'])
+			{
+				continue;
+			}
+
+			$option['title'] = $vbphrase['category' . $category['projectcategoryid'] . ''];
+			$option['value'] = $category['projectcategoryid'];
+
+			$category_options[] = $option;
 		}
-
-		$option['title'] = $vbphrase['category' . $category['projectcategoryid'] . ''];
-		$option['value'] = $category['projectcategoryid'];
-
-		$category_options[] = $option;
 	}
 
 	$category_unknown_selected = ' selected="selected"';
@@ -4583,42 +4598,45 @@ if ($_POST['do'] == 'importcontent2')
 	// setup versions
 	$version_groups = array();
 	$version_query = $db->query_read("
-		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
+		SELECT projectversion.projectversionid, projectversiongroup.projectversiongroupid
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
 		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
 			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
-		WHERE projectversion.projectid = $project[projectid]
+		WHERE projectversion.projectid = " . $project['projectid'] . "
 		ORDER BY projectversion.effectiveorder DESC
 	");
 
 	while ($version = $db->fetch_array($version_query))
 	{
-		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
+		$version_groups["$version[projectversiongroupid]"]["$version[projectversionid]"] = $version['projectversionid'];
 	}
 
 	$applies_versions = $addressed_versions = array();
 
-	foreach ($version_groups AS $optgroup_label => $versions)
+	if ($project['requireappliesversion'] > 0)
 	{
-		$group_applies = $group_addressed = array();
-
-		foreach ($versions AS $optionvalue => $optiontitle)
+		foreach ($version_groups AS $optgroup_label => $versions)
 		{
-			$option['title'] = $optiontitle;
-			$option['value'] = $optionvalue;
+			$group_applies = $group_addressed = array();
 
-			$group_applies[] = $option;
-			$group_addressed[] = $option;
+			foreach ($versions AS $optionvalue => $optiontitle)
+			{
+				$option['title'] = $vbphrase['version' . $optiontitle . ''];
+				$option['value'] = $optionvalue;
+
+				$group_applies[] = $option;
+				$group_addressed[] = $option;
+			}
+
+			$optiongroup['label'] = $vbphrase['versiongroup' . $optgroup_label . ''];
+			$optiongroup['group'] = $group_applies;
+
+			$applies_versions[] = $optiongroup;
+
+			$optiongroup['group'] = $group_addressed;
+
+			$addressed_versions[] = $optiongroup;
 		}
-
-		$optiongroup['label'] = $optgroup_label;
-		$optiongroup['group'] = $group_applies;
-
-		$applies_versions[] = $optiongroup;
-
-		$optiongroup['group'] = $group_addressed;
-
-		$addressed_versions[] = $optiongroup;
 	}
 
 	$applies_unknown_selected = '';

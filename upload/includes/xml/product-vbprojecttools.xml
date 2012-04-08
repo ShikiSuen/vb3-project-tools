@@ -4168,7 +4168,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1333460374" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1333882943" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4348,29 +4348,31 @@ legend {
 					</fieldset>
 				</vb:if>
 
-				<!-- addressed in version -->
-				<fieldset class="blockrow">
-					<legend>{vb:rawphrase addressed_version_issuetype}</legend>
-					<ul class="rightcol">
-						<li>
-							<vb:if condition="$show['status_edit']">
-								<select class="primary" name="addressedversionid" tabindex="1">
-									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
-									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-										<vb:each from="addressed_versions" value="optiongroup">
-											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup.group" value="option">
-													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
-												</vb:each>
-											</optgroup>
-										</vb:each>
-								</select>
-							<vb:else />
-								{vb:raw issue.addressedversion}
-							</vb:if>
-						</li>
-					</ul>
-				</fieldset>
+				<vb:if condition="$project['requireappliesversion'] > 0">
+					<!-- addressed in version -->
+					<fieldset class="blockrow">
+						<legend>{vb:rawphrase addressed_version_issuetype}</legend>
+						<ul class="rightcol">
+							<li>
+								<vb:if condition="$show['status_edit']">
+									<select class="primary" name="addressedversionid" tabindex="1">
+										<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
+										<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+											<vb:each from="addressed_versions" value="optiongroup">
+												<optgroup label="{vb:raw optiongroup.label}">
+													<vb:each from="optiongroup.group" value="option">
+														<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+													</vb:each>
+												</optgroup>
+											</vb:each>
+									</select>
+								<vb:else />
+									{vb:raw issue.addressedversion}
+								</vb:if>
+							</li>
+						</ul>
+					</fieldset>
+				</vb:if>
 			</vb:if>
 
 			<vb:if condition="$show['milestone_edit']">
@@ -6916,7 +6918,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_move_issue_confirm" templatetype="template" date="1333460719" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_move_issue_confirm" templatetype="template" date="1333882951" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7085,29 +7087,31 @@ init_project_readmarker_system();
 					</fieldset>
 				</vb:if>
 
-				<!-- addressed in version -->
-				<fieldset class="blockrow">
-					<legend>{vb:rawphrase addressed_version_issuetype}</legend>
-					<ul class="rightcol">
-						<li>
-							<vb:if condition="$show['status_edit']">
-								<select class="primary" name="addressedversionid" tabindex="1">
-									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
-									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-										<vb:each from="addressed_versions" value="optiongroup">
-											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup.group" value="option">
-													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
-												</vb:each>
-											</optgroup>
-										</vb:each>
-								</select>
-							<vb:else />
-								{vb:raw issue.addressedversion}
-							</vb:if>
-						</li>
-					</ul>
-				</fieldset>
+				<vb:if condition="$project['requireappliesversion'] > 0">
+					<!-- addressed in version -->
+					<fieldset class="blockrow">
+						<legend>{vb:rawphrase addressed_version_issuetype}</legend>
+						<ul class="rightcol">
+							<li>
+								<vb:if condition="$show['status_edit']">
+									<select class="primary" name="addressedversionid" tabindex="1">
+										<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
+										<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+											<vb:each from="addressed_versions" value="optiongroup">
+												<optgroup label="{vb:raw optiongroup.label}">
+													<vb:each from="optiongroup.group" value="option">
+														<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+													</vb:each>
+												</optgroup>
+											</vb:each>
+									</select>
+								<vb:else />
+									{vb:raw issue.addressedversion}
+								</vb:if>
+							</li>
+						</ul>
+					</fieldset>
+				</vb:if>
 			</vb:if>
 
 			<vb:if condition="$show['milestone_edit']">
