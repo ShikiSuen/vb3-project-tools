@@ -2087,7 +2087,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	// Categories
 	$category_options = array();
 
-	if (!in_array($project['requirecategory'], array(0, 1)))
+	if ($project['requirecategory'] > 0)
 	{
 		foreach ($vbulletin->pt_categories AS $category)
 		{
@@ -2109,7 +2109,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	// Priorities
 	$priority = $priority_options = array();
 
-	if (!in_array($project['requirepriority'], array(0, 1)))
+	if ($project['requirepriority'] > 0)
 	{
 		$priorities = $db->query_read("
 			SELECT *
@@ -2137,7 +2137,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 	// Versions
 	$version_groups = array();
 
-	if (!in_array($project['requireappliesversion'], array(0, 1)))
+	if ($project['requireappliesversion'] > 0)
 	{
 		$version_query = $db->query_read("
 			SELECT projectversion.projectversionid, projectversiongroup.projectversiongroupid
