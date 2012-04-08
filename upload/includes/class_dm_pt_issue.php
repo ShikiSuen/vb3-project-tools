@@ -711,7 +711,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		{
 			$this->rebuild_milestone_counters($this->fetch_field('milestoneid'));
 		}
-		vb_Search_Indexcontroller_Queue::indexQueue('vBProjectTools', 'Issue', 'index', intval($this->fetch_field('issueid')) );
+		vB_Search_Indexcontroller_Queue::indexQueue('vBProjectTools', 'Issue', 'index', intval($this->fetch_field('issueid')));
 
 		return true;
 	}

@@ -2534,7 +2534,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1331406694" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1333811075" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2840,7 +2840,7 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuelist .blocksubhead .ptissuelist_status {
 	float: {vb:stylevar right};
-	width: 6%;
+	width: 9%;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_priority {
@@ -2963,7 +2963,7 @@ a.firstunread, a.firstunread:hover
 .pt_issuelist .blockrow .ptissuelist_status {
 	padding: 0 5px;
 	vertical-align: middle;
-	width: 6%;
+	width: 9%;
 	text-align: {vb:stylevar right};
 	float: {vb:stylevar right};
 }
@@ -5139,7 +5139,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 </body>
 </html>]]></template>
-		<template name="pt_issuebit" templatetype="template" date="1333460492" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit<vb:if condition="$issue['visible'] == 'deleted'"> deleted"<vb:else />"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if></vb:if>>
+		<template name="pt_issuebit" templatetype="template" date="1333878025" username="Pitchoune" version="2.2.0"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="blockrow issuebit<vb:if condition="$issue['visible'] == 'deleted'"> deleted"<vb:else />"<vb:if condition="$show['statuscolor']"> style="background-color: {vb:raw issue.statuscolor}"</vb:if></vb:if>>
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']">
 			<img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" />
@@ -5278,7 +5278,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1333460529" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1333878064" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5307,7 +5307,22 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	<!--
 	vbphrase['request_timed_out_refresh'] = '{vb:rawphrase request_timed_out_refresh}';
 
-	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", Array("issuestatusid", "priority", "projectcategoryid", "appliesversionid", "addressedversionid"));
+	var pt_ajax_ids = ["issuestatusid"];
+
+	<vb:if condition="$show['category']">
+		pt_ajax_ids[pt_ajax_ids.length] = "projectcategoryid";
+	</vb:if>
+
+	<vb:if condition="$show['appliesversionid']">
+		pt_ajax_ids[pt_ajax_ids.length] = "appliesversionid";
+		pt_ajax_ids[pt_ajax_ids.length] = "addressedversionid";
+	</vb:if>
+
+	<vb:if condition="$show['priority']">
+		pt_ajax_ids[pt_ajax_ids.length] = "priority";
+	</vb:if>
+
+	vBulletin.register_ajax_urls("projectajax.php?issueid={1:issueid}&do=fetch&field={2:field}", "projectajax.php?issueid={1:issueid}&do=save&field={2:field}&value={3:value}&valuehtml={4:valuehtml}", pt_ajax_ids);
 	//-->
 	</script>
 
@@ -5510,16 +5525,20 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 						</vb:each>
 					</select>
 				</label>
-				&nbsp; &nbsp;
-				<label style="white-space: nowrap"><vb:if condition="$input['issuetypeid']">{vb:rawphrase applies_version_issuetype}<vb:else />{vb:rawphrase applicable_version}</vb:if>
-					<select name="appliesversionid" tabindex="1">
-						<option value="0"{vb:raw anyversion_selected}>{vb:rawphrase any_meta}</option>
-						<option value="-1"{vb:raw unknownversion_selected}>{vb:rawphrase unknown}</option>
+
+				<vb:if condition="$show['appliesversionid']">
+					&nbsp; &nbsp;
+					<label style="white-space: nowrap"><vb:if condition="$input['issuetypeid']">{vb:rawphrase applies_version_issuetype}<vb:else />{vb:rawphrase applicable_version}</vb:if>
+						<select name="appliesversionid" tabindex="1">
+							<option value="0"{vb:raw anyversion_selected}>{vb:rawphrase any_meta}</option>
+							<option value="-1"{vb:raw unknownversion_selected}>{vb:rawphrase unknown}</option>
 							<vb:each from="appliesversion_options" value="option">
 								<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
 							</vb:each>
-					</select>
-				</label>
+						</select>
+					</label>
+				</vb:if>
+
 				&nbsp; &nbsp;
 				<label style="white-space: nowrap">{vb:rawphrase status}
 					<select name="issuestatusid" tabindex="1">
@@ -7674,7 +7693,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1333460770" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1333878107" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7904,16 +7923,15 @@ init_project_readmarker_system();
 							</li>
 						</ul>
 					</fieldset>
-				</vb:if>
 
-				<fieldset class="blockrow">
-					<legend>{vb:rawphrase addressed_version_issuetype}</legend>
-					<ul class="rightcol">
-						<li>
-							<vb:if condition="$show['status_edit']">
-								<select class="primary" name="addressedversionid" tabindex="1">
-									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
-									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+					<fieldset class="blockrow">
+						<legend>{vb:rawphrase addressed_version_issuetype}</legend>
+						<ul class="rightcol">
+							<li>
+								<vb:if condition="$show['status_edit']">
+									<select class="primary" name="addressedversionid" tabindex="1">
+										<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
+										<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
 										<vb:each from="addressed_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup.group" value="option">
@@ -7921,13 +7939,14 @@ init_project_readmarker_system();
 												</vb:each>
 											</optgroup>
 										</vb:each>
-								</select>
-							<vb:else />
-								{vb:raw issue.addressedversion}
-							</vb:if>
-						</li>
-					</ul>
-				</fieldset>
+									</select>
+								<vb:else />
+									{vb:raw issue.addressedversion}
+								</vb:if>
+							</li>
+						</ul>
+					</fieldset>
+				</vb:if>
 			</vb:if>
 
 			<vb:if condition="$show['milestone_edit'] OR $issue['milestonetitle']">
@@ -9124,7 +9143,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_search" templatetype="template" date="1291147057" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_search" templatetype="template" date="1333878191" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -9199,27 +9218,15 @@ init_project_readmarker_system();
 						<ul id="ptsearch_issuestatusid">{vb:raw status_options}</ul>
 					</div>
 
-					<div style="margin-top:6px"><label for="priority_type">{vb:rawphrase priority}</label></div>
-					<select name="priority_type" id="priority_type" tabindex="1">
-						<option value="lteq">{vb:rawphrase at_most}</option>
-						<option value="gteq" selected="selected">{vb:rawphrase at_least}</option>
-					</select>
-					<select name="priority" tabindex="1">
-						<option value="0">{vb:rawphrase any_meta}</option>
-						<option value="-1">{vb:rawphrase priority_0}</option>
-						<option value="1">{vb:rawphrase priority_1}</option>
-						<option value="2">{vb:rawphrase priority_2}</option>
-						<option value="3">{vb:rawphrase priority_3}</option>
-						<option value="4">{vb:rawphrase priority_4}</option>
-						<option value="5">{vb:rawphrase priority_5}</option>
-						<option value="6">{vb:rawphrase priority_6}</option>
-						<option value="7">{vb:rawphrase priority_7}</option>
-						<option value="8">{vb:rawphrase priority_8}</option>
-						<option value="9">{vb:rawphrase priority_9}</option>
-						<option value="10">{vb:rawphrase priority_10}</option>
-					</select>
-
-					</div>
+					<vb:if condition="$priority_options">
+						<div style="margin-top:6px">{vb:rawphrase priority}</div>
+						<div class="textbox checkbox_multiselect">
+							<ul id="ptsearch_projectpriorityid">
+								<li class="smallfont"><label for="cb_project_priority_-1"><input type="checkbox" id="cb_project_priority_-1" name="projectpriorityid[]" value="-1" tabindex="1" />&nbsp;{vb:rawphrase unknown}</label></li>
+								{vb:raw priority_options}
+							</ul>
+						</div>
+					</vb:if>
 				</fieldset>
 
 				<fieldset class="fieldset">
@@ -9310,6 +9317,7 @@ init_project_readmarker_system();
 					</div>
 				</fieldset>
 
+<vb:if condition="$show['appliesversionid']">
 				<fieldset class="fieldset">
 					<legend>{vb:rawphrase version_information}</legend>
 					<div style="padding:3px">
@@ -9341,7 +9349,7 @@ init_project_readmarker_system();
 
 					</div>
 				</fieldset>
-
+</vb:if>
 				<fieldset class="fieldset">
 					<legend>{vb:rawphrase search_by_user_name}</legend>
 					<div style="padding:3px">

@@ -455,9 +455,6 @@ class vB_Pt_IssueSearchGenerator
 		'user'       => 'add_user',       // string - post by user
 		'user_issue' => 'add_user_issue', // string - issue started by user
 
-		'priority_gteq' => 'add_priority_gteq', // int - priority >=
-		'priority_lteq' => 'add_priority_lteq', // int - priority <=
-
 		'searchdate_gteq' => 'add_searchdate_gteq', // int - search date >=
 		'searchdate_lteq' => 'add_searchdate_lteq', // int - search date <=
 
@@ -482,6 +479,8 @@ class vB_Pt_IssueSearchGenerator
 
 		'projectcategoryid' => 'add_projectcategoryid',
 
+		'projectpriorityid' => 'add_projectpriorityid',
+
 		'tag' => 'add_tag', // string/array - has tags
 
 		'newonly' => 'add_newonly', // boolean(0/1)
@@ -496,7 +495,7 @@ class vB_Pt_IssueSearchGenerator
 	var $valid_sort = array(
 		'lastpost'     => 'lastpost',
 		'title'        => 'issue.title',
-		'priority'     => 'IF(issue.priority = 0, 11, issue.priority)',
+		'priority'     => 'issue.priority',
 		'replies'      => 'replycount',
 		'submitdate'   => 'issue.submitdate',
 		'votepositive' => 'issue.votepositive',
@@ -518,6 +517,7 @@ class vB_Pt_IssueSearchGenerator
 		'appliesversionid'   => 'add_group_appliesversionid',
 		'addressedversionid' => 'add_group_addressedversionid',
 		'projectcategoryid'  => 'add_group_projectcategoryid',
+		'projectpriorityid'  => 'add_group_projectpriorityid'
 	);
 
 	/**
@@ -857,6 +857,33 @@ class vB_Pt_IssueSearchGenerator
 		}
 
 		$this->where['projectcategoryid'] = "issue.projectcategoryid IN (" . implode(',', $ids) . ")";
+		return PT_SEARCHGEN_CRITERIA_ADDED;
+	}
+
+	/**
+	* Adds priority ID criteria
+	*
+	* @param	string
+	* @param	integer|array
+	*
+	* @return	boolean	True on success
+	*/
+	function add_projectpriorityid($name, $value)
+	{
+		$id = $this->prepare_scalar_array($value, 'intval', ',');
+		if (!$id)
+		{
+			return PT_SEARCHGEN_CRITERIA_UNNECESSARY;
+		}
+
+		$ids = explode(',', $id);
+		if (($unknown_value = array_search(-1, $ids)) !== false)
+		{
+			// -1 is the "unknown" entry, which actually needs to be 0
+			$ids["$unknown_value"] = 0;
+		}
+
+		$this->where['projectpriorityid'] = "issue.priority IN (" . implode(',', $ids) . ")";
 		return PT_SEARCHGEN_CRITERIA_ADDED;
 	}
 
@@ -1211,58 +1238,6 @@ class vB_Pt_IssueSearchGenerator
 
 		$this->where['text'] = trim("
 			(MATCH(issue.title, issue.summary) AGAINST ('$value' IN BOOLEAN MODE) OR MATCH(issuenote.pagetext) AGAINST ('$value' IN BOOLEAN MODE))
-		");
-
-		return PT_SEARCHGEN_CRITERIA_ADDED;
-	}
-
-	/**
-	* Adds priority >= criteria
-	*
-	* @param	string
-	* @param	integer
-	*
-	* @return	boolean	True on success
-	*/
-	function add_priority_gteq($name, $value)
-	{
-		$value = intval($value);
-		if ($value <= 0)
-		{
-			return PT_SEARCHGEN_CRITERIA_UNNECESSARY;
-		}
-
-		$this->where['priority'] = trim("
-			issue.priority >= $value
-		");
-
-		return PT_SEARCHGEN_CRITERIA_ADDED;
-	}
-
-	/**
-	* Adds priority <= criteria
-	*
-	* @param	string
-	* @param	integer
-	*
-	* @return	boolean	True on success
-	*/
-	function add_priority_lteq($name, $value)
-	{
-		$value = intval($value);
-
-		if ($value == 0)
-		{
-			return PT_SEARCHGEN_CRITERIA_UNNECESSARY;
-		}
-
-		if ($value <= -1)
-		{
-			$value = 0;
-		}
-
-		$this->where['priority'] = trim("
-			issue.priority <= $value
 		");
 
 		return PT_SEARCHGEN_CRITERIA_ADDED;
@@ -2026,6 +2001,18 @@ class vB_Pt_IssueSearchGenerator
 	{
 		$group = 'issue.projectcategoryid, issue.issueid';
 		$groupid_col = 'issue.projectcategoryid';
+	}
+
+	/**
+	* Add grouping by priority
+	*
+	* @param	string	(Output) Grouping method
+	* @param	qtring	(Output) Column for group ID value
+	*/
+	function add_group_projectpriorityid(&$groupid, &$groupid_col)
+	{
+		$group = 'issue.priority, issue.issueid';
+		$groupid_col = 'issue.priority';
 	}
 }
 ?>

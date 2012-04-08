@@ -151,6 +151,11 @@ if ($_REQUEST['do'] == 'search')
 		$vbulletin->GPC['projectid'] = $milestone['projectid'];
 	}
 
+	// These settings are on by default - they are turning off if projectid is specified in url
+	$show['category'] = true;
+	$show['appliesversionid'] = true;
+	$show['priority'] = true;
+
 	// cache for project names - [projectid] = title_clean
 	$project_names = array();
 
@@ -310,7 +315,18 @@ if ($_REQUEST['do'] == 'search')
 	fetch_pt_search_versions($appliesversion_options, $addressedversion_options, $project_names);
 
 	// setup categories
-	$category_options = fetch_pt_search_categories($project_names);
+	$category_options = '';
+	if ($show['category'])
+	{
+		$category_options = fetch_pt_search_categories($project_names);
+	}
+
+	// setup priorities
+	$priority_options = '';
+	if ($show['priority'])
+	{
+		$priority_options = fetch_pt_search_priorities($project_names);
+	}
 
 	// navbar and output
 	$navbits = construct_navbits(array(
@@ -330,6 +346,7 @@ if ($_REQUEST['do'] == 'search')
 		$templater->register('contenttypeid', intval($vbulletin->GPC['contenttypeid']));
 		$templater->register('milestone', $milestone);
 		$templater->register('navbar', $navbar);
+		$templater->register('priority_options', $priority_options);
 		$templater->register('project_options', $project_options);
 		$templater->register('status_options', $status_options);
 		$templater->register('tag_options', $tag_options);
@@ -354,9 +371,6 @@ if ($_REQUEST['do'] == 'dosearch')
 
 		'user' => TYPE_NOHTML,
 		'user_issue' => TYPE_NOHTML,
-
-		'priority_gteq' => TYPE_INT,
-		'priority_lteq' => TYPE_INT,
 
 		'searchdate_gteq' => TYPE_INT,
 		'searchdate_lteq' => TYPE_INT,
@@ -388,6 +402,7 @@ if ($_REQUEST['do'] == 'dosearch')
 		'addressedmix'     => TYPE_ARRAY,
 
 		'projectcategoryid' => TYPE_ARRAY_INT,
+		'projectpriorityid' => TYPE_ARRAY_INT,
 
 		'needsattachments'      => TYPE_UINT,
 		'needspendingpetitions' => TYPE_UINT,
@@ -401,9 +416,6 @@ if ($_REQUEST['do'] == 'dosearch')
 
 		'textlocation'    => TYPE_STR,
 		'userissuesonly'  => TYPE_NOHTML,
-
-		'priority'        => TYPE_INT,
-		'priority_type'   => TYPE_STR,
 
 		'searchdate'      => TYPE_INT,
 		'searchdate_type' => TYPE_STR,

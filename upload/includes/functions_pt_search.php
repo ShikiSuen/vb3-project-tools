@@ -224,6 +224,73 @@ function fetch_pt_search_versions(&$appliesversion_options, &$addressedversion_o
 }
 
 /**
+* Prepare the project priorities for display.
+*
+* @param	array	Array of project names
+*
+* @return	string	Priorities prepared
+*/
+function fetch_pt_search_priorities($project_names)
+{
+	global $vbulletin, $db, $show, $vbphrase, $template_hook;
+
+	$priorities = array();
+	$priority_query = $db->query_read("
+		SELECT projectpriority.projectpriorityid, project.title_clean, project.projectid
+		FROM " . TABLE_PREFIX . "pt_projectpriority AS projectpriority
+		INNER JOIN " . TABLE_PREFIX . "pt_project AS project ON
+			(project.projectid = projectpriority.projectid)
+		ORDER BY project.displayorder, projectpriority.displayorder
+	");
+	while ($priority = $db->fetch_array($priority_query))
+	{
+		$priorities["$priority[projectid]"]["$priority[projectpriorityid]"] = $vbphrase['priority' . $priority['projectpriorityid']];
+	}
+
+	$priority_options = '';
+	$optionclass = '';
+	$optionselected = '';
+	foreach ($priorities AS $projectid => $project_priorities)
+	{
+		if (!isset($project_names["$projectid"]))
+		{
+			continue;
+		}
+
+		$optgroup_options = '';
+		foreach ($project_priorities AS $optionvalue => $optiontitle)
+		{
+			$optionname = 'projectpriorityid[]';
+			$optionid = "projectpriority_$optionvalue";
+			$templater = vB_Template::create('pt_checkbox_option');
+				$templater->register('optionchecked', $optionchecked);
+				$templater->register('optionid', $optionid);
+				$templater->register('optionname', $optionname);
+				$templater->register('optiontitle', $optiontitle);
+				$templater->register('optionvalue', $optionvalue);
+			$optgroup_options .= $templater->render();
+		}
+
+		$show['optgroup_checkbox'] = false;
+		$optgroup_value = '';
+		$optgroup_name = '';
+		$optgroup_id = "project_{$projectid}_priorities";
+		$optgroup_label = $project_names["$projectid"];
+		$optgroup_extra = " id=\"projectpriorityid,$projectid\"";
+		$templater = vB_Template::create('pt_checkbox_optgroup');
+			$templater->register('optgroup_id', $optgroup_id);
+			$templater->register('optgroup_label', $optgroup_label);
+			$templater->register('optgroup_name', $optgroup_name);
+			$templater->register('optgroup_options', $optgroup_options);
+			$templater->register('optgroup_value', $optgroup_value);
+			$templater->register('optionchecked', $optionchecked);
+		$priority_options .= $templater->render();
+	}
+
+	return $priority_options;
+}
+
+/**
 * Prepare the project categories for display.
 *
 * @param	array	Array of project names

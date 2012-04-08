@@ -12,6 +12,15 @@
 || #################################################################### ||
 \*======================================================================*/
 
+/**
+ * @package vBulletin Project Tools
+ * @subpackage Legacy
+ * @author $author$
+ * @version $revision$
+ * @since $date$
+ * @copyright http://www.vbulletin.org/open_source_license_agreement.php
+ */
+
 if (!class_exists('vB_Search_Core', false))
 {
 	exit;
@@ -70,26 +79,33 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 		{
 			$issuenote->set_issue($issue);
 		}
+
 		return $issuenote;
 	}
 
 	/**
-	* Load object from an id
+	* Public factory method to create an issue note object
 	*
 	* @param	integer		Id of the issuenote
 	* @return	array		Array of the result
 	*/
 	public static function create_from_id($id)
 	{
-		$list = array_values(self::create_array(array($id)));
+		global $vbulletin;
 
-		if (!count($list))
+		$issuenote = $vbulletin->db->query_first_slave("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_issuenote
+			WHERE issuenoteid = " . intval($id) . "
+		");
+
+		if (!$issuenote)
 		{
-			return null;
+			return false;
 		}
 		else
 		{
-			return array_shift($list);
+			return self::create_from_record($issuenote);
 		}
 	}
 
@@ -105,34 +121,85 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	{
 		global $vbulletin;
 
+		if (empty($ids))
+		{
+			return array();
+		}
+
 		$select = array();
 		$joins = array();
 		$where = array();
 
-		$select[] = "issuenote.*";
-		$where[] = "issuenote.issuenoteid IN (" . implode(',', array_map('intval', $ids)) . ")";
+		$select[] = 'issuenote.*';
+		$select[] = 'userfield.*, userfieldtext.*, user.*, IF(displaygroupid=0, user.usergroupid, displaygroupid) AS displaygroupid';
 
-		$set = $vbulletin->db->query("
+		$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'user AS user ON (user.userid = issuenote.userid)';
+		$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'userfield AS userfield ON (user.userid = userfield.userid)';
+		$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'usertextfield AS usertextfield ON (user.userid = usertextfield.userid)';
+
+		$where[] = 'issuenote.issuenoteid IN (' . implode(',', $ids) . ')';
+
+		if ($vbulletin->options['avatarenabled'])
+		{
+			$select[] = 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar,
+						customavatar.dateline AS avatardateline, customavatar.width AS width, customavatar.height AS height,
+						customavatar.height_thumb AS height_thumb, customavatar.width_thumb AS width_thumb, customavatar.filedata_thumb';
+			$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'avatar AS avatar ON (avatar.avatarid = user.avatarid)';
+			$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'customavatar AS customavatar ON (customavatar.userid = post.userid)';
+		}
+
+		// Get all the issue note and user data in one go
+		$set = $vbulletin->db->query_read_slave("
 			SELECT " . implode(",", $select) . "
 			FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
 				" . implode("\n", $joins) . "
 			WHERE " . implode (' AND ', $where) . "
 		");
 
-		$issuenotes = array();
-
-		while ($issuenote = $vbulletin->db->fetch_array($set))
+		//ensure that $items is in the same order as $ids
+		$items = array_fill_keys($ids, false);
+		while ($row = $vbulletin->db->fetch_array($set))
 		{
-			$issuenotes[$issuenote['issuenoteid']] = $issuenote;
+			$issue = isset($issue_map[$row['issueid']]) ? $issue_map[$row['issueid']] : null;
+			$items[$row['issuenoteid']] = vB_Legacy_IssueNote::create_from_record($row, $issue);
 		}
 
-		return $issuenotes;
+		$items = array_filter($items);
+		return $items;
 	}
 
 	/**
 	 * constructor -- protectd to force use of factory methods.
 	 */
-	protected function __construct() {}
+	protected function __construct()
+	{
+		$this->registry = $GLOBALS['vbulletin'];
+	}
+
+	//*********************************************************************************
+	// derived getters
+
+	/**
+	 * Is this the first issue note in the issue
+	 *
+	 * @return boolean
+	 */
+	public function is_first()
+	{
+		if (is_null($this->var_is_first))
+		{
+			// find out if first issue note
+			$getpost = $this->registry->db->query_first("
+				SELECT issuenoteid
+				FROM " . TABLE_PREFIX . "pt_issuenote
+				WHERE issueid = " . intval($this->record['issueid']) . "
+				ORDER BY dateline
+				LIMIT 1
+			");
+			$this->var_is_first = ($getpost['issuenoteid'] == $this->record["issuenoteid"]);
+		}
+		return $this->var_is_first;
+	}
 
 	/**
 	* Get the user for this issue note
@@ -211,7 +278,6 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	public function get_display_title()
 	{
 		$title = $this->get_field('title');
-
 		if ($title == '')
 		{
 			$title = fetch_trimmed_title(strip_bbcode($this->get_field('pagetext'), true, false, true), 50);

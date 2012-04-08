@@ -73,13 +73,12 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 	public function index($id)
 	{
 		global $vbulletin;
-
 		$issuenote = vB_Legacy_IssueNote::create_from_id($id, true);
 
 		if ($issuenote)
 		{
 			$indexer = vB_Search_Core::get_instance()->get_core_indexer();
-			$fields = $this->issuenote_to_indexfields($issuenote);
+			$fields = $this->post_to_indexfields($issuenote);
 			$indexer->index($fields);
 		}
 	}
@@ -93,14 +92,12 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 	public function index_id_range($start, $end)
 	{
 		global $vbulletin;
-
 		$indexer = vB_Search_Core::get_instance()->get_core_indexer();
 
 		$issuenote_fields = vB_Legacy_IssueNote::get_field_names();
 		$issue_fields = vB_Legacy_Issue::get_field_names();
 
 		$select = array();
-
 		foreach ($issuenote_fields AS $field)
 		{
 			$select[] = 'issuenote.' . $field;
@@ -117,7 +114,6 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 				JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issuenote.issueid = issue.issueid)
 			WHERE issuenote.issuenoteid >= " . intval($start) . "
 				AND issuenote.issuenoteid <= " . intval($end) . "
-			ORDER BY issuenote.issueid, issuenote.issuenoteid ASC
 		");
 
 		while ($row = $vbulletin->db->fetch_row($set))
@@ -130,9 +126,7 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 			$issue_data = array_combine($issue_fields, array_slice($row, count($issuenote_fields)));
 
 			$issuenote = vB_Legacy_IssueNote::create_from_record($issuenote_data, $issue_data);
-
-			$fields = $this->issuenote_to_indexfields($issuenote);
-
+			$fields = $this->post_to_indexfields($issuenote);
 			if ($fields)
 			{
 				$indexer->index($fields);
@@ -319,7 +313,7 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 	*
 	* @return	array		The index fields
 	*/
-	private function issuenote_to_indexfields($issuenote)
+	private function post_to_indexfields($issuenote)
 	{
 		// Don't try to index inconsistent records
 		$issue = $issuenote->get_issue();
