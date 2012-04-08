@@ -800,7 +800,7 @@ if ($_REQUEST['do'] == 'typelist')
 	print_form_header('', '');
 	print_table_header($vbphrase['issue_type_manager']);
 	print_description_row(
-		'<a href="#" onclick="js_open_help(\'project\', \'typelist\', \'\'); return false;">[' . $vbphrase['help'] . ']</a> | ' . construct_link_code($vbphrase['add_issue_type'], 'projecttype.php?do=typeadd'),
+		'<a href="#" onclick="js_open_help(\'projecttype\', \'typelist\', \'\'); return false;">[' . $vbphrase['help'] . ']</a> | ' . construct_link_code($vbphrase['add_issue_type'], 'projecttype.php?do=typeadd'),
 		false, 2, '', 'center'
 	);
 	print_table_footer();

@@ -352,13 +352,13 @@ if ($_POST['do'] == 'editissue2')
 
 	while ($category = $db->fetch_array($category_data))
 	{
-		$categories["$category[projectcategoryid]"] = $category['title'];
+		$categories["$category[projectcategoryid]"] = $vbphrase['category' . $category['projectcategoryid'] . ''];
 	}
 
-	$version_groups = array();
+	$version_groups = $applies_versions = $addressed_versions = array();
 
 	$version_query = $db->query_read("
-		SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
+		SELECT projectversion.projectversionid, projectversiongroup.projectversiongroupid
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
 			INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
 			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
@@ -368,11 +368,25 @@ if ($_POST['do'] == 'editissue2')
 
 	while ($version = $db->fetch_array($version_query))
 	{
-		$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
+		$version_groups["$version[projectversiongroupid]"]["$version[projectversionid]"] = $version['projectversionid'];
 	}
 
-	$appliesversion_options = array(0 => $vbphrase['unknown']) + $version_groups;
-	$addressedversion_options = array(0 => $vbphrase['none_meta'], '-1' => $vbphrase['next_release']) + $version_groups;
+	foreach ($version_groups AS $optgroup_label => $versions)
+	{
+		$group_applies = $group_addressed = array();
+
+		foreach ($versions AS $optionvalue => $optiontitle)
+		{
+			$group_applies[$optionvalue] = $vbphrase['version' . $optiontitle . ''];
+			$group_addressed[$optionvalue] = $vbphrase['version' . $optiontitle . ''];
+		}
+
+		$applies_versions[$vbphrase['versiongroup' . $optgroup_label . '']] = $group_applies;
+		$addressed_versions[$vbphrase['versiongroup' . $optgroup_label . '']] = $group_addressed;
+	}
+
+	$appliesversion_options = array(0 => $vbphrase['unknown']) + $applies_versions;
+	$addressedversion_options = array(0 => $vbphrase['none_meta'], '-1' => $vbphrase['next_release']) + $addressed_versions;
 
 	if ($issue['isaddressed'] AND $issue['addressedversionid'] == 0)
 	{
