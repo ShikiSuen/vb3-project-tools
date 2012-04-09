@@ -756,12 +756,15 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				);
 			}
 
-			// Decrement totalissues counter
-			$this->registry->db->query_write("
-				UPDATE " . TABLE_PREFIX . "pt_user SET
-					totalissues = totalissues - 1
-				WHERE userid = " . $this->fetch_field('userid') . "
-			");
+			// Decrement totalissues counter for registered users
+			if ($this->fetch_field('userid'))
+			{
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "pt_user SET
+						totalissues = totalissues - 1
+					WHERE userid = " . $this->fetch_field('userid') . "
+				");
+			}
 
 			$this->post_delete($doquery);
 			return $return;
