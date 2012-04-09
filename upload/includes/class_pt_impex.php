@@ -497,16 +497,16 @@ class vB_Pt_Import_Thread extends vB_Pt_Import
 		{
 			$this->issueid = $this->issuedata->save();
 
-			// Custom Magic Selects
-			$issuems =& datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_ARRAY, 'pt_magicselect');
-			$issuems->set('issueid', $this->issueid);
-			$issuems->save();
-
 			for ($i = 0; $i < count($issuenotes); $i++)
 			{
 				$issuenotes[$i]->set('issueid', $this->issueid);
 				$issuenotes[$i]->save();
 			}
+
+			// Custom Magic Selects
+			$issuems =& datamanager_init('Pt_Issue_MagicSelect', $this->registry, ERRTYPE_ARRAY, 'pt_magicselect');
+			$issuems->set('issueid', $this->issueid);
+			$issuems->save();
 
 			return $this->issueid;
 		}
