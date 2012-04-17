@@ -196,7 +196,8 @@ function ptimporter_prepare_issue_posting_pemissions($projectid, $issuetypeid)
 		'title' => '',
 		'summary' => '',
 		'pagetext' => '',
-		'priority' => 0
+		'priority' => 0,
+		'isassigned' => 1
 	);
 	
 	$issue_perms = fetch_project_permissions($vbulletin->userinfo, $projectid, $issuetypeid);

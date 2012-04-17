@@ -4168,7 +4168,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1333882943" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1334676683" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4247,13 +4247,12 @@ legend {
 					</li>
 					<vb:if condition="$show['private_edit']">
 					<li>
-						<label for="cb_private"><input type="checkbox" name="private" value="1" id="cb_private" tabindex="1"{vb:raw private_checked} /> {vb:rawphrase private} <a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_private" target="_blank">[?]</a></label>
+						<label for="cb_private"><input type="checkbox" name="private" value="1" id="cb_private" tabindex="1" /> {vb:rawphrase private} <a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_private" target="_blank">[?]</a></label>
 					</li>
 					</vb:if>
 					<vb:if condition="$show['close_issue']">
 					<li>
-						<label for="cb_close_issue"><input type="checkbox" name="close_issue" value="1" id="cb_close_issue" tabindex="1"{vb:raw close_issue_checked} /> {vb:rawphrase close_this_issue}</label>
-							<input type="hidden" name="original_state" value="{vb:raw issue.state}" />
+						<label for="cb_close_issue"><input type="checkbox" name="close_issue" value="1" id="cb_close_issue" tabindex="1" /> {vb:rawphrase close_this_issue}</label>
 					</li>
 					</vb:if>
 					<vb:if condition="$show['assign_checkbox'] AND !$show['assign_dropdown']">
@@ -4271,6 +4270,7 @@ legend {
 					<ul class="rightcol">
 						<li>
 							<select class="primary" name="priority" tabindex="1">
+								<option value="0">{vb:rawphrase unknown}</option>
 								<vb:each from="priority_options" value="option">
 									<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 								</vb:each>
@@ -4287,7 +4287,7 @@ legend {
 					<ul class="rightcol">
 						<li>
 							<select class="primary" name="projectcategoryid" tabindex="1">
-								<option value="0"{vb:raw category_unknown_selected}>{vb:rawphrase unknown}</option>
+								<option value="0">{vb:rawphrase unknown}</option>
 								<vb:each from="category_options" value="option">
 									<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 								</vb:each>
@@ -4315,7 +4315,7 @@ legend {
 							<vb:if condition="$show['status_edit']">
 								<select class="primary" name="issuestatusid" tabindex="1">
 									<vb:each from="status_options" value="option">
-										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+										<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 									</vb:each>
 								</select>
 							<vb:else />
@@ -4334,11 +4334,11 @@ legend {
 						<ul class="rightcol">
 							<li>
 								<select class="primary" name="appliesversionid" tabindex="1">
-									<option value="0"{vb:raw applies_unknown_selected}>{vb:rawphrase unknown}</option>
+									<option value="0">{vb:rawphrase unknown}</option>
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup.group" value="option">
-													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -4356,12 +4356,12 @@ legend {
 							<li>
 								<vb:if condition="$show['status_edit']">
 									<select class="primary" name="addressedversionid" tabindex="1">
-										<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
-										<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+										<option value="0">{vb:rawphrase none_meta}</option>
+										<option value="-1">{vb:rawphrase next_release}</option>
 											<vb:each from="addressed_versions" value="optiongroup">
 												<optgroup label="{vb:raw optiongroup.label}">
 													<vb:each from="optiongroup.group" value="option">
-														<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+														<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 													</vb:each>
 												</optgroup>
 											</vb:each>
@@ -4375,7 +4375,7 @@ legend {
 				</vb:if>
 			</vb:if>
 
-			<vb:if condition="$show['milestone_edit']">
+			<vb:if condition="$show['milestone_edit'] OR $issue['milestonetitle']">
 				<!-- milestone -->
 				<fieldset class="blockrow">
 					<legend>{vb:rawphrase milestone}</legend>
@@ -4383,8 +4383,13 @@ legend {
 						<li>
 							<vb:if condition="$show['milestone_edit']">
 								<select class="primary" name="milestoneid" tabindex="1">
-									<vb:each from="milestone_options" value="option">
-										<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+									<option value="0"{vb:raw option.selected}>{vb:rawphrase none}</option>
+									<vb:each from="milestone_options" value="optiongroup">
+										<optgroup label="{vb:raw optiongroup.label}">
+											<vb:each from="optiongroup.group" value="option">
+												<option value="{vb:raw option.value}"{vb:raw option.selected}>{vb:raw option.title}</option>
+											</vb:each>
+										</optgroup>
 									</vb:each>
 								</select>
 							<vb:else />
@@ -4418,17 +4423,6 @@ legend {
 				<fieldset class="blockrow">
 					<legend>{vb:rawphrase assigned_users}</legend>
 					<table border="0" cellspacing="0" cellpadding="0">
-						<vb:if condition="$show['assign_checkbox']">
-							<tr>
-								<td colspan="3">
-									<ul class="rightcol">
-										<li>
-											<label><input type="checkbox" name="assignself" value="2" tabindex="1"{vb:raw assign_checkbox_checked} />&nbsp;{vb:rawphrase assign_yourself_to_issue}</label>
-										</li>
-									</ul>
-								</td>
-							</tr>
-						</vb:if>
 					<tr>
 						<td>
 							<label>{vb:rawphrase unassigned_users}</label>
@@ -4547,7 +4541,7 @@ legend {
 										<vb:each from="applies_versions" value="optiongroup">
 											<optgroup label="{vb:raw optiongroup.label}">
 												<vb:each from="optiongroup.group" value="option">
-													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
+													<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 												</vb:each>
 											</optgroup>
 										</vb:each>
@@ -4562,21 +4556,17 @@ legend {
 					<label class="smallfont">{vb:rawphrase addressed_version_issuetype}</label>
 					<ul class="group">
 						<li>
-							<vb:if condition="$show['status_edit']">
-								<select class="primary" name="addressedversionid" tabindex="2">
-									<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
-									<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
-										<vb:each from="addressed_versions" value="optiongroup">
-											<optgroup label="{vb:raw optiongroup.label}">
-												<vb:each from="optiongroup.group" value="option">
-													<option value="{vb:raw option.value}" {vb:raw option.selected}>{vb:raw option.title}</option>
-												</vb:each>
-											</optgroup>
-										</vb:each>
-								</select>
-							<vb:else />
-								{vb:raw issue.addressedversion}
-							</vb:if>
+							<select class="primary" name="addressedversionid" tabindex="2">
+								<option value="0"{vb:raw addressed_unaddressed_selected}>{vb:rawphrase none_meta}</option>
+								<option value="-1"{vb:raw addressed_next_selected}>{vb:rawphrase next_release}</option>
+									<vb:each from="addressed_versions" value="optiongroup">
+										<optgroup label="{vb:raw optiongroup.label}">
+											<vb:each from="optiongroup.group" value="option">
+												<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+											</vb:each>
+										</optgroup>
+									</vb:each>
+							</select>
 						</li>
 					</ul>
 				</div>
@@ -7697,7 +7687,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1333878107" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1333884224" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7927,7 +7917,9 @@ init_project_readmarker_system();
 							</li>
 						</ul>
 					</fieldset>
+				</vb:if>
 
+				<vb:if condition="$project['requireappliesversion'] > 0">
 					<fieldset class="blockrow">
 						<legend>{vb:rawphrase addressed_version_issuetype}</legend>
 						<ul class="rightcol">
@@ -13132,6 +13124,7 @@ switch (THIS_SCRIPT)
 	case 'showthread':
 		$pt_templates[] = 'pt_postbit_create_issue';
 		$pt_templates[] = 'pt_postbit_link_issue';
+		$pt_templates[] = 'pt_showthread_adminoptions';
 		break;
 }
 

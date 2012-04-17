@@ -361,24 +361,20 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		// check for required settings
 		if ($this->info['project'])
 		{
-			$project_requiredappliesversion = $this->info['project']['requireappliesversion'];
-			$project_requiredcategory = $this->info['project']['requirecategory'];
-			$project_requiredpriority = $this->info['project']['requirepriority'];
-
+			// Specs:
 			// 0 = Off
 			// 1 = On, auto-set from default value
 			// 2 = On, not required
 			// 3 = On, required
-
-			// Specs:
-			// If On, apply some more checks:
-			// - If auto-set, check if it exixts at least 1 item. If not, error
-			// - If required and not defined, error
+			//
+			// If On (1 || 2 || 3), apply some more checks:
+			// - If auto-set (1), check if it exixts at least 1 item. If not, return error
+			// - If required (3) and not defined (value in(0, empty)), return error
 
 			// Applies version
-			if (in_array($project_requiredappliesversion, array(1, 2, 3)) AND !$this->fetch_field('appliesversionid'))
+			if ($this->info['project']['projectinfo']['requireappliesversion'] > 0)
 			{
-				if ($project_requiredappliesversion == 1)
+				if ($this->info['project']['projectinfo']['requireappliesversion'] == 1)
 				{
 					// Defining one automatically
 					$appliesversionid = $this->registry->db->query_first("
@@ -397,9 +393,9 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 						$this->do_set('appliesversionid', $appliesversionid['projectversionid']);
 					}
 				}
-				else if ($project_requiredappliesversion == 3)
+				else if ($this->info['project']['projectinfo']['requireappliesversion'] == 3 AND !$this->fetch_field('appliesversionid'))
 				{
-					if (!$this->registry->db->query_first("
+					if ($this->registry->db->query_first("
 						SELECT projectversionid
 						FROM " . TABLE_PREFIX . "pt_projectversion
 						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
@@ -410,15 +406,15 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					}
 					else
 					{
-						$this->do_set('appliesversionid', $appliesversionid['projectversionid']);
+						$this->do_set('appliesversionid', $this->fetch_field('appliesversionid'));
 					}
 				}
 			}
 
 			// Category
-			if (in_array($project_requiredcategory, array(1, 2, 3)) AND !$this->fetch_field('projectcategoryid'))
+			if ($this->info['project']['projectinfo']['requirecategory'] > 0)
 			{
-				if ($project_requiredcategory == 1)
+				if ($this->info['project']['projectinfo']['requirecategory'] == 1)
 				{
 					// Defining one automatically
 					$projectcategoryid = $this->registry->db->query_first("
@@ -437,9 +433,9 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 						$this->do_set('projectcategoryid', $projectcategoryid['projectcategoryid']);
 					}
 				}
-				else if ($project_requiredcategory == 3)
+				else if ($this->info['project']['projectinfo']['requirecategory'] == 3 AND !$this->fetch_field('projectcategoryid'))
 				{
-					if (!$this->registry->db->query_first("
+					if ($this->registry->db->query_first("
 						SELECT projectcategoryid
 						FROM " . TABLE_PREFIX . "pt_projectcategory
 						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
@@ -450,15 +446,15 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					}
 					else
 					{
-						$this->do_set('projectcategoryid', $projectcategoryid['projectcategoryid']);
+						$this->do_set('projectcategoryid', $this->fetch_field('projectcategoryid'));
 					}
 				}
 			}
 
 			// Priority
-			if (in_array($project_requiredpriority, array(1, 2, 3)) AND !$this->fetch_field('priority'))
+			if ($this->info['project']['projectinfo']['requirepriority'] > 0)
 			{
-				if ($project_requiredpriority == 1)
+				if ($this->info['project']['projectinfo']['requirepriority'] == 1)
 				{
 					// Defining one automatically
 					$priorityid = $this->registry->db->query_first("
@@ -477,9 +473,9 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 						$this->do_set('priority', $priorityid['projectpriorityid']);
 					}
 				}
-				else if ($project_requiredpriority == 3)
+				else if ($this->info['project']['projectinfo']['requirepriority'] == 3 AND !$this->fetch_field('priority'))
 				{
-					if (!$this->registry->db->query_first("
+					if ($this->registry->db->query_first("
 						SELECT projectpriorityid
 						FROM " . TABLE_PREFIX . "pt_projectpriority
 						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
@@ -490,7 +486,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					}
 					else
 					{
-						$this->do_set('priority', $priorityid['projectpriorityid']);
+						$this->do_set('priority', $this->fetch_field('priority'));
 					}
 				}
 			}
@@ -549,7 +545,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	*/
 	function post_save_each($doquery = true)
 	{
-		require_once (DIR . '/vb/search/indexcontroller/queue.php');
+		require_once(DIR . '/vb/search/indexcontroller/queue.php');
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_postsave')) ? eval($hook) : false;
 
 		if ($this->condition AND !empty($this->pt_issue) AND $this->info['insert_change_log'])

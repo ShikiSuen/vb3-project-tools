@@ -99,6 +99,9 @@ $actiontemplates = array(
 		'optgroup',
 		'pt_import_content_confirm',
 	),
+	'processimportcontent' => array(
+		'pt_import_content_confirm', // If errors are returned, this is needed
+	),
 	'manageattach' => array(
 		'pt_manageattach'
 	),
@@ -4435,6 +4438,8 @@ if ($_POST['do'] == 'processimportcontent')
 		'milestoneid' => TYPE_UINT,
 		'originaltitle' => TYPE_NOHTML,
 		'private' => TYPE_BOOL,
+		'close_issue' => TYPE_BOOL,
+		'assignself' => TYPE_BOOL,
 	));
 
 	// Do our own checking to make sure we have all permissions needed to create issues
@@ -4494,6 +4499,8 @@ if ($_POST['do'] == 'processimportcontent')
 		$preview = construct_errors($return);
 
 		$_POST['do'] = 'importcontent2';
+		$_POST['preview'] = $preview;
+		$_POST['project-issuetype'] = $vbulletin->GPC['projectid'] . '-' . $vbulletin->GPC['issuetypeid']; // Needed to avoid projectid missing
 	}
 	else
 	{
@@ -4514,7 +4521,7 @@ if ($_POST['do'] == 'importcontent2')
 
 	$project = verify_project($projectid);
 	$posting_perms = ptimporter_prepare_issue_posting_pemissions($project['projectid'], $issuetypeid);
-
+//echo '<div><pre>';print_r($posting_perms);echo '</pre></div>';
 	$show['status_edit'] = ($posting_perms['status_edit']);
 	$show['tags_edit'] = ($posting_perms['tags_edit']);
 	$show['can_custom_tag'] = ($posting_perms['can_custom_tag']);
@@ -4697,25 +4704,34 @@ if ($_POST['do'] == 'importcontent2')
 	}
 
 	// setup default subscribe type
-	if ($issue['subscribetype'] === NULL)
+	switch ($vbulletin->userinfo['autosubscribe'])
 	{
-		switch ($vbulletin->userinfo['autosubscribe'])
-		{
-			case -1: $issue['subscribetype'] = ''; break;
-			case 0: $issue['subscribetype'] = 'none'; break;
-			case 1: $issue['subscribetype'] = 'instant'; break;
-			case 2: $issue['subscribetype'] = 'daily'; break;
-			case 3: $issue['subscribetype'] = 'weekly'; break;
-			default: $issue['subscribetype'] = ''; break;
-		}
+		case -1:
+			$subscribetype = '';
+			break;
+		case 0:
+			$subscribetype = 'none';
+			break;
+		case 1:
+			$subscribetype = 'instant';
+			break;
+		case 2:
+			$subscribetype = 'daily';
+			break;
+		case 3:
+			$subscribetype = 'weekly';
+			break;
+		default:
+			$subscribetype = '';
+			break;
 	}
 
 	$subscribe_selected = array(
-		'donot' => ($issue['subscribetype'] == '' ? ' selected="selected"' : ''),
-		'none' => ($issue['subscribetype'] == 'none' ? ' selected="selected"' : ''),
-		'instant' => ($issue['subscribetype'] == 'instant' ? ' selected="selected"' : ''),
-		'daily' => ($issue['subscribetype'] == 'daily' ? ' selected="selected"' : ''),
-		'weekly' => ($issue['subscribetype'] == 'weekly' ? ' selected="selected"' : ''),
+		'donot' => ($subscribetype == '' ? ' selected="selected"' : ''),
+		'none' => ($subscribetype == 'none' ? ' selected="selected"' : ''),
+		'instant' => ($subscribetype == 'instant' ? ' selected="selected"' : ''),
+		'daily' => ($subscribetype == 'daily' ? ' selected="selected"' : ''),
+		'weekly' => ($subscribetype == 'weekly' ? ' selected="selected"' : ''),
 	);
 
 	$show['subscribe_option'] = ($vbulletin->userinfo['userid'] > 0);

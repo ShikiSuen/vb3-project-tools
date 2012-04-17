@@ -281,7 +281,7 @@ class vB_Pt_Import
 
 		if ($posting_perms['tags_edit'])
 		{
-			$issuedata->set_info('allow_tag_creation', $this->posting_perms['can_custom_tag']);
+			$this->issuedata->set_info('allow_tag_creation', $this->posting_perms['can_custom_tag']);
 			prepare_tag_changes($this->registry->GPC, $existing_tags, $tag_add, $tag_remove);
 
 			foreach ($tag_add AS $tag)
@@ -677,14 +677,14 @@ class vB_Pt_Import_Post extends vB_Pt_Import
 
 		$this->postids = $post['postid'];
 
-		$issuedata->pre_save();
+		$this->issuedata->pre_save();
 
-		if (!$issuedata->errors)
+		if (!$this->issuedata->errors)
 		{
 			$issuenotes->pre_save();
 		}
 
-		$this->errors = array_merge($issuedata->errors, $issuenotes->errors);
+		$this->errors = array_merge($this->issuedata->errors, $issuenotes->errors);
 
 		if ($this->errors)
 		{
@@ -692,7 +692,7 @@ class vB_Pt_Import_Post extends vB_Pt_Import
 		}
 		else
 		{
-			$this->issueid = $issuedata->save();
+			$this->issueid = $this->issuedata->save();
 
 			$issuenotes->set('issueid', $this->issueid);
 			$issuenotes->save();
@@ -847,14 +847,14 @@ class vB_Pt_Import_Issuenote extends vB_Pt_Import
 		$issuenotes->set('dateline', $issuenote['dateline']);
 		$issuenotes->set('ipaddress', $issuenote['ipaddress']);
 
-		$issuedata->pre_save();
+		$this->issuedata->pre_save();
 
-		if (!$issuedata->errors)
+		if (!$this->issuedata->errors)
 		{
 			$issuenotes->pre_save();
 		}
 
-		$this->errors = array_merge($issuedata->errors, $issuenotes->errors);
+		$this->errors = array_merge($this->issuedata->errors, $issuenotes->errors);
 
 		if ($this->errors)
 		{
@@ -862,7 +862,7 @@ class vB_Pt_Import_Issuenote extends vB_Pt_Import
 		}
 		else
 		{
-			$this->issueid = $issuedata->save();
+			$this->issueid = $this->issuedata->save();
 
 			$issuenotes->set('issueid', $this->issueid);
 			$issuenotes->save();
