@@ -234,6 +234,8 @@ if ($show['search_options'])
 	$search_status_options = fetch_issue_status_search_select($projectperms);
 }
 
+($hook = vBulletinHook::fetch_hook('milestoneissuelist_complete')) ? eval($hook) : false;
+
 // navbar and output
 $navbits = construct_navbits(array(
 	'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],

@@ -32,10 +32,12 @@
 
 	<hooktype type="milestone">
 		<hook>milestone_start</hook>
+		<hook>milestone_complete</hook>
 	</hooktype>
 
 	<hooktype type="milestoneissuelist">
 		<hook>milestoneissuelist_start</hook>
+		<hook>milestoneissuelist_complete</hook>
 	</hooktype>
 
 	<hooktype type="project">

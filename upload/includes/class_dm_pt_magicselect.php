@@ -96,19 +96,9 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 		}
 
 		// Value is not an numeric value
-		if (is_numeric($this->info['value']))
+		if (!is_int($this->fetch_field('value')))
 		{
-			// Convert it to a integer value
-			$this->info['value'] = intval($this->info['value']);
-		}
-		else if (is_int($this->info['value']))
-		{
-			// Nothing to do here, just continue
-			continue;
-		}	
-		else
-		{
-			// Not an integer or numeric value - show an error message
+			// Not an integer value - show an error message
 			$this->error('value_must_be_a_positive_integer');
 			return false;
 		}

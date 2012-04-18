@@ -13936,7 +13936,7 @@ Rebuilding profile issue counters will update the number of issues every user ha
 			<phrase name="projectmagicselect_add_edit_displayorder_title" date="1327523055" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
 			<phrase name="projectmagicselect_add_edit_title_text" date="1327523108" username="Pitchoune" version="2.2.0"><![CDATA[Title of the magic select option.]]></phrase>
 			<phrase name="projectmagicselect_add_edit_title_title" date="1327522693" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
-			<phrase name="projectmagicselect_add_edit_value_text" date="1327523099" username="Pitchoune" version="2.2.0"><![CDATA[Value of the magic select option. This must be at least 1.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_value_text" date="1334735883" username="Pitchoune" version="2.2.0"><![CDATA[Value of the magic select option. This must be a positive integer. This must be at least 1.]]></phrase>
 			<phrase name="projectmagicselect_add_edit_value_title" date="1327523099" username="Pitchoune" version="2.2.0"><![CDATA[Value]]></phrase>
 			<phrase name="projectmagicselect_groupadd_groupedit_displayorder_text" date="1327517110" username="Pitchoune" version="2.2.0"><![CDATA[Display order of the magic select menu.]]></phrase>
 			<phrase name="projectmagicselect_groupadd_groupedit_displayorder_title" date="1327517110" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
@@ -14764,6 +14764,7 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="issue_type_key_alphanumeric_only" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Issue Type Key<dfn>A-Z, 0-9, and underscore only</dfn>]]></phrase>
 			<phrase name="issue_type_manager" date="1181310424" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Issue Type Manager]]></phrase>
 			<phrase name="issue_types_deleted_for_project_x" date="1213804832" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Issue Types Deleted for Project <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="magic_select_group_title" date="1334735159" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select Group]]></phrase>
 			<phrase name="magicselects" date="1327245999" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects]]></phrase>
 			<phrase name="milestones_for_x_html" date="1213805585" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Milestones for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="move_issues_into" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[Move Issues Into]]></phrase>
@@ -14885,8 +14886,7 @@ This is needed because Project Tools have a particular attachment system and nee
 <dfn>If you display this project in the forum list, you can use this to override the project's name in the list.</dfn>]]></phrase>
 			<phrase name="use_selected_project_sets" date="1276120817" username="Pitchoune" version="2.1.2"><![CDATA[Use Selected Project Sets]]></phrase>
 			<phrase name="usergroups_access_globally_disabled" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This usergroup's access to the Project Tools is globally disabled. The changes you make here will not be applied until that is changed.]]></phrase>
-			<phrase name="value" date="1333199502" username="Pitchoune" version="2.2.0"><![CDATA[Value
-<dfn>The value must be a positive integer.</dfn>]]></phrase>
+			<phrase name="value" date="1334735821" username="Pitchoune" version="2.2.0"><![CDATA[Value]]></phrase>
 			<phrase name="version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Version Group]]></phrase>
 			<phrase name="versions" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Versions]]></phrase>
 			<phrase name="vote_question_example" date="1176208454" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Vote Question<dfn>Example: Can you reproduce this bug?</dfn>]]></phrase>

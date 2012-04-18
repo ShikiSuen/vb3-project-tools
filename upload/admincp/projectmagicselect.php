@@ -167,6 +167,7 @@ if ($_REQUEST['do'] == 'add')
 	print_form_header('projectmagicselect', 'insert');
 	print_table_header($vbphrase['add_project_magic_select']);
 
+	print_label_row($vbphrase['magic_select_group_title'], $vbphrase['magicselectgroup' . $magicselect['projectmagicselectgroupid'] . '']);
 	print_input_row($vbphrase['title'], 'title');
 	print_input_row($vbphrase['display_order'], 'displayorder');
 	print_input_row($vbphrase['value'], 'value');
@@ -236,6 +237,7 @@ if ($_REQUEST['do'] == 'edit')
 	print_form_header('projectmagicselect', 'update');
 	print_table_header(construct_phrase($vbphrase['edit_project_magic_select'], $vbphrase['magicselect' . $magicselect['projectmagicselectid'] . '']));
 
+	print_label_row($vbphrase['magic_select_group_title'], $vbphrase['magicselectgroup' . $magicselect['projectmagicselectgroupid'] . '']);
 	print_input_row($vbphrase['title'] . '<dfn>' . construct_link_code($vbphrase['translations'], 'phrase.php?' . $vbulletin->session->vars['sessionurl'] . 'do=edit&amp;fieldname=projecttools&amp;t=1&amp;varname=magicselect' . $magicselect['projectmagicselectid'], true) . '</dfn>', 'title', $vbphrase['magicselect' . $magicselect['projectmagicselectid'] . '']);
 	print_input_row($vbphrase['display_order'], 'displayorder', $magicselect['displayorder']);
 	print_input_row($vbphrase['value'], 'value', $magicselect['value']);
