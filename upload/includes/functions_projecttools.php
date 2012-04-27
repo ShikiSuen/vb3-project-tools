@@ -126,7 +126,7 @@ function fetch_project_permissions(&$user, $projectid, $type = '')
 */
 function fetch_project_info($projectid, $perm_check = true, $use_cache = true)
 {
-	global $db, $vbulletin;
+	global $vbulletin;
 	static $cache;
 
 	$projectid = intval($projectid);
@@ -145,7 +145,8 @@ function fetch_project_info($projectid, $perm_check = true, $use_cache = true)
 	}
 	else
 	{
-		$project = $db->query_first("
+		// reference through $vbulletin since $db is missing in cron
+		$project = $vbulletin->db->query_first("
 			SELECT *
 			FROM " . TABLE_PREFIX . "pt_project
 			WHERE projectid = $projectid
