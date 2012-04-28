@@ -554,6 +554,9 @@ if ($_POST['do'] == 'postreply')
 			// Remove auto-saved content
 			clear_autosave_text('vBProjectTools_IssueNote', 0, $issue['issueid'], $vbulletin->userinfo['userid']);
 
+			send_issue_reply_notification($issue, $issuenote);
+			handle_issue_subscription_change($issue['issueid'], $issue['subscribetype'], $vbulletin->GPC['subscribetype']);
+
 			if ($vbulletin->GPC['ajax'])
 			{
 				// AJAX return code
@@ -715,9 +718,6 @@ if ($_POST['do'] == 'postreply')
 			}
 			else
 			{
-				send_issue_reply_notification($issue, $issuenote);
-				handle_issue_subscription_change($issue['issueid'], $issue['subscribetype'], $vbulletin->GPC['subscribetype']);
-
 				// trying to change the status while replying -- ensure we can actually do that
 				if ($vbulletin->GPC['changestatusid'])
 				{
@@ -1693,6 +1693,8 @@ if ($_POST['do'] == 'postissue')
 			// Edit
 			// Remove auto-saved content
 			clear_autosave_text('vBProjectTools_Issue', intval($vbulletin->GPC['issueid']), 0, $vbulletin->userinfo['userid']);
+
+			handle_issue_subscription_change($issue['issueid'], '', $vbulletin->GPC['subscribetype']);
 
 			if ($vbulletin->GPC['ajax'])
 			{
