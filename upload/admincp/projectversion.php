@@ -806,6 +806,8 @@ if ($_POST['do'] == 'order')
 		");
 	}
 
+	build_version_cache();
+
 	define('CP_REDIRECT', 'projectversion.php?do=list&projectid=' . $vbulletin->GPC['projectid']);
 	print_stop_message('saved_display_order_successfully');
 }
