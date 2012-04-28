@@ -263,7 +263,7 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 		// Add
 		$maxorder = $db->query_first("
 			SELECT MAX(displayorder) AS maxorder
-			FROM " . TABLE_PREFIX . "pt_projectversiongroup
+			FROM " . TABLE_PREFIX . "pt_projectversion
 			WHERE projectversiongroupid = " . $vbulletin->GPC['projectversiongroupid']
 		);
 
