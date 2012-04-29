@@ -2023,6 +2023,25 @@ while ($issue = $db->fetch_array($issueidlist))
 
 /*================================*\
 || ############################## ||
+|| #		   Search			# ||
+|| ############################## ||
+\*================================*/
+
+$issuenote_contenttypeid = $db->query_first("
+	SELECT contenttypeid
+	FROM " . TABLE_PREFIX . "contenttype
+	WHERE class = 'IssueNote'
+		AND packageid = " . $packageid['packageid'] . "
+");
+
+$db->query_write("
+	UPDATE " . TABLE_PREFIX . "contenttype SET
+		cansearch = '1'
+	WHERE contenttypeid = " . $issuenote_contenttypeid['contenttypeid'] . "
+");
+
+/*================================*\
+|| ############################## ||
 || #			Final			# ||
 || ############################## ||
 \*================================*/
