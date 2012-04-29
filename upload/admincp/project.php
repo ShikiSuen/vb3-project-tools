@@ -421,7 +421,7 @@ if ($_POST['do'] == 'editissue2')
 	print_select_row($vbphrase['category'], 'projectcategoryid', $categories, $issue['projectcategoryid']);
 	print_select_row($vbphrase['applicable_version'], 'appliesversionid', $appliesversion_options, $issue['appliesversionid']);
 	print_select_row($vbphrase['addressed_version'], 'addressedversionid', $addressedversion_options, $issue['addressedversionid']);
-	print_select_row($vbphrase['status'], 'issuestatusid', $issuestatuses, $issue['issuestatusid']);
+	print_select_row($vbphrase['ptstatus'], 'issuestatusid', $issuestatuses, $issue['issuestatusid']);
 	print_select_row($vbphrase['milestone'], 'milestoneid', $milestones, $issue['milestoneid']);
 
 	construct_hidden_code('issueid', $issue['issueid']);

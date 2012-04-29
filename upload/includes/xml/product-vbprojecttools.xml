@@ -2553,7 +2553,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1335690131" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1335715856" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3097,9 +3097,7 @@ a.firstunread, a.firstunread:hover
 }
 
 .pt_issuelist .actionbuttons .group {
-	padding-top: 10px;
-	padding-bottom: 5px;
-	padding-{vb:stylevar right}: 0px;
+	padding: 10px 0 5px 0;
 }
 
 /* Project issue content definitions */
@@ -13881,8 +13879,6 @@ If you do not enter a value for this option, the project's default name will be 
 			<phrase name="project_add_edit_summary_title" date="1318370779" username="Pitchoune" version="2.2.0"><![CDATA[Summary]]></phrase>
 			<phrase name="project_add_edit_title_text" date="1318370717" username="Pitchoune" version="2.2.0"><![CDATA[Define here the title of the project. You can use HTML code.]]></phrase>
 			<phrase name="project_add_edit_title_title" date="1318370717" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
-			<phrase name="project_editissue1_editissue2_text" date="1318377928" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
-			<phrase name="project_editissue1_editissue2_title" date="1318377928" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
 			<phrase name="project_editissue1_issuetypeid_text" date="1327241920" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available issue types.]]></phrase>
 			<phrase name="project_editissue1_issuetypeid_title" date="1327241920" username="Pitchoune" version="2.2.0"><![CDATA[Issue Type]]></phrase>
 			<phrase name="project_editissue1_projectid_text" date="1327241900" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available projects.]]></phrase>
@@ -13897,17 +13893,11 @@ If you do not enter a value for this option, the project's default name will be 
 			<phrase name="project_editissue2_milestoneid_title" date="1327242663" username="Pitchoune" version="2.2.0"><![CDATA[Milestone]]></phrase>
 			<phrase name="project_editissue2_projectcategoryid_text" date="1327242511" username="Pitchoune" version="2.2.0"><![CDATA[This is a list of available categories for this project.]]></phrase>
 			<phrase name="project_editissue2_projectcategoryid_title" date="1327242511" username="Pitchoune" version="2.2.0"><![CDATA[Category]]></phrase>
-			<phrase name="project_issue_editissue1_editissue2_text" date="1318377858" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
-			<phrase name="project_issue_editissue1_editissue2_title" date="1318377858" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
-			<phrase name="project_issue_editissue_editissue2_text" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
-			<phrase name="project_issue_editissue_editissue2_title" date="1318377827" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
 			<phrase name="project_issue_issueid_text" date="1331411465" username="Pitchoune" version="2.2.0"><![CDATA[This is the Issue ID you must specify to edit.]]></phrase>
 			<phrase name="project_issue_issueid_title" date="1327241858" username="Pitchoune" version="2.2.0"><![CDATA[ID of Issue]]></phrase>
-			<phrase name="project_issue_text" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[These forms will allow you to edit the details of the issue. You can edit the project, the issue type, the category, the applicable version, the addressed version, the status and the milestone.]]></phrase>
-			<phrase name="project_issue_title" date="1318377905" username="Pitchoune" version="2.2.0"><![CDATA[Edit Issue]]></phrase>
-			<phrase name="project_list_text" date="1181914808" username="Ed Sullivan" version="1.0.0 Release Candidate 1"><![CDATA[Projects are an organizational unit for a collection of things that need to be completed or analyzed. This can be anything from tracking changes in a piece of software or personal to-do lists to a list of steps to perform a move or build a car.<br />
+			<phrase name="project_list_text" date="1335732012" username="Pitchoune" version="2.2.0"><![CDATA[Projects are an organizational unit for a collection of things that need to be completed or analyzed. This can be anything from tracking changes in a piece of software or personal to-do lists to a list of steps to perform a move or build a car.<br />
 <br />
-Issue types let you sub-group tasks/issues in a project into more logical units. A project may have as many custom issue types as you wish. See <a href="help.php?do=answer&amp;page=project&amp;pageaction=typelist">here</a> for more information on issue types.<br />
+Issue types let you sub-group tasks/issues in a project into more logical units. A project may have as many custom issue types as you wish. See <a href="help.php?do=answer&amp;page=projecttype&amp;pageaction=typelist">here</a> for more information on issue types.<br />
 <br />
 A project may also utilize categories for additional sub-grouping. Categories have no functional changes except for grouping issues into logical sub-components, allowing for quicker searching. Categories differ from issue types in that they group based on "where" the issue is accomplished instead of "what" the issue is to accomplish.<br />
 <br />
@@ -13937,13 +13927,13 @@ Rebuilding profile issue counters will update the number of issues every user ha
 			<phrase name="projectmagicselect_add_edit_displayorder_text" date="1327523055" username="Pitchoune" version="2.2.0"><![CDATA[Display order of the magic select option.]]></phrase>
 			<phrase name="projectmagicselect_add_edit_displayorder_title" date="1327523055" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
 			<phrase name="projectmagicselect_add_edit_title_text" date="1327523108" username="Pitchoune" version="2.2.0"><![CDATA[Title of the magic select option.]]></phrase>
-			<phrase name="projectmagicselect_add_edit_title_title" date="1327522693" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
-			<phrase name="projectmagicselect_add_edit_value_text" date="1334735883" username="Pitchoune" version="2.2.0"><![CDATA[Value of the magic select option. This must be a positive integer. This must be at least 1.]]></phrase>
+			<phrase name="projectmagicselect_add_edit_title_title" date="1335734615" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select Option Title]]></phrase>
+			<phrase name="projectmagicselect_add_edit_value_text" date="1335734856" username="Pitchoune" version="2.2.0"><![CDATA[Value of the magic select option. This must be a positive integer.]]></phrase>
 			<phrase name="projectmagicselect_add_edit_value_title" date="1327523099" username="Pitchoune" version="2.2.0"><![CDATA[Value]]></phrase>
-			<phrase name="projectmagicselect_groupadd_groupedit_displayorder_text" date="1327517110" username="Pitchoune" version="2.2.0"><![CDATA[Display order of the magic select menu.]]></phrase>
+			<phrase name="projectmagicselect_groupadd_groupedit_displayorder_text" date="1335734983" username="Pitchoune" version="2.2.0"><![CDATA[Display order of the magic select.]]></phrase>
 			<phrase name="projectmagicselect_groupadd_groupedit_displayorder_title" date="1327517110" username="Pitchoune" version="2.2.0"><![CDATA[Display Order]]></phrase>
-			<phrase name="projectmagicselect_groupadd_groupedit_title_text" date="1327517069" username="Pitchoune" version="2.2.0"><![CDATA[Title of the magic select menu.]]></phrase>
-			<phrase name="projectmagicselect_groupadd_groupedit_title_title" date="1327517069" username="Pitchoune" version="2.2.0"><![CDATA[Title]]></phrase>
+			<phrase name="projectmagicselect_groupadd_groupedit_title_text" date="1335734983" username="Pitchoune" version="2.2.0"><![CDATA[Title of the magic select.]]></phrase>
+			<phrase name="projectmagicselect_groupadd_groupedit_title_title" date="1335734600" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select Title]]></phrase>
 			<phrase name="projectmagicselect_list_text" date="1327516432" username="Pitchoune" version="2.2.0"><![CDATA[Magic selects is a way to add some specific content to have a better definition of issues. These menus are available over the post new issue page and in the 'Issue Details' block.<br />
 <br />
 A basic system to track magic selects is included in the Project Tools. This allows you to provide users more options to help you to track issues and make their description better.<br />
@@ -14690,8 +14680,8 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="add_milestone" date="1213799689" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Add Milestone]]></phrase>
 			<phrase name="add_project" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project]]></phrase>
 			<phrase name="add_project_category" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Category]]></phrase>
-			<phrase name="add_project_magic_select" date="1327516787" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select]]></phrase>
-			<phrase name="add_project_magic_select_group" date="1327516997" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select Group]]></phrase>
+			<phrase name="add_project_magic_select" date="1335735216" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select Option]]></phrase>
+			<phrase name="add_project_magic_select_group" date="1335735216" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select]]></phrase>
 			<phrase name="add_project_priority" date="1295124315" username="Pitchoune" version="2.2.0"><![CDATA[Add Project Priority]]></phrase>
 			<phrase name="add_project_version" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Version]]></phrase>
 			<phrase name="add_project_version_group" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Version Group]]></phrase>
@@ -14737,8 +14727,8 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="edit_permissions_for_x" date="1213804739" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_permissions_for_x_in_y" date="1213804793" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span> in <span class="normal">'{2}'</span>]]></phrase>
 			<phrase name="edit_project_category" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Category <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="edit_project_magic_select" date="1316814271" username="Pitchoune" version="2.2.0"><![CDATA[Edit Magic Select <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="edit_project_magic_select_group" date="1327516843" username="Pitchoune" version="2.2.0"><![CDATA[Edit Magic Select Group <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="edit_project_magic_select" date="1335735398" username="Pitchoune" version="2.2.0"><![CDATA[Edit Magic Select Option <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="edit_project_magic_select_group" date="1335735398" username="Pitchoune" version="2.2.0"><![CDATA[Edit Magic Select <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_priority" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Priority <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_version" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Version <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_version_group" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Version Group <span class="normal">'{1}'</span>]]></phrase>
@@ -14766,7 +14756,8 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="issue_type_key_alphanumeric_only" date="1176207818" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Issue Type Key<dfn>A-Z, 0-9, and underscore only</dfn>]]></phrase>
 			<phrase name="issue_type_manager" date="1181310424" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Issue Type Manager]]></phrase>
 			<phrase name="issue_types_deleted_for_project_x" date="1213804832" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Issue Types Deleted for Project <span class="normal">'{1}'</span>]]></phrase>
-			<phrase name="magic_select_group_title" date="1334735159" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select Group]]></phrase>
+			<phrase name="magic_select_group_title" date="1335734482" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select Title]]></phrase>
+			<phrase name="magic_select_title" date="1335734482" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select Option Title]]></phrase>
 			<phrase name="magicselects" date="1327245999" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects]]></phrase>
 			<phrase name="milestones_for_x_html" date="1213805585" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Milestones for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="move_issues_into" date="1182519019" username="Jelsoft" version="1.0.0 Release Candidate 2"><![CDATA[Move Issues Into]]></phrase>
@@ -14850,6 +14841,7 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="ptperm_can_view_private_others" date="1176211716" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can View Others' Private Issues/Notes]]></phrase>
 			<phrase name="ptperm_can_view_private_own" date="1176211706" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can View Own Private Issues/Notes]]></phrase>
 			<phrase name="ptperm_can_vote" date="1176211742" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Vote on Issues]]></phrase>
+			<phrase name="ptstatus" date="1335732993" username="Pitchoune" version="2.2.0"><![CDATA[Status]]></phrase>
 			<phrase name="rebuild_issue_counters" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Rebuild Issue Counters]]></phrase>
 			<phrase name="rebuild_milestone_counters" date="1213799598" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Rebuild Milestone Counters]]></phrase>
 			<phrase name="rebuild_profile_issue_counters" date="1278280035" username="Pitchoune" version="2.1.2"><![CDATA[Rebuild Profile Issue Counters]]></phrase>
@@ -15232,13 +15224,11 @@ Separate each style ID with a comma.<br />
 			<helptopic disp="120" act="add,edit" opt="available_issue_types" />
 			<helptopic disp="1" act="editissue1" opt="projectid" />
 			<helptopic disp="2" act="editissue1" opt="issuetypeid" />
-			<helptopic disp="1" act="editissue1,editissue2" />
 			<helptopic disp="1" act="editissue2" opt="projectcategoryid" />
 			<helptopic disp="2" act="editissue2" opt="appliesversionid" />
 			<helptopic disp="3" act="editissue2" opt="addressedversionid" />
 			<helptopic disp="4" act="editissue2" opt="issuestatusid" />
 			<helptopic disp="5" act="editissue2" opt="milestoneid" />
-			<helptopic disp="1" act="issue" />
 			<helptopic disp="1" act="issue" opt="issueid" />
 			<helptopic disp="1" act="list" />
 		</helpscript>

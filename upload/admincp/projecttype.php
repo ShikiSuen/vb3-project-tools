@@ -841,7 +841,7 @@ if ($_REQUEST['do'] == 'typelist')
 		), false, 'tcat');
 
 		print_cells_row(array(
-			'<span class="normal">' . $vbphrase['status'] . '</span>',
+			'<span class="normal">' . $vbphrase['ptstatus'] . '</span>',
 			'<span class="normal">' . $vbphrase['display_order'] . '</span>',
 			'<span class="normal">' . $vbphrase['issue_completed'] . '</span>',
 			'<b>' . construct_link_code($vbphrase['add_status'], 'projecttype.php?do=statusadd&amp;type=' . $type['issuetypeid']) . '</b>'
