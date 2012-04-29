@@ -44,8 +44,6 @@ $globaltemplates = array(
 	'pt_issuebit',
 	'pt_issuebit_deleted',
 	'pt_issuebit_pagelink',
-	'pt_listprojects',
-	'pt_listprojects_link',
 	'pt_markread_script',
 	'pt_overview',
 	'pt_petitionbit',
@@ -675,51 +673,17 @@ $search_status_options = fetch_issue_status_search_select($projectperms);
 // report list
 $reportbits = prepare_subscribed_reports();
 
-// Project jump
-if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_listprojects_locations'] & 1)
+// Project navigation
+$projectlist = array();
+
+foreach ($vbulletin->pt_projects AS $projectid => $projectdata)
 {
-	$ptdropdown = '';
-
-	// Create the list
-	foreach ($vbulletin->pt_projects AS $projectlist)
+	if (!isset($perms_query["$projectdata[projectid]"]) OR $projectdata['displayorder'] == 0)
 	{
-		if (!isset($perms_query["$projectlist[projectid]"]) OR $projectlist['displayorder'] == 0)
-		{
-			continue;
-		}
-
-		$templater = vB_Template::create('pt_listprojects_link');
-			$templater->register('projectlist', $projectlist);
-		$ptdropdown .= $templater->render();
+		continue;
 	}
 
-	// Do some things if the list is done and filled
-	if ($ptdropdown)
-	{
-		$navpopup = array();
-		$navpopup['css'] = '';
-
-		// Timeline isn't empty - some particular conditions for spaces
-		if (!empty($timeline))
-		{
-			if ($vbulletin->options['pt_listprojects_position_projects'] == 2)
-			{
-				$navpopup['css'] = 'margin10 marginright marginbottom5';
-			}
-		}
-		else
-		{
-			$navpopup['css'] = 'margin10 marginright';
-		}
-
-		$navpopup['title'] = $project['title'];
-
-		// Evaluate the drop_down menu
-		$templater = vB_Template::create('pt_listprojects');
-			$templater->register('navpopup', $navpopup);
-			$templater->register('ptdropdown', $ptdropdown);
-		$pt_ptlist = $templater->render();
-	}
+	$projectlist[$projectdata['projectid']] = $projectdata;
 }
 
 // navbar and output
@@ -739,7 +703,7 @@ $templater = vB_Template::create('pt_project');
 	$templater->register('post_issue_options', $post_issue_options);
 	$templater->register('post_new_issue_text', $post_new_issue_text);
 	$templater->register('project', $project);
-	$templater->register('pt_ptlist', $pt_ptlist);
+	$templater->register('projectlist', $projectlist);
 	$templater->register('reportbits', $reportbits);
 	$templater->register('search_status_options', $search_status_options);
 	$templater->register('timeline', $timeline);

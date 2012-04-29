@@ -2534,7 +2534,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1333811075" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1335690131" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3624,39 +3624,16 @@ div.checkbox_multiselect {
 	width: 300px;
 }
 
-.pt_listprojects .margin43 {
-	margin-top: -43px;
+.pt_listprojects .menuissuelist {
+	float: {vb:stylevar right};
 }
 
-.pt_listprojects .margin38 {
+.pt_listprojects .marginissue1 {
 	margin-top: -38px;
 }
 
-.pt_listprojects .margin33 {
-	margin-top: -33px;
-}
-
-.pt_listprojects .margin15 {
-	margin-top: -15px;
-}
-
-.pt_listprojects .margin10 {
+.pt_listprojects .marginissue2 {
 	margin-top: -10px;
-}
-
-.pt_listprojects .marginmore10 {
-	margin-top: 10px;
-}
-
-.pt_listprojects .marginright {
-	margin-{vb:stylevar right}: 10px;
-}
-
-.pt_listprojects .marginbottom5 {
-	margin-bottom: -5px;
-}
-
-.pt_listprojects .marginbottomadd5 {
 	margin-bottom: 5px;
 }
 
@@ -4592,7 +4569,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1333487815" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1335689968" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4907,9 +4884,22 @@ legend {
 
 <br /><br />
 
-<vb:if condition="$vbulletin->options['pt_listprojects_position_issue'] == 0">
-	{vb:raw pt_ptlist}
-</vb:if>
+<div class="pt_listprojects">
+	<div class="menu<vb:if condition="empty($pagenav)"> marginissue1<vb:else /> marginissue2</vb:if>">
+		<div class="clear"></div>
+		<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
+			<span class="shade">{vb:rawphrase projects}</span>
+			<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
+			<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
+			<ul class="navpopupbody popupbody popuphover">
+				<li class="optionlabel">{vb:rawphrase projects}</li>
+				<vb:each from="projectlist" key="projectid" value="projectdata">
+					<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
+				</vb:each>
+			</ul>
+		</div>
+	</div>
+</div>
 
 <!-- notes -->
 <a name="notestart"></a>
@@ -4931,10 +4921,6 @@ legend {
 	</div>
 <br />
 </div>
-
-<vb:if condition="$vbulletin->options['pt_listprojects_position_issue'] == 1">
-	{vb:raw pt_ptlist}
-</vb:if>
 
 <vb:if condition="$show['quick_reply'] OR $show['ajax_js']">
 <br />
@@ -5123,10 +5109,6 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </div>
 </div>
 
-<vb:if condition="$vbulletin->options['pt_listprojects_position_issue'] == 2">
-	{vb:raw pt_ptlist}
-</vb:if>
-
 {vb:raw footer}
 
 </body>
@@ -5270,7 +5252,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1333878064" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1335689984" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5370,10 +5352,6 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</vb:if>
 	</div>
 </div>
-
-<vb:if condition="$vbulletin->options['pt_listprojects_position_issuelist'] == 1">
-	{vb:raw pt_ptlist}
-</vb:if>
 
 <div id="above_project_controls" class="above_project_controls toolsmenu">
 	<div>
@@ -5554,12 +5532,12 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 
 <div class="clear"></div>
 <div class="pt_issuepopup">
-	<div id="below_threadlist" class="above_threadlist">
+	<div id="below_threadlist" class="below_threadlist">
 		<vb:if condition="$vbphrase['post_new_issue_issuetype']">
 			<a href="projectpost.php?{vb:raw session.sessionurl}do=addissue&amp;projectid={vb:raw project.projectid}&amp;issuetypeid={vb:raw input.issuetypeid}" rel="nofollow" class="newcontent_textcontrol"><span>+</span> {vb:rawphrase post_new_issue_issuetype}</a>
 		<vb:else />
 			<vb:if condition="$post_issue_options">
-				<div class="navpopupmenu popupmenu nohovermenu" style="margin-top: 7px">
+				<div class="navpopupmenu popupmenu nohovermenu" style="margin-top: 7px; position: absolute">
 					<a class="popupctrl" href="{vb:raw relpath}">
 						<span class="ctrlcontainer">{vb:rawphrase post_new_issue}</span>
 					</a>
@@ -5578,17 +5556,29 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 				</div>
 			</vb:if>
 		</vb:if>
-		<vb:if condition="$pagenav">
-			<div class="threadpagenav pagenav">
-				{vb:raw pagenav}
+
+		<div class="threadpagenav">
+			{vb:raw pagenav}
+
+			<div class="pt_listprojects">
+				<div class="menuissuelist">
+					<div class="clear"></div>
+					<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
+						<span class="shade">{vb:rawphrase projects}</span>
+						<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
+						<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
+						<ul class="navpopupbody popupbody popuphover">
+							<li class="optionlabel">{vb:rawphrase projects}</li>
+							<vb:each from="projectlist" key="projectid" value="projectdata">
+								<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
+							</vb:each>
+						</ul>
+					</div>
+				</div>
 			</div>
-		</vb:if>
+		</div>
 	</div>
 </div>
-
-<vb:if condition="$vbulletin->options['pt_listprojects_position_issuelist'] == 0">
-	{vb:raw pt_ptlist}
-</vb:if>
 
 {vb:raw footer}
 
@@ -6006,21 +5996,6 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	</td>
 </tr>
 </table>]]></template>
-		<template name="pt_listprojects" templatetype="template" date="1276536285" username="Pitchoune" version="2.1.2"><![CDATA[<div class="pt_listprojects">
-	<div class="menu {vb:raw navpopup.css}">
-		<div class="clear"></div>
-		<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
-			<span class="shade">{vb:rawphrase projects}</span>
-			<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw navpopup.title}</span></a>
-			<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
-			<ul class="navpopupbody popupbody popuphover">
-				<li class="optionlabel">{vb:rawphrase projects}</li>
-				{vb:raw ptdropdown}
-			</ul>
-		</div>
-	</div>
-</div>]]></template>
-		<template name="pt_listprojects_link" templatetype="template" date="1276536470" username="Pitchoune" version="2.1.2"><![CDATA[<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectlist.projectid}<vb:if condition="$issuetypeid">&amp;issuetypeid={vb:raw issuetypeid}</vb:if>">{vb:raw projectlist.title}</a></li>]]></template>
 		<template name="pt_manageattach" templatetype="template" date="1291146733" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
@@ -8508,7 +8483,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1333460824" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1335690007" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8721,10 +8696,6 @@ init_project_readmarker_system();
 
 <div class="clear"></div>
 
-<vb:if condition="($timeline AND $vbulletin->options['pt_listprojects_position_projects'] == 2) OR empty($timeline)">
-	{vb:raw pt_ptlist}
-</vb:if>
-
 <vb:if condition="$issuebits">
 <div class="pt_issuelist block">
 	<div class="blockhead collapse">
@@ -8772,12 +8743,28 @@ init_project_readmarker_system();
 </div>
 </vb:if>
 
+<vb:if condition="$projectlist">
+	<div class="pt_listprojects">
+		<div class="menu">
+			<div class="clear"></div>
+			<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
+				<span class="shade">{vb:rawphrase projects}</span>
+				<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title}</span></a>
+				<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
+				<ul class="navpopupbody popupbody popuphover">
+					<li class="optionlabel">{vb:rawphrase projects}</li>
+
+					<vb:each from="projectlist" key="projectid" value="projectdata">
+						<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title}</a></li>
+					</vb:each>
+				</ul>
+			</div>
+		</div>
+	</div>
+</vb:if>
+
 <vb:if condition="$timeline">
 <br />
-
-<vb:if condition="$vbulletin->options['pt_listprojects_position_projects'] == 0">
-	{vb:raw pt_ptlist}
-</vb:if>
 
 {vb:raw timeline}
 </vb:if>
@@ -8794,10 +8781,6 @@ init_project_readmarker_system();
 		{vb:raw petitionbits}
 	</div>
 </div>
-</vb:if>
-
-<vb:if condition="$vbulletin->options['pt_listprojects_position_projects'] == 1 AND !empty($timeline)">
-	{vb:raw pt_ptlist}
 </vb:if>
 
 {vb:raw footer}
@@ -14965,20 +14948,6 @@ A value of 0 will display all issues in a group on the first page.]]></phrase>
 <br />
 A value of 0 will display all issues on one page.]]></phrase>
 			<phrase name="setting_pt_issuesperpage_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Issues Displayed Per Page]]></phrase>
-			<phrase name="setting_pt_listprojects_activate_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Do you want to activate this system?]]></phrase>
-			<phrase name="setting_pt_listprojects_activate_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Enable]]></phrase>
-			<phrase name="setting_pt_listprojects_locations_desc" date="1327231115" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display this drop-down menu.]]></phrase>
-			<phrase name="setting_pt_listprojects_locations_title" date="1327231115" username="Pitchoune" version="2.2.0"><![CDATA[Location of the drop-down menu]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issue_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues pages of Project Tools.]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issue_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project issue]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issuelist_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project issues list page of Project Tools.<br />
-<br />
-<strong>Note:</strong> if you have no issue in some project, this option is not used and will be placed before footer.]]></phrase>
-			<phrase name="setting_pt_listprojects_position_issuelist_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project issue list]]></phrase>
-			<phrase name="setting_pt_listprojects_position_projects_desc" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Select where you would like to display the projectjump menu in project overview pages of Project Tools.<br />
-<br />
-<strong>Note:</strong> if you have no issue in some project, this option is not used and will be placed before footer.]]></phrase>
-			<phrase name="setting_pt_listprojects_position_projects_title" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Position of Projectjump menu in project overview]]></phrase>
 			<phrase name="setting_pt_notesperpage_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[This is the number of notes that will be displayed per page in an issue. A note can be a comment/petition or information about changes to the issues details.<br />
 <br />
 A value of 0 will display all notes on one page.]]></phrase>
@@ -15037,7 +15006,6 @@ Separate each style ID with a comma.<br />
 			<phrase name="setting_statuscolor_lightstyles_title" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Light Styles]]></phrase>
 			<phrase name="settinggroup_projecttools" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools: General Options]]></phrase>
 			<phrase name="settinggroup_projecttools_impex" date="1304761644" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools: Import/Export Options]]></phrase>
-			<phrase name="settinggroup_projecttools_projectjump" date="1304761670" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools: Project Jump Options]]></phrase>
 			<phrase name="settinggroup_projecttools_statuscolor" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools: Status Color Options]]></phrase>
 		</phrasetype>
 		<phrasetype name="CMS Widget Types" fieldname="widgettypes">
@@ -15161,41 +15129,6 @@ Separate each style ID with a comma.<br />
 				<datatype>boolean</datatype>
 				<optioncode>yesno</optioncode>
 				<defaultvalue>1</defaultvalue>
-			</setting>
-		</settinggroup>
-		<settinggroup name="projecttools_projectjump" displayorder="830">
-			<setting varname="pt_listprojects_activate" displayorder="10">
-				<datatype>boolean</datatype>
-				<optioncode>yesno</optioncode>
-				<defaultvalue>0</defaultvalue>
-			</setting>
-			<setting varname="pt_listprojects_locations" displayorder="20">
-				<datatype>bitfield</datatype>
-				<optioncode>bitfield:nocache|pt_dropdownmenu</optioncode>
-				<defaultvalue>7</defaultvalue>
-			</setting>
-			<setting varname="pt_listprojects_position_projects" displayorder="30">
-				<datatype>integer</datatype>
-				<optioncode>radio:piped
-0|pt_listprojects_before_timeline
-1|pt_listprojects_before_footer
-2|pt_listprojects_before_recent_issuelist</optioncode>
-				<defaultvalue>0</defaultvalue>
-			</setting>
-			<setting varname="pt_listprojects_position_issuelist" displayorder="40">
-				<datatype>number</datatype>
-				<optioncode>radio:piped
-0|pt_listprojects_before_footer
-1|pt_listprojects_before_recent_issuelist</optioncode>
-				<defaultvalue>0</defaultvalue>
-			</setting>
-			<setting varname="pt_listprojects_position_issue" displayorder="50">
-				<datatype>number</datatype>
-				<optioncode>radio:piped
-0|pt_listprojects_before_notes
-1|pt_listprojects_before_qr
-2|pt_listprojects_before_footer</optioncode>
-				<defaultvalue>0</defaultvalue>
 			</setting>
 		</settinggroup>
 		<settinggroup name="projecttools_statuscolor" displayorder="820">

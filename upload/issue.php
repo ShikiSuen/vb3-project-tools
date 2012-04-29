@@ -49,8 +49,6 @@ $globaltemplates = array(
 	'pt_issuenotebit_petition',
 	'pt_issuenotebit_system',
 	'pt_issuenotebit_systembit',
-	'pt_listprojects',
-	'pt_listprojects_link',
 	'pt_newpost_attachment',
 	'bbcode_code',
 	'bbcode_html',
@@ -634,7 +632,8 @@ require_once(DIR . '/packages/vbprojecttools/attach/issue.php');
 $vbulletin->input->clean_array_gpc('r', array(
 	'issueid' => TYPE_UINT,
 	'filter' => TYPE_NOHTML,
-	'pagenumber' => TYPE_UINT
+	'pagenumber' => TYPE_UINT,
+	'perpage' => TYPE_UINT
 ));
 
 $issue = verify_issue($vbulletin->GPC['issueid'], true, array('avatar', 'vote', 'milestone'));
@@ -646,6 +645,7 @@ verify_seo_url('issue', $issue, array('pagenumber' => $vbulletin->GPC['pagenumbe
 
 $issueperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid'], $issue['issuetypeid']);
 $posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
+$perms_query = build_issue_permissions_query($vbulletin->userinfo);
 
 ($hook = vBulletinHook::fetch_hook('project_issue_start')) ? eval($hook) : false;
 
@@ -758,7 +758,11 @@ $issue['menucode'] = implode($issue['menucode']);
 $issue['activationcode'] = implode($issue['activationcode']);
 $issue['headcode'] = implode('", "', $issue['headcode']);
 
-if (!$vbulletin->options['pt_notesperpage'])
+if ($vbulletin->GPC['perpage'])
+{
+	$vbulletin->options['pt_notesperpage'] = $vbulletin->GPC['perpage'];
+}
+else if (!$vbulletin->options['pt_notesperpage'])
 {
 	$vbulletin->options['pt_notesperpage'] = 999999;
 }
@@ -1101,66 +1105,17 @@ else if ($show['ajax_js'])
 	$vBeditTemplate['clientscript'] = $templater->render();
 }
 
-// Project jump
-if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_listprojects_locations'] & 4)
+// Project navigation
+$projectlist = array();
+
+foreach ($vbulletin->pt_projects AS $projectid => $projectdata)
 {
-	$ptdropdown = '';
-	$perms_query = build_issue_permissions_query($vbulletin->userinfo);
-
-	foreach ($vbulletin->pt_projects AS $projectlist)
+	if (!isset($perms_query["$projectdata[projectid]"]) OR $projectdata['displayorder'] == 0)
 	{
-		if (!isset($perms_query["$projectlist[projectid]"]) OR $projectlist['displayorder'] == 0)
-		{
-			continue;
-		}
-
-		$templater = vB_Template::create('pt_listprojects_link');
-			$templater->register('projectlist', $projectlist);
-		$ptdropdown .= $templater->render();
+		continue;
 	}
 
-	if ($ptdropdown)
-	{
-		// Define particular conditions for spaces
-		$navpopup = array();
-		$navpopup['css'] = '';
-
-		if (empty($pagenav))
-		{
-			if ($vbulletin->options['pt_listprojects_position_issue'] == 0)
-			{
-				$navpopup['css'] = 'margin38';
-			}
-			else if ($vbulletin->options['pt_listprojects_position_issue'] == 1)
-			{
-				$navpopup['css'] = 'margin33';
-			}
-		}
-		else
-		{
-			if ($vbulletin->options['pt_listprojects_position_issue'] == 0)
-			{
-				$navpopup['css'] = 'margin15 marginbottomadd5';
-			}
-			else if ($vbulletin->options['pt_listprojects_position_issue'] == 1)
-			{
-				$navpopup['css'] = 'marginbottomadd5';
-			}
-		}
-
-		if ($vbulletin->options['pt_listprojects_position_issue'] == 2)
-		{
-			$navpopup['css'] = 'marginmore10 marginbottomadd5';
-		}
-
-		$navpopup['title'] = $project['title'];
-
-		// Evaluate the drop_down menu
-		$templater = vB_Template::create('pt_listprojects');
-			$templater->register('navpopup', $navpopup);
-			$templater->register('ptdropdown', $ptdropdown);
-		$pt_ptlist = $templater->render();
-	}
+	$projectlist[$projectdata['projectid']] = $projectdata;
 }
 
 // facebook options
@@ -1210,6 +1165,7 @@ $templater = vB_Template::create('pt_issue');
 	$templater->register('petition_options', $petition_options);
 	$templater->register('posting_perms', $posting_perms);
 	$templater->register('project', $project);
+	$templater->register('projectlist', $projectlist);
 	$templater->register('pt_ptlist', $pt_ptlist);
 	$templater->register('qrissuenoteid', $qrissuenoteid);
 	$templater->register('selected_filter', $selected_filter);

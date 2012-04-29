@@ -44,8 +44,6 @@ $specialtemplates = array(
 $globaltemplates = array(
 	'pt_issuelist',
 	'pt_issuelist_arrow',
-	'pt_listprojects',
-	'pt_listprojects_link',
 	'pt_postmenubit',
 	'pt_issuebit',
 	'pt_issuebit_pagelink',
@@ -476,61 +474,17 @@ else
 $assignable_users = fetch_assignable_users_select($project['projectid']);
 $search_status_options = fetch_issue_status_search_select($projectperms);
 
-// Project jump
-if ($vbulletin->options['pt_listprojects_activate'] AND $vbulletin->options['pt_listprojects_locations'] & 2)
+// Project navigation
+$projectlist = array();
+
+foreach ($vbulletin->pt_projects AS $projectid => $projectdata)
 {
-	$ptdropdown = '';
-	$perms_query = build_issue_permissions_query($vbulletin->userinfo);
-
-	foreach ($vbulletin->pt_projects AS $projectlist)
+	if (!isset($perms_query["$projectdata[projectid]"]) OR $projectdata['displayorder'] == 0)
 	{
-		if (!isset($perms_query["$projectlist[projectid]"]) OR $projectlist['displayorder'] == 0)
-		{
-			continue;
-		}
-
-		$templater = vB_Template::create('pt_listprojects_link');
-			$templater->register('issuetypeid', $vbulletin->GPC['issuetypeid']);
-			$templater->register('projectlist', $projectlist);
-		$ptdropdown .= $templater->render();
+		continue;
 	}
 
-	if ($ptdropdown)
-	{
-		// Define particular conditions for spaces
-		$navpopup = array();
-		$navpopup['css'] = '';
-
-		if ($vbulletin->options['pt_listprojects_locations'] & 2)
-		{
-			if (empty($pagenav))
-			{
-				if ($vbulletin->options['pt_listprojects_position_issuelist'] == 1)
-				{
-					if ($vbphrase['post_new_issue_issuetype'])
-					{
-						$navpopup['css'] = 'margin43';
-					}
-					else
-					{
-						$navpopup['css'] = 'margin38';
-					}
-				}
-				else
-				{
-					$navpopup['css'] = 'margin43';
-				}
-			}
-		}
-
-		$navpopup['title'] = $project['title'];
-
-		// Evaluate the drop_down menu
-		$templater = vB_Template::create('pt_listprojects');
-			$templater->register('navpopup', $navpopup);
-			$templater->register('ptdropdown', $ptdropdown);
-		$pt_ptlist = $templater->render();
-	}
+	$projectlist[$projectdata['projectid']] = $projectdata;
 }
 
 // navbar and output
@@ -581,7 +535,7 @@ $templater = vB_Template::create('pt_issuelist');
 	$templater->register('postable_types', $postable_types);
 	$templater->register('post_issue_options', $post_issue_options);
 	$templater->register('project', $project);
-	$templater->register('pt_ptlist', $pt_ptlist);
+	$templater->register('projectlist', $projectlist);
 	$templater->register('search_status_options', $search_status_options);
 	$templater->register('sortfield', $sortfield);
 	$templater->register('sort_arrow', $sort_arrow);
