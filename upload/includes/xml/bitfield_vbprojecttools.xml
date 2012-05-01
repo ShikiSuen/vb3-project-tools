@@ -3,6 +3,9 @@
 <bitfields product="vbprojecttools">
 	<bitfielddefs>
 		<group name="ugp">
+			<group name="forumpermissions">
+				<bitfield name="canimportintoissues" group="post_thread_permissions" phrase="can_import_into_issues" install="5,6,7">16777216</bitfield>
+			</group>
 			<group name="ptpermissions">
 				<bitfield name="canviewprojecttools" group="project_tools_permissions" phrase="can_view_project_tools" install="1,2,3,4,5,6,7">16</bitfield>
 				<bitfield name="cancreatereport" group="project_tools_permissions" phrase="can_create_report" install="2,5,6,7">1</bitfield>
@@ -66,9 +69,6 @@
 			</group>
 			<group name="pt_hvcheck">
 				<bitfield name="post">1</bitfield>
-			</group>
-			<group name="forumoptions">
-				<bitfield name="canimportintoissues">524288</bitfield>
 			</group>
 			<group name="pt_columns">
 				<bitfield name="last_post">1</bitfield>
