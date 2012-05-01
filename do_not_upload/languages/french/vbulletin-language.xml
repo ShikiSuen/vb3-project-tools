@@ -1,8 +1,89 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Français" vbversion="4.1.0" product="vbprojecttools" type="phrases">
+<language name="Français" vbversion="4.1.12" product="vbprojecttools" type="phrases">
 	<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
-		<phrase name="project_projectadd_projectedit_afterforumids_text" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Cette option vous permet d'afficher les informations du projet dans la liste des forums sur la page d'accueil de vBulletin.<br />
+		<phrase name="options_options_issuelist_columns_text" date="1331500688" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de sélectionner quels colonnes vous souhaitez afficher dans toutes les listes de demandes.<br />
+<br />
+<b>Remarque :</b> faites attention avec ce paramètre, le fait d'affichier trop de colonnes dans les listes de demandes peut <b>abimer le rendu</b> des listes de demandes.]]></phrase>
+		<phrase name="options_options_issuelist_columns_title" date="1331500018" username="Pitchoune" version="2.2.0"><![CDATA[Colonnes à afficher dans la liste des demandes]]></phrase>
+		<phrase name="options_options_pt_allowbbcode_text" date="1331489580" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet d'activer et de désactiver toutes les balises BB dans Project Tools.]]></phrase>
+		<phrase name="options_options_pt_allowbbcode_title" date="1331458493" username="Pitchoune" version="2.2.0"><![CDATA[Autoriser les balises BB dans les demandes]]></phrase>
+		<phrase name="options_options_pt_allowbbimagecode_text" date="1331489580" username="Pitchoune" version="2.2.0"><![CDATA[Si vous activez ceci, les utilisateurs seront capable d'utiliser la balise BB [IMG] pour afficher des images dans Project Tools.]]></phrase>
+		<phrase name="options_options_pt_allowbbimagecode_title" date="1331458493" username="Pitchoune" version="2.2.0"><![CDATA[Autoriser la balise [IMG] dans les demandes]]></phrase>
+		<phrase name="options_options_pt_allowhtml_text" date="1331489580" username="Pitchoune" version="2.2.0"><![CDATA[Il est <b>vivement</b> recommandé de ne pas activer ce paramètre. Ceci permet d'utiliser du code HTML dans Project Tools, qui peut être utilisé à tort.]]></phrase>
+		<phrase name="options_options_pt_allowhtml_title" date="1331458493" username="Pitchoune" version="2.2.0"><![CDATA[Autoriser le code HTML dans les demandes]]></phrase>
+		<phrase name="options_options_pt_allowsmilies_text" date="1331489580" username="Pitchoune" version="2.2.0"><![CDATA[Si vous activez ce paramètre, les utilisateurs pourront taper du texte comme :) et :( et ils pourront être convertis en smileys dans Project Tools. Sinon, le texte inséré sera affiché comme tel.]]></phrase>
+		<phrase name="options_options_pt_allowsmilies_title" date="1331458493" username="Pitchoune" version="2.2.0"><![CDATA[Autoriser les smileys dans les demandes]]></phrase>
+		<phrase name="options_options_pt_allowstartervote_text" date="1331489580" username="Pitchoune" version="2.2.0"><![CDATA[Si vous définissez ce paramètre sur « Oui », l'utilisateur qui a crée la demande sera capable de voter dans sa demande (pour confirmer que l'utilisateur peut reproduire le contenu indiqué).]]></phrase>
+		<phrase name="options_options_pt_allowstartervote_title" date="1331458493" username="Pitchoune" version="2.2.0"><![CDATA[Permettre de voter dans sa propre demande ?]]></phrase>
+		<phrase name="options_options_pt_groupsearchissuespergroup_text" date="1331490011" username="Pitchoune" version="2.2.0"><![CDATA[Quand vous effectuez une recherche groupée, ce paramètre définit combien de demandes doit être affichée dans chaque groupe sur la première page.<br />
+<br />
+<b>Remarque : </b> ce nombre doit être au minimum 1.]]></phrase>
+		<phrase name="options_options_pt_groupsearchissuespergroup_title" date="1331458877" username="Pitchoune" version="2.2.0"><![CDATA[Recherche groupée de demandes par groupe]]></phrase>
+		<phrase name="options_options_pt_humancheck_text" date="1331490011" username="Pitchoune" version="2.2.0"><![CDATA[Si vous définissez ce paramètre sur « Oui », la vérification humaine suivra les règles par groupe d'utilisateurs.<br />
+Si vous définissez ce paramètre sur « Non », la vérification humaine suivra le paramètre ci-dessous.]]></phrase>
+		<phrase name="options_options_pt_humancheck_title" date="1331458877" username="Pitchoune" version="2.2.0"><![CDATA[Vérification humaine par groupe d'utilisateurs]]></phrase>
+		<phrase name="options_options_pt_hvcheck_text" date="1331490011" username="Pitchoune" version="2.2.0"><![CDATA[Si vous cochez un ou plusieurs des lieux d'exécution, ceci demandera aux utilisateurs auxquels la permission de groupe d'utilisateurs <strong>Utiliser la vérification humaine avec Project Tools</strong> est active de passer la vérification humaine lors de ces actions.<br />
+<br />
+Si vous activez l'action « Message », l'éditeur rapide sera désactivé lors de la lecture des demandes.]]></phrase>
+		<phrase name="options_options_pt_hvcheck_title" date="1331458877" username="Pitchoune" version="2.2.0"><![CDATA[Options de la vérification humaine]]></phrase>
+		<phrase name="options_options_pt_issuesperpage_text" date="1331490011" username="Pitchoune" version="2.2.0"><![CDATA[Si un projet a 40 demandes et que ceci est défini sur 10, les demandes seront divisées sur 4 pages.<br />
+<br />
+<b>Remarque : </b> ce nombre doit être au minimum 1.]]></phrase>
+		<phrase name="options_options_pt_issuesperpage_title" date="1331458877" username="Pitchoune" version="2.2.0"><![CDATA[Nombre de demandes à afficher par page]]></phrase>
+		<phrase name="options_options_pt_listprojects_activate_text" date="1331490011" username="Pitchoune" version="2.2.0"><![CDATA[Si ce paramètre est activé, ceci vous permet d'afficher un menu déroulant pour naviguer rapidement entre tous vos projets.<br />
+<br />
+Veuillez vérifier les autres paramètres pour définir les lieux où vous souhaitez afficher le menu.]]></phrase>
+		<phrase name="options_options_pt_listprojects_activate_title" date="1331458877" username="Pitchoune" version="2.2.0"><![CDATA[Activation]]></phrase>
+		<phrase name="options_options_pt_listprojects_locations_text" date="1331497549" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de sélectionner quels pages doivent le menu déroulant.]]></phrase>
+		<phrase name="options_options_pt_listprojects_locations_title" date="1331459091" username="Pitchoune" version="2.2.0"><![CDATA[Lieu de position du menu déroulant]]></phrase>
+		<phrase name="options_options_pt_listprojects_position_issue_text" date="1331497549" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de sélectionner la place du menu déroulant dans chaque demande.]]></phrase>
+		<phrase name="options_options_pt_listprojects_position_issue_title" date="1331459091" username="Pitchoune" version="2.2.0"><![CDATA[Position du menu déroulant dans chaque demande]]></phrase>
+		<phrase name="options_options_pt_listprojects_position_issuelist_text" date="1331497549" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de sélectionner la place du menu déroulant dans chaque liste de demande.<br />
+<br />
+<strong>Remarque :</strong> si vous n'avez aucune demande pour certains projets, cette option ne sera pas utilisée et le menu sera placé avant le bas de page.]]></phrase>
+		<phrase name="options_options_pt_listprojects_position_issuelist_title" date="1331459091" username="Pitchoune" version="2.2.0"><![CDATA[Position du menu déroulant dans la liste des demandes de chaque projet]]></phrase>
+		<phrase name="options_options_pt_listprojects_position_projects_text" date="1331497549" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de sélectionner la place du menu déroulant dans chaque résumé de projet.<br />
+<br />
+<strong>Remarque :</strong> si vous n'avez aucune demande pour certains projets, cette option ne sera pas utilisée et le menu sera placé avant le bas de page.]]></phrase>
+		<phrase name="options_options_pt_listprojects_position_projects_title" date="1331459091" username="Pitchoune" version="2.2.0"><![CDATA[Position du menu déroulant sur la page d'accueil de chaque projet]]></phrase>
+		<phrase name="options_options_pt_notesperpage_text" date="1331497549" username="Pitchoune" version="2.2.0"><![CDATA[si une demande a 40 notes et que ce paramètre est défini sur 10, les notes seront divisées sur 4 pages.<br />
+<br />
+<b>Remarque : </b>ce nombre doit être au minimum 1.]]></phrase>
+		<phrase name="options_options_pt_notesperpage_title" date="1331459091" username="Pitchoune" version="2.2.0"><![CDATA[Nombre de notes à afficher par page]]></phrase>
+		<phrase name="options_options_pt_overview_timelineentries_text" date="1331498565" username="Pitchoune" version="2.2.0"><![CDATA[Si la ligne temporelle de tous les projets a 40 demandes et que ceci est défini sur 10, les 10 premières demandes seront affichées.]]></phrase>
+		<phrase name="options_options_pt_overview_timelineentries_title" date="1331459449" username="Pitchoune" version="2.2.0"><![CDATA[Général : Nombre maximal d'entrées à afficher dans la ligne temporelle]]></phrase>
+		<phrase name="options_options_pt_profile_issue_counters_text" date="1331498565" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet d'afficher le nombre de demandes qu'un utilisateur a créée dans certains endroits (profil, demandes, etc.).]]></phrase>
+		<phrase name="options_options_pt_profile_issue_counters_title" date="1331459449" username="Pitchoune" version="2.2.0"><![CDATA[Afficher les compteurs de demandes]]></phrase>
+		<phrase name="options_options_pt_project_recentissues_text" date="1331498565" username="Pitchoune" version="2.2.0"><![CDATA[Si un projet a 40 demandes et que ceci est défini sur 10, les 10 premières demandes seront affichées.]]></phrase>
+		<phrase name="options_options_pt_project_recentissues_title" date="1331459449" username="Pitchoune" version="2.2.0"><![CDATA[Visualisation de projet : Nombre de demandes récentes]]></phrase>
+		<phrase name="options_options_pt_project_timelineentries_text" date="1331498565" username="Pitchoune" version="2.2.0"><![CDATA[Si une ligne temporelle contient 40 demandes et que ceci est défini sur 10, les 10 premières demandes seront affichées.]]></phrase>
+		<phrase name="options_options_pt_project_timelineentries_title" date="1331459449" username="Pitchoune" version="2.2.0"><![CDATA[Visualisation de projet : Entrées dans la ligne temporelle]]></phrase>
+		<phrase name="options_options_pt_statuscolor_text" date="1331498565" username="Pitchoune" version="2.2.0"><![CDATA[Ceci vous permet de choisir si vous souhaitez mettre une couleur d'arrière-plan sur les demandes. Si oui, ce paramètre vous permet de choisir si vous souhaitez utiliser ces couleurs par sévérité ou état.]]></phrase>
+		<phrase name="options_options_pt_statuscolor_title" date="1331459449" username="Pitchoune" version="2.2.0"><![CDATA[Couleur des états]]></phrase>
+		<phrase name="options_options_pt_timelineperpage_text" date="1331499136" username="Pitchoune" version="2.2.0"><![CDATA[Si une ligne temporelle contient 40 demandes et que ceci est défini sur 10, les demandes seront affichées sur 4 pages.<br />
+<br />
+<b>Remarque : </b>ce nombre doit être au minimum 1.]]></phrase>
+		<phrase name="options_options_pt_timelineperpage_title" date="1331460091" username="Pitchoune" version="2.2.0"><![CDATA[Nombre maximal d'entrées à afficher dans la ligne temporelle par page]]></phrase>
+		<phrase name="options_options_pt_wordwrap_text" date="1331499136" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est utile pour éviter que de longs mots déforment la mise en page de votre forum.<br />
+<br />
+Rappelez-vous, à moins d'utiliser du texte préformaté, X nombre de caractères n'égale pas la largeur spécifique du forum car différents caractères ont différentes longueurs.]]></phrase>
+		<phrase name="options_options_pt_wordwrap_title" date="1331460091" username="Pitchoune" version="2.2.0"><![CDATA[Longueur maximale des mots avant césure]]></phrase>
+		<phrase name="options_options_ptimporter_createnotice_text" date="1331499136" username="Pitchoune" version="2.2.0"><![CDATA[Si ce paramètre est activé, ceci affichera une notice dans la demande indiquant d'où a été importé la demande.]]></phrase>
+		<phrase name="options_options_ptimporter_createnotice_title" date="1331460091" username="Pitchoune" version="2.2.0"><![CDATA[Création d'une notice d'importation]]></phrase>
+		<phrase name="options_options_ptimporter_extendedthreadprefix_text" date="1331499136" username="Pitchoune" version="2.2.0"><![CDATA[Si ceci est activé, ceci vous permet d'utiliser le préfixe de discussion via l'expression « <strong>pt_importhread_threadprefix_extended</strong> » qui contient l'intitulé du projet et le type de demande.<br />
+<br />
+Sinon, l'expression « <strong>pt_importhread_threadprefix</strong> » sera utilisée.<br />]]></phrase>
+		<phrase name="options_options_ptimporter_extendedthreadprefix_title" date="1331460091" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter dynamiquement un préfixe aux discussions]]></phrase>
+		<phrase name="options_options_ptimporter_ignoreattachlimits_text" date="1331499136" username="Pitchoune" version="2.2.0"><![CDATA[Si ce paramètre est activé, ceci vous permet de ne pas vérifier les limites des pièces jointes lors d'une importation.]]></phrase>
+		<phrase name="options_options_ptimporter_ignoreattachlimits_title" date="1331460091" username="Pitchoune" version="2.2.0"><![CDATA[Ignorer les limites des pièces jointes]]></phrase>
+		<phrase name="options_options_ptimporter_keepthreads_text" date="1331498806" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de définir si vous souhaitez fermer la discussion et que son lien redirige vers la demande ou si vous souhaitez conserver la discussion ouverte, conservant un doublon de la demande.]]></phrase>
+		<phrase name="options_options_ptimporter_keepthreads_title" date="1331460206" username="Pitchoune" version="2.2.0"><![CDATA[Conserver les discussions originales intactes]]></phrase>
+		<phrase name="options_options_statuscolor_darkstyles_text" date="1331499744" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de définir quels styles ont des couleurs dominantes foncés. Séparez chaque identifiant de style par une virgule.]]></phrase>
+		<phrase name="options_options_statuscolor_darkstyles_title" date="1331499744" username="Pitchoune" version="2.2.0"><![CDATA[Styles foncés]]></phrase>
+		<phrase name="options_options_statuscolor_lightstyles_text" date="1331499744" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de définir quels styles ont des couleurs dominantes claires. Séparez chaque identifiant de style par une virgule.]]></phrase>
+		<phrase name="options_options_statuscolor_lightstyles_title" date="1331499744" username="Pitchoune" version="2.2.0"><![CDATA[Styles clairs]]></phrase>
+		<phrase name="project_add_edit_afterforumids_text" date="1335736632" username="Pitchoune" version="2.2.0"><![CDATA[Cette option vous permet d'afficher les informations du projet dans la liste des forums sur la page d'accueil de vBulletin.<br />
 <br />
 Vous pouvez sélectionner un ou plusieurs forums après lesquels les informations de ce projet seront affichés, incluant la dernière activité et le nombre de demandes.<br />
 <br />
@@ -12,65 +93,106 @@ Les avertissements suivants s'appliquent :
 <li>Un utilisateur doit avoir la permission de voir au moins un des types de demandes sélectionnées pour ce projet.</li>
 <li>Les informations du projet seront affichées après n'importe quel forum enfant pour le forum que vous sélectionnez.</li>
 </ol>]]></phrase>
-		<phrase name="project_projectadd_projectedit_afterforumids_title" date="1183388855" username="Pitchoune" version="1.0.0"><![CDATA[Afficher après les forums]]></phrase>
-		<phrase name="project_projectadd_projectedit_available_issue_types_text" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Tous les types de demande ne peuvent être nécessaire pour tous les projets, ce pourquoi vous pouvez choisir d'utiliser uniquement les types de demandes qui s'appliquent pour ce projet spécifique. Chaque projet peut utiliser différents types, qui rend possible l'activation de permissions spécifiques.<br />
+		<phrase name="project_add_edit_afterforumids_title" date="1335730456" username="Pitchoune" version="2.2.0"><![CDATA[Afficher après les forums]]></phrase>
+		<phrase name="project_add_edit_available_issue_types_text" date="1335736632" username="Pitchoune" version="2.2.0"><![CDATA[Tous les types de demande ne peuvent être nécessaire pour tous les projets, ce pourquoi vous pouvez choisir d'utiliser uniquement les types de demandes qui s'appliquent pour ce projet spécifique. Chaque projet peut utiliser différents types, qui rend possible l'activation de permissions spécifiques.<br />
 <br />
 Pour faire en sorte qu'un type de demande soit disponible pour un projet, vous devez seulement sélectionner un état par défaut lors de l'envoi de nouveaux demandes. Quand les utilisateurs ne peuvent pas modifier l'état d'un demande quand ils créent de nouveaux demandes, cet état sera utilisé.<br />
 <br />
-Pour gérer les types de demandes et les états, cliquez <a href="project.php?do=typelist" target="_blank">ici</a>.]]></phrase>
-		<phrase name="project_projectadd_projectedit_available_issue_types_title" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Types de demande disponibles]]></phrase>
-		<phrase name="project_projectadd_projectedit_forumtitle_text" date="1181512152" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Si vous choisissez d'utiliser le paramètre « Afficher après les forums », cette option vous permet d'outrepasser le nom du projet quand le projet est affiché dans la liste des forums. Ceci peut être utile si le nom du projet ne fournit pas assez d'informations.<br />
+Pour gérer les types de demandes et les états, cliquez <a href="projecttype.php?do=typelist" target="_blank">ici</a>.]]></phrase>
+		<phrase name="project_add_edit_available_issue_types_title" date="1335730456" username="Pitchoune" version="2.2.0"><![CDATA[Types de demande disponibles]]></phrase>
+		<phrase name="project_add_edit_description_text" date="1335736784" username="Pitchoune" version="2.2.0"><![CDATA[Définissez ici la description du projet. Vous pouvez utiliser du code HTML.]]></phrase>
+		<phrase name="project_add_edit_description_title" date="1335736468" username="Pitchoune" version="2.2.0"><![CDATA[Description]]></phrase>
+		<phrase name="project_add_edit_displayorder_text" date="1335736784" username="Pitchoune" version="2.2.0"><![CDATA[Définissez ici l'ordre d'affichage du projet dans la liste des projets.]]></phrase>
+		<phrase name="project_add_edit_displayorder_title" date="1335730715" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage]]></phrase>
+		<phrase name="project_add_edit_emailonassignment_text" date="1335736784" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir ici si l'utilisateur assigné doit recevoir un email quand il/elle est assigné à une demande.]]></phrase>
+		<phrase name="project_add_edit_emailonassignment_title" date="1335730715" username="Pitchoune" version="2.2.0"><![CDATA[Envoyer un email pour les assignations de demande]]></phrase>
+		<phrase name="project_add_edit_forumtitle_text" date="1335736931" username="Pitchoune" version="2.2.0"><![CDATA[Si vous choisissez d'utiliser l'option « Afficher après les forums », cette option vous permet d'écraser l'intitulé du projet quand le projet est affiché dans la liste des forums. Ceci est utile si l'intitulé du projet ne fournit pas assez d'informations quand il se trouve dans la liste des forums.<br />
 <br />
-Si vous n'insérez rien pour cette option, le nom du projet sera utilisé précédé du mot « Projet ».]]></phrase>
-		<phrase name="project_projectadd_projectedit_forumtitle_title" date="1181510249" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Intitulé dans la liste des forums]]></phrase>
-		<phrase name="project_projectadd_projectedit_options_text" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Cette option vous permet de spécifier quels champs ne doivent pas être laissés à leurs valeurs par défaut quand une demande est créée ou modifiée. Pour les champs que vous sélectionnez, « Inconnu » pourra toujours être sélectionné par défaut, mais la demande ne sera pas sauvegardée jusqu'à ce que la valeur soit modifiée.]]></phrase>
-		<phrase name="project_projectadd_projectedit_options_title" date="1183388751" username="Pitchoune" version="1.0.0"><![CDATA[Champs requis]]></phrase>
-		<phrase name="project_projectcategory_text" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Les catégories permet d'une façon simple de sous-grouper les demandes selon ce à quoi la demande se rapproche. Ceci peut être utile si vous avez plusieurs personnes qui travaille sur un projet et que chaque personne a sa propre spécialité.<br />
+Si vous n'insérez pas de valeur pour cette option, l'intitulé par défaut du projet sera affiché mais précédé du mot « Projet ».]]></phrase>
+		<phrase name="project_add_edit_forumtitle_title" date="1335730715" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé dans la liste des forums]]></phrase>
+		<phrase name="project_add_edit_pmonassignment_text" date="1335736784" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir ici si l'utilisateur assigné doit recevoir un message privé quand il/elle est assigné à une demande.]]></phrase>
+		<phrase name="project_add_edit_pmonassignment_title" date="1335730715" username="Pitchoune" version="2.2.0"><![CDATA[Envoyer un message privé pour les assignations de demande]]></phrase>
+		<phrase name="project_add_edit_requireappliesversion_text" date="1335737123" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir ici si la version appliquée est requise ou non, si il doit utiliser une valeur par défaut ou non. Si aucune valeur par défaut n'est définie, la valeur « Inconnu » sera définie quand un utilisateur créera une nouvelle demande.]]></phrase>
+		<phrase name="project_add_edit_requireappliesversion_title" date="1335730845" username="Pitchoune" version="2.2.0"><![CDATA[Version appliquée]]></phrase>
+		<phrase name="project_add_edit_requirecategory_text" date="1335737123" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir ici si la catégorie est requise ou non, si il doit utiliser une valeur par défaut ou non. Si aucune valeur par défaut n'est définie, la valeur « Inconnu » sera définie quand un utilisateur créera une nouvelle demande.]]></phrase>
+		<phrase name="project_add_edit_requirecategory_title" date="1335730845" username="Pitchoune" version="2.2.0"><![CDATA[Catégorie]]></phrase>
+		<phrase name="project_add_edit_requirepriority_text" date="1335737123" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir ici si la priorité est requise ou non, si il doit utiliser une valeur par défaut ou non. Si aucune valeur par défaut n'est définie, la valeur « Inconnu » sera définie quand un utilisateur créera une nouvelle demande.]]></phrase>
+		<phrase name="project_add_edit_requirepriority_title" date="1335730845" username="Pitchoune" version="2.2.0"><![CDATA[Priorité]]></phrase>
+		<phrase name="project_add_edit_summary_text" date="1335737123" username="Pitchoune" version="2.2.0"><![CDATA[Définissez ici le résumé du projet. Vous pouvez utiliser du code HTML.]]></phrase>
+		<phrase name="project_add_edit_summary_title" date="1335730845" username="Pitchoune" version="2.2.0"><![CDATA[Résumé]]></phrase>
+		<phrase name="project_add_edit_title_text" date="1335737123" username="Pitchoune" version="2.2.0"><![CDATA[Définissez ici l'intitulé du projet. Vous pouvez utiliser du code HTML.]]></phrase>
+		<phrase name="project_add_edit_title_title" date="1335730845" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé]]></phrase>
+		<phrase name="project_editissue1_issuetypeid_text" date="1335737921" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la liste des types de demandes disponibles.]]></phrase>
+		<phrase name="project_editissue1_issuetypeid_title" date="1335731204" username="Pitchoune" version="2.2.0"><![CDATA[Type de demande]]></phrase>
+		<phrase name="project_editissue1_projectid_text" date="1335737921" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la liste des projets disponibles.]]></phrase>
+		<phrase name="project_editissue1_projectid_title" date="1335731204" username="Pitchoune" version="2.2.0"><![CDATA[Projet]]></phrase>
+		<phrase name="project_editissue2_addressedversionid_text" date="1335737921" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la liste des versions appliquées disponibles pour ce projet.]]></phrase>
+		<phrase name="project_editissue2_addressedversionid_title" date="1335731204" username="Pitchoune" version="2.2.0"><![CDATA[Version appliquée]]></phrase>
+		<phrase name="project_editissue2_appliesversionid_text" date="1335737921" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la liste des versions affectées disponibles pour ce projet.]]></phrase>
+		<phrase name="project_editissue2_appliesversionid_title" date="1335731204" username="Pitchoune" version="2.2.0"><![CDATA[Version affectée]]></phrase>
+		<phrase name="project_editissue2_issuestatusid_text" date="1335737921" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la liste des états disponibles pour ce projet.]]></phrase>
+		<phrase name="project_editissue2_issuestatusid_title" date="1335731380" username="Pitchoune" version="2.2.0"><![CDATA[État]]></phrase>
+		<phrase name="project_editissue2_milestoneid_text" date="1335738039" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la liste des étapes disponibles pour ce projet.]]></phrase>
+		<phrase name="project_editissue2_milestoneid_title" date="1335731380" username="Pitchoune" version="2.2.0"><![CDATA[Étape]]></phrase>
+		<phrase name="project_editissue2_projectcategoryid_text" date="1335738039" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la liste des catégories disponibles pour ce projet.]]></phrase>
+		<phrase name="project_editissue2_projectcategoryid_title" date="1335731380" username="Pitchoune" version="2.2.0"><![CDATA[Catégorie]]></phrase>
+		<phrase name="project_issue_issueid_text" date="1335738039" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est l'identifiant de la demande que vous devez spécifier pour modifier.]]></phrase>
+		<phrase name="project_issue_issueid_title" date="1335731443" username="Pitchoune" version="2.2.0"><![CDATA[Identifiant de la demande]]></phrase>
+		<phrase name="project_list_text" date="1335823102" username="Pitchoune" version="2.2.0"><![CDATA[Les projets sont une unité d'organisation pour une collection de choses qui doit être achevé ou analysé. Ceci peut être n'importe quoi comme de tracer les modifications dans une partie d'un logiciel ou une liste personnelle de tâches à effectuer.<br />
 <br />
-Les catégories sont définies par projet. Si vous ne définissez pas de catégories pour un projet, l'option pour sélectionner une catégorie ne sera pas affichée quand un nouvelle demande sera ouverte. Cependant, la valeur « Inconnu » sera toujours visible quand une demande sera visualisée.]]></phrase>
-		<phrase name="project_projectcategory_title" date="1181513565" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Catégories de projets]]></phrase>
-		<phrase name="project_projectlist_text" date="1284848726" username="Pitchoune" version="2.1.2"><![CDATA[Les projets sont une unité d'organisation pour une collection de choses qui doit être achevé ou analysé. Ceci peut être n'importe quoi comme de tracer les modifications dans une partie d'un logiciel ou une liste personnelle de tâches à effectuer.<br />
-<br />
-Les types de demande vous permet de sous-grouper les demandes / tâches dans un projet dans des unités plus logiques. Un projet peut avoir autant de types de demandes communs que souhaité. Voir <a href="help.php?do=answer&amp;page=project&amp;pageaction=typelist">ici</a> pour plus d'informations sur les types de demande.<br />
+Les types de demande vous permet de sous-grouper les demandes / tâches dans un projet dans des unités plus logiques. Un projet peut avoir autant de types de demandes communs que souhaité. Voir <a href="help.php?do=answer&amp;page=projecttype&amp;pageaction=typelist">ici</a> pour plus d'informations sur les types de demande.<br />
 <br />
 Un projet peut aussi utiliser les catégories pour un sous-groupage additionnel. Les catégories ne provoquent aucun changement de fonction excepté pour regrouper les demandes dans les sous-parties logiques, permettant d'effectuer des recherches simplifiées. Les catégories diffèrent des types de demande du fait qu'elles regroupent selon « où » la demande est accomplie au lieu de « comment » la demande est accomplie.<br />
 <br />
 Le traçage de version de base est aussi fourni par projet. Le traçage des versions est particulièrement utile pour le développement d'un logiciel, où une révision spécifique auquel une demande doit s'appliquer est très important.]]></phrase>
-		<phrase name="project_projectlist_title" date="1181513565" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Projets]]></phrase>
-		<phrase name="project_projectversion_text" date="1284848726" username="Pitchoune" version="2.1.2"><![CDATA[Un système basique pour suivre les versions est inclus dans Project Tools. Ceci est spécialement conçu pour les projets à propos des softwares, où la version exacte auquel une demande s'applique ou est adressée est une information importante.<br />
+		<phrase name="project_list_title" date="1335732912" username="Pitchoune" version="2.2.0"><![CDATA[Liste des projets]]></phrase>
+		<phrase name="projectcategory_add_edit_default_text" date="1335738039" username="Pitchoune" version="2.2.0"><![CDATA[Si ceci est sélectionné, la catégorie définie en tant que valeur par défaut sera utilisée automatiquement si l'utilisateur ne peut pas définir une catégorie et que ceci est requis.]]></phrase>
+		<phrase name="projectcategory_add_edit_default_title" date="1335731496" username="Pitchoune" version="2.2.0"><![CDATA[Valeur par défaut]]></phrase>
+		<phrase name="projectcategory_add_edit_displayorder_text" date="1335736234" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est l'ordre d'affichage de la catégorie dans la liste des catégories. La liste des catégories est affichée dans divers endroits.]]></phrase>
+		<phrase name="projectcategory_add_edit_displayorder_title" date="1335731496" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage]]></phrase>
+		<phrase name="projectcategory_add_edit_title_text" date="1335736234" username="Pitchoune" version="2.2.0"><![CDATA[Ceci correspond au texte décrivant la catégorie.]]></phrase>
+		<phrase name="projectcategory_add_edit_title_title" date="1335731496" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé]]></phrase>
+		<phrase name="projectcategory_list_text" date="1335823132" username="Pitchoune" version="2.2.0"><![CDATA[Les catégories permet d'une façon simple de sous-grouper les demandes selon ce à quoi la demande se rapproche. Ceci peut être utile si vous avez plusieurs personnes qui travaille sur un projet et que chaque personne a sa propre spécialité.<br />
 <br />
-Les versions sont divisées en groupes de versions et versions individuelles. Une version peut aussi exister uniquement dans un groupe de version. Ceci permet aux utilisateurs d'effectuer des recherches sur des groupes de versions plus facilement. En regardant le système de versions de vBulletin par exemple, « 3.6.x » est un groupe de versions et « 3.6.7 » est une version dans ce groupe.<br />
+Les catégories sont définies par projet. Si vous ne définissez pas de catégories pour un projet, l'option pour sélectionner une catégorie ne sera pas affichée quand un nouvelle demande sera ouverte. Cependant, la valeur « Inconnu » sera toujours visible quand une demande sera visualisée.]]></phrase>
+		<phrase name="projectcategory_list_title" date="1335733846" username="Pitchoune" version="2.2.0"><![CDATA[Catégories des projets]]></phrase>
+		<phrase name="projectcounters_counters_text" date="1323383121" username="Pitchoune" version="2.2.0"><![CDATA[Cette page contient quelques compteurs que vous pouvez mettre à jour.<br />
 <br />
-Remarquez que les versions que vous créez doivent couvrir 2 situations : les versions affectées et appliquées. En plus de n'importe quels versions que vous avez crée de vous-même, la version appliquée inclura toujours une version appelée « Prochaine version ». Ceci vous permet de créer la prochaine version uniquement quand ceci est nécessaire. Quand vous créez une version, vous avez la possibilité de dénoter la version à créer sur la prochaine version. Si vous choisissez de faire ceci, tous les rapports qui seront listés en tant que prochaine version seront mis à jour pour afficher la version que vous êtes en train de créer.<br />
+<b>Régénérer les compteurs de demande</b><br />
+Régénérer les compteurs de demandes mettra à jour certains champs liés aux demandes qui peuvent ne plus être à jour mais qui peuvent être retrouvés.<br /><br />
+<b>Régénérer les compteurs de projet</b><br />
+Régénérer les compteurs de projet mettra à jour certains champs liés aux projets qui peuvent ne plus être à jour mais peuvent être retrouvés. Exécuter ceci que si le compteur des demandes est à jour.<br /><br />
+<b>Régénérer les compteurs d'étape</b><br />
+Régénérer les compteurs d'étape mettra à jour certains champs liés aux étapes qui peuvent ne plus être à jour mais peuvent être retrouvés.<br /><br />
+<b>Régénérer les compteurs du nombre de demande</b><br />
+Régénérer les compteurs du nombre de demande mettra à jour le nombre de demandes que chaque utilisateur aura crée.]]></phrase>
+		<phrase name="projectcounters_counters_title" date="1323382105" username="Pitchoune" version="2.2.0"><![CDATA[Mettre à jour les compteurs]]></phrase>
+		<phrase name="projectmagicselect_add_edit_displayorder_text" date="1323390194" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est l'ordre d'affichage du sélecteur magique. Ceci est utilisé su la liste des sélecteurs magiques et dans les demandes si il existe plus d'un sélecteur magique par projet.]]></phrase>
+		<phrase name="projectmagicselect_add_edit_displayorder_title" date="1323383121" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage]]></phrase>
+		<phrase name="projectmagicselect_add_edit_title_text" date="1335734908" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé de l'option du sélecteur magique.]]></phrase>
+		<phrase name="projectmagicselect_add_edit_title_title" date="1335734726" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé de l'option du sélecteur magique]]></phrase>
+		<phrase name="projectmagicselect_add_edit_value_text" date="1335734908" username="Pitchoune" version="2.2.0"><![CDATA[Valeur de l'option du sélecteur magique. La valeur doit être un nombre entier positif.]]></phrase>
+		<phrase name="projectmagicselect_add_edit_value_title" date="1335733876" username="Pitchoune" version="2.2.0"><![CDATA[Valeur]]></phrase>
+		<phrase name="projectmagicselect_groupadd_groupedit_displayorder_text" date="1335734908" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage du sélecteur magique.]]></phrase>
+		<phrase name="projectmagicselect_groupadd_groupedit_displayorder_title" date="1335733876" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage]]></phrase>
+		<phrase name="projectmagicselect_groupadd_groupedit_title_text" date="1335734908" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé du sélecteur magique.]]></phrase>
+		<phrase name="projectmagicselect_groupadd_groupedit_title_title" date="1335734726" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé du sélecteur magique]]></phrase>
+		<phrase name="projectmagicselect_list_text" date="1323425379" username="Pitchoune" version="2.2.0"><![CDATA[Les sélecteurs magiques sont un moyen d'ajouter des menus déroulants dans les détails des demandes. Chaque utilisateur peut sélectionner (si celui-ci est autorisé) 1 option dans chaque menu déroulant lié à la demande pour définir certaines actions ou de mieux définir la demande.]]></phrase>
+		<phrase name="projectmagicselect_list_title" date="1323391402" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteurs magiques]]></phrase>
+		<phrase name="projectmilestone_add_edit_completeddate_text" date="1335736423" username="Pitchoune" version="2.2.0"><![CDATA[Ceci correspond à la date de fin réelle de l'étape.]]></phrase>
+		<phrase name="projectmilestone_add_edit_completeddate_title" date="1335736359" username="Pitchoune" version="2.2.0"><![CDATA[Date de fin effective]]></phrase>
+		<phrase name="projectmilestone_add_edit_description_text" date="1335736423" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la description de l'étape.]]></phrase>
+		<phrase name="projectmilestone_add_edit_description_title" date="1335736436" username="Pitchoune" version="2.2.0"><![CDATA[Description]]></phrase>
+		<phrase name="projectmilestone_add_edit_targetdate_text" date="1335736423" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la date auquel l'étape doit être terminée.]]></phrase>
+		<phrase name="projectmilestone_add_edit_targetdate_title" date="1335736359" username="Pitchoune" version="2.2.0"><![CDATA[Date de fin planifiée]]></phrase>
+		<phrase name="projectmilestone_add_edit_title_text" date="1335736423" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est l'intitulé de l'étape.]]></phrase>
+		<phrase name="projectmilestone_add_edit_title_title" date="1335736359" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé]]></phrase>
+		<phrase name="projectmilestone_list_text" date="1335886586" username="Pitchoune" version="2.2.0"><![CDATA[Un système basique pour gérer les demandes est inclus dans Project Tools. Ceci est plus particulièrement utile pour les projets logiciels où la version affectée ou appliquée pour les demandes est une information importante.<br />
 <br />
-<strong>Remarque à propos de l'ordre d'affichage des versions</strong><br />
-Dans tous les autres endroits dans vBulletin et Project Tools, un ordre d'affichage plus petit sera affiché avant toute valeur plus grande. Ceci n'est <em>pas</em> le cas dans les ordres d'affichages des versions et groupes de versions. Les ordres d'affichages plus grands seront visibles en premier !<br />
+Les étapes vous permettent de regrouper les demandes par version appliquée, vous permettant de visualiser facilement les demandes dans ces étapes.<br />
 <br />
-Ceci est dû au fait que vous allez ajouter de nouvelles versions tout le temps. Avec l'option « plus petit en premier », placer une nouvelle version en premier demandera de renuméroter toutes les versions existantes.]]></phrase>
-		<phrase name="project_projectversion_title" date="1181513565" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Versions de projets]]></phrase>
-		<phrase name="project_statusadd_statusedit_canpetitionfrom_text" date="1284848726" username="Pitchoune" version="2.1.2"><![CDATA[Le système de pétitions est un système puissant qui permet aux utilisateurs de demander à ce que l'état d'une demande soit modifiée. Par exemple, la correction pour un problème peut ne pas fonctionner pour certains, ces personnes peuvent demander à modifié l'état « Corrigé » pour l'état « Confirmé ». Cette demande apparaîtra ensuite sur la page d'accueil des projets jusqu'à ce que quelqu'un accepte ou refuse la pétition selon les permissions appropriées.<br />
-<br />
-Cependant, il existe certains cas où vous ne souhaitez pas autoriser le système de pétition pour les utilisateurs quand une demande est indiquée d'un certain état. Un choix commun est de définir cette option sur « Non » pour un état par défaut de chaque type de demande.]]></phrase>
-		<phrase name="project_statusadd_statusedit_canpetitionfrom_title" date="1181513565" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Peut lancer des pétitions depuis cet état]]></phrase>
-		<phrase name="project_taglist_text" date="1284848726" username="Pitchoune" version="2.1.2"><![CDATA[Les tags sont un moyen de définir des meta-données à propos d'une demande pour qu'il puisse être mieux recherché. La façon dont ils doivent être utilisés sont de votre ressort. Ils peuvent être utilisés pour aider à mieux ordonner les demandes en catégories ou peuvent être utilisés quand certains types de demande doivent avoir un suivi.<br />
-<br />
-Dépendant des permissions, les tags peuvent être définis à la volée via la partie publique.]]></phrase>
-		<phrase name="project_taglist_title" date="1181513647" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Tags de projets]]></phrase>
-		<phrase name="project_typeadd_typeedit_iconfile_text" date="1284888240" username="Pitchoune" version="2.1.2"><![CDATA[Ceci vous permet d'afficher une petite icône représentant ce type de demande proche des demandes de ce type. Une icône permet une identification plus rapide qu'un simple texte. Laissez ce champ vide et aucune icône sera affichée.<br />
-<br />
-Vous devez envoyer manuellement cette icône dans votre répertoire « Dossier des images de statut ». Par défaut, ceci est images/statusicon.<br />
-<br />
-Les icônes incluent pour les bugs, fonctionnalités et tâches sont de 16 pixels par 16 pixels de taille.]]></phrase>
-		<phrase name="project_typeadd_typeedit_iconfile_title" date="1181513647" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Nom de fichier pour l'icône]]></phrase>
-		<phrase name="project_typelist_text" date="1284888309" username="Pitchoune" version="2.1.2"><![CDATA[Les types de demande vous permettent de regrouper les demandes selon leur contenu. Par exemple, vous pouvez vouloir garder les fonctionnalités séparés des bugs ; « fonctionnalité » et « bugs » deviendront des types de demande séparés.<br />
-<br />
-Tandis que différents types de demande n'impliquent pas une différenciation des champs affichés, ils ont les avantages suivants :
-<ul>
-<li><strong>Expressions spécifiques</strong> - toutes les demandes ont 2 champs de version : « affectée » et « appliquée ». Vous pouvez choisir des expressions différentes, plus appropriées pour ces champs qui correspond au type de rapport.</li>
-<li><strong>États de demande personnalisé</strong> - les états de demande sont définis par type.</li>
-<li><strong>Permissions distinctes</strong> - un grand nombre de permissions par groupe d'utilisateurs sont définissables par projet et par type de demande.</li>
-</ul>]]></phrase>
-		<phrase name="project_typelist_title" date="1284848949" username="Pitchoune" version="2.1.2"><![CDATA[Qu'est-ce que les types de demande ?]]></phrase>
+Vous pouvez définir une date de fin planifiée et une date de fin effective pour chaque étape. Une date de fin planifiée est automatiquement marqué obsolète quand celle-ci n'est pas respectée. La date de fin effective est prioritaire sur la date de fin planifiée, indiquant que vous avez rendu disponible le contenu entier de l'étape.]]></phrase>
+		<phrase name="projectmilestone_list_title" date="1335736359" username="Pitchoune" version="2.2.0"><![CDATA[Liste des étapes]]></phrase>
 		<phrase name="projectpermission_edit_about_reports_text" date="1284848949" username="Pitchoune" version="2.1.2"><![CDATA[(Ce contenu est aussi détaillé <a href="../faq.php?faq=pt_faq#faq_pt_faq_report" target="_blank">ici</a>.)<br />
 <br />
 Les rapports de recherche vous permettent d'enregistrer les recherches effectuées pour un accès plus facile plus tard. Les rapports de recherche sont disponibles via le lien « Mes rapports » visible sur la plupart des pages de Project Tools.<br />
@@ -85,6 +207,107 @@ Les permissions ne sont pas uniquement définissables par groupe d'utilisateurs e
 <br />
 Il existe aussi quelques permissions qui sont définissables par projet ou type de rapport. Généralement, ces permissions n'ont pas de sens à être définies plus d'une fois. Ceux-ci sont uniquement modifiables quand vous modifiez les permissions de projet globales pour un groupe.]]></phrase>
 		<phrase name="projectpermission_edit_list_title" date="1261165113" username="Pitchoune" version="2.0.1"><![CDATA[Permissions de Project Tools]]></phrase>
+		<phrase name="projectpriority_add_edit_default_text" date="1335884931" username="Pitchoune" version="2.2.0"><![CDATA[Si ceci est sélectionné, la priorité définie en tant que valeur par défaut sera utilisée automatiquement si l'utilisateur ne peut pas définir une priorité et que ceci est requis.]]></phrase>
+		<phrase name="projectpriority_add_edit_default_title" date="1335884377" username="Pitchoune" version="2.2.0"><![CDATA[Valeur par défaut]]></phrase>
+		<phrase name="projectpriority_add_edit_displayorder_text" date="1335884931" username="Pitchoune" version="2.2.0"><![CDATA[L'ordre d'affichage de la priorité. Ceci est nécessaire pour définir l'emplacement de la priorité dans les listes de priorités affichées dans divers emplacements.]]></phrase>
+		<phrase name="projectpriority_add_edit_displayorder_title" date="1335884377" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage]]></phrase>
+		<phrase name="projectpriority_add_edit_statuscolor2_text" date="1335885789" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez choisir une couleur à appliquer en tant que couleur d'arrière-plan dans les listes de demandes sur vos styles clairs. Un style clair est un style avec un arrière-plan de couleur clair ou à dominance clair dans tout le logiciel.]]></phrase>
+		<phrase name="projectpriority_add_edit_statuscolor2_title" date="1335884377" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles clairs]]></phrase>
+		<phrase name="projectpriority_add_edit_statuscolor_text" date="1335885838" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez choisir une couleur à appliquer en tant que couleur d'arrière-plan dans les listes de demandes sur vos styles foncés. Un style foncé est un style avec un arrière-plan de couleur foncé ou à dominance foncé dans tout le logiciel.]]></phrase>
+		<phrase name="projectpriority_add_edit_statuscolor_title" date="1335884356" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles sombres]]></phrase>
+		<phrase name="projectpriority_add_edit_title_text" date="1335884258" username="Pitchoune" version="2.2.0"><![CDATA[L'intitulé de la priorité affichée dans certains endroits variés.]]></phrase>
+		<phrase name="projectpriority_add_edit_title_title" date="1335884258" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé]]></phrase>
+		<phrase name="projectpriority_list_text" date="1335884321" username="Pitchoune" version="2.2.0"><![CDATA[Les priorités sont un moyen de définir le niveau d'importance des demandes. Vous pouvez les trier selon leur importance, comme du plus au moins important, par projet.]]></phrase>
+		<phrase name="projectpriority_list_title" date="1335881124" username="Pitchoune" version="2.2.0"><![CDATA[Priorité des projets]]></phrase>
+		<phrase name="projecttag_list_text" date="1335823225" username="Pitchoune" version="2.2.0"><![CDATA[Les tags sont un moyen de définir des meta-données à propos d'une demande pour qu'il puisse être mieux recherché. La façon dont ils doivent être utilisés sont de votre ressort. Ils peuvent être utilisés pour aider à mieux ordonner les demandes en catégories ou peuvent être utilisés quand certains types de demande doivent avoir un suivi.<br />
+<br />
+Dépendant des permissions, les tags peuvent être définis à la volée via la partie publique.]]></phrase>
+		<phrase name="projecttag_list_title" date="1335823225" username="Pitchoune" version="2.2.0"><![CDATA[Tags de projets]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_canpetitionfrom_text" date="1323425670" username="Pitchoune" version="2.2.0"><![CDATA[Le système de pétitions est un système puissant qui permet aux utilisateurs de demander à ce que l'état d'une demande soit modifiée. Par exemple, la correction pour un problème peut ne pas fonctionner pour certains, ces personnes peuvent demander à modifié l'état « Corrigé » pour l'état « Confirmé ». Cette demande apparaîtra ensuite sur la page d'accueil des projets jusqu'à ce que quelqu'un accepte ou refuse la pétition selon les permissions appropriées.<br />
+<br />
+Cependant, il existe certains cas où vous ne souhaitez pas autoriser le système de pétition pour les utilisateurs quand une demande est indiquée d'un certain état. Un choix commun est de définir cette option sur « Non » pour un état par défaut de chaque type de demande.]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_canpetitionfrom_title" date="1323425670" username="Pitchoune" version="2.2.0"><![CDATA[Peut lancer des pétitions depuis cet état]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_displayorder_text" date="1323425670" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est l'ordre d'affichage dans la liste des états. Ceci est utilisé dans la liste des états affiché dans certains endroits.]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_displayorder_title" date="1323425670" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_issuecompleted_text" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir si cet état marque la demande comme terminé.]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_issuecompleted_title" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[L'état représente une demande achevé ?]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_issuetypeid_text" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est la type de demande auquel l'état est assigné. Vous ne pouvez pas le modifier ou le définir.]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_issuetypeid_title" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[Type de demande]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_projectset_text" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez sélectionner ici quels projets utilisent la fonction de coloration des arrière-plans.]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_projectset_title" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[Utiliser la couleur dans les styles]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_statuscolor2_text" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir ici la couleur utilisée en arrière-plan avec les styles clairs dans la liste des demandes.]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_statuscolor2_title" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles clairs]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_statuscolor_text" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir ici la couleur utilisée en arrière-plan avec les styles sombres dans la liste des demandes.]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_statuscolor_title" date="1323431293" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles sombres]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_title_text" date="1323431442" username="Pitchoune" version="2.2.0"><![CDATA[Définissez ici l'intitulé de l'état.]]></phrase>
+		<phrase name="projecttype_statusadd_statusedit_title_title" date="1323431442" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_displayorder_text" date="1323431442" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir l'ordre d'affichage de la type de demande. Ceci est utilisé dans le menu déroulant pour créer une nouvelle demande et dans d'autres endroits variés.]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_displayorder_title" date="1323431442" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_iconfile_text" date="1323431882" username="Pitchoune" version="2.2.0"><![CDATA[Ceci vous permet d'afficher une petite icône représentant ce type de demande à côté des demandes de ce type. Une icône permet de reconnaître rapidement le type de demande que du texte. Si vous laissez ceci vide, aucune icône ne sera affichée.<br />
+<br />
+Vous devez manuellement placer cette icône dans le répertoire des icônes d'état. Par défaut, ce répertoire est « images/statusicon ».<br />
+<br />
+Les icônes inclus pour les bugs, fonctionnalités et tâches font 16 pixels sur 16 pixels de dimension.]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_iconfile_title" date="1323431442" username="Pitchoune" version="2.2.0"><![CDATA[Nom de fichier pour l'icône]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_issuetypeid_text" date="1323431738" username="Pitchoune" version="2.2.0"><![CDATA[Vous pouvez définir ici la clef du type de demande. Il est préférable de le conserver aussi simple que possible.<br />
+<br />
+Exemples :
+<ul>
+<li>bugs</li>
+<li>tasks</li>
+<li>features</li>
+<ul>]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_issuetypeid_title" date="1323431442" username="Pitchoune" version="2.2.0"><![CDATA[Clef du type de demande]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_permissionbase_text" date="1323431738" username="Pitchoune" version="2.2.0"><![CDATA[Sélectionnez ici à partir de quels types de demande vous souhaitez utiliser les permissions par défaut pour ce nouveau type de demande.]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_permissionbase_title" date="1323431442" username="Pitchoune" version="2.2.0"><![CDATA[Permissions de base d'un type existant]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_phrases_text" date="1323432501" username="Pitchoune" version="2.2.0"><![CDATA[Ceux-ci sont les expressions que vous pouvez personnaliser pour chaque type de demande. Ceci inclut :<br />
+<ul>
+<li>La forme au singulier du type de demande</li>
+<li>La forme au pluriel du type de demande</li>
+<li>La question pour le vote pour les demandes qui utilisent ce type de demande</li>
+<li>L'expression qui décrit les votes positifs</li>
+<li>L'expression qui décrit les votes négatifs</li>
+<li>Le texte de la version effective/affectée</li>
+<li>Le texte de la version corrigée/appliquée</li>
+<li>Le texte pour le bouton « Ouvrir une demande » dans les pages auquel il n'y a qu'un seul type de demande listé</li>
+</ul>]]></phrase>
+		<phrase name="projecttype_typeadd_typeedit_phrases_title" date="1323431905" username="Pitchoune" version="2.2.0"><![CDATA[Expressions]]></phrase>
+		<phrase name="projecttype_typelist_text" date="1323432501" username="Pitchoune" version="2.2.0"><![CDATA[Les types de demande vous permettent de regrouper les demandes basées sur leurs propos. Par exemple, vous pouvez conserver les suggestions de fonctionnalités séparés des rapports de bugs ; « features » et « bugs » deviennent des types de demandes séparés.<br />
+<br />
+Tandis que les différents types de demandes n'afficheront pas forcément les mêmes champs, ils ont les avantages suivants :
+<ul>
+<li><strong>Mots spécifiques</strong> - toutes les demandes ont 2 champs de versions : « applicable » et « adressée ». Vous pouvez choisir d'afficher des mots plus appropriés par rapport au type de demande.</li>
+<li><strong>États de demande personnalisés</strong> - les états de demande sont définies par type.</li>
+<li><strong>Permissions distinctes</strong> - une grande variété de permissions de groupe d'utilisateurs peuvent être définis par projet et par type de demande.</li>
+</ul>]]></phrase>
+		<phrase name="projecttype_typelist_title" date="1323431905" username="Pitchoune" version="2.2.0"><![CDATA[Types de demande]]></phrase>
+		<phrase name="projectversion_add_edit_default_text" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de définir si cette version est la valeur par défaut si une version est requise sur la page de création de nouvelle demande et que l'utilisateur ne peut pas choisir de version.]]></phrase>
+		<phrase name="projectversion_add_edit_default_title" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Valeur par défaut]]></phrase>
+		<phrase name="projectversion_add_edit_displayorder_text" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est l'ordre d'affichage de la version.<br />
+<br />
+<b>Remarque :</b> une valeur plus grande sera affichée en premier  !]]></phrase>
+		<phrase name="projectversion_add_edit_displayorder_title" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage]]></phrase>
+		<phrase name="projectversion_add_edit_versionname_text" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est l'intitulé de la version affiché dans divers endroits.]]></phrase>
+		<phrase name="projectversion_add_edit_versionname_title" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé]]></phrase>
+		<phrase name="projectversion_add_nextversion_text" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet d'indiquer au système si cette version doit être défini dans les demandes qui ont la version « (Prochaine Version) » en tant que version appliquée actuellement.<br />
+<br />
+Ceci est configurable par projet.]]></phrase>
+		<phrase name="projectversion_add_nextversion_title" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Dénoter sur la prochaine version ?]]></phrase>
+		<phrase name="projectversion_groupadd_groupedit_displayorder_text" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est l'ordre d'affichage du groupe de versions.]]></phrase>
+		<phrase name="projectversion_groupadd_groupedit_displayorder_title" date="1335875559" username="Pitchoune" version="2.2.0"><![CDATA[Ordre d'affichage]]></phrase>
+		<phrase name="projectversion_groupadd_groupedit_groupname_text" date="1335824839" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est l'intitulé affiché dans divers endroits.]]></phrase>
+		<phrase name="projectversion_groupadd_groupedit_groupname_title" date="1335823306" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé]]></phrase>
+		<phrase name="projectversion_list_text" date="1335823288" username="Pitchoune" version="2.2.0"><![CDATA[Un système basique pour suivre les versions est inclus dans Project Tools. Ceci est spécialement conçu pour les projets à propos des softwares, où la version exacte auquel une demande s'applique ou est adressée est une information importante.<br />
+<br />
+Les versions sont divisées en groupes de versions et versions individuelles. Une version peut aussi exister uniquement dans un groupe de version. Ceci permet aux utilisateurs d'effectuer des recherches sur des groupes de versions plus facilement. En regardant le système de versions de vBulletin par exemple, « 3.6.x » est un groupe de versions et « 3.6.7 » est une version dans ce groupe.<br />
+<br />
+Remarquez que les versions que vous créez doivent couvrir 2 situations : les versions affectées et appliquées. En plus de n'importe quels versions que vous avez crée de vous-même, la version appliquée inclura toujours une version appelée « Prochaine version ». Ceci vous permet de créer la prochaine version uniquement quand ceci est nécessaire. Quand vous créez une version, vous avez la possibilité de dénoter la version à créer sur la prochaine version. Si vous choisissez de faire ceci, tous les rapports qui seront listés en tant que prochaine version seront mis à jour pour afficher la version que vous êtes en train de créer.<br />
+<br />
+<strong>Remarque à propos de l'ordre d'affichage des versions</strong><br />
+Dans tous les autres endroits dans vBulletin et Project Tools, un ordre d'affichage plus petit sera affiché avant toute valeur plus grande. Ceci n'est <em>pas</em> le cas dans les ordres d'affichages des versions et groupes de versions. Les ordres d'affichages plus grands seront visibles en premier !<br />
+<br />
+Ceci est dû au fait que vous allez ajouter de nouvelles versions tout le temps. Avec l'option « plus petit en premier », placer une nouvelle version en premier demandera de renuméroter toutes les versions existantes.]]></phrase>
+		<phrase name="projectversion_list_title" date="1335823288" username="Pitchoune" version="2.2.0"><![CDATA[Versions de projets]]></phrase>
 	</phrasetype>
 	<phrasetype name="Control Panel Home Pages" fieldname="cphome">
 		<phrase name="edit_issue" date="1284849009" username="Pitchoune" version="2.1.2"><![CDATA[Modifier une demande]]></phrase>
@@ -103,6 +326,8 @@ Il existe aussi quelques permissions qui sont définissables par projet ou type d
 		<phrase name="pt_listprojects_issue" date="1281450544" username="Pitchoune" version="2.1.2"><![CDATA[Rapport d'un projet]]></phrase>
 		<phrase name="pt_listprojects_issuelist" date="1284849093" username="Pitchoune" version="2.1.2"><![CDATA[Liste des demandes d'un projet]]></phrase>
 		<phrase name="pt_listprojects_overview" date="1281450544" username="Pitchoune" version="2.1.2"><![CDATA[Page d'accueil d'un projet]]></phrase>
+		<phrase name="pt_severity_color" date="1323432591" username="Pitchoune" version="2.2.0"><![CDATA[Couleur de la sévérité]]></phrase>
+		<phrase name="pt_status_color" date="1323432591" username="Pitchoune" version="2.2.0"><![CDATA[Couleur de l'état]]></phrase>
 	</phrasetype>
 	<phrasetype name="Permissions" fieldname="cppermission">
 		<phrase name="can_administer_project_tools" date="1261165125" username="Pitchoune" version="2.0.1"><![CDATA[Peut administrer Project Tools]]></phrase>
@@ -114,6 +339,8 @@ Il existe aussi quelques permissions qui sont définissables par projet ou type d
 <dfn>Si vous définissez ceci sur « Non », les utilisateurs ne pourront pas créer de demande.</dfn>]]></phrase>
 		<phrase name="can_delete_public_report_others" date="1284849211" username="Pitchoune" version="2.1.2"><![CDATA[Peut supprimer les demandes publiques des autres]]></phrase>
 		<phrase name="can_delete_public_report_own" date="1284849241" username="Pitchoune" version="2.1.2"><![CDATA[Peut supprimer ses propres demandes publiques]]></phrase>
+		<phrase name="can_export_from_issues" date="1323432647" username="Pitchoune" version="2.2.0"><![CDATA[Peut exporter des demandes]]></phrase>
+		<phrase name="can_import_into_issues" date="1323432666" username="Pitchoune" version="2.2.0"><![CDATA[Peut importer en tant que demande]]></phrase>
 		<phrase name="can_use_humancheck" date="1281450685" username="Pitchoune" version="2.1.2"><![CDATA[Utiliser la vérification humaine avec Project Tools
 <dfn>Cette option fonctionnera si vous définissez l'option « <strong>Vérification humaine par groupe d'utilisateurs</strong> » dans les options de <a href="options.php?dogroup=projecttools"><strong>Project Tools</strong></a>.</dfn>]]></phrase>
 		<phrase name="can_view_project_tools" date="1261165164" username="Pitchoune" version="2.0.1"><![CDATA[Peut voir Project Tools
@@ -128,8 +355,9 @@ Il existe aussi quelques permissions qui sont définissables par projet ou type d
 		<phrase name="ptperm_group_issue_post" date="1284849318" username="Pitchoune" version="2.1.2"><![CDATA[Permissions d'envoi de demande]]></phrase>
 	</phrasetype>
 	<phrasetype name="Scheduled Tasks" fieldname="cron">
-		<phrase name="task_pt_cleanup_desc" date="1260934731" username="Pitchoune" version="2.0.1"><![CDATA[Nettoyage des données de Project Tools]]></phrase>
-		<phrase name="task_pt_cleanup_title" date="1261165084" username="Pitchoune" version="2.0.1"><![CDATA[Nettoyage de Project Tools]]></phrase>
+		<phrase name="task_pt_cleanup_desc" date="1327528286" username="Pitchoune" version="2.2.0"><![CDATA[Nettoyage des données de Project Tools]]></phrase>
+		<phrase name="task_pt_cleanup_log" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Nettoyage terminé.]]></phrase>
+		<phrase name="task_pt_cleanup_title" date="1327528294" username="Pitchoune" version="2.2.0"><![CDATA[Nettoyage de Project Tools]]></phrase>
 		<phrase name="task_pt_dailydigest_desc" date="1284849353" username="Pitchoune" version="2.1.2"><![CDATA[Ce script envoie un résumé quotidien des nouvelles demandes dans Project Tools une fois par jour.]]></phrase>
 		<phrase name="task_pt_dailydigest_log" date="1250715281" username="Pitchoune" version="2.0.1"><![CDATA[Résumé quotidien de Project Tools exécuté.]]></phrase>
 		<phrase name="task_pt_dailydigest_title" date="1250715338" username="Pitchoune" version="2.0.1"><![CDATA[Résumé quotidien de Project Tools]]></phrase>
@@ -159,12 +387,12 @@ L'équipe $vboptions[bbtitle]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pour gérer vos abonnements aux rapports et projets, cliquez ici :
 $vboptions[bburl]/projectpost.php?do=managesubscriptions]]></phrase>
-		<phrase name="pt_digestissue" date="1284849421" username="Pitchoune" version="2.1.2"><![CDATA[Bonjour $issue[username],
+		<phrase name="pt_digestissue" date="1323381427" username="Pitchoune" version="2.2.0"><![CDATA[Bonjour $issue[username],
 
 Vous êtes abonné à la demande « $issue[title] » créée par $issue[submitusername].
 
 À ce titre, nous vous informons que $issue[newposts] nouveaux messages ont enrichi cette demande, le dernier utilisateur étant « $issue[lastpostusername] ».
-$vboptions[bburl]/project.php?issueid=$issue[issueid]
+$vboptions[bburl]/issue.php?issueid=$issue[issueid]
 
 Les demandes avec de nouveaux messages sont les suivants :
 $notebits
@@ -174,9 +402,9 @@ L'équipe $vboptions[bbtitle]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pour gérer vos abonnements aux demandes et projets, cliquez ici :
 $vboptions[bburl]/projectpost.php?do=managesubscriptions]]></phrase>
-		<phrase name="pt_digestissuebit" date="1284849421" username="Pitchoune" version="2.1.2"><![CDATA[************
+		<phrase name="pt_digestissuebit" date="1323381447" username="Pitchoune" version="2.2.0"><![CDATA[************
 $issue[title_clean]
-$vboptions[bburl]/project.php?issueid=$issue[issueid]
+$vboptions[bburl]/issue.php?issueid=$issue[issueid]
 Créée par : $issue[submitusername_clean]
 Dernier message : $issue[lastreplydate] $issue[lastreplytime]]]></phrase>
 		<phrase name="pt_digestnotebit" date="1179944483" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[************
@@ -203,11 +431,11 @@ L'équipe $vboptions[bbtitle]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pour gérer vos abonnements aux rapports et projets, cliquez ici :
 $vboptions[bburl]/projectpost.php?do=managesubscriptions]]></phrase>
-		<phrase name="pt_issueassignment" date="1284849551" username="Pitchoune" version="2.1.2"><![CDATA[Bonjour $assignee_userinfo[username],
+		<phrase name="pt_issueassignment" date="1323381561" username="Pitchoune" version="2.2.0"><![CDATA[Bonjour $assignee_userinfo[username],
 
 Vous avez été assigné(e) à la demande « $issue[title] » par $assigner_userinfo[username].
 
-$vboptions[bburl]/project.php?issueid=$issue[issueid]
+$vboptions[bburl]/issue.php?issueid=$issue[issueid]
 
 Projet : $project[title]
 Type de demande : $issue[issuetype]
@@ -245,8 +473,12 @@ Envoyé par : [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinf
 		<phrase name="reportissuenote_newthread" date="1284849711" username="Pitchoune" version="2.1.2"><![CDATA[Note de rapport signalée par $reportinfo[rusername]]]></phrase>
 	</phrasetype>
 	<phrasetype name="Error Messages" fieldname="error">
-		<phrase name="applicable_version_required" date="1284849793" username="Pitchoune" version="2.1.2"><![CDATA[Vous devez sélectionner une version applicable pour cette demande.]]></phrase>
-		<phrase name="category_required" date="1284849816" username="Pitchoune" version="2.1.2"><![CDATA[Vous devez sélectionner une catégorie pour cette demande.]]></phrase>
+		<phrase name="after_upgrade_40_update_pt_attachment" date="1323365387" username="Pitchoune" version="2.2.0"><![CDATA[<strong>Mise à jour vBulletin Project Tools 2.2</strong>
+<p>Vous devez mettre à jour les pièces jointes de Project Tools au format de vBulletin 4.</p>]]></phrase>
+		<phrase name="applicable_version_missing_contact_administrator" date="1335731144" username="Pitchoune" version="2.2.0"><![CDATA[La version affectée est manquante et est requise. Veuillez contacter l'<a href="{1}">administrateur</a>.]]></phrase>
+		<phrase name="applicable_version_required" date="1335731166" username="Pitchoune" version="2.2.0"><![CDATA[Vous devez sélectionner une version affectée pour cette demande. Si il n'y a pas de version affectée à sélectionner, veuillez contacter l'<a href="{1}">administrateur</a>.]]></phrase>
+		<phrase name="category_missing_contact_administrator" date="1323365456" username="Pitchoune" version="2.2.0"><![CDATA[La catégorie est manquante et est requise. Veuillez contacter l'<a href="{1}">administrateur</a>.]]></phrase>
+		<phrase name="category_required" date="1323365258" username="Pitchoune" version="2.2.0"><![CDATA[Vous devez sélectionner une catégorie pour cette demande. Si il n'y a pas de catégorie à sélectionner, veuillez contacter l'<a href="{1}">administrateur</a>.]]></phrase>
 		<phrase name="counters_rebuilt" date="1179944769" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Mise à jour des compteurs effectué avec succès.]]></phrase>
 		<phrase name="invalid_issue_specified" date="1284849863" username="Pitchoune" version="2.1.2"><![CDATA[Demande spécifiée non valide.]]></phrase>
 		<phrase name="issue_saved" date="1284849990" username="Pitchoune" version="2.1.2"><![CDATA[La demande a été enregistrée avec succès.]]></phrase>
@@ -255,15 +487,25 @@ Envoyé par : [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinf
 		<phrase name="issue_type_already_exists" date="1284849937" username="Pitchoune" version="2.1.2"><![CDATA[Un type de demande avec cette clé existe déjà.]]></phrase>
 		<phrase name="issue_type_deleted" date="1284850025" username="Pitchoune" version="2.1.2"><![CDATA[Le type de demande a été supprimé avec succès.]]></phrase>
 		<phrase name="issue_type_saved" date="1284850025" username="Pitchoune" version="2.1.2"><![CDATA[Le type de demande a été enregistré avec succès.]]></phrase>
+		<phrase name="magic_select_varname_cant_be_used" date="1323432902" username="Pitchoune" version="2.2.0"><![CDATA[Ce nom de variable est déjà utilisé. Veuillez définir un autre nom de variable pour ce sélecteur magique.]]></phrase>
+		<phrase name="missing_text" date="1323432940" username="Pitchoune" version="2.2.0"><![CDATA[Vous n'avez pas spécifié de texte pour le sélecteur magique.]]></phrase>
 		<phrase name="must_have_one_type" date="1284850067" username="Pitchoune" version="2.1.2"><![CDATA[Il doit y avoir au moins un type de demande disponible tout le temps.]]></phrase>
+		<phrase name="no_magic_select_matched_your_query" date="1323433058" username="Pitchoune" version="2.2.0"><![CDATA[Aucun sélecteur magique ne correspond à ces critères.]]></phrase>
+		<phrase name="no_selected_project" date="1323433106" username="Pitchoune" version="2.2.0"><![CDATA[Vous n'avez pas sélectionné de projet. Veuillez sélectionner au minimum 1 projet pour utiliser le sélecteur magique.]]></phrase>
 		<phrase name="one_type_must_be_available" date="1284850140" username="Pitchoune" version="2.1.2"><![CDATA[Il doit y avoir au moins un type de demande disponible pour cette demande.]]></phrase>
-		<phrase name="priority_required" date="1284850276" username="Pitchoune" version="2.1.2"><![CDATA[Vous devez sélectionner une priorité pour cette demande.]]></phrase>
+		<phrase name="priority_missing_contact_administrator" date="1323365472" username="Pitchoune" version="2.2.0"><![CDATA[La priorité est manquante et est requise. Veuillez contacter l'<a href="{1}">administrateur</a>.]]></phrase>
+		<phrase name="priority_required" date="1323365276" username="Pitchoune" version="2.2.0"><![CDATA[Vous devez sélectionner une priorité pour cette demande. Si il n'y a pas de priorité à sélectionner, veuillez contacter l'<a href="{1}">administrateur</a>.]]></phrase>
 		<phrase name="project_category_deleted" date="1284850317" username="Pitchoune" version="2.1.2"><![CDATA[La catégorie du projet a été supprimée avec succès.]]></phrase>
 		<phrase name="project_category_saved" date="1284850317" username="Pitchoune" version="2.1.2"><![CDATA[La catégorie du projet a été enregistrée avec succès.]]></phrase>
 		<phrase name="project_deleted" date="1284850453" username="Pitchoune" version="2.1.2"><![CDATA[Le projet a été supprimé.]]></phrase>
+		<phrase name="project_magic_select_deleted" date="1323433261" username="Pitchoune" version="2.2.0"><![CDATA[Le sélecteur magique a été supprimé avec succès.]]></phrase>
+		<phrase name="project_magic_select_saved" date="1323433261" username="Pitchoune" version="2.2.0"><![CDATA[Le sélecteur magique a été enregistré avec succès.]]></phrase>
+		<phrase name="project_magic_select_updated" date="1323433261" username="Pitchoune" version="2.2.0"><![CDATA[Le sélecteur magique a été mis à jour avec succès.]]></phrase>
 		<phrase name="project_milestone_deleted" date="1284850453" username="Pitchoune" version="2.1.2"><![CDATA[L'étape du projet a été supprimée avec succès.]]></phrase>
 		<phrase name="project_milestone_saved" date="1284850453" username="Pitchoune" version="2.1.2"><![CDATA[L'étape du projet a été enregistrée avec succès.]]></phrase>
 		<phrase name="project_permissions_saved" date="1284850453" username="Pitchoune" version="2.1.2"><![CDATA[Les permissions du projet ont été enregistrées avec succès.]]></phrase>
+		<phrase name="project_priority_deleted" date="1323433192" username="Pitchoune" version="2.2.0"><![CDATA[La priorité du projet a été supprimée avec succès.]]></phrase>
+		<phrase name="project_priority_saved" date="1323433192" username="Pitchoune" version="2.2.0"><![CDATA[La priorité du projet a été enregistrée avec succès.]]></phrase>
 		<phrase name="project_saved" date="1284850453" username="Pitchoune" version="2.1.2"><![CDATA[Le projet a été enregistré avec succès.]]></phrase>
 		<phrase name="project_version_deleted" date="1284850453" username="Pitchoune" version="2.1.2"><![CDATA[La version du projet a été supprimée avec succès.]]></phrase>
 		<phrase name="project_version_saved" date="1284850453" username="Pitchoune" version="2.1.2"><![CDATA[La version du projet a été enregistrée avec succès.]]></phrase>
@@ -283,27 +525,31 @@ Si vous souhaitez continuez cette action, <a href="{1}">cliquez ici</a>.]]></phr
 		<phrase name="there_is_no_project_you_can_create_issues_in" date="1284850610" username="Pitchoune" version="2.1.2"><![CDATA[Actuellement, il n'y a aucun projet auquel vous pouvez créer de demandes.]]></phrase>
 		<phrase name="there_is_no_type_you_can_create_issues_in" date="1284850610" username="Pitchoune" version="2.1.2"><![CDATA[Actuellement, il n'y a aucun type de demande dans ce projet auquel vous pouvez créer de demandes.]]></phrase>
 		<phrase name="type_must_have_one_status" date="1284850625" username="Pitchoune" version="2.1.2"><![CDATA[Chaque type de demande doit avoir au moins un état.]]></phrase>
+		<phrase name="updated_pt_attachments_successfully" date="1323433303" username="Pitchoune" version="2.2.0"><![CDATA[Pièces jointes de Project Tools mises à jour avec succès.]]></phrase>
+		<phrase name="value_must_be_a_positive_integer" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Le champ « Valeur » doit être un nombre entier positif.]]></phrase>
 	</phrasetype>
 	<phrasetype name="FAQ Text" fieldname="faqtext">
 		<phrase name="pt_faq" date="1261164965" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools permet de gérer des projets via $vboptions[bbtitle]. Dépendant de la façon dont l'administrateur a configuré ce système, vous l'utiliserez généralement pour signaler des bugs ou pour effectuer des suggestions.]]></phrase>
-		<phrase name="pt_faq_attach" date="1284850993" username="Pitchoune" version="2.1.2"><![CDATA[Le système de pièces jointes de Project Tools est très similaire au système standard de pièces jointes de vBulletin, à la différence que les extensions de fichiers exactes et les tailles que vous être autorisé pour chaque pièce jointe peuvent différencier.<br />
+		<phrase name="pt_faq_attach" date="1323381532" username="Pitchoune" version="2.2.0"><![CDATA[Le système de pièces jointes de Project Tools est très similaire au système standard de pièces jointes de vBulletin, à la différence que le système pour joindre des fichiers est quelque peu différent.<br />
 <br />
 L'unique aspect qui s'y relate est le support des fichiers patch. Un fichier patch est un document texte formaté d'une certaine façon qui peut indiquer à un ordinateur les modifications spécifiques à réaliser sur un autre document texte sans détruire le reste de son contenu.<br />
 <br />
 Dans Project Tools, si vous envoyez un fichier avec l'extension « .patch », « .diff » ou « .txt » au format <em>unified diff</em>, ceci affichera automatiquement une version surlignée du patch avec la pièce jointe. Ceci permet aux utilisateurs les plus novices d'appliquer vos modifications, mais vous permet toujours d'utiliser un logiciel informatique pour générer ce fichier.<br />
 <br />
 Souvenez-vous que seul les patchs au format <em>unified diff</em> seront surlignés. Si vous envoyez n'importe quel autre fichier en pièce jointe, celui-ci sera traité comme n'importe quel autre fichier.]]></phrase>
-		<phrase name="pt_faq_how_post" date="1284850993" username="Pitchoune" version="2.1.2"><![CDATA[L'envoi de messages dans Project Tools est similaire aux autres endroits dans vBulletin. Cependant, vous aurez besoin de concentrer plus d'informations dans le contenu. La meilleure façon de créer une bonne demande est de décrire clairement les faits et d'essayer de répondre à n'importe quelle question avant qu'elles ne soient posées. Souvenez-vous :
+		<phrase name="pt_faq_how_post" date="1329084977" username="Pitchoune" version="2.2.0"><![CDATA[L'envoi de messages dans Project Tools est similaire aux autres endroits dans vBulletin. Cependant, vous aurez besoin de concentrer plus d'informations dans le contenu. La meilleure façon de créer une bonne demande est de décrire clairement les faits et d'essayer de répondre à n'importe quelle question avant qu'elles ne soient posées. Souvenez-vous :
+<br />
 <ol>
 	<li><strong>Effectuez une recherche avant d'ouvrir une demande</strong></li>
 	<li><strong>Incluez ce que vous souhaitez, ce qui se passe, et ce qui en résulte</strong></li>
 	<li><strong>Indiquez uniquement un fait par demande.</strong></li>
 </ol>
-
 <h4>Effectuez une recherche avant d'ouvrir une demande</h4>
-Avant d'ouvrir des demandes, il est très important d'effectuer une <a href="projectsearch.php">recherche</a>. Si vous trouvez un problème ou que vous avez une idée, il est possible que ceci soit déjà fait par un autre utilisateur.
-
+<br />
+Avant d'ouvrir des demandes, il est très important d'effectuer une <a href="projectsearch.php?do=search">recherche</a>. Si vous trouvez un problème ou que vous avez une idée, il est possible que ceci soit déjà fait par un autre utilisateur.
+<br />
 <h4>Incluez ce que vous souhaitez, ce qui se passe, et ce qui en résulte</h4>
+<br />
 Il est très important de décrire exactement ce qui s'est passé, d'étape en étape si nécessaire. Essayez d'inclure toutes les informations que vous pensez utile, mais pas trop bavard.<br />
 <br />
 Maintenant, essayez d'expliquer ce qui s'est passé du mieux que possible. Si vous recevez un message d'erreur, il est très important d'inclure le message spécifique entier. Les personnes en charge de la gestion du projet sauront quoi en faire. Si vous avez des difficultés à expliquer, des images peuvent remplacer 1 000 mots. Cependant, utilisez les pièces jointes de façon raisonnable.<br />
@@ -311,8 +557,9 @@ Maintenant, essayez d'expliquer ce qui s'est passé du mieux que possible. Si vou
 Enfin, essayez d'expliquer ce à quoi vous vous attendiez comme résultat. Ceci aidera chacun à comprendre ce à quoi vous pensez et permettra de mieux améliorer le projet.<br />
 <br />
 Souvenez-vous qu'il est toujours meilleur d'indiquer trop d'informations que pas assez. Pensez aux questions qu'on peut se poser quand on lit votre demande. Si vous avez un soucis qui est lié à votre navigateur, indiquez les informations concernant l'identité de votre navigateur ainsi que de votre système d'exploitation car ceux-ci sont souvent nécessaire.
-
+<br />
 <h4>Indiquez uniquement un fait par demande.</h4>
+<br />
 Ceci aide l'organisation. Si vous expliquez plusieurs problèmes dans une demande, il devient difficile de leur appliquer une catégorie. Certaines choses peuvent être de légers dysfonctionnements tandis que d'autres choses peuvent être de véritables gros problèmes. Cela donne à chacun une meilleure compréhension de ce qui se passe et aide à encourager plus de personnes à ouvrir des demandes.]]></phrase>
 		<phrase name="pt_faq_private" date="1284850993" username="Pitchoune" version="2.1.2"><![CDATA[Si vous ouvrez une demande privée ou vous laissez un commentaire privé, seul une sélection limitée de personnes seront capable de le voir. Vous devriez l'utiliser pour discuter de choses d'une certaine nature, comme la sécurité ou une information découverte à propos d'un problème quelconque.<br />
 <br />
@@ -323,10 +570,15 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 	</phrasetype>
 	<phrasetype name="FAQ Title" fieldname="faqtitle">
 		<phrase name="pt_faq" date="1261164936" username="Pitchoune" version="2.0.1"><![CDATA[FAQ de Project Tools]]></phrase>
-		<phrase name="pt_faq_attach" date="1261503794" username="Pitchoune" version="2.0.1"><![CDATA[Pourquoi le système de pièces jointes est unique dans Project Tools ?]]></phrase>
-		<phrase name="pt_faq_how_post" date="1284851023" username="Pitchoune" version="2.1.2"><![CDATA[Comment effectuer une bonne description de demande ?]]></phrase>
+		<phrase name="pt_faq_attach" date="1323381541" username="Pitchoune" version="2.2.0"><![CDATA[Pourquoi le système de pièces jointes est unique dans Project Tools ?]]></phrase>
+		<phrase name="pt_faq_how_post" date="1329084903" username="Pitchoune" version="2.2.0"><![CDATA[Comment effectuer une bonne description de demande ?]]></phrase>
 		<phrase name="pt_faq_private" date="1180041889" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Qu'est-ce que signifie de rendre quelque chose privé ? Quand dois-je m'en servir ?]]></phrase>
 		<phrase name="pt_faq_report" date="1180041889" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Qu'est-ce qu'un rapport ? Comment puis-je m'en servir ?]]></phrase>
+	</phrasetype>
+	<phrasetype name="Forum-Related" fieldname="forum">
+		<phrase name="project_tools_options" date="1323433420" username="Pitchoune" version="2.2.0"><![CDATA[Options de Project Tools]]></phrase>
+		<phrase name="pt_can_import_into_issues" date="1323433420" username="Pitchoune" version="2.2.0"><![CDATA[Peut importer des contenus en tant que demande ?
+<dfn>Si le groupe d'utilisateur a la permission correspondante associée à cette option, l'utilisateur pourra importer n'importe quel message / discussion en tant que demande ou de note de demande.</dfn>]]></phrase>
 	</phrasetype>
 	<phrasetype name="Forum Display" fieldname="forumdisplay">
 		<phrase name="pt_import_threadprefix" date="1275164108" username="Pitchoune" version="2.1.1"><![CDATA[Project Tools :]]></phrase>
@@ -342,6 +594,7 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="pt_cannont_be_assigned" date="1284851181" username="Pitchoune" version="2.1.2"><![CDATA[Vous ne pouvez pas être assigné aux demandes pour ce projet avec ce type d'état.]]></phrase>
 		<phrase name="pt_issue_deleted" date="1284851181" username="Pitchoune" version="2.1.2"><![CDATA[La demande a été supprimée avec succès.]]></phrase>
 		<phrase name="pt_issue_edited" date="1284851314" username="Pitchoune" version="2.1.2"><![CDATA[La demande a été mise à jour avec succès.]]></phrase>
+		<phrase name="pt_issue_exported" date="1323433480" username="Pitchoune" version="2.2.0"><![CDATA[La demande a été exportée avec succès.]]></phrase>
 		<phrase name="pt_issue_inserted" date="1284851314" username="Pitchoune" version="2.1.2"><![CDATA[La demande a été ouverte avec succès.]]></phrase>
 		<phrase name="pt_issue_state_modified" date="1284851314" username="Pitchoune" version="2.1.2"><![CDATA[L'état de la demande a été modifiée avec succès.]]></phrase>
 		<phrase name="pt_issue_undeleted" date="1284851314" username="Pitchoune" version="2.1.2"><![CDATA[La demande a été restaurée avec succès.]]></phrase>
@@ -357,7 +610,12 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="pt_vote_cast" date="1284851407" username="Pitchoune" version="2.1.2"><![CDATA[Le vote a été pris en compte avec succès.]]></phrase>
 	</phrasetype>
 	<phrasetype name="GLOBAL" fieldname="global">
+		<phrase name="addressversion" date="1323433709" username="Pitchoune" version="2.2.0"><![CDATA[Version appliquée]]></phrase>
+		<phrase name="applyversion" date="1323433719" username="Pitchoune" version="2.2.0"><![CDATA[Version affectée]]></phrase>
+		<phrase name="category" date="1323433796" username="Pitchoune" version="2.2.0"><![CDATA[Catégorie]]></phrase>
 		<phrase name="doubleclick_project_markread" date="1216302547" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Double-cliquez sur cette icône pour marquer ce projet et son contenu comme lu.]]></phrase>
+		<phrase name="issue" date="1323433825" username="Pitchoune" version="2.2.0"><![CDATA[Demande]]></phrase>
+		<phrase name="priority" date="1323433846" username="Pitchoune" version="2.2.0"><![CDATA[Priorité]]></phrase>
 		<phrase name="projects" date="1185036771" username="Pitchoune" version="1.0.0"><![CDATA[Projets]]></phrase>
 		<phrase name="search_projects" date="1184849035" username="Pitchoune" version="1.0.0"><![CDATA[Recherche dans les projets]]></phrase>
 	</phrasetype>
@@ -372,7 +630,7 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 	</phrasetype>
 	<phrasetype name="Project Tools" fieldname="projecttools">
 		<phrase name="accept_petition_change_status_x" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Accepter la pétition et modifier l'état en</span> {1}<span class="shade"> ?</span>]]></phrase>
-		<phrase name="active" date="1216302858" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Actif]]></phrase>
+		<phrase name="active" date="1327528281" username="Pitchoune" version="2.2.0"><![CDATA[Actif]]></phrase>
 		<phrase name="active_issues" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Demandes actives]]></phrase>
 		<phrase name="active_issues_in_milestone_x_html" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Demandes actives dans l'étape « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="active_milestones" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Étapes actives]]></phrase>
@@ -385,7 +643,7 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="any_active_meta" date="1284885473" username="Pitchoune" version="2.1.2"><![CDATA[(n'importe quelle demande active)]]></phrase>
 		<phrase name="any_meta" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(n'importe quel)]]></phrase>
 		<phrase name="anywhere_meta" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(n'importe où)]]></phrase>
-		<phrase name="applicable_version" date="1284885473" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée]]></phrase>
+		<phrase name="applicable_version" date="1335731128" username="Pitchoune" version="2.2.0"><![CDATA[Version affectée]]></phrase>
 		<phrase name="applied_tags" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tags appliqués]]></phrase>
 		<phrase name="ascending" date="1284760098" username="Pitchoune" version="2.1.2"><![CDATA[Croissant]]></phrase>
 		<phrase name="assign_to_self" date="1281451669" username="Pitchoune" version="2.1.2"><![CDATA[Vous assigner]]></phrase>
@@ -407,7 +665,9 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="continue" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Continuer]]></phrase>
 		<phrase name="current_version" date="1181505208" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Version actuelle]]></phrase>
 		<phrase name="dates_x_to_y" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[{1} à {2}]]></phrase>
+		<phrase name="delete_issue_in_manner" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Supprimer la demande de la manière suivante]]></phrase>
 		<phrase name="delete_issue_note_check_appropriate_option" date="1275163296" username="Pitchoune" version="2.1.1"><![CDATA[Sélectionnez les options appropriées et cliquez sur le bouton « Enregistrer ».]]></phrase>
+		<phrase name="delete_issue_note_in_manner" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Supprimer la note de la manière suivante]]></phrase>
 		<phrase name="delete_this_attachment" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Supprimer cette pièce jointe]]></phrase>
 		<phrase name="delete_this_issue" date="1284885622" username="Pitchoune" version="2.1.2"><![CDATA[Supprimer la demande]]></phrase>
 		<phrase name="delete_this_note" date="1275163314" username="Pitchoune" version="2.1.1"><![CDATA[Supprimer la réponse]]></phrase>
@@ -421,6 +681,12 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="edit_reply_to_issue_x" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Modifier la réponse de la demande]]></phrase>
 		<phrase name="edit_this_issue" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Modifier cette demande]]></phrase>
 		<phrase name="edited_by_x" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Modifié par</span> {1}]]></phrase>
+		<phrase name="export_as_post" date="1323367556" username="Pitchoune" version="2.2.0"><![CDATA[Exporter en tant que message]]></phrase>
+		<phrase name="export_as_thread" date="1323367556" username="Pitchoune" version="2.2.0"><![CDATA[Exporter en tant que discussion]]></phrase>
+		<phrase name="export_issue" date="1323367556" username="Pitchoune" version="2.2.0"><![CDATA[Exporter la demande]]></phrase>
+		<phrase name="export_issue_post" date="1323367625" username="Pitchoune" version="2.2.0"><![CDATA[Message]]></phrase>
+		<phrase name="export_issue_thread" date="1323367625" username="Pitchoune" version="2.2.0"><![CDATA[Discussion]]></phrase>
+		<phrase name="export_this_issue" date="1323367625" username="Pitchoune" version="2.2.0"><![CDATA[Exporter cette demande]]></phrase>
 		<phrase name="field_addressedversionid" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée]]></phrase>
 		<phrase name="field_appliesversionid" date="1284885713" username="Pitchoune" version="2.1.2"><![CDATA[Version affectée]]></phrase>
 		<phrase name="field_assigneduser" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Utilisateurs assignés]]></phrase>
@@ -464,6 +730,7 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="issue_subscriptions" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Abonnements aux demandes]]></phrase>
 		<phrase name="issue_tools" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Outils de la demande]]></phrase>
 		<phrase name="issue_type" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Type de demande]]></phrase>
+		<phrase name="issuenote_made_as_issue" date="1323368416" username="Pitchoune" version="2.2.0"><![CDATA[Cette note a été crée en tant que demande.]]></phrase>
 		<phrase name="issues_in_milestone_x_html" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Demandes dans l'étape « {1} »]]></phrase>
 		<phrase name="issues_with_recent_replies" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Demandes avec des réponses récentes]]></phrase>
 		<phrase name="last_updated_x_at_y" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Dernière mise à jour : {1} à {2}]]></phrase>
@@ -488,6 +755,7 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="move_this_issue" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Déplacer cette demande]]></phrase>
 		<phrase name="my_reports" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Mes rapports]]></phrase>
 		<phrase name="negative_votes" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Votes négatifs]]></phrase>
+		<phrase name="new_content_type" date="1323368438" username="Pitchoune" version="2.2.0"><![CDATA[Nouveau type de contenu]]></phrase>
 		<phrase name="new_project_and_issue_type" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Nouveau projet et type de demande]]></phrase>
 		<phrase name="new_subscribed_issues" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Nouveaux abonnements aux demandes]]></phrase>
 		<phrase name="next_release" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Prochaine version]]></phrase>
@@ -515,27 +783,23 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="post_new_issue" date="1284886990" username="Pitchoune" version="2.1.2"><![CDATA[Ouvrir une demande]]></phrase>
 		<phrase name="post_reply" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Envoyer une réponse]]></phrase>
 		<phrase name="priority" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Priorité]]></phrase>
-		<phrase name="priority_0" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Inconnu]]></phrase>
-		<phrase name="priority_1" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[1 - Très haute]]></phrase>
-		<phrase name="priority_10" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[10 - Très faible]]></phrase>
-		<phrase name="priority_2" date="1179932756" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[2]]></phrase>
-		<phrase name="priority_3" date="1179932819" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[3]]></phrase>
-		<phrase name="priority_4" date="1179932819" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[4]]></phrase>
-		<phrase name="priority_5" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[5 - Moyenne]]></phrase>
-		<phrase name="priority_6" date="1179932819" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[6]]></phrase>
-		<phrase name="priority_7" date="1179932819" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[7]]></phrase>
-		<phrase name="priority_8" date="1179932819" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[8]]></phrase>
-		<phrase name="priority_9" date="1179932819" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[9]]></phrase>
+		<phrase name="priority0" date="1323368451" username="Pitchoune" version="2.2.0"><![CDATA[Inconnu(e)]]></phrase>
 		<phrase name="private_message_keep_in_mind" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ceci est un message privé. Veuillez vous en rappeler quand vous répondez !]]></phrase>
 		<phrase name="project" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Projet]]></phrase>
 		<phrase name="project_information" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Informations sur le projet]]></phrase>
+		<phrase name="project_new_issue_notes" date="1323368612" username="Pitchoune" version="2.2.0"><![CDATA[Contient des notes de demande non lus]]></phrase>
+		<phrase name="project_no_new_issue_notes" date="1323368612" username="Pitchoune" version="2.2.0"><![CDATA[Ne contient pas de notes de demande non lus]]></phrase>
 		<phrase name="project_rss_feed" date="1216304668" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Flux RSS de projets]]></phrase>
 		<phrase name="project_statistics" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Statistiques du projet]]></phrase>
 		<phrase name="project_subscriptions" date="1216304668" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Abonnements de projets]]></phrase>
 		<phrase name="project_timeline" date="1180082769" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ligne temporelle]]></phrase>
 		<phrase name="project_tools" date="1261164839" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools]]></phrase>
 		<phrase name="projects_list" date="1281876883" username="Pitchoune" version="2.1.2"><![CDATA[Liste des projets. Séparez chaque identifiant de projet par une virgule.]]></phrase>
+		<phrase name="promote_to_ptissue" date="1323368645" username="Pitchoune" version="2.2.0"><![CDATA[Créer une demande]]></phrase>
 		<phrase name="pt_create_issue" date="1284887043" username="Pitchoune" version="2.1.2"><![CDATA[Créer une demande]]></phrase>
+		<phrase name="pt_explanation_attachment_system" date="1323368793" username="Pitchoune" version="2.2.0"><![CDATA[Pour joindre des pièces jointes, vous devez sélectionner les pièces jointes en cliquant sur le bouton « Gérer les pièces jointes », et une fois terminé, cliquez sur le bouton « Envoyer ».<br />
+<br />
+Ceci est nécessaire car Project Tools utilise un système de pièces jointes particulier et se devait d'être compatible avec le système de pièces jointes de vBulletin 4.]]></phrase>
 		<phrase name="pt_managesubscriptions" date="1275163954" username="Pitchoune" version="2.1.1"><![CDATA[Lister les abonnements]]></phrase>
 		<phrase name="public_reports" date="1284887043" username="Pitchoune" version="2.1.2"><![CDATA[Demandes publiques]]></phrase>
 		<phrase name="quick_reply" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Réponse rapide]]></phrase>
@@ -585,8 +849,12 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="system_message_attachment_deleted" date="1179935554" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Pièce jointe </span> <em>{3}</em> <span class="shade">supprimée</span>]]></phrase>
 		<phrase name="system_message_attachment_uploaded" date="1260993437" username="Pitchoune" version="2.0.1"><![CDATA[<span class="shade">Pièce jointe </span> <em>{3}</em> <span class="shade">ajoutée</span>]]></phrase>
 		<phrase name="system_message_default" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">{1} modifié(e) de </span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
-		<phrase name="system_message_issue_imported" date="1288568174" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Demande importée de la discussion</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
-		<phrase name="system_message_issue_imported_post" date="1288568174" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Demande importée d'un message de la discussion</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_exported" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande exportée en tant que discussion</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_exported_issuethread" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande exportée dans la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_exported_post" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande importée dans un message dans la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_imported" date="1323381620" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande importée de la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_imported_issuenote" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue importée en tant que note dans la demande</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_imported_post" date="1323381632" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande importée d'un message de la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
 		<phrase name="system_message_milestoneid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Étape modifiée</span>]]></phrase>
 		<phrase name="system_message_projectcategoryid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Catégorie modifiée de</span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
 		<phrase name="system_message_tags" date="1179934545" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Tags modifiés</span>]]></phrase>
@@ -646,6 +914,9 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="add_milestone" date="1284887908" username="Pitchoune" version="2.1.2"><![CDATA[Ajouter une étape]]></phrase>
 		<phrase name="add_project" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter un projet]]></phrase>
 		<phrase name="add_project_category" date="1179990266" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter une catégorie de projet]]></phrase>
+		<phrase name="add_project_magic_select" date="1335735199" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter une option du sélecteur magique]]></phrase>
+		<phrase name="add_project_magic_select_group" date="1335735199" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter un sélecteur magique]]></phrase>
+		<phrase name="add_project_priority" date="1323368939" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter une priorité de projet]]></phrase>
 		<phrase name="add_project_version" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter une version de projet]]></phrase>
 		<phrase name="add_project_version_group" date="1182465050" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Ajouter un groupe de version de projet]]></phrase>
 		<phrase name="add_status" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter un état]]></phrase>
@@ -658,38 +929,49 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="are_you_sure_want_to_delete_milestone_x" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer l'étape appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
 		<phrase name="are_you_sure_want_to_delete_project_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer projet appelé « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
 		<phrase name="are_you_sure_want_to_delete_projectcategory_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer la catégorie de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectmagicselect_x" date="1327528499" username="Pitchoune" version="2.2.0"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le sélecteur magique de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectmagicselectgroup_x" date="1327528499" username="Pitchoune" version="2.2.0"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le groupe de sélecteur magique de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectpriority_x" date="1323368986" username="Pitchoune" version="2.2.0"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer la priorité de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
 		<phrase name="are_you_sure_want_to_delete_projectversion_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer la version de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
 		<phrase name="are_you_sure_want_to_delete_projectversiongroup_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le groupe de version de projet appelé « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
 		<phrase name="available_issue_types" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Types de demande disponibles]]></phrase>
 		<phrase name="base_permissions_off_existing_project" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions de base d'un projet existant]]></phrase>
-		<phrase name="bass_permissions_off_existing_type" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions de base d'un type existant<dfn>Si vous sélectionnez « none », personne ne pourra utiliser ce type par défaut.</dfn>]]></phrase>
+		<phrase name="base_permissions_off_existing_type" date="1323431614" username="Pitchoune" version="2.2.0"><![CDATA[Permissions de base d'un type existant<dfn>Si vous sélectionnez « (aucun) », personne ne pourra utiliser ce type par défaut.</dfn>]]></phrase>
 		<phrase name="can_create_petitions_from_this_status" date="1182164571" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Peut lancer des pétitions depuis cet état ?]]></phrase>
 		<phrase name="categories" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégories]]></phrase>
 		<phrase name="categories_for_x" date="1216297855" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Catégories pour « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="chose_delete_types_project" date="1284888366" username="Pitchoune" version="2.1.2"><![CDATA[Vous avez choisi de supprimer un ou plusieurs types de demande pour ce projet. Pour achever ce processus, vous devrez choisir un nouveau type de demande et d'état pour déplacer les demandes se trouvant dans les types de demande que vous souhaitez supprimer. 
 <p>Si vous n'effectuez pas ceci, les rapports resteront mais deviendront inaccessibles jusqu'à ce que leur type soit de nouveau actif pour ce projet. Pour ignorer cette procédure et retourner à la liste des projets, <a href="project.php?do=projectlist">cliquez ici</a>.</p>]]></phrase>
 		<phrase name="completed_date_desc" date="1284888366" username="Pitchoune" version="2.1.2"><![CDATA[Si vous spécifiez une date ici, cette étape sera déplacée dans la liste des étapes achevées.]]></phrase>
+		<phrase name="default_value" date="1323369083" username="Pitchoune" version="2.2.0"><![CDATA[Valeur par défaut
+<dfn>Cette option est nécessaire uniquement si vous souhaitez appliquer par défaut cette valeur mais par par l'utilisateur (de manière automatique). Vous pouvez définir si cette option est requise dans la page de modification du projet.</dfn>]]></phrase>
 		<phrase name="default_version_group" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Groupe de version par défaut]]></phrase>
 		<phrase name="default_version_number" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Numéro de version par défaut]]></phrase>
 		<phrase name="deleted_issue_type" date="1284888366" username="Pitchoune" version="2.1.2"><![CDATA[Type de demande supprimé]]></phrase>
 		<phrase name="denote_as_next_version" date="1284888529" username="Pitchoune" version="2.1.2"><![CDATA[Dénoter sur la prochaine version ?<dfn>Si ceci est paramétré sur « Oui », tous les rapports avec comme indication pour la version appliquée « Prochaine version » seront associés à cette version.</dfn>]]></phrase>
-		<phrase name="display_after_forums" date="1180997431" username="Pitchoune" version="1.0.0 Beta 3"><![CDATA[Afficher après les forums
-<dfn>Les informations de ce projet apparaîtront dans la liste des forums après les forums sélectionnés.</dfn>]]></phrase>
+		<phrase name="display_after_forums" date="1323381309" username="Pitchoune" version="2.2.0"><![CDATA[Afficher après les forums
+<dfn>Les informations de ce projet apparaîtront dans la liste des forums après les forums sélectionnés.
+<br /><br />
+<span class="modlasttendays">Pour afficher un forum dans un sous-forum, vous avez besoin de sélectionner le forum parent, pas le dernier forum où vous souhaitez afficher le projet. Si le forum parent n'est pas visible pour certains groupes d'utilisateurs, ces utilisateurs ne pourront pas voir le projet.</span></dfn>]]></phrase>
 		<phrase name="do_not_change_meta" date="1209242403" username="Administrateur" version="1.0.3"><![CDATA[(ne pas modifier)]]></phrase>
 		<phrase name="do_not_use_meta" date="1179989720" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(ne pas utiliser)]]></phrase>
 		<phrase name="double_click_permission_quick_set" date="1284888529" username="Pitchoune" version="2.1.2"><![CDATA[Astuce : Vous pouvez double-cliquer sur une permission pour rapidement autoriser ou refuser cette permission pour tous les types de demande !]]></phrase>
 		<phrase name="edit_link_colored_custom_permissions" date="1179989720" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Le lien « [Modifier] » sera visible de la couleur suivante si des permissions personnalisées existent.]]></phrase>
-		<phrase name="edit_milestone" date="1284888529" username="Pitchoune" version="2.1.2"><![CDATA[Modifier l'étape]]></phrase>
+		<phrase name="edit_milestone" date="1323369448" username="Pitchoune" version="2.2.0"><![CDATA[Modifier l'étape « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="edit_permissions_for_x" date="1216297870" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier les permissions pour « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="edit_permissions_for_x_in_y" date="1216297888" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier les permissions pour « <span class="normal">{1}</span> » dans « <span class="normal">{2}</span> »]]></phrase>
-		<phrase name="edit_project_category" date="1179989720" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Modifier la catégorie du projet]]></phrase>
-		<phrase name="edit_project_version" date="1179989720" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Modifier la version du projet]]></phrase>
-		<phrase name="edit_project_version_group" date="1179989720" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Modifier le groupe de version du projet]]></phrase>
+		<phrase name="edit_project_category" date="1323369448" username="Pitchoune" version="2.2.0"><![CDATA[Modifier la catégorie du projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_magic_select" date="1335735308" username="Pitchoune" version="2.2.0"><![CDATA[Modifier l'option du sélecteur magique « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_magic_select_group" date="1335735308" username="Pitchoune" version="2.2.0"><![CDATA[Modifier le sélecteur magique « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_priority" date="1323369128" username="Pitchoune" version="2.2.0"><![CDATA[Modifier la priorité du projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_version" date="1323369128" username="Pitchoune" version="2.2.0"><![CDATA[Modifier la version du projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_version_group" date="1323369128" username="Pitchoune" version="2.2.0"><![CDATA[Modifier le groupe de version du projet « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="edit_project_x" date="1216297906" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier le projet « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="edit_status_x" date="1216297922" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier l'état « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="edit_type_x" date="1216297936" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier le type « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="existing_affected_issues_updated_delete_select_category" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mises à jour quand ceci est supprimé. Choisissez une nouvelle catégorie pour ces demandes :]]></phrase>
 		<phrase name="existing_affected_issues_updated_delete_select_milestone" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mis à jour quand ceci est supprimé. Sélectionnez une nouvelle étape pour ces demandes :]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_priority" date="1327528587" username="Pitchoune" version="2.2.0"><![CDATA[Ceci étant, les demandes affectées doivent être mis à jour quand ceci est supprimé. Sélectionnez une nouvelle priorité pour ces demandes :]]></phrase>
 		<phrase name="existing_affected_issues_updated_delete_select_status" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mises à jour quand ceci est supprimé. Choisissez un nouvel état pour ces demandes :]]></phrase>
 		<phrase name="existing_affected_issues_updated_delete_select_versions_x_y" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mises à jour quand ceci est supprimé.<ol style="margin-top: 0px; margin-bottom: 0px;">
 <li>Choisissez une nouvelle version affectée : {1}</li>
@@ -708,33 +990,40 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="issue_type_key_alphanumeric_only" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Clef du type de demande<dfn>A-Z, 0-9, et le sous-tiret ( _ ) uniquement.</dfn>]]></phrase>
 		<phrase name="issue_type_manager" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Gestionnaire de type de demande]]></phrase>
 		<phrase name="issue_types_deleted_for_project_x" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Types de demande supprimés pour le projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="magic_select_group_title" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé du sélecteur magique]]></phrase>
+		<phrase name="magic_select_title" date="1335734732" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé de l'option du sélecteur magique]]></phrase>
+		<phrase name="magicselects" date="1327528637" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteurs magiques]]></phrase>
 		<phrase name="milestones_for_x_html" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Étapes pour « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="move_issues_into" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Déplacer les demandes dans]]></phrase>
 		<phrase name="need_manually_select_projects_type" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Souvenez-vous que vous avez besoin de sélectionner les projets manuellement qui doivent utiliser ce type une fois que ce dernier est crée !]]></phrase>
 		<phrase name="negative_vote_count_example" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Compteur de votes négatifs<dfn>Exemple : Utilisateurs ne reproduisant pas ce bug</dfn>]]></phrase>
 		<phrase name="no_categories_defined_project" date="1181508179" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Aucune catégorie n'est définie pour ce projet !]]></phrase>
+		<phrase name="no_magic_selects_defined_in_this_group" date="1327528637" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun sélecteur magique défini dans ce groupe.]]></phrase>
 		<phrase name="no_milestones_defined_for_this_project" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Aucune étape défini pour ce projet !]]></phrase>
-		<phrase name="no_projects_defined_click_here_to_add_one" date="1275171231" username="Pitchoune" version="2.1.1"><![CDATA[Aucun projet défini. Cliquer <a href="project.php?do=projectadd">ici</a> pour en ajouter un !]]></phrase>
-		<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Aucun état de ce type défini. Ce type ne sera pas utilisable jusqu'à ce que vous ajoutiez un état. <a href="project.php?do=statusadd&amp;type={1}">Cliquer ici pour en ajouter un !</a>]]></phrase>
-		<phrase name="no_tags_defined" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Aucun tag défini.]]></phrase>
-		<phrase name="no_versions_defined_in_this_group" date="1181508477" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Aucune version définie dans ce groupe.]]></phrase>
-		<phrase name="no_versions_groups_defined_project" date="1181508477" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Aucune version ou groupe de version n'est définie pour ce projet !]]></phrase>
+		<phrase name="no_priorities_defined_project" date="1327528981" username="Pitchoune" version="2.2.0"><![CDATA[Aucune priorité définie pour ce projet ! <a href="projectpriority.php?do=add&amp:projectid={1}">Cliquez ici pour en ajouter un !</a>]]></phrase>
+		<phrase name="no_project_magic_select_defined_click_here_to_add_one" date="1327528710" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun sélecteur magique de défini. <a href="projectmagicselect.php?do=groupadd&amp;projectid={1}">Cliquez ici pour en ajouter un !</a>]]></phrase>
+		<phrase name="no_projects_defined_click_here_to_add_one" date="1327528981" username="Pitchoune" version="2.2.0"><![CDATA[Aucun projet défini. <a href="project.php?do=add">Cliquez ici pour en ajouter un !</a>]]></phrase>
+		<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1327529055" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun état de ce type défini. Ce type ne sera pas utilisable jusqu'à ce que vous ajoutiez un état. <a href="projecttype.php?do=statusadd&amp;type={1}">Cliquez ici pour en ajouter un !</a>]]></phrase>
+		<phrase name="no_tags_defined" date="1324052157" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun tag défini.]]></phrase>
+		<phrase name="no_versions_defined_in_this_group" date="1324052171" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucune version définie dans ce groupe.]]></phrase>
+		<phrase name="no_versions_groups_defined_project" date="1324052185" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucune version ou groupe de version n'est définie pour ce projet !]]></phrase>
 		<phrase name="note_a_larger_value_will_be_displayed_first" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Remarque : une valeur plus grande sera affichée en premier !]]></phrase>
 		<phrase name="note_higer_display_orders_first" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Remarque : Plus l'ordre d'affichage est grand, plus il sera en haut de liste !]]></phrase>
-		<phrase name="note_pt_attachments_diff_dir_vb" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Remarque : les pièces jointes de Project Tools doit être stockée dans un répertoire différent que les pièces jointes de vBulletin !]]></phrase>
 		<phrase name="permission_apply_all_projects_unless_custom" date="1179992354" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ces permissions s'appliqueront à tous les projets tant que vous ne spécifiez pas de permissions personnalisé pour un projet et un groupe d'utilisateur spécifique.]]></phrase>
 		<phrase name="permissions_for_project_x" date="1216298113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Permissions pour le projet « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="plural_form_example" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forme au pluriel<dfn>Exemple : Bugs</dfn>]]></phrase>
 		<phrase name="positive_vote_count_example" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Compteur de vote positifs<dfn>Exemple : Utilisateurs pouvant reproduire le bug.</dfn>]]></phrase>
 		<phrase name="post_new_issue_example" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Ouvrir une nouvelle demande
 <dfn>Exemple : Ouvrir un nouveau bug</dfn>]]></phrase>
-		<phrase name="project_attachment_manager" date="1275171456" username="Pitchoune" version="2.1.1"><![CDATA[Gestionnaire de pièces jointes]]></phrase>
+		<phrase name="priorities" date="1323375971" username="Pitchoune" version="2.2.0"><![CDATA[Priorités]]></phrase>
+		<phrase name="priorities_for_x" date="1323375971" username="Pitchoune" version="2.2.0"><![CDATA[Priorités pour « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="project_list" date="1179991052" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Liste des projets]]></phrase>
+		<phrase name="project_magic_select" date="1323375971" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteur magique]]></phrase>
+		<phrase name="project_magic_select_list" date="1327529092" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteurs magiques pour « <span class="normal">{1}</span> »]]></phrase>
 		<phrase name="project_permission_values_apply" date="1284889825" username="Pitchoune" version="2.1.2"><![CDATA[Valeurs de la permission du projet appliquée comme souhaité.]]></phrase>
 		<phrase name="project_permission_values_do_not_apply" date="1284889825" username="Pitchoune" version="2.1.2"><![CDATA[Les valeurs de la permission du projet ne s'applique pas. L'accès de cet utilisateur à Project Tools a été globalement désactivé.]]></phrase>
 		<phrase name="project_permissions" date="1179991052" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions du projet]]></phrase>
 		<phrase name="project_specific_permissions" date="1179991052" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions spécifiques au projet]]></phrase>
-		<phrase name="project_tools_attachments" date="1275171470" username="Pitchoune" version="2.1.1"><![CDATA[Pièces jointes]]></phrase>
 		<phrase name="project_tools_install_info" date="1261164814" username="Pitchoune" version="2.0.1"><![CDATA[Vous avez installé avec succès Project Tools version <em>{1}</em>.]]></phrase>
 		<phrase name="project_tools_installed_successfully" date="1261164867" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools installé avec succès !]]></phrase>
 		<phrase name="project_tools_options" date="1261164878" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools]]></phrase>
@@ -749,7 +1038,6 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 </ul>]]></phrase>
 		<phrase name="project_tools_upgraded_successfully" date="1261164922" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools mis à jour avec succès !]]></phrase>
 		<phrase name="project_versions_for_x" date="1216298178" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Versions de projet pour « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="pt_status_color" date="1281451766" username="Pitchoune" version="2.1.2"><![CDATA[Couleur de l'état]]></phrase>
 		<phrase name="ptperm_can_assign_edit" date="1179991195" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les utilisateurs assignés]]></phrase>
 		<phrase name="ptperm_can_assign_edit_others" date="1179991195" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les utilisateurs assignés des autres]]></phrase>
 		<phrase name="ptperm_can_assigned" date="1179991195" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut être assigné]]></phrase>
@@ -787,6 +1075,7 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="ptperm_can_view_private_others" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser les demandes / notes privées des autres]]></phrase>
 		<phrase name="ptperm_can_view_private_own" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser ses propres demandes / notes privées]]></phrase>
 		<phrase name="ptperm_can_vote" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Peut voter sur les demandes]]></phrase>
+		<phrase name="ptstatus" date="1335733454" username="Pitchoune" version="2.2.0"><![CDATA[État]]></phrase>
 		<phrase name="rebuild_issue_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de demande]]></phrase>
 		<phrase name="rebuild_milestone_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs d'étape]]></phrase>
 		<phrase name="rebuild_profile_issue_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs du nombre de demande]]></phrase>
@@ -795,20 +1084,29 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="rebuilding_milestone_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs d'étape mettra à jour certains champs variés en relation à une étape qui peut être dépassé mais qui peut être régénéré.]]></phrase>
 		<phrase name="rebuilding_profile_issue_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs du nombre de demande mettra à jour le nombre de demandes que chaque utilisateur a crée.]]></phrase>
 		<phrase name="rebuilding_project_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de projet mettra à jour certains champs variés en relation à une demande qui peut être dépassé mais qui peut être régénéré. Exécutez ceci une fois que les compteurs de demande ont été régénérés.]]></phrase>
+		<phrase name="required_default_not_user_value" date="1323376242" username="Pitchoune" version="2.2.0"><![CDATA[Oui, utiliser une valeur par défaut (non défini par l'utilisateur)]]></phrase>
 		<phrase name="required_fields_issue_submit" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Champs requis<dfn>Quand vous ouvrez une demande, les champs suivants seront obligatoire.</dfn>]]></phrase>
+		<phrase name="required_not_required" date="1323376242" username="Pitchoune" version="2.2.0"><![CDATA[Oui, non requis]]></phrase>
+		<phrase name="required_not_use" date="1323376242" username="Pitchoune" version="2.2.0"><![CDATA[Non, ne pas utiliser]]></phrase>
 		<phrase name="required_requireappliesversion" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée]]></phrase>
 		<phrase name="required_requirecategory" date="1179991672" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégorie]]></phrase>
+		<phrase name="required_required" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Oui, requis]]></phrase>
 		<phrase name="required_requirepriority" date="1179991672" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Priorité]]></phrase>
 		<phrase name="revert_to_default_permissions" date="1216308740" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Réinitialiser les permissions par défaut ?
 <dfn>Si vous choisissez cette option, les jeux de permission sélectionnés seront supprimés et les utilisateurs de ce groupe utiliseront les permissions globales des projets.</dfn>]]></phrase>
+		<phrase name="save_and_reload" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Enregistrer et recharger]]></phrase>
 		<phrase name="select_start_status_for_types_available" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Sélectionnez l'état par défaut pour les types de demande que vous souhaitez rendre disponible pour ce projet.]]></phrase>
 		<phrase name="send_email_on_issueassignment" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Envoyer un email pour les assignations de demande
 <dfn>Choisissez cette option si vous voulez que vos utilisateurs reçoivent un email quand ils sont assignés à une demande par un autre utilisateur.</dfn>]]></phrase>
 		<phrase name="send_pm_on_issueassignment" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Envoyer un message privé pour les assignations de demande
 <dfn>Choisissez cette option si vous voulez que vos utilisateurs reçoivent un message privé quand ils sont assignés à une demande par un autre utilisateur.</dfn>]]></phrase>
+		<phrase name="severitycolor_darkstyles" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles sombres]]></phrase>
+		<phrase name="severitycolor_lightstyles" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles clairs]]></phrase>
 		<phrase name="show_globally_disabled_groups" date="1179991708" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir les groupes d'utilisateurs globalement désactivés]]></phrase>
 		<phrase name="singular_form_example" date="1179991708" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forme au singulier<dfn>Exemple : Bug</dfn>]]></phrase>
 		<phrase name="some_issue_fields_not_editable_frontend" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[Certains champs de demande, comme le projet et le type de demande, ne sont pas modifiables sur la partie public. Ce système vous permet de le faire.]]></phrase>
+		<phrase name="status_color_dark_styles" date="1323376325" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles sombres]]></phrase>
+		<phrase name="status_color_light_styles" date="1323376325" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles clairs]]></phrase>
 		<phrase name="status_represents_completed_issue" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[L'état représente une demande achevé ?]]></phrase>
 		<phrase name="tag_list" date="1179992047" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Liste des tags]]></phrase>
 		<phrase name="target_date_desc" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[Utilisez cette option pour spécifier une date butoir (ou une ligne de fin) pour cette étape.]]></phrase>
@@ -816,6 +1114,8 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 <dfn>Si vous affichez ce projet dans la liste des forums, vous pouvez utiliser ceci pour outrepasser le nom du projet dans la liste.</dfn>]]></phrase>
 		<phrase name="use_selected_project_sets" date="1281452217" username="Pitchoune" version="2.1.2"><![CDATA[Utiliser la couleur dans les styles]]></phrase>
 		<phrase name="usergroups_access_globally_disabled" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[L'accès pour ce groupe d'utilisateurs à Project Tools est globalement désactivé. Les modifications que vous effectuerez ici ne seront pas appliqués jusqu'à ce que ce groupe d'utilisateurs puisse y accéder globalement.]]></phrase>
+		<phrase name="value" date="1327529260" username="Pitchoune" version="2.2.0"><![CDATA[Valeur
+<dfn>La valeur doit être un nombre entier positif proche de 0 <b>et</b> supérieure à 0.</dfn>]]></phrase>
 		<phrase name="version_group" date="1179992047" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Groupe de version]]></phrase>
 		<phrase name="versions" date="1179992442" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Versions]]></phrase>
 		<phrase name="vote_question_example" date="1179992047" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Question de vote<dfn>Exemple : Pouvez-vous reproduire ce bug ?</dfn>]]></phrase>
@@ -850,95 +1150,101 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="setting_issues_projectids_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Projets d'où viennent les demandes]]></phrase>
 		<phrase name="setting_issues_titlemaxchars_desc" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Ce paramètre vous permet de spécifier le nombre de caractères de chaque intitulé à afficher dans le bloc.]]></phrase>
 		<phrase name="setting_issues_titlemaxchars_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Longueur de l'intitulé des demandes]]></phrase>
-		<phrase name="setting_issues_type_desc" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Choisissez quels type de demandes vous souhaitez afficher :
+		<phrase name="setting_issues_type_desc" date="1316116805" username="Pitchoune" version="2.1.3"><![CDATA[Choisissez quels type de demandes vous souhaitez afficher :
 <br />
-<strong>Nouvelles créations</strong> - Les nouvelles demandes seront affichées en premier
-<strong>Nouvelles réponses</strong> - Les demandes avec les nouvelles réponses seront affichées en premier
+<strong>Nouvelles créations</strong> - Les nouvelles demandes seront affichées en premier<br />
+<strong>Nouvelles réponses</strong> - Les demandes avec les nouvelles réponses seront affichées en premier<br />
 <strong>Plus de réponses</strong> - Les demandes avec les dernières réponses seront affichées en premier]]></phrase>
 		<phrase name="setting_issues_type_title" date="1288568641" username="Pitchoune" version="2.1.2"><![CDATA[Type de demande]]></phrase>
 	</phrasetype>
 	<phrasetype name="vBulletin Settings" fieldname="vbsettings">
-		<phrase name="setting_pt_allowbbcode_desc" date="1284853391" username="Pitchoune" version="2.1.2"><![CDATA[Permettre aux utilisateurs d'inclure des balises BB dans les demandes (comme [b], [i] etc...) ?]]></phrase>
-		<phrase name="setting_pt_allowbbcode_title" date="1284853391" username="Pitchoune" version="2.1.2"><![CDATA[Autoriser les balises BB dans les demandes]]></phrase>
-		<phrase name="setting_pt_allowbbimagecode_desc" date="1284853391" username="Pitchoune" version="2.1.2"><![CDATA[Permettre aux utilisateurs d'inclure la balise BB [IMG] dans les demandes ?]]></phrase>
-		<phrase name="setting_pt_allowbbimagecode_title" date="1284853391" username="Pitchoune" version="2.1.2"><![CDATA[Autoriser la balise BB [IMG] dans les demandes]]></phrase>
-		<phrase name="setting_pt_allowhtml_desc" date="1284853391" username="Pitchoune" version="2.1.2"><![CDATA[Permettre aux utilisateurs d'inclure du code HTML dans les demandes ? <br />(<b>Fortement non recommandé.</b>)]]></phrase>
-		<phrase name="setting_pt_allowhtml_title" date="1284853391" username="Pitchoune" version="2.1.2"><![CDATA[Autoriser le code HTML dans les demandes]]></phrase>
-		<phrase name="setting_pt_allowsmilies_desc" date="1284853391" username="Pitchoune" version="2.1.2"><![CDATA[Permettre aux utilisateurs d'inclure des smileys dans les demandes ?]]></phrase>
-		<phrase name="setting_pt_allowsmilies_title" date="1284853391" username="Pitchoune" version="2.1.2"><![CDATA[Autoriser les smileys dans les demandes]]></phrase>
-		<phrase name="setting_pt_allowstartervote_desc" date="1284853824" username="Pitchoune" version="2.1.2"><![CDATA[Si ceci est défini sur « Oui », le créateur de la demande sera capable de voter dans la demande (pour confirmer qu'il peut reproduire le contenu de la demande).]]></phrase>
-		<phrase name="setting_pt_allowstartervote_title" date="1284853824" username="Pitchoune" version="2.1.2"><![CDATA[Permettre de voter dans sa propre demande ?]]></phrase>
-		<phrase name="setting_pt_attachfile_title" date="1216298881" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Enregistrer les pièces jointes de « Project Tools » sous forme de fichiers ?]]></phrase>
-		<phrase name="setting_pt_attachmentextensions_desc" date="1258978504" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools autorise différents types d'extension de fichiers par rapport au forum. Insérez les types d'extensions de fichiers autorisées ici. Tous les utilisateurs seront limités à cette liste.<br />
+		<phrase name="setting_facebooklikeissues_desc" date="1331499977" username="Pitchoune" version="2.2.0"><![CDATA[En activant cette option, vous ferez apparaître un bouton « J'aime » sur toutes les demandes. Les utilisateurs pourront indiquer qu'ils aiment n'importe quelle demande de façon individuelle. Remarque : les utilisateurs n'ont pas à lier leur compte Facebook ici pour pouvoir utiliser cette option.]]></phrase>
+		<phrase name="setting_facebooklikeissues_title" date="1331499977" username="Pitchoune" version="2.2.0"><![CDATA[Bouton « J'aime » - Demandes]]></phrase>
+		<phrase name="setting_fbfeedissuenote_desc" date="1331499933" username="Pitchoune" version="2.2.0"><![CDATA[En activant cette option, les utilisateurs pourront publier une notification sur leur mur Facebook quand ils écrivent une note sur une demande.]]></phrase>
+		<phrase name="setting_fbfeedissuenote_title" date="1331499933" username="Pitchoune" version="2.2.0"><![CDATA[Publier sur Facebook - Note de demande]]></phrase>
+		<phrase name="setting_issuelist_columns_desc" date="1331500142" username="Pitchoune" version="2.2.0"><![CDATA[Sélectionnez ici les colonnes que vous souhaitez afficher à vos utilisateurs dans n'importe quelle liste de demandes.<br />
 <br />
-Insérez chaque type d'extension sur une nouvelle ligne.]]></phrase>
-		<phrase name="setting_pt_attachmentextensions_title" date="1181508993" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Types d'extensions de fichiers autorisées]]></phrase>
-		<phrase name="setting_pt_attachmentsize_desc" date="1182166051" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Taille maximale autorisée pour les pièces jointes <em>en kilo-octets</em>.]]></phrase>
-		<phrase name="setting_pt_attachmentsize_title" date="1182166062" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Taille maximale des pièces jointes]]></phrase>
+<span class="modlasttendays"><strong>Remarque :</strong> le fait de sélectionner beaucoup de colonnes peut détruire la mise en page de vos styles, surtout sur les plus petites résolutions d'écran !</span>]]></phrase>
+		<phrase name="setting_issuelist_columns_title" date="1331500012" username="Pitchoune" version="2.2.0"><![CDATA[Colonnes à afficher dans la liste des demandes]]></phrase>
+		<phrase name="setting_pt_allowbbcode_desc" date="1324052449" username="Pitchoune" version="2.2.0"><![CDATA[Permettre aux utilisateurs d'inclure des balises BB dans les demandes (comme [b], [i] etc...) ?]]></phrase>
+		<phrase name="setting_pt_allowbbcode_title" date="1324052454" username="Pitchoune" version="2.2.0"><![CDATA[Autoriser les balises BB dans les demandes]]></phrase>
+		<phrase name="setting_pt_allowbbimagecode_desc" date="1324052460" username="Pitchoune" version="2.2.0"><![CDATA[Permettre aux utilisateurs d'inclure la balise BB [IMG] dans les demandes ?]]></phrase>
+		<phrase name="setting_pt_allowbbimagecode_title" date="1324052466" username="Pitchoune" version="2.2.0"><![CDATA[Autoriser la balise BB [IMG] dans les demandes]]></phrase>
+		<phrase name="setting_pt_allowhtml_desc" date="1324052470" username="Pitchoune" version="2.2.0"><![CDATA[Permettre aux utilisateurs d'inclure du code HTML dans les demandes ? <br />(<b>Fortement non recommandé.</b>)]]></phrase>
+		<phrase name="setting_pt_allowhtml_title" date="1324052475" username="Pitchoune" version="2.2.0"><![CDATA[Autoriser le code HTML dans les demandes]]></phrase>
+		<phrase name="setting_pt_allowsmilies_desc" date="1324052484" username="Pitchoune" version="2.2.0"><![CDATA[Permettre aux utilisateurs d'inclure des smileys dans les demandes ?]]></phrase>
+		<phrase name="setting_pt_allowsmilies_title" date="1324052488" username="Pitchoune" version="2.2.0"><![CDATA[Autoriser les smileys dans les demandes]]></phrase>
+		<phrase name="setting_pt_allowstartervote_desc" date="1324052508" username="Pitchoune" version="2.2.0"><![CDATA[Si ceci est défini sur « Oui », le créateur de la demande sera capable de voter dans la demande (pour confirmer qu'il peut reproduire le contenu de la demande).]]></phrase>
+		<phrase name="setting_pt_allowstartervote_title" date="1324052513" username="Pitchoune" version="2.2.0"><![CDATA[Permettre de voter dans sa propre demande ?]]></phrase>
+		<phrase name="setting_pt_attachfile_desc" date="1216216839" username="Ed Sullivan" version="2.0.0 Beta 1" />
+		<phrase name="setting_pt_attachfile_title" date="1216298881" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Enregistrer les pièces jointes de « Project Tools » sous forme de fichiers ?]]></phrase>
+		<phrase name="setting_pt_attachpath_desc" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1" />
 		<phrase name="setting_pt_attachpath_title" date="1258978563" username="Pitchoune" version="2.0.1"><![CDATA[Chemin des pièces jointes de Project Tools]]></phrase>
-		<phrase name="setting_pt_groupsearchissuespergroup_desc" date="1284854078" username="Pitchoune" version="2.1.2"><![CDATA[Quand vous effectuez une recherche groupée, combien de demandes doivent apparaître dans chaque groupe sur la première page ?<br />
+		<phrase name="setting_pt_groupsearchissuespergroup_desc" date="1324052522" username="Pitchoune" version="2.2.0"><![CDATA[Quand vous effectuez une recherche groupée, combien de demandes doivent apparaître dans chaque groupe sur la première page ?<br />
 <br />
 La valeur « 0 » affichera toutes les demandes dans un groupe sur la première page.]]></phrase>
-		<phrase name="setting_pt_groupsearchissuespergroup_title" date="1284854078" username="Pitchoune" version="2.1.2"><![CDATA[Recherche groupée de demandes par groupe]]></phrase>
+		<phrase name="setting_pt_groupsearchissuespergroup_title" date="1324052527" username="Pitchoune" version="2.2.0"><![CDATA[Recherche groupée de demandes par groupe]]></phrase>
 		<phrase name="setting_pt_hasprojectforums_desc" date="1180997690" username="Pitchoune" version="1.0.0 Beta 3"><![CDATA[Définissez ceci sur « Oui » si les projets sont définies pour être visibles en tant que forum.]]></phrase>
 		<phrase name="setting_pt_hasprojectforums_title" date="1258978590" username="Pitchoune" version="2.0.1"><![CDATA[Afficher un lien vers le projet dans la liste des forums]]></phrase>
-		<phrase name="setting_pt_humancheck_desc" date="1281453190" username="Pitchoune" version="2.1.2"><![CDATA[Souhaitez-vous définir la vérification humaine par groupe d'utilisateurs ? Dans ce cas, choisissez « Oui », sinon choisissez « Non » si vous souhaitez utiliser l'option suivante.]]></phrase>
-		<phrase name="setting_pt_humancheck_title" date="1281452845" username="Pitchoune" version="2.1.2"><![CDATA[Vérification humaine par groupe d'utilisateurs]]></phrase>
-		<phrase name="setting_pt_hvcheck_desc" date="1281453170" username="Pitchoune" version="2.1.2"><![CDATA[La vérification humaine sera requise pour les actions sélectionnés où la permission des groupes d'utilisateurs « <strong>Vérification humaine obligatoire pour certains lieux d'exécution</strong> » est sélectionnée.]]></phrase>
-		<phrase name="setting_pt_hvcheck_title" date="1281452845" username="Pitchoune" version="2.1.2"><![CDATA[Options de la vérification humaine]]></phrase>
-		<phrase name="setting_pt_issuesperpage_desc" date="1284854078" username="Pitchoune" version="2.1.2"><![CDATA[Ceci est le nombre de demandes à afficher par page dans la liste des demandes.<br />
+		<phrase name="setting_pt_humancheck_desc" date="1324052531" username="Pitchoune" version="2.2.0"><![CDATA[Souhaitez-vous définir la vérification humaine par groupe d'utilisateurs ? Dans ce cas, choisissez « Oui », sinon choisissez « Non » si vous souhaitez utiliser l'option suivante.]]></phrase>
+		<phrase name="setting_pt_humancheck_title" date="1324052539" username="Pitchoune" version="2.2.0"><![CDATA[Vérification humaine par groupe d'utilisateurs]]></phrase>
+		<phrase name="setting_pt_hvcheck_desc" date="1324052544" username="Pitchoune" version="2.2.0"><![CDATA[La vérification humaine sera requise pour les actions sélectionnés où la permission des groupes d'utilisateurs « <strong>Vérification humaine obligatoire pour certains lieux d'exécution</strong> » est sélectionnée.]]></phrase>
+		<phrase name="setting_pt_hvcheck_title" date="1324052550" username="Pitchoune" version="2.2.0"><![CDATA[Options de la vérification humaine]]></phrase>
+		<phrase name="setting_pt_issuesperpage_desc" date="1324052554" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est le nombre de demandes à afficher par page dans la liste des demandes.<br />
 <br />
 La valeur 0 affichera toutes les demandes sur une page.]]></phrase>
-		<phrase name="setting_pt_issuesperpage_title" date="1284854078" username="Pitchoune" version="2.1.2"><![CDATA[Nombre de demandes à afficher par page]]></phrase>
-		<phrase name="setting_pt_listprojects_activate_desc" date="1281453443" username="Pitchoune" version="2.1.2"><![CDATA[Souhaitez-vous activer ce système ?]]></phrase>
-		<phrase name="setting_pt_listprojects_activate_title" date="1281453443" username="Pitchoune" version="2.1.2"><![CDATA[Navigation rapide des projets - Activation]]></phrase>
-		<phrase name="setting_pt_listprojects_locations_desc" date="1281453443" username="Pitchoune" version="2.1.2"><![CDATA[Sélectionnez les pages où vous souhaitez afficher le menu déroulant.]]></phrase>
-		<phrase name="setting_pt_listprojects_locations_title" date="1281453443" username="Pitchoune" version="2.1.2"><![CDATA[Navigation rapide des projets - Lieu de position du menu déroulant]]></phrase>
-		<phrase name="setting_pt_listprojects_position_issue_desc" date="1284854136" username="Pitchoune" version="2.1.2"><![CDATA[Sélectionnez où vous souhaitez afficher le menu déroulant sur les pages de chaque demande.]]></phrase>
-		<phrase name="setting_pt_listprojects_position_issue_title" date="1284854136" username="Pitchoune" version="2.1.2"><![CDATA[Navigation rapide des projets - Position du menu déroulant dans chaque demande]]></phrase>
-		<phrase name="setting_pt_listprojects_position_issuelist_desc" date="1284854136" username="Pitchoune" version="2.1.2"><![CDATA[Sélectionnez où vous souhaitez afficher le menu déroulant dans les listes de demandes de chaque projet.<br />
-<br />
-<strong>Remarque :</strong> si vous n'avez pas de demande à afficher dans un projet, cette option ne sera pas utilisée et le menu sera placé avant de pied de page.]]></phrase>
-		<phrase name="setting_pt_listprojects_position_issuelist_title" date="1284854136" username="Pitchoune" version="2.1.2"><![CDATA[Navigation rapide des projets - Position du menu déroulant dans la liste des demandes de chaque projet]]></phrase>
-		<phrase name="setting_pt_listprojects_position_projects_desc" date="1284854136" username="Pitchoune" version="2.1.2"><![CDATA[Sélectionnez où vous souhaitez afficher le menu déroulant sur la page d'accueil de chaque projet.<br />
-<br />
-<strong>Remarque :</strong> si vous n'avez pas de demande à afficher dans un projet, cette option ne sera pas utilisée et le menu sera placé avant de pied de page.]]></phrase>
-		<phrase name="setting_pt_listprojects_position_projects_title" date="1281453468" username="Pitchoune" version="2.1.2"><![CDATA[Navigation rapide des projets - Position du menu déroulant sur la page d'accueil de chaque projet]]></phrase>
-		<phrase name="setting_pt_notesperpage_desc" date="1284854215" username="Pitchoune" version="2.1.2"><![CDATA[Ceci est le nombre de notes qui peut être affiché par page dans une demande. Une note peut être un commentaire / pétition ou une information à propos de modifications effectuées dans les détails des demandes.<br />
+		<phrase name="setting_pt_issuesperpage_title" date="1324052558" username="Pitchoune" version="2.2.0"><![CDATA[Nombre de demandes à afficher par page]]></phrase>
+		<phrase name="setting_pt_notesperpage_desc" date="1324052709" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est le nombre de notes qui peut être affiché par page dans une demande. Une note peut être un commentaire / pétition ou une information à propos de modifications effectuées dans les détails des demandes.<br />
 <br />
 La valeur 0 affichera tous les notes sur une page.]]></phrase>
-		<phrase name="setting_pt_notesperpage_title" date="1182166150" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Nombre de notes à afficher par page]]></phrase>
-		<phrase name="setting_pt_overview_timelineentries_desc" date="1181509649" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Sur la page principale de « Project Tools » (celle qui liste les projets), une ligne temporelle est affichée. Ceci contrôle le nombre maximal d'entrées à afficher dans la ligne temporelle.]]></phrase>
-		<phrase name="setting_pt_overview_timelineentries_title" date="1182166216" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Général : Nombre maximal d'entrées à afficher dans la ligne temporelle]]></phrase>
-		<phrase name="setting_pt_profile_issue_counters_desc" date="1284854215" username="Pitchoune" version="2.1.2"><![CDATA[Souhaitez-vous afficher dans des lieux variés le nombre de demandes que chaque utilisateur a signalé ?]]></phrase>
-		<phrase name="setting_pt_profile_issue_counters_title" date="1284854215" username="Pitchoune" version="2.1.2"><![CDATA[Afficher les compteurs de demandes]]></phrase>
-		<phrase name="setting_pt_project_recentissues_desc" date="1284854215" username="Pitchoune" version="2.1.2"><![CDATA[Quand vous visualisez les informations d'un projet, les demandes les plus récents sont affichées. Ceci contrôle le nombre maximal de demandes à afficher sur cette page.]]></phrase>
-		<phrase name="setting_pt_project_recentissues_title" date="1284854215" username="Pitchoune" version="2.1.2"><![CDATA[Visualisation de projet : Nombre de demandes récents]]></phrase>
-		<phrase name="setting_pt_project_timelineentries_desc" date="1181509733" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Quand vous visualisez les informations d'un projet, ceci contrôle le nombre d'entrées à afficher dans la ligne temporelle.]]></phrase>
-		<phrase name="setting_pt_project_timelineentries_title" date="1181509869" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Visualisation de projet : Entrées dans la ligne temporelle]]></phrase>
-		<phrase name="setting_pt_statuscolor_desc" date="1284857045" username="Pitchoune" version="2.1.2"><![CDATA[Souhaitez-vous affecter une couleur à chaque état ?<br />
+		<phrase name="setting_pt_notesperpage_title" date="1324052785" username="Pitchoune" version="2.2.0"><![CDATA[Nombre de notes à afficher par page]]></phrase>
+		<phrase name="setting_pt_overview_timelineentries_desc" date="1324052748" username="Pitchoune" version="2.2.0"><![CDATA[Sur la page principale de « Project Tools » (celle qui liste les projets), une ligne temporelle est affichée. Ceci contrôle le nombre maximal d'entrées à afficher dans la ligne temporelle.<br />
+<br />
+La valeur « 0 » cachera la ligne temporelle pour cette page.]]></phrase>
+		<phrase name="setting_pt_overview_timelineentries_title" date="1324052789" username="Pitchoune" version="2.2.0"><![CDATA[Général : Nombre maximal d'entrées à afficher dans la ligne temporelle]]></phrase>
+		<phrase name="setting_pt_profile_issue_counters_desc" date="1324052815" username="Pitchoune" version="2.2.0"><![CDATA[Souhaitez-vous afficher dans des lieux variés le nombre de demandes que chaque utilisateur a signalé ?]]></phrase>
+		<phrase name="setting_pt_profile_issue_counters_title" date="1324052818" username="Pitchoune" version="2.2.0"><![CDATA[Afficher les compteurs de demandes]]></phrase>
+		<phrase name="setting_pt_project_recentissues_desc" date="1324052821" username="Pitchoune" version="2.2.0"><![CDATA[Quand vous visualisez les informations d'un projet, les demandes les plus récents sont affichées. Ceci contrôle le nombre maximal de demandes à afficher sur cette page.]]></phrase>
+		<phrase name="setting_pt_project_recentissues_title" date="1324052825" username="Pitchoune" version="2.2.0"><![CDATA[Visualisation de projet : Nombre de demandes récents]]></phrase>
+		<phrase name="setting_pt_project_timelineentries_desc" date="1324052828" username="Pitchoune" version="2.2.0"><![CDATA[Quand vous visualisez les informations d'un projet, ceci contrôle le nombre d'entrées à afficher dans la ligne temporelle.]]></phrase>
+		<phrase name="setting_pt_project_timelineentries_title" date="1324052831" username="Pitchoune" version="2.2.0"><![CDATA[Visualisation de projet : Entrées dans la ligne temporelle]]></phrase>
+		<phrase name="setting_pt_statuscolor_desc" date="1324052835" username="Pitchoune" version="2.2.0"><![CDATA[Souhaitez-vous affecter une couleur à chaque état ?<br />
 <br />
 <b>Remarque :</b> vous pouvez définir uniquement une couleur par état pour tous les styles. Si vous souhaitez utiliser cette fonction, choisissez les couleurs avec précaution.]]></phrase>
-		<phrase name="setting_pt_statuscolor_title" date="1281453648" username="Pitchoune" version="2.1.2"><![CDATA[Couleur des états]]></phrase>
-		<phrase name="setting_pt_timelineperpage_desc" date="1181509795" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Quand vous visualisez la ligne temporelle, ceci contrôle le nombre d'entrées à afficher par page.]]></phrase>
-		<phrase name="setting_pt_timelineperpage_title" date="1182166173" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Nombre maximal d'entrées à afficher dans la ligne temporelle par page]]></phrase>
-		<phrase name="setting_pt_wordwrap_desc" date="1281454222" username="Pitchoune" version="2.1.2"><![CDATA[Permet d'insérer automatiquement une césure dans les mots longs pour les faire revenir à la ligne.<br />
+		<phrase name="setting_pt_statuscolor_title" date="1324052839" username="Pitchoune" version="2.2.0"><![CDATA[Couleur des états]]></phrase>
+		<phrase name="setting_pt_timelineperpage_desc" date="1324052844" username="Pitchoune" version="2.2.0"><![CDATA[Quand vous visualisez la ligne temporelle, ceci contrôle le nombre d'entrées à afficher par page.]]></phrase>
+		<phrase name="setting_pt_timelineperpage_title" date="1324052847" username="Pitchoune" version="2.2.0"><![CDATA[Nombre maximal d'entrées à afficher dans la ligne temporelle par page]]></phrase>
+		<phrase name="setting_pt_wordwrap_desc" date="1324052854" username="Pitchoune" version="2.2.0"><![CDATA[Permet d'insérer automatiquement une césure dans les mots longs pour les faire revenir à la ligne.<br />
 <br />
 Saisissez « 0 » pour désactiver la césure automatique.]]></phrase>
-		<phrase name="setting_pt_wordwrap_title" date="1281454222" username="Pitchoune" version="2.1.2"><![CDATA[Longueur maximale des mots avant césure]]></phrase>
-		<phrase name="setting_ptimporter_createnotice_desc" date="1281454222" username="Pitchoune" version="2.1.2"><![CDATA[Si ceci est sur « Oui », une notice sera créée affichant l'intitulé de la discussion originale, l'utilisateur et la date d'importation de la discussion.]]></phrase>
-		<phrase name="setting_ptimporter_createnotice_title" date="1281454305" username="Pitchoune" version="2.1.2"><![CDATA[Importation de contenus - création d'une notice d'importation]]></phrase>
-		<phrase name="setting_ptimporter_extendedthreadprefix_desc" date="1284857045" username="Pitchoune" version="2.1.2"><![CDATA[Si vous activez cette option, le préfixe de la discussion sera généré en utilisant l'expression « <strong>pt_importhread_threadprefix_extended</strong> » qui contient l'intitulé du projet et le type de demande. Ceci ajoute une requête supplémentaire par contenu importé dans chaque liste de discussion.
+		<phrase name="setting_pt_wordwrap_title" date="1324052859" username="Pitchoune" version="2.2.0"><![CDATA[Longueur maximale des mots avant césure]]></phrase>
+		<phrase name="setting_ptimporter_createnotice_desc" date="1324052885" username="Pitchoune" version="2.2.0"><![CDATA[Si ceci est sur « Oui », une notice sera créée affichant l'intitulé de la discussion originale, l'utilisateur et la date d'importation de la discussion.]]></phrase>
+		<phrase name="setting_ptimporter_createnotice_title" date="1324052898" username="Pitchoune" version="2.2.0"><![CDATA[Création d'une notice d'importation]]></phrase>
+		<phrase name="setting_ptimporter_extendedthreadprefix_desc" date="1324052927" username="Pitchoune" version="2.2.0"><![CDATA[Si vous activez cette option, le préfixe de la discussion sera généré en utilisant l'expression « <strong>pt_importhread_threadprefix_extended</strong> » qui contient l'intitulé du projet et le type de demande. Ceci ajoute une requête supplémentaire par contenu importé dans chaque liste de discussion.
 <br /><br />
 Si ceci est désactivé, l'expression « <strong>pt_importhread_threadprefix</strong> » sera utilisée.]]></phrase>
-		<phrase name="setting_ptimporter_extendedthreadprefix_title" date="1281454431" username="Pitchoune" version="2.1.2"><![CDATA[Importation de contenus - Ajouter dynamiquement un préfixe aux discussions]]></phrase>
-		<phrase name="setting_ptimporter_ignoreattachlimits_desc" date="1281475923" username="Pitchoune" version="2.1.2"><![CDATA[Si ceci est défini sur « Oui », les pièces jointes qui dépassent la limite imposée par les options de Project Tools seront importées.]]></phrase>
-		<phrase name="setting_ptimporter_ignoreattachlimits_title" date="1281454431" username="Pitchoune" version="2.1.2"><![CDATA[Importation de contenus - Ignorer les limites des pièces jointes]]></phrase>
-		<phrase name="setting_ptimporter_keepthreads_desc" date="1284857131" username="Pitchoune" version="2.1.2"><![CDATA[Si vous définissez ceci sur « Oui », la discussion sera copiée dans Project Tools, mais ne subira rien d'autre. Si vous définissez ceci sur « Non », la discussion sera fermée. La discussion sera toujours visible sur la liste des discussions mais elle redirigera vers la demande.
+		<phrase name="setting_ptimporter_extendedthreadprefix_title" date="1324052907" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter dynamiquement un préfixe aux discussions]]></phrase>
+		<phrase name="setting_ptimporter_ignoreattachlimits_desc" date="1324052931" username="Pitchoune" version="2.2.0"><![CDATA[Si ceci est défini sur « Oui », les pièces jointes qui dépassent la limite imposée par les options de Project Tools seront importées.]]></phrase>
+		<phrase name="setting_ptimporter_ignoreattachlimits_title" date="1324052912" username="Pitchoune" version="2.2.0"><![CDATA[Ignorer les limites des pièces jointes]]></phrase>
+		<phrase name="setting_ptimporter_keepthreads_desc" date="1324052934" username="Pitchoune" version="2.2.0"><![CDATA[Si vous définissez ceci sur « Oui », la discussion sera copiée dans Project Tools, mais ne subira rien d'autre. Si vous définissez ceci sur « Non », la discussion sera fermée. La discussion sera toujours visible sur la liste des discussions mais elle redirigera vers la demande.
 <br /><br />
 Si vous modifiez ce paramètre maintenant, seules les futures discussions importées seront affectées.]]></phrase>
-		<phrase name="setting_ptimporter_keepthreads_title" date="1281454431" username="Pitchoune" version="2.1.2"><![CDATA[Importation de contenus - conserver les discussions originales intactes]]></phrase>
-		<phrase name="settinggroup_projecttools" date="1258982570" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools]]></phrase>
+		<phrase name="setting_ptimporter_keepthreads_title" date="1324052920" username="Pitchoune" version="2.2.0"><![CDATA[Conserver les discussions originales intactes]]></phrase>
+		<phrase name="setting_statuscolor_darkstyles_desc" date="1331500287" username="Pitchoune" version="2.2.0"><![CDATA[Insérez ici tous les identifiants de style de vos styles à dominante foncé.<br />
+<br />
+Séparez chaque identifiant de style avec une virgule.<br />
+<br />
+<span class="modlasttendays">Les identifiants de style de ce paramètre ne doivent pas se retrouver dans la liste du paramètre ci-dessous !</span>]]></phrase>
+		<phrase name="setting_statuscolor_darkstyles_title" date="1331460494" username="Pitchoune" version="2.2.0"><![CDATA[Styles foncés]]></phrase>
+		<phrase name="setting_statuscolor_lightstyles_desc" date="1331500287" username="Pitchoune" version="2.2.0"><![CDATA[Insérez ici tous les identifiants de style de vos styles à dominante claire.<br />
+<br />
+Séparez chaque identifiant de style avec une virgule.<br />
+<br />
+<span class="modlasttendays">Les identifiants de style de ce paramètre ne doivent pas se retrouver dans la liste du paramètre ci-dessus !</span>]]></phrase>
+		<phrase name="setting_statuscolor_lightstyles_title" date="1331460494" username="Pitchoune" version="2.2.0"><![CDATA[Styles clairs]]></phrase>
+		<phrase name="settinggroup_projecttools" date="1323434109" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools : paramètres généraux]]></phrase>
+		<phrase name="settinggroup_projecttools_impex" date="1323434109" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools : paramètres d'importation / d'exportation]]></phrase>
+		<phrase name="settinggroup_projecttools_statuscolor" date="1323434109" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools : paramètres de coloration des arrière-plans]]></phrase>
 	</phrasetype>
 	<phrasetype name="CMS Widget Types" fieldname="widgettypes">
 		<phrase name="widgettype_vbcms_recentptcomments" date="1284857320" username="Pitchoune" version="2.1.2"><![CDATA[Commentaires des demandes récents]]></phrase>
