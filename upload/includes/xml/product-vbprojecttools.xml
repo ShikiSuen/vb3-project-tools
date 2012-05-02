@@ -13243,18 +13243,6 @@ else
 $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_user AS ptuser ON (user.userid = ptuser.userid)";]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
-			<title>Forum Admin: Add Default Options</title>
-			<hookname>forumadmin_add_default</hookname>
-			<phpcode><![CDATA[$forum['canimportintoissues'] = 0;]]></phpcode>
-		</plugin>
-		<plugin active="1" executionorder="5">
-			<title>Forum Admin: Add Some Options</title>
-			<hookname>forumadmin_edit_form</hookname>
-			<phpcode><![CDATA[print_table_header($vbphrase['project_tools_options']);
-
-print_yes_no_row($vbphrase['pt_can_import_into_issues'], 'forum[options][canimportintoissues]', $forum['canimportintoissues']);]]></phpcode>
-		</plugin>
-		<plugin active="1" executionorder="5">
 			<title>Forumbit: PT Display</title>
 			<hookname>forumbit_display</hookname>
 			<phpcode><![CDATA[if (function_exists('pt_forumbit_display'))
@@ -13521,7 +13509,9 @@ if (THIS_SCRIPT == 'index')
 		<plugin active="1" executionorder="5">
 			<title>Postbit: Misc data for postbits</title>
 			<hookname>postbit_display_complete</hookname>
-			<phpcode><![CDATA[$show['createptissue'] = (($this->registry->userinfo['permissions']['ptpermissions'] & $this->registry->bf_ugp_ptpermissions['canimportintoissues']) AND $this->forum['canimportintoissues']) ? true : false;
+			<phpcode><![CDATA[$forumperms = fetch_permissions($this->thread['forumid']);
+
+$show['createptissue'] = (($this->registry->userinfo['permissions']['ptpermissions'] & $this->registry->bf_ugp_ptpermissions['canimportintoissues']) AND ($forumperms & $this->registry->bf_ugp_forumpermissions['canimportintoissues'])) ? true : false;
 
 // Add link to promote the post as an issue
 if ($show['createptissue'] AND (!$post['forwardlink'] AND THIS_SCRIPT != 'usernote' AND THIS_SCRIPT != 'announcement'))
@@ -13571,18 +13561,13 @@ if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 		<plugin active="1" executionorder="5">
 			<title>Show Thread: Display moderation option if permitted</title>
 			<hookname>showthread_complete</hookname>
-			<phpcode><![CDATA[$show['createptissue'] = (($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND $forum['canimportintoissues']) ? true : false;
+			<phpcode><![CDATA[$show['createptissue'] = (($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND ($forumperms & $vbulletin->bf_ugp_forumpermissions['canimportintoissues'])) ? true : false;
 
 $show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];
 
-// Display the link in showthread
-// I hope future vB versions will add a template_hook in this place
-// as this code is not completely useful (can slow a page load)
-// See http://tracker.vbulletin.com/browse/VBIV-12571
-
 if ($show['createptissue'])
 {
-	if (SIMPLE_VERSION >= '418')
+	if (version_compare($vbulletin->options['templateversion'], '4.1.8', '>='))
 	{
 		$template_hook['showthread_adminoptions'] .= vB_Template::create('pt_showthread_adminoptions')->render();
 	}
