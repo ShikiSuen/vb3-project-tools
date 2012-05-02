@@ -14339,8 +14339,6 @@ To create your own report, make a search with the criteria that you want and cli
 		</phrasetype>
 		<phrasetype name="Forum-Related" fieldname="forum">
 			<phrase name="project_tools_options" date="1299622568" username="Pitchoune" version="2.2.0"><![CDATA[vBulletin Project Tools Options]]></phrase>
-			<phrase name="pt_can_import_into_issues" date="1299622693" username="Pitchoune" version="2.2.0"><![CDATA[Can import into issues?
-<dfn>If the usergroup have the permission associated to this option, the user will be able to import any post/thread as an issue or issue note.</dfn>]]></phrase>
 		</phrasetype>
 		<phrasetype name="Forum Display" fieldname="forumdisplay">
 			<phrase name="pt_import_threadprefix" date="1274871230" username="Pitchoune" version="2.1.1"><![CDATA[Project Tools:]]></phrase>
