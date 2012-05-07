@@ -12964,6 +12964,39 @@ ul.forumbits .ui-li .ui-btn-text a.pt_mobile_subforum {
 			$handled = true;
 			break;
 
+		case 'pt_projectversion':
+			$item = $vbulletin->db->query_first("
+				SELECT projectversionid, projectversionid AS title
+				FROM " . TABLE_PREFIX . "pt_projectversion
+				WHERE projectversionid = $itemid
+			");
+
+			$item['title'] = $vbphrase["version$itemid"];
+			$handled = true;
+			break;
+
+		case 'pt_projectcategory':
+			$item = $vbulletin->db->query_first("
+				SELECT projectcategoryid, projectcategoryid AS title
+				FROM " . TABLE_PREFIX . "pt_projectcategory
+				WHERE projectcategoryid = $itemid
+			");
+
+			$item['title'] = $vbphrase["category$itemid"];
+			$handled = true;
+			break;
+
+		case 'pt_milestone':
+			$item = $vbulletin->db->query_first("
+				SELECT milestoneid, milestoneid AS title
+				FROM " . TABLE_PREFIX . "pt_milestone
+				WHERE milestoneid = $itemid
+			");
+
+			$item['title'] = $vbphrase["milestone_{$itemid}_title"];
+			$handled = true;
+			break;
+
 		case 'pt_projectmagicselectgroup':
 			$item = $vbulletin->db->query_first("
 				SELECT projectmagicselectgroupid, projectmagicselectgroupid AS title

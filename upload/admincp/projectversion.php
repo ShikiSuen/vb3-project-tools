@@ -446,7 +446,7 @@ if ($_REQUEST['do'] == 'delete')
 	print_delete_confirmation(
 		'pt_projectversion',
 		$projectversion['projectversionid'],
-		'project',
+		'projectversion',
 		'kill',
 		'',
 		0,
