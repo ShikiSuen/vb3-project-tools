@@ -687,6 +687,17 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					totalissues = totalissues + 1
 				WHERE userid = " . $this->fetch_field('submituserid') . "
 			");
+
+			// Activity stream
+			if (version_compare($this->registry->options['templateversion'], '4.2', '>='))
+			{
+				$activity = new vB_ActivityStream_Manage('project', 'issue');
+					$activity->set('contentid', $this->fetch_field('issueid'));
+					$activity->set('userid', $this->fetch_field('submituserid'));
+					$activity->set('dateline', $this->fetch_field('submitdate'));
+					$activity->set('action', 'create');
+				$activity->save();
+			}
 		}
 
 		if (!$rebuild_project)

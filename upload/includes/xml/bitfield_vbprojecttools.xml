@@ -79,6 +79,10 @@
 				<bitfield name="applyversion">32</bitfield>
 				<bitfield name="addressversion">64</bitfield>
 			</group>
+			<group name="ascontent">
+				<bitfield name="project_issue">131072</bitfield>
+				<bitfield name="project_issuenote">262144</bitfield>
+			</group>
 		</group>
 		<group name="nocache">
 			<group name="pt_dropdownmenu">

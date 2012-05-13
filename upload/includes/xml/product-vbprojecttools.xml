@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.2.0</version>
-	<url />
-	<versioncheckurl />
+	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
+	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.1.4" maxversion="" />
 	</dependencies>
@@ -2065,6 +2065,44 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect
 		</code>
 	</codes>
 	<templates>
+		<template name="activitystream_project_issue" templatetype="template" date="1336908863" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issue userprof_content userprof_content_border">
+Score: {vb:raw activity.score} (This is temporary)
+	<div class="avatar">
+		<img src="{vb:raw userinfo.avatarurl}" alt="{vb:rawphrase xs_avatar, {vb:raw userinfo.username}}" />
+	</div>
+	<div class="content">
+		<div class="datetime">
+			 <span class="date">{vb:raw activity.issuenotedate}<vb:if condition="!$show['detailedtime']">,&nbsp;<span class="time">{vb:raw activity.issuenotetime}</span></vb:if></span>
+		</div>
+		<div class="title">
+			{vb:rawphrase x_started_an_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:link issue, {vb:raw issueinfo}}, {vb:raw issueinfo.title}, {vb:link project, {vb:raw projectinfo}}, {vb:raw projectinfo.title}}
+		</div>
+		<vb:if condition="$show['issuecontent']">
+		<div class="excerpt">{vb:raw issueinfo.preview}</div>
+		<div class="fulllink"><a href="{vb:link issue, {vb:raw issueinfo}}">{vb:rawphrase see_more}</a></div>
+		</vb:if>
+	</div>
+	<div class="views">{vb:rawphrase x_replies, {vb:raw issueinfo.replycount}}</div>
+</li>]]></template>
+		<template name="activitystream_project_issuenote" templatetype="template" date="1336910164" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issuenote userprof_content userprof_content_border">
+Score: {vb:raw activity.score} (This is temporary)
+	<div class="avatar">
+		<img src="{vb:raw userinfo.avatarurl}" alt="{vb:rawphrase xs_avatar, {vb:raw userinfo.username}}" />
+	</div>
+	<div class="content">
+		<div class="datetime">
+			 <span class="date">{vb:raw activity.issuenotedate}<vb:if condition="!$show['detailedtime']">,&nbsp;<span class="time">{vb:raw activity.issuenotetime}</span></vb:if></span>
+		</div>
+		<div class="title">
+			{vb:rawphrase x_replied_to_an_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:link issue, {vb:raw issueinfo}}, {vb:raw issueinfo.title}, {vb:link project, {vb:raw projectinfo}}, {vb:raw projectinfo.title}}
+		</div>
+		<vb:if condition="$show['issuecontent']">
+		<div class="excerpt">{vb:raw issuenoteinfo.preview}</div>
+		<div class="fulllink"><a href="{vb:link issue, {vb:raw issueinfo}}">{vb:rawphrase see_more}</a></div>
+		</vb:if>
+	</div>
+	<div class="views">{vb:rawphrase x_replies, {vb:raw issueinfo.replycount}}</div>
+</li>]]></template>
 		<template name="assetmanager_usage_issue" templatetype="template" date="1301174021" username="Pitchoune" version="2.2.0"><![CDATA[<div class="{vb:raw usagerow}">{vb:rawphrase issue}: <a href="{vb:link issue, {vb:raw issue}}" target="_blank">{vb:raw issue.title}</a></div>]]></template>
 		<template name="block_issues" templatetype="template" date="1311798854" username="Pitchoune" version="2.2.0"><![CDATA[<li>
 	<div class="block smaller">
@@ -13379,6 +13417,11 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 		$datastore_fetch[] = "'pt_bitfields'";
 		$datastore_fetch[] = "'pt_permissions'";
 		break;
+	case 'activity':
+		$datastore_fetch[] = "'pt_bitfields'";
+		$datastore_fetch[] = "'pt_permissions'";
+		$datastore_fetch[] = "'pt_projects'";
+		break;
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -13776,6 +13819,10 @@ if (!$this->condition)
 		</plugin>
 	</plugins>
 	<phrases>
+		<phrasetype name="Activity Stream" fieldname="activitystream">
+			<phrase name="x_replied_to_an_issue_y_in_z" date="1336864727" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> replied to an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
+			<phrase name="x_started_an_issue_y_in_z" date="1336864741" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}" class="username">{2}</a> started an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
+		</phrasetype>
 		<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 			<phrase name="options_options_issuelist_columns_text" date="1327190138" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to select which content columns in any issue list.<br />
 <br />
@@ -14097,6 +14144,8 @@ This was done because you will generally be adding newer releases over time. Wit
 			<phrase name="tag_manager" date="1168604868" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Tag Manager]]></phrase>
 		</phrasetype>
 		<phrasetype name="Control Panel Options" fieldname="cpoption">
+			<phrase name="project_issue" date="1336864286" username="Pitchoune" version="2.2.0"><![CDATA[Project Issue]]></phrase>
+			<phrase name="project_issuenote" date="1336864303" username="Pitchoune" version="2.2.0"><![CDATA[Project IssueNote]]></phrase>
 			<phrase name="pt_listprojects_before_footer" date="1276545868" username="Pitchoune" version="2.1.2"><![CDATA[Before the Footer]]></phrase>
 			<phrase name="pt_listprojects_before_notes" date="1276545880" username="Pitchoune" version="2.1.2"><![CDATA[Before the Notes]]></phrase>
 			<phrase name="pt_listprojects_before_qr" date="1276545893" username="Pitchoune" version="2.1.2"><![CDATA[Before the Quick Reply]]></phrase>
@@ -15330,4 +15379,6 @@ Separate each style ID with a comma.<br />
 		<faq faqname="pt_faq_private" faqparent="pt_faq" displayorder="20" />
 		<faq faqname="pt_faq_report" faqparent="pt_faq" displayorder="30" />
 	</faqentries>
+	<navigation>
+	</navigation>
 </product>
