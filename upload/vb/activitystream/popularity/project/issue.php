@@ -35,10 +35,17 @@ class vB_ActivityStream_Popularity_Project_Issue extends vB_ActivityStream_Popul
 	 */
 	public static function updateScore()
 	{
-		if (!(vB::$vbulletin->options['as_content'] & vB::$vbulletin->bf_misc_ascontent['project_issue']))
+		if (!vB::$vbulletin->products['vbprojecttools'])
 		{
 			return;
 		}
+
+		if (!vB::$vbulletin->activitystream['project_issue']['enabled'])
+		{
+			return;
+		}
+
+		$typeid = vB::$vbulletin->activitystream['project_issue']['typeid'];
 
 		vB::$db->query_write("
 			UPDATE " . TABLE_PREFIX . "activitystream AS a
@@ -46,7 +53,7 @@ class vB_ActivityStream_Popularity_Project_Issue extends vB_ActivityStream_Popul
 			SET
 				a.score = (1 + ((i.replycount) / 10) + (i.votepositive + i.votenegative / 100) )
 			WHERE
-				a.section = 'project' AND a.type = 'issue'
+				a.typeid = {$typeid}
 		");
 	}
 }

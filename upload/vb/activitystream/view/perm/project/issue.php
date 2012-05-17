@@ -36,7 +36,7 @@ class vB_ActivityStream_View_Perm_Project_Issue extends vB_ActivityStream_View_P
 
 		$issues = vB::$db->query_read_slave("
 			SELECT
-				i.issueid, i.title, i.projectid, i.state, i.visible, i.submituserid, i.submituserid AS userid, i.replycount, i.issuetypeid AS i_issuetypeid,
+				i.issueid, i.title, i.projectid, i.state, i.visible, i.submituserid, i.submituserid AS userid, i.replycount, i.issuetypeid,
 				infp.pagetext
 			FROM " . TABLE_PREFIX . "pt_issue AS i
 			INNER JOIN " . TABLE_PREFIX . "pt_issuenote AS infp ON (i.firstnoteid = infp.issuenoteid)
@@ -78,7 +78,7 @@ class vB_ActivityStream_View_Perm_Project_Issue extends vB_ActivityStream_View_P
 		$activity['issuenotetime'] = vbdate(vB::$vbulletin->options['timeformat'], $activity['dateline']);
 
 		$issueinfo['preview'] = strip_quotes($issueinfo['pagetext']);
-		$issueinfo['preview'] = htmlspecialchars_uni(fetch_censored_text(fetch_trimmed_title(strip_bbcode($issueinfo['preview'], false, true, true, true), vB::$vbulletin->options['issuepreview'])));
+		$issueinfo['preview'] = htmlspecialchars_uni(fetch_censored_text(fetch_trimmed_title(strip_bbcode($issueinfo['preview'], false, true, true, true), vB::$vbulletin->options['threadpreview'])));
 
 		$projectperms = fetch_project_permissions(vB::$vbulletin->userinfo, $issueinfo['projectid'], $issueinfo['issuetypeid']);
 		$show['issuecontent'] = ($projectperms & vB::$vbulletin->pt_bitfields['general']['canview']);

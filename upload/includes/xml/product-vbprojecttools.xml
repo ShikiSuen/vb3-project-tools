@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.2.0</version>
-	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
-	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
+	<url />
+	<versioncheckurl />
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.1.4" maxversion="" />
 	</dependencies>
@@ -1873,7 +1873,7 @@ $db->show_errors();
 || ############################## ||
 \*================================*/
 
-// As the Bootstrap Framework is a big shit (at least in 4.1.4),
+// As the Bootstrap Framework is a big shit (at least in 4.1.4, fixed in 4.2.0),
 // we need to workaround it with some queries
 $packageid = $db->query_first("
 	SELECT packageid
@@ -2042,6 +2042,38 @@ $db->query_write("
 
 /*================================*\
 || ############################## ||
+|| #	   Activity Stream		# ||
+|| ############################## ||
+\*================================*/
+
+// Only for 4.2+
+if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+{
+	// Package ID required
+	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+
+	// Insert Issue in Activity Stream
+	vB::$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
+			(packageid, section, type, enabled)
+		VALUES
+			($packageid, 'project', 'issue', 1)
+	");
+
+	// Insert IssueNote in Activity Stream
+	vB::$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
+			(packageid, section, type, enabled)
+		VALUES
+			($packageid, 'project', 'issuenote', 1)
+	");
+
+	// Rebuild Activity Stream datastore
+	build_activitystream_datastore();
+}
+
+/*================================*\
+|| ############################## ||
 || #			Final			# ||
 || ############################## ||
 \*================================*/
@@ -2061,12 +2093,21 @@ build_project_cache();]]></installcode>
 			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuemagicselect");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect");
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup");]]></uninstallcode>
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup");
+
+// Only for 4.2+
+if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+{
+	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issue'");
+	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issuenote'");
+
+	// Rebuild Activity Stream datastore
+	build_activitystream_datastore();
+}]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
-		<template name="activitystream_project_issue" templatetype="template" date="1336908863" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issue userprof_content userprof_content_border">
-Score: {vb:raw activity.score} (This is temporary)
+		<template name="activitystream_project_issue" templatetype="template" date="1337106668" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issue userprof_content userprof_content_border">
 	<div class="avatar">
 		<img src="{vb:raw userinfo.avatarurl}" alt="{vb:rawphrase xs_avatar, {vb:raw userinfo.username}}" />
 	</div>
@@ -2084,8 +2125,7 @@ Score: {vb:raw activity.score} (This is temporary)
 	</div>
 	<div class="views">{vb:rawphrase x_replies, {vb:raw issueinfo.replycount}}</div>
 </li>]]></template>
-		<template name="activitystream_project_issuenote" templatetype="template" date="1336910164" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issuenote userprof_content userprof_content_border">
-Score: {vb:raw activity.score} (This is temporary)
+		<template name="activitystream_project_issuenote" templatetype="template" date="1337106677" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issuenote userprof_content userprof_content_border">
 	<div class="avatar">
 		<img src="{vb:raw userinfo.avatarurl}" alt="{vb:rawphrase xs_avatar, {vb:raw userinfo.username}}" />
 	</div>
@@ -13189,13 +13229,19 @@ switch (THIS_SCRIPT)
 		$pt_templates[] = 'pt_checkbox_option';
 		$pt_templates[] = 'search_input_ptissue';
 		$pt_templates[] = 'search_input_ptissuenote';
-        $pt_templates[] = 'search_results_ptissue';
-        $pt_templates[] = 'search_results_ptissuenote';
+        	$pt_templates[] = 'search_results_ptissue';
+        	$pt_templates[] = 'search_results_ptissuenote';
 		break;
+
 	case 'showthread':
 		$pt_templates[] = 'pt_postbit_create_issue';
 		$pt_templates[] = 'pt_postbit_link_issue';
 		$pt_templates[] = 'pt_showthread_adminoptions';
+		break;
+
+	case 'activity':
+		$pt_templates[] = 'activitystream_project_issue';
+		$pt_templates[] = 'activitystream_project_issuenote';
 		break;
 }
 
@@ -13412,11 +13458,13 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 		$datastore_fetch[] = "'pt_issuetype'";
 		$datastore_fetch[] = "'pt_permissions'";
 		break;
+
 	case 'attachment':
 	case 'newattachment':
 		$datastore_fetch[] = "'pt_bitfields'";
 		$datastore_fetch[] = "'pt_permissions'";
 		break;
+
 	case 'activity':
 		$datastore_fetch[] = "'pt_bitfields'";
 		$datastore_fetch[] = "'pt_permissions'";
@@ -13625,13 +13673,16 @@ if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 		<plugin active="1" executionorder="5">
 			<title>Process PT Global Templates</title>
 			<hookname>process_templates_complete</hookname>
-			<phpcode><![CDATA[if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
+			<phpcode><![CDATA[if (version_compare($vbulletin->options['templateversion'], '4.2.0', '<'))
 {
-	if (defined('PROJECT_SCRIPT'))
+	if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
 	{
-		$vbulletin->options['selectednavtab'] = 'vbproject';
+		if (defined('PROJECT_SCRIPT'))
+		{
+			$vbulletin->options['selectednavtab'] = 'vbproject';
+		}
+		$template_hook['navtab_end'] .= vB_Template::create('pt_navbar_link')->render();
 	}
-	$template_hook['navtab_end'] .= vB_Template::create('pt_navbar_link')->render();
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -13819,10 +13870,6 @@ if (!$this->condition)
 		</plugin>
 	</plugins>
 	<phrases>
-		<phrasetype name="Activity Stream" fieldname="activitystream">
-			<phrase name="x_replied_to_an_issue_y_in_z" date="1336864727" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> replied to an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
-			<phrase name="x_started_an_issue_y_in_z" date="1336864741" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}" class="username">{2}</a> started an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
-		</phrasetype>
 		<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 			<phrase name="options_options_issuelist_columns_text" date="1327190138" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to select which content columns in any issue list.<br />
 <br />
@@ -14144,8 +14191,8 @@ This was done because you will generally be adding newer releases over time. Wit
 			<phrase name="tag_manager" date="1168604868" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Tag Manager]]></phrase>
 		</phrasetype>
 		<phrasetype name="Control Panel Options" fieldname="cpoption">
-			<phrase name="project_issue" date="1336864286" username="Pitchoune" version="2.2.0"><![CDATA[Project Issue]]></phrase>
-			<phrase name="project_issuenote" date="1336864303" username="Pitchoune" version="2.2.0"><![CDATA[Project IssueNote]]></phrase>
+			<phrase name="project_issue" date="1336938347" username="Pitchoune" version="2.2.0"><![CDATA[Project Issue]]></phrase>
+			<phrase name="project_issuenote" date="1336938354" username="Pitchoune" version="2.2.0"><![CDATA[Project Issuenote]]></phrase>
 			<phrase name="pt_listprojects_before_footer" date="1276545868" username="Pitchoune" version="2.1.2"><![CDATA[Before the Footer]]></phrase>
 			<phrase name="pt_listprojects_before_notes" date="1276545880" username="Pitchoune" version="2.1.2"><![CDATA[Before the Notes]]></phrase>
 			<phrase name="pt_listprojects_before_qr" date="1276545893" username="Pitchoune" version="2.1.2"><![CDATA[Before the Quick Reply]]></phrase>
@@ -14445,6 +14492,8 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="priority" date="1307022121" username="Pitchoune" version="2.2.0"><![CDATA[Priority]]></phrase>
 			<phrase name="projects" date="1181655523" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Projects]]></phrase>
 			<phrase name="search_projects" date="1174406531" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search Projects]]></phrase>
+			<phrase name="x_replied_to_an_issue_y_in_z" date="1336938258" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> replied to an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
+			<phrase name="x_started_an_issue_y_in_z" date="1336938296" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}" class="username">{2}</a> started an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
 		</phrasetype>
 		<phrasetype name="Notices" fieldname="notice">
 			<phrase name="is_browsing_project_tools_criteria" date="1277854663" username="Mosh" version="2.1.2"><![CDATA[User is browsing vBulletin Project Tools]]></phrase>
@@ -15379,6 +15428,4 @@ Separate each style ID with a comma.<br />
 		<faq faqname="pt_faq_private" faqparent="pt_faq" displayorder="20" />
 		<faq faqname="pt_faq_report" faqparent="pt_faq" displayorder="30" />
 	</faqentries>
-	<navigation>
-	</navigation>
 </product>
