@@ -2631,7 +2631,7 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1335715856" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1337441186" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -2832,6 +2832,11 @@ a.firstunread, a.firstunread:hover
 
 .pt_project .blockrow div {
 	display: inline-block;
+}
+
+.pt_project .blockrow div.projectdescription {
+	width: 80%;
+	overflow: hidden;
 }
 
 .pt_project .blockrow .stats {
@@ -13673,7 +13678,7 @@ if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 		<plugin active="1" executionorder="5">
 			<title>Process PT Global Templates</title>
 			<hookname>process_templates_complete</hookname>
-			<phpcode><![CDATA[if (version_compare($vbulletin->options['templateversion'], '4.2.0', '<'))
+			<phpcode><![CDATA[if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
 {
 	if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
 	{
@@ -13683,6 +13688,22 @@ if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 		}
 		$template_hook['navtab_end'] .= vB_Template::create('pt_navbar_link')->render();
 	}
+}]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
+			<title>Navbar: Set Fallback Tab</title>
+			<hookname>set_navigation_tab_fallback</hookname>
+			<phpcode><![CDATA[if (defined('PROJECT_SCRIPT'))
+{
+	$root = 'vbtab_project'; // Project root tab
+}]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
+			<title>Navbar: Set Navigation Tab</title>
+			<hookname>set_navigation_tab_main</hookname>
+			<phpcode><![CDATA[if (defined('PROJECT_SCRIPT'))
+{
+	$root = 'vbtab_project'; // Project root tab
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -15428,4 +15449,41 @@ Separate each style ID with a comma.<br />
 		<faq faqname="pt_faq_private" faqparent="pt_faq" displayorder="20" />
 		<faq faqname="pt_faq_report" faqparent="pt_faq" displayorder="30" />
 	</faqentries>
+	<navigation>
+		<tab name="vbtab_project" date="1337425462" username="Pitchoune" version="4.2.0 Alpha 1">
+			<active>1</active>
+			<show />
+			<scripts />
+			<displayorder>50</displayorder>
+			<url>project.php{sesssion.sessionurl_q}</url>
+		</tab>
+		<link name="vbpt_myreports" date="1337425527" username="Pitchoune" version="4.2.0 Alpha 1">
+			<active>1</active>
+			<show>member</show>
+			<parent>vbtab_project</parent>
+			<displayorder>10</displayorder>
+			<url>projectsearch.php?{session.sessionurl}do=reports</url>
+		</link>
+		<link name="vbpt_subscriptions" date="1337425622" username="Pitchoune" version="4.2.0 Alpha 1">
+			<active>1</active>
+			<show />
+			<parent>vbtab_project</parent>
+			<displayorder>20</displayorder>
+			<url>projectpost.php?{session.sessionurl}do=managesubscriptions</url>
+		</link>
+		<link name="vbpt_timeline" date="1337425678" username="Pitchoune" version="4.2.0 Alpha 1">
+			<active>1</active>
+			<show />
+			<parent>vbtab_project</parent>
+			<displayorder>30</displayorder>
+			<url>projecttimeline.php{session.sessionurl_q}</url>
+		</link>
+		<link name="vbpt_faq" date="1337425710" username="Pitchoune" version="4.2.0 Alpha 1">
+			<active>1</active>
+			<show />
+			<parent>vbtab_project</parent>
+			<displayorder>40</displayorder>
+			<url>faq.php?{session.sessionurl}faq=pt_faq</url>
+		</link>
+	</navigation>
 </product>

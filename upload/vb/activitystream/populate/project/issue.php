@@ -33,19 +33,21 @@ class vB_ActivityStream_Populate_Project_Issue extends vB_ActivityStream_Populat
 	 * Don't get: Deleted & Moderated issues
 	 *
 	 */
-	public static function populate()
+	public function populate()
 	{
 		if (!vB::$vbulletin->products['vbprojecttools'])
 		{
 			return;
 		}
 
+		$typeid = vB::$vbulletin->activitystream['project_issue']['typeid'];
+		$this->delete($typeid);
+
 		if (!vB::$vbulletin->activitystream['project_issue']['enabled'])
 		{
 			return;
 		}
 
-		$typeid = vB::$vbulletin->activitystream['project_issue']['typeid'];
 		$timespan = TIMENOW - vB::$vbulletin->options['as_expire'] * 60 * 60 * 24;
 		vB::$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "activitystream
@@ -139,6 +141,8 @@ class vB_ActivityStream_Populate_Project_Issue extends vB_ActivityStream_Populat
 					isn.dateline >= {$timespan}
 						AND
 					isn.issuenoteid <> i.firstnoteid
+						AND
+					isn.type = 'user'
 						AND
 					i.state = 'open'
 						AND

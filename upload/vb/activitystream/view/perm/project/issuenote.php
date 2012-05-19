@@ -48,6 +48,8 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 					AND
 				isn.visible IN ('visible', 'moderated')
 					AND
+				isn.type = 'user'
+					AND
 				i.visible IN ('visible', 'moderated')
 		");
 		while ($issuenote = vB::$db->fetch_array($issuenotes))
