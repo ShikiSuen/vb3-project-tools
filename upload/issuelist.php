@@ -475,16 +475,19 @@ $assignable_users = fetch_assignable_users_select($project['projectid']);
 $search_status_options = fetch_issue_status_search_select($projectperms);
 
 // Project navigation
-$projectlist = array();
-
-foreach ($vbulletin->pt_projects AS $projectid => $projectdata)
+if ($vbulletin->options['pt_disablequicknav'] AND count($vbulletin->pt_projects) >= 2)
 {
-	if (!isset($perms_query["$projectdata[projectid]"]) OR $projectdata['displayorder'] == 0)
-	{
-		continue;
-	}
+	$projectlist = array();
 
-	$projectlist[$projectdata['projectid']] = $projectdata;
+	foreach ($vbulletin->pt_projects AS $projectid => $projectdata)
+	{
+		if (!isset($perms_query["$projectdata[projectid]"]) OR $projectdata['displayorder'] == 0)
+		{
+			continue;
+		}
+
+		$projectlist[$projectdata['projectid']] = $projectdata;
+	}
 }
 
 // navbar and output
