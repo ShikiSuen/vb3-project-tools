@@ -4669,7 +4669,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1335689968" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1337630218" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4984,22 +4984,24 @@ legend {
 
 <br /><br />
 
-<div class="pt_listprojects">
-	<div class="menu<vb:if condition="empty($pagenav)"> marginissue1<vb:else /> marginissue2</vb:if>">
-		<div class="clear"></div>
-		<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
-			<span class="shade">{vb:rawphrase projects}</span>
-			<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
-			<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
-			<ul class="navpopupbody popupbody popuphover">
-				<li class="optionlabel">{vb:rawphrase projects}</li>
-				<vb:each from="projectlist" key="projectid" value="projectdata">
-					<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
-				</vb:each>
-			</ul>
+<vb:if condition="$projectlist">
+	<div class="pt_listprojects">
+		<div class="menu<vb:if condition="empty($pagenav)"> marginissue1<vb:else /> marginissue2</vb:if>">
+			<div class="clear"></div>
+			<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
+				<span class="shade">{vb:rawphrase projects}</span>
+				<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
+				<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
+				<ul class="navpopupbody popupbody popuphover">
+					<li class="optionlabel">{vb:rawphrase projects}</li>
+					<vb:each from="projectlist" key="projectid" value="projectdata">
+						<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
+					</vb:each>
+				</ul>
+			</div>
 		</div>
 	</div>
-</div>
+</vb:if>
 
 <!-- notes -->
 <a name="notestart"></a>
@@ -5352,7 +5354,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1335689984" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1337630113" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5660,22 +5662,24 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		<div class="threadpagenav">
 			{vb:raw pagenav}
 
-			<div class="pt_listprojects">
-				<div class="menuissuelist">
-					<div class="clear"></div>
-					<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
-						<span class="shade">{vb:rawphrase projects}</span>
-						<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
-						<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
-						<ul class="navpopupbody popupbody popuphover">
-							<li class="optionlabel">{vb:rawphrase projects}</li>
-							<vb:each from="projectlist" key="projectid" value="projectdata">
-								<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
-							</vb:each>
-						</ul>
+			<vb:if condition="$projectlist">
+				<div class="pt_listprojects">
+					<div class="menuissuelist">
+						<div class="clear"></div>
+						<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
+							<span class="shade">{vb:rawphrase projects}</span>
+							<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
+							<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
+							<ul class="navpopupbody popupbody popuphover">
+								<li class="optionlabel">{vb:rawphrase projects}</li>
+								<vb:each from="projectlist" key="projectid" value="projectdata">
+									<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
+								</vb:each>
+							</ul>
+						</div>
 					</div>
 				</div>
-			</div>
+			</vb:if>
 		</div>
 	</div>
 </div>
