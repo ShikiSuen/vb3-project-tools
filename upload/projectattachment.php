@@ -117,6 +117,11 @@ if (empty($vbulletin->products['vbprojecttools']))
 	standard_error(fetch_error('product_not_installed_disabled'));
 }
 
+if ($vbulletin->options['pt_maintenancemode'] AND !$show['admincplink'])
+{
+	standard_error(fetch_error('pt_in_maintenance_mode'));
+}
+
 require_once(DIR . '/includes/functions_projecttools.php');
 
 if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools']))

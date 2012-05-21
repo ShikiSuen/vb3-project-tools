@@ -61,9 +61,14 @@ if (empty($vbulletin->products['vbprojecttools']))
 	standard_error(fetch_error('product_not_installed_disabled'));
 }
 
+if ($vbulletin->options['pt_maintenancemode'] AND !$show['admincplink'])
+{
+	standard_error(fetch_error('pt_in_maintenance_mode'));
+}
+
 if (!isset($vbulletin->pt_bitfields) or (!count($vbulletin->pt_bitfields)))
 {
-	require_once DIR . '/includes/adminfunctions_projecttools.php';
+	require_once(DIR . '/includes/adminfunctions_projecttools.php');
 	$vbulletin->pt_bitfields = build_project_bitfields();
 }
 

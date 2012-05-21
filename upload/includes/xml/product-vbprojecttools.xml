@@ -14412,6 +14412,7 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 If you wish to continue this action, <a href="{1}">click here to try again</a>.]]></phrase>
 			<phrase name="pt_attachment_dir_different_vb" date="1181651264" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[The Project Tools' attachment directory must be different than vBulletin's.]]></phrase>
 			<phrase name="pt_have_pending_petition" date="1172238992" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You already have a pending petition for this issue. You may not submit another until this petition has been resolved.]]></phrase>
+			<phrase name="pt_in_maintenance_mode" date="1337627184" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools is in Maintenance Mode. Please come back later.]]></phrase>
 			<phrase name="pt_need_search_criteria" date="1172238720" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You must enter some valid search criteria or a grouping method.]]></phrase>
 			<phrase name="pt_need_vote" date="1172239416" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[You did not choose a type of vote to cast.]]></phrase>
 			<phrase name="pt_no_issue_statues_represent_this_state" date="1213800151" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[There are no issue statuses that represent selected issue state (active or complete). No issues will be found.]]></phrase>
@@ -15092,6 +15093,8 @@ A value of 0 will display all issues in a group on the first page.]]></phrase>
 <br />
 A value of 0 will display all issues on one page.]]></phrase>
 			<phrase name="setting_pt_issuesperpage_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Issues Displayed Per Page]]></phrase>
+			<phrase name="setting_pt_maintenancemode_desc" date="1337626673" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to turn Project Tools into Maintenance Mode.]]></phrase>
+			<phrase name="setting_pt_maintenancemode_title" date="1337626673" username="Pitchoune" version="2.2.0"><![CDATA[Maintenance Mode]]></phrase>
 			<phrase name="setting_pt_notesperpage_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[This is the number of notes that will be displayed per page in an issue. A note can be a comment/petition or information about changes to the issues details.<br />
 <br />
 A value of 0 will display all notes on one page.]]></phrase>
@@ -15256,6 +15259,11 @@ Separate each style ID with a comma.<br />
 				<datatype>bitfield</datatype>
 				<optioncode>bitfield:misc|pt_columns</optioncode>
 				<defaultvalue>15</defaultvalue>
+			</setting>
+			<setting varname="pt_maintenancemode" displayorder="190">
+				<datatype>boolean</datatype>
+				<optioncode>yesno</optioncode>
+				<defaultvalue>0</defaultvalue>
 			</setting>
 		</settinggroup>
 		<settinggroup name="projecttools_impex" displayorder="810">

@@ -51,6 +51,11 @@ if (empty($vbulletin->products['vbprojecttools']))
 	exit;
 }
 
+if ($vbulletin->options['pt_maintenancemode'] AND !$show['admincplink'])
+{
+	exit;
+}
+
 // check to see if global RSS setting is switched on, if not exit.
 if (!$vbulletin->options['externalrss'])
 {
