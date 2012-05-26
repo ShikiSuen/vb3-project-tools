@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -15,10 +15,9 @@
 * Generic handler for displaying a list of issues.
 * Currently, this can only display of a list of issues within one project.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueList
@@ -352,4 +351,5 @@ class vB_Pt_IssueList
 		$this->real_pagenumber = $pagenumber;
 	}
 }
+
 ?>

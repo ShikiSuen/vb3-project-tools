@@ -4,7 +4,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -22,19 +22,12 @@ require_once(DIR . '/vb/legacy/issuenote.php');
 require_once(DIR . '/vb/search/core.php');
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
-
-/**
  * Index controller for issue notes
  *
- * @package vBulletin Project Tools
- * @subpackage Search
+ * @package		vBulletin Project Tools
+ * @since		$Date$
+ * @version		$Rev$
+ * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
  */
 class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexController
 {

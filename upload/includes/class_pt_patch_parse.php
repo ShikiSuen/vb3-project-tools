@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -16,10 +16,9 @@
 *
 * This class will take a patch in unified diff form and parse into a more user friendly format
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 *
 */
@@ -447,4 +446,5 @@ class vB_PatchParser
 		$this->read_while_character(" \r\n\t");
 	}
 }
+
 ?>

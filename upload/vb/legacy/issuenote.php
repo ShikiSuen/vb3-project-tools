@@ -4,22 +4,13 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
 || #    http://www.vbulletin.org/open_source_license_agreement.php    # ||
 || #################################################################### ||
 \*======================================================================*/
-
-/**
- * @package vBulletin Project Tools
- * @subpackage Legacy
- * @author $author$
- * @version $revision$
- * @since $date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
 
 if (!class_exists('vB_Search_Core', false))
 {
@@ -30,27 +21,20 @@ require_once(DIR . '/vb/legacy/dataobject.php');
 require_once(DIR . '/vb/legacy/issue.php');
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Legacy
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
-
-/**
  * Legacy functions for issue notes
  *
- * @package vBulletin Project Tools
- * @subpackage Legacy
+ * @package		vBulletin Project Tools
+ * @since		$Date$
+ * @version		$Rev$
+ * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
  */
 class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 {
 	/**
-	* Get issue note fields
-	*
-	* @return 	array	Array list of the pt_issuenote table
-	*/
+	 * Get issue note fields
+	 *
+	 * @return 	array	Array list of the pt_issuenote table
+	 */
 	public static function get_field_names()
 	{
 		return array(
@@ -60,12 +44,12 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	}
 
 	/**
-	* Public factory method to create a issue note object
-	*
-	* @param	array 		A issue note record to set to this object.
-	* @param	array 		vB_Legacy_Issue - If the issue for this issue note has already been loaded
-	* @return	vB_Legacy_IssueNote
-	*/
+	 * Public factory method to create a issue note object
+	 *
+	 * @param	array 		A issue note record to set to this object.
+	 * @param	array 		vB_Legacy_Issue - If the issue for this issue note has already been loaded
+	 * @return	vB_Legacy_IssueNote
+	 */
 	public static function create_from_record($record, $issue = null)
 	{
 		$issuenote = new vB_Legacy_IssueNote();
@@ -84,11 +68,11 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	}
 
 	/**
-	* Public factory method to create an issue note object
-	*
-	* @param	integer		Id of the issuenote
-	* @return	array		Array of the result
-	*/
+	 * Public factory method to create an issue note object
+	 *
+	 * @param	integer		Id of the issuenote
+	 * @return	array		Array of the result
+	 */
 	public static function create_from_id($id)
 	{
 		global $vbulletin;
@@ -110,13 +94,13 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	}
 
 	/**
-	* Select all informations for issue notes from the database
-	* With corresponding issueids
-	*
-	* @param	array		Array of issuenote ids
-	*
-	* @return	array		Array of issuenote informations
-	*/
+	 * Select all informations for issue notes from the database
+	 * With corresponding issueids
+	 *
+	 * @param	array		Array of issuenote ids
+	 *
+	 * @return	array		Array of issuenote informations
+	 */
 	public static function create_array($ids)
 	{
 		global $vbulletin;
@@ -169,15 +153,12 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	}
 
 	/**
-	 * constructor -- protectd to force use of factory methods.
+	 * Constructor -- protectd to force use of factory methods.
 	 */
 	protected function __construct()
 	{
 		$this->registry = $GLOBALS['vbulletin'];
 	}
-
-	//*********************************************************************************
-	// derived getters
 
 	/**
 	 * Is this the first issue note in the issue
@@ -202,10 +183,10 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	}
 
 	/**
-	* Get the user for this issue note
-	*
-	* @return		vB_Legacy_User
-	*/
+	 * Get the user for this issue note
+	 *
+	 * @return		vB_Legacy_User
+	 */
 	public function get_user()
 	{
 		if (is_null($this->user))
@@ -258,10 +239,10 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	}
 
 	/**
-	* Enter description here...
-	*
-	* @return unknown
-	*/
+	 * Enter description here...
+	 *
+	 * @return unknown
+	 */
 	public function get_pagetext_noquote()
 	{
 		//figure out how to handle the 'cancelwords'
@@ -271,10 +252,10 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 
 
 	/**
-	* Return title string for display. If there is no title given, we'll construct one from the issue note text
-	*
-	* @return		string		Title of the issue note
-	*/
+	 * Return title string for display. If there is no title given, we'll construct one from the issue note text
+	 *
+	 * @return		string		Title of the issue note
+	 */
 	public function get_display_title()
 	{
 		$title = $this->get_field('title');
@@ -290,29 +271,23 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 		return $title;
 	}
 
-	//*********************************************************************************
-	// High level permissions
-
 	/**
-	* Can the user view the issue note as a search result
-	*
-	* @param		mixed		vB_Legacy_CurrentUser: Current user informations
-	*
-	* @return		boolean
-	*/
+	 * Can the user view the issue note as a search result
+	 *
+	 * @param		mixed		vB_Legacy_CurrentUser: Current user informations
+	 *
+	 * @return		boolean
+	 */
 	public function can_search($user)
 	{
 		return true;
 	}
 
-	//*********************************************************************************
-	// Related data/data objects
-
 	/**
-	* Get the issue containing the issue note
-	*
-	* @return		mixed		vB_Legacy_Issue: All infos about the issue
-	*/
+	 * Get the issue containing the issue note
+	 *
+	 * @return		mixed		vB_Legacy_Issue: All infos about the issue
+	 */
 	public function get_issue()
 	{
 		if (is_null($this->issue))
@@ -322,9 +297,6 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 
 		return $this->issue;
 	}
-
-	//*********************************************************************************
-	// Internal Setters for initializer functions
 
 	/**
 	 * The issue containing the issue note
@@ -336,15 +308,10 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 		$this->issue = $issue;
 	}
 
-	//*********************************************************************************
-	// Data
-
 	/**
 	 * @var vB_Registry
 	 */
 	protected $registry = null;
-
-	//some lazy loading storage.
 	protected $user = null;
 	protected $issue = null;
 }

@@ -4,7 +4,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -12,35 +12,28 @@
 || #################################################################### ||
 \*======================================================================*/
 
-/**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
-
 require_once(DIR . '/vb/search/type.php');
 require_once(DIR . '/includes/functions_projecttools.php');
 
 /**
-* There is a type file for each search type. This is the one for issue notes
-*
-* @package vBulletin Project Tools
-* @subpackage Search
-*/
+ * There is a type file for each search type. This is the one for issue notes
+ *
+ * @package		vBulletin Project Tools
+ * @since		$Date$
+ * @version		$Rev$
+ * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+ */
 class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 {
 	/**
-	* This checks to see if we can view this issue note.
-	*
-	* @param	vB_Legacy_Object	$issue
-	* @param	vB_Legacy_Object	$issuenote
-	* @param	vB_Legacy_Object	$user
-	*
-	* @return	boolean
-	**/
+	 * This checks to see if we can view this issue note.
+	 *
+	 * @param	vB_Legacy_Object	$issue
+	 * @param	vB_Legacy_Object	$issuenote
+	 * @param	vB_Legacy_Object	$user
+	 *
+	 * @return	boolean
+	 */
 	protected function verify_issuenote_canread(&$issue, &$issuenote, &$user)
 	{
 		fetch_pt_datastore();
@@ -49,15 +42,15 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	}
 	
 	/**
-	* When displaying results we get passed a list of id's. This
-	* function determines which are viewable by the user.
-	*
-	* @param	object	ID of the user
-	* @param	array	Issue id's returned from a search
-	* @param	array	Project id's for the issues
-	*
-	* @return	array	Array of viewable issues, array of rejected projects
-	*/
+	 * When displaying results we get passed a list of id's. This
+	 * function determines which are viewable by the user.
+	 *
+	 * @param	object	ID of the user
+	 * @param	array	Issue id's returned from a search
+	 * @param	array	Project id's for the issues
+	 *
+	 * @return	array	Array of viewable issues, array of rejected projects
+	 */
 	public function fetch_validated_list($user, $ids, $gids)
 	{
 		require_once(DIR . '/vb/legacy/issuenote.php');
@@ -85,34 +78,34 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	}
 
 	/**
-	* Each search type has some responsibilities, one of which is to give
-	* its display name.
-	*
-	* @return string
-	*/
+	 * Each search type has some responsibilities, one of which is to give
+	 * its display name.
+	 *
+	 * @return string
+	 */
 	public function get_display_name()
 	{
 		return new vB_Phrase('search', 'searchtype_issuenotes');
 	}
 
 	/**
-	* This is how the type objects are created
-	*
-	* @param	integer		$id
-	*
-	* @return 	vBProjectTools_Search_Type_IssueNote	object
-	*/
+	 * This is how the type objects are created
+	 *
+	 * @param	integer		$id
+	 *
+	 * @return 	vBProjectTools_Search_Type_IssueNote	object
+	 */
 	public function create_item($id)
 	{
 		return vBProjectTools_Search_Result_IssueNote::create($id);
 	}
 
 	/**
-	* Each search type has some responsibilities, one of which is to tell
-	* what the default search preferences are.
-	*
-	* @return array
-	*/
+	 * Each search type has some responsibilities, one of which is to tell
+	 * what the default search preferences are.
+	 *
+	 * @return array
+	 */
 	public function additional_pref_defaults()
 	{
 		
@@ -131,48 +124,48 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 			'showposts'	 		=> 0
 		);
 		
-//		query, replycount, votecount, needsattachments, needspendingpetitions,
+//			query, replycount, votecount, needsattachments, needspendingpetitions,
 //			milestoneid, projectcategoryid, appliesversion, addressedversion,
 //			searchuser, exactname, userissuesonly,
-//			textlocation, priority_type,priority, searchdate, beforeafter,
+//			textlocation, priority_type, priority, searchdate, beforeafter,
 //			replycount_type, votecount_type, votecount_posneg,
 //			sort, sortorder
 			
 	}
 
 	/**
-	* Each search type has some responsibilities, one of which is to tell
-	* whether it is groupable - Forums, for example are not, but posts are.
-	* They are naturally grouped by thread.
-	*
-	* @return
-	*/
+	 * Each search type has some responsibilities, one of which is to tell
+	 * whether it is groupable - Forums, for example are not, but posts are.
+	 * They are naturally grouped by thread.
+	 *
+	 * @return
+	 */
 	public function can_group()
 	{
 		return true;
 	}
 
 	/**
-	* Each search type has some responsibilities, one of which is to tell
-	* whether it is grouped by default
-	*
-	* @return
-	*/
+	 * Each search type has some responsibilities, one of which is to tell
+	 * whether it is grouped by default
+	 *
+	 * @return
+	 */
 	public function group_by_default()
 	{
 		return true;
 	}
 
 	/**
-	* This function generates the search elements for the user to search for issue notes
-	*
-	* @param	mixed		Array of user preferences
-	* @param	mixed		Content type for which we are going to search
-	* @param	array		Any additional elements to be registered. These are just passed to the template
-	* @param	string		Name of the template to use for display. We have a default template.
-	*
-	* @return 	mixed		Complete html for the search elements
-	*/
+	 * This function generates the search elements for the user to search for issue notes
+	 *
+	 * @param	mixed		Array of user preferences
+	 * @param	mixed		Content type for which we are going to search
+	 * @param	array		Any additional elements to be registered. These are just passed to the template
+	 * @param	string		Name of the template to use for display. We have a default template.
+	 *
+	 * @return 	mixed		Complete html for the search elements
+	 */
 	public function listUi($prefs = null, $contenttypeid = null, $registers = null, $template_name = null)
 	{
 		global $vbulletin, $vbphrase, $show;
@@ -471,7 +464,6 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 		return $template->render();
 	}
 
-	// ###################### Start listSearchGlobals ######################
 	/**
 	 * vB_Search_Type::list_SearchGlobals()
 	 * The globals is a list of variables we'll try to pull from the input.
@@ -486,10 +478,10 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	}
 
 	/**
-	* Tell what type of object this is for inline moderation
-	*
-	* @return string
-	*/
+	 * Tell what type of object this is for inline moderation
+	 *
+	 * @return string
+	 */
 	public function get_inlinemod_type()
 	{
 		return '';
@@ -627,10 +619,10 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	}
 
 	/**
-	* Add a filter for projects. We'll get them as an array. We should verify that each is an integer
-	*
-	* @param array $projectids
-	*/
+	 * Add a filter for projects. We'll get them as an array. We should verify that each is an integer
+	 *
+	 * @param array $projectids
+	 */
 	protected function add_projectid_filter($criteria, $projectids)
 	{
 		global $vbulletin, $vbphrase;
@@ -663,10 +655,10 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	}
 
 	/**
-	* Add a filter for categories. We'll get them as an array. We should verify that each is an integer
-	*
-	* @param array $categoryids
-	*/
+	 * Add a filter for categories. We'll get them as an array. We should verify that each is an integer
+	 *
+	 * @param array $categoryids
+	 */
 	protected function add_categoryid_filter($criteria, $categoryids)
 	{
 		global $vbulletin, $vbphrase;
@@ -698,10 +690,10 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	}
 
 	/**
-	* Add a filter for versions. We'll get them as an array. We should verify that each is an integer
-	*
-	* @param array $versionids
-	*/
+	 * Add a filter for versions. We'll get them as an array. We should verify that each is an integer
+	 *
+	 * @param array $versionids
+	 */
 	protected function add_versionid_filter($criteria, $versionids, $addressed = false)
 	{
 		global $vbulletin, $vbphrase;
@@ -750,10 +742,10 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	}
 
 	/**
-	* Add a filter for tags. We'll get them as an array. We should verify that each is an integer
-	*
-	* @param array $tagids
-	*/
+	 * Add a filter for tags. We'll get them as an array. We should verify that each is an integer
+	 *
+	 * @param array $tagids
+	 */
 	protected function add_tagid_filter($criteria, $tagids)
 	{
 		global $vbulletin, $vbphrase;
@@ -785,10 +777,10 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 	}
 
 	/**
-	* Add a filter for assigned users. We'll get them as an array. We should verify that each is an integer
-	*
-	* @param array $userids
-	*/
+	 * Add a filter for assigned users. We'll get them as an array. We should verify that each is an integer
+	 *
+	 * @param array $userids
+	 */
 	protected function add_assigned_filter($criteria, $userids)
 	{
 		global $vbulletin, $vbphrase;

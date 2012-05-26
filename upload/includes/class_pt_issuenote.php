@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright �2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -14,10 +14,9 @@
 /**
 * Issue note factory. Create/call this when you need to create a number of issue note objects.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNoteFactory
@@ -92,8 +91,10 @@ class vB_Pt_IssueNoteFactory
 /**
 * Generic issue note class.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNote
 {
@@ -407,8 +408,10 @@ class vB_Pt_IssueNote
 /**
 * Generic issue note class for a user note.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNote_User extends vB_Pt_IssueNote
 {
@@ -465,8 +468,10 @@ class vB_Pt_IssueNote_User extends vB_Pt_IssueNote
 /**
 * Generic issue note class for a petition note.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNote_Petition extends vB_Pt_IssueNote_User
 {
@@ -506,8 +511,10 @@ class vB_Pt_IssueNote_Petition extends vB_Pt_IssueNote_User
 /**
 * Generic issue note class for a system note.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNote_System extends vB_Pt_IssueNote
 {
@@ -545,7 +552,9 @@ class vB_Pt_IssueNote_System extends vB_Pt_IssueNote
 * Generic issue note class for the first issue note
 *
 * @package		vBulletin Project Tools
-* @copyright	http://www.vbulletin.com/liense.html
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNote_Firstnote extends vB_Pt_IssueNote_User
 {
@@ -556,4 +565,5 @@ class vB_Pt_IssueNote_Firstnote extends vB_Pt_IssueNote_User
 	*/
 	var $template = 'pt_issue_firstnote';
 }
+
 ?>

@@ -2,7 +2,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -23,7 +23,6 @@ if (AJAX_Compatible && (typeof vb_disable_ajax == 'undefined' || vb_disable_ajax
 * @package	vBulletin Project Tools
 * @version	$Revision$
 * @date		$Date$
-* @author	$Author$
 *
 * @param	string	The ID of the issue listing element (usually 'projectissuelist')
 */
@@ -55,7 +54,6 @@ function vB_AJAX_IssueList_Init(issuelistid)
 * @package	vBulletin Project Tools
 * @version	$Revision$
 * @date		$Date$
-* @author	$Author$
 *
 * @param	object	The <td> containing the title element
 */

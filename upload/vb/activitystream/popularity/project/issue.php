@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -15,8 +15,9 @@
  * Class to update the popularity score of stream items
  *
  * @package		vBulletin Project Tools
+ * @since		$Date$
  * @version		$Rev$
- * @date		$Date$
+ * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
  */
 class vB_ActivityStream_Popularity_Project_Issue extends vB_ActivityStream_Popularity_Base
 {
@@ -29,9 +30,8 @@ class vB_ActivityStream_Popularity_Project_Issue extends vB_ActivityStream_Popul
 		return parent::__construct();
 	}
 
-	/*
+	/**
 	 * Update popularity score
-	 *
 	 */
 	public static function updateScore()
 	{

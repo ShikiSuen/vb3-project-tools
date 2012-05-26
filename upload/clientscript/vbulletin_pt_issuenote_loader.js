@@ -2,7 +2,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -43,7 +43,6 @@ var vB_IssuenoteLoader = new Array();
 * @package	vBulletin Project Tools
 * @version	$Revision$
 * @date		$Date$
-* @author	$Author$
 *
 * @param	integer	Issue note ID
 */
@@ -107,10 +106,3 @@ vB_AJAX_IssuenoteLoader.prototype.display = function(ajax)
 		}
 	}
 };
-
-/*======================================================================*\
-|| ####################################################################
-|| # Downloaded: 03:28, Tue Jan 25th 2011
-|| # CVS: $RCSfile$ - $Revision$
-|| ####################################################################
-\*======================================================================*/

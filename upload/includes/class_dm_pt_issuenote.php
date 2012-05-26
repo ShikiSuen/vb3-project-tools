@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -19,10 +19,9 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT issue notes (generic).
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueNote extends vB_DataManager
@@ -703,8 +702,10 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 /**
 * Class to do data save/delete operations for PT issue notes (system).
 *
-* @package	vBulletin Project Tools
-* @date		$Date$
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 {
@@ -813,8 +814,10 @@ class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 /**
 * Class to do data save/delete operations for PT issue notes (user).
 *
-* @package	vBulletin Project Tools
-* @date		$Date$
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueNote_User extends vB_DataManager_Pt_IssueNote
 {
@@ -895,8 +898,10 @@ class vB_DataManager_Pt_IssueNote_User extends vB_DataManager_Pt_IssueNote
 /**
 * Class to do data save/delete operations for PT issue notes (petition).
 *
-* @package	vBulletin Project Tools
-* @date		$Date$
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueNote_Petition extends vB_DataManager_Pt_IssueNote
 {
@@ -1002,4 +1007,5 @@ class vB_DataManager_Pt_IssueNote_Petition extends vB_DataManager_Pt_IssueNote
 		($hook = vBulletinHook::fetch_hook('pt_issuenotepetitiondata_delete')) ? eval($hook) : false;
 	}
 }
+
 ?>

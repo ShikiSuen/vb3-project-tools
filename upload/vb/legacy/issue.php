@@ -4,7 +4,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -21,27 +21,20 @@ require_once(DIR . '/vb/legacy/dataobject.php');
 require_once(DIR . '/vb/legacy/project.php');
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Legacy
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
-
-/**
  * Legacy functions for issues
  *
- * @package vBulletin Project Tools
- * @subpackage Legacy
+ * @package		vBulletin Project Tools
+ * @since		$Date$
+ * @version		$Rev$
+ * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
  */
 class vB_Legacy_Issue extends vB_Legacy_DataObject
 {
 	/**
-	* Get issue fields
-	*
-	* @return 	array	Array list of the pt_issue table
-	*/
+	 * Get issue fields
+	 *
+	 * @return 	array	Array list of the pt_issue table
+	 */
 	public static function get_field_names()
 	{
 		return array(
@@ -68,11 +61,11 @@ class vB_Legacy_Issue extends vB_Legacy_DataObject
 	}
 
 	/**
-	* Load object from an id
-	*
-	* @param	integer		Id of the issue
-	* @return	array		Array of the result
-	*/
+	 * Load object from an id
+	 *
+	 * @param	integer		Id of the issue
+	 * @return	array		Array of the result
+	 */
 	public static function create_from_id($id)
 	{
 		$list = array_values(self::create_array(array($id)));
@@ -88,13 +81,13 @@ class vB_Legacy_Issue extends vB_Legacy_DataObject
 	}
 
 	/**
-	* Select all informations for issues from the database
-	* With corresponding issueids
-	*
-	* @param	array		Array of issue ids
-	*
-	* @return	array		Array of issue informations
-	*/
+	 * Select all informations for issues from the database
+	 * With corresponding issueids
+	 *
+	 * @param	array		Array of issue ids
+	 *
+	 * @return	array		Array of issue informations
+	 */
 	public static function create_array($ids)
 	{
 		global $vbulletin;
@@ -124,17 +117,14 @@ class vB_Legacy_Issue extends vB_Legacy_DataObject
 	}
 
 	/**
-	 * constructor -- protectd to force use of factory methods.
+	 * Constructor -- protectd to force use of factory methods.
 	 */
 	protected function __construct() {}
-
-	//*********************************************************************************
-	// Related data
 
 	/**
 	 * Returns the project containing the issue
 	 *
-	 * @return vB_Legacy_Poject
+	 * @return vB_Legacy_Project
 	 */
 	public function get_project()
 	{
@@ -145,17 +135,19 @@ class vB_Legacy_Issue extends vB_Legacy_DataObject
 		return $this->project;
 	}
 
-	//*********************************************************************************
-	// High level permissions
-
+	/**
+	 * Returns if the user can search
+	 *
+	 * @param  User data
+	 */
 	public function can_search($user)
 	{
 		return true;
 	}
 
 	/**
-	* @var array
-	*/
+	 * @var array
+	 */
 	protected $project = null;
 }
 

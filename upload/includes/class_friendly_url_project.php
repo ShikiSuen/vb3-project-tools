@@ -4,7 +4,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || #  This is file is subject to the vBulletin Open Source License.   # ||
 || # ---------------------------------------------------------------- # ||
 || #    http://www.vbulletin.org/open_source_license_agreement.php    # ||
@@ -12,7 +12,12 @@
 \*======================================================================*/
 
 /**
- * Friendly URL for project.php
+* Friendly URL for project.php
+* 
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
  */
 class vB_Friendly_Url_Project extends vB_Friendly_Url
 {
@@ -60,8 +65,13 @@ class vB_Friendly_Url_Project extends vB_Friendly_Url
 }
 
 /**
- * Friendly URL for issuelist.php
- */
+* Friendly URL for issuelist.php
+*
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
 class vB_Friendly_Url_Issuelist extends vB_Friendly_Url_Paged
 {
 	/**
@@ -108,8 +118,13 @@ class vB_Friendly_Url_Issuelist extends vB_Friendly_Url_Paged
 }
 
 /**
- * Friendly URL for issue.php
- */
+* Friendly URL for issue.php
+*
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
 class vB_Friendly_Url_Issue extends vB_Friendly_Url_Paged
 {
 	/**
@@ -157,6 +172,11 @@ class vB_Friendly_Url_Issue extends vB_Friendly_Url_Paged
 
 /**
 * Friendly URL for projecttimeline.php
+*
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Friendly_Url_ProjectTimeline extends vB_Friendly_Url_Paged
 {
@@ -205,6 +225,11 @@ class vB_Friendly_Url_ProjectTimeline extends vB_Friendly_Url_Paged
 
 /**
 * Friendly URL for projectmilestone.php (project milestones)
+*
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Friendly_Url_Projectmilestone extends vB_Friendly_Url
 {
@@ -253,6 +278,11 @@ class vB_Friendly_Url_Projectmilestone extends vB_Friendly_Url
 
 /**
 * Friendly URL for milestone.php (milestone contents)
+*
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Friendly_Url_Milestone extends vB_Friendly_Url
 {
@@ -301,6 +331,11 @@ class vB_Friendly_Url_Milestone extends vB_Friendly_Url
 
 /**
 * Friendly URL for milestone.php (milestone contents)
+*
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Friendly_Url_Msissuelist extends vB_Friendly_Url_Paged
 {

@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -19,10 +19,9 @@ if (!isset($GLOBALS['vbulletin']->db))
 /**
 * This class choose the correct method to import data into Project Tools.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Import_Factory
@@ -106,10 +105,9 @@ class vB_Pt_Import_Factory
 /**
 * This class imports a thread into the Project Tools.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Import
@@ -421,10 +419,9 @@ class vB_Pt_Import
 /**
 * This class imports a thread from forums as new issue
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Import_Thread extends vB_Pt_Import
@@ -645,10 +642,9 @@ class vB_Pt_Import_Thread extends vB_Pt_Import
 /**
 * This class imports a post from forums as new issue
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Import_Post extends vB_Pt_Import
@@ -817,10 +813,9 @@ class vB_Pt_Import_Post extends vB_Pt_Import
 /**
 * This class imports an issue note from forums as new issue
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Import_Issuenote extends vB_Pt_Import
@@ -979,10 +974,9 @@ class vB_Pt_Import_Issuenote extends vB_Pt_Import
 /**
 * This class choose the correct method to export data from Project Tools.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Export_Factory
@@ -1073,10 +1067,9 @@ class vB_Pt_Export_Factory
 /**
 * This class exports an issue note from Project Tools.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Export
@@ -1211,10 +1204,9 @@ class vB_Pt_Export
 /**
 * This class exports an issue note from Project Tools as new thread
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Export_Thread extends vB_Pt_Export
@@ -1295,10 +1287,9 @@ class vB_Pt_Export_Thread extends vB_Pt_Export
 /**
 * This class exports an issue note from Project Tools as new post in an existing thread
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Export_Post extends vB_Pt_Export
@@ -1426,10 +1417,9 @@ class vB_Pt_Export_Post extends vB_Pt_Export
 /**
 * This class exports an issue note from Project Tools as new issue
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_Export_Issuethread extends vB_Pt_Export

@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -19,10 +19,9 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT issue assignments.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_Project extends vB_DataManager
@@ -226,11 +225,6 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 			DELETE FROM " . TABLE_PREFIX . "pt_projectcategory
 			WHERE projectid = $projectid
 		");
-
-		// MySQL 4 needs to use the non-aliased tables in multi-table deletes (#23024)
-		// No longer needed as of PT 2.1.x/vB 4.0.x. (#100)
-		// $mysqlversion = $db->query_first("SELECT version() AS version");
-		// $include_prefix = version_compare($mysqlversion['version'], '4.1.0', '<');
 
 		// clear out all the issue data
 		$db->query_write("
@@ -436,4 +430,5 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 		");
 	}
 }
+
 ?>

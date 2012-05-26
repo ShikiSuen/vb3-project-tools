@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -11,15 +11,14 @@
 || #################################################################### ||
 \*======================================================================*/
 
-require_once ( DIR . '/includes/class_bbcode.php' );
+require_once(DIR . '/includes/class_bbcode.php');
 
 /**
 * vBulletin Project Tools BB Code Parser
 *
 * @package 		vBulletin Project Tools
-* @author		$Author$
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_BbCodeParser_Pt extends vB_BbCodeParser
@@ -33,9 +32,9 @@ class vB_BbCodeParser_Pt extends vB_BbCodeParser
 	 * @param	array		List of tags for use within the parser.
 	 * @param	bool		Determine if custom tags should be used or not.
 	 */
-	public function __construct (&$registry, $tag_list = array (), $append_custom_tags = TRUE)
+	public function __construct(&$registry, $tag_list = array (), $append_custom_tags = TRUE)
 	{
-		parent::vB_BbCodeParser ($registry, $tag_list, $append_custom_tags);
+		parent::vB_BbCodeParser($registry, $tag_list, $append_custom_tags);
 	}
 
 	/**
@@ -46,11 +45,11 @@ class vB_BbCodeParser_Pt extends vB_BbCodeParser
 	 * @param	string	The text to wrap.
 	 * @return	string	The wrapped text.
 	 */
-	public function do_word_wrap ($text)
+	public function do_word_wrap($text)
 	{
 		if ($this->registry->options['pt_wordwrap'] != 0)
 		{
-			$text = fetch_word_wrapped_string ($text, $this->registry->options['pt_wordwrap']);
+			$text = fetch_word_wrapped_string($text, $this->registry->options['pt_wordwrap']);
 		}
 		return $text;
 	}

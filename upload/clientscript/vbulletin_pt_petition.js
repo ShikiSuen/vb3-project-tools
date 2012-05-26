@@ -2,7 +2,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -36,10 +36,9 @@ vB_Pt_Petition_Issuenote_Vars.prototype.init = function()
 /**
 * Class to create Petition controls.
 *
-* @package	vBulletin
-* @version	$Revision$
+* @package	vBulletin Project Tools
+* @version	$Rev$
 * @date		$Date$
-* @author	$Author$
 */
 function vB_Pt_Petition_Watcher()
 {

@@ -15,8 +15,9 @@
  * Class to populate the activity stream from existing content
  *
  * @package		vBulletin Project Tools
+ * @since		$Date$
  * @version		$Rev$
- * @date		$Date$
+ * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
  */
 class vB_ActivityStream_Populate_Project_IssueNote extends vB_ActivityStream_Populate_Base
 {
@@ -29,9 +30,8 @@ class vB_ActivityStream_Populate_Project_IssueNote extends vB_ActivityStream_Pop
 		return parent::__construct();
 	}
 
-	/*
+	/**
 	 * Don't get: Deleted & moderated issues
-	 *
 	 */
 	public function populate()
 	{

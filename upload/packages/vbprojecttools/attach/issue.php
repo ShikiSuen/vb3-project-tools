@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -21,9 +21,10 @@ require_once(DIR . '/includes/functions_projecttools.php');
 /**
 * Class for verifying a vBulletin Project Tools issue attachment
 *
-* @package 		vBulletin Project Tools
-* @version		$Revision$
-* @date 		$Date$
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 *
 */
 class vB_Attachment_Display_Single_vBProjectTools_Issue extends vB_Attachment_Display_Single

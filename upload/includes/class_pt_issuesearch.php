@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -18,10 +18,9 @@ define('PT_SEARCHGEN_CRITERIA_UNNECESSARY', 3);
 /**
 * Performs issue searches
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueSearch
@@ -337,8 +336,10 @@ class vB_Pt_IssueSearch
 /**
 * Resorts searches based on existing search results
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueSearch_Resort extends vB_Pt_IssueSearch
 {
@@ -428,8 +429,10 @@ class vB_Pt_IssueSearch_Resort extends vB_Pt_IssueSearch
 /**
 * Generates issue search criteria. Atom is issue.issueid. That table must be available in the final query.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date$
+* @version		$Rev$
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueSearchGenerator
 {
@@ -2015,4 +2018,5 @@ class vB_Pt_IssueSearchGenerator
 		$groupid_col = 'issue.priority';
 	}
 }
+
 ?>

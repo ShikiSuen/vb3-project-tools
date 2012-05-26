@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -19,10 +19,9 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT issues.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
+* @package		vBulletin Project Tools
 * @since		$Date$
-* @version		$Revision$
+* @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_Issue extends vB_DataManager
@@ -546,6 +545,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	function post_save_each($doquery = true)
 	{
 		require_once(DIR . '/vb/search/indexcontroller/queue.php');
+
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_postsave')) ? eval($hook) : false;
 
 		if ($this->condition AND !empty($this->pt_issue) AND $this->info['insert_change_log'])
@@ -788,7 +788,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	*/
 	function post_delete($doquery = true)
 	{
-		require_once DIR . '/vb/search/indexcontroller/queue.php';
+		require_once(DIR . '/vb/search/indexcontroller/queue.php');
 		$issueid = intval($this->fetch_field('issueid'));
 		$db =& $this->registry->db;
 
@@ -1403,4 +1403,5 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		$milestonedata->save();
 	}
 }
+
 ?>
