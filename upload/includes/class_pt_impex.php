@@ -85,7 +85,7 @@ class vB_Pt_Import_Factory
 			case 'post':
 				$out = new vB_Pt_Import_Post();
 				break;
-			case 'issuethread':
+			case 'issuenote':
 				$out = new vB_Pt_Import_Issuenote();
 				break;
 			default:
