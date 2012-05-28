@@ -36,7 +36,7 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 
 		$issuenotes = vB::$db->query_read_slave("
 			SELECT
-				isn.issuenoteid AS isn_issuenoteid, isn.issueid AS isn_issueid, isn.visible AS isn_visible, isn.userid AS isn_userid, isn.pagetext AS isn_pagetext,
+				isn.issuenoteid AS isn_issuenoteid, isn.issueid AS isn_issueid, isn.visible AS isn_visible, isn.userid AS isn_userid, isn.pagetext AS isn_pagetext, isn.type AS isn_type,
 				i.issueid AS i_issueid, i.title AS i_title, i.projectid AS i_projectid, i.state AS i_state, i.issuetypeid AS i_issuetypeid,
 				i.visible AS i_visible, i.submituserid AS i_submituserid, i.submituserid AS i_userid, i.replycount AS i_replycount,
 				isnfp.pagetext AS i_pagetext
@@ -48,7 +48,7 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 					AND
 				isn.visible IN ('visible', 'moderated')
 					AND
-				isn.type = 'user'
+				isn.type IN ('user', 'system', 'petition')
 					AND
 				i.visible IN ('visible', 'moderated')
 		");
@@ -90,8 +90,15 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 		$activity['issuenotedate'] = vbdate(vB::$vbulletin->options['dateformat'], $activity['dateline'], true);
 		$activity['issuenotetime'] = vbdate(vB::$vbulletin->options['timeformat'], $activity['dateline']);
 
-		$preview = strip_quotes($issuenoteinfo['pagetext']);
-		$issuenoteinfo['preview'] = htmlspecialchars_uni(fetch_censored_text(fetch_trimmed_title(strip_bbcode($preview, false, true, true, true), vB::$vbulletin->options['threadpreview'])));
+		if ($issuenoteinfo['type'] == 'system')
+		{
+			$issuenoteinfo['preview'] = translate_system_note($issuenoteinfo['pagetext']);
+		}
+		else
+		{
+			$preview = strip_quotes($issuenoteinfo['pagetext']);
+			$issuenoteinfo['preview'] = htmlspecialchars_uni(fetch_censored_text(fetch_trimmed_title(strip_bbcode($preview, false, true, true, true), vB::$vbulletin->options['threadpreview'])));
+		}
 
 		$projectperms = fetch_project_permissions(vB::$vbulletin->userinfo, $issueinfo['projectid'], $issueinfo['issuetypeid']);
 		$show['issuecontent'] = ($projectperms & vB::$vbulletin->pt_bitfields['general']['canview']);

@@ -63,7 +63,7 @@ class vB_ActivityStream_Populate_Project_IssueNote extends vB_ActivityStream_Pop
 						AND
 					isn.issuenoteid <> i.firstnoteid
 						AND
-					isn.type = 'user'
+					isn.type IN ('user', 'system', 'petition')
 						AND
 					i.state = 'open'
 						AND
