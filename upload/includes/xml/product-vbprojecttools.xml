@@ -2125,7 +2125,7 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 	</div>
 	<div class="views">{vb:rawphrase x_replies, {vb:raw issueinfo.replycount}}</div>
 </li>]]></template>
-		<template name="activitystream_project_issuenote" templatetype="template" date="1338216068" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issuenote userprof_content userprof_content_border">
+		<template name="activitystream_project_issuenote" templatetype="template" date="1338220912" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issuenote userprof_content userprof_content_border">
 	<div class="avatar">
 		<img src="{vb:raw userinfo.avatarurl}" alt="{vb:rawphrase xs_avatar, {vb:raw userinfo.username}}" />
 	</div>
@@ -2150,6 +2150,12 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 							<li>{vb:raw data}</li>
 						</vb:each>
 					</ul>
+				<vb:elseif condition="$issuenoteinfo['type'] == 'petition'" />
+					<div class="excerpt">
+						{vb:rawphrase petition_change_x_pending, {vb:raw issuenoteinfo.issuestatus}}
+						<br /><br />
+						{vb:raw issuenoteinfo.preview}
+					</div>
 				<vb:else />
 					<div class="excerpt">{vb:raw issuenoteinfo.preview}</div>
 				</vb:if>

@@ -41,8 +41,8 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 				i.visible AS i_visible, i.submituserid AS i_submituserid, i.submituserid AS i_userid, i.replycount AS i_replycount,
 				isnfp.pagetext AS i_pagetext
 			FROM " . TABLE_PREFIX . "pt_issuenote AS isn
-			INNER JOIN " . TABLE_PREFIX . "pt_issue AS i ON (isn.issueid = i.issueid)
-			INNER JOIN " . TABLE_PREFIX . "pt_issuenote AS isnfp ON (i.firstnoteid = isnfp.issuenoteid)
+				INNER JOIN " . TABLE_PREFIX . "pt_issue AS i ON (isn.issueid = i.issueid)
+				INNER JOIN " . TABLE_PREFIX . "pt_issuenote AS isnfp ON (i.firstnoteid = isnfp.issuenoteid)
 			WHERE
 				isn.issuenoteid IN (" . implode(",", array_keys($this->content['issuenoteid'])) . ")
 					AND
@@ -54,6 +54,22 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 		");
 		while ($issuenote = vB::$db->fetch_array($issuenotes))
 		{
+			if ($issuenote['isn_type'] == 'petition')
+			{
+				// We need to query pt_issuepetition table to display the petition status
+				$petitiondata = vB::$db->query_first("
+					SELECT petitionstatusid
+					FROM " . TABLE_PREFIX . "pt_issuepetition
+					WHERE issuenoteid = " . intval($issuenote['isn_issuenoteid']) . "
+				");
+
+				$issuenote['isn_petition'] = $petitiondata['petitionstatusid'];
+			}
+			else
+			{
+				$issuenote['isn_petition'] = '';
+			}
+
 			unset($this->content['issueid'][$issuenote['isn_issueid']]);
 			$this->content['issuenote'][$issuenote['isn_issuenoteid']] = $this->parse_array($issuenote, 'isn_');
 			$this->content['userid'][$issuenote['isn_userid']] = 1;
@@ -93,6 +109,13 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 		if ($issuenoteinfo['type'] == 'system')
 		{
 			$issuenoteinfo['preview'] = translate_system_note($issuenoteinfo['pagetext']);
+		}
+		else if ($issuenoteinfo['type'] == 'petition')
+		{
+			$issuenoteinfo['issuestatus'] = new vB_Phrase('projecttools', 'issuestatus' . $issuenoteinfo['petition']);
+
+			$preview = strip_quotes($issuenoteinfo['pagetext']);
+			$issuenoteinfo['preview'] = htmlspecialchars_uni(fetch_censored_text(fetch_trimmed_title(strip_bbcode($preview, false, true, true, true), vB::$vbulletin->options['threadpreview'])));
 		}
 		else
 		{
