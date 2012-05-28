@@ -2125,7 +2125,7 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 	</div>
 	<div class="views">{vb:rawphrase x_replies, {vb:raw issueinfo.replycount}}</div>
 </li>]]></template>
-		<template name="activitystream_project_issuenote" templatetype="template" date="1337106677" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issuenote userprof_content userprof_content_border">
+		<template name="activitystream_project_issuenote" templatetype="template" date="1338216068" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issuenote userprof_content userprof_content_border">
 	<div class="avatar">
 		<img src="{vb:raw userinfo.avatarurl}" alt="{vb:rawphrase xs_avatar, {vb:raw userinfo.username}}" />
 	</div>
@@ -2134,11 +2134,27 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 			 <span class="date">{vb:raw activity.issuenotedate}<vb:if condition="!$show['detailedtime']">,&nbsp;<span class="time">{vb:raw activity.issuenotetime}</span></vb:if></span>
 		</div>
 		<div class="title">
-			{vb:rawphrase x_replied_to_an_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:link issue, {vb:raw issueinfo}}, {vb:raw issueinfo.title}, {vb:link project, {vb:raw projectinfo}}, {vb:raw projectinfo.title}}
+			<vb:if condition="$issuenoteinfo['type'] == 'system'">
+				{vb:rawphrase x_made_changes_in_the_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:link issue, {vb:raw issueinfo}}, {vb:raw issueinfo.title}, {vb:link project, {vb:raw projectinfo}}, {vb:raw projectinfo.title}}
+			<vb:elseif condition="$issuenoteinfo['type'] == 'petition'" />
+				{vb:rawphrase x_made_a_petition_in_the_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:link issue, {vb:raw issueinfo}}, {vb:raw issueinfo.title}, {vb:link project, {vb:raw projectinfo}}, {vb:raw projectinfo.title}}
+			<vb:elseif condition="$issuenoteinfo['type'] == 'user'" />
+				{vb:rawphrase x_replied_to_an_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:link issue, {vb:raw issueinfo}}, {vb:raw issueinfo.title}, {vb:link project, {vb:raw projectinfo}}, {vb:raw projectinfo.title}}
+			</vb:if>
 		</div>
 		<vb:if condition="$show['issuecontent']">
-		<div class="excerpt">{vb:raw issuenoteinfo.preview}</div>
-		<div class="fulllink"><a href="{vb:link issue, {vb:raw issueinfo}}">{vb:rawphrase see_more}</a></div>
+			<div class="excerpt restore">
+				<vb:if condition="$issuenoteinfo['type'] == 'system'">
+					<ul>
+						<vb:each from="issuenoteinfo.preview" value="data">
+							<li>{vb:raw data}</li>
+						</vb:each>
+					</ul>
+				<vb:else />
+					<div class="excerpt">{vb:raw issuenoteinfo.preview}</div>
+				</vb:if>
+			</div>
+			<div class="fulllink"><a href="{vb:link issue, {vb:raw issueinfo}}">{vb:rawphrase see_more}</a></div>
 		</vb:if>
 	</div>
 	<div class="views">{vb:rawphrase x_replies, {vb:raw issueinfo.replycount}}</div>
@@ -2631,7 +2647,7 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1337441186" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1338216827" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3821,6 +3837,11 @@ div.checkbox_multiselect {
 	white-space: normal;
 	padding: 1px 0px 0px 0px;
 }
+
+/* Activity stream specific values */
+#activitylist li.activitybit.project_issuenote ul {
+	padding-{vb:stylevar left} : 85px;
+} 
 
 /* Overwrite some values */
 .above_threadlist .threadpagenav {
@@ -13448,13 +13469,14 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 {
 	case 'index':
 	case 'forumdisplay':
+		$GLOBALS['phrasegroups'][] = 'projecttools';
+
 		if ($vbulletin->options['pt_hasprojectforums'])
 		{
 			$datastore_fetch[] = "'pt_bitfields'";
 			$datastore_fetch[] = "'pt_permissions'";
 			$datastore_fetch[] = "'pt_projects'";
 		}
-		$GLOBALS['phrasegroups'][] = 'projecttools';
 		break;
 
 	case 'usercp':
@@ -13475,6 +13497,8 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 		break;
 
 	case 'activity':
+		$GLOBALS['phrasegroups'][] = 'projecttools';
+
 		$datastore_fetch[] = "'pt_bitfields'";
 		$datastore_fetch[] = "'pt_permissions'";
 		$datastore_fetch[] = "'pt_projects'";
@@ -13627,6 +13651,10 @@ if (
 		$vbulletin->options['pt_hasprojectforums']
 		AND
 		$vbulletin->options['mobilestyleid_advanced'] == $vbulletin->userinfo['styleid']
+	)
+	OR
+	(
+		THIS_SCRIPT == 'activity'
 	)
 )
 {
@@ -13895,6 +13923,10 @@ if (!$this->condition)
 		</plugin>
 	</plugins>
 	<phrases>
+		<phrasetype name="Activity Stream" fieldname="activitystream">
+			<phrase name="x_made_a_petition_in_the_issue_y_in_z" date="1338216995" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> made a petition in the issue <a href="{3}">{4}</a> in project <a href="{5}">{6}</a>]]></phrase>
+			<phrase name="x_made_changes_in_the_issue_y_in_z" date="1338217021" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> made some changes in the issue <a href="{3}">{4}</a> in project <a href="{5}">{6}</a>]]></phrase>
+		</phrasetype>
 		<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 			<phrase name="options_options_issuelist_columns_text" date="1327190138" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to select which content columns in any issue list.<br />
 <br />
