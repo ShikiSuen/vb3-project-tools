@@ -705,6 +705,17 @@ if ($_POST['do'] == 'postreply')
 							$issuedata->set_existing($issue);
 							$issuedata->set('issuestatusid', $vbulletin->GPC['changestatusid']);
 							$issuedata->save();
+
+							// Activity stream
+							if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+							{
+								$activity = new vB_ActivityStream_Manage('project', 'issuenote');
+									$activity->set('contentid', $issuenote['issuenoteid']);
+									$activity->set('userid', $issuenote['userid']);
+									$activity->set('dateline', $issuenote['dateline']);
+									$activity->set('action', 'create');
+								$activity->save();
+							}
 						}
 					}
 				}
@@ -738,6 +749,17 @@ if ($_POST['do'] == 'postreply')
 							$issuedata->set_existing($issue);
 							$issuedata->set('issuestatusid', $vbulletin->GPC['changestatusid']);
 							$issuedata->save();
+
+							// Activity stream
+							if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+							{
+								$activity = new vB_ActivityStream_Manage('project', 'issuenote');
+									$activity->set('contentid', $issuenote['issuenoteid']);
+									$activity->set('userid', $issuenote['userid']);
+									$activity->set('dateline', $issuenote['dateline']);
+									$activity->set('action', 'create');
+								$activity->save();
+							}
 						}
 					}
 				}
