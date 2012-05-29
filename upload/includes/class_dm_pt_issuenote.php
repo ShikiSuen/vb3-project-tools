@@ -58,7 +58,8 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 		'do_floodcheck' => true,
 		'do_dupecheck' => true,
 		'reason' => '', // string, nohtml (stored htmlspecialchars'd)
-		'parseurl' => false
+		'parseurl' => false,
+		'noas' => true
 	);
 
 	/**
@@ -375,14 +376,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			// Activity stream
 			if (version_compare($this->registry->options['templateversion'], '4.2', '>='))
 			{
-				$astype = vB::$db->query_first("
-					SELECT typeid
-					FROM " . TABLE_PREFIX . "activitystreamtype
-					WHERE section = 'project'
-						AND type = 'issue'
-				");
-
-				if ($this->fetch_field('issueid') == vB::$db->query_first("SELECT contentid FROM " . TABLE_PREFIX . "activitystream WHERE typeid = " . $astype['typeid'] . " AND contentid = " . $this->fetch_field('issueid') . ""))
+				if (!$this->info['noas'])
 				{
 					$activity = new vB_ActivityStream_Manage('project', 'issuenote');
 						$activity->set('contentid', $this->fetch_field('issuenoteid'));

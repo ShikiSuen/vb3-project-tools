@@ -476,6 +476,7 @@ if ($_POST['do'] == 'postreply')
 		// an insert
 		$issuenotedata->set('userid', $vbulletin->userinfo['userid']);
 		$issuenotedata->set('username', $vbulletin->userinfo['username']);
+		$issuenotedata->set_info('noas', false);
 		if (!($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancreateprivate']))
 		{
 			// new issue -- can't make private
@@ -1554,6 +1555,7 @@ if ($_POST['do'] == 'postissue')
 		$issuenote->set('visible', 'visible');
 		$issuenote->set('isfirstnote', 1);
 		$issuenote->set('pagetext', $vbulletin->GPC['message']);
+		$issuenote->set_info('noas', true);
 	}
 
 	if (fetch_require_pt_hvcheck('post'))
