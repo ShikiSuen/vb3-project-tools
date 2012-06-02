@@ -656,7 +656,7 @@ $perms_query = build_issue_permissions_query($vbulletin->userinfo);
 
 $show['issue_closed'] = ($issue['state'] == 'closed');
 $show['reply_issue'] = $posting_perms['can_reply'];
-$show['quick_reply'] = ($vbulletin->userinfo['userid'] AND $posting_perms['can_reply']);
+$show['quick_reply'] = (($vbulletin->userinfo['userid'] AND $posting_perms['can_reply']) AND (!fetch_require_pt_hvcheck('post')));
 $show['lightbox'] = ($vbulletin->options['lightboxenabled'] AND $vbulletin->options['usepopups']);
 
 if (!$vbulletin->pt_issuestatus["$issue[issuestatusid]"]['canpetitionfrom'])
@@ -1104,11 +1104,6 @@ if ($show['quick_reply'])
 		$messagearea
 	";
 }
-else if ($show['ajax_js'])
-{
-	$templater = vB_Template::create('editor_clientscript');
-	$vBeditTemplate['clientscript'] = $templater->render();
-}
 
 // Project navigation
 if ($vbulletin->options['pt_disablequicknav'] AND count($vbulletin->pt_projects) >= 2)
@@ -1162,6 +1157,8 @@ $templater = vB_Template::create('pt_issue');
 	$templater->register('attachmentoption', $attachmentoption);
 	$templater->register('display_type_counts', $display_type_counts);
 	$templater->register('editorid', $editorid);
+	$templater->register('editor_clientscript', vB_Template::create('editor_clientscript')->render());
+	$templater->register('editor_js', vB_Ckeditor::getJsIncludes());
 	$templater->register('fblikebutton', $fblikebutton);
 	$templater->register('fbpublishcheckbox', $fbpublishcheckbox);
 	$templater->register('issuefirstnote', $issuefirstnote);
@@ -1178,7 +1175,6 @@ $templater = vB_Template::create('pt_issue');
 	$templater->register('qrissuenoteid', $qrissuenoteid);
 	$templater->register('selected_filter', $selected_filter);
 	$templater->register('tags', $tags);
-	$templater->register('vBeditTemplate', $vBeditTemplate);
 	$templater->register('vbversion', $vbversion);
 	$templater->register('contenttypeid', $issue_contenttypeid);
 print_output($templater->render());

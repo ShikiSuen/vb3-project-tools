@@ -4696,7 +4696,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1337630218" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1338674590" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5011,24 +5011,22 @@ legend {
 
 <br /><br />
 
-<vb:if condition="$projectlist">
-	<div class="pt_listprojects">
-		<div class="menu<vb:if condition="empty($pagenav)"> marginissue1<vb:else /> marginissue2</vb:if>">
-			<div class="clear"></div>
-			<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
-				<span class="shade">{vb:rawphrase projects}</span>
-				<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
-				<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
-				<ul class="navpopupbody popupbody popuphover">
-					<li class="optionlabel">{vb:rawphrase projects}</li>
-					<vb:each from="projectlist" key="projectid" value="projectdata">
-						<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
-					</vb:each>
-				</ul>
-			</div>
+<div class="pt_listprojects">
+	<div class="menu<vb:if condition="empty($pagenav)"> marginissue1<vb:else /> marginissue2</vb:if>">
+		<div class="clear"></div>
+		<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
+			<span class="shade">{vb:rawphrase projects}</span>
+			<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
+			<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
+			<ul class="navpopupbody popupbody popuphover">
+				<li class="optionlabel">{vb:rawphrase projects}</li>
+				<vb:each from="projectlist" key="projectid" value="projectdata">
+					<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
+				</vb:each>
+			</ul>
 		</div>
 	</div>
-</vb:if>
+</div>
 
 <!-- notes -->
 <a name="notestart"></a>
@@ -5051,7 +5049,14 @@ legend {
 <br />
 </div>
 
-<vb:if condition="$show['quick_reply'] OR $show['ajax_js']">
+<!-- scripts for quick edit -->
+<vb:if condition="!$show['quick_reply']">
+	{vb:raw editor_clientscript}
+	{vb:raw editor_js}
+</vb:if>
+<!-- / scripts for quick edit -->
+
+<vb:if condition="$show['quick_reply']">
 <br />
 
 <!-- ajax errors table -->
@@ -5071,12 +5076,6 @@ legend {
 </div>
 <!-- / ajax errors table -->
 
-
-<!-- scripts for quick reply and quick edit -->
-{vb:raw vBeditTemplate.clientscript}
-</vb:if>
-
-<vb:if condition="$show['quick_reply']">
 <div id="qr_defaultcontainer" class="blockfoot floatcontainer qrcontainer<vb:if condition="$show['qr_require_click']"> qr_require_click</vb:if>">
 <form class="vbform" name="quick_reply" id="quick_reply" method="post" action="projectpost.php?{vb:raw session.sessionurl}do=postreply" onsubmit="return qr_pt_prepare_submit(this, {vb:raw vboptions.postminchars});">
 	<div id="qr_error_tbody" class="block errorblock hidden">
@@ -7793,7 +7792,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1333884224" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1338674614" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7884,6 +7883,8 @@ init_project_readmarker_system();
 		<div class="section">
 			{vb:raw usernamecode}
 
+			{vb:raw human_verify}
+
 			<div class="blockrow">
 				<div class="smallfont" style="float:{vb:stylevar right}"><a href="faq.php?{vb:raw session.sessionurl}faq=pt_faq#faq_pt_faq_how_post" target="_blank">{vb:rawphrase what_makes_good_issue_description}</a></div>
 				<label for="title" class="full">{vb:rawphrase title}:</label>
@@ -7899,8 +7900,6 @@ init_project_readmarker_system();
 				<label for="{vb:raw editorid}_textarea" class="full">{vb:rawphrase description}:</label>
 				{vb:raw messagearea}
 			</div>
-
-			{vb:raw human_verify}
 		</div>
 	</div>
 	<div class="blockfoot actionbuttons">
@@ -8372,7 +8371,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_postreply" templatetype="template" date="1329085817" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postreply" templatetype="template" date="1338674634" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8464,13 +8463,13 @@ init_project_readmarker_system();
 	<div class="blockbody formcontrols">
 		<div class="section">
 			{vb:raw usernamecode}
+
+			{vb:raw human_verify}
 		
 			<div class="blockrow">
 				<label for="{vb:raw editorid}_textarea" class="full">{vb:rawphrase description}:</label>
 				{vb:raw messagearea}
 			</div>
-
-			{vb:raw human_verify}
 		</div>
 	</div>
 	<div class="blockfoot actionbuttons">
