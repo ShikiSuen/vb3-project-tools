@@ -4272,7 +4272,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_import_content_confirm" templatetype="template" date="1334676683" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_import_content_confirm" templatetype="template" date="1338680839" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -4344,7 +4344,7 @@ legend {
 	<div class="blockbody formcontrols">
 		<div class="section">
 			<div class="blockrow">
-				<label>{vb:rawphrase additional_options}</label>
+				<label>{vb:rawphrase miscellaneous_options}</label>
 				<ul class="checkradio group rightcol">
 					<li>
 						<label>{vb:rawphrase project}<br />{vb:raw project.title_clean}</label>
@@ -4374,7 +4374,6 @@ legend {
 					<ul class="rightcol">
 						<li>
 							<select class="primary" name="priority" tabindex="1">
-								<option value="0">{vb:rawphrase unknown}</option>
 								<vb:each from="priority_options" value="option">
 									<option value="{vb:raw option.value}">{vb:raw option.title}</option>
 								</vb:each>
@@ -4404,14 +4403,13 @@ legend {
 			<vb:if condition="$show['assign_dropdown']">
 				<fieldset class="blockrow">
 					<legend>{vb:rawphrase issue_type}</legend>
-					<ul class="rightcol">
+					<ul class="rightcol group">
 						<li>
 							{vb:raw issuetype}
 						</li>
 					</ul>
 				</fieldset>
 
-				<!-- status -->
 				<fieldset class="blockrow">
 					<legend>{vb:rawphrase status}</legend>
 					<ul class="rightcol">
@@ -4453,7 +4451,6 @@ legend {
 				</vb:if>
 
 				<vb:if condition="$project['requireappliesversion'] > 0">
-					<!-- addressed in version -->
 					<fieldset class="blockrow">
 						<legend>{vb:rawphrase addressed_version_issuetype}</legend>
 						<ul class="rightcol">
@@ -4462,13 +4459,13 @@ legend {
 									<select class="primary" name="addressedversionid" tabindex="1">
 										<option value="0">{vb:rawphrase none_meta}</option>
 										<option value="-1">{vb:rawphrase next_release}</option>
-											<vb:each from="addressed_versions" value="optiongroup">
-												<optgroup label="{vb:raw optiongroup.label}">
-													<vb:each from="optiongroup.group" value="option">
-														<option value="{vb:raw option.value}">{vb:raw option.title}</option>
-													</vb:each>
-												</optgroup>
-											</vb:each>
+										<vb:each from="addressed_versions" value="optiongroup">
+											<optgroup label="{vb:raw optiongroup.label}">
+												<vb:each from="optiongroup.group" value="option">
+													<option value="{vb:raw option.value}">{vb:raw option.title}</option>
+												</vb:each>
+											</optgroup>
+										</vb:each>
 									</select>
 								<vb:else />
 									{vb:raw issue.addressedversion}
@@ -4503,6 +4500,8 @@ legend {
 					</ul>
 				</fieldset>
 			</vb:if>
+
+			{vb:raw issue.magicselectcode}
 
 			<vb:if condition="$show['subscribe_option']">
 				<!-- subscription -->

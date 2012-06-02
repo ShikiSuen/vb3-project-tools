@@ -4410,17 +4410,16 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 	require_once(DIR . '/includes/functions_pt_impex.php');
 	$datainfo = array();
 
-	if ($threadid)
+	if ($threadid OR $postid)
 	{	
 		$threadinfo = verify_id('thread', $threadid, 1, 1);
 		$foruminfo = verify_id('forum', $threadinfo['forumid'], 1, 1);
-	}
+		$forumperms = fetch_permissions($foruminfo['forumid']);
 
-	if ($postid)
-	{
-		$threadinfo = verify_id('thread', $threadid, 1, 1);
-		$foruminfo = verify_id('forum', $threadinfo['forumid'], 1, 1);
-		$postinfo = verify_id('post', $postid, 1, 1);
+		if ($postid)
+		{
+			$postinfo = verify_id('post', $postid, 1, 1);
+		}
 	}
 
 	if ($vbulletin->GPC['issuenote'])
@@ -4439,7 +4438,7 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 	// Permission check
 	if ($vbulletin->GPC['type'] != 'issuenote')
 	{
-		if (!(($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND $foruminfo['canimportintoissues']))
+		if (!(($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND ($forumperms & $vbulletin->bf_ugp_forumpermissions['canimportintoissues'])))
 		{
 			print_no_permission();
 		}
@@ -4476,7 +4475,26 @@ if ($_POST['do'] == 'processimportcontent')
 	// Do our own checking to make sure we have all permissions needed to create issues
 	$project = ptimporter_verify_issuetypeid($vbulletin->GPC['issuetypeid'], $vbulletin->GPC['projectid']);
 	$posting_perms = ptimporter_prepare_issue_posting_pemissions($project['projectid'], $vbulletin->GPC['issuetypeid']);
-	
+
+	// Custom Magic Selects
+	$listmagicselect = array();
+
+	$magicselects = $db->query_read("
+		SELECT projectmagicselectgroupid
+		FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
+		WHERE projectid = " . $project['projectid'] . "
+	");
+
+	while ($magicselect = $db->fetch_array($magicselects))
+	{
+		$listmagicselect[] = $magicselect['projectmagicselectgroupid'];
+	}
+
+	foreach ($listmagicselect AS $magicselectlist)
+	{
+		$vbulletin->input->clean_gpc('p', 'magicselect' . $magicselectlist, TYPE_UINT);
+	}
+
 	// Make sure the new issue status is valid
 	ptimporter_verify_issuestatusid($vbulletin->GPC['issuestatusid'], $vbulletin->GPC['issuetypeid']);
 
@@ -4521,7 +4539,21 @@ if ($_POST['do'] == 'processimportcontent')
 
 	$importdata = $importer->fetch_import($datatype);
 
+	// Return the issueid
 	$return = $importdata->import_all();
+
+	// Custom Magic Selects
+	$magiclists = array();
+
+	$issuems =& datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_ARRAY, 'pt_magicselect');
+
+	foreach ($listmagicselect AS $magicselectlist)
+	{
+		$issuems->set('magicselect' . $magicselectlist, $vbulletin->GPC['magicselect' . $magicselectlist]);
+	}
+
+	$issuems->set('issueid', $return);
+	$issuems->save();
 
 	if (is_array($return))
 	{
@@ -4547,6 +4579,8 @@ if ($_POST['do'] == 'importcontent2')
 		'project-issuetype' => TYPE_NOHTML,
 		'preview' => TYPE_NOHTML,
 	));
+
+	$issue = array();
 
 	list($projectid, $issuetypeid) = explode('-', $vbulletin->GPC['project-issuetype']);
 
@@ -4767,6 +4801,54 @@ if ($_POST['do'] == 'importcontent2')
 
 	$show['subscribe_option'] = ($vbulletin->userinfo['userid'] > 0);
 
+	// Custom Magic Selects
+	$issue['magicselectcode'] = '';
+	$magicselectlist = array();
+
+	$magicselect_query = $db->query_read("
+		SELECT projectmagicselect.*, projectmagicselectgroup.displayorder AS groupdisplayorder
+		FROM " . TABLE_PREFIX . "pt_projectmagicselect AS projectmagicselect
+			INNER JOIN " . TABLE_PREFIX . "pt_projectmagicselectgroup AS projectmagicselectgroup ON (projectmagicselect.projectmagicselectgroupid = projectmagicselectgroup.projectmagicselectgroupid)
+		WHERE projectmagicselectgroup.projectid = " . $project['projectid'] . "
+		ORDER BY projectmagicselectgroup.displayorder, projectmagicselect.displayorder ASC
+	");
+
+	while ($magicselects = $db->fetch_array($magicselect_query))
+	{
+		$magicselectlist["$magicselects[projectmagicselectgroupid]"]["$magicselects[projectmagicselectid]"] = $magicselects;
+	}
+
+	$show['magicselect_none'] = true;
+
+	foreach ($magicselectlist AS $projectmagicselectgroupid => $magicselectcontent)
+	{
+		$selected = '';
+		$options = array();
+		$magicselect = array();
+
+		$magicselect['text'] = $vbphrase['magicselectgroup' . $projectmagicselectgroupid . ''];
+		$magicselect['projectmagicselectgroupid'] = $projectmagicselectgroupid;
+
+		foreach ($magicselectcontent AS $msid => $magicselectdata)
+		{
+			$options['value'] = $magicselectdata['value'];
+			$options['title'] = $vbphrase['magicselect' . $msid];
+			$options['selected'] = ($magicselectdata['value'] == $issue['magicselect' . $magicselectdata['projectmagicselectgroupid']] ? ' selected="selected"' : '');
+
+			if ($options['value'] == 0)
+			{
+				$show['magicselect_none'] = false;
+			}
+
+			$magicselect['options'][] = $options;
+		}
+
+		$templater = vB_Template::create('pt_postissue_magicselect');
+			$templater->register('magicselect', $magicselect);
+			$templater->register('issue', $issue);
+		$issue['magicselectcode'] .= $templater->render();
+	}
+
 	// setup milestones
 	$show['milestone'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $project['milestonecount']);
 	$show['milestone_edit'] = ($show['milestone'] AND $posting_perms['milestone_edit']);
@@ -4827,8 +4909,6 @@ if ($_POST['do'] == 'importcontent2')
 	$vbphrase['addressed_version_issuetype'] = $vbphrase["addressed_version_$issuetypeid"];
 
 	// Some values for template
-	$issue = array();
-
 	$issue['issuetype'] = $vbphrase['issuetype_' . $issuetypeid . '_singular'];
 	$issue['issuestatus'] = $vbphrase['issuestatus' . $issuestatus['startstatusid'] . ''];
 	$issue['issuestatusid'] = $issuestatus['startstatusid'];

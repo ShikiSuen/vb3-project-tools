@@ -562,11 +562,10 @@ class vB_Pt_Import_Thread extends vB_Pt_Import
 			// Specific values for PT
 			$this->registry->db->query_write("
 				INSERT INTO " . TABLE_PREFIX . "pt_issueattach
-					(attachmentid, issueid, userid, visible, status, ispatchfile)
+					(attachmentid, issueid, visible, status, ispatchfile)
 				VALUES
 					($attachmentid,
 					" . $this->issueid . ",
-					" . $attach['userid'] . ",
 					1,
 					'current',
 					" . (in_array(substr($attach['filename'], strpos($attach['filename'], '.')), array('diff', 'patch', 'xml')) ? 1 : 0) . ")
@@ -740,11 +739,10 @@ class vB_Pt_Import_Post extends vB_Pt_Import
 			// Specific values for PT
 			$this->registry->db->query_write("
 				INSERT INTO " . TABLE_PREFIX . "pt_issueattach
-					(attachmentid, issueid, userid, visible, status, ispatchfile)
+					(attachmentid, issueid, visible, status, ispatchfile)
 				VALUES
 					($attachmentid,
 					" . $this->issueid . ",
-					" . $attach['userid'] . ",
 					1,
 					'current',
 					" . (in_array(substr($attach['filename'], strpos($attach['filename'], '.')), array('diff', 'patch', 'xml')) ? 1 : 0) . ")
@@ -909,11 +907,10 @@ class vB_Pt_Import_Issuenote extends vB_Pt_Import
 			// Specific values for PT
 			$this->registry->db->query_write("
 				INSERT INTO " . TABLE_PREFIX . "pt_issueattach
-					(attachmentid, issueid, userid, visible, status, ispatchfile)
+					(attachmentid, issueid, visible, status, ispatchfile)
 				VALUES
 					($attachmentid,
 					" . $this->issueid . ",
-					" . $attach['userid'] . ",
 					1,
 					'current',
 					" . (in_array(substr($attach['filename'], strpos($attach['filename'], '.')), array('diff', 'patch', 'xml')) ? 1 : 0) . ")
