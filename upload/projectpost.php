@@ -82,25 +82,23 @@ $actiontemplates = array(
 		'bbcode_video',
 	),
 	'export' => array(
-		'optgroup',
 		'pt_export_content'
 	),
 	'confirmexport' => array(
-		'optgroup',
 		'pt_export_content_confirm',
 		'pt_export_content_post',
 		'pt_export_content_thread'
 	),
 	'importcontent' => array(
-		'optgroup',
 		'pt_import_content',
 	),
 	'importcontent2' => array(
-		'optgroup',
 		'pt_import_content_confirm',
+		'pt_postissue_magicselect',
 	),
 	'processimportcontent' => array(
 		'pt_import_content_confirm', // If errors are returned, this is needed
+		'pt_postissue_magicselect', // If errors are returned, this is needed
 	),
 	'manageattach' => array(
 		'pt_manageattach'
@@ -121,11 +119,9 @@ $actiontemplates = array(
 		'pt_manageprojectsubscription'
 	),
 	'moveissue' => array(
-		'optgroup',
 		'pt_move_issue'
 	),
 	'moveissue2' => array(
-		'optgroup',
 		'pt_move_issue_confirm'
 	),
 );
