@@ -1504,6 +1504,8 @@ $db->hide_errors();
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requireappliesversion INT UNSIGNED NOT NULL DEFAULT 0");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirecategory INT UNSIGNED NOT NULL DEFAULT 0");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirepriority INT UNSIGNED NOT NULL DEFAULT 0");
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD pmonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0");
+$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0");
 
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversion ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
 $db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
@@ -1608,6 +1610,17 @@ while ($project = $db->fetch_array($projects))
 	$projectdata->set('requireappliesversion', $requireappliesversion);
 	$projectdata->set('requirecategory', $requirecategory);
 	$projectdata->set('requirepriority', $requirepriority);
+
+	if ($project['options'] & 8)
+	{
+		$projectdata->set('emailonassignment', 1);
+	}
+
+	if ($project['options'] & 16)
+	{
+		$projectdata->set('pmonassignment', 1);
+	}
+
 	$projectdata->save();
 }
 

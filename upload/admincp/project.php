@@ -608,7 +608,9 @@ if ($_POST['do'] == 'update')
 		'forumtitle' => TYPE_STR,
 		'requireappliesversion' => TYPE_UINT,
 		'requirecategory' => TYPE_UINT,
-		'requirepriority' => TYPE_UINT
+		'requirepriority' => TYPE_UINT,
+		'pmonassignment' => TYPE_BOOL,
+		'emailonassignment' => TYPE_BOOL,
 	));
 
 	if (empty($vbulletin->GPC['title']))
@@ -653,6 +655,8 @@ if ($_POST['do'] == 'update')
 	$projectdata->set('requireappliesversion', $vbulletin->GPC['requireappliesversion']);
 	$projectdata->set('requirecategory', $vbulletin->GPC['requirecategory']);
 	$projectdata->set('requirepriority', $vbulletin->GPC['requirepriority']);
+	$projectdata->set('pmonassignment', $vbulletin->GPC['pmonassignment']);
+	$projectdata->set('emailonassignment', $vbulletin->GPC['emailnoassignment']);
 
 	if (!$project['projectid'])
 	{
@@ -810,8 +814,8 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>", 'title', $project['title']);
 	print_input_row("$vbphrase[summary]<dfn>$vbphrase[html_is_allowed]</dfn>", 'summary', $project['summary']);
 	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>", 'description', $project['description'], 6, 60);
-	print_yes_no_row($vbphrase['send_email_on_issueassignment'], 'options[emailonassignment]', (intval($project['options']) & $vbulletin->bf_misc['pt_projectoptions']['emailonassignment'] ? 1 : 0));
-	print_yes_no_row($vbphrase['send_pm_on_issueassignment'], 'options[pmonassignment]', (intval($project['options']) & $vbulletin->bf_misc['pt_projectoptions']['pmonassignment'] ? 1 : 0));
+	print_yes_no_row($vbphrase['send_email_on_issueassignment'], 'emailonassignment', (intval($project['options']) & $vbulletin->bf_misc['pt_projectoptions']['emailonassignment'] ? 1 : 0));
+	print_yes_no_row($vbphrase['send_pm_on_issueassignment'], 'pmonassignment', (intval($project['options']) & $vbulletin->bf_misc['pt_projectoptions']['pmonassignment'] ? 1 : 0));
 	print_input_row($vbphrase['display_order'], 'displayorder', $project['displayorder'], true, 5);
 
 	$required = array(

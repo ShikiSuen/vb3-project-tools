@@ -44,7 +44,9 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 		'requirecategory'		=> array(TYPE_UINT, REQ_NO),
 		'requirepriority'		=> array(TYPE_UINT, REQ_NO),
 		'afterforumids'			=> array(TYPE_STR, REQ_NO, VF_METHOD, 'verify_commalist'),
-		'forumtitle'			=> array(TYPE_STR, REQ_NO)
+		'forumtitle'			=> array(TYPE_STR, REQ_NO),
+		'pmonassignment'		=> array(TYPE_BOOL, REQ_NO),
+		'emailonassignment'		=> array(TYPE_BOOL, REQ_NO)
 	);
 
 	/**
