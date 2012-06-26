@@ -7,7 +7,7 @@
 	<url />
 	<versioncheckurl />
 	<dependencies>
-		<dependency dependencytype="vbulletin" minversion="4.1.4" maxversion="" />
+		<dependency dependencytype="vbulletin" minversion="4.1.4" maxversion="5.0.0 Alpha 1" />
 	</dependencies>
 	<codes>
 		<code version="*">
@@ -14567,6 +14567,11 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="priority" date="1307022121" username="Pitchoune" version="2.2.0"><![CDATA[Priority]]></phrase>
 			<phrase name="projects" date="1181655523" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Projects]]></phrase>
 			<phrase name="search_projects" date="1174406531" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search Projects]]></phrase>
+			<phrase name="vb_navigation_link_vbpt_faq_text" date="1337425710" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[FAQ]]></phrase>
+			<phrase name="vb_navigation_link_vbpt_myreports_text" date="1337425527" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[My Reports]]></phrase>
+			<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1337425622" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[Manage Subscriptions]]></phrase>
+			<phrase name="vb_navigation_link_vbpt_timeline_text" date="1337425678" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[Project Timeline]]></phrase>
+			<phrase name="vb_navigation_tab_vbtab_project_text" date="1337425462" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[Projects]]></phrase>
 			<phrase name="x_replied_to_an_issue_y_in_z" date="1336938258" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> replied to an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
 			<phrase name="x_started_an_issue_y_in_z" date="1336938296" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}" class="username">{2}</a> started an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
 		</phrasetype>
