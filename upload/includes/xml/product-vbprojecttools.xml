@@ -126,6 +126,23 @@ $db->query_write("
 ");
 
 $db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueimport (
+		issueid INT UNSIGNED NOT NULL,
+		contenttypeid INT UNSIGNED NOT NULL,
+		contentid INT UNSIGNED NOT NULL,
+		data MEDIUMTEXT,
+		PRIMARY KEY (issueid)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuemagicselect (
+		issueid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY (issueid)
+	)
+");
+
+$db->query_write("
 	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuenote (
 		issuenoteid INT UNSIGNED AUTO_INCREMENT NOT NULL,
 		issueid INT UNSIGNED NOT NULL DEFAULT 0,
@@ -268,8 +285,18 @@ $db->query_write("
 		displayorder INT UNSIGNED NOT NULL DEFAULT 0,
 		canpetitionfrom SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		issuecompleted SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+		statuscolor VARCHAR(20) NOT NULL DEFAULT '',
+		statuscolor2 VARCHAR(20) NOT NULL DEFALT '',
 		PRIMARY KEY (issuestatusid),
 		KEY finder (issuetypeid, displayorder)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
+		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
+		projectid INT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (issuestatusid, projectid)
 	)
 ");
 
@@ -353,6 +380,11 @@ $db->query_write("
 		afterforumids BLOB NOT NULL,
 		forumtitle VARCHAR(250) NOT NULL DEFAULT '',
 		milestonecount INT UNSIGNED NOT NULL DEFAULT 0,
+		requireappliesversion INT UNSIGNED NOT NULL DEFAULT 0,
+		requirecategory INT UNSIGNED NOT NULL DEFAULT 0,
+		requirepriority INT UNSIGNED NOT NULL DEFAULT 0,
+		pmonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
+		emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0
 		PRIMARY KEY (projectid)
 	)
 ");
@@ -363,8 +395,31 @@ $db->query_write("
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		title VARCHAR(250) NOT NULL DEFAULT '',
 		displayorder INT UNSIGNED NOT NULL DEFAULT 0,
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectcategoryid),
 		KEY finder (projectid, displayorder)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselect (
+		projectmagicselectid INT(10) NOT NULL AUTO_INCREMENT,
+		projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		projectmagicselectgroupid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		`value` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY (projectmagicselectid),
+		KEY projectid (projectid)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup (
+		projectmagicselectgroupid INT(10) NOT NULL AUTO_INCREMENT,
+		projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY (projectmagicselectgroupid),
+		KEY projectid (projectid)
 	)
 ");
 
@@ -378,6 +433,19 @@ $db->query_write("
 		attachpermissions INT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (usergroupid, projectid, issuetypeid),
 		KEY projectid (projectid)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectpriority (
+		projectpriorityid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		projectid INT UNSIGNED NOT NULL,
+		displayorder INT UNSIGNED NOT NULL,
+		statuscolor VARCHAR(20) NOT NULL,
+		statuscolor2 VARCHAR(20) NOT NULL,
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (projectpriorityid),
+		KEY finder (projectid,displayorder)
 	)
 ");
 
@@ -443,6 +511,7 @@ $db->query_write("
 		projectversiongroupid INT UNSIGNED NOT NULL DEFAULT 0,
 		displayorder SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		effectiveorder INT UNSIGNED NOT NULL DEFAULT 0,
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0
 		PRIMARY KEY (projectversionid),
 		KEY finder (projectid, effectiveorder)
 	)
@@ -465,6 +534,14 @@ $db->query_write("
 		tagtext VARCHAR(50) NOT NULL DEFAULT '',
 		PRIMARY KEY (tagid),
 		UNIQUE KEY tagtext (tagtext)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_user (
+		userid INT UNSIGNED NOT NULL DEFAULT 0,
+		totalissues INT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (userid)
 	)
 ");
 
@@ -737,6 +814,8 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueassign");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueattach");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuechange");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuedeletionlog");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuemagicselect");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuenote");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuenotehash");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuenotehistory");
@@ -748,6 +827,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuereportsubscri
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuesearch");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuesearchresult");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatus");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuesubscribe");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuetag");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuetype");
@@ -756,7 +836,10 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_milestone");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_milestonetypecount");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_project");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectcategory");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpermission");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectread");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projecttype");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projecttypeprivatelastpost");
@@ -764,6 +847,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projecttypesubscri
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectversion");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectversiongroup");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_tag");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");
 
 $db->query_write("DELETE FROM " . TABLE_PREFIX . "datastore WHERE title LIKE 'pt\_%'");
 
@@ -1047,6 +1131,7 @@ if ($db_alter->fetch_table_info('thread'))
 		$db->query_write("ALTER TABLE " . TABLE_PREFIX . "thread CHANGE ptissueid pt_issueid INT(10) UNSIGNED NOT NULL");
 		$db->query_write("ALTER TABLE " . TABLE_PREFIX . "thread CHANGE ptforwardmode pt_forwardmode INT(10) UNSIGNED NOT NULL");
 
+		// Requires only to remove the old product
 		$db_alter->add_field(array(
 			'name' => 'ptissueid',
 			'type' => 'int',
@@ -1160,44 +1245,54 @@ if ($show['ptimporter_previous'])
 			<uninstallcode />
 		</code>
 		<code version="2.1.2">
-			<installcode><![CDATA[$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
-		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
-		projectid INT UNSIGNED NOT NULL DEFAULT 0,
-		PRIMARY KEY (issuestatusid, projectid)
-	) ENGINE=MyISAM
-");
-
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_user (
-		userid INT UNSIGNED NOT NULL,
-		totalissues INT UNSIGNED NOT NULL DEFAULT 0,
-		PRIMARY KEY (userid)
-	) ENGINE=MyISAM
-");
-
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueimport (
-		issueid INT UNSIGNED NOT NULL,
-		contenttypeid INT UNSIGNED NOT NULL,
-		contentid INT UNSIGNED NOT NULL,
-		data MEDIUMTEXT,
-		PRIMARY KEY (issueid)
-	) ENGINE=MyISAM
-");
-
-require_once(DIR . '/includes/class_dbalter.php');
-$db_alter = new vB_Database_Alter_MySQL($db);
-
-// Add field for 'PT color titles by status' feature
-if ($db_alter->fetch_table_info('pt_issuestatus'))
+			<installcode><![CDATA[if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
 {
-	$db_alter->add_field(array(
-		'name' => 'statuscolor',
-		'type' => 'varchar',
-		'length' => '20',
-		'null' => false
-	));
+	// This is needed? Don't know. Added to be sure.
+	require_once(DIR . '/includes/class_bootstrap_framework.php');
+	vB_Bootstrap_Framework::init();
+}
+
+if ($installed_version !== null)
+{
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
+			issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
+			projectid INT UNSIGNED NOT NULL DEFAULT 0,
+			PRIMARY KEY (issuestatusid, projectid)
+		)
+	");
+
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_user (
+			userid INT UNSIGNED NOT NULL,
+			totalissues INT UNSIGNED NOT NULL DEFAULT 0,
+			PRIMARY KEY (userid)
+		)
+	");
+
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueimport (
+			issueid INT UNSIGNED NOT NULL,
+			contenttypeid INT UNSIGNED NOT NULL,
+			contentid INT UNSIGNED NOT NULL,
+			data MEDIUMTEXT,
+			PRIMARY KEY (issueid)
+		)
+	");
+
+	require_once(DIR . '/includes/class_dbalter.php');
+	$db_alter = new vB_Database_Alter_MySQL($db);
+
+	// Add field for 'PT color titles by status' feature
+	if ($db_alter->fetch_table_info('pt_issuestatus'))
+	{
+		$db_alter->add_field(array(
+			'name' => 'statuscolor',
+			'type' => 'varchar',
+			'length' => '20',
+			'null' => false
+		));
+	}
 }
 
 // #############################################################################
@@ -1207,8 +1302,6 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 */
 
 // Get the contenttypeid of threads
-require_once(DIR . '/includes/class_bootstrap_framework.php');
-vB_Bootstrap_Framework::init();
 $contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
 
 // Move any existing data into the new table before removing useless fields
@@ -1269,47 +1362,33 @@ rebuild_profile_issue_counters();
 if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
 {
 	// We need to have the packageid of vbcms
-	$packageid = $db->query_first("
-		SELECT packageid AS packageid
-		FROM " . TABLE_PREFIX . "package
-		WHERE productid = 'vbcms'
-	");
+	$packagecms = vB_Types::instance()->getPackageID('vbcms');
 
 	// Add widgets
 	$db->query_write("
 		INSERT IGNORE INTO " . TABLE_PREFIX . "cms_widgettype
 			(class, packageid)
 		VALUES
-			('RecentPTIssues', " . $packageid['packageid'] . "),
-			('RecentPTComments', " . $packageid['packageid'] . ")
+			('RecentPTIssues', " . $packagecms . "),
+			('RecentPTComments', " . $packagecms . ")
 	");
+}
 
-	// Clear CMS cache to add these widgets directly in the widget type list
-
-	// This is needed? Don't know. Added to be sure.
-	require_once(DIR . '/includes/class_bootstrap_framework.php');
-	vB_Bootstrap_Framework::init();
-
-	if (method_exists(vB_Cache::instance(), 'clean'))
-	{
-		vB_Cache::instance()->clean(false);
-	}
+// Clear CMS cache to add these widgets directly in the widget type list
+if (method_exists(vB_Cache::instance(), 'clean'))
+{
+	vB_Cache::instance()->clean(false);
 }
 
 // Adding some content type for PT search via search.php
-$package = $db->query_first("
-	SELECT packageid
-	FROM " . TABLE_PREFIX . "package
-	WHERE productid = 'vbprojecttools'
-		AND class = 'vBProjectTools'
-");
+$packagept = vB_Types::instance()->getPackageID('vBProjectTools');
 
 // Actually deactivated - change cansearch from 0 to 1 to activate it
 $db->query_write("
 	INSERT INTO " . TABLE_PREFIX . "contenttype
 		(class, packageid, canplace, cansearch, cantag, canattach)
 	VALUES
-		('IssueNote', " . $package['packageid'] . ", '0', '0', '0', '0')
+		('IssueNote', " . $packagept . ", '0', '0', '0', '0')
 ");
 
 // #############################################################################
@@ -1358,11 +1437,7 @@ else
 	// Appropriate the block to the corresponding product
 	$db->query_write("UPDATE " . TABLE_PREFIX . "blocktype SET productid = 'vbprojecttools' WHERE name = 'ptissues'");
 }]]></installcode>
-			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset");
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");
-
-// #############################################################################
+			<uninstallcode><![CDATA[// #############################################################################
 /**
 * CMS Widgets
 */
@@ -1468,10 +1543,13 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
 		<code version="2.1.3">
 			<installcode><![CDATA[// Issue #163 fix
-$db->query_write("
-	ALTER TABLE " . TABLE_PREFIX . "pt_user
-	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT '0'
-");]]></installcode>
+if ($installed_version !== null)
+{
+	$db->query_write("
+		ALTER TABLE " . TABLE_PREFIX . "pt_user
+		CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT '0'
+	");
+}]]></installcode>
 			<uninstallcode />
 		</code>
 		<code version="2.2.0">
@@ -1479,18 +1557,21 @@ $db->query_write("
 $full_product_info = fetch_product_list(true);
 
 // Adding a table for priority
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectpriority (
-		projectpriorityid INT UNSIGNED NOT NULL AUTO_INCREMENT,
-		projectid INT UNSIGNED NOT NULL,
-		displayorder INT UNSIGNED NOT NULL,
-		statuscolor VARCHAR(20) NOT NULL,
-		statuscolor2 VARCHAR(20) NOT NULL,
-		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-		PRIMARY KEY (projectpriorityid),
-		KEY finder (projectid,displayorder)
-	) ENGINE=MyISAM
-");
+if ($installed_version !== null)
+{
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectpriority (
+			projectpriorityid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			projectid INT UNSIGNED NOT NULL,
+			displayorder INT UNSIGNED NOT NULL,
+			statuscolor VARCHAR(20) NOT NULL,
+			statuscolor2 VARCHAR(20) NOT NULL,
+			defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+			PRIMARY KEY (projectpriorityid),
+			KEY finder (projectid,displayorder)
+		)
+	");
+}
 
 /*================================*\
 || ############################## ||
@@ -1501,14 +1582,17 @@ $db->query_write("
 // Hide errors if columns are already present
 $db->hide_errors();
 
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requireappliesversion INT UNSIGNED NOT NULL DEFAULT 0");
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirecategory INT UNSIGNED NOT NULL DEFAULT 0");
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirepriority INT UNSIGNED NOT NULL DEFAULT 0");
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD pmonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0");
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0");
+if ($installed_version !== null)
+{
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requireappliesversion INT UNSIGNED NOT NULL DEFAULT 0");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirecategory INT UNSIGNED NOT NULL DEFAULT 0");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD requirepriority INT UNSIGNED NOT NULL DEFAULT 0");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD pmonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project ADD emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0");
 
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversion ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectversion ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_projectcategory ADD defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0");
+}
 
 // Show future errors now
 $db->show_errors();
@@ -1875,7 +1959,10 @@ foreach ($project_array AS $projects)
 $db->hide_errors();
 
 // Add field for 'PT color titles by status' feature
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_issuestatus ADD statuscolor2 VARCHAR(20) NOT NULL");
+if ($installed_version !== null)
+{
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_issuestatus ADD statuscolor2 VARCHAR(20) NOT NULL DEFAULT ''");
+}
 
 // Show future errors now
 $db->show_errors();
@@ -1888,25 +1975,20 @@ $db->show_errors();
 
 // As the Bootstrap Framework is a big shit (at least in 4.1.4, fixed in 4.2.0),
 // we need to workaround it with some queries
-$packageid = $db->query_first("
-	SELECT packageid
-	FROM " . TABLE_PREFIX . "package
-	WHERE productid = 'vbprojecttools'
-		AND class = 'vBProjectTools'
-");
+if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
+{
+	require_once(DIR . '/includes/class_bootstrap_framework.php');
+	vB_Bootstrap_Framework::init();
+}
 
-$issue_contenttypeid = $db->query_first("
-	SELECT contenttypeid
-	FROM " . TABLE_PREFIX . "contenttype
-	WHERE class = 'Issue'
-		AND packageid = " . $packageid['packageid'] . "
-");
+$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+$issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
 
 // Query to allow attachments to issues
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
 		canattach = '1'
-	WHERE contenttypeid = " . $issue_contenttypeid['contenttypeid'] . "
+	WHERE contenttypeid = " . $issue_contenttypeid . "
 ");
 
 // Default data to import with PT 2.2
@@ -1967,18 +2049,21 @@ foreach ($attachmenttypes AS $extension => $attachmenttype)
 }
 
 // Add an admin message to move attachments in the vB4 system
-$db->query_write("
-	INSERT INTO " . TABLE_PREFIX . "adminmessage
-		(varname, dismissable, script, action, execurl, method, status)
-	VALUES
-		('after_upgrade_40_update_pt_attachment',
-		1,
-		'project.php',
-		'updateattachments',
-		'project.php?do=updateattachments&pp=25',
-		'get',
-		'undone')
-");
+if ($installed_version !== null)
+{
+	$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "adminmessage
+			(varname, dismissable, script, action, execurl, method, status)
+		VALUES
+			('after_upgrade_40_update_pt_attachment',
+			1,
+			'project.php',
+			'updateattachments',
+			'project.php?do=updateattachments&pp=25',
+			'get',
+			'undone')
+	");
+}
 
 /*================================*\
 || ############################## ||
@@ -1986,37 +2071,40 @@ $db->query_write("
 || ############################## ||
 \*================================*/
 
-// For value for every issue
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuemagicselect (
-		issueid INT(10) UNSIGNED NOT NULL DEFAULT '0',
-		PRIMARY KEY (issueid)
-	) ENGINE=MyISAM
-");
+if ($installed_version !== null)
+{
+	// For value for every issue
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuemagicselect (
+			issueid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+			PRIMARY KEY (issueid)
+		)
+	");
 
-// Every option of all drop-down menus will be stored in this table
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselect (
-		projectmagicselectid INT(10) NOT NULL AUTO_INCREMENT,
-		projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
-		projectmagicselectgroupid INT(10) UNSIGNED NOT NULL DEFAULT '0',
-		displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
-		`value` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-		PRIMARY KEY (projectmagicselectid),
-		KEY projectid (projectid)
-	) ENGINE=MyISAM
-");
+	// Every option of all drop-down menus will be stored in this table
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselect (
+			projectmagicselectid INT(10) NOT NULL AUTO_INCREMENT,
+			projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+			projectmagicselectgroupid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+			displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
+			`value` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+			PRIMARY KEY (projectmagicselectid),
+			KEY projectid (projectid)
+		)
+	");
 
-// Every magic select informations will be stored in this table
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup (
-		projectmagicselectgroupid INT(10) NOT NULL AUTO_INCREMENT,
-		projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
-		displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
-		PRIMARY KEY (projectmagicselectgroupid),
-		KEY projectid (projectid)
-	) ENGINE=MyISAM
-");
+	// Every magic select informations will be stored in this table
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup (
+			projectmagicselectgroupid INT(10) NOT NULL AUTO_INCREMENT,
+			projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+			displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
+			PRIMARY KEY (projectmagicselectgroupid),
+			KEY projectid (projectid)
+		)
+	");
+}
 
 // Add all existing issue in the pt_issuemagicselect or viewing each issue will fail
 $issueidlist = $db->query_read("
@@ -2040,17 +2128,19 @@ while ($issue = $db->fetch_array($issueidlist))
 || ############################## ||
 \*================================*/
 
-$issuenote_contenttypeid = $db->query_first("
-	SELECT contenttypeid
-	FROM " . TABLE_PREFIX . "contenttype
-	WHERE class = 'IssueNote'
-		AND packageid = " . $packageid['packageid'] . "
-");
+if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
+{
+	// This is needed? Don't know. Added to be sure.
+	require_once(DIR . '/includes/class_bootstrap_framework.php');
+	vB_Bootstrap_Framework::init();
+}
+
+$issuenote_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_IssueNote');
 
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
 		cansearch = '1'
-	WHERE contenttypeid = " . $issuenote_contenttypeid['contenttypeid'] . "
+	WHERE contenttypeid = " . $issuenote_contenttypeid . "
 ");
 
 /*================================*\
@@ -2103,12 +2193,7 @@ build_version_cache();
 build_project_category_cache();
 build_project_priority_cache();
 build_project_cache();]]></installcode>
-			<uninstallcode><![CDATA[$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuemagicselect");
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect");
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup");
-
-// Only for 4.2+
+			<uninstallcode><![CDATA[// Only for 4.2+
 if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 {
 	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issue'");
