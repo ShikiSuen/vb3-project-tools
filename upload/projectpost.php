@@ -4430,22 +4430,6 @@ if (in_array($_REQUEST['do'], array('processimportcontent', 'importcontent', 'im
 		$issue = verify_issue($issuenoteinfo['issueid']);
 		$project = verify_project($issue['projectid']);
 	}
-
-	// Permission check
-	if ($vbulletin->GPC['type'] != 'issuenote')
-	{
-		if (!(($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND ($forumperms & $vbulletin->bf_ugp_forumpermissions['canimportintoissues'])))
-		{
-			print_no_permission();
-		}
-	}
-	else
-	{
-		if (!$vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues'])
-		{
-			print_no_permission();
-		}
-	}
 }
 
 // #######################################################################
@@ -4582,7 +4566,7 @@ if ($_POST['do'] == 'importcontent2')
 
 	$project = verify_project($projectid);
 	$posting_perms = ptimporter_prepare_issue_posting_pemissions($project['projectid'], $issuetypeid);
-//echo '<div><pre>';print_r($posting_perms);echo '</pre></div>';
+
 	$show['status_edit'] = ($posting_perms['status_edit']);
 	$show['tags_edit'] = ($posting_perms['tags_edit']);
 	$show['can_custom_tag'] = ($posting_perms['can_custom_tag']);

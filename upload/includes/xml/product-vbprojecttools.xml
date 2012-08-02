@@ -13774,7 +13774,7 @@ if (THIS_SCRIPT == 'index')
 			<hookname>postbit_display_complete</hookname>
 			<phpcode><![CDATA[$forumperms = fetch_permissions($this->thread['forumid']);
 
-$show['createptissue'] = (($this->registry->userinfo['permissions']['ptpermissions'] & $this->registry->bf_ugp_ptpermissions['canimportintoissues']) AND ($forumperms & $this->registry->bf_ugp_forumpermissions['canimportintoissues'])) ? true : false;
+$show['createptissue'] = ($this->registry->userinfo['permissions']['ptpermissions'] & $this->registry->bf_ugp_ptpermissions['canimportintoissues']) ? true : false;
 
 // Add link to promote the post as an issue
 if ($show['createptissue'] AND (!$post['forwardlink'] AND THIS_SCRIPT != 'usernote' AND THIS_SCRIPT != 'announcement'))
@@ -13843,7 +13843,7 @@ if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 		<plugin active="1" executionorder="5">
 			<title>Show Thread: Display moderation option if permitted</title>
 			<hookname>showthread_complete</hookname>
-			<phpcode><![CDATA[$show['createptissue'] = (($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) AND ($forumperms & $vbulletin->bf_ugp_forumpermissions['canimportintoissues'])) ? true : false;
+			<phpcode><![CDATA[$show['createptissue'] = ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canimportintoissues']) ? true : false;
 
 $show['adminoptions'] = $show['adminoptions'] OR $show['createptissue'];
 
