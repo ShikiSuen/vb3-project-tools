@@ -286,7 +286,7 @@ $db->query_write("
 		canpetitionfrom SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		issuecompleted SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		statuscolor VARCHAR(20) NOT NULL DEFAULT '',
-		statuscolor2 VARCHAR(20) NOT NULL DEFALT '',
+		statuscolor2 VARCHAR(20) NOT NULL DEFAULT '',
 		PRIMARY KEY (issuestatusid),
 		KEY finder (issuetypeid, displayorder)
 	)
@@ -384,7 +384,7 @@ $db->query_write("
 		requirecategory INT UNSIGNED NOT NULL DEFAULT 0,
 		requirepriority INT UNSIGNED NOT NULL DEFAULT 0,
 		pmonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
-		emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0
+		emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectid)
 	)
 ");
@@ -511,7 +511,7 @@ $db->query_write("
 		projectversiongroupid INT UNSIGNED NOT NULL DEFAULT 0,
 		displayorder SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		effectiveorder INT UNSIGNED NOT NULL DEFAULT 0,
-		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectversionid),
 		KEY finder (projectid, effectiveorder)
 	)
@@ -1362,7 +1362,7 @@ rebuild_profile_issue_counters();
 if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
 {
 	// We need to have the packageid of vbcms
-	$packagecms = vB_Types::instance()->getPackageID('vbcms');
+	$packagecms = vB_Types::instance()->getPackageID('vBCms');
 
 	// Add widgets
 	$db->query_write("
