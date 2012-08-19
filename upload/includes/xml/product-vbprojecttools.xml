@@ -1217,7 +1217,7 @@ if ($show['ptimporter_previous'])
 	// Clear routes from datastore
 	build_datastore('routes', serialize(array()), 1);
 
-	//clear the type cache.
+	// Clear the type cache.
 	vB_Cache::instance()->purge('vb_types.types');
 
 	if ($db_alter->fetch_table_info('language'))
@@ -1252,6 +1252,9 @@ if ($show['ptimporter_previous'])
 	vB_Bootstrap_Framework::init();
 }
 
+require_once(DIR . '/includes/class_dbalter.php');
+$db_alter = new vB_Database_Alter_MySQL($db);
+
 if ($installed_version !== null)
 {
 	$db->query_write("
@@ -1280,9 +1283,6 @@ if ($installed_version !== null)
 		)
 	");
 
-	require_once(DIR . '/includes/class_dbalter.php');
-	$db_alter = new vB_Database_Alter_MySQL($db);
-
 	// Add field for 'PT color titles by status' feature
 	if ($db_alter->fetch_table_info('pt_issuestatus'))
 	{
@@ -1301,9 +1301,6 @@ if ($installed_version !== null)
 * Moved into a new table
 */
 
-// Get the contenttypeid of threads
-$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
-
 // Move any existing data into the new table before removing useless fields
 $movedthreads = $db->query_read("
 	SELECT threadid, pt_issueid, pt_forwardmode
@@ -1313,6 +1310,9 @@ $movedthreads = $db->query_read("
 
 if ($db->num_rows($movedthreads) > 0)
 {
+	// Get the contenttypeid of threads
+	$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
 	while ($movedthread = $db->fetch_array($movedthreads))
 	{
 		$data = array();
@@ -1381,14 +1381,14 @@ if (method_exists(vB_Cache::instance(), 'clean'))
 }
 
 // Adding some content type for PT search via search.php
-$packagept = vB_Types::instance()->getPackageID('vBProjectTools');
+$packagept = $db->query_first("SELECT packageid FROM " . TABLE_PREFIX . "package WHERE class = 'vBProjectTools'");
 
 // Actually deactivated - change cansearch from 0 to 1 to activate it
 $db->query_write("
 	INSERT INTO " . TABLE_PREFIX . "contenttype
 		(class, packageid, canplace, cansearch, cantag, canattach)
 	VALUES
-		('IssueNote', " . $packagept . ", '0', '0', '0', '0')
+		('IssueNote', " . $packagept['packageid'] . ", '0', '0', '0', '0')
 ");
 
 // #############################################################################
@@ -1981,14 +1981,13 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
 	vB_Bootstrap_Framework::init();
 }
 
-$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
-$issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
+$issue_contenttypeid = $db->query_first("SELECT contenttypeid FROM " . TABLE_PREFIX . "contenttype WHERE class = 'Issue'");
 
 // Query to allow attachments to issues
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
 		canattach = '1'
-	WHERE contenttypeid = " . $issue_contenttypeid . "
+	WHERE contenttypeid = " . $issue_contenttypeid['contenttypeid'] . "
 ");
 
 // Default data to import with PT 2.2
@@ -2135,12 +2134,12 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
 	vB_Bootstrap_Framework::init();
 }
 
-$issuenote_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_IssueNote');
+$issuenote_contenttypeid = $db->query_first("SELECT contenttypeid FROM " . TABLE_PREFIX . "contenttype WHERE class = 'IssueNote'");
 
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
 		cansearch = '1'
-	WHERE contenttypeid = " . $issuenote_contenttypeid . "
+	WHERE contenttypeid = " . $issuenote_contenttypeid['contenttypeid'] . "
 ");
 
 /*================================*\
@@ -2153,14 +2152,14 @@ $db->query_write("
 if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 {
 	// Package ID required
-	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+	$packageid = $db->query_first("SELECT packageid FROM " . TABLE_PREFIX . "package WHERE class = 'vBProjectTools'");
 
 	// Insert Issue in Activity Stream
 	vB::$db->query_write("
 		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
 			(packageid, section, type, enabled)
 		VALUES
-			($packageid, 'project', 'issue', 1)
+			(" . $packageid['packageid'] . ", 'project', 'issue', 1)
 	");
 
 	// Insert IssueNote in Activity Stream
@@ -2168,7 +2167,7 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
 			(packageid, section, type, enabled)
 		VALUES
-			($packageid, 'project', 'issuenote', 1)
+			(" . $packageid['packageid'] . ", 'project', 'issuenote', 1)
 	");
 
 	// Rebuild Activity Stream datastore
