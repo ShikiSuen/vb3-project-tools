@@ -282,7 +282,7 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 
 	print_input_row($vbphrase['title'] . ($trans_link ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link . $projectcategory['projectcategoryid'], true) . '</dfn>' : ''), 'title', $vbphrase['category' . $projectcategory['projectcategoryid'] . ''], false);
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectcategory['displayorder'], true, 5);
-	print_yes_no_row($vbphrase['default_value'], 'default', $projectpriority['default']);
+	print_yes_no_row($vbphrase['default_value'], 'default', $projectpriority['defaultvalue']);
 	construct_hidden_code('projectid', $project['projectid']);
 	construct_hidden_code('projectcategoryid', $projectcategory['projectcategoryid']);
 	print_submit_row();
