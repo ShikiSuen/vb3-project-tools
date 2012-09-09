@@ -195,12 +195,13 @@ if ($_POST['do'] == 'update')
 		// Perform the save
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_projectversion
-				(projectid, projectversiongroupid, displayorder, effectiveorder)
+				(projectid, projectversiongroupid, displayorder, effectiveorder, defaultvalue)
 			VALUES
 				(" . $projectversiongroup['projectid'] . ",
 				" . $projectversiongroup['projectversiongroupid'] . ",
 				" . $vbulletin->GPC['displayorder'] . ",
-				" . ($vbulletin->GPC['displayorder'] + $projectversiongroup['displayorder'] * 100000) . ")
+				" . ($vbulletin->GPC['displayorder'] + $projectversiongroup['displayorder'] * 100000) . ",
+				" . ($vbulletin->GPC['default'] ? 1 : 0) . ")
 		");
 
 		$projectversionid = $db->insert_id();
