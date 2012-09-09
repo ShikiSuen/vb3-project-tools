@@ -273,7 +273,7 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 
 
 	print_input_row($vbphrase['display_order'], 'displayorder', $projectpriority['displayorder'], true, 5);
-	print_yes_no_row($vbphrase['default_value'], 'default', $projectpriority['default']);
+	print_yes_no_row($vbphrase['default_value'], 'default', $projectpriority['defaultvalue']);
 
 	require_once(DIR . '/includes/adminfunctions_template.php');
 	$colorPicker = construct_color_picker(11);
@@ -357,8 +357,8 @@ if ($_POST['do'] == 'kill')
 
 	$db->query_write("
 		UPDATE " . TABLE_PREFIX . "pt_issue SET
-			projectpriorityid = " . $vbulletin->GPC['destpriorityid'] . "
-		WHERE projectpriorityid = $projectpriority[projectpriorityid]
+			priority = " . $vbulletin->GPC['destpriorityid'] . "
+		WHERE priority = $projectpriority[projectpriorityid]
 	");
 
 	build_project_priority_cache();
