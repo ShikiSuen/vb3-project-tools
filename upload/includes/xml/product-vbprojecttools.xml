@@ -286,7 +286,7 @@ $db->query_write("
 		canpetitionfrom SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		issuecompleted SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		statuscolor VARCHAR(20) NOT NULL DEFAULT '',
-		statuscolor2 VARCHAR(20) NOT NULL DEFAULT '',
+		statuscolor2 VARCHAR(20) NOT NULL DEFALT '',
 		PRIMARY KEY (issuestatusid),
 		KEY finder (issuetypeid, displayorder)
 	)
@@ -384,7 +384,7 @@ $db->query_write("
 		requirecategory INT UNSIGNED NOT NULL DEFAULT 0,
 		requirepriority INT UNSIGNED NOT NULL DEFAULT 0,
 		pmonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
-		emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
+		emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0
 		PRIMARY KEY (projectid)
 	)
 ");
@@ -511,7 +511,7 @@ $db->query_write("
 		projectversiongroupid INT UNSIGNED NOT NULL DEFAULT 0,
 		displayorder SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		effectiveorder INT UNSIGNED NOT NULL DEFAULT 0,
-		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0
 		PRIMARY KEY (projectversionid),
 		KEY finder (projectid, effectiveorder)
 	)
@@ -1217,7 +1217,7 @@ if ($show['ptimporter_previous'])
 	// Clear routes from datastore
 	build_datastore('routes', serialize(array()), 1);
 
-	// Clear the type cache.
+	//clear the type cache.
 	vB_Cache::instance()->purge('vb_types.types');
 
 	if ($db_alter->fetch_table_info('language'))
@@ -1252,9 +1252,6 @@ if ($show['ptimporter_previous'])
 	vB_Bootstrap_Framework::init();
 }
 
-require_once(DIR . '/includes/class_dbalter.php');
-$db_alter = new vB_Database_Alter_MySQL($db);
-
 if ($installed_version !== null)
 {
 	$db->query_write("
@@ -1283,6 +1280,9 @@ if ($installed_version !== null)
 		)
 	");
 
+	require_once(DIR . '/includes/class_dbalter.php');
+	$db_alter = new vB_Database_Alter_MySQL($db);
+
 	// Add field for 'PT color titles by status' feature
 	if ($db_alter->fetch_table_info('pt_issuestatus'))
 	{
@@ -1301,6 +1301,9 @@ if ($installed_version !== null)
 * Moved into a new table
 */
 
+// Get the contenttypeid of threads
+$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
 // Move any existing data into the new table before removing useless fields
 $movedthreads = $db->query_read("
 	SELECT threadid, pt_issueid, pt_forwardmode
@@ -1310,9 +1313,6 @@ $movedthreads = $db->query_read("
 
 if ($db->num_rows($movedthreads) > 0)
 {
-	// Get the contenttypeid of threads
-	$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
-
 	while ($movedthread = $db->fetch_array($movedthreads))
 	{
 		$data = array();
@@ -1362,7 +1362,7 @@ rebuild_profile_issue_counters();
 if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
 {
 	// We need to have the packageid of vbcms
-	$packagecms = vB_Types::instance()->getPackageID('vBCms');
+	$packagecms = vB_Types::instance()->getPackageID('vbcms');
 
 	// Add widgets
 	$db->query_write("
@@ -1381,14 +1381,14 @@ if (method_exists(vB_Cache::instance(), 'clean'))
 }
 
 // Adding some content type for PT search via search.php
-$packagept = $db->query_first("SELECT packageid FROM " . TABLE_PREFIX . "package WHERE class = 'vBProjectTools'");
+$packagept = vB_Types::instance()->getPackageID('vBProjectTools');
 
 // Actually deactivated - change cansearch from 0 to 1 to activate it
 $db->query_write("
 	INSERT INTO " . TABLE_PREFIX . "contenttype
 		(class, packageid, canplace, cansearch, cantag, canattach)
 	VALUES
-		('IssueNote', " . $packagept['packageid'] . ", '0', '0', '0', '0')
+		('IssueNote', " . $packagept . ", '0', '0', '0', '0')
 ");
 
 // #############################################################################
@@ -1981,13 +1981,14 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
 	vB_Bootstrap_Framework::init();
 }
 
-$issue_contenttypeid = $db->query_first("SELECT contenttypeid FROM " . TABLE_PREFIX . "contenttype WHERE class = 'Issue'");
+$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+$issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
 
 // Query to allow attachments to issues
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
 		canattach = '1'
-	WHERE contenttypeid = " . $issue_contenttypeid['contenttypeid'] . "
+	WHERE contenttypeid = " . $issue_contenttypeid . "
 ");
 
 // Default data to import with PT 2.2
@@ -2134,12 +2135,12 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
 	vB_Bootstrap_Framework::init();
 }
 
-$issuenote_contenttypeid = $db->query_first("SELECT contenttypeid FROM " . TABLE_PREFIX . "contenttype WHERE class = 'IssueNote'");
+$issuenote_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_IssueNote');
 
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
 		cansearch = '1'
-	WHERE contenttypeid = " . $issuenote_contenttypeid['contenttypeid'] . "
+	WHERE contenttypeid = " . $issuenote_contenttypeid . "
 ");
 
 /*================================*\
@@ -2152,14 +2153,14 @@ $db->query_write("
 if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 {
 	// Package ID required
-	$packageid = $db->query_first("SELECT packageid FROM " . TABLE_PREFIX . "package WHERE class = 'vBProjectTools'");
+	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
 
 	// Insert Issue in Activity Stream
 	vB::$db->query_write("
 		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
 			(packageid, section, type, enabled)
 		VALUES
-			(" . $packageid['packageid'] . ", 'project', 'issue', 1)
+			($packageid, 'project', 'issue', 1)
 	");
 
 	// Insert IssueNote in Activity Stream
@@ -2167,7 +2168,7 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
 			(packageid, section, type, enabled)
 		VALUES
-			(" . $packageid['packageid'] . ", 'project', 'issuenote', 1)
+			($packageid, 'project', 'issuenote', 1)
 	");
 
 	// Rebuild Activity Stream datastore
@@ -13181,6 +13182,17 @@ ul.forumbits .ui-li .ui-btn-text a.pt_mobile_subforum {
 			");
 
 			$item['title'] = $vbphrase["version$itemid"];
+			$handled = true;
+			break;
+
+		case 'pt_projectversiongroup':
+			$item = $vbulletin->db->query_first("
+				SELECT projectversiongroupid, projectversiongroupid AS title
+				FROM " . TABLE_PREFIX . "pt_projectversiongroup
+				WHERE projectversiongroupid = $itemid
+			");
+
+			$item['title'] = $vbphrase["versiongroup$itemid"];
 			$handled = true;
 			break;
 
