@@ -722,8 +722,7 @@ if ($_REQUEST['do'] == 'groupdelete')
 	$version_query = $db->query_read("
 		SELECT projectversion.projectversionid, projectversiongroup.projectversiongroupid
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
-		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
-			(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
+		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON (projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
 		WHERE projectversion.projectid = $project[projectid]
 			AND projectversiongroup.projectversiongroupid <> " . $vbulletin->GPC['projectversiongroupid'] . "
 		ORDER BY projectversion.effectiveorder DESC
@@ -734,22 +733,25 @@ if ($_REQUEST['do'] == 'groupdelete')
 		$version_groups["$version[projectversiongroupid]"]["$version[projectversionid]"] = $version['projectversionid'];
 	}
 
-	foreach ($version_groups AS $optgroup_label => $versions)
+	if ($version_groups)
 	{
-		$group_applies = $group_addressed = array();
-
-		foreach ($versions AS $optionvalue => $optiontitle)
+		foreach ($version_groups AS $optgroup_label => $versions)
 		{
-			$group_applies[$optionvalue] = $vbphrase['version' . $optiontitle . ''];
-			$group_addressed[$optionvalue] = $vbphrase['version' . $optiontitle . ''];
+			$group_applies = $group_addressed = array();
+
+			foreach ($versions AS $optionvalue => $optiontitle)
+			{
+				$group_applies[$optionvalue] = $vbphrase['version' . $optiontitle . ''];
+				$group_addressed[$optionvalue] = $vbphrase['version' . $optiontitle . ''];
+			}
+
+			$applies_versions[$vbphrase['versiongroup' . $optgroup_label . '']] = $group_applies;
+			$addressed_versions[$vbphrase['versiongroup' . $optgroup_label . '']] = $group_addressed;
 		}
 
-		$applies_versions[$vbphrase['versiongroup' . $optgroup_label . '']] = $group_applies;
-		$addressed_versions[$vbphrase['versiongroup' . $optgroup_label . '']] = $group_addressed;
+		$applies_version = array(0 => $vbphrase['unknown']) + $applies_versions;
+		$addressed_version = array(0 => $vbphrase['none_meta'], '-1' => $vbphrase['next_release']) + $addressed_versions;
 	}
-
-	$applies_version = array(0 => $vbphrase['unknown']) + $applies_versions;
-	$addressed_version = array(0 => $vbphrase['none_meta'], '-1' => $vbphrase['next_release']) + $addressed_versions;
 
 	print_delete_confirmation(
 		'pt_projectversiongroup',
@@ -758,7 +760,7 @@ if ($_REQUEST['do'] == 'groupdelete')
 		'groupkill',
 		'',
 		0,
-		construct_phrase($vbphrase['existing_affected_issues_updated_delete_select_versions_x_y'], '<select name="appliesversionid">' . construct_select_options($applies_version, 0) . '</select>', '<select name="addressedversionid">' . construct_select_options($addressed_version, -1) . '</select>'),
+		($applies_version AND $addressed_version ? construct_phrase($vbphrase['existing_affected_issues_updated_delete_select_versions_x_y'], '<select name="appliesversionid">' . construct_select_options($applies_version, 0) . '</select>', '<select name="addressedversionid">' . construct_select_options($addressed_version, -1) . '</select>') : ''),
 		'groupname'
 	);
 }
