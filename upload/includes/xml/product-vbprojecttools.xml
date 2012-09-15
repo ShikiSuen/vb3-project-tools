@@ -2196,8 +2196,8 @@ build_project_cache();]]></installcode>
 			<uninstallcode><![CDATA[// Only for 4.2+
 if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 {
-	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issue'");
-	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issuenote'");
+	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE packageid = " .  . intval($packageid)"");
 
 	// Rebuild Activity Stream datastore
 	build_activitystream_datastore();
@@ -14573,6 +14573,7 @@ If you wish to continue this action, <a href="{1}">click here to try again</a>.]
 			<phrase name="there_is_no_type_you_can_create_issues_in" date="1274871359" username="Pitchoune" version="2.1.1"><![CDATA[Currently there is no issue type in this project you can create issues in.]]></phrase>
 			<phrase name="type_must_have_one_status" date="1176210879" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Each issue type must have at least one status.]]></phrase>
 			<phrase name="updated_pt_attachments_successfully" date="1304432479" username="Pitchoune" version="2.2.0"><![CDATA[Updated Project Tools Attachments Successfully]]></phrase>
+			<phrase name="upgrade_script_42_finished" date="1347719381" username="Pitchoune" version="2.2.0"><![CDATA[Upgrade script finished.]]></phrase>
 			<phrase name="value_must_be_a_positive_integer" date="1333201768" username="Pitchoune" version="2.2.0"><![CDATA[Value must be a positive integer.]]></phrase>
 		</phrasetype>
 		<phrasetype name="FAQ Text" fieldname="faqtext">
@@ -15164,6 +15165,8 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="target_date_desc" date="1216726428" username="Ed Sullivan" version="2.0.0 Beta 2"><![CDATA[Use this option to specify the target (or deadline) for this milestone.]]></phrase>
 			<phrase name="title_in_forum_list" date="1180531471" username="Ed Sullivan" version="1.0.0 Beta 3"><![CDATA[Title in Forum List
 <dfn>If you display this project in the forum list, you can use this to override the project's name in the list.</dfn>]]></phrase>
+			<phrase name="upgrade_script_42_description" date="1347719162" username="Pitchoune" version="2.2.0"><![CDATA[This will add all the stuff you need to run Project Tools correctly on vBulletin 4.2.0+.]]></phrase>
+			<phrase name="upgrade_script_42_title" date="1347719138" username="Pitchoune" version="2.2.0"><![CDATA[Upgrade script for vBulletin 4.2.x]]></phrase>
 			<phrase name="use_selected_project_sets" date="1276120817" username="Pitchoune" version="2.1.2"><![CDATA[Use Selected Project Sets]]></phrase>
 			<phrase name="usergroups_access_globally_disabled" date="1181651167" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[This usergroup's access to the Project Tools is globally disabled. The changes you make here will not be applied until that is changed.]]></phrase>
 			<phrase name="value" date="1334735821" username="Pitchoune" version="2.2.0"><![CDATA[Value]]></phrase>

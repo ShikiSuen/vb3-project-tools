@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ï¿½2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -106,6 +106,28 @@ if ($_REQUEST['do'] == 'counters')
 	print_table_header($vbphrase['rebuild_profile_issue_counters']);
 	print_description_row($vbphrase['rebuilding_profile_issue_counters_will_update_various_fields']);
 	print_submit_row($vbphrase['go'], '');
+
+	// Do the check for 4.2.0+ only
+	if (version_compare($vbulletin->options['templateversion'], '4.2.0', '>='))
+	{
+		// First, get the packageid of Project Tools from database
+		$packageid = vB_Types::instance()->getPackageId('vBProjectTools');
+
+		// Check if the packageid exists in the activitystreamtype table
+		$upgrade42 = $db->query_read("
+			SELECT type
+			FROM " . TABLE_PREFIX . "activitystreamtype
+			WHERE packageid = " . intval($packageid) . "
+		");
+
+		if ($db->num_rows($upgrade42) == 0)
+		{
+			print_form_header('projectcounters', 'upgrade42');
+			print_table_header($vbphrase['upgrade_script_42_title']);
+			print_description_row($vbphrase['upgrade_script_42_description']);
+			print_submit_row($vbphrase['go'], '');
+		}
+	}
 }
 
 // ########################################################################
@@ -182,6 +204,32 @@ if ($_REQUEST['do'] == 'profileissuecounters')
 
 	define('CP_REDIRECT', 'projectcounters.php?do=counters');
 	print_stop_message('counters_rebuilt');
+}
+
+// ########################################################################
+if ($_POST['do'] == 'upgrade42')
+{
+	// Package ID required
+	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+
+	// Insert Issue in Activity Stream
+	vB::$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
+			(packageid, section, type, enabled)
+		VALUES
+			(" . intval($packageid) . ", 'project', 'issue', 1)
+	");
+
+	// Insert IssueNote in Activity Stream
+	vB::$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
+			(packageid, section, type, enabled)
+		VALUES
+			(" . intval($packageid) . ", 'project', 'issuenote', 1)
+	");
+
+	// Rebuild Activity Stream datastore
+	build_activitystream_datastore();
 }
 
 print_cp_footer();
