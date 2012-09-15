@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Français" vbversion="4.1.12" product="vbprojecttools" type="phrases">
+<language name="Français" vbversion="4.2.1 Alpha 1" product="vbprojecttools" type="phrases">
+	<phrasetype name="Activity Stream" fieldname="activitystream">
+		<phrase name="x_made_a_petition_in_the_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> a lancé une pétition dans la demande <a href="{3}">{4}</a> dans le projet <a href="{5}">{6}</a>]]></phrase>
+		<phrase name="x_made_changes_in_the_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> a effectué quelques changements dans la demande <a href="{3}">{4}</a> dans le projet <a href="{5}">{6}</a>]]></phrase>
+	</phrasetype>
 	<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 		<phrase name="options_options_issuelist_columns_text" date="1331500688" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de sélectionner quels colonnes vous souhaitez afficher dans toutes les listes de demandes.<br />
 <br />
@@ -318,6 +322,8 @@ Ceci est dû au fait que vous allez ajouter de nouvelles versions tout le temps. 
 		<phrase name="tag_manager" date="1179937192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Gestionnaire de tag]]></phrase>
 	</phrasetype>
 	<phrasetype name="Control Panel Options" fieldname="cpoption">
+		<phrase name="project_issue" date="1347746276" username="Pitchoune" version="2.2.0"><![CDATA[Demande de projet]]></phrase>
+		<phrase name="project_issuenote" date="1347746276" username="Pitchoune" version="2.2.0"><![CDATA[Note de demande de projet]]></phrase>
 		<phrase name="pt_listprojects_before_footer" date="1281450490" username="Pitchoune" version="2.1.2"><![CDATA[Avant le bas de page]]></phrase>
 		<phrase name="pt_listprojects_before_notes" date="1281450490" username="Pitchoune" version="2.1.2"><![CDATA[Avant les notes / réponses]]></phrase>
 		<phrase name="pt_listprojects_before_qr" date="1281450544" username="Pitchoune" version="2.1.2"><![CDATA[Avant la réponse rapide]]></phrase>
@@ -515,6 +521,7 @@ Envoyé par : [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinf
 Si vous souhaitez continuez cette action, <a href="{1}">cliquez ici</a>.]]></phrase>
 		<phrase name="pt_attachment_dir_different_vb" date="1184847199" username="Pitchoune" version="1.0.0"><![CDATA[Le répertoire des pièces jointes de « Project Tools » doit être dans un répertoire différent que celui de vBulletin.]]></phrase>
 		<phrase name="pt_have_pending_petition" date="1284850502" username="Pitchoune" version="2.1.2"><![CDATA[Vous avez déjà une pétition en attente pour cette demande. Vous ne pouvez pas en avoir une nouvelle tant que la pétition actuelle n'a pas été résolue.]]></phrase>
+		<phrase name="pt_in_maintenance_mode" date="1347746276" username="Pitchoune" version="2.2.0"><![CDATA[Project Tools est en mode maintenance. Veuillez revenir plus tard.]]></phrase>
 		<phrase name="pt_need_search_criteria" date="1179945610" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Vous devez insérer des critères de recherche valide ou une méthode de regroupement.]]></phrase>
 		<phrase name="pt_need_vote" date="1179945610" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Vous n'avez pas choisi un type de vote à envoyer.]]></phrase>
 		<phrase name="pt_no_issue_statues_represent_this_state" date="1284850538" username="Pitchoune" version="2.1.2"><![CDATA[Il n'y a aucun état de demande qui représente l'état de demande sélectionné (actif ou terminé). Aucune demande ne peut être trouvée.]]></phrase>
@@ -577,8 +584,6 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 	</phrasetype>
 	<phrasetype name="Forum-Related" fieldname="forum">
 		<phrase name="project_tools_options" date="1323433420" username="Pitchoune" version="2.2.0"><![CDATA[Options de Project Tools]]></phrase>
-		<phrase name="pt_can_import_into_issues" date="1323433420" username="Pitchoune" version="2.2.0"><![CDATA[Peut importer des contenus en tant que demande ?
-<dfn>Si le groupe d'utilisateur a la permission correspondante associée à cette option, l'utilisateur pourra importer n'importe quel message / discussion en tant que demande ou de note de demande.</dfn>]]></phrase>
 	</phrasetype>
 	<phrasetype name="Forum Display" fieldname="forumdisplay">
 		<phrase name="pt_import_threadprefix" date="1275164108" username="Pitchoune" version="2.1.1"><![CDATA[Project Tools :]]></phrase>
@@ -618,6 +623,13 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="priority" date="1323433846" username="Pitchoune" version="2.2.0"><![CDATA[Priorité]]></phrase>
 		<phrase name="projects" date="1185036771" username="Pitchoune" version="1.0.0"><![CDATA[Projets]]></phrase>
 		<phrase name="search_projects" date="1184849035" username="Pitchoune" version="1.0.0"><![CDATA[Recherche dans les projets]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_faq_text" date="1347746711" username="Pitchoune" version="2.2.0"><![CDATA[FAQ]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_myreports_text" date="1347746716" username="Pitchoune" version="2.2.0"><![CDATA[Mes rapports]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1347746720" username="Pitchoune" version="2.2.0"><![CDATA[Abonnements aux demandes]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_timeline_text" date="1347746724" username="Pitchoune" version="2.2.0"><![CDATA[Ligne temporelle]]></phrase>
+		<phrase name="vb_navigation_tab_vbtab_project_text" date="1347746728" username="Pitchoune" version="2.2.0"><![CDATA[Projets]]></phrase>
+		<phrase name="x_replied_to_an_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> a répondu à la demande <a href="{3}">{4}</a> dans le projet <a href="{5}">{6}</a>]]></phrase>
+		<phrase name="x_started_an_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}" class="username">{2}</a> a crée une demande <a href="{3}">{4}</a> dans le projet <a href="{5}">{6}</a>]]></phrase>
 	</phrasetype>
 	<phrasetype name="Notices" fieldname="notice">
 		<phrase name="is_browsing_project_tools_criteria" date="1281450959" username="Pitchoune" version="2.1.2"><![CDATA[L'utilisateur visualise Project Tools]]></phrase>
@@ -1112,6 +1124,8 @@ Ceci est nécessaire car Project Tools utilise un système de pièces jointes parti
 		<phrase name="target_date_desc" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[Utilisez cette option pour spécifier une date butoir (ou une ligne de fin) pour cette étape.]]></phrase>
 		<phrase name="title_in_forum_list" date="1180997508" username="Pitchoune" version="1.0.0 Beta 3"><![CDATA[Intitulé dans la liste des forums
 <dfn>Si vous affichez ce projet dans la liste des forums, vous pouvez utiliser ceci pour outrepasser le nom du projet dans la liste.</dfn>]]></phrase>
+		<phrase name="upgrade_script_42_description" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Ceci va ajouter tout le nécessaire pour pouvoir utiliser Project Tools correctement avec vBulletin 4.2.0+.]]></phrase>
+		<phrase name="upgrade_script_42_title" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Script de mise à jour pour vBulletin 4.2.x.]]></phrase>
 		<phrase name="use_selected_project_sets" date="1281452217" username="Pitchoune" version="2.1.2"><![CDATA[Utiliser la couleur dans les styles]]></phrase>
 		<phrase name="usergroups_access_globally_disabled" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[L'accès pour ce groupe d'utilisateurs à Project Tools est globalement désactivé. Les modifications que vous effectuerez ici ne seront pas appliqués jusqu'à ce que ce groupe d'utilisateurs puisse y accéder globalement.]]></phrase>
 		<phrase name="value" date="1327529260" username="Pitchoune" version="2.2.0"><![CDATA[Valeur
@@ -1180,6 +1194,8 @@ Ceci est nécessaire car Project Tools utilise un système de pièces jointes parti
 		<phrase name="setting_pt_attachfile_title" date="1216298881" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Enregistrer les pièces jointes de « Project Tools » sous forme de fichiers ?]]></phrase>
 		<phrase name="setting_pt_attachpath_desc" date="1216216871" username="Ed Sullivan" version="2.0.0 Beta 1" />
 		<phrase name="setting_pt_attachpath_title" date="1258978563" username="Pitchoune" version="2.0.1"><![CDATA[Chemin des pièces jointes de Project Tools]]></phrase>
+		<phrase name="setting_pt_disablequicknav_desc" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet d'activer la navigation rapide entre les projets.]]></phrase>
+		<phrase name="setting_pt_disablequicknav_title" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Activer la navigation rapide]]></phrase>
 		<phrase name="setting_pt_groupsearchissuespergroup_desc" date="1324052522" username="Pitchoune" version="2.2.0"><![CDATA[Quand vous effectuez une recherche groupée, combien de demandes doivent apparaître dans chaque groupe sur la première page ?<br />
 <br />
 La valeur « 0 » affichera toutes les demandes dans un groupe sur la première page.]]></phrase>
@@ -1194,6 +1210,8 @@ La valeur « 0 » affichera toutes les demandes dans un groupe sur la première pag
 <br />
 La valeur 0 affichera toutes les demandes sur une page.]]></phrase>
 		<phrase name="setting_pt_issuesperpage_title" date="1324052558" username="Pitchoune" version="2.2.0"><![CDATA[Nombre de demandes à afficher par page]]></phrase>
+		<phrase name="setting_pt_maintenancemode_desc" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Ce paramètre vous permet de placer Project Tools en mode maintenance.]]></phrase>
+		<phrase name="setting_pt_maintenancemode_title" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Mode maintenance]]></phrase>
 		<phrase name="setting_pt_notesperpage_desc" date="1324052709" username="Pitchoune" version="2.2.0"><![CDATA[Ceci est le nombre de notes qui peut être affiché par page dans une demande. Une note peut être un commentaire / pétition ou une information à propos de modifications effectuées dans les détails des demandes.<br />
 <br />
 La valeur 0 affichera tous les notes sur une page.]]></phrase>
