@@ -2198,6 +2198,8 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 {
 	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
 	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE packageid = " .  . intval($packageid)"");
+	//$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issue'");
+	//$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issuenote'");
 
 	// Rebuild Activity Stream datastore
 	build_activitystream_datastore();
@@ -2751,7 +2753,7 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1338216827" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1348225783" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3737,6 +3739,14 @@ a.firstunread, a.firstunread:hover
 	margin-bottom: 5px;
 }
 
+.pt_issuepopup .below_threadlist {
+	padding-bottom: 38px;
+}
+
+.popupbody li.searchlinks {
+	padding-top: 25px;
+}
+
 .popupbody li input.searchbox {
 	width: auto;
 }
@@ -3910,9 +3920,8 @@ div.checkbox_multiselect {
 
 .vB_MagicSelect_hover {
 	border: 1px solid rgb(34, 84, 177);
-	padding: 0px -1px;
 	background-color: white;
-	margin: 0px -1px 2px -1px;
+	margin: 1px -1px 1px -1px;
 }
 
 .vB_MagicSelect span, .vB_MagicSelect_hover span {
@@ -3938,13 +3947,13 @@ div.checkbox_multiselect {
 }
 
 .vB_MagicSelect_wrappable {
+	padding: 0px;
 	white-space: normal;
-	padding: 1px 0px 0px 0px;
 }
 
 /* Activity stream specific values */
 #activitylist li.activitybit.project_issuenote ul {
-	padding-{vb:stylevar left} : 85px;
+	padding-{vb:stylevar left}: 85px;
 } 
 
 /* Overwrite some values */
@@ -4793,7 +4802,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1338674590" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1348388706" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5037,11 +5046,13 @@ legend {
 		<div class="vB_MagicSelect_preload vB_MagicSelect_margin vB_MagicSelect_wrappable">
 			<span class="shade">{vb:rawphrase assigned_users}</span>
 			<span id="assignusers"><span id="assignusers_display"><vb:if condition="$assignments">{vb:raw assignments}<vb:else />{vb:rawphrase none_meta}</vb:if></span></span>
+			<img src="{vb:raw vboptions.cleargifurl}" height="21" style="vertical-align: middle" />
 		</div>
 
 		<div class="vB_MagicSelect_preload vB_MagicSelect_margin vB_MagicSelect_wrappable">
 			<span class="shade">{vb:rawphrase tags}</span>
 			<span id="tags"><span id="tags_display"><vb:if condition="$tags">{vb:raw tags}<vb:else />{vb:rawphrase none_meta}</vb:if></span></span>
+			<img src="{vb:raw vboptions.cleargifurl}" height="21" style="vertical-align: middle" />
 		</div>
 	</div>
 	<br />
@@ -5108,22 +5119,24 @@ legend {
 
 <br /><br />
 
-<div class="pt_listprojects">
-	<div class="menu<vb:if condition="empty($pagenav)"> marginissue1<vb:else /> marginissue2</vb:if>">
-		<div class="clear"></div>
-		<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
-			<span class="shade">{vb:rawphrase projects}</span>
-			<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
-			<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
-			<ul class="navpopupbody popupbody popuphover">
-				<li class="optionlabel">{vb:rawphrase projects}</li>
-				<vb:each from="projectlist" key="projectid" value="projectdata">
-					<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
-				</vb:each>
-			</ul>
+<vb:if condition="$projectlist">
+	<div class="pt_listprojects">
+		<div class="menu<vb:if condition="empty($pagenav)"> marginissue1<vb:else /> marginissue2</vb:if>">
+			<div class="clear"></div>
+			<div class="navpopupmenu popupmenu nohovermenu" id="projectlist_navpopup">
+				<span class="shade">{vb:rawphrase projects}</span>
+				<a href="{vb:raw relpath}" class="popupctrl"><span class="ctrlcontainer">{vb:raw project.title_clean}</span></a>
+				<a href="{vb:raw relpath}#top" class="textcontrol" onclick="document.location.hash='top';return false;">{vb:rawphrase top}</a>
+				<ul class="navpopupbody popupbody popuphover">
+					<li class="optionlabel">{vb:rawphrase projects}</li>
+					<vb:each from="projectlist" key="projectid" value="projectdata">
+						<li><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projectdata.projectid}">{vb:raw projectdata.title_clean}</a></li>
+					</vb:each>
+				</ul>
+			</div>
 		</div>
 	</div>
-</div>
+</vb:if>
 
 <!-- notes -->
 <a name="notestart"></a>
@@ -5477,7 +5490,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_issuelist" templatetype="template" date="1337630113" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issuelist" templatetype="template" date="1348223589" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5622,13 +5635,11 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 							</select>
 							<div class="text"><input type="submit" class="button" style="float: {vb:stylevar left}; margin-top: 2px" value="{vb:rawphrase search}" /></div>
 						</li>
-						<li class="formsubmit">
-							<div class="newissueslink">
-								<a href="projectsearch.php?{vb:raw session.sessionurl}do=dosearch&amp;projectid[]={vb:raw project.projectid}&amp;newonly=1">{vb:rawphrase find_new_issues}</a>
-							</div>
-							<div class="advancedsearchlink">
-								<a href="projectsearch.php?{vb:raw session.sessionurl}do=search&amp;projectid={vb:raw project.projectid}">{vb:rawphrase advanced_search}</a>
-							</div>
+						<li class="searchlinks">
+							<a href="projectsearch.php?{vb:raw session.sessionurl}do=dosearch&amp;projectid[]={vb:raw project.projectid}&amp;newonly=1">{vb:rawphrase find_new_issues}</a>
+						</li>
+						<li>
+							<a href="projectsearch.php?{vb:raw session.sessionurl}do=search&amp;projectid={vb:raw project.projectid}">{vb:rawphrase advanced_search}</a>
 						</li>
 					</ul>
 					<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
@@ -7751,7 +7762,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_patch" templatetype="template" date="1291146850" username="Pitchoune" version="2.1.2"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_patch" templatetype="template" date="1348652096" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7781,7 +7792,7 @@ init_project_readmarker_system();
 	</div>
 	<div class="blockbody settings_form_border">
 		<div class="blockrow" style="text-align: center">
-			<a href="projectattachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}">{vb:rawphrase download_patch_file}</a>
+			<a href="attachment.php?{vb:raw session.sessionurl}attachmentid={vb:raw attachment.attachmentid}">{vb:rawphrase download_patch_file}</a>
 		</div>
 	</div>
 </div>
@@ -8710,7 +8721,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1335690007" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1348573016" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8850,13 +8861,11 @@ init_project_readmarker_system();
 							</select>
 							<div class="text"><input type="submit" class="button" style="float: {vb:stylevar left}; margin-top: 2px" value="{vb:rawphrase search}" /></div>
 						</li>
-						<li class="formsubmit">
-							<div class="newissueslink">
-								<a href="projectsearch.php?{vb:raw session.sessionurl}do=dosearch&amp;projectid[]={vb:raw project.projectid}&amp;newonly=1">{vb:rawphrase find_new_issues}</a>
-							</div>
-							<div class="advancedsearchlink">
-								<a href="projectsearch.php?{vb:raw session.sessionurl}do=search&amp;projectid={vb:raw project.projectid}">{vb:rawphrase advanced_search}</a>
-							</div>
+						<li class="searchlinks">
+							<a href="projectsearch.php?{vb:raw session.sessionurl}do=dosearch&amp;projectid[]={vb:raw project.projectid}&amp;newonly=1">{vb:rawphrase find_new_issues}</a>
+						</li>
+						<li>
+							<a href="projectsearch.php?{vb:raw session.sessionurl}do=search&amp;projectid={vb:raw project.projectid}">{vb:rawphrase advanced_search}</a>
 						</li>
 					</ul>
 					<input type="hidden" name="s" value="{vb:raw session.sessionhash}" />
