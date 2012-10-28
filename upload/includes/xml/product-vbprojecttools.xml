@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.4</version>
-	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
-	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
+	<url />
+	<versioncheckurl />
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.0.8" maxversion="" />
 	</dependencies>
@@ -9771,6 +9771,11 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="doubleclick_project_markread" date="1211381999" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Double-click this icon to mark this project and its contents as read]]></phrase>
 			<phrase name="projects" date="1181655523" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Projects]]></phrase>
 			<phrase name="search_projects" date="1174406531" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search Projects]]></phrase>
+			<phrase name="vb_navigation_link_vbpt_faq_text" date="1351455249" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[FAQ]]></phrase>
+			<phrase name="vb_navigation_link_vbpt_timeline_text" date="1351455221" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[Project Timeline]]></phrase>
+			<phrase name="vb_navigation_link_vbpt_myreports_text" date="1351455130" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[My Reports]]></phrase>
+			<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1351455116" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[Manage Subscriptions]]></phrase>
+			<phrase name="vb_navigation_tab_vbtab_project_text" date="1351454959" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[Projects]]></phrase>
 		</phrasetype>
 		<phrasetype name="Notices" fieldname="notice">
 			<phrase name="is_browsing_project_tools_criteria" date="1277854663" username="Mosh" version="2.1.2"><![CDATA[User is browsing vBulletin Project Tools]]></phrase>
