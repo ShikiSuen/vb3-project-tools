@@ -3,9 +3,9 @@
 <product productid="vbprojecttools" active="1">
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
-	<version>2.1.3</version>
-	<url />
-	<versioncheckurl />
+	<version>2.1.4</version>
+	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
+	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.0.8" maxversion="" />
 	</dependencies>
@@ -9199,13 +9199,32 @@ if ($issueinfos['pt_issueid'] > 0 AND $issueinfos['pt_forwardmode'] == 1)
 		<plugin active="1" executionorder="5">
 			<title>Process PT Global Templates</title>
 			<hookname>process_templates_complete</hookname>
-			<phpcode><![CDATA[if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
+			<phpcode><![CDATA[if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
 {
-	if (defined('PROJECT_SCRIPT'))
+	if ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['canviewprojecttools'])
 	{
-		$vbulletin->options['selectednavtab'] = 'vbproject';
+		if (defined('PROJECT_SCRIPT'))
+		{
+			$vbulletin->options['selectednavtab'] = 'vbproject';
+		}
+		$template_hook['navtab_end'] .= vB_Template::create('pt_navbar_link')->render();
 	}
-	$template_hook['navtab_end'] .= vB_Template::create('pt_navbar_link')->render();
+}]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
+			<title>Navbar: Set Fallback Tab</title>
+			<hookname>set_navigation_tab_fallback</hookname>
+			<phpcode><![CDATA[if (defined('PROJECT_SCRIPT'))
+{
+	$root = 'vbtab_project'; // Project root tab
+}]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
+			<title>Navbar: Set Navigation Tab</title>
+			<hookname>set_navigation_tab_main</hookname>
+			<phpcode><![CDATA[if (defined('PROJECT_SCRIPT'))
+{
+	$root = 'vbtab_project'; // Project root tab
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -10567,4 +10586,42 @@ diff</defaultvalue>
 		<faq faqname="pt_faq_private" faqparent="pt_faq" displayorder="20" />
 		<faq faqname="pt_faq_report" faqparent="pt_faq" displayorder="30" />
 	</faqentries>
+	<navigation>
+		<tab name="vbtab_project" date="1351454959" username="Pitchoune" version="4.2.1 Alpha 1">
+			<active>1</active>
+			<show />
+			<scripts />
+			<displayorder>50</displayorder>
+			<url>project.php{sesssion.sessionurl_q}</url>
+			<menuid />
+		</tab>
+		<link name="vbpt_myreports" date="1351455031" username="Pitchoune" version="4.2.1 Alpha 1">
+			<active>1</active>
+			<show>member</show>
+			<parent>vbtab_project</parent>
+			<displayorder>10</displayorder>
+			<url>projectsearch.php?{session.sessionurl}do=reports</url>
+		</link>
+		<link name="vbpt_subscriptions" date="1351455116" username="Pitchoune" version="4.2.1 Alpha 1">
+			<active>1</active>
+			<show />
+			<parent>vbtab_project</parent>
+			<displayorder>20</displayorder>
+			<url>projectpost.php?{session.sessionurl}do=managesubscriptions</url>
+		</link>
+		<link name="vbpt_timeline" date="1351455221" username="Pitchoune" version="4.2.1 Alpha 1">
+			<active>1</active>
+			<show />
+			<parent>vbtab_project</parent>
+			<displayorder>30</displayorder>
+			<url>project.php?{session.sessionurl}do=timeline</url>
+		</link>
+		<link name="vbpt_faq" date="1351455249" username="Pitchoune" version="4.2.1 Alpha 1">
+			<active>1</active>
+			<show />
+			<parent>vbtab_project</parent>
+			<displayorder>40</displayorder>
+			<url>faq.php?{session.sessionurl}faq=pt_faq</url>
+		</link>
+	</navigation>
 </product>
