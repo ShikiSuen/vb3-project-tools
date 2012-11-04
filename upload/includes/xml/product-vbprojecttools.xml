@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.4</version>
-	<url />
-	<versioncheckurl />
+	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
+	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.0.8" maxversion="" />
 	</dependencies>
@@ -1484,6 +1484,50 @@ $db->query_write("
 	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT '0'
 ");]]></installcode>
 			<uninstallcode />
+		</code>
+		<code version="2.1.4">
+			<installcode><![CDATA[/*================================*\
+|| ############################## ||
+|| #	   Activity Stream		# ||
+|| ############################## ||
+\*================================*/
+
+// Only for 4.2+
+if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+{
+	// Package ID required
+	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+
+	// Insert Issue in Activity Stream
+	vB::$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
+			(packageid, section, type, enabled)
+		VALUES
+			($packageid, 'project', 'issue', 1)
+	");
+
+	// Insert IssueNote in Activity Stream
+	vB::$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
+			(packageid, section, type, enabled)
+		VALUES
+			($packageid, 'project', 'issuenote', 1)
+	");
+
+	// Rebuild Activity Stream datastore
+	build_activitystream_datastore();
+}]]></installcode>
+			<uninstallcode><![CDATA[// Only for 4.2+
+if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+{
+	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE packageid = " .  . intval($packageid)"");
+	//$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issue'");
+	//$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issuenote'");
+
+	// Rebuild Activity Stream datastore
+	build_activitystream_datastore();
+}]]></uninstallcode>
 		</code>
 	</codes>
 	<templates>
@@ -9772,9 +9816,9 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="projects" date="1181655523" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Projects]]></phrase>
 			<phrase name="search_projects" date="1174406531" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search Projects]]></phrase>
 			<phrase name="vb_navigation_link_vbpt_faq_text" date="1351455249" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[FAQ]]></phrase>
-			<phrase name="vb_navigation_link_vbpt_timeline_text" date="1351455221" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[Project Timeline]]></phrase>
 			<phrase name="vb_navigation_link_vbpt_myreports_text" date="1351455130" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[My Reports]]></phrase>
 			<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1351455116" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[Manage Subscriptions]]></phrase>
+			<phrase name="vb_navigation_link_vbpt_timeline_text" date="1351455221" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[Project Timeline]]></phrase>
 			<phrase name="vb_navigation_tab_vbtab_project_text" date="1351454959" username="Pitchoune" version="4.2.1 Alpha 1"><![CDATA[Projects]]></phrase>
 		</phrasetype>
 		<phrasetype name="Notices" fieldname="notice">
@@ -10592,36 +10636,35 @@ diff</defaultvalue>
 		<faq faqname="pt_faq_report" faqparent="pt_faq" displayorder="30" />
 	</faqentries>
 	<navigation>
-		<tab name="vbtab_project" date="1351454959" username="Pitchoune" version="4.2.1 Alpha 1">
+		<tab name="vbtab_project" date="1352052217" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show />
 			<scripts />
 			<displayorder>50</displayorder>
 			<url>project.php{sesssion.sessionurl_q}</url>
-			<menuid />
 		</tab>
-		<link name="vbpt_myreports" date="1351455031" username="Pitchoune" version="4.2.1 Alpha 1">
+		<link name="vbpt_myreports" date="1352052217" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show>member</show>
 			<parent>vbtab_project</parent>
 			<displayorder>10</displayorder>
 			<url>projectsearch.php?{session.sessionurl}do=reports</url>
 		</link>
-		<link name="vbpt_subscriptions" date="1351455116" username="Pitchoune" version="4.2.1 Alpha 1">
+		<link name="vbpt_subscriptions" date="1352052217" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>20</displayorder>
 			<url>projectpost.php?{session.sessionurl}do=managesubscriptions</url>
 		</link>
-		<link name="vbpt_timeline" date="1351455221" username="Pitchoune" version="4.2.1 Alpha 1">
+		<link name="vbpt_timeline" date="1352052217" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>30</displayorder>
 			<url>project.php?{session.sessionurl}do=timeline</url>
 		</link>
-		<link name="vbpt_faq" date="1351455249" username="Pitchoune" version="4.2.1 Alpha 1">
+		<link name="vbpt_faq" date="1352052217" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
