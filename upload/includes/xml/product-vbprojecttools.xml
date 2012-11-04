@@ -1552,6 +1552,61 @@ if ($installed_version !== null)
 }]]></installcode>
 			<uninstallcode />
 		</code>
+		<code version="2.1.4">
+			<installcode><![CDATA[/*================================*\
+|| ############################## ||
+|| #	   Activity Stream		# ||
+|| ############################## ||
+\*================================*/
+
+// Only for 4.2+
+if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+{
+	// Package ID required
+	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+
+	// Insert Issue in Activity Stream
+	vB::$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
+			(packageid, section, type, enabled)
+		VALUES
+			($packageid, 'project', 'issue', 1)
+	");
+
+	// Insert IssueNote in Activity Stream
+	vB::$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
+			(packageid, section, type, enabled)
+		VALUES
+			($packageid, 'project', 'issuenote', 1)
+	");
+
+	// Rebuild Activity Stream datastore
+	build_activitystream_datastore();
+}]]></installcode>
+			<uninstallcode><![CDATA[// Only for 4.2+
+if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+{
+	// Get PT package ID
+	$projecttypeid = vB_Types::instance()->getPackageID('vBProjectTools');
+
+	// Get all typeids of PT
+	$ascontents = $db->query_read("SELECT typeid FROM " . TABLE_PREFIX . "activitystreamtype WHERE packageid = '" . $projecttypeid . "'");
+
+	while ($ascontent = $db->fetch_array($ascontents))
+	{
+		// Do the deletion of each item in activitystream table for each typeid
+		$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystream WHERE typeid = " . $ascontent['typeid'] . "");
+	}
+
+	// Remove all PT reference from activitystreamtype table
+	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issue'");
+	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issuenote'");
+
+	// Rebuild Activity Stream datastore
+	build_activitystream_datastore();
+}]]></uninstallcode>
+		</code>
 		<code version="2.2.0">
 			<installcode><![CDATA[// For new phrases
 $full_product_info = fetch_product_list(true);
@@ -2145,38 +2200,6 @@ $db->query_write("
 
 /*================================*\
 || ############################## ||
-|| #	   Activity Stream		# ||
-|| ############################## ||
-\*================================*/
-
-// Only for 4.2+
-if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
-{
-	// Package ID required
-	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
-
-	// Insert Issue in Activity Stream
-	vB::$db->query_write("
-		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
-			(packageid, section, type, enabled)
-		VALUES
-			($packageid, 'project', 'issue', 1)
-	");
-
-	// Insert IssueNote in Activity Stream
-	vB::$db->query_write("
-		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
-			(packageid, section, type, enabled)
-		VALUES
-			($packageid, 'project', 'issuenote', 1)
-	");
-
-	// Rebuild Activity Stream datastore
-	build_activitystream_datastore();
-}
-
-/*================================*\
-|| ############################## ||
 || #			Final			# ||
 || ############################## ||
 \*================================*/
@@ -2193,17 +2216,7 @@ build_version_cache();
 build_project_category_cache();
 build_project_priority_cache();
 build_project_cache();]]></installcode>
-			<uninstallcode><![CDATA[// Only for 4.2+
-if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
-{
-	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
-	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE packageid = " .  . intval($packageid)"");
-	//$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issue'");
-	//$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issuenote'");
-
-	// Rebuild Activity Stream datastore
-	build_activitystream_datastore();
-}]]></uninstallcode>
+			<uninstallcode />
 		</code>
 	</codes>
 	<templates>
@@ -14048,6 +14061,8 @@ if (!$this->condition)
 		<phrasetype name="Activity Stream" fieldname="activitystream">
 			<phrase name="x_made_a_petition_in_the_issue_y_in_z" date="1338216995" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> made a petition in the issue <a href="{3}">{4}</a> in project <a href="{5}">{6}</a>]]></phrase>
 			<phrase name="x_made_changes_in_the_issue_y_in_z" date="1338217021" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> made some changes in the issue <a href="{3}">{4}</a> in project <a href="{5}">{6}</a>]]></phrase>
+			<phrase name="x_replied_to_an_issue_y_in_z" date="1352060270" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> replied to an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
+			<phrase name="x_started_an_issue_y_in_z" date="1352060260" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}" class="username">{2}</a> started an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
 		</phrasetype>
 		<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 			<phrase name="options_options_issuelist_columns_text" date="1327190138" username="Pitchoune" version="2.2.0"><![CDATA[This setting allows you to select which content columns in any issue list.<br />
@@ -14678,8 +14693,6 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1337425622" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[Manage Subscriptions]]></phrase>
 			<phrase name="vb_navigation_link_vbpt_timeline_text" date="1337425678" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[Project Timeline]]></phrase>
 			<phrase name="vb_navigation_tab_vbtab_project_text" date="1337425462" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[Projects]]></phrase>
-			<phrase name="x_replied_to_an_issue_y_in_z" date="1336938258" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> replied to an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
-			<phrase name="x_started_an_issue_y_in_z" date="1336938296" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}" class="username">{2}</a> started an issue <a href="{3}">{4}</a> in <a href="{5}">{6}</a>]]></phrase>
 		</phrasetype>
 		<phrasetype name="Notices" fieldname="notice">
 			<phrase name="is_browsing_project_tools_criteria" date="1277854663" username="Mosh" version="2.1.2"><![CDATA[User is browsing vBulletin Project Tools]]></phrase>

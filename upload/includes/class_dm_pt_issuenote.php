@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ï¿½2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -58,8 +58,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 		'do_floodcheck' => true,
 		'do_dupecheck' => true,
 		'reason' => '', // string, nohtml (stored htmlspecialchars'd)
-		'parseurl' => false,
-		'noas' => true
+		'parseurl' => false
 	);
 
 	/**
@@ -376,15 +375,12 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			// Activity stream
 			if (version_compare($this->registry->options['templateversion'], '4.2', '>='))
 			{
-				if (!$this->info['noas'])
-				{
-					$activity = new vB_ActivityStream_Manage('project', 'issuenote');
-						$activity->set('contentid', $this->fetch_field('issuenoteid'));
-						$activity->set('userid', $this->fetch_field('userid'));
-						$activity->set('dateline', $this->fetch_field('dateline'));
-						$activity->set('action', 'create');
-					$activity->save();
-				}
+				$activity = new vB_ActivityStream_Manage('project', 'issuenote');
+					$activity->set('contentid', $this->fetch_field('issuenoteid'));
+					$activity->set('userid', $this->fetch_field('userid'));
+					$activity->set('dateline', $this->fetch_field('dateline'));
+					$activity->set('action', 'create');
+				$activity->save();
 			}
 		}
 		else if ($this->fetch_field('visible') != $this->existing['visible'] OR $this->fetch_field('type') != $this->existing['type'])

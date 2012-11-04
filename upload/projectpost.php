@@ -701,19 +701,19 @@ if ($_POST['do'] == 'postreply')
 							$issuedata->set_existing($issue);
 							$issuedata->set('issuestatusid', $vbulletin->GPC['changestatusid']);
 							$issuedata->save();
-
-							// Activity stream
-							if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
-							{
-								$activity = new vB_ActivityStream_Manage('project', 'issuenote');
-									$activity->set('contentid', $issuenote['issuenoteid']);
-									$activity->set('userid', $issuenote['userid']);
-									$activity->set('dateline', $issuenote['dateline']);
-									$activity->set('action', 'create');
-								$activity->save();
-							}
 						}
 					}
+				}
+
+				// Activity stream
+				if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+				{
+					$activity = new vB_ActivityStream_Manage('project', 'issuenote');
+						$activity->set('contentid', $issuenote['issuenoteid']);
+						$activity->set('userid', $issuenote['userid']);
+						$activity->set('dateline', $issuenote['dateline']);
+						$activity->set('action', 'create');
+					$activity->save();
 				}
 
 				$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
@@ -731,6 +731,7 @@ if ($_POST['do'] == 'postreply')
 			}
 			else
 			{
+				// No AJAX
 				// trying to change the status while replying -- ensure we can actually do that
 				if ($vbulletin->GPC['changestatusid'])
 				{
@@ -745,19 +746,19 @@ if ($_POST['do'] == 'postreply')
 							$issuedata->set_existing($issue);
 							$issuedata->set('issuestatusid', $vbulletin->GPC['changestatusid']);
 							$issuedata->save();
-
-							// Activity stream
-							if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
-							{
-								$activity = new vB_ActivityStream_Manage('project', 'issuenote');
-									$activity->set('contentid', $issuenote['issuenoteid']);
-									$activity->set('userid', $issuenote['userid']);
-									$activity->set('dateline', $issuenote['dateline']);
-									$activity->set('action', 'create');
-								$activity->save();
-							}
 						}
 					}
+				}
+
+				// Activity stream
+				if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+				{
+					$activity = new vB_ActivityStream_Manage('project', 'issuenote');
+						$activity->set('contentid', $issuenote['issuenoteid']);
+						$activity->set('userid', $issuenote['userid']);
+						$activity->set('dateline', $issuenote['dateline']);
+						$activity->set('action', 'create');
+					$activity->save();
 				}
 
 				($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
@@ -919,7 +920,6 @@ if ($_POST['do'] == 'postreply')
 			}
 			else
 			{
-
 				($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;
 
 				$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$issuenote[issuenoteid]";
