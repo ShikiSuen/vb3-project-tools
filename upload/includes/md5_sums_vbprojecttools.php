@@ -12,7 +12,7 @@ $md5_sums = array(
 		'projectattachment.php' => '97e72427e6954b35366329e82175d0e7',
 		'projectexternal.php' => '7ada923d62014d8203c0ee7eb0f69083',
 		'projectmilestone.php' => 'b14799fb4fb78bda48421ba6fc0b4f8e',
-		'projectpost.php' => 'bf1fc787798a8d5a75176026359f5b03',
+		'projectpost.php' => '8e3ec4b8a1dd8c2661db23ea6d559f1c',
 		'projectsearch.php' => 'd5390d44fd127da35d669f110eb01c2b',
 	),
 	'/admincp' => array(
@@ -30,35 +30,14 @@ $md5_sums = array(
 		'vbulletin_pt_read_marker.js' => '7a13200fd427e09d44c48324399f25b3',
 		'vbulletin_ptsearch_form.js' => 'f5cd7e4b3b3ecba48d9e2a37687374d9',
 	),
-	'/images/buttons' => array(
-		'project-hover.png' => 'dcde1da9e7446e1d80f95ac924fb7291',
-		'project.png' => '7680167b9f54c35fd712fa166ef5ff13',
-	),
-	'/images/misc' => array(
-		'issue_assigned.png' => 'd49c90aea57f6fc2ae8d8f599752f9f7',
-		'issue_closed.png' => 'bc4263496ac6453a078ba3794c190a66',
-		'issue_petition.png' => '57c43da89314e5d13efe5f44d9e795de',
-		'issue_private.png' => '4252f2ec08e9d698e11962b7440def17',
-	),
-	'/images/site_icons' => array(
-		'project.png' => '0d106e5b9b92a8d8e41c95e63ffeb08c',
-	),
-	'/images/statusicon' => array(
-		'project_forum_new.png' => '0a76e7c36e19060b5475f8f3dceababe',
-		'project_forum_old.png' => 'd92ea6e6fc0ae0fb297c66ef5bb5ab2c',
-		'project_new-16.png' => '3340bcd05e873b963565eb1f547d76da',
-		'pt_type_bug.png' => '198dfb2cc9a8f1d4c07002d7154bb960',
-		'pt_type_feature.png' => 'ae971bbac7be861c0801d3c3654b3151',
-		'pt_type_task.png' => '5bdb7d94a29290d45b87707e1baac956',
-	),
 	'/includes' => array(
 		'adminfunctions_projecttools.php' => '1b3cec8dbfe897cef65af6ea16026257',
 		'class_bbcode_pt.php' => '847f7ed2e0593015c18178a52588cbf5',
 		'class_dm_attachment_pt.php' => 'e9c7b14cbae995279dbfeaed4ef530bf',
-		'class_dm_pt_issue.php' => '204b14ee58eea2ed955c16c44ac8653f',
+		'class_dm_pt_issue.php' => '17a7b000ea858502891faa8351874bca',
 		'class_dm_pt_issueassign.php' => 'c7989746432ccca6b4f452d38f64c0de',
 		'class_dm_pt_issuechange.php' => '5b18424362befbb17d65d9d33f360696',
-		'class_dm_pt_issuenote.php' => 'e1993f20f27a6c16672b19bf7f38881e',
+		'class_dm_pt_issuenote.php' => '27debd38517a5772ab336241df0132e9',
 		'class_dm_pt_issuepetition.php' => '4083bedf7de0e9b3e979e1a418fa88ca',
 		'class_dm_pt_issuereport.php' => '74d003b284aba212ff8577fb3958b72c',
 		'class_dm_pt_issuestatus.php' => '7e1f71bbfe2490ce2a347c05936af9ad',
@@ -91,16 +70,16 @@ $md5_sums = array(
 		'ptissues.php' => 'c0a092ed90db3be216eb737e2934414f',
 	),
 	'/includes/cron' => array(
-		'digestweekly.php' => '0389002bc6dec8e108ceda88273a0933',
 		'pt_cleanup.php' => '5dc921bc76c5afa4efcfadb99850e0ef',
 		'pt_digestdaily.php' => '83b7a956a73eda71e550bf7732892de5',
+		'pt_digestweekly.php' => '48f927958bcfbeca2cb5f5e3d979c0b4',
 	),
 	'/includes/xml' => array(
 		'bitfield_vbprojecttools.xml' => '293cc0eb3f6fbd2d9aad308710cf7871',
 		'cpnav_vbprojecttools.xml' => 'b11204aed357b78e4ab31dd0c9b38d0c',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => 'ab3876ae66973c4d737cd36b5c8b67bb',
-		'product-vbprojecttools.xml' => '972a8d593ea3baf01a2b437c30f72332',
+		'product-vbprojecttools.xml' => 'd3e606c52d132df8fbc1886a8d49d591',
 	),
 	'/packages/vbcms/item/widget' => array(
 		'recentptcomments.php' => 'dc13b9cdef27ffec0c2f60c45d9bcff4',
@@ -111,7 +90,7 @@ $md5_sums = array(
 		'recentptissues.php' => 'ebe88e67011d8b92e134f48937be4794',
 	),
 	'/packages/vbprojecttools/search/indexcontroller' => array(
-		'issuenote.php' => '8befd4c50d4b4d32ba986013e2318f98',
+		'issuenote.php' => 'fd638a0f636ebfdf9f28c0ca0ae23985',
 		'project.php' => 'd34a378b9e20b7d8aac01ca8c2c6769e',
 	),
 	'/packages/vbprojecttools/search/result' => array(
@@ -127,10 +106,22 @@ $md5_sums = array(
 		'issuenote.php' => '53216befbaf8262ac3e198bad8a4d908',
 		'project.php' => 'ba95cef0bca9e1aeb47227a4ed80684c',
 	),
+	'/vb/activitystream/popularity/project' => array(
+		'issue.php' => 'b01cc13ef7fe0e61e7eb5fa6381051ef',
+	),
+	'/vb/activitystream/populate/project' => array(
+		'issue.php' => '573fac83598cd259c91290ace4848fff',
+		'issuenote.php' => '42377341b96a50f34bae9c283d0c45d1',
+	),
+	'/vb/activitystream/view/perm/project' => array(
+		'base.php' => '515a8ce065fd18f269ed3d979b4fc942',
+		'issue.php' => 'b0d5919380f10a3767fd5406783bb803',
+		'issuenote.php' => '621d6491b7c0ce1840b0ccc9f0c6b31b',
+	),
 	'/vb/legacy' => array(
-		'issue.php' => 'eb863afbd14956f936ac79d5151c703e',
-		'issuenote.php' => '4686d8e5df7a569c6602f7636b0327c4',
-		'project.php' => 'f75d9549e785ae5b402fc529e19e20af',
+		'issue.php' => 'ae7b5f709b8c2f5cd4464f3aab3bbc3e',
+		'issuenote.php' => 'c9617c9dc8ceaeb51a383fbae32d58f7',
+		'project.php' => '8fd758c946d9c530682b0c6fb3e2850a',
 	),
 );
 $md5_sum_softwareid = 'vbprojecttools';

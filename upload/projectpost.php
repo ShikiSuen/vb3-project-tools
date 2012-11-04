@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ï¿½2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -400,6 +400,17 @@ if ($_POST['do'] == 'postreply')
 						$issuedata->save();
 					}
 				}
+			}
+
+			// Activity stream
+			if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
+			{
+				$activity = new vB_ActivityStream_Manage('project', 'issuenote');
+					$activity->set('contentid', $issuenote['issuenoteid']);
+					$activity->set('userid', $issuenote['userid']);
+					$activity->set('dateline', $issuenote['dateline']);
+					$activity->set('action', 'create');
+				$activity->save();
 			}
 
 			($hook = vBulletinHook::fetch_hook('projectpost_postreply_complete')) ? eval($hook) : false;

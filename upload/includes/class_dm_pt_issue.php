@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.1.3                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ï¿½2000-2011 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -576,12 +576,27 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 		if (!$this->condition)
 		{
-			// Insert new issue - increase 'totalissues' counter in pt_user table for the original user
-			$this->registry->db->query_write("
-				UPDATE " . TABLE_PREFIX . "pt_user SET
-					totalissues = totalissues + 1
-				WHERE userid = " . $this->fetch_field('submituserid') . "
-			");
+			// Insert new issue
+			// Increase 'totalissues' counter in pt_user table for the original user
+			if ($this->fetch_field('submituserid'))
+			{
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "pt_user SET
+						totalissues = totalissues + 1
+					WHERE userid = " . $this->fetch_field('submituserid') . "
+				");
+			}
+
+			// Activity stream
+			if (version_compare($this->registry->options['templateversion'], '4.2', '>='))
+			{
+				$activity = new vB_ActivityStream_Manage('project', 'issue');
+					$activity->set('contentid', $this->fetch_field('issueid'));
+					$activity->set('userid', $this->fetch_field('submituserid'));
+					$activity->set('dateline', $this->fetch_field('submitdate'));
+					$activity->set('action', 'create');
+				$activity->save();
+			}
 		}
 
 		if (!$rebuild_project)

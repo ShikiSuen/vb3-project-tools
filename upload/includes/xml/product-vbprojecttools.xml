@@ -7,7 +7,7 @@
 	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
 	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
 	<dependencies>
-		<dependency dependencytype="vbulletin" minversion="4.0.8" maxversion="" />
+		<dependency dependencytype="vbulletin" minversion="4.1.4" maxversion="" />
 	</dependencies>
 	<codes>
 		<code version="*">
@@ -122,6 +122,23 @@ $db->query_write("
 		dateline INT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (primaryid, type),
 		KEY moderation (type, dateline)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueimport (
+		issueid INT UNSIGNED NOT NULL,
+		contenttypeid INT UNSIGNED NOT NULL,
+		contentid INT UNSIGNED NOT NULL,
+		data MEDIUMTEXT,
+		PRIMARY KEY (issueid)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuemagicselect (
+		issueid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY (issueid)
 	)
 ");
 
@@ -268,8 +285,18 @@ $db->query_write("
 		displayorder INT UNSIGNED NOT NULL DEFAULT 0,
 		canpetitionfrom SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		issuecompleted SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+		statuscolor VARCHAR(20) NOT NULL DEFAULT '',
+		statuscolor2 VARCHAR(20) NOT NULL DEFAULT '',
 		PRIMARY KEY (issuestatusid),
 		KEY finder (issuetypeid, displayorder)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
+		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
+		projectid INT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (issuestatusid, projectid)
 	)
 ");
 
@@ -353,6 +380,11 @@ $db->query_write("
 		afterforumids BLOB NOT NULL,
 		forumtitle VARCHAR(250) NOT NULL DEFAULT '',
 		milestonecount INT UNSIGNED NOT NULL DEFAULT 0,
+		requireappliesversion INT UNSIGNED NOT NULL DEFAULT 0,
+		requirecategory INT UNSIGNED NOT NULL DEFAULT 0,
+		requirepriority INT UNSIGNED NOT NULL DEFAULT 0,
+		pmonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
+		emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectid)
 	)
 ");
@@ -363,8 +395,31 @@ $db->query_write("
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		title VARCHAR(250) NOT NULL DEFAULT '',
 		displayorder INT UNSIGNED NOT NULL DEFAULT 0,
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectcategoryid),
 		KEY finder (projectid, displayorder)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselect (
+		projectmagicselectid INT(10) NOT NULL AUTO_INCREMENT,
+		projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		projectmagicselectgroupid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		`value` INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY (projectmagicselectid),
+		KEY projectid (projectid)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup (
+		projectmagicselectgroupid INT(10) NOT NULL AUTO_INCREMENT,
+		projectid INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		displayorder INT(10) UNSIGNED NOT NULL DEFAULT '0',
+		PRIMARY KEY (projectmagicselectgroupid),
+		KEY projectid (projectid)
 	)
 ");
 
@@ -378,6 +433,19 @@ $db->query_write("
 		attachpermissions INT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (usergroupid, projectid, issuetypeid),
 		KEY projectid (projectid)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectpriority (
+		projectpriorityid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		projectid INT UNSIGNED NOT NULL,
+		displayorder INT UNSIGNED NOT NULL,
+		statuscolor VARCHAR(20) NOT NULL,
+		statuscolor2 VARCHAR(20) NOT NULL,
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (projectpriorityid),
+		KEY finder (projectid,displayorder)
 	)
 ");
 
@@ -443,6 +511,7 @@ $db->query_write("
 		projectversiongroupid INT UNSIGNED NOT NULL DEFAULT 0,
 		displayorder SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		effectiveorder INT UNSIGNED NOT NULL DEFAULT 0,
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectversionid),
 		KEY finder (projectid, effectiveorder)
 	)
@@ -465,6 +534,14 @@ $db->query_write("
 		tagtext VARCHAR(50) NOT NULL DEFAULT '',
 		PRIMARY KEY (tagid),
 		UNIQUE KEY tagtext (tagtext)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_user (
+		userid INT UNSIGNED NOT NULL DEFAULT 0,
+		totalissues INT UNSIGNED NOT NULL DEFAULT 0,
+		PRIMARY KEY (userid)
 	)
 ");
 
@@ -710,7 +787,7 @@ if ($installed_version === null)
 
 		// insert some good permissions for the admin group
 		$db->query_write("
-			INSERT INTO " . TABLE_PREFIX . "pt_projectpermission
+			INSERT IGNORE INTO " . TABLE_PREFIX . "pt_projectpermission
 				(usergroupid, projectid, issuetypeid, generalpermissions, postpermissions, attachpermissions)
 			VALUES
 				" . implode(',', $perms)
@@ -737,6 +814,8 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueassign");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueattach");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuechange");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuedeletionlog");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuemagicselect");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuenote");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuenotehash");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuenotehistory");
@@ -748,6 +827,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuereportsubscri
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuesearch");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuesearchresult");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatus");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuesubscribe");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuetag");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuetype");
@@ -756,7 +836,10 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_milestone");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_milestonetypecount");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_project");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectcategory");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpermission");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpriority");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectread");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projecttype");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projecttypeprivatelastpost");
@@ -764,6 +847,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projecttypesubscri
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectversion");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectversiongroup");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_tag");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");
 
 $db->query_write("DELETE FROM " . TABLE_PREFIX . "datastore WHERE title LIKE 'pt\_%'");
 
@@ -1047,6 +1131,7 @@ if ($db_alter->fetch_table_info('thread'))
 		$db->query_write("ALTER TABLE " . TABLE_PREFIX . "thread CHANGE ptissueid pt_issueid INT(10) UNSIGNED NOT NULL");
 		$db->query_write("ALTER TABLE " . TABLE_PREFIX . "thread CHANGE ptforwardmode pt_forwardmode INT(10) UNSIGNED NOT NULL");
 
+		// Requires only to remove the old product
 		$db_alter->add_field(array(
 			'name' => 'ptissueid',
 			'type' => 'int',
@@ -1132,7 +1217,7 @@ if ($show['ptimporter_previous'])
 	// Clear routes from datastore
 	build_datastore('routes', serialize(array()), 1);
 
-	//clear the type cache.
+	// Clear the type cache.
 	vB_Cache::instance()->purge('vb_types.types');
 
 	if ($db_alter->fetch_table_info('language'))
@@ -1160,44 +1245,54 @@ if ($show['ptimporter_previous'])
 			<uninstallcode />
 		</code>
 		<code version="2.1.2">
-			<installcode><![CDATA[$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
-		issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
-		projectid INT UNSIGNED NOT NULL DEFAULT 0,
-		PRIMARY KEY (issuestatusid, projectid)
-	)
-");
-
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_user (
-		userid INT UNSIGNED NOT NULL,
-		totalissues INT UNSIGNED NOT NULL DEFAULT 0,
-		PRIMARY KEY (userid)
-	) ENGINE=MyISAM
-");
-
-$db->query_write("
-	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueimport (
-		issueid INT UNSIGNED NOT NULL,
-		contenttypeid INT UNSIGNED NOT NULL,
-		contentid INT UNSIGNED NOT NULL,
-		data MEDIUMTEXT,
-		PRIMARY KEY (issueid)
-	) ENGINE=MyISAM
-");
+			<installcode><![CDATA[if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
+{
+	// This is needed? Don't know. Added to be sure.
+	require_once(DIR . '/includes/class_bootstrap_framework.php');
+	vB_Bootstrap_Framework::init();
+}
 
 require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
 
-// Add field for 'PT color titles by status' feature
-if ($db_alter->fetch_table_info('pt_issuestatus'))
+if ($installed_version !== null)
 {
-	$db_alter->add_field(array(
-		'name' => 'statuscolor',
-		'type' => 'varchar',
-		'length' => '20',
-		'null' => false
-	));
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset (
+			issuestatusid INT UNSIGNED NOT NULL DEFAULT 0,
+			projectid INT UNSIGNED NOT NULL DEFAULT 0,
+			PRIMARY KEY (issuestatusid, projectid)
+		)
+	");
+
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_user (
+			userid INT UNSIGNED NOT NULL,
+			totalissues INT UNSIGNED NOT NULL DEFAULT 0,
+			PRIMARY KEY (userid)
+		)
+	");
+
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_issueimport (
+			issueid INT UNSIGNED NOT NULL,
+			contenttypeid INT UNSIGNED NOT NULL,
+			contentid INT UNSIGNED NOT NULL,
+			data MEDIUMTEXT,
+			PRIMARY KEY (issueid)
+		)
+	");
+
+	// Add field for 'PT color titles by status' feature
+	if ($db_alter->fetch_table_info('pt_issuestatus'))
+	{
+		$db_alter->add_field(array(
+			'name' => 'statuscolor',
+			'type' => 'varchar',
+			'length' => '20',
+			'null' => false
+		));
+	}
 }
 
 // #############################################################################
@@ -1205,11 +1300,6 @@ if ($db_alter->fetch_table_info('pt_issuestatus'))
 * 'Create issue from thread' edited to be expandable
 * Moved into a new table
 */
-
-// Get the contenttypeid of threads
-require_once(DIR . '/includes/class_bootstrap_framework.php');
-vB_Bootstrap_Framework::init();
-$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
 
 // Move any existing data into the new table before removing useless fields
 $movedthreads = $db->query_read("
@@ -1220,6 +1310,9 @@ $movedthreads = $db->query_read("
 
 if ($db->num_rows($movedthreads) > 0)
 {
+	// Get the contenttypeid of threads
+	$contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
 	while ($movedthread = $db->fetch_array($movedthreads))
 	{
 		$data = array();
@@ -1231,7 +1324,7 @@ if ($db->num_rows($movedthreads) > 0)
 		$db->query_write("
 			INSERT INTO " . TABLE_PREFIX . "pt_issueimport
 				(issueid, contenttypeid, contentid, data)
-		VALUES
+			VALUES
 				(" . $movedthread['pt_issueid'] . ", $contenttypeid, " . $movedthread['threadid'] . ", '" . $importdata . "')
 			");
 	}
@@ -1253,7 +1346,7 @@ $usercounts = $db->query_read("
 
 while ($usercount = $db->fetch_array($usercounts))
 {
-	$db->query_write("INSERT INTO " . TABLE_PREFIX . "pt_user (userid) VALUES (" . intval($usercount['userid']) . ")");
+	$db->query_write("INSERT IGNORE INTO " . TABLE_PREFIX . "pt_user (userid) VALUES (" . intval($usercount['userid']) . ")");
 }
 
 // Rebuild profile issue counters for every user
@@ -1265,53 +1358,37 @@ rebuild_profile_issue_counters();
 * CMS Widgets
 */
 
-$products = fetch_product_list(true);
-
 // Adding some infos for CMS widgets
-if (file_exists(DIR . "/includes/xml/product-vbcms.xml") AND $products['vbcms']['active'] == '1')
+if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
 {
 	// We need to have the packageid of vbcms
-	$packageid = $db->query_first("
-		SELECT packageid AS packageid
-		FROM " . TABLE_PREFIX . "package
-		WHERE productid = 'vbcms'
-	");
+	$packagecms = vB_Types::instance()->getPackageID('vBCms');
 
 	// Add widgets
 	$db->query_write("
-		INSERT INTO " . TABLE_PREFIX . "cms_widgettype
+		INSERT IGNORE INTO " . TABLE_PREFIX . "cms_widgettype
 			(class, packageid)
 		VALUES
-			('RecentPTIssues', " . $packageid['packageid'] . "),
-			('RecentPTComments', " . $packageid['packageid'] . ")
+			('RecentPTIssues', " . $packagecms . "),
+			('RecentPTComments', " . $packagecms . ")
 	");
+}
 
-	// Clear CMS cache to add these widgets directly in the widget type list
-
-	// This is needed? Don't know. Added to be sure.
-	require_once(DIR . '/includes/class_bootstrap_framework.php');
-	vB_Bootstrap_Framework::init();
-
-	if (method_exists(vB_Cache::instance(), 'clean'))
-	{
-		vB_Cache::instance()->clean(false);
-	}
+// Clear CMS cache to add these widgets directly in the widget type list
+if (method_exists(vB_Cache::instance(), 'clean'))
+{
+	vB_Cache::instance()->clean(false);
 }
 
 // Adding some content type for PT search via search.php
-$package = $db->query_first("
-	SELECT packageid
-	FROM " . TABLE_PREFIX . "package
-	WHERE productid = 'vbprojecttools'
-		AND class = 'vBProjectTools'
-");
+$packagept = $db->query_first("SELECT packageid FROM " . TABLE_PREFIX . "package WHERE class = 'vBProjectTools'");
 
 // Actually deactivated - change cansearch from 0 to 1 to activate it
 $db->query_write("
 	INSERT INTO " . TABLE_PREFIX . "contenttype
 		(class, packageid, canplace, cansearch, cantag, canattach)
 	VALUES
-		('IssueNote', " . $package['packageid'] . ", '0', '0', '0', '0')
+		('IssueNote', " . $packagept['packageid'] . ", '0', '0', '0', '0')
 ");
 
 // #############################################################################
@@ -1360,20 +1437,7 @@ else
 	// Appropriate the block to the corresponding product
 	$db->query_write("UPDATE " . TABLE_PREFIX . "blocktype SET productid = 'vbprojecttools' WHERE name = 'ptissues'");
 }]]></installcode>
-			<uninstallcode><![CDATA[require_once(DIR . '/includes/class_dbalter.php');
-$db_alter = new vB_Database_Alter_MySQL($db);
-if ($db_alter->fetch_table_info('pt_issuestatus'))
-{
-	$db_alter->drop_field('statuscolor');
-}
-
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issuestatusprojectset");
-
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_user");
-
-$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_issueimport");
-
-// #############################################################################
+			<uninstallcode><![CDATA[// #############################################################################
 /**
 * CMS Widgets
 */
@@ -1479,10 +1543,13 @@ $blockmanager->reloadBlockTypes(true);]]></uninstallcode>
 		</code>
 		<code version="2.1.3">
 			<installcode><![CDATA[// Issue #163 fix
-$db->query_write("
-	ALTER TABLE " . TABLE_PREFIX . "pt_user
-	CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT '0'
-");]]></installcode>
+if ($installed_version !== null)
+{
+	$db->query_write("
+		ALTER TABLE " . TABLE_PREFIX . "pt_user
+		CHANGE userid userid INT UNSIGNED NOT NULL DEFAULT '0'
+	");
+}]]></installcode>
 			<uninstallcode />
 		</code>
 		<code version="2.1.4">
@@ -1496,14 +1563,14 @@ $db->query_write("
 if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 {
 	// Package ID required
-	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+	$packageid = $db->query_first("SELECT packageid FROM " . TABLE_PREFIX . "package WHERE class = 'vBProjectTools'");
 
 	// Insert Issue in Activity Stream
 	vB::$db->query_write("
 		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
 			(packageid, section, type, enabled)
 		VALUES
-			($packageid, 'project', 'issue', 1)
+			(" . $packageid['packageid'] . ", 'project', 'issue', 1)
 	");
 
 	// Insert IssueNote in Activity Stream
@@ -1511,7 +1578,7 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 		INSERT INTO " . TABLE_PREFIX . "activitystreamtype
 			(packageid, section, type, enabled)
 		VALUES
-			($packageid, 'project', 'issuenote', 1)
+			(" . $packageid['packageid'] . ", 'project', 'issuenote', 1)
 	");
 
 	// Rebuild Activity Stream datastore
@@ -1520,10 +1587,21 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 			<uninstallcode><![CDATA[// Only for 4.2+
 if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 {
-	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
-	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE packageid = " .  . intval($packageid)"");
-	//$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issue'");
-	//$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issuenote'");
+	// Get PT package ID
+	$projecttypeid = vB_Types::instance()->getPackageID('vBProjectTools');
+
+	// Get all typeids of PT
+	$ascontents = $db->query_read("SELECT typeid FROM " . TABLE_PREFIX . "activitystreamtype WHERE packageid = '" . $projecttypeid . "'");
+
+	while ($ascontent = $db->fetch_array($ascontents))
+	{
+		// Do the deletion of each item in activitystream table for each typeid
+		$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystream WHERE typeid = " . $ascontent['typeid'] . "");
+	}
+
+	// Remove all PT reference from activitystreamtype table
+	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issue'");
+	$db->query_write("DELETE FROM " . TABLE_PREFIX . "activitystreamtype WHERE section = 'project' AND type = 'issuenote'");
 
 	// Rebuild Activity Stream datastore
 	build_activitystream_datastore();
@@ -1531,6 +1609,80 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 		</code>
 	</codes>
 	<templates>
+		<template name="activitystream_project_issue" templatetype="template" date="1352068061" username="Pitchoune" version="2.1.4"><![CDATA[<li class="activitybit project_issue userprof_content userprof_content_border">
+	<div class="avatar">
+		<img src="{vb:raw userinfo.avatarurl}" alt="{vb:rawphrase xs_avatar, {vb:raw userinfo.username}}" />
+	</div>
+	<div class="content">
+		<div class="datetime">
+			 <span class="date">{vb:raw activity.issuenotedate}<vb:if condition="!$show['detailedtime']">,&nbsp;<span class="time">{vb:raw activity.issuenotetime}</span></vb:if></span>
+		</div>
+		<div class="title">
+			<vb:if condition="$userinfo['userid']">
+				{vb:rawphrase x_started_an_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:raw issueinfo.issueid}, {vb:raw issueinfo.title}, {vb:raw projectinfo.projectid}, {vb:raw projectinfo.title}, {vb:raw session.sessionhash}}
+			<vb:else />
+				{vb:rawphrase guest_x_started_an_issue_y_in_z, {vb:raw userinfo.username}, {vb:raw issueinfo.issueid}, {vb:raw issueinfo.title}, {vb:raw projectinfo.projectid}, {vb:raw projectinfo.title}, {vb:raw session.sessionhash}}
+			</vb:if>
+		</div>
+		<vb:if condition="$show['issuecontent']">
+		<div class="excerpt">{vb:raw issueinfo.preview}</div>
+		<div class="fulllink"><a href="project.php?{vb:raw session.sessionhash}issueid={vb:raw issueinfo.issueid}">{vb:rawphrase see_more}</a></div>
+		</vb:if>
+	</div>
+	<div class="views">{vb:rawphrase x_replies, {vb:raw issueinfo.replycount}}</div>
+</li>]]></template>
+		<template name="activitystream_project_issuenote" templatetype="template" date="1352068727" username="Pitchoune" version="2.1.4"><![CDATA[<li class="activitybit project_issuenote userprof_content userprof_content_border">
+	<div class="avatar">
+		<img src="{vb:raw userinfo.avatarurl}" alt="{vb:rawphrase xs_avatar, {vb:raw userinfo.username}}" />
+	</div>
+	<div class="content">
+		<div class="datetime">
+			 <span class="date">{vb:raw activity.issuenotedate}<vb:if condition="!$show['detailedtime']">,&nbsp;<span class="time">{vb:raw activity.issuenotetime}</span></vb:if></span>
+		</div>
+		<div class="title">
+			<vb:if condition="$issuenoteinfo['type'] == 'system'">
+				<vb:if condition="$userinfo['userid']">
+					{vb:rawphrase x_made_changes_in_the_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:raw issueinfo.issueid}, {vb:raw issueinfo.title}, {vb:raw projectinfo.projectid}, {vb:raw projectinfo.title}, {vb:raw session.sessionhash}}
+				<vb:else />
+					{vb:rawphrase guest_x_made_changes_in_the_issue_y_in_z, {vb:raw userinfo.username}, {vb:raw issueinfo.issueid}, {vb:raw issueinfo.title}, {vb:raw projectinfo.projectid}, {vb:raw projectinfo.title}, {vb:raw session.sessionhash}}
+				</vb:if>
+			<vb:elseif condition="$issuenoteinfo['type'] == 'petition'" />
+				<vb:if condition="$userinfo['userid']">
+					{vb:rawphrase x_made_a_petition_in_the_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:raw issueinfo.issueid}, {vb:raw issueinfo.title}, {vb:raw projectinfo.projectid}, {vb:raw projectinfo.title}, {vb:raw session.sessionhash}}
+				<vb:else />
+					{vb:rawphrase guest_x_made_a_petition_in_the_issue_y_in_z, {vb:raw userinfo.username}, {vb:raw issueinfo.issueid}, {vb:raw issueinfo.title}, {vb:raw projectinfo.projectid}, {vb:raw projectinfo.title}, {vb:raw session.sessionhash}}
+				</vb:if>
+			<vb:elseif condition="$issuenoteinfo['type'] == 'user'" />
+				<vb:if condition="$userinfo['userid']">
+					{vb:rawphrase x_replied_to_an_issue_y_in_z, {vb:link member, {vb:raw userinfo}}, {vb:raw userinfo.username}, {vb:raw issueinfo.issueid}, {vb:raw issueinfo.title}, {vb:raw projectinfo.projectid}, {vb:raw projectinfo.title}, {vb:raw session.sessionhash}}
+				<vb:else />
+					{vb:rawphrase guest_x_replied_to_an_issue_y_in_z, {vb:raw userinfo.username}, {vb:raw issueinfo.issueid}, {vb:raw issueinfo.title}, {vb:raw projectinfo.projectid}, {vb:raw projectinfo.title}, {vb:raw session.sessionhash}}
+				</vb:if>
+			</vb:if>
+		</div>
+		<vb:if condition="$show['issuecontent']">
+			<div class="excerpt restore">
+				<vb:if condition="$issuenoteinfo['type'] == 'system'">
+					<ul>
+						<vb:each from="issuenoteinfo.preview" value="data">
+							<li>{vb:raw data}</li>
+						</vb:each>
+					</ul>
+				<vb:elseif condition="$issuenoteinfo['type'] == 'petition'" />
+					<div class="excerpt">
+						{vb:rawphrase petition_change_x_pending, {vb:raw issuenoteinfo.issuestatus}}
+						<br /><br />
+						{vb:raw issuenoteinfo.preview}
+					</div>
+				<vb:else />
+					<div class="excerpt">{vb:raw issuenoteinfo.preview}</div>
+				</vb:if>
+			</div>
+			<div class="fulllink"><a href="project.php?{vb:raw session.sessionhash}issueid={vb:raw issueinfo.issueid}">{vb:rawphrase see_more}</a></div>
+		</vb:if>
+	</div>
+	<div class="views">{vb:rawphrase x_replies, {vb:raw issueinfo.replycount}}</div>
+</li>]]></template>
 		<template name="block_issues" templatetype="template" date="1311797900" username="Pitchoune" version="2.1.3"><![CDATA[<li>
 	<div class="block smaller">
 		<div class="blocksubhead">
@@ -2017,7 +2169,7 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1316107661" username="Pitchoune" version="2.1.3"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1352068752" username="Pitchoune" version="2.1.4"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3114,6 +3266,11 @@ div.checkbox_multiselect {
 .vB_MagicSelect_wrappable {
 	white-space: normal;
 	padding: 1px 0px 0px 0px;
+}
+
+/* Activity stream specific values */
+#activitylist li.activitybit.project_issuenote ul {
+	padding-{vb:stylevar left}: 85px;
 }
 
 /* Overwrite some values */
@@ -8918,12 +9075,18 @@ switch (THIS_SCRIPT)
 		$pt_templates[] = 'pt_checkbox_option';
 		$pt_templates[] = 'search_input_ptissue';
 		$pt_templates[] = 'search_input_ptissuenote';
-        $pt_templates[] = 'search_results_ptissue';
-        $pt_templates[] = 'search_results_ptissuenote';
+        	$pt_templates[] = 'search_results_ptissue';
+        	$pt_templates[] = 'search_results_ptissuenote';
 		break;
+
 	case 'showthread':
 		$pt_templates[] = 'pt_postbit_create_issue';
 		$pt_templates[] = 'pt_postbit_link_issue';
+		break;
+
+	case 'activity':
+		$pt_templates[] = 'activitystream_project_issue';
+		$pt_templates[] = 'activitystream_project_issuenote';
 		break;
 }
 
@@ -9086,6 +9249,14 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 		$datastore_fetch[] = "'pt_issuetype'";
 		$datastore_fetch[] = "'pt_permissions'";
 		break;
+
+	case 'activity':
+		$GLOBALS['phrasegroups'][] = 'projecttools';
+
+		$datastore_fetch[] = "'pt_bitfields'";
+		$datastore_fetch[] = "'pt_permissions'";
+		$datastore_fetch[] = "'pt_projects'";
+		break;
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
@@ -9202,10 +9373,44 @@ else if ($userinfo['activity'] == 'archive_project')
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
-			<title>Search: Adding PT CSS Template in various places</title>
+			<title>Adding PT CSS Template in various places</title>
 			<hookname>parse_templates</hookname>
 			<phpcode><![CDATA[// In search.php & projectpost.php?do=managesubscriptions, projecttools.css is not automatically added - do it here
-if ((THIS_SCRIPT == 'search' AND in_array($_REQUEST['do'], array('intro', 'process'))) OR (THIS_SCRIPT == 'projectpost' AND in_array($_REQUEST['do'], array('managesubscriptions'))) OR (THIS_SCRIPT == 'showthread') OR (THIS_SCRIPT == 'usercp'))
+if (
+	(
+		THIS_SCRIPT == 'search'
+		AND
+		in_array($_REQUEST['do'], array('intro', 'process'))
+	)
+	OR
+	(
+		THIS_SCRIPT == 'projectpost'
+		AND
+		in_array($_REQUEST['do'], array('managesubscriptions'))
+	)
+	OR
+	(
+		THIS_SCRIPT == 'showthread'
+	)
+	OR
+	(
+		THIS_SCRIPT == 'usercp'
+		AND 
+		defined('PT_SUBSCRIPTION') 
+	) 
+	OR 
+	( 
+		THIS_SCRIPT == 'index' 
+		AND 
+		$vbulletin->options['pt_hasprojectforums'] 
+		AND 
+		$vbulletin->options['mobilestyleid_advanced'] == $vbulletin->userinfo['styleid'] 
+	) 
+	OR 
+	( 
+		THIS_SCRIPT == 'activity' 
+	)
+)
 {
 	$template_hook['headinclude_bottom_css'] .= vB_Template::create('pt_headinclude')->render();
 }]]></phpcode>
@@ -9453,6 +9658,16 @@ if (!$this->condition)
 		</plugin>
 	</plugins>
 	<phrases>
+		<phrasetype name="Activity Stream" fieldname="activitystream">
+			<phrase name="guest_x_made_a_petition_in_the_issue_y_in_z" date="1352068366" username="Pitchoune" version="2.1.4"><![CDATA[{1} made a petition in the issue <a href="project.php?{6}issueid={2}">{3}</a> in <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+			<phrase name="guest_x_made_changes_in_the_issue_y_in_z" date="1352068563" username="Pitchoune" version="2.1.4"><![CDATA[{1} made some changes in the issue <a href="project.php?{6}issueid={2}">{3}</a> in <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+			<phrase name="guest_x_replied_to_an_issue_y_in_z" date="1352068222" username="Pitchoune" version="2.1.4"><![CDATA[{1} replied to an issue <a href="project.php?{6}issueid={2}">{3}</a> in <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+			<phrase name="guest_x_started_an_issue_y_in_z" date="1352068188" username="Pitchoune" version="2.1.4"><![CDATA[{1} started an issue <a href="project.php?{6}issueid={2}">{3}</a> in <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+			<phrase name="x_made_a_petition_in_the_issue_y_in_z" date="1352068341" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> made a petition in the issue <a href="project.php?{7}issueid={3}">{4}</a> in project <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+			<phrase name="x_made_changes_in_the_issue_y_in_z" date="1352068653" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> made some changes in the issue <a href="project.php?{7}issueid={3}">{4}</a> in project <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+			<phrase name="x_replied_to_an_issue_y_in_z" date="1352062572" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> replied to an issue <a href="project.php?{7}issueid={3}">{4}</a> in <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+			<phrase name="x_started_an_issue_y_in_z" date="1352062499" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}" class="username">{2}</a> started an issue <a href="project.php?{7}issueid={3}">{4}</a> in <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		</phrasetype>
 		<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 			<phrase name="project_projectadd_projectedit_afterforumids_text" date="1185885194" username="Ed Sullivan" version="1.0.1"><![CDATA[This option allows you to display project information within the forum list on the vBulletin main page.<br />
 <br />
@@ -10636,35 +10851,35 @@ diff</defaultvalue>
 		<faq faqname="pt_faq_report" faqparent="pt_faq" displayorder="30" />
 	</faqentries>
 	<navigation>
-		<tab name="vbtab_project" date="1352052217" username="Pitchoune" version="2.1.4">
+		<tab name="vbtab_project" date="1352062281" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show />
 			<scripts />
 			<displayorder>50</displayorder>
 			<url>project.php{sesssion.sessionurl_q}</url>
 		</tab>
-		<link name="vbpt_myreports" date="1352052217" username="Pitchoune" version="2.1.4">
+		<link name="vbpt_myreports" date="1352062281" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show>member</show>
 			<parent>vbtab_project</parent>
 			<displayorder>10</displayorder>
 			<url>projectsearch.php?{session.sessionurl}do=reports</url>
 		</link>
-		<link name="vbpt_subscriptions" date="1352052217" username="Pitchoune" version="2.1.4">
+		<link name="vbpt_subscriptions" date="1352062281" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>20</displayorder>
 			<url>projectpost.php?{session.sessionurl}do=managesubscriptions</url>
 		</link>
-		<link name="vbpt_timeline" date="1352052217" username="Pitchoune" version="2.1.4">
+		<link name="vbpt_timeline" date="1352062281" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>30</displayorder>
 			<url>project.php?{session.sessionurl}do=timeline</url>
 		</link>
-		<link name="vbpt_faq" date="1352052217" username="Pitchoune" version="2.1.4">
+		<link name="vbpt_faq" date="1352062281" username="Pitchoune" version="2.1.4">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
