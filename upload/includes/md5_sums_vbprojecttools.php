@@ -50,6 +50,7 @@ $md5_sums = array(
 		'class_pt_issuenote.php' => '91621cdfce2cfdf7d445379d0f116a8e',
 		'class_pt_issuesearch.php' => 'd8965c01edeb0e90b27abd61e39ddfaa',
 		'class_pt_patch_parse.php' => '5d25cc65a60d653b0ed8dc925960cad2',
+		'class_ptimporter.php' => '93c8e54a9b6971ad343ed069d236c51f',
 		'class_reportitem_pt.php' => '88b0133eb3ca7c83b6d2bdf9c74e5afb',
 		'class_upload_pt.php' => '637af6b275428e302f9c46e122e0306e',
 		'class_upload_ptimporter.php' => '700e0d446984a48ad568c308a43d3d18',
