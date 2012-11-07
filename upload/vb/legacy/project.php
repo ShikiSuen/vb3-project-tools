@@ -4,7 +4,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.1.4                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright Â©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2012 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
