@@ -4,8 +4,8 @@
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
 	<version>2.1.4</version>
-	<url><![CDATA[http://www.vbulletin.org/forum/misc.php?do=producthelp&pid=vbprojecttools]]></url>
-	<versioncheckurl><![CDATA[http://www.vbulletin.org/forum/misc.php?do=productcheck&pid=vbprojecttools]]></versioncheckurl>
+	<url />
+	<versioncheckurl />
 	<dependencies>
 		<dependency dependencytype="vbulletin" minversion="4.1.4" maxversion="" />
 	</dependencies>
@@ -9659,14 +9659,14 @@ if (!$this->condition)
 	</plugins>
 	<phrases>
 		<phrasetype name="Activity Stream" fieldname="activitystream">
-			<phrase name="guest_x_made_a_petition_in_the_issue_y_in_z" date="1352068366" username="Pitchoune" version="2.1.4"><![CDATA[{1} made a petition in the issue <a href="project.php?{6}issueid={2}">{3}</a> in <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
-			<phrase name="guest_x_made_changes_in_the_issue_y_in_z" date="1352068563" username="Pitchoune" version="2.1.4"><![CDATA[{1} made some changes in the issue <a href="project.php?{6}issueid={2}">{3}</a> in <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
-			<phrase name="guest_x_replied_to_an_issue_y_in_z" date="1352068222" username="Pitchoune" version="2.1.4"><![CDATA[{1} replied to an issue <a href="project.php?{6}issueid={2}">{3}</a> in <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
-			<phrase name="guest_x_started_an_issue_y_in_z" date="1352068188" username="Pitchoune" version="2.1.4"><![CDATA[{1} started an issue <a href="project.php?{6}issueid={2}">{3}</a> in <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+			<phrase name="guest_x_made_a_petition_in_the_issue_y_in_z" date="1352068366" username="Pitchoune" version="2.1.4"><![CDATA[{1} made a petition in the issue <a href="project.php?{6}issueid={2}">{3}</a> in project <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+			<phrase name="guest_x_made_changes_in_the_issue_y_in_z" date="1352068563" username="Pitchoune" version="2.1.4"><![CDATA[{1} made some changes in the issue <a href="project.php?{6}issueid={2}">{3}</a> in project <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+			<phrase name="guest_x_replied_to_an_issue_y_in_z" date="1352068222" username="Pitchoune" version="2.1.4"><![CDATA[{1} replied to an issue <a href="project.php?{6}issueid={2}">{3}</a> in project <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+			<phrase name="guest_x_started_an_issue_y_in_z" date="1352068188" username="Pitchoune" version="2.1.4"><![CDATA[{1} started an issue <a href="project.php?{6}issueid={2}">{3}</a> in project <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
 			<phrase name="x_made_a_petition_in_the_issue_y_in_z" date="1352068341" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> made a petition in the issue <a href="project.php?{7}issueid={3}">{4}</a> in project <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
 			<phrase name="x_made_changes_in_the_issue_y_in_z" date="1352068653" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> made some changes in the issue <a href="project.php?{7}issueid={3}">{4}</a> in project <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
-			<phrase name="x_replied_to_an_issue_y_in_z" date="1352062572" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> replied to an issue <a href="project.php?{7}issueid={3}">{4}</a> in <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
-			<phrase name="x_started_an_issue_y_in_z" date="1352062499" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}" class="username">{2}</a> started an issue <a href="project.php?{7}issueid={3}">{4}</a> in <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+			<phrase name="x_replied_to_an_issue_y_in_z" date="1352062572" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> replied to an issue <a href="project.php?{7}issueid={3}">{4}</a> in project <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+			<phrase name="x_started_an_issue_y_in_z" date="1352062499" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}" class="username">{2}</a> started an issue <a href="project.php?{7}issueid={3}">{4}</a> in project <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
 		</phrasetype>
 		<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 			<phrase name="project_projectadd_projectedit_afterforumids_text" date="1185885194" username="Ed Sullivan" version="1.0.1"><![CDATA[This option allows you to display project information within the forum list on the vBulletin main page.<br />
