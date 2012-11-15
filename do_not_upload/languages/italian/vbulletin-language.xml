@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Italiano (IT)" vbversion="4.1.0" product="vbprojecttools" type="custom">
+<language name="Italiano (IT)" vbversion="4.1.4" product="vbprojecttools" type="custom">
+	<phrasetype name="Activity Stream" fieldname="activitystream">
+		<phrase name="guest_x_made_a_petition_in_the_issue_y_in_z" date="1347746541" username="Darkshenron" version="2.1.4"><![CDATA[{1} ha fatto una petizione alla Problema <a href="project.php?{6}issueid={2}">{3}</a> nel Progretto <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="guest_x_made_changes_in_the_issue_y_in_z" date="1347746541" username="Darkshenron" version="2.1.4"><![CDATA[{1} ha apportato alcune modifiche alla Problema <a href="project.php?{6}issueid={2}">{3}</a> nel Progretto <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="guest_x_replied_to_an_issue_y_in_z" date="1347746541" username="Darkshenron" version="2.1.4"><![CDATA[{1} ha risposto alla Problema <a href="project.php?{6}issueid={2}">{3}</a> nel Progretto <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="guest_x_started_an_issue_y_in_z" date="1347746541" username="Darkshenron" version="2.1.4"><![CDATA[{1} ha creato la Problema <a href="project.php?{6}issueid={2}">{3}</a> nel Progretto <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="x_made_a_petition_in_the_issue_y_in_z" date="1347746541" username="Darkshenron" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> ha fatto una petizione alla Problema <a href="project.php?{7}issueid={3}">{4}</a> nel Progretto <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		<phrase name="x_made_changes_in_the_issue_y_in_z" date="1347746541" username="Darkshenron" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> ha apportato alcune modifiche alla Problema <a href="project.php?{7}issueid={3}">{4}</a> nel Progretto <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		<phrase name="x_replied_to_an_issue_y_in_z" date="1347746541" username="Darkshenron" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> ha risposto alla Problema <a href="project.php?{7}issueid={3}">{4}</a> nel Progretto <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		<phrase name="x_started_an_issue_y_in_z" date="1347746541" username="Darkshenron" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> ha creato la Problema <a href="project.php?{7}issueid={3}">{4}</a> nel Progretto <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+	</phrasetype>
 	<phrasetype name="Control Panel Home Pages" fieldname="cphome">
 		<phrase name="edit_issue" date="1272579195" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Modifica Problema]]></phrase>
 		<phrase name="issue_type_manager" date="1272579150" username="Darkshenron" version="2.1.0 Alpha 1"><![CDATA[Gestione Tipi Problemi]]></phrase>

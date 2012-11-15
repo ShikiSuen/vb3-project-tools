@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Français ANSI (#28+)" vbversion="4.1.4" product="vbprojecttools" type="phrases">
+<language name="Français" vbversion="4.1.4" product="vbprojecttools" type="phrases">
+	<phrasetype name="Activity Stream" fieldname="activitystream">
+		<phrase name="guest_x_made_a_petition_in_the_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.1.4"><![CDATA[{1} a lancé une pétition dans la demande <a href="project.php?{6}issueid={2}">{3}</a> dans le projet <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="guest_x_made_changes_in_the_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.1.4"><![CDATA[{1} a effectué quelques changements dans la demande <a href="project.php?{6}issueid={2}">{3}</a> dans le projet <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="guest_x_replied_to_an_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.1.4"><![CDATA[{1} a répondu à la demande <a href="project.php?{6}issueid={2}">{3}</a> dans le projet <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="guest_x_started_an_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.1.4"><![CDATA[{1} a ouvert une demande <a href="project.php?{6}issueid={2}">{3}</a> dans le projet <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="x_made_a_petition_in_the_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> a lancé une pétition dans la demande <a href="project.php?{7}issueid={3}">{4}</a> dans le projet <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		<phrase name="x_made_changes_in_the_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> a effectué quelques changements dans la demande <a href="project.php?{7}issueid={3}">{4}</a> dans le projet <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		<phrase name="x_replied_to_an_issue_y_in_z"><![CDATA[<a href="{1}">{2}</a> a répondu à la demande <a href="project.php?{7}issueid={3}">{4}</a> dans le projet <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		<phrase name="x_started_an_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.1.4"><![CDATA[<a href="{1}" class="username">{2}</a> a ouvert une demande <a href="project.php?{7}issueid={3}">{4}</a> dans le projet <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+	</phrasetype>
 	<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
 		<phrase name="project_projectadd_projectedit_afterforumids_text" date="1284848135" username="Pitchoune" version="2.1.2"><![CDATA[Cette option vous permet d'afficher les informations du projet dans la liste des forums sur la page d'accueil de vBulletin.<br />
 <br />
