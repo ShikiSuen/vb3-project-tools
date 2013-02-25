@@ -286,7 +286,7 @@ $db->query_write("
 		canpetitionfrom SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		issuecompleted SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		statuscolor VARCHAR(20) NOT NULL DEFAULT '',
-		statuscolor2 VARCHAR(20) NOT NULL DEFALT '',
+		statuscolor2 VARCHAR(20) NOT NULL DEFAULT '',
 		PRIMARY KEY (issuestatusid),
 		KEY finder (issuetypeid, displayorder)
 	)
@@ -384,7 +384,7 @@ $db->query_write("
 		requirecategory INT UNSIGNED NOT NULL DEFAULT 0,
 		requirepriority INT UNSIGNED NOT NULL DEFAULT 0,
 		pmonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
-		emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0
+		emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectid)
 	)
 ");
@@ -511,7 +511,7 @@ $db->query_write("
 		projectversiongroupid INT UNSIGNED NOT NULL DEFAULT 0,
 		displayorder SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		effectiveorder INT UNSIGNED NOT NULL DEFAULT 0,
-		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0
+		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectversionid),
 		KEY finder (projectid, effectiveorder)
 	)
@@ -1078,6 +1078,14 @@ $db->query_write("
 		(class, packageid, canplace, cansearch, cantag, canattach)
 	VALUES
 		('Issue', $packageid, '0', '0', '0', '0')
+");
+
+// Actually deactivated - change cansearch from 0 to 1 to activate it
+$db->query_write("
+	INSERT INTO " . TABLE_PREFIX . "contenttype
+		(class, packageid, canplace, cansearch, cantag, canattach)
+	VALUES
+		('IssueNote', $packageid, '0', '0', '0', '0')
 ");]]></installcode>
 			<uninstallcode><![CDATA[// Delete content types if the product is fully removed
 $db->query_write("
@@ -1359,10 +1367,10 @@ rebuild_profile_issue_counters();
 */
 
 // Adding some infos for CMS widgets
-if (file_exists(DIR . "/includes/xml/product-vbcms.xml"))
+if (file_exists(DIR . "/includes/xml/product-vbcms.xml") )
 {
 	// We need to have the packageid of vbcms
-	$packagecms = vB_Types::instance()->getPackageID('vbcms');
+	$packagecms = vB_Types::instance()->getPackageID('vBCms');
 
 	// Add widgets
 	$db->query_write("
@@ -1380,16 +1388,19 @@ if (method_exists(vB_Cache::instance(), 'clean'))
 	vB_Cache::instance()->clean(false);
 }
 
-// Adding some content type for PT search via search.php
-$packagept = vB_Types::instance()->getPackageID('vBProjectTools');
+if ($installed_version !== null)
+{
+	// Adding some content type for PT search via search.php
+	$packagept = vB_Types::instance()->getPackageID('vBProjectTools');
 
-// Actually deactivated - change cansearch from 0 to 1 to activate it
-$db->query_write("
-	INSERT INTO " . TABLE_PREFIX . "contenttype
-		(class, packageid, canplace, cansearch, cantag, canattach)
-	VALUES
-		('IssueNote', " . $packagept . ", '0', '0', '0', '0')
-");
+	// Actually deactivated - change cansearch from 0 to 1 to activate it
+	$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "contenttype
+			(class, packageid, canplace, cansearch, cantag, canattach)
+		VALUES
+			('IssueNote', " . $packagept . ", '0', '0', '0', '0')
+	");
+}
 
 // #############################################################################
 /**
@@ -1563,7 +1574,21 @@ if ($installed_version !== null)
 if (version_compare($vbulletin->options['templateversion'], '4.2', '>='))
 {
 	// Package ID required
-	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+	if ($installed_version !== null)
+	{
+		$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+	}
+	else
+	{
+		$packagept = $db->query_first("
+			SELECT packageid
+			FROM " . TABLE_PREFIX . "package
+			WHERE productid = 'vbprojecttools'
+				AND class = 'vBProjectTools'
+		");
+
+		$packageid = $packagept['packageid'];
+	}
 
 	// Insert Issue in Activity Stream
 	vB::$db->query_write("
@@ -1658,113 +1683,116 @@ $requireappliesversion = 0;
 $requirecategory = 0;
 $requirepriority = 0;
 
-$projects = $db->query_read("
-	SELECT projectid, options
-	FROM " . TABLE_PREFIX . "pt_project
-");
-
-while ($project = $db->fetch_array($projects))
+if ($installed_version !== null)
 {
-	require_once(DIR . '/includes/functions_projecttools.php');
-	$projectinfo = fetch_project_info($project['projectid'], false);
-
-	switch ($project['options'])
+	$projects = $db->query_read("
+		SELECT projectid, options
+		FROM " . TABLE_PREFIX . "pt_project
+	");
+	
+	while ($project = $db->fetch_array($projects))
 	{
-		// If nothing is in value
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-			$options = 0;
-			$required = $project['options'];
-			break;
-		// If emailonassignment is in value
-		case '8':
-		case '9':
-		case '10':
-		case '11':
-		case '12':
-		case '13':
-		case '14':
-		case '15':
-			$options = 1;
-			$required = $project['options'] - 8;
-			break;
-		// If pmonassignment is in value
-		case '16':
-		case '17':
-		case '18':
-		case '19':
-		case '20':
-		case '21':
-		case '22':
-		case '23':
-			$options = 2;
-			$required = $project['options'] - 16;
-			break;
-		// If emailonassignment & pmonassignment are in value
-		case '24':
-		case '25':
-		case '26':
-		case '27':
-		case '28':
-		case '29':
-		case '30':
-		case '31':
-			$options = 3;
-			$required = $project['options'] - 24;
-			break;
+		require_once(DIR . '/includes/functions_projecttools.php');
+		$projectinfo = fetch_project_info($project['projectid'], false);
+	
+		switch ($project['options'])
+		{
+			// If nothing is in value
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+				$options = 0;
+				$required = $project['options'];
+				break;
+			// If emailonassignment is in value
+			case '8':
+			case '9':
+			case '10':
+			case '11':
+			case '12':
+			case '13':
+			case '14':
+			case '15':
+				$options = 1;
+				$required = $project['options'] - 8;
+				break;
+			// If pmonassignment is in value
+			case '16':
+			case '17':
+			case '18':
+			case '19':
+			case '20':
+			case '21':
+			case '22':
+			case '23':
+				$options = 2;
+				$required = $project['options'] - 16;
+				break;
+			// If emailonassignment & pmonassignment are in value
+			case '24':
+			case '25':
+			case '26':
+			case '27':
+			case '28':
+			case '29':
+			case '30':
+			case '31':
+				$options = 3;
+				$required = $project['options'] - 24;
+				break;
+		}
+	
+		// Now separate each required option to its corresponding place in the database
+		// Apply version
+		if ($required & 1)
+		{
+			$requireappliesversion = 1;
+		}
+	
+		// Category
+		if ($required & 2)
+		{
+			$requirecategory = 1;
+		}
+	
+		// Priority
+		if ($required & 4)
+		{
+			$requirepriority = 1;
+		}
+	
+		// Save them!
+		$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_CP);
+		if ($projectinfo)
+		{
+			$projectdata->set_existing($projectinfo);
+		}
+		$projectdata->set('options', $options);
+		$projectdata->set('requireappliesversion', $requireappliesversion);
+		$projectdata->set('requirecategory', $requirecategory);
+		$projectdata->set('requirepriority', $requirepriority);
+	
+		if ($project['options'] & 8)
+		{
+			$projectdata->set('emailonassignment', 1);
+		}
+	
+		if ($project['options'] & 16)
+		{
+			$projectdata->set('pmonassignment', 1);
+		}
+	
+		$projectdata->save();
 	}
-
-	// Now separate each required option to its corresponding place in the database
-	// Apply version
-	if ($required & 1)
-	{
-		$requireappliesversion = 1;
-	}
-
-	// Category
-	if ($required & 2)
-	{
-		$requirecategory = 1;
-	}
-
-	// Priority
-	if ($required & 4)
-	{
-		$requirepriority = 1;
-	}
-
-	// Save them!
-	$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_CP);
-	if ($projectinfo)
-	{
-		$projectdata->set_existing($projectinfo);
-	}
-	$projectdata->set('options', $options);
-	$projectdata->set('requireappliesversion', $requireappliesversion);
-	$projectdata->set('requirecategory', $requirecategory);
-	$projectdata->set('requirepriority', $requirepriority);
-
-	if ($project['options'] & 8)
-	{
-		$projectdata->set('emailonassignment', 1);
-	}
-
-	if ($project['options'] & 16)
-	{
-		$projectdata->set('pmonassignment', 1);
-	}
-
-	$projectdata->save();
+	
+	// Delete useless table field in pt_project table
+	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project DROP options");
 }
-
-// Delete useless table field in pt_project table
-$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_project DROP options");
 
 /*================================*\
 || ############################## ||
@@ -2036,8 +2064,31 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
 	vB_Bootstrap_Framework::init();
 }
 
-$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
-$issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
+if ($installed_version !== null)
+{
+	$packageid = vB_Types::instance()->getPackageID('vBProjectTools');
+	$issue_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_Issue');
+}
+else
+{
+	$packagept = $db->query_first("
+		SELECT packageid
+		FROM " . TABLE_PREFIX . "package
+		WHERE productid = 'vbprojecttools'
+			AND class = 'vBProjectTools'
+	");
+
+	$packageid = $packagept['packageid'];
+
+	$issue_contenttypept = $db->query_first("
+		SELECT contenttypeid
+		FROM " . TABLE_PREFIX . "contenttype
+		WHERE packageid = $packageid
+			AND class = 'Issue'
+	");
+
+	$issue_contenttypeid = $issue_contenttypept['contenttypeid'];
+}
 
 // Query to allow attachments to issues
 $db->query_write("
@@ -2190,7 +2241,30 @@ if (version_compare($vbulletin->options['templateversion'], '4.2', '<'))
 	vB_Bootstrap_Framework::init();
 }
 
-$issuenote_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_IssueNote');
+if ($installed_version !== null)
+{
+	$issuenote_contenttypeid = vB_Types::instance()->getContentTypeID('vBProjectTools_IssueNote');
+}
+else
+{
+	$packagept = $db->query_first("
+		SELECT packageid
+		FROM " . TABLE_PREFIX . "package
+		WHERE productid = 'vbprojecttools'
+			AND class = 'vBProjectTools'
+	");
+
+	$packageid = $packagept['packageid'];
+
+	$issuenote_contenttypept = $db->query_first("
+		SELECT contenttypeid
+		FROM " . TABLE_PREFIX . "contenttype
+		WHERE packageid = $packageid
+			AND class = 'IssueNote'
+	");
+
+	$issuenote_contenttypeid = $issuenote_contenttypept['contenttypeid'];
+}
 
 $db->query_write("
 	UPDATE " . TABLE_PREFIX . "contenttype SET
@@ -14546,7 +14620,7 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 			<phrase name="after_upgrade_40_update_pt_attachment" date="1303579053" username="Pitchoune" version="2.2.0"><![CDATA[<strong>vBulletin Project Tools 2.2 Post Upgrade</strong>
 <p>You must update your Project Tools attachments to vBulletin 4 format.</p>]]></phrase>
 			<phrase name="applicable_version_missing_contact_administrator" date="1323361621" username="Pitchoune" version="2.2.0"><![CDATA[The applicable version is missing and is required. Please contact the <a href="{1}">administrator</a>.]]></phrase>
-			<phrase name="applicable_version_required" date="1323365011" username="Pitchoune" version="2.2.0"><![CDATA[You must select an applicable version for this issue. If there is no applicable version to select, please contact the <a href="{1}">administrator</a>.]]></phrase>
+			<phrase name="applicable_version_required" date="1357940177" username="Pitchoune" version="2.2.0"><![CDATA[You must select a value for the '{2}' field for this issue. If there is nothing to select, please contact the <a href="{1}">administrator</a>.]]></phrase>
 			<phrase name="category_missing_contact_administrator" date="1323361590" username="Pitchoune" version="2.2.0"><![CDATA[The category is missing and is required. Please contact the <a href="{1}">administrator</a>.]]></phrase>
 			<phrase name="category_required" date="1323365050" username="Pitchoune" version="2.2.0"><![CDATA[You must select a category for this issue. If there is no category to select, please contact the <a href="{1}">administrator</a>.]]></phrase>
 			<phrase name="counters_rebuilt" date="1170954293" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Counters Rebuilt]]></phrase>
