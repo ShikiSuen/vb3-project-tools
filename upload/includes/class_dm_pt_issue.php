@@ -371,9 +371,9 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			// - If required (3) and not defined (value in(0, empty)), return error
 
 			// Applies version
-			if ($this->info['project']['projectinfo']['requireappliesversion'] > 0)
+			if ($this->info['project']['requireappliesversion'] > 0)
 			{
-				if ($this->info['project']['projectinfo']['requireappliesversion'] == 1)
+				if ($this->info['project']['requireappliesversion'] == 1)
 				{
 					// Defining one automatically
 					$appliesversionid = $this->registry->db->query_first("
@@ -392,7 +392,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 						$this->do_set('appliesversionid', $appliesversionid['projectversionid']);
 					}
 				}
-				else if ($this->info['project']['projectinfo']['requireappliesversion'] == 3 AND !$this->fetch_field('appliesversionid'))
+				else if ($this->info['project']['requireappliesversion'] == 3 AND (!$this->fetch_field('appliesversionid') OR $this->fetch_field('appliesversionid') == 0))
 				{
 					if ($this->registry->db->query_first("
 						SELECT projectversionid
@@ -401,7 +401,8 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 						LIMIT 1
 						"))
 					{
-						$this->error('applicable_version_required', $this->registry->options['contactuslink']);
+						global $vbphrase;
+						$this->error('applicable_version_required', $this->registry->options['contactuslink'], $vbphrase["applies_version_" . $this->fetch_field('issuetypeid')]);
 					}
 					else
 					{
@@ -411,9 +412,9 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 
 			// Category
-			if ($this->info['project']['projectinfo']['requirecategory'] > 0)
+			if ($this->info['project']['requirecategory'] > 0)
 			{
-				if ($this->info['project']['projectinfo']['requirecategory'] == 1)
+				if ($this->info['project']['requirecategory'] == 1)
 				{
 					// Defining one automatically
 					$projectcategoryid = $this->registry->db->query_first("
@@ -432,7 +433,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 						$this->do_set('projectcategoryid', $projectcategoryid['projectcategoryid']);
 					}
 				}
-				else if ($this->info['project']['projectinfo']['requirecategory'] == 3 AND !$this->fetch_field('projectcategoryid'))
+				else if ($this->info['project']['requirecategory'] == 3 AND !$this->fetch_field('projectcategoryid'))
 				{
 					if ($this->registry->db->query_first("
 						SELECT projectcategoryid
@@ -451,9 +452,9 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 
 			// Priority
-			if ($this->info['project']['projectinfo']['requirepriority'] > 0)
+			if ($this->info['project']['requirepriority'] > 0)
 			{
-				if ($this->info['project']['projectinfo']['requirepriority'] == 1)
+				if ($this->info['project']['requirepriority'] == 1)
 				{
 					// Defining one automatically
 					$priorityid = $this->registry->db->query_first("
@@ -472,7 +473,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 						$this->do_set('priority', $priorityid['projectpriorityid']);
 					}
 				}
-				else if ($this->info['project']['projectinfo']['requirepriority'] == 3 AND !$this->fetch_field('priority'))
+				else if ($this->info['project']['requirepriority'] == 3 AND !$this->fetch_field('priority'))
 				{
 					if ($this->registry->db->query_first("
 						SELECT projectpriorityid
