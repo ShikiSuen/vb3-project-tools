@@ -736,7 +736,7 @@ class vBProjectTools_Search_Type_IssueNote extends vB_Search_Type
 			$phrase_key = 'applicable_version';
 		}
 
-		$version_strings =  vB_Search_Searchtools::getDisplayString('pt_projectversion', $vbphrase[$phrase_key], 'versionname', 'projectversionid', $versionids, vB_Search_Core::OP_EQ, false);
+		$version_strings =  vB_Search_Searchtools::getDisplayString('pt_projectversion', $vbphrase[$phrase_key], 'projectversiongroupid', 'projectversionid', $versionids, vB_Search_Core::OP_EQ, false);
 		$criteria->add_filter($fieldname, vB_Search_Core::OP_EQ, $versionids, true);
 		$criteria->add_display_strings($fieldname, $version_strings) ;
 	}
