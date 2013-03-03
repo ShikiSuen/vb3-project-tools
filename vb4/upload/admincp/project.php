@@ -96,6 +96,10 @@ if ($_REQUEST['do'] == 'install')
 {
 	$vbulletin->input->clean_gpc('r', 'installed_version', TYPE_NOHTML);
 
+	// Rebuild everything after a new install or any upgrade
+	build_assignable_users();
+	build_pt_user_list('pt_report_users', 'pt_report_user_cache');
+
 	$full_product_info = fetch_product_list(true);
 	print_form_header('', '');
 
