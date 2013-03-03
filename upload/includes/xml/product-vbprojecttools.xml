@@ -2840,7 +2840,7 @@ build_project_cache();]]></installcode>
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1348225783" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1362322991" username="Pitchoune" version="2.2.0"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3784,6 +3784,12 @@ a.firstunread, a.firstunread:hover
 }
 
 /* Popup */
+.above_project_controls .projectpopups a.firstunread {
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	border: 0;
+}
+
 .pt_popup {
 	clear: {vb:stylevar left};
 	display: inline-block;
