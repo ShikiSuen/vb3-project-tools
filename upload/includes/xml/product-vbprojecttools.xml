@@ -2278,6 +2278,9 @@ $db->query_write("
 || ############################## ||
 \*================================*/
 
+// Add new permissions into the system - import/export permissions
+$db->query_write("UPDATE " . TABLE_PREFIX . "usergroup SET ptpermissions = ptpermissions + 384 WHERE usergroupid IN ('5', '6')");
+
 // Ensure phrases will be rebuilt
 $rebuild['phrases'] = true;
 
