@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
+<!-- Italian File -->
 <language name="Italiano (IT)" vbversion="4.1.4" product="vbprojecttools" type="custom">
 	<phrasetype name="Activity Stream" fieldname="activitystream">
 		<phrase name="guest_x_made_a_petition_in_the_issue_y_in_z" date="1347746541" username="Darkshenron" version="2.1.4"><![CDATA[{1} ha fatto una petizione alla Problema <a href="project.php?{6}issueid={2}">{3}</a> nel Progretto <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
