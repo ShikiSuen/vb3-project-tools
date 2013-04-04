@@ -1126,9 +1126,10 @@ if (is_facebookenabled())
 {
 	// display publish to Facebook checkbox in quick editor?
 	$fbpublishcheckbox = construct_fbpublishcheckbox();
+
+	// display the like button for this issue?
+	$fblikebutton = construct_fblikebutton();
 }
-// display the like button for this issue?
-$fblikebutton = construct_fblikebutton();
 
 $pageinfo = array();
 
