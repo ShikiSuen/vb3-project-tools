@@ -716,7 +716,7 @@ class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 	*
 	* @param	string	Serialized string of changes
 	*/
-	function verify_pagetext(&$pagetext)
+	function verify_pagetext(&$pagetext, $noshouting = true)
 	{
 		if (!@unserialize($pagetext))
 		{
