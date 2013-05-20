@@ -13,7 +13,7 @@
 
 class vB_ActivityStream_View_Perm_Project_Issue extends vB_ActivityStream_View_Perm_Project_Base
 {
-	public function __construct(&$content)
+	public function __construct(&$content, &$vbphrase)
 	{
 		$this->requireFirst['vB_ActivityStream_View_Perm_Project_IssueNote'] = 1;
 		return parent::__construct($content);
@@ -69,7 +69,7 @@ class vB_ActivityStream_View_Perm_Project_Issue extends vB_ActivityStream_View_P
 	 *
 	 * @return	string	Template
 	 */
-	public function fetchTemplate($templatename, $activity)
+	public function fetchTemplate($templatename, $activity, $skipgroup = false, $fetchphrase = false)
 	{
 		global $show;
 
