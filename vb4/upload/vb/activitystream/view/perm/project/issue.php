@@ -55,10 +55,10 @@ class vB_ActivityStream_View_Perm_Project_Issue extends vB_ActivityStream_View_P
 		$this->content['issueid'] = array();
 	}
 
-	public function fetchCanView($record)
+	public function fetchCanView($activity)
 	{
 		$this->processUsers();
-		return $this->fetchCanViewIssue($record['contentid']);
+		return $this->fetchCanViewIssue($activity['contentid']);
 	}
 
 	/*
