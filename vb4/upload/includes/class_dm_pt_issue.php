@@ -732,7 +732,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	*
 	* @return	integer	The number of rows deleted
 	*/
-	function delete($hard_delete = false)
+	function delete($doquery = true)
 	{
 		if (empty($this->condition))
 		{
@@ -752,9 +752,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				return false;
 			}
 
-			$this->info['hard_delete'] = $hard_delete;
-
-			if ($this->info['hard_delete'])
+			if ($this->existing['delete'])
 			{
 				$return = $this->db_delete(TABLE_PREFIX, $this->table, $this->condition, true);
 			}
