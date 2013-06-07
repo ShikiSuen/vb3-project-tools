@@ -13,7 +13,7 @@
 
 class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_View_Perm_Project_Base
 {
-	public function __construct(&$content)
+	public function __construct(&$content, &$vbphrase)
 	{
 		$this->requireExist['vB_ActivityStream_View_Perm_Project_Issue'] = 1;
 		return parent::__construct($content);
@@ -83,10 +83,10 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 		$this->content['issuenoteid'] = array();
 	}
 
-	public function fetchCanView($record)
+	public function fetchCanView($activity)
 	{
 		$this->processUsers();
-		return $this->fetchCanViewIssueNote($record['contentid']);
+		return $this->fetchCanViewIssueNote($activity['contentid']);
 	}
 
 	/*
@@ -97,7 +97,7 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 	 *
 	 * @return	string	Template
 	 */
-	public function fetchTemplate($templatename, $activity)
+	public function fetchTemplate($templatename, $activity, $skipgroup = false, $fetchphrase = false)
 	{
 		global $show;
 
