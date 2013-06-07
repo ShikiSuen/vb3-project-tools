@@ -225,7 +225,7 @@ class vB_DataManager_Pt_IssueType extends vB_DataManager
 	/**
 	* Any code to run before deleting.
 	*/
-	function pre_delete()
+	function pre_delete($doquery = true)
 	{
 		if (!$this->registry->db->query_first("
 			SELECT issuetypeid

@@ -67,7 +67,7 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_MagicSelect(&$registry, $errtype = ERRTYPE_CP)
+	function vB_DataManager_Pt_MagicSelect(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
 		parent::vB_DataManager($registry, $errtype);
 
@@ -225,7 +225,7 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_Issue_MagicSelect(&$registry, $errtype = ERRTYPE_ARRAY)
+	function vB_DataManager_Pt_Issue_MagicSelect(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
 		parent::vB_DataManager($registry, $errtype);
 

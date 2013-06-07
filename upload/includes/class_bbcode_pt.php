@@ -32,7 +32,7 @@ class vB_BbCodeParser_Pt extends vB_BbCodeParser
 	 * @param	array		List of tags for use within the parser.
 	 * @param	bool		Determine if custom tags should be used or not.
 	 */
-	public function __construct(&$registry, $tag_list = array (), $append_custom_tags = TRUE)
+	public function __construct(&$registry, $tag_list = array (), $append_custom_tags = true)
 	{
 		parent::vB_BbCodeParser($registry, $tag_list, $append_custom_tags);
 	}

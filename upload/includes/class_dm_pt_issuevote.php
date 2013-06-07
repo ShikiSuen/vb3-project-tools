@@ -159,7 +159,7 @@ class vB_DataManager_Pt_IssueVote extends vB_DataManager
 		{
 			$this->registry->db->query_write("
 				UPDATE " . TABLE_PREFIX . "pt_issue SET
-					$fieldname = $fieldname + 1
+					" . $fieldname . " = " . $fieldname . " + 1
 				WHERE issueid = " . intval($this->fetch_field('issueid'))
 			);
 		}
@@ -180,7 +180,7 @@ class vB_DataManager_Pt_IssueVote extends vB_DataManager
 
 		$this->registry->db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_issue SET
-				$fieldname = CAST($fieldname AS SIGNED) - 1
+				" . $fieldname . " = CAST(" . $fieldname . " AS SIGNED) - 1
 			WHERE issueid = " . intval($this->fetch_field('issueid'))
 		);
 

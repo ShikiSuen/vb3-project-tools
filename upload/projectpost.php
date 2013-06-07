@@ -414,6 +414,9 @@ if ($_POST['do'] == 'postreply')
 
 	if ($issuenote['issuenoteid'])
 	{
+		// Soft or hard delete? True if hard, false if soft
+		$issue['delete'] = ($vbulletin->GPC['delete'] == 'hard') ? true : false;
+
 		// an edit
 		$issuenotedata->set_existing($issuenote);
 		$issuenotedata->set_info('reason', $vbulletin->GPC['reason']);
@@ -431,7 +434,7 @@ if ($_POST['do'] == 'postreply')
 				print_no_permission();
 			}
 
-			$issuenotedata->delete($vbulletin->GPC['delete'] == 'hard');
+			$issuenotedata->delete();
 
 			$vbulletin->url = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 			eval(print_standard_redirect('pt_issuenote_deleted'));
@@ -1405,6 +1408,9 @@ if ($_POST['do'] == 'postissue')
 
 	if ($issue['issueid'])
 	{
+		// Soft or hard delete? True if hard, false if soft
+		$issue['delete'] = ($vbulletin->GPC['delete'] == 'hard') ? true : false;
+
 		$issuedata->set_existing($issue);
 
 		if ($vbulletin->GPC['delete'])
@@ -1415,7 +1421,7 @@ if ($_POST['do'] == 'postissue')
 				print_no_permission();
 			}
 
-			$issuedata->delete($vbulletin->GPC['delete'] == 'hard');
+			$issuedata->delete();
 
 			$vbulletin->url = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "projectid=$project[projectid]";
 			eval(print_standard_redirect('pt_issue_deleted'));

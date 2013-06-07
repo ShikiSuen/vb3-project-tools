@@ -112,7 +112,7 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	*
 	* @return	mixed	If this was an INSERT query, the INSERT ID is returned
 	*/
-	function save($doquery = true, $delayed = false)
+	function save($doquery = true, $delayed = false, $affected_rows = false, $replace = false, $ignore = false)
 	{
 		if ($this->has_errors())
 		{
