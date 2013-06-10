@@ -128,10 +128,15 @@ class vB_Attachment_Display_Multiple_vBProjectTools_Issue extends vB_Attachment_
 	*
 	* @return	void
 	*/
-	public function __construct(&$registry, $contenttypeid)
+	public function __construct(&$registry)
 	{
 		parent::__construct($registry);
-		$this->contenttypeid = $contenttypeid;
+
+		require_once(DIR . '/includes/class_bootstrap_framework.php');
+		require_once(DIR . '/vb/types.php');
+		vB_Bootstrap_Framework::init();
+		$types = vB_Types::instance();
+		$this->contenttypeid = intval($types->getContentTypeID('vBProjectTools_Issue'));
 	}
 
 	/**
@@ -472,20 +477,17 @@ class vB_Attachment_Dm_vBProjectTools_Issue extends vB_Attachment_Dm
 	*
 	* @return	boolean
 	*/
-	public function pre_approve($list, $checkperms = true)
+	public function pre_approve($list)
 	{
 		@ignore_user_abort(true);
 
-		if ($checkperms)
-		{
-			// Verify that we have permission to view these attachmentids
-			$attachmultiple = new vB_Attachment_Display_Multiple($this->registry);
-			$attachments = $attachmultiple->fetch_results("a.attachmentid IN (" . implode(", ", $list) . ")");
+		// Verify that we have permission to view these attachmentids
+		$attachmultiple = new vB_Attachment_Display_Multiple($this->registry);
+		$attachments = $attachmultiple->fetch_results("a.attachmentid IN (" . implode(", ", $list) . ")");
 
-			if (count($list) != count($attachments))
-			{
-				return false;
-			}
+		if (count($list) != count($attachments))
+		{
+			return false;
 		}
 
 		$ids = $this->registry->db->query_read("
@@ -498,7 +500,7 @@ class vB_Attachment_Dm_vBProjectTools_Issue extends vB_Attachment_Dm
 		");
 		while ($id = $this->registry->db->fetch_array($ids))
 		{
-			if (!can_moderate($id['projectid'], 'canmoderateattachments') AND $checkperms)
+			if (!can_moderate($id['projectid'], 'canmoderateattachments'))
 			{
 				return false;
 			}
@@ -514,7 +516,7 @@ class vB_Attachment_Dm_vBProjectTools_Issue extends vB_Attachment_Dm
 	*
 	* @return	boolean
 	*/
-	public function pre_delete($list, $checkperms = true)
+	public function pre_delete($list)
 	{
 		@ignore_user_abort(true);
 
@@ -524,16 +526,13 @@ class vB_Attachment_Dm_vBProjectTools_Issue extends vB_Attachment_Dm
 			'threadlist' => array()
 		);
 
-		if ($checkperms)
-		{
-			// Verify that we have permission to view these attachmentids
-			$attachmultiple = new vB_Attachment_Display_Multiple($this->registry);
-			$attachments = $attachmultiple->fetch_results("a.attachmentid IN (" . implode(", ", $list) . ")");
+		// Verify that we have permission to view these attachmentids
+		$attachmultiple = new vB_Attachment_Display_Multiple($this->registry);
+		$attachments = $attachmultiple->fetch_results("a.attachmentid IN (" . implode(", ", $list) . ")");
 
-			if (count($list) != count($attachments))
-			{
-				return false;
-			}
+		if (count($list) != count($attachments))
+		{
+			return false;
 		}
 
 		$ids = $this->registry->db->query_read("
@@ -550,7 +549,7 @@ class vB_Attachment_Dm_vBProjectTools_Issue extends vB_Attachment_Dm
 		");
 		while ($id = $this->registry->db->fetch_array($ids))
 		{
-			if (!$id['inprogress'] AND $checkperms)
+			if (!$id['inprogress'])
 			{
 				if (!$id['open'] AND !can_moderate($id['forumid'], 'canopenclose') AND !$this->registry->options['allowclosedattachdel'])
 				{
@@ -559,6 +558,7 @@ class vB_Attachment_Dm_vBProjectTools_Issue extends vB_Attachment_Dm
 				else if (!can_moderate($id['forumid'], 'caneditposts'))
 				{
 					$forumperms = fetch_permissions($id['forumid']);
+
 					if (!($forumperms & $this->registry->bf_ugp_forumpermissions['caneditpost']) OR $this->registry->userinfo['userid'] != $id['userid'])
 					{
 						return false;
@@ -676,7 +676,7 @@ class vB_Attachment_Upload_Displaybit_vBProjectTools_Issue extends vB_Attachment
 	*
 	* @return	string
 	*/
-	public function process_display_template($attach, $values = array(), $disablecomment = true)
+	public function process_display_template($attach, $values = array(), $disablecomment = false)
 	{
 		$attach['extension'] = strtolower(file_extension($attach['filename']));
 		$attach['filename']  = htmlspecialchars_uni($attach['filename']);
@@ -807,7 +807,7 @@ class vB_Attach_Display_Content_vBProjectTools_Issue
 	*
 	* @return	array
 	*/
-	public function fetch_postattach($posthash = 0, $contentid = 0, $users = null)
+	public function fetch_postattach($posthash = 0, $contentid = 0, $users = null, $groupbyboth = false, $attachid = 0)
 	{
 		// if we were passed no information, simply return an empty array
 		// to avoid a nasty database error

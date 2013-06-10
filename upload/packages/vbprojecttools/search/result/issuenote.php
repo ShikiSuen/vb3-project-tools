@@ -40,12 +40,8 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 	{
 		if ($issuenote)
 		{
-			$item = new vBProjectTools_Search_Result_IssueNote($issuenote, $issue = null);
-
-			if ($issue)
-			{
-				$item->set_issue($issue);
-			}
+			$this->issuenote = $issuenote;
+			$item = new vBProjectTools_Search_Result_IssueNote();
 
 			return $item;
 		}
@@ -55,13 +51,7 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 		}
 	}
 
-	protected function __construct($issuenote = null)
-	{
-		if (!empty($issuenote))
-		{
-			$this->issuenote = $issuenote;
-		}
-	}
+	protected function __construct() {}
 
 	public function get_contenttype()
 	{

@@ -60,10 +60,10 @@ class vBCms_Widget_RecentPTComments extends vBCms_Widget
 	 * @param	vB_Widget	$widget
 	 * @return vBCms_View_Widget				- The view result
 	 */
-	public function getConfigView($widget = false)
+	public function getConfigView()
 	{
 		$this->assertWidget();
-		require_once DIR . '/includes/functions_databuild.php';
+		require_once(DIR . '/includes/functions_databuild.php');
 		fetch_phrase_group('cpcms');
 		fetch_phrase_group('vbblock');
 		fetch_phrase_group('vbblocksettings');

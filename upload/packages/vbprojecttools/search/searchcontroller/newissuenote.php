@@ -69,10 +69,7 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		$project_where = "((" . implode(") OR (", $project_where) . "))";
 		build_issue_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $devnull);
 
-		$lastpost_col = ($private_lastpost_join ?
-			'IF(issueprivatelastpost.lastpost IS NOT NULL, issueprivatelastpost.lastpost, issue.lastpost)' :
-			'issue.lastpost'
-		);
+		$lastpost_col = ($private_lastpost_join ? 'IF(issueprivatelastpost.lastpost IS NOT NULL, issueprivatelastpost.lastpost, issue.lastpost)' : 'issue.lastpost');
 
 		if (!empty($range_filters['markinglimit'][0]))
 		{
@@ -107,7 +104,58 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 			$lastpost_where = "AND $lastpost_col >= $datecut";
 		}
 
-		$orderby = $this->get_orderby($criteria);
+		$sort = $criteria->get_sort();
+		$direction = strtolower($criteria->get_sort_direction()) == 'desc' ? 'desc' : 'asc';
+
+		$sort_map = array(
+			'user'				=> 'submitusername',
+			'dateline'			=> 'submitdate',
+			'groupuser'			=> 'submitusername',
+			'groupdateline'		=> 'lastpost',
+			'defaultdateline'	=> 'lastpost',
+			'defaultuser'		=> 'username',
+			'replycount'		=> 'replycount',
+			'issuestart'		=> 'dateline'
+		);
+
+		if (!isset($sort_map[$sort]))
+		{
+			$sort = ($criteria->get_grouped() == vB_Search_Core::GROUP_NO) ? 'dateline' : 'groupdateline';
+		}
+
+		//if its a non group field and we aren't grouping, use the post table
+		$nongroup_field = in_array($sort, array('user', 'dateline'));
+
+		//if a field is a date, don't add the secondary sort by the "dateline" field
+		$date_sort = in_array($sort, array('dateline', 'groupdateline', 'defaultdateline', 'issuestart'));
+
+		if ($criteria->get_grouped() == vB_Search_Core::GROUP_NO)
+		{
+			if ($nongroup_field)
+			{
+				$table = 'pt_issuenote';
+			}
+			else
+			{
+				$table = 'pt_issue';
+			}
+
+			$orderby = "$table.$sort_map[$sort] $direction";
+
+			if (!$date_sort)
+			{
+				$orderby .= ", issuenote.dateline DESC";
+			}
+		}
+		else
+		{
+			$orderby = "issue.$sort_map[$sort] $direction";
+
+			if (!$date_sort)
+			{
+				$orderby .= ", issue.submitdate DESC";
+			}
+		}
 
 		//This doesn't actually work -- removing.
 		//even though showresults would filter thread.visible=0, thread.visible remains in these 2 queries
@@ -153,62 +201,6 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		}
 
 		return $results;
-	}
-
-	private function get_orderby($criteria)
-	{
-		$sort = $criteria->get_sort();
-		$direction = strtolower($criteria->get_sort_direction()) == 'desc' ? 'desc' : 'asc';
-
-		$sort_map = array(
-			'user'				=> 'submitusername',
-			'dateline'			=> 'submitdate',
-			'groupuser'			=> 'submitusername',
-			'groupdateline'		=> 'lastpost',
-			'defaultdateline'	=> 'lastpost',
-			'defaultuser'		=> 'username',
-			'replycount'		=> 'replycount',
-			'issuestart'		=> 'dateline'
-		);
-
-		if (!isset($sort_map[$sort]))
-		{
-			$sort = ($criteria->get_grouped() == vB_Search_Core::GROUP_NO) ? 'dateline' : 'groupdateline';
-		}
-
-		//if its a non group field and we aren't grouping, use the post table
-		$nongroup_field = in_array($sort, array('user', 'dateline'));
-
-		//if a field is a date, don't add the secondary sort by the "dateline" field
-		$date_sort = in_array($sort, array('dateline', 'groupdateline', 'defaultdateline', 'issuestart'));
-
-		if ($criteria->get_grouped() == vB_Search_Core::GROUP_NO)
-		{
-			if ($nongroup_field)
-			{
-				$table = 'pt_issuenote';
-			}
-			else
-			{
-				$table = 'pt_issue';
-			}
-
-			$orderby = "$table.$sort_map[$sort] $direction";
-			if (!$date_sort)
-			{
-				$orderby .= ", issuenote.dateline DESC";
-			}
-		}
-		else
-		{
-			$orderby = "issue.$sort_map[$sort] $direction";
-			if (!$date_sort)
-			{
-				$orderby .= ", issue.submitdate DESC";
-			}
-		}
-
-		return $orderby;
 	}
 }
 
