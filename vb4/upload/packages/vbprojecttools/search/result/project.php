@@ -62,14 +62,13 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 
 		// type counts
 		$perms_query = build_issue_permissions_query($vbulletin->userinfo);
+
 		if (empty($perms_query))
 		{
 			print_no_permission();
 		}
 
-		build_project_private_lastpost_sql_all($vbulletin->userinfo,
-			$private_lastpost_join, $private_lastpost_fields
-		);
+		build_project_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $private_lastpost_fields);
 
 		$project_types = array();
 		$project_types_query = $vbulletin->db->query_read("
@@ -81,6 +80,7 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 			WHERE projecttype.projectid = " . $this->projectid . "
 			ORDER BY issuetype.displayorder
 		");
+
 		while ($project_type = $vbulletin->db->fetch_array($project_types_query))
 		{
 			$project_types["$project_type[projectid]"][] = $project_type;
@@ -97,6 +97,7 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 		$project['newflag'] = false;
 
 		$type_counts = array();
+
 		foreach ($project_types["$project[projectid]"] AS $type)
 		{
 			if (!($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
@@ -132,16 +133,19 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 			else
 			{
 				$projettypeview = intval(fetch_bbarray_cookie('project_lastview', $project['projectid'] . $type['issuetypeid']));
+
 				if (!$projettypeview)
 				{
 					$projettypeview = $vbulletin->userinfo['lastvisit'];
 				}
 			}
+
 			if ($type['lastpost'] > $projettypeview)
 			{
 				$type['newflag'] = true;
 				$project['newflag'] = true;
 			}
+
 			$project['projectread'] = max($project['projectread'], $projettypeview);
 
 			$type['countid'] = "project_typecount_$project[projectid]_$type[issuetypeid]";

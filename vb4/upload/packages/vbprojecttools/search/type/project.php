@@ -100,7 +100,7 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 	 *
 	 * @return $html: complete html for the search elements
 	 */
-	public function listUi($prefs = null)
+	public function listUi($prefs = null, $contenttypeid = null, $registers = null, $template_name = null)
 	{
 		global $vbulletin, $show;
 
