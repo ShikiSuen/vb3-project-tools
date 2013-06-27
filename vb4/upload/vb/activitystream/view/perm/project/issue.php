@@ -16,7 +16,7 @@ class vB_ActivityStream_View_Perm_Project_Issue extends vB_ActivityStream_View_P
 	public function __construct(&$content, &$vbphrase)
 	{
 		$this->requireFirst['vB_ActivityStream_View_Perm_Project_IssueNote'] = 1;
-		return parent::__construct($content);
+		return parent::__construct($content, $vbphrase);
 	}
 
 	public function group($activity)
