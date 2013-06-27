@@ -16,7 +16,7 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 	public function __construct(&$content, &$vbphrase)
 	{
 		$this->requireExist['vB_ActivityStream_View_Perm_Project_Issue'] = 1;
-		return parent::__construct($content);
+		return parent::__construct($content, $vbphrase);
 	}
 
 	public function group($activity)
