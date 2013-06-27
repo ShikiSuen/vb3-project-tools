@@ -1,0 +1,987 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<language name="Român&#259; (RO)" vbversion="4.2.1" product="vbprojecttools" type="phrases">
+	<phrasetype name="Activity Stream" fieldname="activitystream">
+		<phrase name="guest_x_made_a_petition_in_the_issue_y_in_z" date="1367863698" username="Teascu Dorin" version="2.1.4"><![CDATA[{1} a creat o peti&#539;ie în problema <a href="project.php?{6}issueid={2}">{3}</a> din proiectul <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="guest_x_made_changes_in_the_issue_y_in_z" date="1367863698" username="Teascu Dorin" version="2.1.4"><![CDATA[{1} a f&#259;cut schimb&#259;ri în problema <a href="project.php?{6}issueid={2}">{3}</a> din proiectul <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="guest_x_replied_to_an_issue_y_in_z" date="1367863698" username="Teascu Dorin" version="2.1.4"><![CDATA[{1} a r&#259;spuns la problema <a href="project.php?{6}issueid={2}">{3}</a> din proiectul <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="guest_x_started_an_issue_y_in_z" date="1367863698" username="Teascu Dorin" version="2.1.4"><![CDATA[{1} a creat problema <a href="project.php?{6}issueid={2}">{3}</a> în proiectul <a href="project.php?{6}projectid={4}">{5}</a>]]></phrase>
+		<phrase name="x_made_a_petition_in_the_issue_y_in_z" date="1367863698" username="Teascu Dorin" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> a creat o peti&#539;ie în problema <a href="project.php?{7}issueid={3}">{4}</a> din proiectul <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		<phrase name="x_made_changes_in_the_issue_y_in_z" date="1367863698" username="Teascu Dorin" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> a f&#259;cut schimb&#259;ri în problema <a href="project.php?{7}issueid={3}">{4}</a> din proiectul <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		<phrase name="x_replied_to_an_issue_y_in_z" date="1367863698" username="Teascu Dorin" version="2.1.4"><![CDATA[<a href="{1}">{2}</a> a r&#259;spuns la problema <a href="project.php?{7}issueid={3}">{4}</a> din proiectul <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+		<phrase name="x_started_an_issue_y_in_z" date="1367863698" username="Teascu Dorin" version="2.1.4"><![CDATA[<a href="{1}" class="username">{2}</a> a creat problema <a href="project.php?{7}issueid={3}">{4}</a> în proiectul <a href="project.php?{7}projectid={5}">{6}</a>]]></phrase>
+	</phrasetype>
+	<phrasetype name="Control Panel Help Text" fieldname="cphelptext">
+		<phrase name="project_projectadd_projectedit_afterforumids_text" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceast&#259; op&#539;iune î&#539;i permite s&#259; afi&#537;ezi informa&#539;ii proiect în list&#259; forum pe pagina principal&#259; a vBulletin.<br />
+<br />
+Po&#539;i selecta una sau mai multe forumuri dup&#259; care s&#259; afi&#537;ezi informa&#539;ii despre acest proiect, inclusiv ora ultimei activit&#259;&#539;i &#537;i num&#259;rul de probleme.<br />
+<br />
+Urm&#259;toarele limite se aplic&#259;:
+<ol>
+<li>Un utilizator trebuie s&#259; aib&#259; permisiunea s&#259; vad&#259; forumul pe care acest proiect ar trebui s&#259;-l urmeze.</li>
+<li>Un utilizator trebuie s&#259; aib&#259; permisiunea s&#259; vad&#259; cel pu&#539;in unul din tipurile problem&#259; selectate pentru acest proiect.</li>
+<li>Informa&#539;ia proiectului va fi afi&#537;at&#259; dup&#259; orice sub-forumuri pentru forumul selectat.</li>
+</ol>]]></phrase>
+		<phrase name="project_projectadd_projectedit_afterforumids_title" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Afi&#537;eaz&#259; dup&#259; forumuri]]></phrase>
+		<phrase name="project_projectadd_projectedit_available_issue_types_text" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Nu toate tipurile problem&#259; sunt aplicabile pentru toate proiectele, astfel po&#539;i alege s&#259; folose&#537;ti doar acele tipuri care se aplic&#259; la acest proiect. Fiecare proiect poate folosi tipuri diferite, care activeaz&#259; control permisiune foarte profund &#537;i puternic.<br />
+<br />
+Pentru a face un tip problem&#259; disponibil pentru un proiect, trebuie s&#259; selectezi un status de pornire. Când utilizatorii care nu pot schimba statusul nici unei probleme trimite o nou&#259; problem&#259;, va începe cu aceast&#259; stare.<br />
+<br />
+Pentru a gestiona tipuri problem&#259; &#537;i statusuri, d&#259; click <a href="project.php?do=typelist" target="_blank">aici</a>.]]></phrase>
+		<phrase name="project_projectadd_projectedit_available_issue_types_title" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Tipuri problem&#259; disponibile]]></phrase>
+		<phrase name="project_projectadd_projectedit_forumtitle_text" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Dac&#259; alegi s&#259; folose&#537;ti "Afi&#537;eaz&#259; dup&#259; forumuri", aceast&#259; op&#539;iune î&#539;i permite suprascrierea numelui proiectului când proiectul este afi&#537;at în list&#259; forum. Aceasta ajut&#259; dac&#259; numele proiectului nu ofer&#259; context suficient când este înconjurat de forumuri.<br />
+<br />
+Dac&#259; nu introduci o valoare pentru aceast&#259; op&#539;iune, numele implicit al proiectului va fi folosit dar precedat de cuvântul "Proiect".]]></phrase>
+		<phrase name="project_projectadd_projectedit_forumtitle_title" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Titlu în list&#259; forum]]></phrase>
+		<phrase name="project_projectadd_projectedit_options_text" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceast&#259; op&#539;iune î&#539;i permite s&#259; specifici care câmpuri nu pot fi l&#259;sate ca valoare implicit&#259; "Necunoscut" când o problem&#259; este creat&#259; sau editat&#259;. Pentru câmpurile pe care le-ai selectat, "Necunoscut" va fi înc&#259; selectat implicit, dar problema nu va putea fi salvat&#259; pân&#259; când valoarea nu este schimbat&#259;.]]></phrase>
+		<phrase name="project_projectadd_projectedit_options_title" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Câmpuri necesare]]></phrase>
+		<phrase name="project_projectcategory_text" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Categoriile permit un mod simplu de sub-grupare a problemelor dintr-un proiect bazat pe ce se axeaz&#259; problema. Aceasta poate fi util dac&#259; ai câteva persoane care lucreaz&#259; la un proiect &#537;i fiecare persoan&#259; are propria specialitate.<br />
+<br />
+Categoriile pot fi definite per proiect. Dac&#259; nu define&#537;ti nici o categorie pentru un proiect, op&#539;iunea de a selecta o categorie nu va fi afi&#537;at&#259; când creezi o problem&#259;. Oricum, o valoare "necunoscut" va fi totu&#537;i ar&#259;tat&#259; când cite&#537;ti o problem&#259;.]]></phrase>
+		<phrase name="project_projectcategory_title" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Prezentare categorie proiect]]></phrase>
+		<phrase name="project_projectlist_text" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiectele sunt o unitate organiza&#539;ional&#259; pentru o colec&#539;ie de lucruri ce trebuie finalizate sau analizate. Asta poate fi orice de la urm&#259;rire schimb&#259;ri într-un software sau în liste personale de sarcini la o list&#259; de pa&#537;i de executat o mutare sau de a construi o ma&#537;in&#259;.<br />
+<br />
+Tipurile problem&#259; te las&#259; s&#259; sub-grupezi sarcini/probleme într-un proiect în unit&#259;&#539;i mai logice. Un proiect poate avea câte tipuri problem&#259; personalizat&#259; vrei. Vezi <a href="help.php?do=answer&amp;page=project&amp;pageaction=typelist">aici</a> mai multe informa&#539;ii despre tipuri problem&#259;.<br />
+<br />
+Un proiect poate utiliza &#537;i categorii pentru sub-grupare adi&#539;ional&#259;. Categoriile nu au schimb&#259;ri func&#539;ionale cu excep&#539;ia grup&#259;rii problemelor în sub-componente logice, permi&#539;ând o c&#259;utare mai rapid&#259;. Categoriile difer&#259; de tipuri problem&#259; prin gruparea lor bazat pe "unde" problema este realizat&#259; în loc de "ce" problem&#259; este realizat&#259;.<br />
+<br />
+Urm&#259;rire versiune de baz&#259; este oferit&#259; &#537;i per proiect. Urm&#259;rire versiune este util&#259; în special într-un software, unde reviziunea specific&#259; la care se aplic&#259; o problem&#259; este foarte important.]]></phrase>
+		<phrase name="project_projectlist_title" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Prezentare proiect]]></phrase>
+		<phrase name="project_projectversion_text" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Un sistem de baz&#259; pentru a urm&#259;rii versiuni este inclus în Unelte Proiect. Aceasta este foarte util&#259; pentru proiecte software, unde versiunea exact&#259; la care se aplic&#259; o problem&#259; sau la care se adreseaz&#259; este o informa&#539;ie important&#259;.<br />
+<br />
+Versiunile sunt împ&#259;r&#539;ite în grupuri versiune &#537;i versiuni individuale. O versiune poate exista doar într-un grup versiune. Asta permite utilizatorilor s&#259; fac&#259; c&#259;ut&#259;ri în toate grupurile mai u&#537;or. Folosind lans&#259;rile vBulletin ca exemplu, "3.6.x" va fi un grup versiune &#537;i "3.6.7" va fi o versiune din acel grup.<br />
+<br />
+Re&#539;ine c&#259; versiunile pe care le creezi trebuie s&#259; cuprind&#259; dou&#259; situa&#539;ii: versiuni aplicabile &#537;i versiuni adresate. Adi&#539;ional la orice versiuni ai creat explicit, versiunea adresat&#259; va include întotdeauna o op&#539;iune pentru "Versiune urm&#259;toare". Aceasta î&#539;i permite s&#259; creezi doar urm&#259;toarea versiune când este cu adev&#259;rat necesar. Când creezi versiunea, vei avea op&#539;iunea s&#259; seteze ca versiune urm&#259;toare. Dac&#259; alegi s&#259; faci asta, toate problemele care au fost listate ca fiind adresate în versiunea urm&#259;toare vor fi actualizate s&#259; arate ca fiind adresate în versiunea pe care tocmai ai creat-o.<br />
+<br />
+<strong>O not&#259; despre ordini afi&#537;are versiune</strong><br />
+În toate celelalte sec&#539;iuni ale vBulletin &#537;i ale Unelte Proiect, o ordine mai mic&#259; de afi&#537;are va fi afi&#537;at&#259; înainte de una mai mare. Acesta <em>nu</em> este cazul cu ordinele de afi&#537;are versiune &#537;i grup versiune. Ordinele afi&#537;are mai mari vor fi ar&#259;tate primele!<br />
+<br />
+Aceasta a fost f&#259;cut&#259; deoarece vei ad&#259;uga în general versiuni mai noi în timp. Cu op&#539;iunea "mai mic este primul", plasând versiuni noi primele va necesita renumerotare pentru toate versiunile existente.]]></phrase>
+		<phrase name="project_projectversion_title" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Prezentare versiune proiect]]></phrase>
+		<phrase name="project_statusadd_statusedit_canpetitionfrom_text" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Sistemul peti&#539;ie problem&#259; este un sistem puternic care permite utilizatorilor s&#259; cear&#259; ca statusul unei probleme s&#259; fie schimbat. De exemplu, repararea pentru o problem&#259; poate nu func&#539;ioneaz&#259; pentru ei, astfel pot cere o schimbare în "Confirmat" decât în "Reparat". Aceast&#259; cerere va ap&#259;rea apoi în pagina prezentare proiect pân&#259; va fi rezolvat&#259; de cineva cu permisiunile corespunz&#259;toare.<br />
+<br />
+Oricum, sunt anumite cazuri unde nu vrei ca utilizatori s&#259; poat&#259; face asta când o problem&#259; este într-un anumit status. O alegere obi&#537;nuit&#259; este s&#259; setezi aceast&#259; op&#539;iune "nu" pentru un status pornire tip.]]></phrase>
+		<phrase name="project_statusadd_statusedit_canpetitionfrom_title" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate crea peti&#539;ii din acest status?]]></phrase>
+		<phrase name="project_taglist_text" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Tagurile sunt un mod de a defini date-meta flexibile despre o problem&#259; într-un mod ce se poate c&#259;uta. Cum sunt ele folosite depinde cu totul de tine. Pot fi folosite pentru a ajuta la categorisirea problemelor sau pot fi folosite când anumite tipuri de urm&#259;ri sunt necesare.<br />
+<br />
+În func&#539;ie de permisiuni, tagurile pot s&#259; fie definite direct prin interfa&#539;&#259;.]]></phrase>
+		<phrase name="project_taglist_title" date="1368124488" username="Teascu Dorin" version="2.1.4"><![CDATA[Prezentare taguri]]></phrase>
+		<phrase name="project_typeadd_typeedit_iconfile_text" date="1368114191" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceasta î&#539;i permite s&#259; afi&#537;ezi o iconi&#539;&#259; mic&#259; reprezentând acest tip problem&#259; lâng&#259; probleme de acest tip. O iconi&#539;&#259; pentru identificare rapid&#259; în detrimentul unui text simplu. Las&#259; acest câmp liber &#537;i nici o iconi&#539;&#259; nu va fi afi&#537;at&#259;.<br />
+<br />
+Trebuie s&#259; încarci manual aceast&#259; iconi&#539;&#259; în folderul "Iconi&#539;&#259; status item". Implicit acesta este images/statusicon.<br />
+<br />
+Iconi&#539;ele incluse pentru erori, func&#539;ii, &#537;i sarcini sunt de 16 pixeli pe 16 pixeli.]]></phrase>
+		<phrase name="project_typeadd_typeedit_iconfile_title" date="1367986157" username="Teascu Dorin" version="2.1.4"><![CDATA[Nume fi&#537;ier pentru iconi&#539;&#259;]]></phrase>
+		<phrase name="project_typelist_text" date="1367986157" username="Teascu Dorin" version="2.1.4"><![CDATA[Tipuri problem&#259; î&#539;i permit s&#259; grupezi probleme bazat pe scopul lor. De exemplu, vrei s&#259; p&#259;strezi sugestii viitoare separate de rapoartele cu erori; "func&#539;ii" &#537;i "erori" vor deveni tipuri problem&#259; separate.<br />
+<br />
+În timp ce tipurile problem&#259; diferite nu cauzeaz&#259; câmpuri diferite s&#259; fie afi&#537;ate, au urm&#259;toarele avantaje:
+<ul>
+<li><strong>Formul&#259;ri specifice</strong> - toate problemele au dou&#259; câmpuri de versiune: "aplicabile" &#537;i "adresate". Po&#539;i alege formul&#259;ri diferite, mai adecvate pentru aceste câmpuri care se potrivesc cu tipurile tale.</li>
+<li><strong>Statusuri problem&#259; personalizate</strong> - statusurile problem&#259; sunt definite dup&#259; tip.</li>
+<li><strong>Permisiuni distincte</strong> - o gam&#259; variat&#259; de permisiuni grup utilizatori pot fi definite per proiect &#537;i tip problem&#259;.</li>
+</ul>]]></phrase>
+		<phrase name="project_typelist_title" date="1367986157" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce sunt tipurile problem&#259;?]]></phrase>
+		<phrase name="projectpermission_edit_about_reports_text" date="1367986157" username="Teascu Dorin" version="2.1.4"><![CDATA[(Acest topic este detailat &#537;i <a href="../faq.php?faq=pt_faq#faq_pt_faq_report" target="_blank">aici</a>.)<br />
+<br />
+Rapoartele î&#539;i permit s&#259; salvezi c&#259;ut&#259;rile pentru acces mai u&#537;or mai târziu. Rapoartele sunt disponibile prin meniul extensibil "Rapoartele mele" ar&#259;tat  în anumite pagini Unelte Proiect.<br />
+<br />
+Un raport poate fi fie public (accesibil pentru oricine cu permisiuni c&#259;utare), fie privat (accesibil doar pentru creator). Dac&#259; vizitatorii au permisiunea s&#259; caute, un raport public poate fi accesibil prin RSS.]]></phrase>
+		<phrase name="projectpermission_edit_about_reports_title" date="1367986157" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce sunt rapoartele?]]></phrase>
+		<phrase name="projectpermission_edit_list_text" date="1367986157" username="Teascu Dorin" version="2.1.4"><![CDATA[Uneltele Proiect includ un sistem amplu &#537;i puternic pentru a gestiona accesul. Este bazat pe sistemul de permisiuni vBulletin. Asigur&#259;-te c&#259; în&#539;elegi <a href="http://www.vbulletin.com/docs/html/introduction_usergroups" target="_blank">bazele întâi</a>!<br />
+<br />
+Precum permisiunile forum-grup utilizatori se împart în vBulletin, Unelte Proiect includ împ&#259;r&#539;ire permisiuni globale &#537;i permisiuni proiect. Dac&#259; un set permisiune personalizat&#259; nu este definit pentru un anumit grup &#537;i proiect, setul global va fi folosit.<br />
+<br />
+Permisiunile nu pot fi definite doar per grup utilizatori &#537;i per proiect, dar precum &#537;i per tip problem&#259;. Un grup poate avea acces la erori într-un proiect dar nu sugestiile func&#539;ii, de exemplu.<br />
+<br />
+Sunt &#537;i anumite permisiuni care nu pot fi definite per tip proiect sau problem&#259;. În general, aceste permisiuni nu vor avea sens s&#259; fie definite mai mult de odat&#259;. Acestea sunt editabile doar cînd editezi permisiunile proiect globale pentru un grup.]]></phrase>
+		<phrase name="projectpermission_edit_list_title" date="1367863698" username="Teascu Dorin" version="2.1.4"><![CDATA[Prezentare permisiuni Unelte Proiect]]></phrase>
+	</phrasetype>
+	<phrasetype name="Control Panel Home Pages" fieldname="cphome">
+		<phrase name="edit_issue" date="1368121264" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; problem&#259;]]></phrase>
+		<phrase name="issue_type_manager" date="1368121264" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestionare tip problem&#259;]]></phrase>
+		<phrase name="project_manager" date="1368121264" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestionare proiect]]></phrase>
+		<phrase name="project_permissions" date="1368121306" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni proiect]]></phrase>
+		<phrase name="project_tools" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte Proiect]]></phrase>
+		<phrase name="tag_manager" date="1368122186" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestionare tag]]></phrase>
+	</phrasetype>
+	<phrasetype name="Control Panel Options" fieldname="cpoption">
+		<phrase name="pt_listprojects_before_footer" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[Înainte de subsol]]></phrase>
+		<phrase name="pt_listprojects_before_notes" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[Înainte de note]]></phrase>
+		<phrase name="pt_listprojects_before_qr" date="1368121264" username="Teascu Dorin" version="2.1.4"><![CDATA[Înainte de R&#259;spuns Rapid]]></phrase>
+		<phrase name="pt_listprojects_before_recent_issuelist" date="1368121264" username="Teascu Dorin" version="2.1.4"><![CDATA[Înainte de listare problem&#259;]]></phrase>
+		<phrase name="pt_listprojects_before_timeline" date="1368121264" username="Teascu Dorin" version="2.1.4"><![CDATA[Înainte de cronologie]]></phrase>
+		<phrase name="pt_listprojects_issue" date="1368121264" username="Teascu Dorin" version="2.1.4"><![CDATA[Problema unui proiect]]></phrase>
+		<phrase name="pt_listprojects_issuelist" date="1368121264" username="Teascu Dorin" version="2.1.4"><![CDATA[List&#259; problem&#259; a unui proiect]]></phrase>
+		<phrase name="pt_listprojects_overview" date="1368121264" username="Teascu Dorin" version="2.1.4"><![CDATA[Pagin&#259; prezentare a unui proiect]]></phrase>
+	</phrasetype>
+	<phrasetype name="Permissions" fieldname="cppermission">
+		<phrase name="can_administer_project_tools" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate administra Unelte Proiect]]></phrase>
+		<phrase name="can_administer_project_tools_permissions" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate administra permisiuni unelte proiect]]></phrase>
+		<phrase name="can_create_custom_tags" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate crea taguri personalizate]]></phrase>
+		<phrase name="can_create_public_report" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate crea raport public
+<dfn>Dac&#259; setezi aceasta nu, dar "Poate crea raport" da, utilizatorii vor putea totu&#537;i s&#259; creeze rapoarte private.</dfn>]]></phrase>
+		<phrase name="can_create_report" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate crea raport
+<dfn>Dac&#259; setezi asta nu, utilizatorii nu vor putea s&#259; creeze rapoarte.</dfn>]]></phrase>
+		<phrase name="can_delete_public_report_others" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate &#537;terge rapoarte publice ale altora]]></phrase>
+		<phrase name="can_delete_public_report_own" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate &#537;terge rapoarte publice proprii]]></phrase>
+		<phrase name="can_use_humancheck" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Folose&#537;te Verificare Uman&#259; în Unelte Proiect
+<dfn>Aceast&#259; op&#539;iune va func&#539;iona dac&#259; setezi corect op&#539;iunea <strong>Verificare uman&#259; dup&#259; grup utilizatori</strong> în Op&#539;iuni vBulletin în grupul <a href="options.php?dogroup=projecttools"><strong>Op&#539;iuni Unelte Proiect</strong></a>.</dfn>]]></phrase>
+		<phrase name="can_view_project_tools" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate vedea Unelte Proiect
+<dfn>Dac&#259; asta este setat&#259; nu, utilizatorii nu vor avea acces la Unelte Proiect indiferent de alte set&#259;ri permisiune.</dfn>]]></phrase>
+		<phrase name="project_tools_permissions" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni unelte proiect]]></phrase>
+		<phrase name="ptperm_group_attach" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni ata&#537;ament]]></phrase>
+		<phrase name="ptperm_group_general" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni generale]]></phrase>
+		<phrase name="ptperm_group_general_edit" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni editare generale]]></phrase>
+		<phrase name="ptperm_group_general_manage" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni gestionare generale]]></phrase>
+		<phrase name="ptperm_group_issue_delete" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[permisiuni &#537;tergere problem&#259;]]></phrase>
+		<phrase name="ptperm_group_issue_edit" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni editare problem&#259;]]></phrase>
+		<phrase name="ptperm_group_issue_post" date="1368121196" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni postare problem&#259;]]></phrase>
+	</phrasetype>
+	<phrasetype name="Scheduled Tasks" fieldname="cron">
+		<phrase name="task_pt_cleanup_desc" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[Cur&#259;&#539;&#259; date vechi Unelte Proiect]]></phrase>
+		<phrase name="task_pt_cleanup_log" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[-]]></phrase>
+		<phrase name="task_pt_cleanup_title" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[Cur&#259;&#539;are Unelte Proiect]]></phrase>
+		<phrase name="task_pt_dailydigest_desc" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[Trimite notific&#259;ri zilnice sintez&#259; pentru Unelte Proiect.]]></phrase>
+		<phrase name="task_pt_dailydigest_log" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[Rulare sintez&#259; zilnic&#259; unelte proiect.]]></phrase>
+		<phrase name="task_pt_dailydigest_title" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[Sintez&#259; zilnic&#259; Unelte Proiect]]></phrase>
+		<phrase name="task_pt_digestweekly_desc" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[Trimite notific&#259;ri zilnice sintez&#259; pentru Unelte Proiect.]]></phrase>
+		<phrase name="task_pt_digestweekly_log" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[Rulare sintez&#259; zilnic&#259; unelte proiect.]]></phrase>
+		<phrase name="task_pt_digestweekly_title" date="1368121135" username="Teascu Dorin" version="2.1.4"><![CDATA[Sintez&#259; s&#259;pt&#259;mânal&#259; unelte proiect]]></phrase>
+	</phrasetype>
+	<phrasetype name="Email Body Text" fieldname="emailbody">
+		<phrase name="notify_pt" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA[$notification[username],
+
+$issuenote[username] tocmai a r&#259;spuns la o problem&#259; la care e&#537;ti abonat numit&#259; '$issue[title]' în proiectul $project[title_clean] de pe $vboptions[bbtitle].
+
+Aceast&#259; problem&#259; este localizat&#259; în:
+$vboptions[bburl]/project.php?do=gotonote&issuenoteid=$issuenote[issuenoteid]
+
+Aici este mesajul care tocmai a fost postat:
+
+***************
+$pagetext
+***************
+
+Pot fi &#537;i alte r&#259;spunsuri, dar nu vei mai primi alte notific&#259;ri pân&#259; nu vizitezi iar forumul.
+
+Cu Respect,
+$vboptions[bbtitle]
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Pentru a gestiona abonamentele problem&#259; &#537;i proiect, d&#259; click aici:
+$vboptions[bburl]/projectpost.php?do=managesubscriptions]]></phrase>
+		<phrase name="pt_digestissue" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA[Salut $issue[username],
+
+E&#537;ti abonat la problema "$issue[title]" creat&#259; de $issue[submitusername], a(u) fost $issue[newposts] post(uri) la aceast&#259; problem&#259;, ultimul respondent a fost $issue[lastpostusername].
+$vboptions[bburl]/project.php?issueid=$issue[issueid]
+
+Aceste urm&#259;toare r&#259;spunsuri au fost date la problem&#259;:
+$notebits
+
+Cu Respect,
+$vboptions[bbtitle]
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Pentru a gestiona abonamentele problem&#259; &#537;i proiect, d&#259; click aici:
+$vboptions[bburl]/projectpost.php?do=managesubscriptions]]></phrase>
+		<phrase name="pt_digestissuebit" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA[************
+$issue[title_clean]
+$vboptions[bburl]/project.php?issueid=$issue[issueid]
+Creat de: $issue[submitusername_clean]
+Ultimul post: $issue[lastreplydate] $issue[lastreplytime]
+]]></phrase>
+		<phrase name="pt_digestnotebit" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA[************
+Postat de: $note[username]
+Pe: $note[postdate] $note[posttime]
+
+$note[message]
+]]></phrase>
+		<phrase name="pt_digestproject" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA[Salut $project[username_clean],
+
+E&#537;ti abonat la "$project[issuetype_plural]" postat în "$project[title_clean]". Au fost $newissues probleme noi &#537;i $updatedissues probleme actualizate de la ultima sintez&#259;.
+
+$vboptions[bburl]/project.php?do=issuelist&projectid=$project[projectid]&issuetypeid=$project[issuetypeid]
+
+Urm&#259;toarele probleme sunt noi:
+$newissuebits
+
+Urm&#259;toarele probleme au fost actualizate cu posturi noi:
+$updatedissuebits
+
+Cu Respect,
+$vboptions[bbtitle]
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Pentru a gestiona abonamentele problem&#259; &#537;i proiect, d&#259; click aici:
+$vboptions[bburl]/projectpost.php?do=managesubscriptions]]></phrase>
+		<phrase name="pt_issueassignment" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA[Salut $assignee_userinfo[username],
+
+Ai fost atribuit la problema "$issue[title]" de $assigner_userinfo[username].
+
+$vboptions[bburl]/project.php?issueid=$issue[issueid]
+
+Proiect: $project[title]
+Tip problem&#259;: $issue[issuetype]
+
+Cu Respect,
+$vboptions[bbtitle]
+]]></phrase>
+		<phrase name="reportissuenote" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[$reportinfo[rusername] ( mailto:$reportinfo[remail] ) a raportat aceast&#259; not&#259; problem&#259;:
+
+$vboptions[bburl]/project.php?do=gotonote&issuenoteid=$reportinfo[issuenoteid]
+
+Aceasta este parte din proiectul:
+$reportinfo[ptitle]
+$vboptions[bburl]/project.php?projectid=$reportinfo[projectid]
+
+Acesta este motivul oferit de utilizator:
+$reportinfo[reason]
+
+$reportinfo[discuss]
+
+Acest mesaj a fost trimis la to&#539;i moderatorii acestei sec&#539;iuni, sau la to&#539;i administratorii dac&#259; nu sunt moderatori.]]></phrase>
+		<phrase name="reportissuenote_newthread" date="1368120787" username="Teascu Dorin" version="2.1.4"><![CDATA[[url=$vboptions[bburl]/member.php?u=$reportinfo[ruserid]]$reportinfo[rusername][/url] a raportat o not&#259; problem&#259;.
+
+Motiv:[quote]$reportinfo[reason][/quote]
+Not&#259; problem&#259;: [url]$vboptions[bburl]/project.php?do=gotonote&issuenoteid=$reportinfo[issuenoteid][/url]
+Proiect: [url=$vboptions[bburl]/project.php?projectid=$reportinfo[projectid]]$reportinfo[ptitle][/url]
+Moderatori atribui&#539;i: $reportinfo[modlist]
+
+Postat de: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[pusername][/url]]]></phrase>
+	</phrasetype>
+	<phrasetype name="Email Subject Text" fieldname="emailsubject">
+		<phrase name="notify_pt" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[R&#259;spunde la problema '$issue[title]']]></phrase>
+		<phrase name="pt_digestissue" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[Problema "$issue[title]" actualizat&#259;]]></phrase>
+		<phrase name="pt_digestproject" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA["$project[issuetype_plural]" Actualizeaz&#259; în proiectul "$project[title_clean]"]]></phrase>
+		<phrase name="pt_issueassignment" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA[Atribuit la problema '$issue[title]']]></phrase>
+		<phrase name="reportissuenote" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA[Not&#259; problem&#259; raportat&#259; de pe $vboptions[bbtitle]]]></phrase>
+		<phrase name="reportissuenote_newthread" date="1368120511" username="Teascu Dorin" version="2.1.4"><![CDATA[Not&#259; problem&#259; raportat&#259; de $reportinfo[rusername]]]></phrase>
+	</phrasetype>
+	<phrasetype name="Error Messages" fieldname="error">
+		<phrase name="applicable_version_required" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Trebuie s&#259; selectezi o versiune aplicabil&#259; pentru aceast&#259; problem&#259;.]]></phrase>
+		<phrase name="category_required" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Trebuie s&#259; selectezi o categorie pentru aceast&#259; problem&#259;.]]></phrase>
+		<phrase name="counters_rebuilt" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Reconstruire contoare]]></phrase>
+		<phrase name="invalid_issue_specified" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; specificat&#259; incorect&#259;.]]></phrase>
+		<phrase name="issue_saved" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; salvat&#259;]]></phrase>
+		<phrase name="issue_status_deleted" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Status problem&#259; &#537;ters]]></phrase>
+		<phrase name="issue_status_saved" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Status problem&#259; salvat]]></phrase>
+		<phrase name="issue_type_already_exists" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Un tip problem&#259; cu aceast&#259; cheie exist&#259; deja.]]></phrase>
+		<phrase name="issue_type_deleted" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Tip problem&#259; &#537;ters]]></phrase>
+		<phrase name="issue_type_saved" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Tip problem&#259; salvat]]></phrase>
+		<phrase name="must_have_one_type" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Cel pu&#539;in un tip problem&#259; trebuie s&#259; fie disponibil tot timpul.]]></phrase>
+		<phrase name="one_type_must_be_available" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Cel pu&#539;in un top problem&#259; trebuie s&#259; fie disponibil pentru acest proiect.]]></phrase>
+		<phrase name="priority_required" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Trebuie s&#259; selectezi o prioritate pentru aceast&#259; problem&#259;.]]></phrase>
+		<phrase name="project_category_deleted" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Categorie proiect &#537;tears&#259;]]></phrase>
+		<phrase name="project_category_saved" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Categorie proiect salvat&#259;]]></phrase>
+		<phrase name="project_deleted" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiect &#537;ters]]></phrase>
+		<phrase name="project_milestone_deleted" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Reper proiect &#537;ters]]></phrase>
+		<phrase name="project_milestone_saved" date="1368118824" username="Teascu Dorin" version="2.1.4"><![CDATA[Reper proiect salvat]]></phrase>
+		<phrase name="project_permissions_saved" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni proiect salvate]]></phrase>
+		<phrase name="project_saved" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiect salvat]]></phrase>
+		<phrase name="project_version_deleted" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune proiect &#537;tears&#259;]]></phrase>
+		<phrase name="project_version_saved" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune proiect salvat&#259;]]></phrase>
+		<phrase name="project_x_using_status_start_state" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiectul '{1}' folose&#537;te statusuri ca stare de pornire. Trebuie s&#259; selectezi un status diferit ca stare de pornire înainte s&#259;-l po&#539;i &#537;terge.]]></phrase>
+		<phrase name="pt_action_error" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Ac&#539;iunea pe care ai folosit-o nu a putut fi executat&#259; deoarece o valoare de securitate a fost incorect&#259;.<br />
+<br />
+Dac&#259; vrei s&#259; continui aceast&#259; ac&#539;iune, <a href="{1}">d&#259; click aici pentru a încerca din nou</a>.]]></phrase>
+		<phrase name="pt_attachment_dir_different_vb" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Folderul ata&#537;amente Unelte Proiect trebuie s&#259; fie diferit de cel al vBulletin.]]></phrase>
+		<phrase name="pt_have_pending_petition" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Ai deja o peti&#539;ie în a&#537;teptare pentru aceast&#259; problem&#259;. Nu po&#539;i trimite alta pân&#259; ce aceasta a fost rezolvat&#259;.]]></phrase>
+		<phrase name="pt_need_search_criteria" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Trebuie s&#259; introduci anumite criterii de c&#259;utare valide sau o metod&#259; de grupare.]]></phrase>
+		<phrase name="pt_need_vote" date="1368119628" username="Teascu Dorin" version="2.1.4"><![CDATA[Nu ai ales un tip de vot de emis.]]></phrase>
+		<phrase name="pt_no_issue_statues_represent_this_state" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[Nu sunt statusuri problem&#259; care reprezint&#259; stare problem&#259; selectat&#259; (activ&#259; sau finalizat&#259;). Nici o problem&#259; nu se va g&#259;si.]]></phrase>
+		<phrase name="pt_petition_not_pending" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceast&#259; peti&#539;ie nu mai este în a&#537;teptare. Te rog apas&#259; înapoi pentru a vedea solu&#539;ionarea.]]></phrase>
+		<phrase name="pt_petition_status_invalid" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[Nu ai selectat un status peti&#539;ie valid.]]></phrase>
+		<phrase name="pt_search_field_x_unknown" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[Câmp c&#259;utare {1} specificat incorect.]]></phrase>
+		<phrase name="tags_deleted" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[Taguri &#537;terse]]></phrase>
+		<phrase name="there_is_no_project_you_can_create_issues_in" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[Momentan nu este nici un proiect în care s&#259; po&#539;i crea probleme.]]></phrase>
+		<phrase name="there_is_no_type_you_can_create_issues_in" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[Momentan nu este nici un tip problem&#259; în acest proiect în care s&#259; po&#539;i crea probleme.]]></phrase>
+		<phrase name="type_must_have_one_status" date="1368119875" username="Teascu Dorin" version="2.1.4"><![CDATA[Fiecare tip problem&#259; are cel pu&#539;in un status.]]></phrase>
+	</phrasetype>
+	<phrasetype name="FAQ Text" fieldname="faqtext">
+		<phrase name="pt_faq" date="1368072589" username="Teascu Dorin" version="2.1.4"><![CDATA[Sistemul Unelte Proiect adaug&#259; capabilit&#259;&#539;i gestionare proiect în $vboptions[bbtitle]. În func&#539;ie de cum administratorul a configurat acest sistem, îl vei folosi s&#259; raportezi erori sau pentru sugestii.]]></phrase>
+		<phrase name="pt_faq_attach" date="1368072589" username="Teascu Dorin" version="2.1.4"><![CDATA[Sistemul de ata&#537;ament al Unelte Proiect este mai degrab&#259; similar cu sistemul standard de ata&#537;amente vBulletin, de&#537;i tipurile exacte de fi&#537;iere &#537;i m&#259;rimile pe care le po&#539;i ad&#259;uga vor fi destul de diferite.<br />
+<br />
+Aspectul unic este raportat la manipularea fi&#537;ierelor patch. Un fi&#537;ier patch este un document text în format special T care instruie&#537;te computerul despre cum s&#259; fac&#259; schimb&#259;ri specifice la un alt document text f&#259;r&#259; a distruge restul con&#539;inutului.<br />
+<br />
+În Unelte Proiect, dac&#259; încarci un fi&#537;ier ".patch", ".diff", sau ".txt" în format <em>diff unificat</em>, vom afi&#537;a automat o versiune eviden&#539;iat&#259; a patch-ului cu ata&#537;amentul. Aceasta permite utilizatorilor cu cuno&#537;tin&#539;e minime de tehnic&#259; s&#259; aplice schimb&#259;rile tale, dar s&#259; î&#539;i permit&#259; totu&#537;i s&#259; folose&#537;ti programul computer pentru a genera fi&#537;ierul.<br />
+<br />
+Re&#539;ine c&#259; doar patch-urile din formatul <em>diff unificat</em> vor fi eviden&#539;iate. Dac&#259; încarci orice alt tip de ata&#537;ament, va fi procesat ca orice alt fi&#537;ier.]]></phrase>
+		<phrase name="pt_faq_how_post" date="1368113985" username="Teascu Dorin" version="2.1.4"><![CDATA[Postarea în Unelte Proiect ar trebui s&#259; arate asem&#259;n&#259;tor cu alte sec&#539;iuni din vBulletin. Oricum, în general ai nevoie s&#259; te concentrezi mai mult pe con&#539;inut. Cheia post&#259;rii unei probleme bune este s&#259;-&#537;i impun&#259; punctul de vedere &#537;i s&#259; încerci s&#259; r&#259;spunzi la orice posibile întreb&#259;ri înainte s&#259; apar&#259;. Re&#539;ine:
+<ol>
+	<li><strong>S&#259; cau&#539;i înainte de postare</strong></li>
+	<li><strong>S&#259; incluzi ce ai f&#259;cut, ce s-a întâmplat, &#537;i ce te a&#537;teptai</strong></li>
+	<li><strong>S&#259; incluzi doar un item per problem&#259;</strong></li>
+</ol>
+
+<h4>Caut&#259; înainte de a posta</h4>
+Înainte de a posta, este foarte important s&#259; <a href="search.php?search_type=1&contenttypeid=$contenttypeid">cau&#539;i</a> în Unelte Proiect. Dac&#259; ai g&#259;sit o problem&#259; sau ai o idee, este posibil ca &#537;i altcineva s&#259; fi avut aceea&#537;i problem&#259;.
+
+<h4>Include ce ai f&#259;cut, ce s-a întâmplat, &#537;i ce te a&#537;teptai</h4>
+Este foarte important s&#259; expui exact ce ai f&#259;cut, într-un mod pas cu pas dac&#259; este necesar. Încearc&#259; s&#259; incluzi toate informa&#539;iile care crezi c&#259; sunt de ajutor, dar nu detaila prea mult.<br />
+<br />
+Acum încearc&#259; s&#259; explici ce s-a întâmplat cât de bine se poate. Dac&#259; prime&#537;ti un mesaj eroare, este întotdeauna important s&#259; incluzi &#537;i mesajul specific complet. Persoanele care r&#259;spund de gestionarea proiectului vor putea s&#259; utilizeze aceste raport&#259;ri. Dac&#259; ai probleme în a explica, pozele pot fi mai bune decât 1000 de cuvinte. Folose&#537;te op&#539;iunea ata&#537;ament oricând este convenabil.<br />
+<br />
+În final, încearc&#259; s&#259; explici ce te a&#537;teptai s&#259; se întâmple. Aceasta ajut&#259; pe toat&#259; lumea s&#259; în&#539;eleag&#259; la ce te gânde&#537;ti &#537;i de cele mai multe ori duce la îmbun&#259;t&#259;&#539;iri.<br />
+<br />
+Re&#539;ine c&#259; este întotdeauna mai bine s&#259; oferi prea mult&#259; informa&#539;ie decât prea pu&#539;in&#259;. Gânde&#537;te-te la tipurile de întreb&#259;ri ce pot ap&#259;rea raportat la problema ta. Dac&#259; ai avut o problem&#259; cu ceva în browserul t&#259;u, incluzând informa&#539;ii despre browserul &#537;i sistemul t&#259;u de operare s-ar putea s&#259; fie necesare.
+
+<h4>Include doar un item per problem&#259;</h4>
+Aceasta ajut&#259; la organizare. Dac&#259; explici mai multe probleme într-o problem&#259;, atunci face s&#259; fie mai greu s&#259; fie setate per categorii. Unele pot fi ceva normal în timp ce altele sunt probleme justificat. Ofer&#259; tuturor un în&#539;eles mai bun despre ceea ce se întâmpl&#259; &#537;i ajut&#259; la încurajarea mai multor persoane s&#259; gestioneze probleme.]]></phrase>
+		<phrase name="pt_faq_private" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Dac&#259; faci o problem&#259; sau un r&#259;spuns privat, doar un num&#259;r limitat de persoane vor putea s&#259; le vad&#259;. Ar trebui s&#259; folose&#537;ti asta când discu&#539;i probleme de natur&#259; sensibil&#259;, cum ar fi securitate sau informa&#539;ii acoperite de un Acord de Confiden&#539;ialitate.<br />
+<br />
+Marcheaz&#259; itemi ca privat doar când trebuie neap&#259;rat s&#259; fie priva&#539;i.]]></phrase>
+		<phrase name="pt_faq_report" date="1368114673" username="Teascu Dorin" version="2.1.4"><![CDATA[Rapoartele î&#539;i permit s&#259; salvezi c&#259;ut&#259;ri pentru acces rapid mai târziu. Când e&#537;ti abonat la un raport (fie prin crearea lui sau prin abonarea la al altcuiva), vei avea acces la acel raport prin meniul extensibil "Rapoartele mele".<br />
+<br />
+Pentru a crea propriul t&#259;u raport, f&#259; o c&#259;utare cu criteriul dorit &#537;i d&#259; click pe linkul "Salveaz&#259; aceast&#259; c&#259;utare ca raport".]]></phrase>
+	</phrasetype>
+	<phrasetype name="FAQ Title" fieldname="faqtitle">
+		<phrase name="pt_faq" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[Întreb&#259;ri Frecvente Unelte Proiect]]></phrase>
+		<phrase name="pt_faq_attach" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce este unic despre sistemul de ata&#537;amente Unelte Proiect?]]></phrase>
+		<phrase name="pt_faq_how_post" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce face o bun&#259; descriere problem&#259;?]]></phrase>
+		<phrase name="pt_faq_private" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce înseamn&#259; s&#259; faci ceva privat? Când ar trebui s&#259; fac asta?]]></phrase>
+		<phrase name="pt_faq_report" date="1368072589" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce sunt rapoartele? Cum le folosesc?]]></phrase>
+	</phrasetype>
+	<phrasetype name="Forum Display" fieldname="forumdisplay">
+		<phrase name="pt_import_threadprefix" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte proiect:]]></phrase>
+		<phrase name="pt_import_threadprefix_extended" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[{2} în proiectul {1}:]]></phrase>
+	</phrasetype>
+	<phrasetype name="Front-End Redirect Messages" fieldname="frontredirect">
+		<phrase name="project_markread" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Acest proiect sau tip problem&#259; a fost marcat ca citit cu succes.]]></phrase>
+		<phrase name="pt_already_assigned" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Ne pare r&#259;u, dar e&#537;ti deja atribuit la aceast&#259; problem&#259;, &#537;i nu po&#539;i s&#259; te atribui singur.]]></phrase>
+		<phrase name="pt_assigned" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Ai fost atribuit la aceast&#259; problem&#259;.]]></phrase>
+		<phrase name="pt_attachment_deleted" date="1368071563" username="Teascu Dorin" version="2.1.4"><![CDATA[Ata&#537;ament &#537;ters.]]></phrase>
+		<phrase name="pt_attachment_edited" date="1368071563" username="Teascu Dorin" version="2.1.4"><![CDATA[Ata&#537;ament actualizat.]]></phrase>
+		<phrase name="pt_attachment_uploaded" date="1368071563" username="Teascu Dorin" version="2.1.4"><![CDATA[Ata&#537;ament înc&#259;rcat.]]></phrase>
+		<phrase name="pt_cannont_be_assigned" date="1368071563" username="Teascu Dorin" version="2.1.4"><![CDATA[Nu po&#539;i fi atribuit la probleme în proiect &#537;i tipul status.]]></phrase>
+		<phrase name="pt_issue_deleted" date="1368071563" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; &#537;tears&#259;.]]></phrase>
+		<phrase name="pt_issue_edited" date="1368071621" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; actualizat&#259;.]]></phrase>
+		<phrase name="pt_issue_inserted" date="1368071621" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; creat&#259;.]]></phrase>
+		<phrase name="pt_issue_state_modified" date="1368071621" username="Teascu Dorin" version="2.1.4"><![CDATA[Stare problem&#259; modificat&#259; cu succes]]></phrase>
+		<phrase name="pt_issue_undeleted" date="1368071621" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; anulat &#537;tergere.]]></phrase>
+		<phrase name="pt_issuenote_deleted" date="1368071621" username="Teascu Dorin" version="2.1.4"><![CDATA[Not&#259; problem&#259; &#537;tears&#259;]]></phrase>
+		<phrase name="pt_issuenote_edited" date="1368124550" username="Teascu Dorin" version="2.1.4"><![CDATA[Comentariu problem&#259; actualizat.]]></phrase>
+		<phrase name="pt_issuenote_inserted" date="1368124550" username="Teascu Dorin" version="2.1.4"><![CDATA[Comentariu problem&#259; ad&#259;ugat.]]></phrase>
+		<phrase name="pt_issuenote_undeleted" date="1368124550" username="Teascu Dorin" version="2.1.4"><![CDATA[Not&#259; problem&#259; anulat &#537;tergere]]></phrase>
+		<phrase name="pt_petition_processed" date="1368124550" username="Teascu Dorin" version="2.1.4"><![CDATA[Peti&#539;ie procesat&#259;.]]></phrase>
+		<phrase name="pt_report_created" date="1368124550" username="Teascu Dorin" version="2.1.4"><![CDATA[Raport creat.]]></phrase>
+		<phrase name="pt_report_subscriptions_updated" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[Raporteaz&#259; abonamente actualizate.]]></phrase>
+		<phrase name="pt_searchexecuted" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[C&#259;utarea ta a fost executat&#259; &#537;i e&#537;ti acum redirectat la rezultate.]]></phrase>
+		<phrase name="pt_subscriptions_updated" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[Abonamente actualizate.]]></phrase>
+		<phrase name="pt_vote_cast" date="1368071799" username="Teascu Dorin" version="2.1.4"><![CDATA[Emitere vot.]]></phrase>
+	</phrasetype>
+	<phrasetype name="GLOBAL" fieldname="global">
+		<phrase name="doubleclick_project_markread" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[Dublu click pe aceast&#259; iconi&#539;&#259; pentru a marca acest proiect &#537;i con&#539;inuturile sale ca citite]]></phrase>
+		<phrase name="projects" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiecte]]></phrase>
+		<phrase name="search_projects" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Caut&#259; proiecte]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_faq_text" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Întreb&#259;ri Frecvente]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_myreports_text" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Rapoartele mele]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestioneaz&#259; abonamente]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_timeline_text" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Cronologie proiect]]></phrase>
+		<phrase name="vb_navigation_tab_vbtab_project_text" date="1368071474" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiecte]]></phrase>
+	</phrasetype>
+	<phrasetype name="Notices" fieldname="notice">
+		<phrase name="is_browsing_project_tools_criteria" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[Utilizatorul navigheaz&#259; în Unelte Proiect vBulletin]]></phrase>
+		<phrase name="is_browsing_project_x_criteria" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[Utilizatorul navigheaz&#259; în {1} Proiect vBulletin]]></phrase>
+	</phrasetype>
+	<phrasetype name="Postbit" fieldname="postbit">
+		<phrase name="promote_to_ptissue" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[Promoveaz&#259; ca problem&#259;]]></phrase>
+		<phrase name="pt_create_issue" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[Creeaz&#259; problem&#259;]]></phrase>
+		<phrase name="pt_post_made_as_issue" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[Acest post a fost f&#259;cut ca problem&#259;]]></phrase>
+	</phrasetype>
+	<phrasetype name="Project Tools" fieldname="projecttools">
+		<phrase name="accept_petition_change_status_x" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Accept peti&#539;ie &#537;i schimb status pentru </span> {1}<span class="shade">?</span>]]></phrase>
+		<phrase name="active" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[Activ]]></phrase>
+		<phrase name="active_issues" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme active]]></phrase>
+		<phrase name="active_issues_in_milestone_x_html" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme active în reperul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="active_milestones" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[Repere active]]></phrase>
+		<phrase name="activity_voting" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[Activitate / Votare]]></phrase>
+		<phrase name="added" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[Ad&#259;ugat]]></phrase>
+		<phrase name="addressed_version" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune adresat&#259;]]></phrase>
+		<phrase name="all" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[Toate]]></phrase>
+		<phrase name="allow_report_viewable_to_all" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit acestui raport s&#259; poat&#259; fi v&#259;zut de to&#539;i utilizatorii? Dac&#259; nu, doar tu vei putea s&#259;-l vezi.]]></phrase>
+		<phrase name="any" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[Oricare]]></phrase>
+		<phrase name="any_active_meta" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[(oricare activ)]]></phrase>
+		<phrase name="any_meta" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[(oricare)]]></phrase>
+		<phrase name="anywhere_meta" date="1368052892" username="Teascu Dorin" version="2.1.4"><![CDATA[(oriunde)]]></phrase>
+		<phrase name="applicable_version" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune aplicabil&#259;]]></phrase>
+		<phrase name="applied_tags" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Taguri aplicate]]></phrase>
+		<phrase name="ascending" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Cresc&#259;tor]]></phrase>
+		<phrase name="assign_to_self" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Atribuie pentru tine]]></phrase>
+		<phrase name="assign_yourself_to_issue" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Atribuie problema pentru tine]]></phrase>
+		<phrase name="assigned_users" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Utilizatori atribui&#539;i]]></phrase>
+		<phrase name="available_items" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Itemi disponibili]]></phrase>
+		<phrase name="category" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Categorie]]></phrase>
+		<phrase name="change_status_to" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Schimb&#259; status în]]></phrase>
+		<phrase name="changes" date="1368052963" username="Teascu Dorin" version="2.1.4"><![CDATA[Schimb&#259;ri]]></phrase>
+		<phrase name="click_here_to_view_x_completed_milestones" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Click aici pentru a vedea {1} reper(e) finalizat(e)!]]></phrase>
+		<phrase name="close_this_issue" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Închide aceast&#259; problem&#259;]]></phrase>
+		<phrase name="closed" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Închis]]></phrase>
+		<phrase name="comments" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Comentarii]]></phrase>
+		<phrase name="completed" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Finalizat]]></phrase>
+		<phrase name="completed_date" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Dat&#259; finalizat]]></phrase>
+		<phrase name="completed_issues_in_milestone_x_html" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme finalizate în reperul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="completed_milestones" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Repere finalizate]]></phrase>
+		<phrase name="contains_text" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Con&#539;ine text]]></phrase>
+		<phrase name="continue" date="1368053061" username="Teascu Dorin" version="2.1.4"><![CDATA[Continu&#259;]]></phrase>
+		<phrase name="current_version" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune actual&#259;]]></phrase>
+		<phrase name="dates_x_to_y" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[{1} la {2}]]></phrase>
+		<phrase name="delete_issue_note_check_appropriate_option" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[Selecteaz&#259; op&#539;iunile necesare &#537;i apoi d&#259; click pe butonul Salveaz&#259;.]]></phrase>
+		<phrase name="delete_this_attachment" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[&#536;terge acest ata&#537;ament]]></phrase>
+		<phrase name="delete_this_issue" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[&#536;terge problem&#259;]]></phrase>
+		<phrase name="delete_this_note" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[&#536;terge r&#259;spuns]]></phrase>
+		<phrase name="descending" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[Descresc&#259;tor]]></phrase>
+		<phrase name="description" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[Descriere]]></phrase>
+		<phrase name="download" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[Descarc&#259;]]></phrase>
+		<phrase name="download_patch_file" date="1368053134" username="Teascu Dorin" version="2.1.4"><![CDATA[Descarc&#259; fi&#537;ier patch]]></phrase>
+		<phrase name="edit_history" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; istoric]]></phrase>
+		<phrase name="edit_issue" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; problem&#259;]]></phrase>
+		<phrase name="edit_reply" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; r&#259;spuns]]></phrase>
+		<phrase name="edit_reply_to_issue_x" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; r&#259;spuns la problem&#259;]]></phrase>
+		<phrase name="edit_this_issue" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; aceast&#259; problem&#259;]]></phrase>
+		<phrase name="edited_by_x" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Editat de</span> {1}]]></phrase>
+		<phrase name="field_addressedversionid" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune adresat&#259;]]></phrase>
+		<phrase name="field_appliesversionid" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune aplicabil&#259;]]></phrase>
+		<phrase name="field_assigneduser" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[Utilizatori atribui&#539;i]]></phrase>
+		<phrase name="field_attachment_deleted" date="1368053216" username="Teascu Dorin" version="2.1.4"><![CDATA[&#536;tergere ata&#537;ament]]></phrase>
+		<phrase name="field_attachment_uploaded" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Înc&#259;rcare ata&#537;ament]]></phrase>
+		<phrase name="field_isaddressed" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Stare adresat&#259;]]></phrase>
+		<phrase name="field_issuestatusid" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Status]]></phrase>
+		<phrase name="field_issuetypeid" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Tip]]></phrase>
+		<phrase name="field_milestoneid" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Reper]]></phrase>
+		<phrase name="field_priority" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Prioritate]]></phrase>
+		<phrase name="field_projectcategoryid" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Categorie]]></phrase>
+		<phrase name="field_tags" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Taguri]]></phrase>
+		<phrase name="field_title" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Titlu]]></phrase>
+		<phrase name="filter_responses_to_show" date="1368053261" username="Teascu Dorin" version="2.1.4"><![CDATA[Filtreaz&#259; r&#259;spunsuri de ar&#259;tat]]></phrase>
+		<phrase name="find_issues_from" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[G&#259;se&#537;te probleme din]]></phrase>
+		<phrase name="find_issues_with" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[G&#259;se&#537;te probleme cu]]></phrase>
+		<phrase name="find_new_issues" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[G&#259;se&#537;te probleme noi]]></phrase>
+		<phrase name="force" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[For&#539;eaz&#259;]]></phrase>
+		<phrase name="group_by" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[Grupeaz&#259; dup&#259;]]></phrase>
+		<phrase name="hard_delete" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[Eliminare]]></phrase>
+		<phrase name="has_pending_petitions" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[Are peti&#539;ii în a&#537;teptare]]></phrase>
+		<phrase name="hostname_ip_x_y" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[Numele de gazd&#259; {1} este <strong>{2}</strong>.]]></phrase>
+		<phrase name="initial_report" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[Raport ini&#539;ial]]></phrase>
+		<phrase name="ip_address_logged_x" date="1368053355" username="Teascu Dorin" version="2.1.4"><![CDATA[Adresa IP logat&#259; este <strong>{1}</strong>.]]></phrase>
+		<phrase name="issue" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259;]]></phrase>
+		<phrase name="issue_been_deleted" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceast&#259; problem&#259; a fost &#537;tears&#259;]]></phrase>
+		<phrase name="issue_changed_by_system" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; schimbat&#259; de sistem]]></phrase>
+		<phrase name="issue_changed_by_x" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; schimbat&#259; de {1}]]></phrase>
+		<phrase name="issue_deleted" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; &#537;tears&#259;]]></phrase>
+		<phrase name="issue_details" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[Detalii problem&#259;]]></phrase>
+		<phrase name="issue_has_been_deleted" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceast&#259; problem&#259; a fost &#537;tears&#259;]]></phrase>
+		<phrase name="issue_list" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[List&#259; problem&#259;]]></phrase>
+		<phrase name="issue_must_have_attachments" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[Problema trebuie s&#259; aib&#259; ata&#537;amente]]></phrase>
+		<phrase name="issue_must_have_pending_petitions" date="1368053443" username="Teascu Dorin" version="2.1.4"><![CDATA[Problema trebuie s&#259; aib&#259; peti&#539;ii în a&#537;teptare]]></phrase>
+		<phrase name="issue_note" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Not&#259; problem&#259;]]></phrase>
+		<phrase name="issue_number" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Num&#259;r problem&#259;]]></phrase>
+		<phrase name="issue_properties" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Propriet&#259;&#539;i problem&#259;]]></phrase>
+		<phrase name="issue_report" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Raport]]></phrase>
+		<phrase name="issue_state" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Stare problem&#259;]]></phrase>
+		<phrase name="issue_status" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Status problem&#259;]]></phrase>
+		<phrase name="issue_subscriptions" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Abonamente problem&#259;]]></phrase>
+		<phrase name="issue_tools" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte problem&#259;]]></phrase>
+		<phrase name="issue_type" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Tip problem&#259;]]></phrase>
+		<phrase name="issues_in_milestone_x_html" date="1368053511" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme în reperul '{1}']]></phrase>
+		<phrase name="issues_with_recent_replies" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme cu r&#259;spunsuri recente]]></phrase>
+		<phrase name="last_updated_x_at_y" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[Ultima actualizare {1} la {2}]]></phrase>
+		<phrase name="last_x_actions" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[Ultimele {1} ac&#539;iuni]]></phrase>
+		<phrase name="latest_issues_in_this_milestone" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[Ultimele probleme în acest reper]]></phrase>
+		<phrase name="learn_more_about_reports" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[Înva&#539;&#259; mai multe despre rapoarte!]]></phrase>
+		<phrase name="loading" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[Înc&#259;rcare]]></phrase>
+		<phrase name="make_this_issue_private" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[F&#259; aceast&#259; problem&#259; privat&#259;]]></phrase>
+		<phrase name="make_this_issue_public" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[F&#259; aceast&#259; problem&#259; public&#259;]]></phrase>
+		<phrase name="manage_attachment" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestioneaz&#259; ata&#537;ament]]></phrase>
+		<phrase name="manage_project_subscription" date="1368053619" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestioneaz&#259; abonament proiect]]></phrase>
+		<phrase name="manage_subscription" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestioneaz&#259; abonament]]></phrase>
+		<phrase name="mark_all_issues_read" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Marcheaz&#259; toate problemele citite]]></phrase>
+		<phrase name="mark_all_x_read" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Marcheaz&#259; toate {1} citite]]></phrase>
+		<phrase name="mark_attachment_current" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Marcheaz&#259; acest ata&#537;ament ca actual]]></phrase>
+		<phrase name="mark_attachment_obsolete" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Marcheaz&#259; acest ata&#537;ament ca învechit]]></phrase>
+		<phrase name="message_has_been_deleted" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Acest mesaj a fost &#537;ters]]></phrase>
+		<phrase name="milestone" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Reper]]></phrase>
+		<phrase name="milestone_x_html" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Reper: {1}]]></phrase>
+		<phrase name="milestones" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Repere]]></phrase>
+		<phrase name="move_issue" date="1368053700" username="Teascu Dorin" version="2.1.4"><![CDATA[Mut&#259; problem&#259;]]></phrase>
+		<phrase name="move_this_issue" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[Mut&#259; aceast&#259; problem&#259;]]></phrase>
+		<phrase name="my_reports" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[Rapoartele mele]]></phrase>
+		<phrase name="negative_votes" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[Voturi negative]]></phrase>
+		<phrase name="new_project_and_issue_type" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiect nou &#537;i tip problem&#259;]]></phrase>
+		<phrase name="new_subscribed_issues" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme abonate noi]]></phrase>
+		<phrase name="next_release" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiunea urm&#259;toare]]></phrase>
+		<phrase name="no_issues_matching_criteria" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[Nu sunt probleme cu acest criteriu]]></phrase>
+		<phrase name="no_more_replies_may_be_made" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[Nu mai pot fi date r&#259;spunsuri.]]></phrase>
+		<phrase name="no_reports_defined" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[Nu sunt rapoarte definite. <a href="faq.php?{1}faq=pt_faq#faq_pt_faq_report">Click aici.</a> pentru a afla despre cum se face un raport.]]></phrase>
+		<phrase name="no_target_date" date="1368054011" username="Teascu Dorin" version="2.1.4"><![CDATA[F&#259;r&#259; dat&#259; &#539;int&#259;]]></phrase>
+		<phrase name="none_meta" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[(nimic)]]></phrase>
+		<phrase name="number_reported_issues_by_x" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[Num&#259;r de probleme raportate de {1}]]></phrase>
+		<phrase name="obsolete" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[Învechit]]></phrase>
+		<phrase name="open_this_issue" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[Deschide aceast&#259; problem&#259;]]></phrase>
+		<phrase name="order_by" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[Ordoneaz&#259; dup&#259;]]></phrase>
+		<phrase name="overdue" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[Restant]]></phrase>
+		<phrase name="patch_lines_x_on" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[Liniile {1} &#537;i mai jos]]></phrase>
+		<phrase name="patch_lines_x_to_y" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[Liniile {1} la {2}]]></phrase>
+		<phrase name="pending_petitions" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[Peti&#539;ii în a&#537;teptare]]></phrase>
+		<phrase name="petition_change_x_accepted" date="1368054215" username="Teascu Dorin" version="2.1.4"><![CDATA[<span>Aceast&#259; peti&#539;ie pentru a schimba în</span> {1} <span>a fost</span> acceptat&#259;]]></phrase>
+		<phrase name="petition_change_x_pending" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[<span>Aceast&#259; peti&#539;ie pentru a schimba în</span> {1} <span>este momentan</span> în a&#537;teptare]]></phrase>
+		<phrase name="petition_change_x_rejected" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[<span>Aceast&#259; peti&#539;ie pentru a schimba în</span> {1} <span>a fost</span> respins&#259;]]></phrase>
+		<phrase name="petition_for_change_to_x_by_y" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[Peti&#539;ie pentru a schimba în <span class="shade">{1}</span> de {2}]]></phrase>
+		<phrase name="petition_for_status_change_to" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[Peti&#539;ie pentru schimbare status în]]></phrase>
+		<phrase name="petitions" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[Peti&#539;ii]]></phrase>
+		<phrase name="please_wait" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[Te rog a&#537;teapt&#259;]]></phrase>
+		<phrase name="positive_votes" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[Voturi pozitive]]></phrase>
+		<phrase name="post_new_issue" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[Posteaz&#259; problem&#259; nou&#259;]]></phrase>
+		<phrase name="post_reply" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[Posteaz&#259; r&#259;spuns]]></phrase>
+		<phrase name="priority" date="1368054346" username="Teascu Dorin" version="2.1.4"><![CDATA[Prioritate]]></phrase>
+		<phrase name="priority_0" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[Necunoscut]]></phrase>
+		<phrase name="priority_1" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[1 - Major]]></phrase>
+		<phrase name="priority_10" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[10 - Minor]]></phrase>
+		<phrase name="priority_2" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[2]]></phrase>
+		<phrase name="priority_3" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[3]]></phrase>
+		<phrase name="priority_4" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[4]]></phrase>
+		<phrase name="priority_5" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[5 - Mediu]]></phrase>
+		<phrase name="priority_6" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[6]]></phrase>
+		<phrase name="priority_7" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[7]]></phrase>
+		<phrase name="priority_8" date="1368054397" username="Teascu Dorin" version="2.1.4"><![CDATA[8]]></phrase>
+		<phrase name="priority_9" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[9]]></phrase>
+		<phrase name="private_message_keep_in_mind" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[Acesta este un mesaj privat. Re&#539;ine asta când dai r&#259;spuns.]]></phrase>
+		<phrase name="project" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiect]]></phrase>
+		<phrase name="project_information" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[Informa&#539;ii proiect]]></phrase>
+		<phrase name="project_rss_feed" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[Flux RSS proiect]]></phrase>
+		<phrase name="project_statistics" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[Statistici proiect]]></phrase>
+		<phrase name="project_subscriptions" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[Abonamente proiect]]></phrase>
+		<phrase name="project_timeline" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[Cronologie proiect]]></phrase>
+		<phrase name="project_tools" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte Proiect]]></phrase>
+		<phrase name="projects_list" date="1368054492" username="Teascu Dorin" version="2.1.4"><![CDATA[Liste proiect. Separ&#259; fiecare ID proiect cu o virgul&#259;.]]></phrase>
+		<phrase name="pt_create_issue" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[Creeaz&#259; problem&#259;]]></phrase>
+		<phrase name="pt_managesubscriptions" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestioneaz&#259; abonamente]]></phrase>
+		<phrase name="public_reports" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[Rapoarte publice]]></phrase>
+		<phrase name="quick_reply" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[R&#259;spuns rapid]]></phrase>
+		<phrase name="reason_for_edit_delete" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[Motiv pentru editare / &#537;tergere]]></phrase>
+		<phrase name="removed" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[Eliminat]]></phrase>
+		<phrase name="repeat_search" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[Repet&#259; c&#259;utare]]></phrase>
+		<phrase name="reply_text_sure_submit_attach" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[Ai introdus un text ca r&#259;spuns. Dac&#259; trimi&#539;i acest ata&#537;ament, acest text se va pierde. E&#537;ti sigur c&#259; vrei s&#259; continui?]]></phrase>
+		<phrase name="reply_to_issue_x" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[R&#259;spunde la problem&#259;]]></phrase>
+		<phrase name="report_issue_note" date="1368054621" username="Teascu Dorin" version="2.1.4"><![CDATA[Raporteaz&#259; not&#259; problem&#259;]]></phrase>
+		<phrase name="reports" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Rapoarte]]></phrase>
+		<phrase name="request_timed_out_refresh" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Solicit&#259; a&#537;teptare. Te rog reîmprosp&#259;teaz&#259; aceast&#259; pagin&#259; pentru a vedea dac&#259; actualizarea s-a aplicat.]]></phrase>
+		<phrase name="result_sorting_and_grouping" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Rezultate sortare &#537;i grupare]]></phrase>
+		<phrase name="save_report" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Salveaz&#259; raport]]></phrase>
+		<phrase name="save_this_search_as_report" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Salveaz&#259; aceast&#259; c&#259;utare ca un raport]]></phrase>
+		<phrase name="search_group_addressedversionid" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme adresate în <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="search_group_appliesversionid" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme aplicabile la <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="search_group_assignment" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme atribuite la <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="search_group_issuestatusid" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme cu statusuri <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="search_group_issuetypeid" date="1368054746" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme de tipul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="search_group_projectcategoryid" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme în categoria <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="search_group_projectid" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme în proiectul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="search_group_tag" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme cu tagul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="search_only_issues_submitted_by_user" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Caut&#259; doar probleme trimise de acest utilizator]]></phrase>
+		<phrase name="search_results_report_x" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Caut&#259; rezultate pentru raportul '{1}']]></phrase>
+		<phrase name="search_this_milestone" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Caut&#259; acest reper]]></phrase>
+		<phrase name="search_this_project" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Cauta acest proiect]]></phrase>
+		<phrase name="search_tools" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte c&#259;utare]]></phrase>
+		<phrase name="selected_items" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Itemi selecta&#539;i]]></phrase>
+		<phrase name="selected_subscriptions" date="1368069643" username="Teascu Dorin" version="2.1.4"><![CDATA[Abonamente selectate]]></phrase>
+		<phrase name="setting_ptissues_messagemaxchars_title" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[Lungime text preafi&#537;are problem&#259; Unelte Proiect]]></phrase>
+		<phrase name="show_timeline" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[Arat&#259; cronologie]]></phrase>
+		<phrase name="soft_delete" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[&#536;tergere simpl&#259;]]></phrase>
+		<phrase name="sort_results_by" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[Soteaz&#259; rezultate dup&#259;]]></phrase>
+		<phrase name="status" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[Status]]></phrase>
+		<phrase name="submitted" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[Trimis]]></phrase>
+		<phrase name="submitted_by" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[Trimis de]]></phrase>
+		<phrase name="subscribe" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[Abonare]]></phrase>
+		<phrase name="subscribe_to_this_issue" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[Abonare la aceast&#259; problem&#259;]]></phrase>
+		<phrase name="subscribe_to_this_project" date="1368069739" username="Teascu Dorin" version="2.1.4"><![CDATA[Abonare la acest proiect]]></phrase>
+		<phrase name="subscription" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[Abonament]]></phrase>
+		<phrase name="subscription_type" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[Tip abonament]]></phrase>
+		<phrase name="summary" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[Sumar]]></phrase>
+		<phrase name="system_message_addressed" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Problem&#259; marcat&#259; ca</span> <em>adresat&#259;</em>]]></phrase>
+		<phrase name="system_message_addressedversionid" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Versiune adresat&#259; schimbar&#259; din</span> <em>{2}</em> <span class="shade">în</span> <em>{3}</em>]]></phrase>
+		<phrase name="system_message_appliesversionid" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Versiune aplicabil&#259; schimbat&#259; din</span> <em>{2}</em> <span class="shade">în</span> <em>{3}</em>]]></phrase>
+		<phrase name="system_message_assigneduser" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Atribuiri utilizator modificate</span>]]></phrase>
+		<phrase name="system_message_attachment_deleted" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Ata&#537;amentul </span> <em>{3}</em> <span class="shade">&#537;ters</span>]]></phrase>
+		<phrase name="system_message_attachment_uploaded" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Ata&#537;amentul </span> <em>{3}</em> <span class="shade">înc&#259;rcat</span>]]></phrase>
+		<phrase name="system_message_default" date="1368069895" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">{1} schimbat din</span> <em>{2}</em> <span class="shade">în</span> <em>{3}</em>]]></phrase>
+		<phrase name="system_message_issue_imported" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Problem&#259; importat&#259; din subiectul</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_imported_post" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Problem&#259; importat&#259; dintr-un post din subiectul</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_milestoneid" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Reper schimbat</span>]]></phrase>
+		<phrase name="system_message_projectcategoryid" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Categorie schimbat&#259; din</span> <em>{2}</em> <span class="shade">în</span> <em>{3}</em>]]></phrase>
+		<phrase name="system_message_tags" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Taguri modificate</span>]]></phrase>
+		<phrase name="system_message_unaddressed" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[<span class="shade">Problem&#259; marcat&#259; ca</span> <em>neadresat&#259;</em>]]></phrase>
+		<phrase name="tags" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[Taguri]]></phrase>
+		<phrase name="target_date" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[Dat&#259; &#539;int&#259;]]></phrase>
+		<phrase name="text_location" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[Loca&#539;ie text]]></phrase>
+		<phrase name="this_is_private_issue" date="1368070087" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceasta este o problem&#259; privat&#259;]]></phrase>
+		<phrase name="this_issue_is_closed" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceast&#259; problem&#259; este închis&#259;.]]></phrase>
+		<phrase name="timeline_empty" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[Cronologia este goal&#259;.]]></phrase>
+		<phrase name="timeline_entry_issue" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; creat&#259; de <a href="{1}" class="shade">{2}</a>]]></phrase>
+		<phrase name="timeline_entry_petition" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[Peti&#539;ie schimbare status din <a href="{1}" class="shade">{2}</a>]]></phrase>
+		<phrase name="timeline_entry_reply" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[R&#259;spuns la problem&#259; din <a href="{1}" class="shade">{2}</a>]]></phrase>
+		<phrase name="timeline_entry_system" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[Detalii problem&#259; modificate de <a href="{1}" class="shade">{2}</a>]]></phrase>
+		<phrase name="timeline_entry_system_specific" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[Detalii problem&#259; modificate de <a href="{1}" class="shade">{2}</a> ({3})]]></phrase>
+		<phrase name="total_active" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[Total active]]></phrase>
+		<phrase name="total_attachments" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[Total ata&#537;amente]]></phrase>
+		<phrase name="total_completed" date="1368070234" username="Teascu Dorin" version="2.1.4"><![CDATA[Total finalizate]]></phrase>
+		<phrase name="total_issues" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Total probleme]]></phrase>
+		<phrase name="unaddressed" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Neadresat]]></phrase>
+		<phrase name="unapplied_tags" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Taguri neaplicate]]></phrase>
+		<phrase name="unassigned_users" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Utilizatori neatribui&#539;i]]></phrase>
+		<phrase name="undelete" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Anulare &#537;tergere]]></phrase>
+		<phrase name="undelete_ellipsis" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Anulare &#537;tergere...]]></phrase>
+		<phrase name="unknown" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Necunoscut]]></phrase>
+		<phrase name="unsubscribe_from_this_issue" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Dezabonare de la aceast&#259; problem&#259;]]></phrase>
+		<phrase name="unsubscribing_personal_report_delete" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Dezabonarea de la un raport personal îl va &#537;terge automat.]]></phrase>
+		<phrase name="update_subscriptions" date="1368070333" username="Teascu Dorin" version="2.1.4"><![CDATA[Actualizeaz&#259; abonamente]]></phrase>
+		<phrase name="upload_file" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Încarc&#259; fi&#537;ier]]></phrase>
+		<phrase name="version" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune]]></phrase>
+		<phrase name="version_information" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Informa&#539;ie versiune]]></phrase>
+		<phrase name="view_all" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi tot]]></phrase>
+		<phrase name="view_all_issues_in_this_milestone" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi toate probleme din acest reper]]></phrase>
+		<phrase name="view_changes" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi schimb&#259;ri]]></phrase>
+		<phrase name="view_comments" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi comentarii]]></phrase>
+		<phrase name="view_complete_issue_list" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi list&#259; probleme finalizate]]></phrase>
+		<phrase name="view_first_unread" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi prima necitit&#259;]]></phrase>
+		<phrase name="view_highlighted_patch" date="1368070422" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi patch-uri eviden&#539;iate]]></phrase>
+		<phrase name="view_milestones" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi repere]]></phrase>
+		<phrase name="view_more_results" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi mai multe rezultate]]></phrase>
+		<phrase name="view_patch" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[Vezi patch]]></phrase>
+		<phrase name="what_makes_good_issue_description" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce face s&#259; fie o descrie bun&#259; problem&#259;?]]></phrase>
+		<phrase name="what_want_do_issue" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce vrei s&#259; faci cu aceast&#259; problem&#259;?]]></phrase>
+		<phrase name="what_want_do_message" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce vrei s&#259; faci cu acest mesaj?]]></phrase>
+		<phrase name="x_percent_completed" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[{1}% finalizate]]></phrase>
+		<phrase name="x_results" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[{1} rezultat(e)]]></phrase>
+		<phrase name="you_are_searching_within_a_single_milestone" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[Cau&#539;i într-un singur reper.]]></phrase>
+		<phrase name="you_assigned_issue" date="1368070537" username="Teascu Dorin" version="2.1.4"><![CDATA[E&#537;ti atribuit la aceast&#259; problem&#259;]]></phrase>
+		<phrase name="you_have_voted_issue" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[Ai votat în aceast&#259; problem&#259;.]]></phrase>
+		<phrase name="you_not_subscribed_issues" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[Nu e&#537;ti abonat la nici o problem&#259;.]]></phrase>
+		<phrase name="you_subscribed_issue" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[E&#537;ti abonat la aceast&#259; problem&#259;]]></phrase>
+		<phrase name="your_personal_reports" date="1368070714" username="Teascu Dorin" version="2.1.4"><![CDATA[Rapoartele tale personale]]></phrase>
+	</phrasetype>
+	<phrasetype name="Project Tools (Admin)" fieldname="projecttoolsadmin">
+		<phrase name="add_issue_status" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; status problem&#259;]]></phrase>
+		<phrase name="add_issue_type" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; tip problem&#259;]]></phrase>
+		<phrase name="add_milestone" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; reper]]></phrase>
+		<phrase name="add_project" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; proiect]]></phrase>
+		<phrase name="add_project_category" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; categorie proiect]]></phrase>
+		<phrase name="add_project_version" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; versiune proiect]]></phrase>
+		<phrase name="add_project_version_group" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; grup versiune proiect]]></phrase>
+		<phrase name="add_status" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; status]]></phrase>
+		<phrase name="add_tag" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; tag]]></phrase>
+		<phrase name="add_version" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[Adaug&#259; versiune]]></phrase>
+		<phrase name="addressed_version_example" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiuni adresate<dfn>Exemplu: Versiune fix&#259;</dfn>]]></phrase>
+		<phrase name="applicable_version_example" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune aplicabil&#259;<dfn>Exemplu: Versiune afectat&#259;</dfn>]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_issuestatus_x" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[E&#537;ti <b>sigur</b> c&#259; vrei s&#259; &#537;tergi acest status problem&#259; numit '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Aceast&#259; ac&#539;iune este ireversibil&#259;.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_issuetype_x" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[E&#537;ti <b>sigur</b> c&#259; vrei s&#259; &#537;tergi tipul problem&#259; numit '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Aceast&#259; ac&#539;iune este ireversibil&#259;.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_milestone_x" date="1367983751" username="Teascu Dorin" version="2.1.4"><![CDATA[E&#537;ti <b>sigur</b> c&#259; vrei s&#259; &#537;tergi reperul numit '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Aceast&#259; ac&#539;iune este ireversibil&#259;.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_project_x" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[E&#537;ti <b>sigur</b> c&#259; vrei sî &#537;tergi proiectul numit '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Aceast&#259; ac&#539;iune este ireversibil&#259;.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectcategory_x" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[E&#537;ti <b>sigur</b> c&#259; vrei s&#259; &#537;tergi categoria proiect numit&#259; '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Aceast&#259; ac&#539;iune este ireversibil&#259;.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectversion_x" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[E&#537;ti <b>sigur</b> c&#259; vrei s&#259; &#537;tergi aceast&#259; versiune proiect numit&#259; '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Aceast&#259; ac&#539;iune este ireversibil&#259;.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectversiongroup_x" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[E&#537;ti <b>sigur</b> c&#259; vrei s&#259; &#537;tergi acest grup versiune proiect numit '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Aceast&#259; ac&#539;iune este irevesibil&#259;.]]></phrase>
+		<phrase name="available_issue_types" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[Tipuri problem&#259; disponibile]]></phrase>
+		<phrase name="base_permissions_off_existing_project" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[Bazeaz&#259; permisiuni pe proiect existent]]></phrase>
+		<phrase name="bass_permissions_off_existing_type" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[Bazeaz&#259; permisiuni pe proiect existent<dfn>Dac&#259; selectezi "nimic", nimeni nu va avea permisiunea s&#259; foloseasc&#259; acest tip implicit.</dfn>]]></phrase>
+		<phrase name="can_create_petitions_from_this_status" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate crea peti&#539;ii din acest status?]]></phrase>
+		<phrase name="categories" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[Categorii]]></phrase>
+		<phrase name="categories_for_x" date="1367984014" username="Teascu Dorin" version="2.1.4"><![CDATA[Categorii pentru <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="chose_delete_types_project" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[Po&#539;i alege s&#259; &#537;tergi una sau mai multe tipuri problem&#259; din acest proiect. Pentru a finaliza acest proiect, ar trebui s&#259; alegi un nou tip problem&#259; &#537;i status pentru a muta toate problemele afectate în el.
+		<p>Dac&#259; nu faci asta, problemele vor r&#259;mâne dar vor deveni inaccesibile pân&#259; ce tipul lor va fi reactivat pentru acest proiect. Pentru a omite acest proces &#537;i pentru a merge înapoi la list&#259; proiect, <a href="project.php?do=projectlist">s&#259; click aici</a>.</p>]]></phrase>
+		<phrase name="completed_date_desc" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[Dac&#259; specifici o dat&#259; aici, acest reper va fi mutat în lista "Repere finalizate".]]></phrase>
+		<phrase name="default_version_group" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[Grup versiune implicit&#259;]]></phrase>
+		<phrase name="default_version_number" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[Num&#259;r versiune implict&#259;]]></phrase>
+		<phrase name="deleted_issue_type" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[Tip problem&#259; &#537;ters]]></phrase>
+		<phrase name="denote_as_next_version" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[Setez ca versiune urm&#259;toare?<dfn>Dac&#259; este selectat, orice probleme marcate ca fiind adresate în "versiunea urm&#259;toare" vor deveni asociate cu aceast&#259; versiune.</dfn>]]></phrase>
+		<phrase name="display_after_forums" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[Afi&#537;eaz&#259; dup&#259; forum
+<dfn>Informa&#539;ia acestui proiect va ap&#259;rea în list&#259; forum dup&#259; forumurile selectate.</dfn>]]></phrase>
+		<phrase name="do_not_change_meta" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[(nu schimba)]]></phrase>
+		<phrase name="do_not_use_meta" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[(nu folosi)]]></phrase>
+		<phrase name="double_click_permission_quick_set" date="1367985275" username="Teascu Dorin" version="2.1.4"><![CDATA[<em>Sfat</em>: Po&#539;i da dublu-click pe un nume permisiune pentru a oferi sau revoca instant acea permisiune pentru toate tipurile problem&#259;!]]></phrase>
+		<phrase name="edit_link_colored_custom_permissions" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Linkul de editare va fi colorat astfel dac&#259; exist&#259; permisiuni personalizate.]]></phrase>
+		<phrase name="edit_milestone" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; reper]]></phrase>
+		<phrase name="edit_permissions_for_x" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; permisiuni pentru <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="edit_permissions_for_x_in_y" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; permisiuni pentru <span class="normal">'{1}'</span> în <span class="normal">'{2}'</span>]]></phrase>
+		<phrase name="edit_project_category" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; categorie proiect]]></phrase>
+		<phrase name="edit_project_version" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; versiune proiect]]></phrase>
+		<phrase name="edit_project_version_group" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; grup versiune proiect]]></phrase>
+		<phrase name="edit_project_x" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; proiectul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="edit_status_x" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; statusul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="edit_type_x" date="1368033066" username="Teascu Dorin" version="2.1.4"><![CDATA[Editeaz&#259; tipul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_category" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[Problemele afectate, existente, trebuie s&#259; fie actualizate când acesta este &#537;ters. Selecteaz&#259; o categorie nou&#259; pentru aceste probleme:]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_milestone" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[Problemele afectate, existente, trebuie s&#259; fie actualizate când acesta este &#537;ters. Selecteaz&#259; un reper nou pentru aceste probleme:]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_status" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[Problemele afectate, existente, trebuie s&#259; fie actualizate când acesta este &#537;ters. Selecteaz&#259; un status nou pentru aceste probleme:]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_versions_x_y" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[Problemele afectate, existente, trebuie s&#259; fie actualizate când acesta este &#537;ters.
+<ol style="margin-top: 0px; margin-bottom: 0px;">
+	<li>Selecteaz&#259; o nou&#259; versiune aplicabil&#259;: {1}</li>
+	<li>Selecteaz&#259; o nou&#259; versiune adresat&#259;: {2}</li>
+</ol>]]></phrase>
+		<phrase name="filename_for_icon" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[Nume fi&#537;ier pentru iconi&#539;&#259;<dfn>Aceasta trebuie s&#259; fie plasat&#259; în folderul imagini iconi&#539;e status (implicit: images/statusicon).</dfn>]]></phrase>
+		<phrase name="force_to_be_custom" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[For&#539;ez s&#259; fie personalizat?
+<dfn>Seteaz&#259; asta dac&#259; vrei s&#259; for&#539;ezi un set de permisiuni s&#259; fie create pentru acest proiect chiar &#537;i f&#259;r&#259; a face nici o schimbare. Dac&#259; faci schimb&#259;ri, un set permisiune va fi creat automat.</dfn>]]></phrase>
+		<phrase name="global_project_permissions" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni globale proiect]]></phrase>
+		<phrase name="global_project_tools_permissions" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni globale Unelte Permisiuni]]></phrase>
+		<phrase name="hide_globally_disabled_groups" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[Ascunde grupuri utilizatori global dezactivate]]></phrase>
+		<phrase name="html_is_allowed" date="1368033453" username="Teascu Dorin" version="2.1.4"><![CDATA[HTML este permis]]></phrase>
+		<phrase name="id_of_issue" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[ID problem&#259;]]></phrase>
+		<phrase name="issue_closed" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; închis&#259;]]></phrase>
+		<phrase name="issue_completed" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259; finalizat&#259;]]></phrase>
+		<phrase name="issue_type_key_alphanumeric_only" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[Cheie tip problem&#259;<dfn>Doar A-Z, 0-9, &#537;i sublinie</dfn>]]></phrase>
+		<phrase name="issue_type_manager" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestionare tip problem&#259;]]></phrase>
+		<phrase name="issue_types_deleted_for_project_x" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[Tipuri problem&#259; &#537;terse pentru proiectul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="milestones_for_x_html" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[Repere pentru <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="move_issues_into" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[Mut&#259; problem&#259; în]]></phrase>
+		<phrase name="need_manually_select_projects_type" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[Re&#539;ine c&#259; va trebui s&#259; selectezi manual proiectele care vor folosi acest tip dup&#259; ce este creat!]]></phrase>
+		<phrase name="negative_vote_count_example" date="1368033762" username="Teascu Dorin" version="2.1.4"><![CDATA[Num&#259;rul voturi negative<dfn>Exemplu: Utilizatorii care nu pot reproduce eroarea</dfn>]]></phrase>
+		<phrase name="no_categories_defined_project" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[Nici o categorie definit&#259; pentru acest proiect!]]></phrase>
+		<phrase name="no_milestones_defined_for_this_project" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[Nici un reper definit pentru acest proiect!]]></phrase>
+		<phrase name="no_projects_defined_click_here_to_add_one" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[Nici un proiect definit. Click <a href="project.php?do=projectadd">aici</a> pentru a ad&#259;uga unul!]]></phrase>
+		<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[Nici un status de acest tip definit. Acest tip nu va fi util pân&#259; nu adaugi cel pu&#539;in un status. <a href="project.php?do=statusadd&amp;type={1}">Click aici</a> pentru a ad&#259;uga unul!]]></phrase>
+		<phrase name="no_tags_defined" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[F&#259;r&#259; taguri definite.]]></phrase>
+		<phrase name="no_versions_defined_in_this_group" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[F&#259;r&#259; versiuni definite în acest grup.]]></phrase>
+		<phrase name="no_versions_groups_defined_project" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[F&#259;r&#259; versiuni sau grupuri definite pentru acest proiect!]]></phrase>
+		<phrase name="note_a_larger_value_will_be_displayed_first" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[Not&#259;: o valoare mai mare va fi afi&#537;at&#259; prima!]]></phrase>
+		<phrase name="note_higer_display_orders_first" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[Not&#259;: Ordine de afi&#537;are mai mare vor fi ar&#259;tate primele aici!]]></phrase>
+		<phrase name="note_pt_attachments_diff_dir_vb" date="1368034062" username="Teascu Dorin" version="2.1.4"><![CDATA[Not&#259;: Ata&#537;amentele Unelte Proiect trebuie s&#259; fie stocate într-un folder diferit decât ata&#537;amentele vBulletin!]]></phrase>
+		<phrase name="permission_apply_all_projects_unless_custom" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceste permisiuni se vor aplica pentru to&#539;i dac&#259; nu specifici un set de permisiuni personalizat pentru un proiect &#537;i user grup specific.]]></phrase>
+		<phrase name="permissions_for_project_x" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni pentru proiectul <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="plural_form_example" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[Plural de la<dfn>Exemplu: Erori</dfn>]]></phrase>
+		<phrase name="positive_vote_count_example" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[Num&#259;r voturi pozitive<dfn>Exemplu: Utilizatorii care pot reproduce eroarea.</dfn>]]></phrase>
+		<phrase name="post_new_issue_example" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[Posteaz&#259; problem&#259; nou&#259;
+<dfn>Exemplu: Posteaz&#259; eroare nou&#259;</dfn>]]></phrase>
+		<phrase name="project_attachment_manager" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[Gestionare ata&#537;ament proiect]]></phrase>
+		<phrase name="project_list" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[List&#259; proiect]]></phrase>
+		<phrase name="project_permission_values_apply" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[Valorile permisiune proiect se aplic&#259; dup&#259; a&#537;tept&#259;ri.]]></phrase>
+		<phrase name="project_permission_values_do_not_apply" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[Valorile permisiune proiect nu se aplic&#259;. Accesul acestui utilizator la Unelte Proiect a fost dezactivat global.]]></phrase>
+		<phrase name="project_permissions" date="1368034421" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni proiect]]></phrase>
+		<phrase name="project_specific_permissions" date="1368034890" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni specifice proiect]]></phrase>
+		<phrase name="project_tools_attachments" date="1368034890" username="Teascu Dorin" version="2.1.4"><![CDATA[Ata&#537;amente Unelte Proiect]]></phrase>
+		<phrase name="project_tools_install_info" date="1368034890" username="Teascu Dorin" version="2.1.4"><![CDATA[Ai instalat cu succes Unelte Proiect vBulletin, versiunea <em>{1}</em>.]]></phrase>
+		<phrase name="project_tools_installed_successfully" date="1368034890" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte Proiect vBulletin instalat cu succes!]]></phrase>
+		<phrase name="project_tools_options" date="1368034890" username="Teascu Dorin" version="2.1.4"><![CDATA[Op&#539;iuni Unelte Proiect]]></phrase>
+		<phrase name="project_tools_permissions_for_x" date="1368034890" username="Teascu Dorin" version="2.1.4"><![CDATA[Permisiuni Unelte Proiect pentru <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="project_tools_upgrade_info" date="1368034890" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte Proiect vBulletin a fost actualizat cu succes de la versiunea <em>{1}</em> la <em>{2}</em>.]]></phrase>
+		<phrase name="project_tools_upgrade_info_1_2" date="1368051332" username="Teascu Dorin" version="2.1.4"><![CDATA[Dup&#259; actualizare de la Unelte Proiect 1.0, este recomandat:
+<ul style="margin-top:0px; margin-bottom:0px">
+	<li>S&#259; activezi setarea "Trimite email la atribuire problem&#259;" la proiectele la care vrei.</li>
+	<li>S&#259; setezi flagul "Problem&#259; finalizat&#259;" la <a href="project.php?do=typelist">statusuri problem&#259;</a> dup&#259; necesit&#259;&#539;i.</li>
+	<li>S&#259; verifici <a href="projectpermission.php?do=list">permisiuni proiect</a> noi pentru a te asigura c&#259; sunt corecte pentru utilizatori.</li>
+	<li>S&#259; <a href="project.php?do=counters">Reconstruie&#537;ti contoare problem&#259;</a> urmat de contoare proiect pentru a profita de urm&#259;rirea îmbun&#259;t&#259;&#539;it&#259; a notelor private.</li>
+</ul>]]></phrase>
+		<phrase name="project_tools_upgraded_successfully" date="1368034890" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte Proiect vBulletin actualizat cu succes!]]></phrase>
+		<phrase name="project_versions_for_x" date="1368034890" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiuni proiect pentru <span class="normal">'{1}'</span>]]></phrase>
+		<phrase name="pt_status_color" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Culoare status]]></phrase>
+		<phrase name="ptperm_can_assign_edit" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita atribuiri]]></phrase>
+		<phrase name="ptperm_can_assign_edit_others" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita atribuirile altora]]></phrase>
+		<phrase name="ptperm_can_assigned" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate fi atribuit]]></phrase>
+		<phrase name="ptperm_can_attach" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate înc&#259;rca ata&#537;amente]]></phrase>
+		<phrase name="ptperm_can_attach_edit" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita ata&#537;amente]]></phrase>
+		<phrase name="ptperm_can_attach_edit_others" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita ata&#537;amentele altora]]></phrase>
+		<phrase name="ptperm_can_attach_view" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate vedea ata&#537;amente]]></phrase>
+		<phrase name="ptperm_can_change_milestone" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita repere problem&#259;]]></phrase>
+		<phrase name="ptperm_can_create_private" date="1368051216" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate face probleme/note private la momentul cre&#259;ri]]></phrase>
+		<phrase name="ptperm_can_delete_issue" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate &#537;terge probleme]]></phrase>
+		<phrase name="ptperm_can_delete_issue_others" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate &#537;terge problemele altora]]></phrase>
+		<phrase name="ptperm_can_delete_note" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate &#537;terge note]]></phrase>
+		<phrase name="ptperm_can_delete_note_others" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate &#537;terge notele altora]]></phrase>
+		<phrase name="ptperm_can_edit_issue" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita informa&#539;ie problem&#259;]]></phrase>
+		<phrase name="ptperm_can_edit_issue_others" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita informa&#539;ie problema a altora]]></phrase>
+		<phrase name="ptperm_can_edit_note" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita note]]></phrase>
+		<phrase name="ptperm_can_edit_note_others" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita notele altora]]></phrase>
+		<phrase name="ptperm_can_edit_private" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita setare privat dup&#259; creare]]></phrase>
+		<phrase name="ptperm_can_manage" date="1368051657" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate gestiona probleme/note
+<dfn>Permite gestionarea statusurilor &#537;terse &#537;i citirea adreselor IP.</dfn>]]></phrase>
+		<phrase name="ptperm_can_move_issue" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate muta probleme]]></phrase>
+		<phrase name="ptperm_can_open_close_issue" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate deschide/închide probleme]]></phrase>
+		<phrase name="ptperm_can_petition" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate crea peti&#539;ie pentru schimb&#259;ri status]]></phrase>
+		<phrase name="ptperm_can_post_new" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate posta probleme noi]]></phrase>
+		<phrase name="ptperm_can_reply" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate r&#259;spunde la probleme]]></phrase>
+		<phrase name="ptperm_can_reply_others" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate r&#259;spunde la problemele altora]]></phrase>
+		<phrase name="ptperm_can_search" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate c&#259;uta]]></phrase>
+		<phrase name="ptperm_can_status_assigned" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita statusuri problem&#259; când este atribuit]]></phrase>
+		<phrase name="ptperm_can_status_unassigned" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita statusuri problem&#259; când nu este atribuit]]></phrase>
+		<phrase name="ptperm_can_tags_assigned" date="1368051763" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita taguri problem&#259; când este desemnat]]></phrase>
+		<phrase name="ptperm_can_tags_unassigned" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate edita taguri problem&#259; când nu este atribuit]]></phrase>
+		<phrase name="ptperm_can_view" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate vedea probleme]]></phrase>
+		<phrase name="ptperm_can_view_milestones" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate vedea repere]]></phrase>
+		<phrase name="ptperm_can_view_others" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate vedea problemele altora]]></phrase>
+		<phrase name="ptperm_can_view_private_others" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate vedea probleme/note private ale altora]]></phrase>
+		<phrase name="ptperm_can_view_private_own" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate vedea probleme/note private proprii]]></phrase>
+		<phrase name="ptperm_can_vote" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Poate vota în problem&#259;]]></phrase>
+		<phrase name="rebuild_issue_counters" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Reconstruie&#537;te contoare problem&#259;]]></phrase>
+		<phrase name="rebuild_milestone_counters" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Reconstruie&#537;te contoare reper]]></phrase>
+		<phrase name="rebuild_profile_issue_counters" date="1368051884" username="Teascu Dorin" version="2.1.4"><![CDATA[Reconstruie&#537;te contoare problem&#259; profil]]></phrase>
+		<phrase name="rebuild_project_counters" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Reconstruie&#537;te contoare proiect]]></phrase>
+		<phrase name="rebuilding_issue_counters_will_update_various_fields" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Reconstruirea contoarelor problem&#259; va actualiza anumite câmpuri asociate cu o problem&#259; care poate deveni expirat&#259; dar poate fi reconstruit&#259;.]]></phrase>
+		<phrase name="rebuilding_milestone_counters_will_update_various_fields" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Reconstruirea contoarelor reper va actualiza câmpuri variate asociate cu un reper care poate deveni expirat dar poate fi reconstruit.]]></phrase>
+		<phrase name="rebuilding_profile_issue_counters_will_update_various_fields" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Reconstruirea contoare problem&#259; profil va actualiza num&#259;rul de probleme pe care le-a f&#259;cut fiecare utilizator.]]></phrase>
+		<phrase name="rebuilding_project_counters_will_update_various_fields" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Reconstruirea contoare proiect va actualiza câmpuri variate asociate cu un proiect care poate deveni expirat dar poate fi reconstruit. Ruleaz&#259; asta odat&#259; ce &#537;tii c&#259; contoarele probleme sunt actualizate.]]></phrase>
+		<phrase name="required_fields_issue_submit" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Câmpuri necesare<dfn>Când creezi o problem&#259;, urm&#259;toarele câmpuri trebuie s&#259; fie populate.</dfn>]]></phrase>
+		<phrase name="required_requireappliesversion" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiune aplicabil&#259;]]></phrase>
+		<phrase name="required_requirecategory" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Categorie]]></phrase>
+		<phrase name="required_requirepriority" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Prioritate]]></phrase>
+		<phrase name="revert_to_default_permissions" date="1368052247" username="Teascu Dorin" version="2.1.4"><![CDATA[Inversez la permisiuni implicite?
+<dfn>Dac&#259; alegi aceast&#259; op&#539;iune, seturile permisiune selectate vor fi &#537;terse &#537;i utilizatorii din acest grup vor folosi permisiunile globale proiect.</dfn>]]></phrase>
+		<phrase name="select_start_status_for_types_available" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[Selecteaz&#259; statusul de pornire pentru tipuri de problem&#259; pe care le vrei disponibile pentru acest proiect.]]></phrase>
+		<phrase name="send_email_on_issueassignment" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[Trimite email la atribuire problem&#259;
+<dfn>Alege aceast&#259; op&#539;iune dac&#259; vrei ca utilizatorii s&#259; primeasc&#259; email când sunt atribui&#539;i la o problem&#259; de alt utilizator.</dfn>]]></phrase>
+		<phrase name="send_pm_on_issueassignment" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[Trimite MP la atribuire problem&#259;
+<dfn>Alege aceast&#259; op&#539;iune dac&#259; vrei ca utilizatorii s&#259; primeasc&#259; Mesaj Privat când sunt atribui&#539;i la o problem&#259; de alt utilizator.</dfn>]]></phrase>
+		<phrase name="show_globally_disabled_groups" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[Arat&#259; grupuri utilizatori global dezactivate]]></phrase>
+		<phrase name="singular_form_example" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[Form&#259; simpl&#259;<dfn>Exemplu: eroare</dfn>]]></phrase>
+		<phrase name="some_issue_fields_not_editable_frontend" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[Unele câmpuri problem&#259;, cum ar fi tip problem&#259; &#537;i proiect, nu pot fi editate prin interfa&#539;&#259;. Acest sistem î&#539;i permite s&#259; editezi acele câmpuri.]]></phrase>
+		<phrase name="status_represents_completed_issue" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[Statusul reprezint&#259; o problem&#259; finalizat&#259;?]]></phrase>
+		<phrase name="tag_list" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[List&#259; tag]]></phrase>
+		<phrase name="target_date_desc" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[Folose&#537;te aceast&#259; op&#539;iune pentru a specifica 
+&#539;inta (sau termenul) pentru acest reper.]]></phrase>
+		<phrase name="title_in_forum_list" date="1368052631" username="Teascu Dorin" version="2.1.4"><![CDATA[Titlu în list&#259; forum
+<dfn>Dac&#259; afi&#537;ezi acest proiect în list&#259; forum, po&#539;i folosi asta pentru a suprascrie numele proiectului în list&#259;.</dfn>]]></phrase>
+		<phrase name="use_selected_project_sets" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[Folose&#537;te seturi proiect selectate]]></phrase>
+		<phrase name="usergroups_access_globally_disabled" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[Accesul acestui grup utilizatori la Unelte Proiect este dezactivat global. Schimb&#259;rile pe care le faci aici nu vor fi aplicate pân&#259; când asta nu se schimb&#259;.]]></phrase>
+		<phrase name="version_group" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[Grup versiune]]></phrase>
+		<phrase name="versions" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[Versiuni]]></phrase>
+		<phrase name="vote_question_example" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[Întrebare vot<dfn>Exemplu: Po&#539;i reproduce aceast&#259; eroare?</dfn>]]></phrase>
+		<phrase name="what_are_reports" date="1368052810" username="Teascu Dorin" version="2.1.4"><![CDATA[Ce sunt rapoartele?]]></phrase>
+	</phrasetype>
+	<phrasetype name="Searching" fieldname="search">
+		<phrase name="complete_search" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[Caut&#259; cu parametrii adi&#539;ionali]]></phrase>
+		<phrase name="issue" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[Problem&#259;]]></phrase>
+		<phrase name="project" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiect]]></phrase>
+		<phrase name="search_entire_project" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[Caut&#259; intrare proiect]]></phrase>
+		<phrase name="search_for_issues" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Caut&#259; dup&#259; probleme]]></phrase>
+		<phrase name="search_for_projects" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Caut&#259; dup&#259; proiecte]]></phrase>
+		<phrase name="searchtype_issuenotes" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Note problem&#259;]]></phrase>
+		<phrase name="searchtype_issues" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme]]></phrase>
+		<phrase name="searchtype_projects" date="1367983537" username="Teascu Dorin" version="2.1.4"><![CDATA[Proiecte]]></phrase>
+	</phrasetype>
+	<phrasetype name="Style Tools" fieldname="style">
+		<phrase name="group_project_tools" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte proiect]]></phrase>
+	</phrasetype>
+	<phrasetype name="User Tools (global)" fieldname="user">
+		<phrase name="find_all_issues_started_by_x" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[G&#259;se&#537;te toate probleme dup&#259; {1}]]></phrase>
+		<phrase name="find_all_issues_with_posts_by_x" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[G&#259;se&#537;te toate problemele cu posturi dup&#259; {1}]]></phrase>
+	</phrasetype>
+	<phrasetype name="Forum Blocks" fieldname="vbblock">
+		<phrase name="all_projects" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[Toate proiectele]]></phrase>
+		<phrase name="blocktype_ptissues" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[Ultimele probleme]]></phrase>
+	</phrasetype>
+	<phrasetype name="Forum Blocks Settings" fieldname="vbblocksettings">
+		<phrase name="setting_issues_limit_desc" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Acesta este num&#259;rul maxim de probleme ce se vor afi&#537;a în bloc.]]></phrase>
+		<phrase name="setting_issues_limit_title" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Maxim de probleme]]></phrase>
+		<phrase name="setting_issues_projectids_desc" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Po&#539;i alege s&#259; afi&#537;ezi probleme în proiecte specifice.]]></phrase>
+		<phrase name="setting_issues_projectids_title" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Limit&#259; proiecte]]></phrase>
+		<phrase name="setting_issues_titlemaxchars_desc" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Aceast&#259; setare î&#539;i permite s&#259; specifici câte caractere ale titlului proiectului s&#259; fie afi&#537;at în bloc.]]></phrase>
+		<phrase name="setting_issues_titlemaxchars_title" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Lungime titlu problem&#259;]]></phrase>
+		<phrase name="setting_issues_type_desc" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Alege care tip problem&#259; vrei s&#259; o afi&#537;ezi:
+<br />
+<strong>Nou create</strong> - Problemele nou create vor fi afi&#537;ate primele.<br />
+<strong>R&#259;spunsuri noi</strong> - Problemele cu r&#259;spunsurile cele mai noi vor fi afi&#537;ate primele.<br />
+<strong>R&#259;spunsuri multiple</strong> - Problemele cu cele mai multe r&#259;spunsuri vor fi afi&#537;ate primele.]]></phrase>
+		<phrase name="setting_issues_type_title" date="1367983451" username="Teascu Dorin" version="2.1.4"><![CDATA[Tip problem&#259;]]></phrase>
+	</phrasetype>
+	<phrasetype name="vBulletin Settings" fieldname="vbsettings">
+		<phrase name="setting_pt_allowbbcode_desc" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit utilizatorilor s&#259; includ&#259; coduri BB în probleme? (Cum ar fi [b], [i] etc.)]]></phrase>
+		<phrase name="setting_pt_allowbbcode_title" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit cod BB în probleme?]]></phrase>
+		<phrase name="setting_pt_allowbbimagecode_desc" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit utilizatorilor s&#259; afi&#537;eze imagini prin coduri [IMG] în probleme?]]></phrase>
+		<phrase name="setting_pt_allowbbimagecode_title" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit cod BB [IMG] în probleme?]]></phrase>
+		<phrase name="setting_pt_allowhtml_desc" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit utilizatorilor s&#259; includ&#259; cod HTML brut în probleme?<br />(<b>Nu este deloc recomandat.</b>)]]></phrase>
+		<phrase name="setting_pt_allowhtml_title" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit HTML în probleme?]]></phrase>
+		<phrase name="setting_pt_allowsmilies_desc" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit utilizatorilor s&#259; includ&#259; zâmbete în probleme?]]></phrase>
+		<phrase name="setting_pt_allowsmilies_title" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit zâmbete în probleme?]]></phrase>
+		<phrase name="setting_pt_allowstartervote_desc" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[Dac&#259; setezi asta da, creatorul problemei va putea s&#259; voteze în problem&#259; (cum ar fi s&#259; confirme c&#259; pot reproduce problema).]]></phrase>
+		<phrase name="setting_pt_allowstartervote_title" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[Permit creatorului problemei s&#259; voteze în problem&#259;?]]></phrase>
+		<phrase name="setting_pt_attachfile_desc" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[-]]></phrase>
+		<phrase name="setting_pt_attachfile_title" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[Ata&#537;amente Unelte Proiect ca fi&#537;iere?]]></phrase>
+		<phrase name="setting_pt_attachmentextensions_desc" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte Proiect permit diferite tipuri de fi&#537;iere s&#259; fie ata&#537;ate decât forumul. Introdu extensiile fi&#537;ierelor pe care utilizatorii vor putea s&#259; le ata&#537;eze la probleme aici.<br />
+<br />
+Pune fiecare extensie pe o linie separat&#259;.<br />
+<br />
+L&#259;sând aceasta liber&#259; va permite toate extensiile. Pentru a dezactiva ata&#537;amente în unelte proiect, seteaz&#259; "M&#259;rime maxim&#259; ata&#537;ament problem&#259;" 0 sau folose&#537;te permisiuni.]]></phrase>
+		<phrase name="setting_pt_attachmentextensions_title" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[Extensii ata&#537;ament problem&#259; permise]]></phrase>
+		<phrase name="setting_pt_attachmentsize_desc" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[M&#259;rimea maxim&#259; ata&#537;ament permis&#259;, <em>în kilobi&#539;i</em>.]]></phrase>
+		<phrase name="setting_pt_attachmentsize_title" date="1367864041" username="Teascu Dorin" version="2.1.4"><![CDATA[M&#259;rime maxim&#259; ata&#537;ament problem&#259;]]></phrase>
+		<phrase name="setting_pt_attachpath_desc" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[-]]></phrase>
+		<phrase name="setting_pt_attachpath_title" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[Cale fi&#537;ier ata&#537;ament Unelte Proiect]]></phrase>
+		<phrase name="setting_pt_groupsearchissuespergroup_desc" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[Când execu&#539;i o c&#259;utare grupat&#259;, câte probleme ar trebui s&#259; fie afi&#537;ate în fiecare grup pr prima pagin&#259;?<br />
+<br />
+O valoare de 0 va afi&#537;a toate problemele într-un grup pe prima pagin&#259;.]]></phrase>
+		<phrase name="setting_pt_groupsearchissuespergroup_title" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme c&#259;utare grupate per grup]]></phrase>
+		<phrase name="setting_pt_hasprojectforums_desc" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[Seteaz&#259; da dac&#259; proiectele sunt setate s&#259; fie ar&#259;tate ca forumuri.]]></phrase>
+		<phrase name="setting_pt_hasprojectforums_title" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[Are forumuri proiect]]></phrase>
+		<phrase name="setting_pt_humancheck_desc" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[Vrei s&#259; permi&#539;i verificare uman&#259; doar dup&#259; grup utilizatori? Seteaz&#259; 'Da' în acel caz, sau 'Nu' dac&#259; preferi s&#259; folose&#537;ti op&#539;iunea urm&#259;toare.]]></phrase>
+		<phrase name="setting_pt_humancheck_title" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[Verificare uman&#259; dup&#259; grup utilizatori]]></phrase>
+		<phrase name="setting_pt_hvcheck_desc" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[Verificarea uman&#259; va fi solicitat&#259; pentru ac&#539;iunile selectate unde permisiunea grup utilizator a utilizatorului <strong>Solicit&#259; verificare uman&#259; pentru ac&#539;iuni configurate</strong> este selectat&#259;.]]></phrase>
+		<phrase name="setting_pt_hvcheck_title" date="1367897273" username="Teascu Dorin" version="2.1.4"><![CDATA[Op&#539;iuni verificare uman&#259;]]></phrase>
+		<phrase name="setting_pt_issuesperpage_desc" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Acesta este num&#259;rul de probleme de afi&#537;at per pagin&#259; în lista probleme.<br />
+<br />
+O valoare de 0 va afi&#537;a toate problemele pe o pagin&#259;.]]></phrase>
+		<phrase name="setting_pt_issuesperpage_title" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme afi&#537;ate per pagin&#259;]]></phrase>
+		<phrase name="setting_pt_listprojects_activate_desc" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Vrei s&#259; activezi acest sistem?]]></phrase>
+		<phrase name="setting_pt_listprojects_activate_title" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Salt proiect - Activat]]></phrase>
+		<phrase name="setting_pt_listprojects_locations_desc" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Selecteaz&#259; unde vrei s&#259; afi&#537;ezi acest meniu extensibil.]]></phrase>
+		<phrase name="setting_pt_listprojects_locations_title" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Salt proiect - Loca&#539;ie a meniului extensibil]]></phrase>
+		<phrase name="setting_pt_listprojects_position_issue_desc" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Selecteaz&#259; unde vrei s&#259; afi&#537;ezi meniul salt-proiect în paginile probleme proiect ale Unelte Proiect.]]></phrase>
+		<phrase name="setting_pt_listprojects_position_issue_title" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Salt proiect - Pozi&#539;ia meniului salt-proiect în problem&#259; proiect]]></phrase>
+		<phrase name="setting_pt_listprojects_position_issuelist_desc" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Selecteaz&#259; unde vrei s&#259; afi&#537;ezi meniul salt-proiect în pagina list&#259; probleme proiect a Unelte Proiect.<br />
+<br />
+<strong>Not&#259;:</strong> dac&#259; nu ai nici o problem&#259; într-un anumit proiect, aceast&#259; op&#539;iune nu este folosit&#259; &#537;i va fi plasat&#259; înainte de subsol.]]></phrase>
+		<phrase name="setting_pt_listprojects_position_issuelist_title" date="1367897614" username="Teascu Dorin" version="2.1.4"><![CDATA[Salt proiect - Pozi&#539;ie a meniului salt-proiect în list&#259; problem&#259; proiect]]></phrase>
+		<phrase name="setting_pt_listprojects_position_projects_desc" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Selecteaz&#259; unde vrei s&#259; afi&#537;ezi meniul salt-proiect în pagini prezentare proiect a Unelte Proiect.<br />
+<br />
+<strong>Not&#259;:</strong> dac&#259; nu ai nici un proiect într-un anumit proiect, aceast&#259; op&#539;iune nu este folosit&#259; &#537;i va fi plasat&#259; înainte de subsol.]]></phrase>
+		<phrase name="setting_pt_listprojects_position_projects_title" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Salt proiect - Pozi&#539;ia meniului salt-proiect în prezentare proiect]]></phrase>
+		<phrase name="setting_pt_notesperpage_desc" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Acesta este num&#259;rul de note ce va fi afi&#537;at per pagin&#259; într-o problem&#259;. O not&#259; poate fi comentariu/peti&#539;ie sau informa&#539;ie despre schimb&#259;ri în detaliile problemelor.<br />
+<br />
+O valoare de 0 va afi&#537;a toate notele pe o pagin&#259;.]]></phrase>
+		<phrase name="setting_pt_notesperpage_title" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Note afi&#537;ate per pagin&#259;]]></phrase>
+		<phrase name="setting_pt_overview_timelineentries_desc" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Pe pagina de prezentare a Unelte Proiect (care listeaz&#259; toate proiectele), o sec&#539;iune cronologie este afi&#537;at&#259;. Aceasta controleaz&#259; num&#259;rul maxim de intr&#259;ri a cronologiei de afi&#537;at aici.<br />
+<br />
+O valoare de 0 va ascunde cronologia de pe aceast&#259; pagin&#259;.]]></phrase>
+		<phrase name="setting_pt_overview_timelineentries_title" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Prezentare: Intr&#259;ri cronologie]]></phrase>
+		<phrase name="setting_pt_profile_issue_counters_desc" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Vrei s&#259; afi&#537;ezi în loca&#539;ii variate num&#259;rul de probleme pe care le-a f&#259;cut fiecare utilizator?]]></phrase>
+		<phrase name="setting_pt_profile_issue_counters_title" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Afi&#537;eaz&#259; num&#259;r probleme profil]]></phrase>
+		<phrase name="setting_pt_project_recentissues_desc" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Când vezi informa&#539;iile unui proiect, cele mai recente probleme sunt afi&#537;ate. Aceasta controleaz&#259; num&#259;rul maxim de probleme de afi&#537;at pe aceast&#259; pagin&#259;.<br />
+<br />
+O valoare de 0 va ascunde problemele recente de pe aceast&#259; pagin&#259;.]]></phrase>
+		<phrase name="setting_pt_project_recentissues_title" date="1367898366" username="Teascu Dorin" version="2.1.4"><![CDATA[Vedere proiect: Num&#259;r probleme recente]]></phrase>
+		<phrase name="setting_pt_project_timelineentries_desc" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Când vezi informa&#539;ia unui proiect, aceasta controleaz&#259; num&#259;ru de intr&#259;ri cronologie ce vor fi afi&#537;ate.<br />
+<br />
+O valoare de 0 va ascunde cronologia de pe aceast&#259; pagin&#259;.]]></phrase>
+		<phrase name="setting_pt_project_timelineentries_title" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Vedere proiect: Intr&#259;ri cronologie]]></phrase>
+		<phrase name="setting_pt_statuscolor_desc" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Vrei s&#259; folose&#537;ti func&#539;ia 'Culoare status'?<br />
+<br />
+<b>Not&#259;:</b> Po&#539;i defini doar o culoare per status pentru toate temele. Dac&#259; vrei s&#259; o folose&#537;ti, alege culorile în&#539;elept.]]></phrase>
+		<phrase name="setting_pt_statuscolor_title" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Culoare status]]></phrase>
+		<phrase name="setting_pt_timelineperpage_desc" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Când vezi pagina cronologie, aceasta controleaz&#259; num&#259;rul de intr&#259;ri ar&#259;tate pe fiecare pagin&#259;.<br />
+<br />
+O valoare de 0 va afi&#537;a toate intr&#259;rile în intervalul de timp specificat pe o pagin&#259;.]]></phrase>
+		<phrase name="setting_pt_timelineperpage_title" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Intr&#259;ri cronologie per pagin&#259;]]></phrase>
+		<phrase name="setting_pt_wordwrap_desc" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Unelte Proiect de multe ori necesit&#259; s&#259; despart&#259; &#537;irurile de text lung la o valoare mai mare decât o face vBulletin pentru posturi. Dac&#259; vrei ca Unelte Proiect (UP) s&#259; insereze automat spa&#539;ii în cuvinte lungi s&#259; le fac&#259; s&#259; se despart&#259; dup&#259; un anumit num&#259;r de caractere, seteaz&#259; num&#259;rul de caractere în caseta de mai jos.<br /> 
+<br /> 
+Pentru a dezactiva desp&#259;r&#539;ire cuvânt, introdu 0.]]></phrase>
+		<phrase name="setting_pt_wordwrap_title" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Num&#259;r de caractere înainte de desp&#259;r&#539;ire text]]></phrase>
+		<phrase name="setting_ptimporter_createnotice_desc" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Dac&#259; este adev&#259;rat, o notificare va fi creat&#259; ar&#259;tând titlul con&#539;inutului original, utilizatorul &#537;i data la care a fost importat con&#539;inutul.]]></phrase>
+		<phrase name="setting_ptimporter_createnotice_title" date="1367898866" username="Teascu Dorin" version="2.1.4"><![CDATA[Import&#259; con&#539;inuturi - Creeaz&#259; notificare import]]></phrase>
+		<phrase name="setting_ptimporter_extendedthreadprefix_desc" date="1367899545" username="Teascu Dorin" version="2.1.4"><![CDATA[Dac&#259; activezi aceast&#259; op&#539;iune, prefixul subiectului va fi generat folosind  expresia <strong>pt_importhread_threadprefix_extended</strong> care poate con&#539;ine titlul proiectului &#537;i tipul problemei. Aceasta necesit&#259; momentan o interogare adi&#539;ional&#259; per redirectare vizibil&#259;.<br />
+<br />
+Dac&#259; este dezactivat, expresia <strong>pt_importhread_threadprefix</strong> va fi folosit&#259;.<br />
+<br />
+<strong>Not&#259;:</strong> Aceast&#259; setare afecteaz&#259; doar subiectele actuale.]]></phrase>
+		<phrase name="setting_ptimporter_extendedthreadprefix_title" date="1367899545" username="Teascu Dorin" version="2.1.4"><![CDATA[Con&#539;inuturi importare - Arat&#259; prefix con&#539;inut dinamic]]></phrase>
+		<phrase name="setting_ptimporter_ignoreattachlimits_desc" date="1367899545" username="Teascu Dorin" version="2.1.4"><![CDATA[Dac&#259; este setat adev&#259;rat, ata&#537;amentele care nu intr&#259; în limitele state în op&#539;iunile unelte proiect vor fi importate.]]></phrase>
+		<phrase name="setting_ptimporter_ignoreattachlimits_title" date="1367899545" username="Teascu Dorin" version="2.1.4"><![CDATA[Con&#539;inuturi importare - Ignor&#259; limite ata&#537;ament]]></phrase>
+		<phrase name="setting_ptimporter_keepthreads_desc" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Dac&#259; setezi asta da, con&#539;inutul va fi copiat în unelte proiect, dar nu va fi atins altfel. Dac&#259; setezi asta nu, con&#539;inutul va fi închis. Con&#539;inutul va fi totu&#537;i afi&#537;at în loca&#539;ia lor original&#259;, dar înaintat în problem&#259; unelte proiect.<br />
+<br />
+Aceast&#259; setare va afecta doar con&#539;inuturile importate în viitor.<br />
+<br />
+<strong>Not&#259;:</strong> Aceast&#259; setare afecteaz&#259; doar subiectele actuale.]]></phrase>
+		<phrase name="setting_ptimporter_keepthreads_title" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Con&#539;inuturi importare - P&#259;streaz&#259; con&#539;inut original intact]]></phrase>
+		<phrase name="settinggroup_projecttools" date="1367983332" username="Teascu Dorin" version="2.1.4"><![CDATA[Op&#539;iuni Unelte Proiect]]></phrase>
+	</phrasetype>
+	<phrasetype name="CMS Widget Types" fieldname="widgettypes">
+		<phrase name="widgettype_vbcms_recentptcomments" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Comentarii recente UP]]></phrase>
+		<phrase name="widgettype_vbcms_recentptissues" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Probleme recente UP]]></phrase>
+	</phrasetype>
+	<phrasetype name="Who's Online" fieldname="wol">
+		<phrase name="viewing_project_archive" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Cite&#537;te arhiv&#259; proiect]]></phrase>
+		<phrase name="viewing_projects" date="1367863423" username="Teascu Dorin" version="2.1.4"><![CDATA[Cite&#537;te proiecte]]></phrase>
+	</phrasetype>
+</language>
