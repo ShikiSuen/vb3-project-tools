@@ -35,7 +35,7 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	 *
 	 * @return 	array	Array list of the pt_issuenote table
 	 */
-	public static function get_fieldnames()
+	public function get_fieldnames()
 	{
 		return array(
 			'issuenoteid', 'issueid', 'dateline', 'pagetext', 'userid', 'username', 'type', 'ispending',

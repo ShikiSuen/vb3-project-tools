@@ -35,7 +35,7 @@ class vB_Legacy_Issue extends vB_Legacy_DataObject
 	 *
 	 * @return 	array	Array list of the pt_issue table
 	 */
-	public static function get_fieldnames()
+	public function get_fieldnames()
 	{
 		return array(
 			'issueid', 'projectid', 'issuestatusid', 'issuetypeid', 'title', 'summary', 'submituserid', 'submitusername', 'submitdate',
