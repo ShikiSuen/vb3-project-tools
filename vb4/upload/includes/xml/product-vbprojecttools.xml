@@ -4283,7 +4283,7 @@ legend {
 		</div>
 	</div>
 </form>]]></template>
-		<template name="pt_export_content_thread" templatetype="template" date="1298643253" username="Pitchoune" version="2.2.0"><![CDATA[<div id="pagetitle">
+		<template name="pt_export_content_thread" templatetype="template" date="1372625218" username="Pitchoune" version="2.2.0"><![CDATA[<div id="pagetitle">
 	<h1>{vb:rawphrase export_as_thread}</h1>
 </div>
 
@@ -4299,7 +4299,9 @@ legend {
 					<li>
 						<label for="destforumid">{vb:rawphrase destination_forum}:</label>
 						<select name="destforumid" id="destforumid" class="primary" tabindex="1">
-							{vb:raw moveforumbits}
+							<vb:each from="moveforumbits" key="id" value="item"> 
+								<option value="{vb:raw item.optionvalue}" class="{vb:raw item.optionclass}"<vb:if condition="$item['optionselected']"> selected="{vb:raw item.optionselected}"</vb:if>>{vb:raw item.optiontitle}</option> 
+							</vb:each> 
 						</select>
 					</li>
 					<li>
