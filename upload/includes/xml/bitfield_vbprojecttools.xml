@@ -59,11 +59,6 @@
 				<bitfield group="attach" name="canattacheditothers" phrase="ptperm_can_attach_edit_others" install="5,6,7">8</bitfield>
 			</group>
 		</group>
-		<group name="misc">
-			<group name="pt_projectoptions">
-				<bitfield name="emailonassignment">1</bitfield>
-				<bitfield name="pmonassignment">2</bitfield>
-			</group>
 			<group name="pt_hvcheck">
 				<bitfield name="post">1</bitfield>
 			</group>
