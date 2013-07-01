@@ -38,7 +38,6 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	*/
 	var $validfields = array(
 		'attachmentid'       => array(TYPE_UINT,       REQ_YES, VF_METHOD, 'verify_nonzero'),
-		'userid'             => array(TYPE_UINT,       REQ_YES),
 		'issueid'            => array(TYPE_UINT,       REQ_YES),
 		'visible'            => array(TYPE_UINT,       REQ_NO),
 		'status'             => array(TYPE_STR,        REQ_NO),
