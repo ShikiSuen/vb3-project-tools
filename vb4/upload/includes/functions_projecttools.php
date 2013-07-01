@@ -1264,7 +1264,7 @@ function build_issue_bit($issue, $project, $issueperms)
 	$memberaction_dropdown = construct_memberaction_dropdown(fetch_lastposter_userinfo($issue));
 
 	// Columns to show
-	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
+	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
 
 	// multipage nav
 	$issue['totalnotes'] = $issue['replycount'];
