@@ -3,7 +3,7 @@
 <product productid="vbprojecttools" active="1">
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
-	<version>2.2.0</version>
+	<version>2.2.1</version>
 	<url />
 	<versioncheckurl />
 	<dependencies>
@@ -2295,6 +2295,49 @@ build_project_priority_cache();
 build_project_cache();]]></installcode>
 			<uninstallcode />
 		</code>
+		<code version="2.2.1">
+			<installcode><![CDATA[// Require for working with fields
+require_once(DIR . '/includes/class_dbalter.php');
+$db_alter = new vB_Database_Alter_MySQL($db);
+
+/*================================*\
+|| ############################## ||
+|| #	  Attachment fields		# ||
+|| ############################## ||
+\*================================*/
+
+// Remove old pt_issueattach fields if they still exist
+
+// Hide the error made if the field doesn't exist anymore
+$db->hide_errors();
+
+// Do the check
+$useridfield = $db->query_first("SELECT userid FROM " . TABLE_PREFIX . "pt_issueattach");
+
+// No need to hide errors anymore
+$db->show_errors();
+
+// Do the work
+if ($useridfield)
+{
+	// Drop useless columns table if all data are converted!
+	if ($db_alter->fetch_table_info('pt_issueattach'))
+	{
+		// Remove useless columns
+		$db_alter->drop_field('userid');
+		$db_alter->drop_field('filename');
+		$db_alter->drop_field('extension');
+		$db_alter->drop_field('dateline');
+		$db_alter->drop_field('filesize');
+		$db_alter->drop_field('filehash');
+		$db_alter->drop_field('filedata');
+		$db_alter->drop_field('thumbnail');
+		$db_alter->drop_field('thumbnail_filesize');
+		$db_alter->drop_field('thumbnail_dateline');
+	}
+}]]></installcode>
+			<uninstallcode />
+		</code>
 	</codes>
 	<templates>
 		<template name="activitystream_project_issue" templatetype="template" date="1337106668" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issue userprof_content userprof_content_border">
@@ -4283,7 +4326,7 @@ legend {
 		</div>
 	</div>
 </form>]]></template>
-		<template name="pt_export_content_thread" templatetype="template" date="1372625218" username="Pitchoune" version="2.2.0"><![CDATA[<div id="pagetitle">
+		<template name="pt_export_content_thread" templatetype="template" date="1372674016" username="Pitchoune" version="2.2.1"><![CDATA[<div id="pagetitle">
 	<h1>{vb:rawphrase export_as_thread}</h1>
 </div>
 
