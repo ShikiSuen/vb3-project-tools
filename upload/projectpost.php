@@ -2433,7 +2433,6 @@ if ($_POST['do'] == 'uploadattachment')
 	{
 		$attachdata =& vB_DataManager_Attachment_Pt::fetch_library($vbulletin, ERRTYPE_STANDARD);
 			$attachdata->setr('attachmentid', $attachment['attachmentid']);
-			$attachdata->setr('userid', $vbulletin->userinfo['userid']);
 			$attachdata->setr('issueid', $issue['issueid']);
 			$attachdata->set('visible', 1); // Need to redefine how to manage it
 		$attachdata->save();
