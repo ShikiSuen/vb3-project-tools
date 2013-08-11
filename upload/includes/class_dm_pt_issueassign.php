@@ -143,7 +143,7 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 			$change->save();
 		}
 
-		if ($this->info['project'] AND (intval($this->info['project']['options']) & $this->registry->bf_misc['pt_projectoptions']['emailonassignment']))
+		if ($this->info['project'] AND (intval($this->info['project']['emailonassignment'])))
 		{
 			if ($this->fetch_field('userid'))
 			{
@@ -152,7 +152,7 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 			}
 		}
 		
-		if ($this->info['project'] AND (intval($this->info['project']['options']) & $this->registry->bf_misc['pt_projectoptions']['pmonassignment']))
+		if ($this->info['project'] AND (intval($this->info['project']['pmonassignment'])))
 		{
 			if ($this->fetch_field('userid'))
 			{
