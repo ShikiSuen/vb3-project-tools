@@ -1144,7 +1144,8 @@ function prepare_issue_posting_pemissions($issue, $issueperms)
 		'milestone_edit' => false,
 		'issue_close' => false,
 		'can_custom_tag' => false,
-		'can_reply' => false
+		'can_reply' => false,
+		'issue_priority' => false
 	);
 
 	if (is_issue_closed($issue, $issueperms))
@@ -1179,6 +1180,7 @@ function prepare_issue_posting_pemissions($issue, $issueperms)
 		$return['tags_edit'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['cantagsunassigned']);
 	}
 
+	// Create / edit private issues
 	if ($issue['issueid'] == 0)
 	{
 		$return['private_edit'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancreateprivate']);
@@ -1188,10 +1190,22 @@ function prepare_issue_posting_pemissions($issue, $issueperms)
 		$return['private_edit'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditprivate']);
 	}
 
+	// Priority
+	$return['issue_priority'] = ($vbulletin->userinfo['userid'] AND ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canchangepriority']) AND ($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canchangepriorityothers'])));
+
+	// Issue edit
 	$return['issue_edit'] = ($vbulletin->userinfo['userid'] AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissue']) AND ($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissueothers'])));
+
+	// Milestone edit
 	$return['milestone_edit'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canchangemilestone']);
+
+	// Closed issue
 	$return['issue_close'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancloseissue']);
+
+	// Custom tag
 	$return['can_custom_tag'] = ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['cancustomtag']);
+
+	// Reply
 	$return['can_reply'] = (($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreply']) AND ($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreplyothers'])));
 
 	return $return;
