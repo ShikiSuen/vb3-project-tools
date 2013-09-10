@@ -1367,7 +1367,7 @@ rebuild_profile_issue_counters();
 */
 
 // Adding some infos for CMS widgets
-if (file_exists(DIR . "/includes/xml/product-vbcms.xml") )
+if ($vbulletin->products['vbcms'])
 {
 	// We need to have the packageid of vbcms
 	$packagecms = vB_Types::instance()->getPackageID('vBCms');
@@ -4943,7 +4943,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1348388706" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1378830441" username="Pitchoune" version="2.2.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -5217,6 +5217,8 @@ legend {
 	// initialize various magic select
 	vBulletin.register_control("vB_MagicSelect", "magicselect_projectcategoryid", "projectcategoryid", "{vb:raw issue.issueid}");
 	vBulletin.register_control("vB_MagicSelect", "magicselect_appliesversionid", "appliesversionid", "{vb:raw issue.issueid}");
+</vb:if>
+<vb:if condition="$show['priority_issue']">
 	vBulletin.register_control("vB_MagicSelect", "magicselect_priority", "priority", "{vb:raw issue.issueid}");
 </vb:if>
 <vb:if condition="$show['milestone_edit']">
