@@ -15251,6 +15251,8 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="ptperm_can_attach_edit_others" date="1176211600" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Edit Others' Attachments]]></phrase>
 			<phrase name="ptperm_can_attach_view" date="1176211529" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can View Attachments]]></phrase>
 			<phrase name="ptperm_can_change_milestone" date="1213802939" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Can Edit Issue Milestones]]></phrase>
+			<phrase name="ptperm_can_change_priority" date="1378840591" username="Pitchoune" version="2.2.1"><![CDATA[Can Change Priority]]></phrase>
+			<phrase name="ptperm_can_change_priority_others" date="1378840633" username="Pitchoune" version="2.2.1"><![CDATA[Can Change Priority to Others' Issues]]></phrase>
 			<phrase name="ptperm_can_create_private" date="1176739390" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Make Issues/Notes Private During Creation]]></phrase>
 			<phrase name="ptperm_can_delete_issue" date="1176211943" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Delete Issues]]></phrase>
 			<phrase name="ptperm_can_delete_issue_others" date="1176211956" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Delete Others' Issues]]></phrase>
