@@ -431,7 +431,7 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 	 *
 	 * @return	string
 	 */
-	protected function getHash()
+	protected function getHash($widgetid = false, $nodeid = false)
 	{
 		$context = new vB_Context('widget', array(
 			'widgetid' => $this->widget->getId(),
