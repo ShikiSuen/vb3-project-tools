@@ -620,7 +620,7 @@ class vB_Attachment_Dm_vBProjectTools_Issue extends vB_Attachment_Dm
 	*
 	* @return	void
 	*/
-	public function post_delete()
+	public function post_delete(&$attachdm = '')
 	{
 		// Update attach in the post table
 		if (!empty($this->lists['postlist']))
