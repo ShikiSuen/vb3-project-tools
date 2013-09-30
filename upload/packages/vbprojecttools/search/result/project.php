@@ -57,8 +57,15 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 		$phrase = new vB_Legacy_Phrase();
 		$phrase->add_phrase_groups(array('projecttools'));
 
+		// Do a query for adding the project group
+		$projectgroup = $vbulletin->db->query_first("
+			SELECT projectgroupid
+			FROM " . TABLE_PREFIX . "pt_project
+			WHERE projectid = " . $projectid . "
+		");
+
 		// We only have projectid, so displaying project id line
-		$project = $vbulletin->pt_projects["$this->projectid"];
+		$project = $vbulletin->pt_projects[$projectgroup['projectgroupid']]['projects'][$this->projectid];
 
 		// type counts
 		$perms_query = build_issue_permissions_query($vbulletin->userinfo);

@@ -90,7 +90,14 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 			$projectperms["$issue[projectid]"] = fetch_project_permissions($vbulletin->userinfo, $issue['projectid']);
 		}
 
-		$project = $vbulletin->pt_projects["$issue[projectid]"];
+		// Do a query for adding the project group
+		$projectgroup = $vbulletin->db->query_first("
+			SELECT projectgroupid
+			FROM " . TABLE_PREFIX . "pt_project
+			WHERE projectid = " . $projectid . "
+		");
+
+		$project = $vbulletin->pt_projects[$projectgroup['projectgroupid']]['projects'][$issue['projectid']];
 		$issueperms = $projectperms["$issue[projectid]"]["$issue[issuetypeid]"];
 		$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 

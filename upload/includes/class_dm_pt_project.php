@@ -34,6 +34,7 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 	var $validfields = array(
 		'projectid'				=> array(TYPE_UINT, REQ_INCR),
 		'displayorder'			=> array(TYPE_UINT, REQ_NO),
+		'projectgroupid'		=> array(TYPE_UINT, REQ_YES),
 		'title'					=> array(TYPE_STR, REQ_YES),
 		'title_clean'			=> array(TYPE_NOHTMLCOND, REQ_AUTO),
 		'summary'				=> array(TYPE_STR, REQ_NO),

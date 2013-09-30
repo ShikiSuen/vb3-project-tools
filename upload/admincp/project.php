@@ -1,7 +1,7 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.2.0                   # ||
+|| #                  vBulletin Project Tools 2.2.1                   # ||
 || # ---------------------------------------------------------------- # ||
 || # Copyright ©2000-2013 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
@@ -606,6 +606,7 @@ if ($_POST['do'] == 'update')
 		'title' => TYPE_STR,
 		'summary' => TYPE_STR,
 		'description' => TYPE_STR,
+		'projectgroupid' => TYPE_UINT,
 		'startstatus' => TYPE_ARRAY_UINT,
 		'permissionbase' => TYPE_UINT,
 		'afterforumids' => TYPE_ARRAY_UINT,
@@ -654,6 +655,7 @@ if ($_POST['do'] == 'update')
 	$projectdata->set('title', $vbulletin->GPC['title']);
 	$projectdata->set('summary', $vbulletin->GPC['summary']);
 	$projectdata->set('description', $vbulletin->GPC['description']);
+	$projectdata->set('projectgroupid', $vbulletin->GPC['projectgroupid']);
 	$projectdata->set('afterforumids', implode(',', $vbulletin->GPC['afterforumids']));
 	$projectdata->set('forumtitle', $vbulletin->GPC['forumtitle']);
 	$projectdata->set('requireappliesversion', $vbulletin->GPC['requireappliesversion']);
@@ -758,6 +760,8 @@ if ($_POST['do'] == 'update')
 // ########################################################################
 if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 {
+	$vbulletin->input->clean_gpc('r', 'projectgroupid', TYPE_UINT);
+
 	if ($vbulletin->GPC['projectid'])
 	{
 		$project = fetch_project_info($vbulletin->GPC['projectid'], false);
@@ -765,6 +769,19 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 
 	if (empty($project))
 	{
+		// Add
+		$group_data = $db->query_first("
+			SELECT projectgroupid
+			FROM " . TABLE_PREFIX . "pt_projectgroup
+			WHERE projectgroupid = " . $vbulletin->GPC['projectgroupid'] . "
+		");
+
+		// Empty group or it doesnt exist in the db
+		if (empty($vbulletin->GPC['projectgroupid']) OR empty($group_data['projectgroupid']))
+		{
+			print_stop_message('project_no_project_group_defined');
+		}
+
 		$maxorder = $db->query_first("
 			SELECT MAX(displayorder) AS maxorder
 			FROM " . TABLE_PREFIX . "pt_project
@@ -772,36 +789,21 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 
 		$project = array(
 			'projectid' => 0,
+			'projectgroupid' => $vbulletin->GPC['projectgroupid'],
 			'displayorder' => $maxorder['maxorder'] + 10,
 			'options' => ''
 		);
 	}
 
-	$issuestatus_options = array();
-
-	$issuestatus_data = $db->query_read("
+	$group_data = $db->query_read("
 		SELECT *
-		FROM " . TABLE_PREFIX . "pt_issuestatus
+		FROM " . TABLE_PREFIX . "pt_projectgroup
 		ORDER BY displayorder
 	");
 
-	while ($issuestatus = $db->fetch_array($issuestatus_data))
+	while ($groups = $db->fetch_array($group_data))
 	{
-		$issuestatus_options["$issuestatus[issuetypeid]"]["$issuestatus[issuestatusid]"] = $vbphrase["issuestatus$issuestatus[issuestatusid]"];
-	}
-
-	$categories = array();
-
-	$category_data = $db->query_read("
-		SELECT *
-		FROM " . TABLE_PREFIX . "pt_projectcategory
-		WHERE projectid = $project[projectid]
-		ORDER BY displayorder
-	");
-
-	while ($category = $db->fetch_array($category_data))
-	{
-		$categories["$category[projectcategoryid]"] = $category['title'];
+		$grouplist[$groups['projectgroupid']] = $groups['title'];
 	}
 
 	print_form_header('project', 'update');
@@ -815,9 +817,10 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 		print_table_header($vbphrase['add_project']);
 	}
 
-	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>", 'title', $project['title']);
-	print_input_row("$vbphrase[summary]<dfn>$vbphrase[html_is_allowed]</dfn>", 'summary', $project['summary']);
-	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>", 'description', $project['description'], 6, 60);
+	print_input_row($vbphrase['title'] . "<dfn>" . $vbphrase['html_is_allowed'] . "</dfn>", 'title', $project['title']);
+	print_input_row($vbphrase['summary'] . "<dfn>" . $vbphrase['html_is_allowed'] . "</dfn>", 'summary', $project['summary']);
+	print_textarea_row($vbphrase['description'] . "<dfn>" . $vbphrase['html_is_allowed'] . "</dfn>", 'description', $project['description'], 6, 60);
+	print_select_row($vbphrase['project_group'], 'projectgroup', $grouplist, $project['projectgroupid']);
 	print_yes_no_row($vbphrase['send_email_on_issueassignment'], 'emailonassignment', $project['emailonassignment']);
 	print_yes_no_row($vbphrase['send_pm_on_issueassignment'], 'pmonassignment', $project['pmonassignment']);
 	print_input_row($vbphrase['display_order'], 'displayorder', $project['displayorder'], true, 5);
@@ -856,7 +859,7 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 
 		while ($proj = $db->fetch_array($project_query))
 		{
-			$projects["$proj[projectid]"] = $proj['title_clean'];
+			$projects[$proj['projectid']] = $proj['title_clean'];
 		}
 
 		print_select_row($vbphrase['base_permissions_off_existing_project'], 'permissionbase', array('0' => $vbphrase['none_meta']) + $projects);
@@ -876,13 +879,15 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 
 	while ($status = $db->fetch_array($status_data))
 	{
-		$statuses["$status[issuetypeid]"]["$status[issuestatusid]"] = $vbphrase["issuestatus$status[issuestatusid]"];
+		$statuses[$status['issuetypeid']][$status['issuestatusid']] = $vbphrase["issuestatus" . $status['issuestatusid']];
 	}
 
 	$types = $db->query_read("
 		SELECT issuetype.*, projecttype.startstatusid
 		FROM " . TABLE_PREFIX . "pt_issuetype AS issuetype
-		LEFT JOIN " . TABLE_PREFIX . "pt_projecttype AS projecttype ON (projecttype.projectid = $project[projectid] AND projecttype.issuetypeid = issuetype.issuetypeid)
+		LEFT JOIN " . TABLE_PREFIX . "pt_projecttype AS projecttype
+			ON (projecttype.projectid = " . $project['projectid'] . "
+				AND projecttype.issuetypeid = issuetype.issuetypeid)
 		ORDER BY issuetype.displayorder
 	");
 
@@ -890,15 +895,16 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 	{
 		$typestatus = array(0 => $vbphrase['do_not_use_meta']);
 
-		if (is_array($statuses["$type[issuetypeid]"]))
+		if (is_array($statuses[$type['issuetypeid']]))
 		{
-			$typestatus += $statuses["$type[issuetypeid]"];
+			$typestatus += $statuses[$type['issuetypeid']];
 		}
 
-		print_select_row($vbphrase["issuetype_$type[issuetypeid]_plural"], "startstatus[$type[issuetypeid]]", $typestatus, $type['startstatusid']);
+		print_select_row($vbphrase["issuetype_" . $type['issuetypeid'] . "_plural"], "startstatus[" . $type['issuetypeid'] . "]", $typestatus, $type['startstatusid']);
 	}
 
 	construct_hidden_code('projectid', $project['projectid']);
+	construct_hidden_code('projectgroupid', $project['projectgroupid']);
 	print_submit_row();
 }
 
@@ -934,22 +940,165 @@ if ($_REQUEST['do'] == 'delete')
 }
 
 // ########################################################################
-if ($_POST['do'] == 'order')
+if ($_POST['do'] == 'groupupdate')
 {
-	$vbulletin->input->clean_gpc('p', 'order', TYPE_ARRAY_UINT);
+	$vbulletin->input->clean_array_gpc('p', array(
+		'projectgroupid' => TYPE_UINT,
+		'title' => TYPE_STR,
+		'displayorder' => TYPE_UINT
+	));
 
-	$case = '';
+	$group = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectgroup
+		WHERE projectgroupid = " . $vbulletin->GPC['projectgroupid'] . "
+	");
 
-	foreach ($vbulletin->GPC['order'] AS $projectid => $displayorder)
+	$projectdata =& datamanager_init('Pt_ProjectGroup', $vbulletin, ERRTYPE_CP);
+
+	if ($group)
 	{
-		$case .= "\nWHEN " . intval($projectid) . " THEN " . $displayorder;
+		$projectdata->set_existing($group);
 	}
 
-	if ($case)
+	$projectdata->set('displayorder', $vbulletin->GPC['displayorder']);
+	$projectdata->set('title', $vbulletin->GPC['title']);
+
+	$projectdata->save();
+	
+	define('CP_REDIRECT', 'project.php?do=list');
+	print_stop_message('project_group_saved');
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'groupadd' OR $_REQUEST['do'] == 'groupedit')
+{
+	$vbulletin->input->clean_gpc('r', 'projectgroupid', TYPE_UINT);
+
+	if ($vbulletin->GPC['projectgroupid'])
+	{
+		$group = $db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_projectgroup
+			WHERE projectgroupid = " . $vbulletin->GPC['projectgroupid'] . "
+		");
+	}
+
+	if (empty($group))
+	{
+		// Add
+		$maxorder = $db->query_first("
+			SELECT MAX(displayorder) AS maxorder
+			FROM " . TABLE_PREFIX . "pt_projectgroup
+		");
+
+		$project = array(
+			'projectgroupid' => 0,
+			'displayorder' => $maxorder['maxorder'] + 10
+		);
+	}
+
+	print_form_header('project', 'groupupdate');
+
+	if ($group['projectgroupid'])
+	{
+		print_table_header(construct_phrase($vbphrase['edit_project_group_x'], $group['title_clean']));
+	}
+	else
+	{
+		print_table_header($vbphrase['add_project_group']);
+	}
+
+	print_input_row($vbphrase['title'] . "<dfn>" . $vbphrase['html_is_allowed'] . "</dfn>", 'title', $group['title']);
+	print_input_row($vbphrase['display_order'], 'displayorder', $group['displayorder'], true, 5);
+
+	construct_hidden_code('projectgroupid', $group['projectgroupid']);
+	print_submit_row();
+}
+
+// ########################################################################
+if ($_POST['do'] == 'groupkill')
+{
+	$vbulletin->input->clean_gpc('r', 'projectgroupid', TYPE_UINT);
+
+	$group = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectgroup
+		WHERE projectgroupid = " . $vbulletin->GPC['projectgroupid'] . "
+	");
+
+	if (!$group)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
+	$projectdata =& datamanager_init('Pt_ProjectGroup', $vbulletin, ERRTYPE_CP);
+	$projectdata->set_existing($group);
+	$projectdata->delete();
+
+	define('CP_REDIRECT', 'project.php?do=list');
+	print_stop_message('project_group_deleted');
+}
+
+// ########################################################################
+if ($_REQUEST['do'] == 'groupdelete')
+{
+	$vbulletin->input->clean_gpc('r', 'projectgroupid', TYPE_UINT);
+
+	$group = $db->query_first("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectgroup
+		WHERE projectgroupid = " . $vbulletin->GPC['projectgroupid'] . "
+	");
+
+	if (!$group)
+	{
+		print_stop_message('invalid_action_specified');
+	}
+
+	print_delete_confirmation('pt_projectgroup', $group['projectgroupid'], 'project', 'groupkill');
+}
+
+// ########################################################################
+if ($_POST['do'] == 'order')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'projectorder' => TYPE_ARRAY_UINT,
+		'projectgrouporder' => TYPE_ARRAY_UINT
+	));
+
+	$groupcase = '';
+	$grouporder = array();
+
+	foreach ($vbulletin->GPC['projectgrouporder'] AS $id => $displayorder)
+	{
+		$grouporder[intval($id)] = $displayorder;
+		$groupcase .= "\nWHEN " . intval($id) . " THEN " . $displayorder;
+	}
+
+	if ($groupcase)
 	{
 		$db->query_write("
-			UPDATE " . TABLE_PREFIX . "pt_project SET
-				displayorder = CASE projectid $case ELSE displayorder END
+			UPDATE " . TABLE_PREFIX . "pt_projectgroup SET
+				displayorder = CASE projectgroupid $groupcase ELSE displayorder END
+		");
+	}
+
+	$projectcase_display = '';
+
+	foreach ($vbulletin->GPC['projectorder'] AS $id => $displayorder)
+	{
+		$projectcase_display .= "\nWHEN " . intval($id) . " THEN " . $displayorder;
+	}
+
+	if ($projectcase_display)
+	{
+		$db->query_write("
+			UPDATE " . TABLE_PREFIX . "pt_project AS project
+			INNER JOIN " . TABLE_PREFIX . "pt_projectgroup AS projectgroup ON
+				(project.projectgroupid = projectgroup.projectgroupid)
+			SET
+				project.displayorder = CASE project.projectid $projectcase_display ELSE project.displayorder END
 		");
 	}
 
@@ -962,44 +1111,86 @@ if ($_POST['do'] == 'order')
 // ########################################################################
 if ($_REQUEST['do'] == 'list')
 {
-	$projects = $db->query_read("
+	$groups = array();
+
+	$group_data = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectgroup
+		ORDER BY displayorder
+	");
+
+	while ($group = $db->fetch_array($group_data))
+	{
+		$groups["$group[projectgroupid]"] = $group;
+	}
+
+	$projects = array();
+
+	$project_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_project
 		ORDER BY displayorder
 	");
 
+	while ($project = $db->fetch_array($project_data))
+	{
+		$projects["$project[projectgroupid]"][] = $project;
+	}
+
 	print_form_header('project', 'order');
 	print_table_header($vbphrase['project_list'], 3);
 
-	print_cells_row(array($vbphrase['project'], $vbphrase['display_order'], '&nbsp;'), true);
-
-	if ($db->num_rows($projects))
+	if ($groups)
 	{
-		while ($project = $db->fetch_array($projects))
+		foreach ($groups AS $group)
 		{
 			print_cells_row(array(
-				$project['title'],
-				"<input type=\"text\" class=\"bginput\" name=\"order[$project[projectid]]\" value=\"$project[displayorder]\" tabindex=\"1\" size=\"3\" />",
-				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
-					construct_link_code($vbphrase['edit'], 'project.php?do=edit&amp;projectid=' . $project['projectid']) .
-					construct_link_code($vbphrase['delete'], 'project.php?do=delete&amp;projectid=' . $project['projectid']) .
-					construct_link_code($vbphrase['priorities'], 'projectpriority.php?do=list&amp;projectid=' . $project['projectid']) .
-					construct_link_code($vbphrase['categories'], 'projectcategory.php?do=list&amp;projectid=' . $project['projectid']) .
-					construct_link_code($vbphrase['versions'], 'projectversion.php?do=list&amp;projectid=' . $project['projectid']) .
-					construct_link_code($vbphrase['milestones'], 'projectmilestone.php?do=list&amp;projectid=' . $project['projectid']) .
-					construct_link_code($vbphrase['magicselects'], 'projectmagicselect.php?do=list&amp;projectid=' . $project['projectid']) .
-				'</div>'
-			));
+				$group['title'],
+				"<input type=\"text\" class=\"bginput\" name=\"projectgrouporder[" . $group['projectgroupid'] . "]\" value=\"" . $group['displayorder'] . "\" tabindex=\"1\" size=\"3\" />",
+				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="normal smallfont">' .
+					construct_link_code($vbphrase['edit'], 'project.php?do=groupedit&amp;projectgroupid=' . $group['projectgroupid']) .
+					construct_link_code($vbphrase['delete'], 'project.php?do=groupdelete&amp;projectgroupid=' . $group['projectgroupid']) .
+					construct_link_code($vbphrase['add_project'], 'project.php?do=add&amp;projectgroupid=' . $group['projectgroupid']) .
+					'</div>',
+			), 'thead');
+
+			if (is_array($projects[$group['projectgroupid']]))
+			{
+				foreach ($projects[$group['projectgroupid']] AS $project)
+				{
+					print_cells_row(array(
+						$project['title'],
+						"<input type=\"text\" class=\"bginput\" name=\"projectorder[" . $project['projectid'] . "]\" value=\"" . $project['displayorder'] . "\" tabindex=\"1\" size=\"3\" />",
+						'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="smallfont">' .
+							construct_link_code($vbphrase['edit'], 'project.php?do=edit&amp;projectid=' . $project['projectid']) .
+							construct_link_code($vbphrase['delete'], 'project.php?do=delete&amp;projectid=' . $project['projectid']) .
+							construct_link_code($vbphrase['priorities'], 'projectpriority.php?do=list&amp;projectid=' . $project['projectid']) .
+							construct_link_code($vbphrase['categories'], 'projectcategory.php?do=list&amp;projectid=' . $project['projectid']) .
+							construct_link_code($vbphrase['versions'], 'projectversion.php?do=list&amp;projectid=' . $project['projectid']) .
+							construct_link_code($vbphrase['milestones'], 'projectmilestone.php?do=list&amp;projectid=' . $project['projectid']) .
+							construct_link_code($vbphrase['magicselects'], 'projectmagicselect.php?do=list&amp;projectid=' . $project['projectid']) .
+						'</div>'
+					));
+				}
+			}
+			else
+			{
+				print_description_row($vbphrase['no_project_defined_in_this_group'], false, 3, '', 'center');
+			}
+
+
+
 		}
 	}
 	else
 	{
-		print_description_row($vbphrase['no_projects_defined_click_here_to_add_one'], false, 3, '', 'center');
+		print_description_row($vbphrase['no_project_group_defined'], false, 3, '', 'center');
+		print_table_footer();
 	}
 
 	print_submit_row($vbphrase['save_display_order'], '', 3);
 
-	echo '<p align="center">' . construct_link_code($vbphrase['add_project'], 'project.php?do=add') . ' | ' . construct_link_code($vbphrase['project_tools_options'], 'options.php?do=options&amp;dogroup=projecttools') . '</p>';
+	echo '<p align="center">' . construct_link_code($vbphrase['add_project_group'], 'project.php?do=groupadd') . ' | ' . construct_link_code($vbphrase['project_tools_options'], 'options.php?do=options&amp;dogroup=projecttools') . '</p>';
 }
 
 print_cp_footer();

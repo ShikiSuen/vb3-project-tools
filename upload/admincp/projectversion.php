@@ -830,7 +830,7 @@ if ($_REQUEST['do'] == 'list')
 	$group_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectversiongroup
-		WHERE projectid = $project[projectid]
+		WHERE projectid = " . $project['projectid'] . "
 		ORDER BY displayorder DESC
 	");
 
@@ -844,7 +844,7 @@ if ($_REQUEST['do'] == 'list')
 	$version_data = $db->query_read("
 		SELECT *
 		FROM " . TABLE_PREFIX . "pt_projectversion
-		WHERE projectid = $project[projectid]
+		WHERE projectid = " . $project['projectid'] . "
 		ORDER BY displayorder DESC
 	");
 

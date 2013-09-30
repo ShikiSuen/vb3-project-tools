@@ -43,17 +43,20 @@ function pt_forumbit_setup(&$project_forums, &$project_types)
 		return;
 	}
 
-	foreach ($vbulletin->pt_projects AS $project)
+	foreach ($vbulletin->pt_projects AS $projectgroupid => $projectgroupdata)
 	{
-		if ($project['afterforumids'])
+		foreach ($projectgroupdata['projects'] AS $projectid => $project)
 		{
-			$after = explode(',', $project['afterforumids']);
-			foreach ($after AS $afterforumid)
+			if ($project['afterforumids'])
 			{
-				$project_forums["$afterforumid"][] = $project['projectid'];
+				$after = explode(',', $project['afterforumids']);
+				foreach ($after AS $afterforumid)
+				{
+					$project_forums["$afterforumid"][] = $project['projectid'];
+				}
+	
+				$after_projects[] = $project['projectid'];
 			}
-
-			$after_projects[] = $project['projectid'];
 		}
 	}
 
@@ -103,7 +106,14 @@ function pt_forumbit_display(&$forum)
 	{
 		foreach ($project_forums["$forum[forumid]"] AS $projectid)
 		{
-			$project = $vbulletin->pt_projects["$projectid"];
+			// Check the projectgroupid first
+			$projectgroup = $db->query_first("
+				SELECT projectgroupid
+				FROM " . TABLE_PREFIX . "pt_project
+				WHERE projectid = " . $projectid . "
+			");
+
+			$project = $vbulletin->pt_projects["$projectgroup[projectgroupid]"]['projects']["$projectid"];
 
 			$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 			$project['lastpost'] = 0;
@@ -215,7 +225,14 @@ function pt_subforumbit_display(&$forum)
 	{
 		foreach ($project_forums["$forum[forumid]"] AS $projectid)
 		{
-			$project = $vbulletin->pt_projects["$projectid"];
+			// Check the projectgroupid first
+			$projectgroup = $db->query_first("
+				SELECT projectgroupid
+				FROM " . TABLE_PREFIX . "pt_project
+				WHERE projectid = " . $projectid . "
+			");
+
+			$project = $vbulletin->pt_projects["$projectgroup[projectgroupid]"]['projects']["$projectid"];
 
 			$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 			$project['lastactivity'] = 0;

@@ -49,6 +49,7 @@ $globaltemplates = array(
 	'pt_petitionbit',
 	'pt_project',
 	'pt_projectbit',
+	'pt_projectgroupbit',
 	'pt_postmenubit',
 	'pt_timeline',
 	'pt_timeline_group',
@@ -303,101 +304,115 @@ if (empty($vbulletin->GPC['projectid']))
 	$show['search_options'] = false;
 
 	// project list
-	$projectbits = '';
+	$projectgroupbits = '';
 
-	foreach ($vbulletin->pt_projects AS $project)
+	foreach ($vbulletin->pt_projects AS $projectgroupid => $projectgroupdata)
 	{
-		if (!isset($perms_query["$project[projectid]"]) OR !is_array($project_types["$project[projectid]"]) OR $project['displayorder'] == 0)
+		$projectbits = '';
+
+		if (is_array($projectgroupdata['projects']) AND isset($projectgroupdata['projects']))
 		{
-			continue;
-		}
-
-		$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
-		$project['lastpost'] = 0;
-		$show['private_lastpost'] = false;
-		$project['newflag'] = false;
-
-		$type_counts = array();
-
-		foreach ($project_types["$project[projectid]"] AS $type)
-		{
-			if (!($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
+			foreach ($projectgroupdata['projects'] AS $projectid => $project)
 			{
-				continue;
-			}
-
-			if ($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch'])
-			{
-				$show['search_options'] = true;
-			}
-
-			if ($type['lastpost'] > $project['lastpost'])
-			{
-				$project['lastpost'] = $type['lastpost'];
-				$project['lastpostuserid'] = $type['lastpostuserid'];
-				$project['lastpostusername'] = $type['lastpostusername'];
-				$project['lastpostid'] = $type['lastpostid'];
-				$project['lastissueid'] = $type['lastissueid'];
-				$project['lastissuetitle'] = $type['lastissuetitle'];
-
-				$show['private_lastpost'] = (($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewothers']) ? false : true);
-			}
-
-			$type['name'] = $vbphrase["issuetype_$type[issuetypeid]_plural"];
-			$type['issuecount'] = vb_number_format($type['issuecount']);
-			$type['issuecountactive'] = vb_number_format($type['issuecountactive']);
-
-			if ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid'])
-			{
-				$projettypeview = max($type['projectread'], TIMENOW - ($vbulletin->options['markinglimit'] * 86400));
-			}
-			else
-			{
-				$projettypeview = intval(fetch_bbarray_cookie('project_lastview', $project['projectid'] . $type['issuetypeid']));
-				if (!$projettypeview)
+				if (!isset($perms_query["$project[projectid]"]) OR !is_array($project_types["$project[projectid]"]) OR $project['displayorder'] == 0)
 				{
-					$projettypeview = $vbulletin->userinfo['lastvisit'];
+					continue;
 				}
+		
+				$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
+				$project['lastpost'] = 0;
+				$show['private_lastpost'] = false;
+				$project['newflag'] = false;
+		
+				$type_counts = array();
+		
+				foreach ($project_types["$project[projectid]"] AS $type)
+				{
+					if (!($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
+					{
+						continue;
+					}
+		
+					if ($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch'])
+					{
+						$show['search_options'] = true;
+					}
+		
+					if ($type['lastpost'] > $project['lastpost'])
+					{
+						$project['lastpost'] = $type['lastpost'];
+						$project['lastpostuserid'] = $type['lastpostuserid'];
+						$project['lastpostusername'] = $type['lastpostusername'];
+						$project['lastpostid'] = $type['lastpostid'];
+						$project['lastissueid'] = $type['lastissueid'];
+						$project['lastissuetitle'] = $type['lastissuetitle'];
+		
+						$show['private_lastpost'] = (($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewothers']) ? false : true);
+					}
+		
+					$type['name'] = $vbphrase["issuetype_$type[issuetypeid]_plural"];
+					$type['issuecount'] = vb_number_format($type['issuecount']);
+					$type['issuecountactive'] = vb_number_format($type['issuecountactive']);
+		
+					if ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid'])
+					{
+						$projettypeview = max($type['projectread'], TIMENOW - ($vbulletin->options['markinglimit'] * 86400));
+					}
+					else
+					{
+						$projettypeview = intval(fetch_bbarray_cookie('project_lastview', $project['projectid'] . $type['issuetypeid']));
+						if (!$projettypeview)
+						{
+							$projettypeview = $vbulletin->userinfo['lastvisit'];
+						}
+					}
+		
+					if ($type['lastpost'] > $projettypeview)
+					{
+						$type['newflag'] = true;
+						$project['newflag'] = true;
+					}
+		
+					$project['projectread'] = max($project['projectread'], $projettypeview);
+		
+					$type['countid'] = "project_typecount_$project[projectid]_$type[issuetypeid]";
+		
+					$type['pageinfo'] = array('issuetypeid' => $type['issuetypeid']);
+		
+					$type_counts[] = $type;
+				}
+		
+				if (!$type_counts)
+				{
+					continue;
+				}
+		
+				if ($project['lastpost'])
+				{
+					$project['lastpostdate'] = vbdate($vbulletin->options['dateformat'], $project['lastpost'], true);
+					$project['lastposttime'] = vbdate($vbulletin->options['timeformat'], $project['lastpost']);
+					$project['lastissuetitle_short'] = fetch_trimmed_title(fetch_censored_text($project['lastissuetitle']));
+				}
+				else
+				{
+					$project['lastpostdate'] = '';
+					$project['lastposttime'] = '';
+				}
+		
+				($hook = vBulletinHook::fetch_hook('project_overview_projectbit')) ? eval($hook) : false;
+					
+				$templater = vB_Template::create('pt_projectbit');
+					$templater->register('project', $project);
+					$templater->register('type_counts', $type_counts);
+				$projectbits .= $templater->render();
 			}
-
-			if ($type['lastpost'] > $projettypeview)
-			{
-				$type['newflag'] = true;
-				$project['newflag'] = true;
-			}
-
-			$project['projectread'] = max($project['projectread'], $projettypeview);
-
-			$type['countid'] = "project_typecount_$project[projectid]_$type[issuetypeid]";
-
-			$type['pageinfo'] = array('issuetypeid' => $type['issuetypeid']);
-
-			$type_counts[] = $type;
 		}
 
-		if (!$type_counts)
-		{
-			continue;
-		}
-
-		if ($project['lastpost'])
-		{
-			$project['lastpostdate'] = vbdate($vbulletin->options['dateformat'], $project['lastpost'], true);
-			$project['lastposttime'] = vbdate($vbulletin->options['timeformat'], $project['lastpost']);
-			$project['lastissuetitle_short'] = fetch_trimmed_title(fetch_censored_text($project['lastissuetitle']));
-		}
-		else
-		{
-			$project['lastpostdate'] = '';
-			$project['lastposttime'] = '';
-		}
-
-		($hook = vBulletinHook::fetch_hook('project_overview_projectbit')) ? eval($hook) : false;
-			
-		$templater = vB_Template::create('pt_projectbit');
-			$templater->register('project', $project);
-			$templater->register('type_counts', $type_counts);
-		$projectbits .= $templater->render();
+		// Project groups
+		$templater = vB_Template::create('pt_projectgroupbit');
+			$templater->register('projectbits', $projectbits);
+			$templater->register('projectgroup', $projectgroupdata);
+		$projectgroupbits .= $templater->render();
 	}
 
 	// report list
@@ -413,7 +428,8 @@ if (empty($vbulletin->GPC['projectid']))
 		$templater->register_page_templates();
 		$templater->register('markread_script', $markread_script);
 		$templater->register('navbar', $navbar);
-		$templater->register('projectbits', $projectbits);
+		//$templater->register('projectbits', $projectbits);
+		$templater->register('projectgroupbits', $projectgroupbits);
 		$templater->register('reportbits', $reportbits);
 		$templater->register('timeline', $timeline);
 		$templater->register('contenttypeid', $issue_contenttypeid);
@@ -678,19 +694,29 @@ $search_status_options = fetch_issue_status_search_select($projectperms);
 // report list
 $reportbits = prepare_subscribed_reports();
 
+// Do a query for adding the project group
+$projectgroup = $vbulletin->db->query_first("
+	SELECT projectgroupid
+	FROM " . TABLE_PREFIX . "pt_project
+	WHERE projectid = " . $projectid . "
+");
+
 // Project navigation
-if ($vbulletin->options['pt_disablequicknav'] AND count($vbulletin->pt_projects) >= 2)
+if ($vbulletin->options['pt_disablequicknav'] AND count($vbulletin->pt_projects[$projectgroup['projectgroupid']]['projects']) >= 2)
 {
 	$projectlist = array();
 
-	foreach ($vbulletin->pt_projects AS $projectid => $projectdata)
+	foreach ($vbulletin->pt_projects AS $projectgroupid => $projectgroupdata)
 	{
-		if (!isset($perms_query["$projectdata[projectid]"]) OR $projectdata['displayorder'] == 0)
+		foreach ($projectgroupdata['projects'] AS $projectid => $projectdata)
 		{
-			continue;
+			if (!isset($perms_query["$projectdata[projectid]"]) OR $projectdata['displayorder'] == 0)
+			{
+				continue;
+			}
+	
+			$projectlist[$projectdata['projectid']] = $projectdata;
 		}
-
-		$projectlist[$projectdata['projectid']] = $projectdata;
 	}
 }
 
