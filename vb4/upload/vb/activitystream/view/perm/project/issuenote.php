@@ -37,7 +37,7 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 		$issuenotes = vB::$db->query_read_slave("
 			SELECT
 				isn.issuenoteid AS isn_issuenoteid, isn.issueid AS isn_issueid, isn.visible AS isn_visible, isn.userid AS isn_userid, isn.pagetext AS isn_pagetext, isn.type AS isn_type,
-				i.issueid AS i_issueid, i.title AS i_title, i.projectid AS i_projectid, i.state AS i_state, i.issuetypeid AS i_issuetypeid,
+				i.issueid AS i_issueid, i.title AS i_title, i.projectid AS i_projectid, p.projectgroupid AS i_projectgroupid, i.state AS i_state, i.issuetypeid AS i_issuetypeid,
 				i.visible AS i_visible, i.submituserid AS i_submituserid, i.submituserid AS i_userid, i.replycount AS i_replycount,
 				isnfp.pagetext AS i_pagetext
 			FROM " . TABLE_PREFIX . "pt_issuenote AS isn
@@ -132,7 +132,7 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 			$templater->register('issueinfo', $issueinfo);
 			$templater->register('issuenoteinfo', $issuenoteinfo);
 			$templater->register('pageinfo', array('p' => $issuenoteinfo['issuenoteid']));
-			$templater->register('projectinfo', vB::$vbulletin->pt_projects[$issueinfo['projectid']]);
+			$templater->register('projectinfo', vB::$vbulletin->pt_projects[$issueinfo['projectgroupid']]['projects'][$issueinfo['projectid']]);
 		return $templater->render();
 	}
 }

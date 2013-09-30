@@ -35,12 +35,15 @@ function ptimporter_get_allowed_projects()
 		return $cache;
 	}
 	
-	foreach ($vbulletin->pt_projects AS $project)
+	foreach ($vbulletin->pt_projects AS $projectgroup => $projectdata)
 	{
-		$types = ptimporter_get_allowed_issuetypes($project);
-		if (count($types) >= 1)
+		foreach ($projectdata['projects'] AS $projectid => $project)
 		{
-			$cache[] = array('projectid' => $project['projectid'], 'projectinfo' => $project, 'types' => $types);
+			$types = ptimporter_get_allowed_issuetypes($project);
+			if (count($types) >= 1)
+			{
+				$cache[] = array('projectid' => $project['projectid'], 'projectinfo' => $project, 'types' => $types);
+			}
 		}
 	}
 	
@@ -185,11 +188,17 @@ function ptimporter_verify_issuestatusid($issuestatusid, $issuetypeid)
 function ptimporter_prepare_issue_posting_pemissions($projectid, $issuetypeid)
 {
 	global $vbulletin, $vbphrase;
-	
+
+	$projectgroup = $db->query_first("
+		SELECT projectgroupid
+		FROM " . TABLE_PREFIX . "pt_project
+		WHERE projectid = " . $projectid . "
+	");
+
 	$issue = array(
 		'issueid' => 0,
 		'projectid' => $projectid,
-		'issuestatusid' => $vbulletin->pt_projects[$projectid]['types'][$issuetypeid],
+		'issuestatusid' => $vbulletin->pt_projects["$projectgroup[$projectgroupid]"]['projects'][$projectid]['types'][$issuetypeid],
 		'issuetypeid' => $issuetypeid,
 		'issuetype' => $vbphrase['issuetype_' . $issuetypeid . '_singular'],
 		'projectcategoryid' => 0,

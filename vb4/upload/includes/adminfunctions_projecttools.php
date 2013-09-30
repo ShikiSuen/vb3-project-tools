@@ -268,26 +268,38 @@ function build_project_cache()
 
 	$cache = array();
 
-	$projects = $db->query_read("
+	$projectgroups = $db->query_read("
 		SELECT *
-		FROM " . TABLE_PREFIX . "pt_project
+		FROM " . TABLE_PREFIX . "pt_projectgroup
 		ORDER BY displayorder
 	");
-	while ($project = $db->fetch_array($projects))
+	while ($projectgroup = $db->fetch_array($projectgroups))
 	{
-		$project_types = array();
-		$project_types_query = $db->query_read("
-			SELECT issuetypeid, startstatusid
-			FROM " . TABLE_PREFIX . "pt_projecttype AS projecttype
-			WHERE projecttype.projectid = $project[projectid]
+		$projects = $db->query_read("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_project
+			WHERE projectgroupid = " . $projectgroup['projectgroupid'] . "
+			ORDER BY displayorder
 		");
-		while ($project_type = $db->fetch_array($project_types_query))
+		while ($project = $db->fetch_array($projects))
 		{
-			$project_types["$project_type[issuetypeid]"] = $project_type['startstatusid'];
+			$project_types = array();
+			$project_types_query = $db->query_read("
+				SELECT issuetypeid, startstatusid
+				FROM " . TABLE_PREFIX . "pt_projecttype AS projecttype
+				WHERE projecttype.projectid = $project[projectid]
+			");
+			while ($project_type = $db->fetch_array($project_types_query))
+			{
+				$project_types["$project_type[issuetypeid]"] = $project_type['startstatusid'];
+			}
+	
+			$project['types'] = $project_types;
+			//$cache["$project[projectid]"] = $project;
+			$projectgroup["$project[projectid]"] = $project;
 		}
 
-		$project['types'] = $project_types;
-		$cache["$project[projectid]"] = $project;
+		$cache["$projectgroup[projectgroupid]"] = $projectgroup;
 	}
 
 	build_datastore('pt_projects', serialize($cache), 1);

@@ -135,13 +135,20 @@ function fetch_project_info($projectid, $perm_check = true, $use_cache = true)
 		return false;
 	}
 
-	if ($use_cache AND isset($cache["$projectid"]))
+	// Do a query for adding the project group
+	$projectgroup = $vbulletin->db->query_first("
+		SELECT projectgroupid
+		FROM " . TABLE_PREFIX . "pt_project
+		WHERE projectid = " . $projectid . "
+	");
+
+	if ($use_cache AND isset($cache["$projectgroup[projectgroupid]"]['projects']["$projectid"]))
 	{
-		$project = $cache["$projectid"];
+		$project = $cache["$projectgroup[projectgroupid]"]['projects']["$projectid"];
 	}
-	else if ($use_cache AND isset($vbulletin->pt_projects["$projectid"]))
+	else if ($use_cache AND isset($vbulletin->pt_projects["$projectgroup[projectgroupid]"]['projects']["$projectid"]))
 	{
-		return $vbulletin->pt_projects["$projectid"];
+		return $vbulletin->pt_projects["$projectgroup[projectgroupid]"]['projects']["$projectid"];
 	}
 	else
 	{
@@ -151,7 +158,7 @@ function fetch_project_info($projectid, $perm_check = true, $use_cache = true)
 			FROM " . TABLE_PREFIX . "pt_project
 			WHERE projectid = $projectid
 		");
-		$cache["$projectid"] = $project;
+		$cache["$projectgroup[projectgroupid]"]['projects']["$projectid"] = $project;
 	}
 
 	if (!$project)
@@ -544,7 +551,14 @@ function verify_issuetypeid($issuetypeid, $projectid)
 		standard_error(fetch_error('invalidid', $vbphrase['issue_type'], $vbulletin->options['contactuslink']));
 	}
 
-	$types = $vbulletin->pt_projects["$project[projectid]"]['types'];
+	// Do a query for adding the project group
+	$projectgroup = $vbulletin->db->query_first("
+		SELECT projectgroupid
+		FROM " . TABLE_PREFIX . "pt_project
+		WHERE projectid = " . $projectid . "
+	");
+
+	$types = $vbulletin->pt_projects["$projectgroup[projectgroupid]"]['projects']["$project[projectid]"]['types'];
 	if (!isset($types["$issuetypeid"]))
 	{
 		standard_error(fetch_error('invalidid', $vbphrase['issue_type'], $vbulletin->options['contactuslink']));
@@ -1804,9 +1818,9 @@ function construct_project_chooser_options($displayselectproject = false, $topna
 
 	$vbulletin->pt_projects = unserialize($data['data']);
 
-	foreach ($vbulletin->pt_projects AS $projectid => $project)
+	foreach($vbulletin->pt_projects AS $projectgroupid => $projectgroupdata)
 	{
-		$selectoptions["$projectid"] = $project['title'];
+		$selectoptions['projects']["$projectid"] = $project['title'];
 	}
 
 	return $selectoptions;

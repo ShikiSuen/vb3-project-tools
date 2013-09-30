@@ -36,10 +36,11 @@ class vB_ActivityStream_View_Perm_Project_Issue extends vB_ActivityStream_View_P
 
 		$issues = vB::$db->query_read_slave("
 			SELECT
-				i.issueid, i.title, i.projectid, i.state, i.visible, i.submituserid, i.submituserid AS userid, i.replycount, i.issuetypeid,
+				i.issueid, i.title, i.projectid, p.projectgroupid, i.state, i.visible, i.submituserid, i.submituserid AS userid, i.replycount, i.issuetypeid,
 				infp.pagetext
 			FROM " . TABLE_PREFIX . "pt_issue AS i
 			INNER JOIN " . TABLE_PREFIX . "pt_issuenote AS infp ON (i.firstnoteid = infp.issuenoteid)
+			INNER JOIN " . TABLE_PREFIX . "pt_project AS p ON (i.projectid = p.projectid)
 			WHERE
 				i.issueid IN (" . implode(",", array_keys($this->content['issueid'])) . ")
 					AND
@@ -87,7 +88,7 @@ class vB_ActivityStream_View_Perm_Project_Issue extends vB_ActivityStream_View_P
 			$templater->register('userinfo', $this->content['user'][$activity['userid']]);
 			$templater->register('activity', $activity);
 			$templater->register('issueinfo', $issueinfo);
-			$templater->register('projectinfo', vB::$vbulletin->pt_projects[$issueinfo['projectid']]);
+			$templater->register('projectinfo', vB::$vbulletin->pt_projects[$issueinfo['projectgroupid']]['projects'][$issueinfo['projectid']]);
 		return $templater->render();
 	}
 }

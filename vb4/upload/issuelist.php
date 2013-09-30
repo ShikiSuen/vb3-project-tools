@@ -357,7 +357,7 @@ if (!empty($issuetypeid) AND empty($issuenewcount) AND !empty($issueoldcount) AN
 }
 
 // issue type selection options
-$issuetype_options = build_issuetype_select($projectperms, array_keys($vbulletin->pt_projects["$project[projectid]"]['types']), $vbulletin->GPC['issuetypeid']);
+$issuetype_options = build_issuetype_select($projectperms, array_keys($vbulletin->pt_projects[$project['projectgroupid']]['projects'][$project['projectid']]['types']), $vbulletin->GPC['issuetypeid']);
 $any_issuetype_selected = (!$vbulletin->GPC['issuetypeid'] ? ' selected="selected"' : '');
 
 // version options
@@ -480,18 +480,21 @@ $assignable_users = fetch_assignable_users_select($project['projectid']);
 $search_status_options = fetch_issue_status_search_select($projectperms);
 
 // Project navigation
-if ($vbulletin->options['pt_disablequicknav'] AND count($vbulletin->pt_projects) >= 2)
+if ($vbulletin->options['pt_disablequicknav'] AND count($vbulletin->pt_projects[$project['projectgroupid']]['projects']) >= 2)
 {
 	$projectlist = array();
 
-	foreach ($vbulletin->pt_projects AS $projectid => $projectdata)
+	foreach ($vbulletin->pt_projects AS $projectgroupid => $projectgroupdata)
 	{
-		if (!isset($perms_query["$projectdata[projectid]"]) OR $projectdata['displayorder'] == 0)
+		foreach ($projectgroupdata['projects'] AS $projectid => $projectdata)
 		{
-			continue;
+			if (!isset($perms_query["$projectdata[projectid]"]) OR $projectdata['displayorder'] == 0)
+			{
+				continue;
+			}
+	
+			$projectlist[$projectdata['projectid']] = $projectdata;
 		}
-
-		$projectlist[$projectdata['projectid']] = $projectdata;
 	}
 }
 

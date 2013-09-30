@@ -385,19 +385,30 @@ $db->query_write("
 		requirepriority INT UNSIGNED NOT NULL DEFAULT 0,
 		pmonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
 		emailonassignment TINYINT UNSIGNED NOT NULL DEFAULT 0,
+		projectgroupid INT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectid)
 	)
 ");
 
 $db->query_write("
 	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectcategory (
-		projectcategoryid INT UNSIGNED AUTO_INCREMENT NOT NULL,
+		projectcategoryid INT UNSIGNED NOT NULL AUTO_INCREMENT,
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		title VARCHAR(250) NOT NULL DEFAULT '',
 		displayorder INT UNSIGNED NOT NULL DEFAULT 0,
 		defaultvalue SMALLINT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (projectcategoryid),
 		KEY finder (projectid, displayorder)
+	)
+");
+
+$db->query_write("
+	CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectgroup (
+		projectgroupid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		displayorder INT DEFAULT 0,
+		title VARCHAR(250) NOT NULL DEFAULT '',
+		title_clean VARCHAR(250) NOT NULL DEFAULT '',
+		PRIMARY KEY (projectgroupid)
 	)
 ");
 
@@ -2299,6 +2310,30 @@ build_project_cache();]]></installcode>
 			<installcode><![CDATA[// Require for working with fields
 require_once(DIR . '/includes/class_dbalter.php');
 $db_alter = new vB_Database_Alter_MySQL($db);
+
+if ($installed_version !== null)
+{
+	$db->query_write("
+		CREATE TABLE IF NOT EXISTS " . TABLE_PREFIX . "pt_projectgroup (
+			projectgroupid INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			displayorder INT DEFAULT 0,
+			title VARCHAR(250) NOT NULL DEFAULT '',
+			title_clean VARCHAR(250) NOT NULL DEFAULT '',
+			PRIMARY KEY (projectgroupid)
+		)
+	");
+
+	if ($db_alter->fetch_table_info('pt_project'))
+	{
+		$db_alter->add_field(array(
+			'name' => 'projectgroupid',
+			'type' => 'int',
+			'attributes' => 'unsigned',
+			'null' => false,
+			'default' => ''
+		));
+	}
+}
 
 /*================================*\
 || ############################## ||
@@ -13860,7 +13895,35 @@ $criteria_options = array_merge($criteria_options, array(
 		<plugin active="1" executionorder="5">
 			<title><![CDATA[Online: PT Who's Online Activity]]></title>
 			<hookname>online_location_process</hookname>
-			<phpcode><![CDATA[if (substr($filename, 0, 7) == 'project')
+			<phpcode><![CDATA[if (substr($filename, 0, 5) == 'issue')
+{
+	$userinfo['activity'] = 'projecttools';
+}
+else if (substr($filename, 0, 9) == 'issuelist')
+{
+	$userinfo['activity'] = 'projecttools';
+}
+else if (substr($filename, 0, 7) == 'project')
+{
+	$userinfo['activity'] = 'projecttools';
+}
+else if (substr($filename, 0, 17) == 'projectattachment')
+{
+	$userinfo['activity'] = 'projecttools';
+}
+else if (substr($filename, 0, 16) == 'projectmilestone')
+{
+	$userinfo['activity'] = 'projecttools';
+}
+else if (substr($filename, 0, 11) == 'projectpost')
+{
+	$userinfo['activity'] = 'projecttools';
+}
+else if (substr($filename, 0, 13) == 'projectsearch')
+{
+	$userinfo['activity'] = 'projecttools';
+}
+else if (substr($filename, 0, 15) == 'projecttimeline')
 {
 	$userinfo['activity'] = 'projecttools';
 }
@@ -14698,11 +14761,14 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 			<phrase name="project_category_deleted" date="1173188557" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Category Deleted]]></phrase>
 			<phrase name="project_category_saved" date="1173188543" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Category Saved]]></phrase>
 			<phrase name="project_deleted" date="1168607282" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Deleted]]></phrase>
+			<phrase name="project_group_deleted" date="1378938572" username="Pitchoune" version="2.2.1"><![CDATA[Project Group Deleted]]></phrase>
+			<phrase name="project_group_saved" date="1378935994" username="Pitchoune" version="2.2.1"><![CDATA[Project Group Saved]]></phrase>
 			<phrase name="project_magic_select_deleted" date="1316730885" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select deleted successfully.]]></phrase>
 			<phrase name="project_magic_select_saved" date="1316730875" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select saved successfully.]]></phrase>
 			<phrase name="project_magic_select_updated" date="1316730864" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select updated successfully.]]></phrase>
 			<phrase name="project_milestone_deleted" date="1213800464" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Milestone Deleted]]></phrase>
 			<phrase name="project_milestone_saved" date="1213800472" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Project Milestone Saved]]></phrase>
+			<phrase name="project_no_project_group_defined" date="1378932046" username="Pitchoune" version="2.2.1"><![CDATA[There is no valid project group selected.]]></phrase>
 			<phrase name="project_permissions_saved" date="1168607305" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Project Permissions Saved]]></phrase>
 			<phrase name="project_priority_deleted" date="1295124654" username="Pitchoune" version="2.2.0"><![CDATA[Project Priority Deleted]]></phrase>
 			<phrase name="project_priority_saved" date="1295124666" username="Pitchoune" version="2.2.0"><![CDATA[Project Priority Saved]]></phrase>
@@ -15119,6 +15185,7 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="add_milestone" date="1213799689" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Add Milestone]]></phrase>
 			<phrase name="add_project" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project]]></phrase>
 			<phrase name="add_project_category" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Add Project Category]]></phrase>
+			<phrase name="add_project_group" date="1378931616" username="Pitchoune" version="2.2.1"><![CDATA[Add Project Group]]></phrase>
 			<phrase name="add_project_magic_select" date="1335735216" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select Option]]></phrase>
 			<phrase name="add_project_magic_select_group" date="1335735216" username="Pitchoune" version="2.2.0"><![CDATA[Add Magic Select]]></phrase>
 			<phrase name="add_project_priority" date="1295124315" username="Pitchoune" version="2.2.0"><![CDATA[Add Project Priority]]></phrase>
@@ -15132,8 +15199,8 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="are_you_sure_want_to_delete_issuestatus_x" date="1213021399" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the issue status called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_issuetype_x" date="1213021410" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the issue type called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_milestone_x" date="1213021483" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the milestone called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
-			<phrase name="are_you_sure_want_to_delete_project_x" date="1213021416" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectcategory_x" date="1213021424" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Are you <b>sure</b> you want to delete the project category called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
+			<phrase name="are_you_sure_want_to_delete_projectgroup_x" date="1378938360" username="Pitchoune" version="2.2.1"><![CDATA[Are you <b>sure</b> you want to delete the project group called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectmagicselect_x" date="1327326572" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the magic select called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectmagicselectgroup_x" date="1327326589" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the magic select group called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
 			<phrase name="are_you_sure_want_to_delete_projectpriority_x" date="1295124347" username="Pitchoune" version="2.2.0"><![CDATA[Are you <b>sure</b> you want to delete the project priority called '{1}'?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} This action can not be un-done.]]></phrase>
@@ -15166,6 +15233,7 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="edit_permissions_for_x" date="1213804739" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_permissions_for_x_in_y" date="1213804793" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Edit Permissions for <span class="normal">'{1}'</span> in <span class="normal">'{2}'</span>]]></phrase>
 			<phrase name="edit_project_category" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Category <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="edit_project_group_x" date="1378934247" username="Pitchoune" version="2.2.1"><![CDATA[Edit Project Group <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_magic_select" date="1335735398" username="Pitchoune" version="2.2.0"><![CDATA[Edit Magic Select Option <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_magic_select_group" date="1335735398" username="Pitchoune" version="2.2.0"><![CDATA[Edit Magic Select <span class="normal">'{1}'</span>]]></phrase>
 			<phrase name="edit_project_priority" date="1323369635" username="Pitchoune" version="2.2.0"><![CDATA[Edit Project Priority <span class="normal">'{1}'</span>]]></phrase>
@@ -15206,6 +15274,8 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="no_magic_selects_defined_in_this_group" date="1327326304" username="Pitchoune" version="2.2.0"><![CDATA[There is no magic select defined in this group.]]></phrase>
 			<phrase name="no_milestones_defined_for_this_project" date="1213799816" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[No milestones defined for this project!]]></phrase>
 			<phrase name="no_priorities_defined_project" date="1327528911" username="Pitchoune" version="2.2.0"><![CDATA[There is no priority defined. <a href="projectpriority.php?do=add&amp:projectid={1}">Click here to add one!</a>]]></phrase>
+			<phrase name="no_project_defined_in_this_group" date="1378931535" username="Pitchoune" version="2.2.1"><![CDATA[There is no project defined for this group!]]></phrase>
+			<phrase name="no_project_group_defined" date="1378931508" username="Pitchoune" version="2.2.1"><![CDATA[There is no projects or groups defined!]]></phrase>
 			<phrase name="no_project_magic_select_defined_click_here_to_add_one" date="1327326219" username="Pitchoune" version="2.2.0"><![CDATA[There is no magic select defined. <a href="projectmagicselect.php?do=groupadd&amp;projectid={1}">Click here to add one!</a>]]></phrase>
 			<phrase name="no_projects_defined_click_here_to_add_one" date="1327528959" username="Pitchoune" version="2.2.0"><![CDATA[There is no projects defined. <a href="project.php?do=add">Click here to add one!</a>]]></phrase>
 			<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1327529050" username="Pitchoune" version="2.2.0"><![CDATA[There is no statuses of this type defined. This type will not be usable until you add at least one status. <a href="projecttype.php?do=statusadd&amp;type={1}">Click here to add one!</a>]]></phrase>
@@ -15222,6 +15292,7 @@ This is needed because Project Tools have a particular attachment system and nee
 <dfn>Example: Post New Bug</dfn>]]></phrase>
 			<phrase name="priorities" date="1295124480" username="Pitchoune" version="2.2.0"><![CDATA[Priorities]]></phrase>
 			<phrase name="priorities_for_x" date="1295124492" username="Pitchoune" version="2.2.0"><![CDATA[Priorities for <span class="normal">'{1}'</span>]]></phrase>
+			<phrase name="project_group" date="1378931376" username="Pitchoune" version="2.2.1"><![CDATA[Project Group]]></phrase>
 			<phrase name="project_list" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Project List]]></phrase>
 			<phrase name="project_magic_select" date="1316724625" username="Pitchoune" version="2.2.0"><![CDATA[Magic Select]]></phrase>
 			<phrase name="project_magic_select_list" date="1327326496" username="Pitchoune" version="2.2.0"><![CDATA[Magic Selects for '<span class="normal">{1}</span>']]></phrase>

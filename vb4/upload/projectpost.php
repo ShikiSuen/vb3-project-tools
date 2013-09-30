@@ -1207,7 +1207,7 @@ if ($_POST['do'] == 'postissue' OR $_REQUEST['do'] == 'addissue' OR $_REQUEST['d
 		$project = verify_project($vbulletin->GPC['projectid']);
 		$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 
-		$type_choices = array_keys($vbulletin->pt_projects["$project[projectid]"]['types']);
+		$type_choices = array_keys($vbulletin->pt_projects[$project['projectgroupid']]['projects'][$project['projectid']]['types']);
 
 		$can_post = array();
 
