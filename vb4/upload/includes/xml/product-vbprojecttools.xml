@@ -7819,7 +7819,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_overview" templatetype="template" date="1309280359" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_overview" templatetype="template" date="1380645059" username="Pitchoune" version="2.2.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -7914,17 +7914,8 @@ init_project_readmarker_system();
 </div>
 </vb:if>
 
-<div class="pt_overview block">
-	<div class="blockhead">{vb:rawphrase projects}</div>
-	<div class="blockbody formcontrols">
-		<div class="blocksubhead">
-			<div class="project">{vb:rawphrase project}</div>
-			<div class="lastpost">{vb:rawphrase last_post}</div>
-			<div class="activeissues">{vb:rawphrase active_issues}</div>
-		</div>
-		{vb:raw projectbits}
-	</div>
-</div>
+{vb:raw projectgroupbits}
+
 <script type="text/javascript" src="clientscript/vbulletin_pt_read_marker.js?v={vb:raw vboptions.simpleversion}"></script>
 <script type="text/javascript">
 <!--
@@ -9236,6 +9227,17 @@ init_project_readmarker_system();
 				</li>
 			</vb:each>
 		</ul>
+	</div>
+</div>]]></template>
+		<template name="pt_projectgroupbit" templatetype="template" date="1380645068" username="Pitchoune" version="2.2.1"><![CDATA[<div class="pt_overview block">
+	<div class="blockhead">{vb:raw projectgroup.title_clean}</div>
+	<div class="blockbody formcontrols">
+		<div class="blocksubhead">
+			<div class="project">{vb:rawphrase projects}</div>
+			<div class="lastpost">{vb:rawphrase last_post}</div>
+			<div class="activeissues">{vb:rawphrase active_issues}</div>
+		</div>
+		{vb:raw projectbits}
 	</div>
 </div>]]></template>
 		<template name="pt_project_milestones" templatetype="template" date="1308853340" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
