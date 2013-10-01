@@ -49,7 +49,6 @@ $globaltemplates = array(
 	'pt_petitionbit',
 	'pt_project',
 	'pt_projectbit',
-	'pt_projectgroupbit',
 	'pt_postmenubit',
 	'pt_timeline',
 	'pt_timeline_group',
@@ -698,7 +697,7 @@ $reportbits = prepare_subscribed_reports();
 $projectgroup = $vbulletin->db->query_first("
 	SELECT projectgroupid
 	FROM " . TABLE_PREFIX . "pt_project
-	WHERE projectid = " . $projectid . "
+	WHERE projectid = " . $project['projectid'] . "
 ");
 
 // Project navigation
