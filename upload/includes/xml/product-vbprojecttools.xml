@@ -589,6 +589,7 @@ if ($installed_version === null)
 	$projectdata->set('summary', 'This is a short summary of the project.');
 	$projectdata->set('description', 'This is a description of the project. You may wish to discuss things like goals, timelines, and responsibilities here.');
 	$projectdata->set('displayorder', 1);
+	$projectdata->set('projectgroupid', 1);
 	$projectid = $projectdata->save();
 
 	// ... and some default issue types ...
@@ -2323,6 +2324,13 @@ if ($installed_version !== null)
 		)
 	");
 
+	$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "pt_projectgroup
+			(displayorder, title, title_clean)
+		VALUES
+			(1, 'Default Project Group', 'Default Project Group')
+	");
+
 	if ($db_alter->fetch_table_info('pt_project'))
 	{
 		$db_alter->add_field(array(
@@ -2330,9 +2338,13 @@ if ($installed_version !== null)
 			'type' => 'int',
 			'attributes' => 'unsigned',
 			'null' => false,
-			'default' => ''
+			'default' => '0'
 		));
 	}
+
+	$db->query_write("
+		UPDATE " . TABLE_PREFIX . "pt_project SET projectgroupid = 1
+	");
 }
 
 /*================================*\
