@@ -417,7 +417,8 @@ class vBCms_Widget_RecentPTComments extends vBCms_Widget
 
 		//figure out how to handle the 'cancelwords'
 		$display['highlight'] = array();
-		$page_text =  preg_replace('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siUe', "process_quote_removal('\\3', \$display['highlight'])", $pagetext);
+		/*$page_text =  preg_replace('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siUe', "process_quote_removal('\\3', \$display['highlight'])", $pagetext);*/
+		$page_text = preg_replace_callback('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siU', "process_quote_removal_callback", $pagetext);
 
 		$strip_quotes = true;
 

@@ -247,7 +247,8 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 	{
 		//figure out how to handle the 'cancelwords'
 		$display['highlight'] = array();
-		return preg_replace('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siUe', "process_quote_removal('\\3', \$display['highlight'])", $this->get_field('pagetext'));
+		/*return preg_replace('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siUe', "process_quote_removal('\\3', \$display['highlight'])", $this->get_field('pagetext'));*/
+		return preg_replace_callback('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siU', "process_quote_removal_callback", $this->get_field('pagetext'));
 	}
 
 
