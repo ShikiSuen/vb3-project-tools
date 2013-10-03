@@ -1910,4 +1910,18 @@ function fetch_issuelist_columns($column, $project = array())
 	return $columns;
 }
 
+/**
+ * Callback function for processing the quote removal
+ *
+ * @param  string $matches
+ *
+ * @return [type]
+ */
+function process_quote_removal_callback($matches)
+{
+	$array = array();
+
+	return process_quote_removal($matches[3], array());
+}
+
 ?>

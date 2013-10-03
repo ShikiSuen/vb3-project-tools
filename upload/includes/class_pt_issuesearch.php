@@ -1056,13 +1056,19 @@ class vB_Pt_IssueSearchGenerator
 			}
 		}
 
-		$query_text = preg_replace(
+		/*$query_text = preg_replace(
 			'#"([^"]+)"#sie',
 			"stripslashes(str_replace(' ' , '*', '\\0'))",
 			$query_text
-		);
+		);*/
 
 		require_once(DIR . '/includes/functions_search.php');
+		$query_text = preg_replace_callback(
+			'#"([^"]+)"#si',
+			"stripslashes_callback",
+			$query_text
+		);
+
 		$query_text = sanitize_search_query($query_text, $errors);
 
 		if (!$errors)
