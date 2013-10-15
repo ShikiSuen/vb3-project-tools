@@ -295,8 +295,7 @@ function build_project_cache()
 			}
 	
 			$project['types'] = $project_types;
-			//$cache["$project[projectid]"] = $project;
-			$projectgroup["$project[projectid]"] = $project;
+			$projectgroup['projects']["$project[projectid]"] = $project;
 		}
 
 		$cache["$projectgroup[projectgroupid]"] = $projectgroup;
