@@ -102,7 +102,7 @@ $milestone_data = $vbulletin->db->query_read("
 	SELECT *
 	FROM " . TABLE_PREFIX . "pt_milestone
 	WHERE projectid = " . $project['projectid'] . "
-	ORDER BY completeddate DESC, targetdate
+	ORDER BY completeddate DESC, targetdate, displayorder
 ");
 
 if (!$db->num_rows($milestone_data))
