@@ -350,6 +350,7 @@ $db->query_write("
 		projectid INT UNSIGNED NOT NULL DEFAULT 0,
 		targetdate INT NOT NULL DEFAULT 0,
 		completeddate INT NOT NULL DEFAULT 0,
+		displayorder INT UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY (milestoneid),
 		INDEX (projectid, completeddate, targetdate)
 	)
@@ -2382,7 +2383,26 @@ if ($useridfield)
 		$db_alter->drop_field('thumbnail_filesize');
 		$db_alter->drop_field('thumbnail_dateline');
 	}
-}]]></installcode>
+}
+
+/*================================*\
+|| ############################## ||
+|| #   Milestone display order	# ||
+|| ############################## ||
+\*================================*/
+
+if ($installed_version !== null)
+{
+	if ($db_alter->fetch_table_info('pt_milestone'))
+	{
+		$db_alter->add_field(array(
+			'name' => 'displayorder',
+			'type' => 'int',
+			'attributes' => 'unsigned',
+			'null' => false,
+			'default' => '0'
+		));
+	}]]></installcode>
 			<uninstallcode />
 		</code>
 	</codes>
