@@ -96,7 +96,8 @@ if ($_POST['do'] == 'update')
 		'title' => TYPE_STR,
 		'description' => TYPE_STR,
 		'targetdate' => TYPE_UNIXTIME,
-		'completeddate' => TYPE_UNIXTIME
+		'completeddate' => TYPE_UNIXTIME,
+		'displayorder' => TYPE_UINT,
 	));
 
 	if ($vbulletin->GPC['milestoneid'])
@@ -141,6 +142,7 @@ if ($_POST['do'] == 'update')
 	$milestonedata->set_info('description', $vbulletin->GPC['description']);
 	$milestonedata->set('targetdate', $vbulletin->GPC['targetdate']);
 	$milestonedata->set('completeddate', $vbulletin->GPC['completeddate']);
+	$milestonedata->set('displayorder', $vbulletin->GPC['displayorder']);
 	$milestonedata->save();	
 
 	define('CP_REDIRECT', 'projectmilestone.php?do=list&projectid=' . $project['projectid']);
@@ -194,10 +196,11 @@ if ($_REQUEST['do'] == 'add' OR $_REQUEST['do'] == 'edit')
 		print_table_header($vbphrase['add_milestone']);
 	}
 
-	print_input_row("$vbphrase[title]<dfn>$vbphrase[html_is_allowed]</dfn>" . ($trans_link_name ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_name, true) . '</dfn>' : '') . "", 'title', $vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
-	print_textarea_row("$vbphrase[description]<dfn>$vbphrase[html_is_allowed]</dfn>" . ($trans_link_desc ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_desc, true) . '</dfn>' : '') . "", 'description', $vbphrase['milestone_' . $milestone['milestoneid'] . '_description']);
-	print_time_row("$vbphrase[target_date]<dfn>$vbphrase[target_date_desc]</dfn>", 'targetdate', $milestone['targetdate'], false);
-	print_time_row("$vbphrase[completed_date]<dfn>$vbphrase[completed_date_desc]</dfn>", 'completeddate', $milestone['completeddate'], false);
+	print_input_row($vbphrase['title'] . '<dfn>' . $vbphrase['html_is_allowed'] . '</dfn>' . ($trans_link_name ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_name, true) . '</dfn>' : '') . "", 'title', $vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
+	print_textarea_row($vbphrase['description'] . '<dfn>' . $vbphrase['html_is_allowed'] . '</dfn>' . ($trans_link_desc ? '<dfn>' . construct_link_code($vbphrase['translations'], $trans_link_desc, true) . '</dfn>' : '') . "", 'description', $vbphrase['milestone_' . $milestone['milestoneid'] . '_description']);
+	print_input_row($vbphrase['display_order'], 'displayorder', $milestone['displayorder'], true, 5);
+	print_time_row($vbphrase['target_date'] . '<dfn>' . $vbphrase['target_date_desc'] . '</dfn>', 'targetdate', $milestone['targetdate'], false);
+	print_time_row($vbphrase['completed_date'] . '<dfn>' . $vbphrase['completed_date_desc'] . '</dfn>', 'completeddate', $milestone['completeddate'], false);
 
 	construct_hidden_code('projectid', $project['projectid']);
 	construct_hidden_code('milestoneid', $milestone['milestoneid']);

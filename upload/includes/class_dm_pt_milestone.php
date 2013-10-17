@@ -37,6 +37,7 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 		'projectid'     => array(TYPE_UINT,       REQ_YES),
 		'targetdate'    => array(TYPE_UNIXTIME,   REQ_NO),
 		'completeddate' => array(TYPE_UNIXTIME,   REQ_NO),
+		'displayorder'	=> array(TYPE_UINT,		  REQ_NO),
 	);
 
 	/**
