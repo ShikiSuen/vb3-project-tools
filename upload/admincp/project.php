@@ -1178,8 +1178,7 @@ if ($_REQUEST['do'] == 'list')
 				print_description_row($vbphrase['no_project_defined_in_this_group'], false, 3, '', 'center');
 			}
 
-
-
+			print_submit_row($vbphrase['save_display_order'], '', 3);
 		}
 	}
 	else
@@ -1187,8 +1186,6 @@ if ($_REQUEST['do'] == 'list')
 		print_description_row($vbphrase['no_project_group_defined'], false, 3, '', 'center');
 		print_table_footer();
 	}
-
-	print_submit_row($vbphrase['save_display_order'], '', 3);
 
 	echo '<p align="center">' . construct_link_code($vbphrase['add_project_group'], 'project.php?do=groupadd') . ' | ' . construct_link_code($vbphrase['project_tools_options'], 'options.php?do=options&amp;dogroup=projecttools') . '</p>';
 }

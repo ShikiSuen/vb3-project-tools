@@ -584,6 +584,14 @@ if ($installed_version === null)
 
 	// Below this needs some translating!
 
+	// setup first a project group for the default project
+	$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "pt_projectgroup
+			(displayorder, title, title_clean)
+		VALUES
+			(1, 'Default Project Group', 'Default Project Group')
+	");
+
 	// setup a default project ...
 	$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_SILENT);
 	$projectdata->set('title', 'Default Project');
@@ -849,6 +857,7 @@ $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_milestone");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_milestonetypecount");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_project");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectcategory");
+$db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectgroup");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselect");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectmagicselectgroup");
 $db->query_write("DROP TABLE IF EXISTS " . TABLE_PREFIX . "pt_projectpermission");
