@@ -831,17 +831,23 @@ $hook_query_joins = $hook_query_where = '';
 $notetype_counts_query = $db->query_read("
 	SELECT issuenote.type, COUNT(*) AS total
 	FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
-	$hook_query_joins
-	WHERE issuenote.issueid = $issue[issueid]
-		AND issuenote.issuenoteid <> $issue[firstnoteid]
-		AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
-		$hook_query_where
+	" . $hook_query_joins . "
+	WHERE issuenote.issueid = " . $issue['issueid'] . "
+		AND issuenote.issuenoteid <> " . $issue['firstnoteid'] . "
+		AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")" . $private_text . ")
+		" . $hook_query_where . "
 	GROUP BY issuenote.type
 ");
 
 while ($notetype_count = $db->fetch_array($notetype_counts_query))
 {
-	$notetype_counts["$notetype_count[type]"] = intval($notetype_count['total']);
+	$notetype_counts[$notetype_count['type']] = intval($notetype_count['total']);
+}
+
+// Set the comments counter to 0 if the user can't see replies
+if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewreplies']))
+{
+	$notetype_counts['user'] = 0;
 }
 
 // sanitize type filter
@@ -933,72 +939,88 @@ $hook_query_fields = $hook_query_joins = $hook_query_where = '';
 ($hook = vBulletinHook::fetch_hook('project_issue_note_query')) ? eval($hook) : false;
 
 // notes
-$notes = $db->query_read("
-	SELECT issuenote.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
-		" . ($vbulletin->options['avatarenabled'] ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
-		user.*, userfield.*, usertextfield.*,
-		IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
-		issuepetition.petitionstatusid, issuepetition.resolution AS petitionresolution
-		" . ($can_see_deleted ? ", issuedeletionlog.reason AS deletionreason" : '') . "
-		$hook_query_fields
-	FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
-	LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
-	LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
-	LEFT JOIN " . TABLE_PREFIX . "usertextfield AS usertextfield ON (usertextfield.userid = user.userid)
-	LEFT JOIN " . TABLE_PREFIX . "pt_issuepetition AS issuepetition ON (issuepetition.issuenoteid = issuenote.issuenoteid)
-	" . ($can_see_deleted ? "LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON (issuedeletionlog.primaryid = issuenote.issuenoteid AND issuedeletionlog.type = 'issuenote')" : '') . "
-	" . ($vbulletin->options['avatarenabled'] ? "
-		LEFT JOIN " . TABLE_PREFIX . "avatar AS avatar ON(avatar.avatarid = user.avatarid)
-		LEFT JOIN " . TABLE_PREFIX . "customavatar AS customavatar ON(customavatar.userid = user.userid)" : '') . "
-	$hook_query_joins
-	WHERE issuenote.issueid = $issue[issueid]
-		AND issuenote.issuenoteid <> $issue[firstnoteid]
-		AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
-		$type_filter
-		$hook_query_where
-	ORDER BY issuenote.dateline
-	LIMIT $start, " . $vbulletin->options['pt_notesperpage'] . "
-");
-
-$pageinfo = array();
-
-if ($vbulletin->GPC['filter'] != 'comments')
+if ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewreplies'])
 {
-	$pageinfo['filter'] = $vbulletin->GPC['filter'];
-}
+	$notes = $db->query_read("
+		SELECT issuenote.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
+			" . ($vbulletin->options['avatarenabled'] ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
+			user.*, userfield.*, usertextfield.*,
+			IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
+			issuepetition.petitionstatusid, issuepetition.resolution AS petitionresolution
+			" . ($can_see_deleted ? ", issuedeletionlog.reason AS deletionreason" : '') . "
+			$hook_query_fields
+		FROM " . TABLE_PREFIX . "pt_issuenote AS issuenote
+		LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
+		LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
+		LEFT JOIN " . TABLE_PREFIX . "usertextfield AS usertextfield ON (usertextfield.userid = user.userid)
+		LEFT JOIN " . TABLE_PREFIX . "pt_issuepetition AS issuepetition ON (issuepetition.issuenoteid = issuenote.issuenoteid)
+		" . ($can_see_deleted ? "LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON (issuedeletionlog.primaryid = issuenote.issuenoteid AND issuedeletionlog.type = 'issuenote')" : '') . "
+		" . ($vbulletin->options['avatarenabled'] ? "
+			LEFT JOIN " . TABLE_PREFIX . "avatar AS avatar ON(avatar.avatarid = user.avatarid)
+			LEFT JOIN " . TABLE_PREFIX . "customavatar AS customavatar ON(customavatar.userid = user.userid)" : '') . "
+		$hook_query_joins
+		WHERE issuenote.issueid = $issue[issueid]
+			AND issuenote.issuenoteid <> $issue[firstnoteid]
+			AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)
+			$type_filter
+			$hook_query_where
+		ORDER BY issuenote.dateline
+		LIMIT $start, " . $vbulletin->options['pt_notesperpage'] . "
+	");
 
-$pagenav = construct_page_nav(
-	$vbulletin->GPC['pagenumber'],
-	$vbulletin->options['pt_notesperpage'],
-	$note_count,
-	'',
-	'',
-	'',
-	'issue',
-	$issue,
-	$pageinfo
-);
+	$pageinfo = array();
 
-$bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
+	if ($vbulletin->GPC['filter'] != 'comments')
+	{
+		$pageinfo['filter'] = $vbulletin->GPC['filter'];
+	}
 
-$factory = new vB_Pt_IssueNoteFactory();
-$factory->registry =& $vbulletin;
-$factory->bbcode =& $bbcode;
-$factory->issue =& $issue;
-$factory->project =& $project;
-$factory->browsing_perms = $issueperms;
+	$pagenav = construct_page_nav(
+		$vbulletin->GPC['pagenumber'],
+		$vbulletin->options['pt_notesperpage'],
+		$note_count,
+		'',
+		'',
+		'',
+		'issue',
+		$issue,
+		$pageinfo
+	);
 
-$notebits = '';
-$displayed_dateline = 0;
+	$bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
 
-while ($note = $db->fetch_array($notes))
-{
-	$displayed_dateline = max($displayed_dateline, $note['dateline']);
-	$note_handler =& $factory->create($note);
-	$notebits .= $note_handler->construct();
+	$factory = new vB_Pt_IssueNoteFactory();
+	$factory->registry =& $vbulletin;
+	$factory->bbcode =& $bbcode;
+	$factory->issue =& $issue;
+	$factory->project =& $project;
+	$factory->browsing_perms = $issueperms;
+
+	$notebits = '';
+	$displayed_dateline = 0;
+
+	while ($note = $db->fetch_array($notes))
+	{
+		$displayed_dateline = max($displayed_dateline, $note['dateline']);
+		$note_handler =& $factory->create($note);
+		$notebits .= $note_handler->construct();
+	}
 }
 
 // prepare the original issue like a note since it has note text
+// init the datamanager if the user can't see replies or the issue wont show
+if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewreplies']))
+{
+	$bbcode = new vB_BbCodeParser_Pt($vbulletin, fetch_tag_list());
+
+	$factory = new vB_Pt_IssueNoteFactory();
+	$factory->registry =& $vbulletin;
+	$factory->bbcode =& $bbcode;
+	$factory->issue =& $issue;
+	$factory->project =& $project;
+	$factory->browsing_perms = $issueperms;
+}
+
 $displayed_dateline = max($displayed_dateline, $issue['dateline']);
 $note_handler =& $factory->create($issue);
 $note_handler->construct();

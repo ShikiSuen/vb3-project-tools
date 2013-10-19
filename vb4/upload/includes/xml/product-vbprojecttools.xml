@@ -15395,6 +15395,7 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="ptperm_can_view_others" date="1176211849" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can View Others' Issues]]></phrase>
 			<phrase name="ptperm_can_view_private_others" date="1176211716" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can View Others' Private Issues/Notes]]></phrase>
 			<phrase name="ptperm_can_view_private_own" date="1176211706" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can View Own Private Issues/Notes]]></phrase>
+			<phrase name="ptperm_can_view_replies" date="1382129404" username="Pitchoune" version="2.2.1"><![CDATA[Can View Replies]]></phrase>
 			<phrase name="ptperm_can_vote" date="1176211742" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Can Vote on Issues]]></phrase>
 			<phrase name="ptstatus" date="1335732993" username="Pitchoune" version="2.2.0"><![CDATA[Status]]></phrase>
 			<phrase name="rebuild_issue_counters" date="1176206938" username="Jelsoft" version="1.0.0 Alpha 1"><![CDATA[Rebuild Issue Counters]]></phrase>
