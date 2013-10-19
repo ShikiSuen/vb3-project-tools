@@ -1295,7 +1295,7 @@ function build_issue_bit($issue, $project, $issueperms)
 	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
 
 	// No perm to see replies - set the default date to the issue time & the number of comments to 0
-	if (!($issueperms[$issue['issuetype']]['generalpermissions'] & $vbulletin->pt_bitfields['generalpermissions']['canviewreplies']))
+	if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewreplies']))
 	{
 		$issue['replycount'] = 0;
 		$issue['lastpostdate'] = $issue['submitdate'];
