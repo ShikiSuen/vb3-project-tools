@@ -204,12 +204,12 @@ require_once(DIR . '/includes/class_pt_issuelist.php');
 $issue_list = new vB_Pt_IssueList($project, $vbulletin);
 $issue_list->set_sort($vbulletin->GPC['sortfield'], $vbulletin->GPC['sortorder']);
 
-$list_criteria = $perms_query["$project[projectid]"] . "
+$list_criteria = $perms_query[$project['projectid']] . "
 	" . ($vbulletin->GPC['issuetypeid'] ? " AND issue.issuetypeid = '" . $db->escape_string($vbulletin->GPC['issuetypeid']) . "'" : '') . "
-	$status_criteria
+	" . $status_criteria . "
 	" . ($group_filter ? " AND projectversion.projectversiongroupid = " . $group_filter : '') . "
 	" . ($version_filter == -1 ? " AND issue.appliesversionid = 0" : '') . "
-	" . ($version_filter > 0 ? " AND issue.appliesversionid = $version_filter" : '');
+	" . ($version_filter > 0 ? " AND issue.appliesversionid = " . $version_filter : '');
 
 $issue_list->exec_query($list_criteria, $vbulletin->GPC['pagenumber'], $vbulletin->options['pt_issuesperpage']);
 
@@ -280,6 +280,9 @@ $issuebits = '';
 
 while ($issue = $db->fetch_array($issue_list->result))
 {
+	// Perm check for template
+	$show['canviewreplies'] = ($projectperms[$issue['issuetype']]['generalpermissions'] & $vbulletin->pt_bitfields['generalpermissions']['canviewreplies']);
+
 	$issuebits .= build_issue_bit($issue, $project, $projectperms["$issue[issuetypeid]"]);
 
 	$projectread["$issue[issuetypeid]"] = max($projectread["$issue[issuetypeid]"], $issue['projectread']);

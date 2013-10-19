@@ -1294,6 +1294,17 @@ function build_issue_bit($issue, $project, $issueperms)
 	// Columns to show
 	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
 
+	// No perm to see replies - set the default date to the issue time & the number of comments to 0
+	if (!($issueperms[$issue['issuetype']]['generalpermissions'] & $vbulletin->pt_bitfields['generalpermissions']['canviewreplies']))
+	{
+		$issue['replycount'] = 0;
+		$issue['lastpostdate'] = $issue['submitdate'];
+		$issue['lastposttime'] = $issue['submittime'];
+		$issue['lastpostuserid'] = $issue['lastposterid'];
+		$issue['lastpostusername'] = $issue['lastposter'];
+		$issue['lastnoteid'] = $issue['firstnoteid'];
+	}
+
 	// multipage nav
 	$issue['totalnotes'] = $issue['replycount'];
 	$total =& $issue['totalnotes'];
@@ -1352,7 +1363,7 @@ function build_issue_bit($issue, $project, $issueperms)
 		}
 	}
 
-	// Corresponding option choosen AND the color is filled in the coresponding priority
+	// Corresponding option choosen AND the color is filled in the corresponding priority
 	if ($vbulletin->options['pt_statuscolor'] == 2 AND $issue['statuscolor'])
 	{
 		$show['statuscolor'] = true;
