@@ -20,7 +20,8 @@ define('CVS_REVISION', '$Rev$');
 // #################### PRE-CACHE TEMPLATES AND DATA ######################
 $phrasegroups = array(
 	'projecttools',
-	'projecttoolsadmin'
+	'projecttoolsadmin',
+	'style'
 );
 
 $specialtemplates = array(
@@ -65,7 +66,7 @@ log_admin_action((!empty($vbulletin->GPC['projectid']) ? ' project id = ' . $vbu
 // ######################### START MAIN SCRIPT ############################
 // ########################################################################
 
-print_cp_header($vbphrase['project_tools'], iif(in_array($_REQUEST['do'], array('statusedit', 'statusadd')) , 'init_color_preview()'));
+print_cp_header($vbphrase['project_tools'], iif(in_array($_REQUEST['do'], array('statusedit', 'statusadd', 'typelist')) , 'init_color_preview()'));
 
 if (empty($_REQUEST['do']))
 {
@@ -174,7 +175,10 @@ if ($_POST['do'] == 'statusupdate')
 // ########################################################################
 if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 {
-	$vbulletin->input->clean_gpc('r', 'type', TYPE_STR);
+	$vbulletin->input->clean_array_gpc('r', array(
+		'type' => TYPE_STR,
+		'colorPickerType' => TYPE_INT
+	));
 
 	if ($vbulletin->GPC['issuestatusid'])
 	{
@@ -207,6 +211,26 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 			'projectset' => '',
 		);
 	}
+
+	?>
+	<script type="text/javascript">
+	<!--
+	<?php
+	foreach (array(
+		'css_value_invalid',
+		'color_picker_not_ready',
+	) AS $phrasename)
+	{
+			$JS_PHRASES[] = "\"$phrasename\" : \"" . fetch_js_safe_string($vbphrase["$phrasename"]) . "\"";
+	}
+	?>
+
+	var vbphrase = {
+		<?php echo implode(",\r\n\t", $JS_PHRASES) . "\r\n"; ?>
+	};
+	//-->
+	</script>
+	<?php
 
 	echo '<script type="text/javascript" src="../clientscript/vbulletin_cpcolorpicker.js"></script>';
 
@@ -246,33 +270,8 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 	require_once(DIR . '/includes/adminfunctions_template.php');
 	$colorPicker = construct_color_picker(11);
 
-	// Construct_color_row reworked just for here
-	echo "<tr>
-		<td class=\"alt2\">" . $vbphrase['status_color_dark_styles'] . "</td>
-		<td class=\"alt2\">
-			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">
-			<tr>
-				<td width=\"160px\"><input type=\"text\" class=\"bginput\" name=\"statuscolor\" id=\"color_0\" value=\"{$issuestatus['statuscolor']}\" title=\"statuscolor\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(0)\" dir=\"ltr\" />&nbsp;</td>
-				<td><div id=\"preview_0\" class=\"colorpreview\" onclick=\"open_color_picker(0, event)\"></div></td>
-				<td align=\"" . vB_Template_Runtime::fetchStyleVar('right') . "\" style=\"padding-" . vB_Template_Runtime::fetchStyleVar('left') . ":4px\">" . construct_table_help_button('statuscolor') . "</td>
-			</tr>
-			</table>
-		</td>
-	</tr>\n";
-
-	// Construct_color_row reworked just for here
-	echo "<tr>
-		<td class=\"alt1\">" . $vbphrase['status_color_light_styles'] . "</td>
-		<td class=\"alt1\">
-			<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">
-			<tr>
-				<td width=\"160px\"><input type=\"text\" class=\"bginput\" name=\"statuscolor2\" id=\"color_1\" value=\"{$issuestatus['statuscolor2']}\" title=\"statuscolor2\" tabindex=\"1\" size=\"22\" onchange=\"preview_color(1)\" dir=\"ltr\" />&nbsp;</td>
-				<td><div id=\"preview_1\" class=\"colorpreview\" onclick=\"open_color_picker(1, event)\"></div></td>
-				<td align=\"" . vB_Template_Runtime::fetchStyleVar('right') . "\" style=\"padding-" . vB_Template_Runtime::fetchStyleVar('left') . ":4px\">" . construct_table_help_button('statuscolor2') . "</td>
-			</tr>
-			</table>
-		</td>
-	</tr>\n";
+	print_label_row($vbphrase['status_color_dark_styles'], construct_status_color_row('statuscolor', $issuestatus['statuscolor'], 'bginput', 22, false));
+	print_label_row($vbphrase['status_color_light_styles'], construct_status_color_row('statuscolor2', $issuestatus['statuscolor2'], 'bginput', 22, false));
 
 	$projectsets = '';
 
@@ -293,7 +292,7 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 
 	if ($projectsets)
 	{
-		print_label_row($vbphrase['use_selected_project_sets'], $projectsets, 'alt2', 'top', 'projectset');
+		print_label_row($vbphrase['use_selected_project_sets'], $projectsets, '', 'top', 'projectset');
 	}
 
 	construct_hidden_code('issuestatusid', $issuestatus['issuestatusid']);
@@ -307,9 +306,9 @@ if ($_REQUEST['do'] == 'statusadd' OR $_REQUEST['do'] == 'statusedit')
 
 	var bburl = "<?php echo $vbulletin->options['bburl']; ?>/";
 	var cpstylefolder = "<?php echo $vbulletin->options['cpstylefolder']; ?>";
-	var numColors = 2;
+	var numColors = "<?php echo $numcolors; ?>";
 	var colorPickerWidth = 253;
-	var colorPickerType = 0;
+	var colorPickerType = <?php echo intval($colorPickerType); ?>;
 
 	//-->
 	</script>
@@ -753,9 +752,12 @@ if ($_POST['do'] == 'typedisplayorder')
 {
 	$vbulletin->input->clean_array_gpc('p', array(
 		'order' => TYPE_ARRAY_UINT,
-		'issuecompleted' => TYPE_ARRAY_BOOL
+		'issuecompleted' => TYPE_ARRAY_BOOL,
+		'statuscolor' => TYPE_ARRAY_NOHTML,
+		'statuscolor2' => TYPE_ARRAY_NOHTML
 	));
 
+	// Display order
 	$case = '';
 
 	foreach ($vbulletin->GPC['order'] AS $statusid => $displayorder)
@@ -771,6 +773,7 @@ if ($_POST['do'] == 'typedisplayorder')
 		");
 	}
 
+	// Issue completed
 	$case = '';
 
 	foreach ($vbulletin->GPC['issuecompleted'] AS $statusid => $issuecompleted)
@@ -786,6 +789,38 @@ if ($_POST['do'] == 'typedisplayorder')
 		");
 	}
 
+	// Status color for dark styles
+	$case = '';
+
+	foreach ($vbulletin->GPC['statuscolor'] AS $statusid => $colorvalue)
+	{
+		$case .= "\nWHEN " . intval($statusid) . " THEN '" . $colorvalue . "'";
+	}
+
+	if ($case)
+	{
+		$db->query_write("
+			UPDATE " . TABLE_PREFIX . "pt_issuestatus SET
+				statuscolor = CASE issuestatusid $case ELSE 0 END
+		");
+	}
+
+	// Status color for light styles
+	$case = '';
+
+	foreach ($vbulletin->GPC['statuscolor2'] AS $statusid => $colorvalue)
+	{
+		$case .= "\nWHEN " . intval($statusid) . " THEN '" . $colorvalue . "'";
+	}
+
+	if ($case)
+	{
+		$db->query_write("
+			UPDATE " . TABLE_PREFIX . "pt_issuestatus SET
+				statuscolor2 = CASE issuestatusid $case ELSE 0 END
+		");
+	}
+
 	build_issue_type_cache();
 	rebuild_project_counters(false);
 	rebuild_milestone_counters(false);
@@ -797,6 +832,8 @@ if ($_POST['do'] == 'typedisplayorder')
 // ########################################################################
 if ($_REQUEST['do'] == 'typelist')
 {
+	$vbulletin->input->clean_gpc('r', 'colorPickerType', TYPE_INT);
+
 	print_form_header('', '');
 	print_table_header($vbphrase['issue_type_manager']);
 	print_description_row(
@@ -824,6 +861,28 @@ if ($_REQUEST['do'] == 'typelist')
 		ORDER BY displayorder
 	");
 
+	?>
+	<script type="text/javascript">
+	<!--
+	<?php
+	foreach (array(
+		'css_value_invalid',
+		'color_picker_not_ready',
+	) AS $phrasename)
+	{
+			$JS_PHRASES[] = "\"$phrasename\" : \"" . fetch_js_safe_string($vbphrase["$phrasename"]) . "\"";
+	}
+	?>
+
+	var vbphrase = {
+		<?php echo implode(",\r\n\t", $JS_PHRASES) . "\r\n"; ?>
+	};
+	//-->
+	</script>
+	<?php
+
+	echo '<script type="text/javascript" src="../clientscript/vbulletin_cpcolorpicker.js"></script>';
+
 	print_form_header('projecttype', 'typedisplayorder');
 
 	$firstpass = true;
@@ -832,6 +891,8 @@ if ($_REQUEST['do'] == 'typelist')
 	{
 		print_cells_row(array(
 			$vbphrase['issue_type'] . ' <b>' . $vbphrase["issuetype_$type[issuetypeid]_plural"] . '</b>',
+			'&nbsp;',
+			'&nbsp;',
 			'&nbsp;',
 			'&nbsp;',
 			'<b>' .
@@ -844,6 +905,8 @@ if ($_REQUEST['do'] == 'typelist')
 			'<span class="normal">' . $vbphrase['ptstatus'] . '</span>',
 			'<span class="normal">' . $vbphrase['display_order'] . '</span>',
 			'<span class="normal">' . $vbphrase['issue_completed'] . '</span>',
+			'<span class="normal">' . $vbphrase['status_color_dark_styles'] . '</span>',
+			'<span class="normal">' . $vbphrase['status_color_light_styles'] . '</span>',
 			'<b>' . construct_link_code($vbphrase['add_status'], 'projecttype.php?do=statusadd&amp;type=' . $type['issuetypeid']) . '</b>'
 		), true);
 
@@ -851,10 +914,15 @@ if ($_REQUEST['do'] == 'typelist')
 		{
 			foreach ($statuses["$type[issuetypeid]"] AS $status)
 			{
+				require_once(DIR . '/includes/adminfunctions_template.php');
+				$colorPicker = construct_color_picker(11);
+
 				print_cells_row(array(
-					$vbphrase["issuestatus$status[issuestatusid]"],
-					"<input type=\"text\" class=\"bginput\" name=\"order[$status[issuestatusid]]\" value=\"$status[displayorder]\" tabindex=\"1\" size=\"3\" />",
+					$vbphrase['issuestatus' . $status['issuestatusid'] . ''],
+					'<input type="text" class="bginput" name="order[' . $status['issuestatusid'] . ']" value="' . $status['displayorder'] . '" tabindex="1" size="3" />',
 					'<input type="checkbox" name="issuecompleted[' . $status['issuestatusid'] . ']" value="1" ' . ($status['issuecompleted'] ? 'checked="checked"' : '') . ' />',
+					construct_status_color_row('statuscolor[' . $status['issuestatusid'] . ']', $status['statuscolor'], 'bginput', 22, false),
+					construct_status_color_row('statuscolor2[' . $status['issuestatusid'] . ']', $status['statuscolor2'], 'bginput', 22, false),
 					"<div align=\"" . vB_Template_Runtime::fetchStyleVar('right') . "\" class=\"smallfont\">" .
 						construct_link_code($vbphrase['edit'], 'projecttype.php?do=statusedit&amp;issuestatusid=' . $status['issuestatusid']) .
 						construct_link_code($vbphrase['delete'], 'projecttype.php?do=statusdelete&amp;issuestatusid=' . $status['issuestatusid']) .
@@ -864,11 +932,27 @@ if ($_REQUEST['do'] == 'typelist')
 		}
 		else
 		{
-			print_description_row(construct_phrase($vbphrase['no_statuses_of_this_type_defined_click_here_to_add'], $type['issuetypeid']), false, 4, '', 'center');
+			print_description_row(construct_phrase($vbphrase['no_statuses_of_this_type_defined_click_here_to_add'], $type['issuetypeid']), false, 6, '', 'center');
 		}
 	}
 
-	print_submit_row($vbphrase['save_changes'], '', 4);
+	print_submit_row($vbphrase['save_changes'], '', 6);
+
+	echo $colorPicker;
+
+	?>
+	<script type="text/javascript">
+	<!--
+
+	var bburl = "<?php echo $vbulletin->options['bburl']; ?>/";
+	var cpstylefolder = "<?php echo $vbulletin->options['cpstylefolder']; ?>";
+	var numColors = <?php echo intval($numcolors); ?>;
+	var colorPickerWidth = 253;
+	var colorPickerType = <?php echo intval($vbulletin->GPC['colorPickerType']); ?>;
+
+	//-->
+	</script>
+	<?php
 }
 
 print_cp_footer();
