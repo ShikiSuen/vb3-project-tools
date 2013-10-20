@@ -677,29 +677,29 @@ if ($installed_version === null)
 	// ... and some statuses
 	$statuses = array(
 		'bug' => array(
-			'Unconfirmed' => array('displayorder' => 10, 'canpetitionfrom' => 0, 'issuecompleted' => 0),
-			'Awaiting Feedback' => array('displayorder' => 20, 'canpetitionfrom' => 1, 'issuecompleted' => 0),
-			'Cannot Reproduce' => array('displayorder' => 30, 'canpetitionfrom' => 1, 'issuecompleted' => 0),
-			'Confirmed' => array('displayorder' => 40, 'canpetitionfrom' => 1, 'issuecompleted' => 0),
-			'Duplicate' => array('displayorder' => 50, 'canpetitionfrom' => 0, 'issuecompleted' => 1),
-			'Not a Bug' => array('displayorder' => 60, 'canpetitionfrom' => 0, 'issuecompleted' => 1),
-			'Fixed' => array('displayorder' => 100, 'canpetitionfrom' => 1, 'issuecompleted' => 1),
-			'No Response' => array('displayorder' => 110, 'canpetitionfrom' => 1, 'issuecompleted' => 1),
+			'Unconfirmed' => array('displayorder' => 10, 'canpetitionfrom' => 0, 'issuecompleted' => 0, 'statuscolor' => '#FFACAC', 'statuscolor2' =>'#FFACAC'),
+			'Awaiting Feedback' => array('displayorder' => 20, 'canpetitionfrom' => 1, 'issuecompleted' => 0, 'statuscolor' => '#FFC97B', 'statuscolor2' =>'#FFC97B'),
+			'Cannot Reproduce' => array('displayorder' => 30, 'canpetitionfrom' => 1, 'issuecompleted' => 0, 'statuscolor' => '#ACFFAC', 'statuscolor2' =>'#ACFFAC'),
+			'Confirmed' => array('displayorder' => 40, 'canpetitionfrom' => 1, 'issuecompleted' => 0, 'statuscolor' => '#FFC97B', 'statuscolor2' =>'#FFC97B'),
+			'Duplicate' => array('displayorder' => 50, 'canpetitionfrom' => 0, 'issuecompleted' => 1, 'statuscolor' => '#ACFFAC', 'statuscolor2' =>'#ACFFAC'),
+			'Not a Bug' => array('displayorder' => 60, 'canpetitionfrom' => 0, 'issuecompleted' => 1, 'statuscolor' => '#ACFFAC', 'statuscolor2' =>'#ACFFAC'),
+			'Fixed' => array('displayorder' => 100, 'canpetitionfrom' => 1, 'issuecompleted' => 1, 'statuscolor' => '#ACFFAC', 'statuscolor2' =>'#ACFFAC'),
+			'No Response' => array('displayorder' => 110, 'canpetitionfrom' => 1, 'issuecompleted' => 1, 'statuscolor' => '#ACFFAC', 'statuscolor2' =>'#ACFFAC'),
 		),
 		'feature' => array(
-			'Suggested' => array('displayorder' => 10, 'canpetitionfrom' => 0, 'issuecompleted' => 0),
-			'Accepted' => array('displayorder' => 20, 'canpetitionfrom' => 0, 'issuecompleted' => 0),
-			'In Progress' => array('displayorder' => 30, 'canpetitionfrom' => 0, 'issuecompleted' => 0),
-			'Implemented' => array('displayorder' => 100, 'canpetitionfrom' => 1, 'issuecompleted' => 1),
-			'Rejected' => array('displayorder' => 110, 'canpetitionfrom' => 0, 'issuecompleted' => 1),
-			'On Hold' => array('displayorder' => 120, 'canpetitionfrom' => 0, 'issuecompleted' => 0),
+			'Suggested' => array('displayorder' => 10, 'canpetitionfrom' => 0, 'issuecompleted' => 0, 'statuscolor' => '#FFACAC', 'statuscolor2' =>'#FFACAC'),
+			'Accepted' => array('displayorder' => 20, 'canpetitionfrom' => 0, 'issuecompleted' => 0, 'statuscolor' => '#FFC97B', 'statuscolor2' =>'#FFC97B'),
+			'In Progress' => array('displayorder' => 30, 'canpetitionfrom' => 0, 'issuecompleted' => 0, 'statuscolor' => '#FFC97B', 'statuscolor2' =>'#FFC97B'),
+			'Implemented' => array('displayorder' => 100, 'canpetitionfrom' => 1, 'issuecompleted' => 1, 'statuscolor' => '#ACFFAC', 'statuscolor2' =>'#ACFFAC'),
+			'Rejected' => array('displayorder' => 110, 'canpetitionfrom' => 0, 'issuecompleted' => 1, 'statuscolor' => '#ACFFAC', 'statuscolor2' =>'#ACFFAC'),
+			'On Hold' => array('displayorder' => 120, 'canpetitionfrom' => 0, 'issuecompleted' => 0, 'statuscolor' => '#FFC97B', 'statuscolor2' =>'#FFC97B'),
 		),
 		'task' => array(
-			'Requested' => array('displayorder' => 10, 'canpetitionfrom' => 0, 'issuecompleted' => 0),
-			'Accepted' => array('displayorder' => 20, 'canpetitionfrom' => 0, 'issuecompleted' => 0),
-			'In Progress' => array('displayorder' => 30, 'canpetitionfrom' => 0, 'issuecompleted' => 0),
-			'Completed' => array('displayorder' => 100, 'canpetitionfrom' => 1, 'issuecompleted' => 1),
-			'Rejected' => array('displayorder' => 110, 'canpetitionfrom' => 0, 'issuecompleted' => 1),
+			'Requested' => array('displayorder' => 10, 'canpetitionfrom' => 0, 'issuecompleted' => 0, 'statuscolor' => '#FFACAC', 'statuscolor2' =>'#FFACAC'),
+			'Accepted' => array('displayorder' => 20, 'canpetitionfrom' => 0, 'issuecompleted' => 0, 'statuscolor' => '#FFC97B', 'statuscolor2' =>'#FFC97B'),
+			'In Progress' => array('displayorder' => 30, 'canpetitionfrom' => 0, 'issuecompleted' => 0, 'statuscolor' => '#FFC97B', 'statuscolor2' =>'#FFC97B'),
+			'Completed' => array('displayorder' => 100, 'canpetitionfrom' => 1, 'issuecompleted' => 1, 'statuscolor' => '#ACFFAC', 'statuscolor2' =>'#ACFFAC'),
+			'Rejected' => array('displayorder' => 110, 'canpetitionfrom' => 0, 'issuecompleted' => 1, 'statuscolor' => '#ACFFAC', 'statuscolor2' =>'#ACFFAC'),
 		)
 	);
 	$statusids = array();
@@ -1322,6 +1322,59 @@ if ($installed_version !== null)
 			'length' => '20',
 			'null' => false
 		));
+	}
+}
+
+// #############################################################################
+/**
+* Add default colors for issue statuses
+*/
+
+if ($installed_version !== null)
+{
+	$statuses = array(
+		'1' => '#FFACAC',
+		'2' => '#FFC97B',
+		'3' => '#ACFFAC',
+		'4' => '#FFC97B',
+		'5' => '#ACFFAC',
+		'6' => '#ACFFAC',
+		'7' => '#ACFFAC',
+		'8' => '#ACFFAC',
+		'9' => '#FFACAC',
+		'10' => '#FFC97B',
+		'11' => '#FFC97B',
+		'12' => '#ACFFAC',
+		'13' => '#ACFFAC',
+		'14' => '#FFC97B',
+		'15' => '#FFACAC',
+		'16' => '#FFC97B',
+		'17' => '#FFC97B',
+		'18' => '#ACFFAC',
+		'19' => '#ACFFAC'
+	);
+
+	$statusid = array();
+
+	foreach ($statuses AS $issuestatusid => $statuscolor)
+	{
+		$issuestatus = $db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_issuestatus
+			WHERE issuestatusid = " . $issuestatusid
+		);
+
+		if ($issuestatus)
+		{
+			$dm =& datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_SILENT);
+
+			$dm->set_existing($issuestatus);
+			$dm->set_info('rebuild_caches', false);
+
+			$dm->set('statuscolor', $val);
+
+			$dm->save();
+		}
 	}
 }
 
@@ -2063,10 +2116,55 @@ foreach ($project_array AS $projects)
 // Hide errors if column is already present
 $db->hide_errors();
 
-// Add field for 'PT color titles by status' feature
+// Add field for 'PT color titles by status' feature & import default values for default issue statuses
 if ($installed_version !== null)
 {
 	$db->query_write("ALTER TABLE " . TABLE_PREFIX . "pt_issuestatus ADD statuscolor2 VARCHAR(20) NOT NULL DEFAULT ''");
+
+	$statuses = array(
+		'1' => '#FFACAC',
+		'2' => '#FFC97B',
+		'3' => '#ACFFAC',
+		'4' => '#FFC97B',
+		'5' => '#ACFFAC',
+		'6' => '#ACFFAC',
+		'7' => '#ACFFAC',
+		'8' => '#ACFFAC',
+		'9' => '#FFACAC',
+		'10' => '#FFC97B',
+		'11' => '#FFC97B',
+		'12' => '#ACFFAC',
+		'13' => '#ACFFAC',
+		'14' => '#FFC97B',
+		'15' => '#FFACAC',
+		'16' => '#FFC97B',
+		'17' => '#FFC97B',
+		'18' => '#ACFFAC',
+		'19' => '#ACFFAC'
+	);
+
+	$statusid = array();
+
+	foreach ($statuses AS $issuestatusid => $statuscolor)
+	{
+		$issuestatus = $db->query_first("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_issuestatus
+			WHERE issuestatusid = " . $issuestatusid
+		);
+
+		if ($issuestatus)
+		{
+			$dm =& datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_SILENT);
+
+			$dm->set_existing($issuestatus);
+			$dm->set_info('rebuild_caches', false);
+
+			$dm->set('statuscolor2', $val);
+
+			$dm->save();
+		}
+	}
 }
 
 // Show future errors now

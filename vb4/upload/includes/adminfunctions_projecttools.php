@@ -625,6 +625,52 @@ function build_pt_user_list($name, $callback)
 }
 
 /**
+* Returns a row containing an input and a color picker widget
+*
+* @param	string	Item varname
+* @param	string	Item value
+* @param	string	CSS class to display with
+* @param	integer	Size of input box
+* @param	boolean	Surround code with <tr> ... </tr> ?
+*
+* @return	string
+*/
+function construct_status_color_row($name, $value, $class = 'bginput', $size = 22, $printtr = true)
+{
+	global $numcolors;
+
+	$value = htmlspecialchars_uni($value);
+
+	$html = '';
+
+	if ($printtr)
+	{
+		$html .= "
+		<tr>\n";
+	}
+
+	$html .= '
+			<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td><input type="text" class="' . $class . '" name="' . $name . '" id="color_' . $numcolors . '" value="' . $value . '" title="$' . $name . '" tabindex="1" size="' . $size . '" onchange="preview_color('. $numcolors . ')" dir="ltr" />&nbsp;</td>
+				<td><div id="preview_' . $numcolors . '" class="colorpreview" onclick="open_color_picker(' . $numcolors . ', event)"></div></td>
+			</tr>
+			</table>
+	';
+
+	if ($printtr)
+	{
+		$html .= "	</tr>\n";
+	}
+
+	$numcolors ++;
+
+	return $html;
+}
+
+
+
+/**
 * Fetches the 'scriptpath' variable - ie: the URI of the current page
 *
 * @return	string
