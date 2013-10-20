@@ -1177,9 +1177,8 @@ if ($_REQUEST['do'] == 'list')
 			{
 				print_description_row($vbphrase['no_project_defined_in_this_group'], false, 3, '', 'center');
 			}
-
-			print_submit_row($vbphrase['save_display_order'], '', 3);
 		}
+		print_submit_row($vbphrase['save_display_order'], '', 3);
 	}
 	else
 	{
