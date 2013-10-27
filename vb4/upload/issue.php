@@ -1154,6 +1154,14 @@ if (is_facebookenabled())
 	$fblikebutton = construct_fblikebutton();
 }
 
+// Vertical postbit?
+$show['legacy'] = false;
+
+if ($vbulletin->options['pt_legacytemplate'])
+{
+	$show['legacy'] = true;
+}
+
 $pageinfo = array();
 
 $pageinfo['issuetypeid'] = $issue['issuetypeid'];

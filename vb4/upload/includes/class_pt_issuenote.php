@@ -181,6 +181,7 @@ class vB_Pt_IssueNote
 	function construct()
 	{
 		global $show;
+
 		// preparation for display...
 		$this->prepare_start();
 		$this->process_date();
@@ -462,6 +463,14 @@ class vB_Pt_IssueNote_User extends vB_Pt_IssueNote
 				$this->note['import_seo'] = fetch_seo_url('issue', $this->note, null, 'import_issueid', 'import_title');
 			}
 		}
+
+		// Vertical postbit?
+		$show['legacy'] = false;
+
+		if ($this->registry->options['pt_legacytemplate'])
+		{
+			$show['legacy'] = true;
+		}
 	}
 }
 
@@ -505,6 +514,14 @@ class vB_Pt_IssueNote_Petition extends vB_Pt_IssueNote_User
 		$show['process_petition'] = ($this->note['petitionresolution'] == 'pending' AND $show['status_edit']);
 
 		$this->note['petition_text'] = construct_phrase($vbphrase['petition_change_x_' . $this->note['petitionresolution']], $this->note['petitionstatus']);
+
+		// Vertical postbit?
+		$show['legacy'] = false;
+
+		if ($this->registry->options['pt_legacytemplate'])
+		{
+			$show['legacy'] = true;
+		}
 	}
 }
 
@@ -544,6 +561,14 @@ class vB_Pt_IssueNote_System extends vB_Pt_IssueNote
 		foreach (translate_system_note($changes) AS $entry)
 		{
 			$this->note['message'][] = $entry;
+		}
+
+		// Vertical postbit?
+		$show['legacy'] = false;
+
+		if ($this->registry->options['pt_legacytemplate'])
+		{
+			$show['legacy'] = true;
 		}
 	}
 }
