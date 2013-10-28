@@ -43,6 +43,7 @@ class vB_ActivityStream_View_Perm_Project_IssueNote extends vB_ActivityStream_Vi
 			FROM " . TABLE_PREFIX . "pt_issuenote AS isn
 				INNER JOIN " . TABLE_PREFIX . "pt_issue AS i ON (isn.issueid = i.issueid)
 				INNER JOIN " . TABLE_PREFIX . "pt_issuenote AS isnfp ON (i.firstnoteid = isnfp.issuenoteid)
+				INNER JOIN " . TABLE_PREFIX . "pt_project AS p ON (p.projectid = i.projectid)
 			WHERE
 				isn.issuenoteid IN (" . implode(",", array_keys($this->content['issuenoteid'])) . ")
 					AND
