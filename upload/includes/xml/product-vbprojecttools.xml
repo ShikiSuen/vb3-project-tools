@@ -2509,7 +2509,43 @@ if ($installed_version !== null)
 			'null' => false,
 			'default' => '0'
 		));
-	}]]></installcode>
+	}
+}
+
+/*================================*\
+|| ############################## ||
+|| #      Fix for issue 316	    # ||
+|| ############################## ||
+\*================================*/
+if ($installed_version !== null)
+{
+	$projectids = $db->query_read("
+		SELECT projectid
+		FROM " . TABLE_PREFIX . "pt_project
+	");
+
+	foreach ($projectids['projectid'] AS $projectid)
+	{
+		$statusids = $db->query_read("
+			SELECT issuestatusid
+			FROM " . TABLE_PREFIX . "pt_issuestatus
+		");
+
+		foreach ($statusids['issuestatusid'] AS $issuestatusid)
+		{
+			$db->query_write("
+				INSERT INTO " . TABLE_PREFIX . "pt_issuestatusprojectset
+					(issuestatusid, projectid)
+				VALUES
+					($issuestatusid, $projectid)
+			");
+		}
+	}
+}
+
+// Rebuild all the things!
+require_once(DIR . '/includes/adminfunctions_projecttools.php');
+build_project_cache();]]></installcode>
 			<uninstallcode />
 		</code>
 	</codes>
@@ -3060,7 +3096,7 @@ if ($installed_version !== null)
 .vB_MagicSelect img, .vB_MagicSelect_hover img {
 	vertical-align: top;
 }]]></template>
-		<template name="projecttools.css" templatetype="template" date="1382881868" username="Pitchoune" version="2.2.1"><![CDATA[@charset "UTF-8";
+		<template name="projecttools.css" templatetype="template" date="1382879588" username="Pitchoune" version="2.2.1"><![CDATA[@charset "UTF-8";
 
 /* vB4 Project Tools CSS definitions */
 
@@ -3385,8 +3421,7 @@ a.firstunread, a.firstunread:hover
 
 .pt_issuelist .blocksubhead .ptissuelist_replies {
 	float: {vb:stylevar right};
-	width: 8%;
-	margin-{vb:stylevar left}: 30px;
+	width: 5%;
 }
 
 .pt_issuelist .blocksubhead .ptissuelist_issuetype {
@@ -3515,7 +3550,7 @@ a.firstunread, a.firstunread:hover
 .pt_issuelist .blockrow .ptissuelist_replies {
 	padding: 0 5px;
 	vertical-align: middle;
-	width: 8%;
+	width: 5%;
 	text-align: center;
 	float: {vb:stylevar right};
 }
@@ -5174,7 +5209,7 @@ legend {
 
 </body>
 </html>]]></template>
-		<template name="pt_issue" templatetype="template" date="1382880665" username="Pitchoune" version="2.2.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_issue" templatetype="template" date="1378830441" username="Pitchoune" version="2.2.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -6197,7 +6232,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 </body>
 </html>]]></template>
 		<template name="pt_issuelist_arrow" templatetype="template" date="1294664144" username="Pitchoune" version="2.2.0"><![CDATA[<img class="inlineimg" src="{vb:stylevar imgdir_button}/sort{vb:raw opposite_sort}.png" alt="{vb:rawphrase reverse_sort_order}" border="0" />]]></template>
-		<template name="pt_issuenotebit_petition" templatetype="template" date="1382880609" username="Pitchoune" version="2.2.1"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_petition" templatetype="template" date="1382880515" username="Pitchoune" version="2.2.1"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="block pt_issue_note">
 	<div class="issue_note<vb:if condition="$show['legacy']">_legacy</vb:if>">
 		<div class="block">
@@ -6327,7 +6362,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	//--> 
 	</script>
 </li>]]></template>
-		<template name="pt_issuenotebit_system" templatetype="template" date="1382880621" username="Pitchoune" version="2.2.1"><![CDATA[<!-- note system -->
+		<template name="pt_issuenotebit_system" templatetype="template" date="1382880140" username="Pitchoune" version="2.2.1"><![CDATA[<!-- note system -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="pt_issue_note">
 	<div class="issue_note<vb:if condition="$show['legacy']">_legacy</vb:if>">
 		<div class="block">
@@ -6352,7 +6387,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</div>
 </li>]]></template>
-		<template name="pt_issuenotebit_user" templatetype="template" date="1382880633" username="Pitchoune" version="2.2.1"><![CDATA[<!-- user note -->
+		<template name="pt_issuenotebit_user" templatetype="template" date="1382869624" username="Pitchoune" version="2.2.1"><![CDATA[<!-- user note -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="pt_issue_note">
 	<div class="issue_note<vb:if condition="$show['legacy']">_legacy</vb:if>">
 		<div class="block">
@@ -6465,7 +6500,7 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 		</div>
 	</div>
 </li>]]></template>
-		<template name="pt_issue_firstnote" templatetype="template" date="1382880645" username="Pitchoune" version="2.2.1"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="pt_issue_content">
+		<template name="pt_issue_firstnote" templatetype="template" date="1382641954" username="Pitchoune" version="2.2.1"><![CDATA[<li id="issue_{vb:raw issue.issueid}" class="pt_issue_content">
 	<div class="issue_content<vb:if condition="$show['legacy']">_legacy</vb:if>">
 		<div class="block">
 			<div class="blockhead">
@@ -16066,40 +16101,46 @@ Separate each style ID with a comma.<br />
 		<faq faqname="pt_faq_report" faqparent="pt_faq" displayorder="30" />
 	</faqentries>
 	<navigation>
-		<tab name="vbtab_project" date="1337425462" username="Pitchoune" version="4.2.0 Alpha 1">
+		<tab name="vbtab_project" date="1382645451" username="Pitchoune" version="2.2.1">
 			<active>1</active>
 			<show />
 			<scripts />
 			<displayorder>50</displayorder>
 			<url>project.php{sesssion.sessionurl_q}</url>
+			<menuid />
+			<newpage>0</newpage>
 		</tab>
-		<link name="vbpt_myreports" date="1337425527" username="Pitchoune" version="4.2.0 Alpha 1">
+		<link name="vbpt_myreports" date="1382645451" username="Pitchoune" version="2.2.1">
 			<active>1</active>
 			<show>member</show>
 			<parent>vbtab_project</parent>
 			<displayorder>10</displayorder>
 			<url>projectsearch.php?{session.sessionurl}do=reports</url>
+			<newpage>0</newpage>
 		</link>
-		<link name="vbpt_subscriptions" date="1337425622" username="Pitchoune" version="4.2.0 Alpha 1">
+		<link name="vbpt_subscriptions" date="1382645451" username="Pitchoune" version="2.2.1">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>20</displayorder>
 			<url>projectpost.php?{session.sessionurl}do=managesubscriptions</url>
+			<newpage>0</newpage>
 		</link>
-		<link name="vbpt_timeline" date="1337425678" username="Pitchoune" version="4.2.0 Alpha 1">
+		<link name="vbpt_timeline" date="1382645451" username="Pitchoune" version="2.2.1">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>30</displayorder>
 			<url>projecttimeline.php{session.sessionurl_q}</url>
+			<newpage>0</newpage>
 		</link>
-		<link name="vbpt_faq" date="1337425710" username="Pitchoune" version="4.2.0 Alpha 1">
+		<link name="vbpt_faq" date="1382645451" username="Pitchoune" version="2.2.1">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>40</displayorder>
 			<url>faq.php?{session.sessionurl}faq=pt_faq</url>
+			<newpage>0</newpage>
 		</link>
 	</navigation>
 </product>
