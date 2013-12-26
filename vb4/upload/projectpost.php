@@ -415,7 +415,7 @@ if ($_POST['do'] == 'postreply')
 	if ($issuenote['issuenoteid'])
 	{
 		// Soft or hard delete? True if hard, false if soft
-		$issue['delete'] = ($vbulletin->GPC['delete'] == 'hard') ? true : false;
+		$issuenote['delete'] = ($vbulletin->GPC['delete'] == 'hard') ? true : false;
 
 		// an edit
 		$issuenotedata->set_existing($issuenote);
