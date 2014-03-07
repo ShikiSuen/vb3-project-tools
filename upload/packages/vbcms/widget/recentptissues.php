@@ -411,9 +411,8 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 		require_once(DIR . '/includes/functions_search.php');
 
 		//figure out how to handle the 'cancelwords'
-		$display['highlight'] = array();
-		/*$page_text =  preg_replace('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siUe', "process_quote_removal('\\3', \$display['highlight'])", $pagetext);*/
-		$page_text = preg_replace_callback('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siU', "process_quote_removal_callback", $pagetext);
+		$this->display['highlight'] = array();
+		$page_text = preg_replace_callback('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siU', array($this, 'process_quote_removal_callback'), $pagetext);
 
 		$strip_quotes = true;
 
@@ -440,6 +439,14 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 		);
 
 		return strval($context);
+	}
+
+	/**
+	* This functions fixes a php 5.5+ issue
+	*/
+	protected function process_quote_removal_callback($matches)
+	{
+		return process_quote_removal($matches[3], $this->display['highlight']);
 	}
 }
 
