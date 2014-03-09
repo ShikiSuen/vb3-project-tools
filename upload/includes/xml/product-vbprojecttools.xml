@@ -2524,21 +2524,41 @@ if ($installed_version !== null)
 		FROM " . TABLE_PREFIX . "pt_project
 	");
 
-	foreach ($projectids['projectid'] AS $projectid)
+	while ($projectlistids = $db->fetch_array($projectids))
+	{
+		$projectlist[] = $projectlistids['projectid'];
+	}
+
+	foreach ($projectlist AS $projectid)
 	{
 		$statusids = $db->query_read("
 			SELECT issuestatusid
 			FROM " . TABLE_PREFIX . "pt_issuestatus
 		");
 
-		foreach ($statusids['issuestatusid'] AS $issuestatusid)
+		while ($statuslistids = $db->fetch_array($statusids))
 		{
-			$db->query_write("
-				INSERT INTO " . TABLE_PREFIX . "pt_issuestatusprojectset
-					(issuestatusid, projectid)
-				VALUES
-					($issuestatusid, $projectid)
+			$statuslist[] = $statuslistids['issuestatusid'];
+		}
+
+		foreach ($statuslist AS $issuestatusid)
+		{
+			$statuscheck = $db->query_first("
+				SELECT *
+				FROM " . TABLE_PREFIX . "pt_issuestatusprojectset
+				WHERE issuestatusid = " . $issuestatusid . "
+					AND projectid = " . $projectid . "
 			");
+
+			if (!$statuscheck)
+			{
+				$db->query_write("
+					INSERT INTO " . TABLE_PREFIX . "pt_issuestatusprojectset
+						(issuestatusid, projectid)
+					VALUES
+						($issuestatusid, $projectid)
+				");
+			}
 		}
 	}
 }
