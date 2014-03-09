@@ -12,73 +12,66 @@
 		<phrase name="priority" date="1323433846" username="Pitchoune" version="2.2.0"><![CDATA[Priorité]]></phrase>
 		<phrase name="projects" date="1185036771" username="Pitchoune" version="1.0.0"><![CDATA[Projets]]></phrase>
 		<phrase name="search_projects" date="1184849035" username="Pitchoune" version="1.0.0"><![CDATA[Recherche dans les projets]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_faq_text" date="1393795355" username="Pitchoune" version="2.2.1"><![CDATA[FAQ]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_myreports_text" date="1393795355" username="Pitchoune" version="2.2.1"><![CDATA[Mes rapports]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1393795355" username="Pitchoune" version="2.2.1"><![CDATA[Abonnements aux demandes]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_timeline_text" date="1393795355" username="Pitchoune" version="2.2.1"><![CDATA[Ligne temporelle]]></phrase>
-		<phrase name="vb_navigation_tab_vbtab_project_text" date="1393795368" username="Pitchoune" version="2.2.1"><![CDATA[Projets]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_faq_text" date="1394354726" username="Pitchoune" version="2.2.1"><![CDATA[FAQ]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_myreports_text" date="1394354728" username="Pitchoune" version="2.2.1"><![CDATA[Mes rapports]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1394354729" username="Pitchoune" version="2.2.1"><![CDATA[Abonnements aux demandes]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_timeline_text" date="1394354730" username="Pitchoune" version="2.2.1"><![CDATA[Ligne temporelle]]></phrase>
+		<phrase name="vb_navigation_tab_vbtab_project_text" date="1394354732" username="Pitchoune" version="2.2.1"><![CDATA[Projets]]></phrase>
 	</phrasetype>
 	<phrasetype name="Project Tools" fieldname="projecttools">
-		<phrase name="addressed_version_bug" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Fixed Version]]></phrase>
-		<phrase name="addressed_version_feature" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Implemented Version]]></phrase>
-		<phrase name="addressed_version_task" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Completed Version]]></phrase>
-		<phrase name="applies_version_bug" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Affected Version]]></phrase>
-		<phrase name="applies_version_feature" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Suggested Version]]></phrase>
-		<phrase name="applies_version_task" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Target Version]]></phrase>
-		<phrase name="issuestatus1" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Unconfirmed]]></phrase>
-		<phrase name="issuestatus10" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Accepted]]></phrase>
-		<phrase name="issuestatus11" date="1372671021" username="Pitchoune" custom="1"><![CDATA[In Progress]]></phrase>
-		<phrase name="issuestatus12" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Implemented]]></phrase>
-		<phrase name="issuestatus13" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Rejected]]></phrase>
-		<phrase name="issuestatus14" date="1372671021" username="Pitchoune" custom="1"><![CDATA[On Hold]]></phrase>
-		<phrase name="issuestatus15" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Requested]]></phrase>
-		<phrase name="issuestatus16" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Accepted]]></phrase>
-		<phrase name="issuestatus17" date="1372671021" username="Pitchoune" custom="1"><![CDATA[In Progress]]></phrase>
-		<phrase name="issuestatus18" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Completed]]></phrase>
-		<phrase name="issuestatus19" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Rejected]]></phrase>
-		<phrase name="issuestatus2" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Awaiting Feedback]]></phrase>
-		<phrase name="issuestatus3" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Cannot Reproduce]]></phrase>
-		<phrase name="issuestatus4" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Confirmed]]></phrase>
-		<phrase name="issuestatus5" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Duplicate]]></phrase>
-		<phrase name="issuestatus6" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Not a Bug]]></phrase>
-		<phrase name="issuestatus7" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Fixed]]></phrase>
-		<phrase name="issuestatus8" date="1372671021" username="Pitchoune" custom="1"><![CDATA[No Response]]></phrase>
-		<phrase name="issuestatus9" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Suggested]]></phrase>
-		<phrase name="issuetype_bug_plural" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Bugs]]></phrase>
-		<phrase name="issuetype_bug_singular" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Bug]]></phrase>
-		<phrase name="issuetype_feature_plural" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Features]]></phrase>
-		<phrase name="issuetype_feature_singular" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Feature]]></phrase>
-		<phrase name="issuetype_task_plural" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Tasks]]></phrase>
-		<phrase name="issuetype_task_singular" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Task]]></phrase>
-		<phrase name="milestone_1_description" date="1382047609" username="Pitchoune" version="2.2.1" custom="1"><![CDATA[45435453435ze4r35qsd4f5sef]]></phrase>
-		<phrase name="milestone_1_name" date="1382047609" username="Pitchoune" version="2.2.1" custom="1"><![CDATA[12156456435]]></phrase>
-		<phrase name="milestone_2_description" date="1382047651" username="Pitchoune" version="2.2.1" custom="1"><![CDATA[qdfgqdfgrqgrqsgfd]]></phrase>
-		<phrase name="milestone_2_name" date="1382047651" username="Pitchoune" version="2.2.1" custom="1"><![CDATA[qdfsqfgdrg]]></phrase>
-		<phrase name="post_new_issue_bug" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Post New Bug]]></phrase>
-		<phrase name="post_new_issue_feature" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Post New Feature]]></phrase>
-		<phrase name="post_new_issue_task" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Post New Task]]></phrase>
-		<phrase name="priority1" date="1372671021" username="Pitchoune" custom="1"><![CDATA[1 - Highest]]></phrase>
-		<phrase name="priority10" date="1372671021" username="Pitchoune" custom="1"><![CDATA[10 - Lowest]]></phrase>
+		<phrase name="addressed_version_bug" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Correction dans la version]]></phrase>
+		<phrase name="addressed_version_feature" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Implanté dans la version]]></phrase>
+		<phrase name="addressed_version_task" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Version corrigée]]></phrase>
+		<phrase name="applies_version_bug" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Affecté dans la version]]></phrase>
+		<phrase name="applies_version_feature" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Suggéré pour la version]]></phrase>
+		<phrase name="applies_version_task" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Version affectée]]></phrase>
+		<phrase name="issuestatus1" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Non confirmé]]></phrase>
+		<phrase name="issuestatus10" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Accepté]]></phrase>
+		<phrase name="issuestatus11" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[En cours]]></phrase>
+		<phrase name="issuestatus12" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Implanté]]></phrase>
+		<phrase name="issuestatus13" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Rejeté]]></phrase>
+		<phrase name="issuestatus14" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[En attente]]></phrase>
+		<phrase name="issuestatus15" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Demandé]]></phrase>
+		<phrase name="issuestatus16" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Accepté]]></phrase>
+		<phrase name="issuestatus17" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[En cours]]></phrase>
+		<phrase name="issuestatus18" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Terminé]]></phrase>
+		<phrase name="issuestatus19" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Rejeté]]></phrase>
+		<phrase name="issuestatus2" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[En attente d'avis]]></phrase>
+		<phrase name="issuestatus3" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Impossible à reproduire]]></phrase>
+		<phrase name="issuestatus4" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Confirmé]]></phrase>
+		<phrase name="issuestatus5" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Doublon]]></phrase>
+		<phrase name="issuestatus6" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Pas un bug]]></phrase>
+		<phrase name="issuestatus7" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Corrigé]]></phrase>
+		<phrase name="issuestatus8" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Pas de réponse]]></phrase>
+		<phrase name="issuestatus9" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Suggéré]]></phrase>
+		<phrase name="issuetype_bug_plural" date="1394353340" username="Pitchoune" version="2.2.1"><![CDATA[Bugs]]></phrase>
+		<phrase name="issuetype_bug_singular" date="1394353340" username="Pitchoune" version="2.2.1"><![CDATA[Bug]]></phrase>
+		<phrase name="issuetype_feature_plural" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Fonctionnalités]]></phrase>
+		<phrase name="issuetype_feature_singular" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Fonctionnalité]]></phrase>
+		<phrase name="issuetype_task_plural" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Tâches]]></phrase>
+		<phrase name="issuetype_task_singular" date="1394353349" username="Pitchoune" version="2.2.1"><![CDATA[Tâche]]></phrase>
+		<phrase name="post_new_issue_bug" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[Envoyer un nouveau bug]]></phrase>
+		<phrase name="post_new_issue_feature" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[Envoyer une nouvelle fonctionnalité]]></phrase>
+		<phrase name="post_new_issue_task" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[Envoyer une nouvelle tâche]]></phrase>
+		<phrase name="priority1" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[1 - Important]]></phrase>
+		<phrase name="priority10" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[10 - Négligeable]]></phrase>
 		<phrase name="priority2" date="1372671021" username="Pitchoune" custom="1"><![CDATA[2]]></phrase>
 		<phrase name="priority3" date="1372671021" username="Pitchoune" custom="1"><![CDATA[3]]></phrase>
 		<phrase name="priority4" date="1372671021" username="Pitchoune" custom="1"><![CDATA[4]]></phrase>
-		<phrase name="priority5" date="1372671021" username="Pitchoune" custom="1"><![CDATA[5 - Medium]]></phrase>
+		<phrase name="priority5" date="1394353457" username="Pitchoune" version="2.2.1"><![CDATA[5 - Moyen]]></phrase>
 		<phrase name="priority6" date="1372671021" username="Pitchoune" custom="1"><![CDATA[6]]></phrase>
 		<phrase name="priority7" date="1372671021" username="Pitchoune" custom="1"><![CDATA[7]]></phrase>
 		<phrase name="priority8" date="1372671021" username="Pitchoune" custom="1"><![CDATA[8]]></phrase>
 		<phrase name="priority9" date="1372671021" username="Pitchoune" custom="1"><![CDATA[9]]></phrase>
-		<phrase name="version1" date="1379362856" username="Pitchoune" version="2.2.1" custom="1"><![CDATA[ds&lt;fqsfes&lt;fsdqf]]></phrase>
-		<phrase name="version2" date="1379362863" username="Pitchoune" version="2.2.1" custom="1"><![CDATA[wxcvwxcvwcxv]]></phrase>
-		<phrase name="versiongroup1" date="1379362849" username="Pitchoune" version="2.2.1" custom="1"><![CDATA[qdfgsdrgqez&lt;g]]></phrase>
-		<phrase name="vote_count_negative_bug" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Users unable to reproduce bug]]></phrase>
-		<phrase name="vote_count_negative_feature" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Votes against this feature]]></phrase>
-		<phrase name="vote_count_negative_task" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Votes not to perform]]></phrase>
-		<phrase name="vote_count_positive_bug" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Users able to reproduce bug]]></phrase>
-		<phrase name="vote_count_positive_feature" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Votes for this feature]]></phrase>
-		<phrase name="vote_count_positive_task" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Votes to perform]]></phrase>
-		<phrase name="vote_question_bug" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Are you able to reproduce this bug?]]></phrase>
-		<phrase name="vote_question_feature" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Would you like to see this feature implemented?]]></phrase>
-		<phrase name="vote_question_task" date="1372671021" username="Pitchoune" custom="1"><![CDATA[Would you like to see this task performed?]]></phrase>
+		<phrase name="vote_count_negative_bug" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Utilisateurs ne pouvant pas reproduire le bug]]></phrase>
+		<phrase name="vote_count_negative_feature" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Votes contre cette fonctionnalité]]></phrase>
+		<phrase name="vote_count_negative_task" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Votes pour ne pas effectuer cette tâche]]></phrase>
+		<phrase name="vote_count_positive_bug" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Utilisateurs pouvant reproduire le bug]]></phrase>
+		<phrase name="vote_count_positive_feature" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Votes pour cette fonctionnalité]]></phrase>
+		<phrase name="vote_count_positive_task" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Votes pour effectuer cette tâche]]></phrase>
+		<phrase name="vote_question_bug" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Êtes-vous capable de reproduire ce bug ?]]></phrase>
+		<phrase name="vote_question_feature" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Souhaiteriez-vous voir cette fonctionnalité implanté ?]]></phrase>
+		<phrase name="vote_question_task" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Souhaiteriez-vous voir cette tâche effectuée ?]]></phrase>
 		<phrase name="accept_petition_change_status_x" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Accepter la pétition et modifier l'état en</span> {1}<span class="shade"> ?</span>]]></phrase>
 		<phrase name="active" date="1327528281" username="Pitchoune" version="2.2.0"><![CDATA[Actif]]></phrase>
 		<phrase name="active_issues" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Demandes actives]]></phrase>
