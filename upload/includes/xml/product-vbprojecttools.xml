@@ -8332,7 +8332,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1338674614" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1394821217" username="Pitchoune" version="2.2.1"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -8761,7 +8761,7 @@ init_project_readmarker_system();
 				<vb:if condition="$applies_versions">
 					<!-- applies to version -->
 					<div class="blockrow">
-						<label class="smallfont">{vb:rawphrase applies_version_issuetype}</label>
+						<label>{vb:rawphrase applies_version_issuetype}</label>
 						<ul class="group">
 							<li>
 								<select class="primary" name="appliesversionid" tabindex="2">
@@ -8781,7 +8781,7 @@ init_project_readmarker_system();
 
 				<!-- addressed in version -->
 				<div class="blockrow">
-					<label class="smallfont">{vb:rawphrase addressed_version_issuetype}</label>
+					<label>{vb:rawphrase addressed_version_issuetype}</label>
 					<ul class="group">
 						<li>
 							<vb:if condition="$show['status_edit']">
