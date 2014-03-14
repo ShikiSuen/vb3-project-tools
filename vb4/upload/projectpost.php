@@ -1239,7 +1239,7 @@ if ($_POST['do'] == 'postissue' OR $_REQUEST['do'] == 'addissue' OR $_REQUEST['d
 			$issue = array(
 				'issueid' => 0,
 				'projectid' => $project['projectid'],
-				'issuestatusid' => $vbulletin->pt_projects["$project[projectid]"]['types'][$vbulletin->GPC['issuetypeid']],
+				'issuestatusid' => $vbulletin->pt_projects["$project[projectgroupid]"]['projects']["$project[projectid]"]['types'][$vbulletin->GPC['issuetypeid']],
 				'issuetypeid' => $vbulletin->GPC['issuetypeid'],
 				'issuetype' => $vbphrase['issuetype_' . $vbulletin->GPC['issuetypeid'] . '_singular'],
 				'projectcategoryid' => 0,
@@ -1949,7 +1949,7 @@ if ($_REQUEST['do'] == 'addissue' OR $_REQUEST['do'] == 'editissue')
 		$optionselected = '';
 		$issuetype_options = $option = array();
 
-		foreach (array_keys($vbulletin->pt_projects["$project[projectid]"]['types']) AS $type)
+		foreach (array_keys($vbulletin->pt_projects[$project['projectgroupid']]['projects']["$project[projectid]"]['types']) AS $type)
 		{
 			if (!($projectperms["$type"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($projectperms["$type"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
 			{
