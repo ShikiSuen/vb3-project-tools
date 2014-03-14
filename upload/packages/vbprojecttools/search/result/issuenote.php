@@ -94,7 +94,7 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 		$projectgroup = $vbulletin->db->query_first("
 			SELECT projectgroupid
 			FROM " . TABLE_PREFIX . "pt_project
-			WHERE projectid = " . $projectid . "
+			WHERE projectid = " . $issue['projectid'] . "
 		");
 
 		$project = $vbulletin->pt_projects[$projectgroup['projectgroupid']]['projects'][$issue['projectid']];
