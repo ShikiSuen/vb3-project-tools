@@ -35,21 +35,31 @@ class vBProjectTools_Search_SearchController_NewIssueNote extends vB_Search_Sear
 		$equals_filters = $criteria->get_equals_filters();
 		$notequals_filter = $criteria->get_notequals_filters();
 
-		// Do a query for adding the project group
-		$projectgroup = $vbulletin->db->query_first("
-			SELECT projectgroupid
-			FROM " . TABLE_PREFIX . "pt_project
-			WHERE projectid = " . $projectid . "
-		");
-
 		//handle projects
 		if (isset($equals_filters['projectid']))
 		{
+			// Do a query for adding the project group
+			$projectgroup = $vbulletin->db->query_first("
+				SELECT projectgroupid
+				FROM " . TABLE_PREFIX . "pt_project
+				WHERE projectid = " . $equals_filters['projectid'] . "
+			");
+
 			$projectids = $equals_filters['projectid'];
 		}
 		else
 		{
-			$projectids = array_keys($vbulletin->pt_projects[$projectgroup['projectgroupid']]['projects']);
+			$projectlist = array();
+
+			foreach ($vbulletin->pt_projects AS $projectgroupid => $projectgroupprojectid)
+			{
+				foreach ($projectgroupprojectid AS $notused => $projectid)
+				{
+					$projectlist[] = $projectid;
+				}
+			}
+
+			$projectids = array_keys($projectlist);
 		}
 
 		$excluded_projectids = array();
