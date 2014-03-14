@@ -4971,35 +4971,38 @@ if ($_REQUEST['do'] == 'importcontent')
 {
 	$project_type_select = array();
 
-	foreach ($vbulletin->pt_projects AS $projectid => $projectinfo)
+	foreach ($vbulletin->pt_projects AS $projectgroupid => $project)
 	{
-		$project_perms["$projectid"] = fetch_project_permissions($vbulletin->userinfo, $projectid);
-
-		$optiongroup = $optgroup = $option = array();
-
-		foreach (array_keys($projectinfo['types']) AS $type)
+		foreach ($project['projects'] AS $projectid => $projectinfo)
 		{
-			// Check we can both view and post the target issue type
-			if (!($project_perms["$projectid"]["$type"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($project_perms["$projectid"]["$type"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
+			$project_perms["$projectid"] = fetch_project_permissions($vbulletin->userinfo, $projectid);
+
+			$optiongroup = $optgroup = $option = array();
+
+			foreach (array_keys($projectinfo['types']) AS $type)
+			{
+				// Check we can both view and post the target issue type
+				if (!($project_perms["$projectid"]["$type"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($project_perms["$projectid"]["$type"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
+				{
+					continue;
+				}
+
+				$option['title'] = $vbphrase["issuetype_{$type}_singular"];
+				$option['value'] = $projectinfo['projectid'] . '-' . $type;
+
+				$optiongroup[] = $option;
+			}
+
+			if (empty($optiongroup))
 			{
 				continue;
 			}
 
-			$option['title'] = $vbphrase["issuetype_{$type}_singular"];
-			$option['value'] = $projectinfo['projectid'] . '-' . $type;
+			$optgroup['label'] = $projectinfo['title'];
+			$optgroup['group'] = $optiongroup;
 
-			$optiongroup[] = $option;
+			$project_type_select[] = $optgroup;
 		}
-
-		if (empty($optiongroup))
-		{
-			continue;
-		}
-
-		$optgroup['label'] = $projectinfo['title'];
-		$optgroup['group'] = $optiongroup;
-
-		$project_type_select[] = $optgroup;
 	}
 
 	switch ($vbulletin->GPC['type'])
