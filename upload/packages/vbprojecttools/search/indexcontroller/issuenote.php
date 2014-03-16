@@ -250,7 +250,9 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		global $vbulletin;
 
 		$set = $vbulletin->db->query_read("
-			SELECT issueid FROM " . TABLE_PREFIX . "pt_issue WHERE projectid = " . intval($id) . "
+			SELECT issueid
+			FROM " . TABLE_PREFIX . "pt_issue
+			WHERE projectid = " . intval($id) . "
 		");
 
 		while ($row = $vbulletin->db->fetch_array($set))
@@ -285,7 +287,9 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		global $vbulletin;
 
 		$set = $vbulletin->db->query_read("
-			SELECT issueid FROM " . TABLE_PREFIX . "pt_issue WHERE projectid = " . intval($id) . "
+			SELECT issueid
+			FROM " . TABLE_PREFIX . "pt_issue
+			WHERE projectid = " . intval($id) . "
 		");
 
 		while ($row = $vbulletin->db->fetch_array($set))

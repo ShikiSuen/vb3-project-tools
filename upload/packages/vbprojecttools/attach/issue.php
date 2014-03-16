@@ -96,6 +96,7 @@ class vB_Attachment_Display_Single_vBProjectTools_Issue extends vB_Attachment_Di
 
 			$viewpermission = ($issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattachview']);
 			$viewthumbpermission = ($issueperms['attachpermissions'] & $this->registry->pt_bitfields['attach']['canattachview']);
+
 			if (!($issueperms['generalpermissions'] & $this->registry->pt_bitfields['general']['canview']) OR (!($issueperms['generalpermissions'] & $this->registry->pt_bitfields['general']['canviewothers']) AND ($issueinfo['submituserid'] != $this->registry->userinfo['userid'] OR $this->registry->userinfo['userid'] == 0)))
 			{
 				return false;
