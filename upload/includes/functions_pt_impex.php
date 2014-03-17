@@ -189,7 +189,7 @@ function ptimporter_prepare_issue_posting_pemissions($projectid, $issuetypeid)
 {
 	global $vbulletin, $vbphrase;
 
-	$projectgroup = $db->query_first("
+	$projectgroup = $vbulletin->db->query_first("
 		SELECT projectgroupid
 		FROM " . TABLE_PREFIX . "pt_project
 		WHERE projectid = " . $projectid . "
