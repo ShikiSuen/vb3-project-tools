@@ -949,7 +949,7 @@ function generate_repeat_search_field($crit_name, $crit_value)
 
 function stripslashes_callback($matches)
 {
-	return stripslashes(str_replace(' ' , '*', $matches[0]))
+	return stripslashes(str_replace(' ' , '*', $matches[0]));
 }
 
 ?>
