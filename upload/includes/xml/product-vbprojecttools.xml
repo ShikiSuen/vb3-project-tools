@@ -3,7 +3,7 @@
 <product productid="vbprojecttools" active="1">
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
-	<version>2.2.1</version>
+	<version>2.2.2</version>
 	<url />
 	<versioncheckurl />
 	<dependencies>
@@ -1088,6 +1088,16 @@ $db->query_write("
 ");
 $packageid = $db->insert_id();
 
+if (!$packageid)
+{
+	$packageid = $db->query_first("
+		SELECT packageid
+		FROM " . TABLE_PREFIX . "package
+		WHERE productid = 'vbprojecttools'
+			AND class = 'vBProjectTools'
+	");
+}
+
 $db->query_write("
 	REPLACE INTO " . TABLE_PREFIX . "contenttype
 		(class, packageid, canplace, cansearch, cantag, canattach)
@@ -1223,11 +1233,9 @@ if ($show['ptimporter_previous'])
 	//tags
 	$db->query_write("
 		DELETE tagcontent
-		FROM " . TABLE_PREFIX . "package AS package JOIN
-			" . TABLE_PREFIX . "contenttype AS contenttype ON
-				contenttype.packageid = package.packageid JOIN
-			" . TABLE_PREFIX . "tagcontent AS tagcontent ON
-				contenttype.contenttypeid = tagcontent.contenttypeid
+		FROM " . TABLE_PREFIX . "package AS package
+			JOIN " . TABLE_PREFIX . "contenttype AS contenttype ON contenttype.packageid = package.packageid
+			JOIN " . TABLE_PREFIX . "tagcontent AS tagcontent ON contenttype.contenttypeid = tagcontent.contenttypeid
 		WHERE productid = 'db_ptimporter'
 	");
 
@@ -1235,12 +1243,9 @@ if ($show['ptimporter_previous'])
 	$db->query_write("
 		DELETE package, route, action, contenttype
 		FROM " . TABLE_PREFIX . "package AS package
-		LEFT JOIN " . TABLE_PREFIX . "route AS route
-			ON route.packageid = package.packageid
-		LEFT JOIN " . TABLE_PREFIX . "action AS action
-			ON action.routeid = route.routeid
-		LEFT JOIN " . TABLE_PREFIX . "contenttype AS contenttype
-			ON contenttype.packageid = package.packageid
+			LEFT JOIN " . TABLE_PREFIX . "route AS route ON route.packageid = package.packageid
+			LEFT JOIN " . TABLE_PREFIX . "action AS action ON action.routeid = route.routeid
+			LEFT JOIN " . TABLE_PREFIX . "contenttype AS contenttype ON contenttype.packageid = package.packageid
 		WHERE productid = 'db_ptimporter'
 	");
 
@@ -8332,7 +8337,7 @@ init_project_readmarker_system();
 <a class="ptlink" href="{vb:link issue, {vb:raw issueinfos}, null, 'pt_issueid', 'title'}">
 	{vb:rawphrase pt_post_made_as_issue}
 </a>]]></template>
-		<template name="pt_postissue" templatetype="template" date="1394821217" username="Pitchoune" version="2.2.1"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_postissue" templatetype="template" date="1403021350" username="Pitchoune" version="2.2.2"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -9492,17 +9497,19 @@ init_project_readmarker_system();
 		</ul>
 	</div>
 </div>]]></template>
-		<template name="pt_projectgroupbit" templatetype="template" date="1380645068" username="Pitchoune" version="2.2.1"><![CDATA[<div class="pt_overview block">
-	<div class="blockhead">{vb:raw projectgroup.title_clean}</div>
-	<div class="blockbody formcontrols">
-		<div class="blocksubhead">
-			<div class="project">{vb:rawphrase projects}</div>
-			<div class="lastpost">{vb:rawphrase last_post}</div>
-			<div class="activeissues">{vb:rawphrase active_issues}</div>
+		<template name="pt_projectgroupbit" templatetype="template" date="1397670534" username="Pitchoune" version="2.2.1"><![CDATA[<vb:if condition="$projectbits">
+	<div class="pt_overview block">
+		<div class="blockhead">{vb:raw projectgroup.title_clean}</div>
+		<div class="blockbody formcontrols">
+			<div class="blocksubhead">
+				<div class="project">{vb:rawphrase projects}</div>
+				<div class="lastpost">{vb:rawphrase last_post}</div>
+				<div class="activeissues">{vb:rawphrase active_issues}</div>
+			</div>
+			{vb:raw projectbits}
 		</div>
-		{vb:raw projectbits}
 	</div>
-</div>]]></template>
+</vb:if>]]></template>
 		<template name="pt_project_milestones" templatetype="template" date="1308853340" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
