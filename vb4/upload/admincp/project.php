@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.1                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -1145,7 +1145,7 @@ if ($_REQUEST['do'] == 'list')
 		foreach ($groups AS $group)
 		{
 			print_cells_row(array(
-				$group['title'],
+				$group['title_clean'],
 				"<input type=\"text\" class=\"bginput\" name=\"projectgrouporder[" . $group['projectgroupid'] . "]\" value=\"" . $group['displayorder'] . "\" tabindex=\"1\" size=\"3\" />",
 				'<div align="' . vB_Template_Runtime::fetchStyleVar('right') . '" class="normal smallfont">' .
 					construct_link_code($vbphrase['edit'], 'project.php?do=groupedit&amp;projectgroupid=' . $group['projectgroupid']) .
