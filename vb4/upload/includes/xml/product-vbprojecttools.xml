@@ -14181,6 +14181,10 @@ else if (substr($filename, 0, 9) == 'issuelist')
 {
 	$userinfo['activity'] = 'projecttools';
 }
+else if (substr($filename, 0, 9) == 'milestone')
+{
+	$userinfo['activity'] = 'projecttools';
+}
 else if (substr($filename, 0, 7) == 'project')
 {
 	$userinfo['activity'] = 'projecttools';
