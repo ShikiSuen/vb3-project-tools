@@ -6388,6 +6388,22 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	//--> 
 	</script>
 </li>]]></template>
+		<template name="pt_issuenotebit_replies" templatetype="template" date="1414870686" username="admin" version="2.2.2"><![CDATA[<!-- user note -->
+<li id="issuenote_{vb:raw note.issuenoteid}" class="pt_issue_note">
+	<div class="issue_note<vb:if condition="$show['legacy']">_legacy</vb:if>">
+		<div class="block">
+			<a name="note{vb:raw note.issuenoteid}"></a>
+			<div class="blockhead">
+				{vb:rawphrase note}
+			</div>
+			<div class="blockbody settings_form_border">
+				<div class="blockrow">
+					<div class="restore">{vb:rawphrase replies_exist_but_not_visible}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</li>]]></template>
 		<template name="pt_issuenotebit_system" templatetype="template" date="1382880621" username="Pitchoune" version="2.2.1"><![CDATA[<!-- note system -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="pt_issue_note">
 	<div class="issue_note<vb:if condition="$show['legacy']">_legacy</vb:if>">
@@ -15317,6 +15333,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="no_reports_defined" date="1176812000" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[There are no reports defined. <a href="faq.php?{1}faq=pt_faq#faq_pt_faq_report">Click here to find out how to make a report.</a>]]></phrase>
 			<phrase name="no_target_date" date="1213619444" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[No target date]]></phrase>
 			<phrase name="none_meta" date="1174485896" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[(none)]]></phrase>
+			<phrase name="note" date="1414870643" username="admin" version="2.2.2"><![CDATA[Note:]]></phrase>
 			<phrase name="number_reported_issues_by_x" date="1278636105" username="Pitchoune" version="2.1.2"><![CDATA[Number of reported issues by {1}]]></phrase>
 			<phrase name="obsolete" date="1175167333" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Obsolete]]></phrase>
 			<phrase name="open_this_issue" date="1212158317" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Open this Issue]]></phrase>
@@ -15359,6 +15376,10 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="reason_for_edit_delete" date="1175078274" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Reason for edit / delete]]></phrase>
 			<phrase name="removed" date="1175093580" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Removed]]></phrase>
 			<phrase name="repeat_search" date="1182435690" username="Ed Sullivan" version="1.0.0 Release Candidate 2"><![CDATA[Repeat Search]]></phrase>
+			<phrase name="replies_exist_but_not_visible" date="1414870780" username="admin" version="2.2.2"><![CDATA[This issue contains some replies but it seems you don't have the permission to show them. To see them, you should log in.
+<br />
+<br />
+Once logged in, if the administrator decided it, you can still be able to not see replies.]]></phrase>
 			<phrase name="reply_text_sure_submit_attach" date="1183734604" username="Ed Sullivan" version="1.0.1"><![CDATA[You have entered some text as a reply. If you submit this attachment, this text will be lost. Are you sure you want to continue?]]></phrase>
 			<phrase name="reply_to_issue_x" date="1175174815" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Reply to Issue]]></phrase>
 			<phrase name="report_issue_note" date="1213634409" username="Scott" version="2.0.0 Alpha 1"><![CDATA[Report Issue Note]]></phrase>
@@ -16139,40 +16160,46 @@ Separate each style ID with a comma.<br />
 		<faq faqname="pt_faq_report" faqparent="pt_faq" displayorder="30" />
 	</faqentries>
 	<navigation>
-		<tab name="vbtab_project" date="1337425462" username="Pitchoune" version="4.2.0 Alpha 1">
+		<tab name="vbtab_project" date="1414863541" username="admin" version="2.2.2">
 			<active>1</active>
 			<show />
 			<scripts />
 			<displayorder>50</displayorder>
 			<url>project.php{sesssion.sessionurl_q}</url>
+			<menuid />
+			<newpage>0</newpage>
 		</tab>
-		<link name="vbpt_myreports" date="1337425527" username="Pitchoune" version="4.2.0 Alpha 1">
+		<link name="vbpt_myreports" date="1414863541" username="admin" version="2.2.2">
 			<active>1</active>
 			<show>member</show>
 			<parent>vbtab_project</parent>
 			<displayorder>10</displayorder>
 			<url>projectsearch.php?{session.sessionurl}do=reports</url>
+			<newpage>0</newpage>
 		</link>
-		<link name="vbpt_subscriptions" date="1337425622" username="Pitchoune" version="4.2.0 Alpha 1">
+		<link name="vbpt_subscriptions" date="1414863541" username="admin" version="2.2.2">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>20</displayorder>
 			<url>projectpost.php?{session.sessionurl}do=managesubscriptions</url>
+			<newpage>0</newpage>
 		</link>
-		<link name="vbpt_timeline" date="1337425678" username="Pitchoune" version="4.2.0 Alpha 1">
+		<link name="vbpt_timeline" date="1414863541" username="admin" version="2.2.2">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>30</displayorder>
 			<url>projecttimeline.php{session.sessionurl_q}</url>
+			<newpage>0</newpage>
 		</link>
-		<link name="vbpt_faq" date="1337425710" username="Pitchoune" version="4.2.0 Alpha 1">
+		<link name="vbpt_faq" date="1414863541" username="admin" version="2.2.2">
 			<active>1</active>
 			<show />
 			<parent>vbtab_project</parent>
 			<displayorder>40</displayorder>
 			<url>faq.php?{session.sessionurl}faq=pt_faq</url>
+			<newpage>0</newpage>
 		</link>
 	</navigation>
 </product>
