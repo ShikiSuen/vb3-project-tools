@@ -1006,6 +1006,14 @@ if ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['can
 		$notebits .= $note_handler->construct();
 	}
 }
+else
+{
+	if (!$vbulletin->userinfo['userid'])
+	{
+		$templater = vB_Template::create('pt_issuenotebit_replies');
+		$notebits = $templater->render();
+	}
+}
 
 // prepare the original issue like a note since it has note text
 // init the datamanager if the user can't see replies or the issue wont show
