@@ -2573,6 +2573,25 @@ require_once(DIR . '/includes/adminfunctions_projecttools.php');
 build_project_cache();]]></installcode>
 			<uninstallcode />
 		</code>
+		<code version="2.2.2">
+			<installcode><![CDATA[// Add an admin message for 'Can View Replies' permission
+if ($installed_version !== null)
+{
+	$db->query_write("
+		INSERT INTO " . TABLE_PREFIX . "adminmessage
+			(varname, dismissable, script, action, execurl, method, status)
+		VALUES
+			('after_upgrade_pt222_update_perm_canviewreplies',
+			1,
+			'',
+			'',
+			'',
+			'get',
+			'undone')
+	");
+}]]></installcode>
+			<uninstallcode />
+		</code>
 	</codes>
 	<templates>
 		<template name="activitystream_project_issue" templatetype="template" date="1337106668" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issue userprof_content userprof_content_border">
@@ -15036,6 +15055,10 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 		<phrasetype name="Error Messages" fieldname="error">
 			<phrase name="after_upgrade_40_update_pt_attachment" date="1303579053" username="Pitchoune" version="2.2.0"><![CDATA[<strong>vBulletin Project Tools 2.2 Post Upgrade</strong>
 <p>You must update your Project Tools attachments to vBulletin 4 format.</p>]]></phrase>
+			<phrase name="after_upgrade_pt222_update_perm_canviewreplies" date="1414880987" username="admin" version="2.2.2"><![CDATA[Since Project Tools 2.2.1, there is a new permission named 'Can View Replies' which needs to be reviewed. If you don't, some users wont be able to view issues replies.
+<br />
+<br />
+Note that unregistered users wont be able to see them at all.]]></phrase>
 			<phrase name="applicable_version_missing_contact_administrator" date="1323361621" username="Pitchoune" version="2.2.0"><![CDATA[The applicable version is missing and is required. Please contact the <a href="{1}">administrator</a>.]]></phrase>
 			<phrase name="applicable_version_required" date="1357940177" username="Pitchoune" version="2.2.0"><![CDATA[You must select a value for the '{2}' field for this issue. If there is nothing to select, please contact the <a href="{1}">administrator</a>.]]></phrase>
 			<phrase name="category_missing_contact_administrator" date="1323361590" username="Pitchoune" version="2.2.0"><![CDATA[The category is missing and is required. Please contact the <a href="{1}">administrator</a>.]]></phrase>
