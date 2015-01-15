@@ -6410,6 +6410,26 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	//--> 
 	</script>
 </li>]]></template>
+		<template name="pt_issuenotebit_replies" templatetype="template" date="1421359792" username="Pitchoune" version="2.2.2"><![CDATA[<!-- user note -->
+<li id="issuenote_{vb:raw note.issuenoteid}" class="pt_issue_note">
+	<div class="issue_note">
+		<div class="block">
+			<a name="note{vb:raw note.issuenoteid}"></a>
+			<div class="blockhead">
+				{vb:rawphrase note}
+			</div>
+			<div class="blockbody settings_form_border">
+				<div class="blockrow">
+					<vb:if condition="!$vbulletin->userinfo['userid']">
+						<div class="restore">{vb:rawphrase replies_exist_but_not_visible}</div>
+					<vb:else />
+						<div class="restore">{vb:rawphrase replies_not_visible_admin_permission}</div>
+					</vb:if>
+				</div>
+			</div>
+		</div>
+	</div>
+</li>]]></template>
 		<template name="pt_issuenotebit_system" templatetype="template" date="1382880621" username="Pitchoune" version="2.2.1"><![CDATA[<!-- note system -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="pt_issue_note">
 	<div class="issue_note<vb:if condition="$show['legacy']">_legacy</vb:if>">
@@ -15042,6 +15062,10 @@ Posted by: [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinfo[
 		<phrasetype name="Error Messages" fieldname="error">
 			<phrase name="after_upgrade_40_update_pt_attachment" date="1303579053" username="Pitchoune" version="2.2.0"><![CDATA[<strong>vBulletin Project Tools 2.2 Post Upgrade</strong>
 <p>You must update your Project Tools attachments to vBulletin 4 format.</p>]]></phrase>
+			<phrase name="after_upgrade_pt222_update_perm_canviewreplies" date="1421359877" username="Pitchoune" version="2.2.2"><![CDATA[Since Project Tools 2.2.1, there is a new permission named 'Can View Replies' which needs to be reviewed. If you don't, some users wont be able to view issues replies.
+<br />
+<br />
+Note that unregistered users wont be able to see them at all.]]></phrase>
 			<phrase name="applicable_version_missing_contact_administrator" date="1323361621" username="Pitchoune" version="2.2.0"><![CDATA[The applicable version is missing and is required. Please contact the <a href="{1}">administrator</a>.]]></phrase>
 			<phrase name="applicable_version_required" date="1357940177" username="Pitchoune" version="2.2.0"><![CDATA[You must select a value for the '{2}' field for this issue. If there is nothing to select, please contact the <a href="{1}">administrator</a>.]]></phrase>
 			<phrase name="category_missing_contact_administrator" date="1323361590" username="Pitchoune" version="2.2.0"><![CDATA[The category is missing and is required. Please contact the <a href="{1}">administrator</a>.]]></phrase>
