@@ -1008,11 +1008,8 @@ if ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['can
 }
 else
 {
-	if (!$vbulletin->userinfo['userid'])
-	{
-		$templater = vB_Template::create('pt_issuenotebit_replies');
-		$notebits = $templater->render();
-	}
+	$templater = vB_Template::create('pt_issuenotebit_replies');
+	$notebits = $templater->render();
 }
 
 // prepare the original issue like a note since it has note text
