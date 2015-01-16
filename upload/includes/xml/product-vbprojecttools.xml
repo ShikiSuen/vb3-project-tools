@@ -1772,9 +1772,13 @@ if ($installed_version !== null)
 	
 	while ($project = $db->fetch_array($projects))
 	{
-		require_once(DIR . '/includes/functions_projecttools.php');
-		$projectinfo = fetch_project_info($project['projectid'], false);
-	
+		//require_once(DIR . '/includes/functions_projecttools.php');
+		//$projectinfo = fetch_project_info($project['projectid'], false, true, false);
+		$projectinfo[] = $project;
+	}
+
+	foreach ($projectinfo AS $project)
+	{
 		switch ($project['options'])
 		{
 			// If nothing is in value
@@ -2416,8 +2420,7 @@ build_attachment_permissions();
 require_once(DIR . '/includes/adminfunctions_projecttools.php');
 build_version_cache();
 build_project_category_cache();
-build_project_priority_cache();
-build_project_cache();]]></installcode>
+build_project_priority_cache();]]></installcode>
 			<uninstallcode />
 		</code>
 		<code version="2.2.1">
@@ -2566,11 +2569,7 @@ if ($installed_version !== null)
 			}
 		}
 	}
-}
-
-// Rebuild all the things!
-require_once(DIR . '/includes/adminfunctions_projecttools.php');
-build_project_cache();]]></installcode>
+}]]></installcode>
 			<uninstallcode />
 		</code>
 		<code version="2.2.2">
@@ -2592,6 +2591,7 @@ if ($installed_version !== null)
 }
 
 // Needed for project groups into the datastore
+require_once(DIR . '/includes/adminfunctions_projecttools.php');
 build_project_cache();]]></installcode>
 			<uninstallcode />
 		</code>
