@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ï¿½2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -266,7 +266,11 @@ $pagenav = construct_page_nav(
 	$pageinfo
 );
 
-verify_seo_url('issuelist', $project, $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber']));
+// Fix for issue #345. Could be temporary.
+if ($vbulletin->options['friendlyurl'] != 0)
+{
+	verify_seo_url('issuelist', $project, $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber']));
+}
 
 $projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
 
