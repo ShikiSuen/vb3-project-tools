@@ -8,14 +8,14 @@
 $md5_sums = array(
 	'/' => array(
 		'issue.php' => '4441c0ed04689a30897e475dcde5f631',
-		'issuelist.php' => 'c5f345ee8bd12002c0e2d1867f789f8e',
+		'issuelist.php' => 'f07ccb223782a56ed32b25f890b9707f',
 		'milestone.php' => '0d7780acaea7b8206e54f2e7ac3f9c27',
 		'milestoneissuelist.php' => 'c41c87ad0e58bf65820455ebddf2140c',
 		'project.php' => '467dac6edf42da259bbfdc82bb5c23ca',
 		'projectajax.php' => '1e570a8bdd84a6675557dc3a94c57f10',
 		'projectexternal.php' => 'f3b883fd8e801d5a6e0e12658423420c',
 		'projectmilestone.php' => '151cc3483147dff48a5c43677a21c550',
-		'projectpost.php' => 'ba998d0c7d43a08b589539279571abe2',
+		'projectpost.php' => '378a7f6abc79323e7217f3f899e5cd0d',
 		'projectsearch.php' => 'c2dd99fb7782e28263e50c0e2633c861',
 		'projecttimeline.php' => '5508d3ba7d7629a981da8329d246b4d5',
 	),
