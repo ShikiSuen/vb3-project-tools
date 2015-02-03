@@ -4979,7 +4979,7 @@ if ($_REQUEST['do'] == 'importcontent')
 
 			$optiongroup = $optgroup = $option = array();
 
-			foreach (array_keys($projectinfo['types']) AS $type)
+			foreach (array_keys($projectinfo['projects']["$projectid"]['types']) AS $type)
 			{
 				// Check we can both view and post the target issue type
 				if (!($project_perms["$projectid"]["$type"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($project_perms["$projectid"]["$type"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
