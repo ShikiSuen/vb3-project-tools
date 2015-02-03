@@ -9621,7 +9621,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_project_subscriptionbit" templatetype="template" date="1294259383" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
+		<template name="pt_project_subscriptionbit" templatetype="template" date="1422988581" username="Pitchoune" version="2.2.2"><![CDATA[<div class="blockrow">
 	<div class="ptissuelist_project">
 		<div><strong><a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw projecttype.projectid}">{vb:raw projecttype.title}</a></strong></div>
 		<div class="smallfont">{vb:raw projecttype.summary}</div>
@@ -9647,7 +9647,7 @@ init_project_readmarker_system();
 			</div>
 			<div align="{vb:stylevar right}" style="white-space:nowrap">
 				{vb:raw projecttype.lastpostdate} <span class="time">{vb:raw projecttype.lastposttime}</span>
-				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw projecttype.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw projecttype.lastpostid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
 			</div>
 		</div>
 	</div>
@@ -10374,7 +10374,7 @@ init_project_readmarker_system();
 		<span class="shade">{vb:rawphrase project}</span> <a href="project.php?{vb:raw session.sessionurl}projectid={vb:raw project.projectid}">{vb:raw project.title}</a>
 	</vb:if>
 </li>]]></template>
-		<template name="pt_subscriptionbit" templatetype="template" date="1309716158" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow">
+		<template name="pt_subscriptionbit" templatetype="template" date="1422988540" username="Pitchoune" version="2.2.2"><![CDATA[<div class="blockrow">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
 	</div>
@@ -10401,7 +10401,7 @@ init_project_readmarker_system();
 		{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
 		<p>
 			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
-			<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost.gif" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+			<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
 		</p>
 	</div>
 	<div class="ptissuelist_replies smallfont">
