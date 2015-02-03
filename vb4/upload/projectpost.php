@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -3856,7 +3856,7 @@ if ($_REQUEST['do'] == 'moveissue')
 
 		$optgroup = $optiongroup = $option = array();
 
-		foreach (array_keys($projectinfo['types']) AS $type)
+		foreach (array_keys($projectinfo['projects']["$projectid"]['types']) AS $type)
 		{
 			// Check we can both view and post the target issue type
 			if (!($project_perms["$projectid"]["$type"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($project_perms["$projectid"]["$type"]['postpermissions'] & $vbulletin->pt_bitfields['post']['canpostnew']))
