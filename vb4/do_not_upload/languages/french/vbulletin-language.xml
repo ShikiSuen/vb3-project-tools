@@ -1,580 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<language name="Français" vbversion="4.2.2" product="vbprojecttools" type="phrases">
-	<phrasetype name="GLOBAL" fieldname="global">
-		<phrase name="x_replied_to_an_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> a répondu à la demande <a href="{3}">{4}</a> dans le projet <a href="{5}">{6}</a>]]></phrase>
-		<phrase name="x_started_an_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}" class="username">{2}</a> a crée une demande <a href="{3}">{4}</a> dans le projet <a href="{5}">{6}</a>]]></phrase>
-		<phrase name="addressversion" date="1323433709" username="Pitchoune" version="2.2.0"><![CDATA[Version appliquée]]></phrase>
-		<phrase name="applyversion" date="1323433719" username="Pitchoune" version="2.2.0"><![CDATA[Version affectée]]></phrase>
-		<phrase name="category" date="1323433796" username="Pitchoune" version="2.2.0"><![CDATA[Catégorie]]></phrase>
-		<phrase name="doubleclick_project_markread" date="1216302547" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Double-cliquez sur cette icône pour marquer ce projet et son contenu comme lu.]]></phrase>
-		<phrase name="issue" date="1323433825" username="Pitchoune" version="2.2.0"><![CDATA[Demande]]></phrase>
-		<phrase name="priority" date="1323433846" username="Pitchoune" version="2.2.0"><![CDATA[Priorité]]></phrase>
-		<phrase name="projects" date="1185036771" username="Pitchoune" version="1.0.0"><![CDATA[Projets]]></phrase>
-		<phrase name="search_projects" date="1184849035" username="Pitchoune" version="1.0.0"><![CDATA[Recherche dans les projets]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_faq_text" date="1394354726" username="Pitchoune" version="2.2.1"><![CDATA[FAQ]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_myreports_text" date="1394354728" username="Pitchoune" version="2.2.1"><![CDATA[Mes rapports]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1394354729" username="Pitchoune" version="2.2.1"><![CDATA[Abonnements aux demandes]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_timeline_text" date="1394354730" username="Pitchoune" version="2.2.1"><![CDATA[Ligne temporelle]]></phrase>
-		<phrase name="vb_navigation_tab_vbtab_project_text" date="1394354732" username="Pitchoune" version="2.2.1"><![CDATA[Projets]]></phrase>
-	</phrasetype>
-	<phrasetype name="Project Tools" fieldname="projecttools">
-		<phrase name="addressed_version_bug" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Correction dans la version]]></phrase>
-		<phrase name="addressed_version_feature" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Implanté dans la version]]></phrase>
-		<phrase name="addressed_version_task" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Version corrigée]]></phrase>
-		<phrase name="applies_version_bug" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Affecté dans la version]]></phrase>
-		<phrase name="applies_version_feature" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Suggéré pour la version]]></phrase>
-		<phrase name="applies_version_task" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Version affectée]]></phrase>
-		<phrase name="issuestatus1" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Non confirmé]]></phrase>
-		<phrase name="issuestatus10" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Accepté]]></phrase>
-		<phrase name="issuestatus11" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[En cours]]></phrase>
-		<phrase name="issuestatus12" date="1394353190" username="Pitchoune" version="2.2.1"><![CDATA[Implanté]]></phrase>
-		<phrase name="issuestatus13" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Rejeté]]></phrase>
-		<phrase name="issuestatus14" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[En attente]]></phrase>
-		<phrase name="issuestatus15" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Demandé]]></phrase>
-		<phrase name="issuestatus16" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Accepté]]></phrase>
-		<phrase name="issuestatus17" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[En cours]]></phrase>
-		<phrase name="issuestatus18" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Terminé]]></phrase>
-		<phrase name="issuestatus19" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Rejeté]]></phrase>
-		<phrase name="issuestatus2" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[En attente d'avis]]></phrase>
-		<phrase name="issuestatus3" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Impossible à reproduire]]></phrase>
-		<phrase name="issuestatus4" date="1394353281" username="Pitchoune" version="2.2.1"><![CDATA[Confirmé]]></phrase>
-		<phrase name="issuestatus5" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Doublon]]></phrase>
-		<phrase name="issuestatus6" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Pas un bug]]></phrase>
-		<phrase name="issuestatus7" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Corrigé]]></phrase>
-		<phrase name="issuestatus8" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Pas de réponse]]></phrase>
-		<phrase name="issuestatus9" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Suggéré]]></phrase>
-		<phrase name="issuetype_bug_plural" date="1394353340" username="Pitchoune" version="2.2.1"><![CDATA[Bugs]]></phrase>
-		<phrase name="issuetype_bug_singular" date="1394353340" username="Pitchoune" version="2.2.1"><![CDATA[Bug]]></phrase>
-		<phrase name="issuetype_feature_plural" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Fonctionnalités]]></phrase>
-		<phrase name="issuetype_feature_singular" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Fonctionnalité]]></phrase>
-		<phrase name="issuetype_task_plural" date="1394353335" username="Pitchoune" version="2.2.1"><![CDATA[Tâches]]></phrase>
-		<phrase name="issuetype_task_singular" date="1394353349" username="Pitchoune" version="2.2.1"><![CDATA[Tâche]]></phrase>
-		<phrase name="post_new_issue_bug" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[Envoyer un nouveau bug]]></phrase>
-		<phrase name="post_new_issue_feature" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[Envoyer une nouvelle fonctionnalité]]></phrase>
-		<phrase name="post_new_issue_task" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[Envoyer une nouvelle tâche]]></phrase>
-		<phrase name="priority1" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[1 - Important]]></phrase>
-		<phrase name="priority10" date="1394353446" username="Pitchoune" version="2.2.1"><![CDATA[10 - Négligeable]]></phrase>
-		<phrase name="priority2" date="1372671021" username="Pitchoune" custom="1"><![CDATA[2]]></phrase>
-		<phrase name="priority3" date="1372671021" username="Pitchoune" custom="1"><![CDATA[3]]></phrase>
-		<phrase name="priority4" date="1372671021" username="Pitchoune" custom="1"><![CDATA[4]]></phrase>
-		<phrase name="priority5" date="1394353457" username="Pitchoune" version="2.2.1"><![CDATA[5 - Moyen]]></phrase>
-		<phrase name="priority6" date="1372671021" username="Pitchoune" custom="1"><![CDATA[6]]></phrase>
-		<phrase name="priority7" date="1372671021" username="Pitchoune" custom="1"><![CDATA[7]]></phrase>
-		<phrase name="priority8" date="1372671021" username="Pitchoune" custom="1"><![CDATA[8]]></phrase>
-		<phrase name="priority9" date="1372671021" username="Pitchoune" custom="1"><![CDATA[9]]></phrase>
-		<phrase name="vote_count_negative_bug" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Utilisateurs ne pouvant pas reproduire le bug]]></phrase>
-		<phrase name="vote_count_negative_feature" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Votes contre cette fonctionnalité]]></phrase>
-		<phrase name="vote_count_negative_task" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Votes pour ne pas effectuer cette tâche]]></phrase>
-		<phrase name="vote_count_positive_bug" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Utilisateurs pouvant reproduire le bug]]></phrase>
-		<phrase name="vote_count_positive_feature" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Votes pour cette fonctionnalité]]></phrase>
-		<phrase name="vote_count_positive_task" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Votes pour effectuer cette tâche]]></phrase>
-		<phrase name="vote_question_bug" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Êtes-vous capable de reproduire ce bug ?]]></phrase>
-		<phrase name="vote_question_feature" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Souhaiteriez-vous voir cette fonctionnalité implanté ?]]></phrase>
-		<phrase name="vote_question_task" date="1394353544" username="Pitchoune" version="2.2.1"><![CDATA[Souhaiteriez-vous voir cette tâche effectuée ?]]></phrase>
-		<phrase name="accept_petition_change_status_x" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Accepter la pétition et modifier l'état en</span> {1}<span class="shade"> ?</span>]]></phrase>
-		<phrase name="active" date="1327528281" username="Pitchoune" version="2.2.0"><![CDATA[Actif]]></phrase>
-		<phrase name="active_issues" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Demandes actives]]></phrase>
-		<phrase name="active_issues_in_milestone_x_html" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Demandes actives dans l'étape « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="active_milestones" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Étapes actives]]></phrase>
-		<phrase name="activity_voting" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Activité / Vote]]></phrase>
-		<phrase name="added" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouté]]></phrase>
-		<phrase name="addressed_version" date="1284885473" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée]]></phrase>
-		<phrase name="all" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tout]]></phrase>
-		<phrase name="allow_report_viewable_to_all" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permettre à ce que ce rapport soit visible par tous les utilisateurs ? Si non, il n'y aura que vous qui pourrez visualiser ce rapport.]]></phrase>
-		<phrase name="any" date="1216302897" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[N'importe quel]]></phrase>
-		<phrase name="any_active_meta" date="1284885473" username="Pitchoune" version="2.1.2"><![CDATA[(n'importe quelle demande active)]]></phrase>
-		<phrase name="any_meta" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(n'importe quel)]]></phrase>
-		<phrase name="anywhere_meta" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(n'importe où)]]></phrase>
-		<phrase name="applicable_version" date="1335731128" username="Pitchoune" version="2.2.0"><![CDATA[Version affectée]]></phrase>
-		<phrase name="applied_tags" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tags appliqués]]></phrase>
-		<phrase name="ascending" date="1284760098" username="Pitchoune" version="2.1.2"><![CDATA[Croissant]]></phrase>
-		<phrase name="assign_to_self" date="1281451669" username="Pitchoune" version="2.1.2"><![CDATA[Vous assigner]]></phrase>
-		<phrase name="assign_yourself_to_issue" date="1284885515" username="Pitchoune" version="2.1.2"><![CDATA[Vous assigner à cette demande]]></phrase>
-		<phrase name="assigned_users" date="1179929669" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Utilisateurs assignés]]></phrase>
-		<phrase name="available_items" date="1179929669" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Objets disponibles]]></phrase>
-		<phrase name="category" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégorie]]></phrase>
-		<phrase name="change_status_to" date="1180986761" username="Pitchoune" version="1.0.0 Beta 3"><![CDATA[Modifier l'état]]></phrase>
-		<phrase name="changes" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Modifications]]></phrase>
-		<phrase name="click_here_to_view_x_completed_milestones" date="1284885515" username="Pitchoune" version="2.1.2"><![CDATA[Cliquez ici pour afficher les {1} étape(s) achevées !]]></phrase>
-		<phrase name="close_this_issue" date="1284885515" username="Pitchoune" version="2.1.2"><![CDATA[Fermer cette demande]]></phrase>
-		<phrase name="closed" date="1216303113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Fermé]]></phrase>
-		<phrase name="comments" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Commentaires]]></phrase>
-		<phrase name="completed" date="1216303212" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Achevé]]></phrase>
-		<phrase name="completed_date" date="1254167284" username="Pitchoune" version="2.0.1"><![CDATA[Date de fin effective]]></phrase>
-		<phrase name="completed_issues_in_milestone_x_html" date="1284885595" username="Pitchoune" version="2.1.2"><![CDATA[Demandes achevées dans l'étape « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="completed_milestones" date="1284885595" username="Pitchoune" version="2.1.2"><![CDATA[Étapes achevées]]></phrase>
-		<phrase name="contains_text" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Texte contenant]]></phrase>
-		<phrase name="continue" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Continuer]]></phrase>
-		<phrase name="current_version" date="1181505208" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Version actuelle]]></phrase>
-		<phrase name="dates_x_to_y" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[{1} à {2}]]></phrase>
-		<phrase name="delete_issue_in_manner" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Supprimer la demande de la manière suivante]]></phrase>
-		<phrase name="delete_issue_note_check_appropriate_option" date="1275163296" username="Pitchoune" version="2.1.1"><![CDATA[Sélectionnez les options appropriées et cliquez sur le bouton « Enregistrer ».]]></phrase>
-		<phrase name="delete_issue_note_in_manner" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Supprimer la note de la manière suivante]]></phrase>
-		<phrase name="delete_this_attachment" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Supprimer cette pièce jointe]]></phrase>
-		<phrase name="delete_this_issue" date="1284885622" username="Pitchoune" version="2.1.2"><![CDATA[Supprimer la demande]]></phrase>
-		<phrase name="delete_this_note" date="1275163314" username="Pitchoune" version="2.1.1"><![CDATA[Supprimer la réponse]]></phrase>
-		<phrase name="descending" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Décroissant]]></phrase>
-		<phrase name="description" date="1179929715" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Description]]></phrase>
-		<phrase name="download" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Télécharger]]></phrase>
-		<phrase name="download_patch_file" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Télécharger le fichier patch]]></phrase>
-		<phrase name="edit_history" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Modifier l'historique]]></phrase>
-		<phrase name="edit_issue" date="1284885622" username="Pitchoune" version="2.1.2"><![CDATA[Modifier la demande]]></phrase>
-		<phrase name="edit_reply" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Modifier la réponse]]></phrase>
-		<phrase name="edit_reply_to_issue_x" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Modifier la réponse de la demande]]></phrase>
-		<phrase name="edit_this_issue" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Modifier cette demande]]></phrase>
-		<phrase name="edited_by_x" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Modifié par</span> {1}]]></phrase>
-		<phrase name="export_as_post" date="1323367556" username="Pitchoune" version="2.2.0"><![CDATA[Exporter en tant que message]]></phrase>
-		<phrase name="export_as_thread" date="1323367556" username="Pitchoune" version="2.2.0"><![CDATA[Exporter en tant que discussion]]></phrase>
-		<phrase name="export_issue" date="1323367556" username="Pitchoune" version="2.2.0"><![CDATA[Exporter la demande]]></phrase>
-		<phrase name="export_issue_post" date="1323367625" username="Pitchoune" version="2.2.0"><![CDATA[Message]]></phrase>
-		<phrase name="export_issue_thread" date="1323367625" username="Pitchoune" version="2.2.0"><![CDATA[Discussion]]></phrase>
-		<phrase name="export_this_issue" date="1323367625" username="Pitchoune" version="2.2.0"><![CDATA[Exporter cette demande]]></phrase>
-		<phrase name="field_addressedversionid" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée]]></phrase>
-		<phrase name="field_appliesversionid" date="1284885713" username="Pitchoune" version="2.1.2"><![CDATA[Version affectée]]></phrase>
-		<phrase name="field_assigneduser" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Utilisateurs assignés]]></phrase>
-		<phrase name="field_attachment_deleted" date="1179936605" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pièce jointe supprimée]]></phrase>
-		<phrase name="field_attachment_uploaded" date="1216303258" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Pièce jointe envoyée]]></phrase>
-		<phrase name="field_isaddressed" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Appliqué]]></phrase>
-		<phrase name="field_issuestatusid" date="1179929914" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[État]]></phrase>
-		<phrase name="field_issuetypeid" date="1179930715" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Types]]></phrase>
-		<phrase name="field_milestoneid" date="1284885748" username="Pitchoune" version="2.1.2"><![CDATA[Étape]]></phrase>
-		<phrase name="field_priority" date="1179929914" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Priorité]]></phrase>
-		<phrase name="field_projectcategoryid" date="1179929914" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégorie]]></phrase>
-		<phrase name="field_tags" date="1179930781" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tags]]></phrase>
-		<phrase name="field_title" date="1179929914" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Intitulé]]></phrase>
-		<phrase name="filter_responses_to_show" date="1179930724" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Filtrer les réponses à voir]]></phrase>
-		<phrase name="find_issues_from" date="1284885748" username="Pitchoune" version="2.1.2"><![CDATA[Trouver les demandes de]]></phrase>
-		<phrase name="find_issues_with" date="1284885748" username="Pitchoune" version="2.1.2"><![CDATA[Trouver les demandes avec]]></phrase>
-		<phrase name="find_new_issues" date="1284885748" username="Pitchoune" version="2.1.2"><![CDATA[Trouver les nouveaux demandes]]></phrase>
-		<phrase name="force" date="1179931451" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forcer]]></phrase>
-		<phrase name="group_by" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Grouper par]]></phrase>
-		<phrase name="hard_delete" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Suppression physique]]></phrase>
-		<phrase name="has_pending_petitions" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[En attente de pétition]]></phrase>
-		<phrase name="hostname_ip_x_y" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[L'hôte de {1} est <strong>{2}</strong>.]]></phrase>
-		<phrase name="initial_report" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Rapport initial]]></phrase>
-		<phrase name="ip_address_logged_x" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[L'adresse IP enregistrée est <strong>{1}</strong>.]]></phrase>
-		<phrase name="issue" date="1284885800" username="Pitchoune" version="2.1.2"><![CDATA[Demande]]></phrase>
-		<phrase name="issue_been_deleted" date="1284885800" username="Pitchoune" version="2.1.2"><![CDATA[Cette demande a été supprimée]]></phrase>
-		<phrase name="issue_changed_by_system" date="1284885800" username="Pitchoune" version="2.1.2"><![CDATA[Demande modifiée par Système]]></phrase>
-		<phrase name="issue_changed_by_x" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Demande modifiée par {1}]]></phrase>
-		<phrase name="issue_deleted" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Demande supprimée]]></phrase>
-		<phrase name="issue_details" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Détails de la demande]]></phrase>
-		<phrase name="issue_has_been_deleted" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Cette demande a été supprimée]]></phrase>
-		<phrase name="issue_list" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Liste des demandes]]></phrase>
-		<phrase name="issue_must_have_attachments" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[La demande doit contenir des pièces jointes]]></phrase>
-		<phrase name="issue_must_have_pending_petitions" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[La demande doit avoir des pétitions en attente]]></phrase>
-		<phrase name="issue_note" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Note de la demande]]></phrase>
-		<phrase name="issue_number" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Demande #]]></phrase>
-		<phrase name="issue_properties" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Propriétés de la demande]]></phrase>
-		<phrase name="issue_report" date="1209241988" username="Administrateur" version="1.0.3"><![CDATA[Rapport]]></phrase>
-		<phrase name="issue_state" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[État de la demande]]></phrase>
-		<phrase name="issue_status" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[État de la demande]]></phrase>
-		<phrase name="issue_subscriptions" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Abonnements aux demandes]]></phrase>
-		<phrase name="issue_tools" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Outils de la demande]]></phrase>
-		<phrase name="issue_type" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Type de demande]]></phrase>
-		<phrase name="issuenote_made_as_issue" date="1323368416" username="Pitchoune" version="2.2.0"><![CDATA[Cette note a été crée en tant que demande.]]></phrase>
-		<phrase name="issues_in_milestone_x_html" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Demandes dans l'étape « {1} »]]></phrase>
-		<phrase name="issues_with_recent_replies" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Demandes avec des réponses récentes]]></phrase>
-		<phrase name="last_updated_x_at_y" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Dernière mise à jour : {1} à {2}]]></phrase>
-		<phrase name="last_x_actions" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[{1} dernières actions]]></phrase>
-		<phrase name="latest_issues_in_this_milestone" date="1284886133" username="Pitchoune" version="2.1.2"><![CDATA[Dernières demandes dans cette étape]]></phrase>
-		<phrase name="learn_more_about_reports" date="1179932210" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Apprenez-en plus à propos des rapports !]]></phrase>
-		<phrase name="loading" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Chargement]]></phrase>
-		<phrase name="make_this_issue_private" date="1284886133" username="Pitchoune" version="2.1.2"><![CDATA[Rendre la demande privée]]></phrase>
-		<phrase name="make_this_issue_public" date="1284886133" username="Pitchoune" version="2.1.2"><![CDATA[Rendre la demande publique]]></phrase>
-		<phrase name="manage_attachment" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Gérer la pièce jointe]]></phrase>
-		<phrase name="manage_project_subscription" date="1216304478" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Gérer les abonnements aux projets]]></phrase>
-		<phrase name="manage_subscription" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Gérer l'abonnement]]></phrase>
-		<phrase name="mark_all_issues_read" date="1284886133" username="Pitchoune" version="2.1.2"><![CDATA[Marquer les demandes comme lues]]></phrase>
-		<phrase name="mark_all_x_read" date="1216304478" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Marquer tou(te)s les « {1} » comme lu(e)s]]></phrase>
-		<phrase name="mark_attachment_current" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Marquer cette pièce jointe comme étant correcte]]></phrase>
-		<phrase name="mark_attachment_obsolete" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Marquer cette pièce jointe comme étant obsolète]]></phrase>
-		<phrase name="message_has_been_deleted" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ce message a été supprimé]]></phrase>
-		<phrase name="milestone" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Étape]]></phrase>
-		<phrase name="milestone_x_html" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Étape : {1}]]></phrase>
-		<phrase name="milestones" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Étapes]]></phrase>
-		<phrase name="move_issue" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Déplacer la demande]]></phrase>
-		<phrase name="move_this_issue" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Déplacer cette demande]]></phrase>
-		<phrase name="my_reports" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Mes rapports]]></phrase>
-		<phrase name="negative_votes" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Votes négatifs]]></phrase>
-		<phrase name="new_content_type" date="1323368438" username="Pitchoune" version="2.2.0"><![CDATA[Nouveau type de contenu]]></phrase>
-		<phrase name="new_project_and_issue_type" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Nouveau projet et type de demande]]></phrase>
-		<phrase name="new_subscribed_issues" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Nouveaux abonnements aux demandes]]></phrase>
-		<phrase name="next_release" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Prochaine version]]></phrase>
-		<phrase name="no_issues_matching_criteria" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Aucune demande ne correspond à ce critère.]]></phrase>
-		<phrase name="no_more_replies_may_be_made" date="1246559080" username="Pitchoune" version="2.0.1"><![CDATA[Aucun nouveau message ne peut être crée.]]></phrase>
-		<phrase name="no_reports_defined" date="1180082896" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Il n'y a aucun rapport défini. <a href="faq.php?{1}faq=pt_faq#faq_pt_faq_report">Cliquez ici pour savoir comment ouvrir un rapport.</a>]]></phrase>
-		<phrase name="no_target_date" date="1216304611" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Aucune date butoir]]></phrase>
-		<phrase name="none_meta" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(aucun)]]></phrase>
-		<phrase name="number_reported_issues_by_x" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Nombre de demandes signalées par {1}]]></phrase>
-		<phrase name="obsolete" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Obsolète]]></phrase>
-		<phrase name="open_this_issue" date="1284886965" username="Pitchoune" version="2.1.2"><![CDATA[Ouvrir cette demande]]></phrase>
-		<phrase name="order_by" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Trier par]]></phrase>
-		<phrase name="overdue" date="1216304594" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[En retard]]></phrase>
-		<phrase name="patch_lines_x_on" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Lignes {1} et précédentes]]></phrase>
-		<phrase name="patch_lines_x_to_y" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Lignes {1} à {2}]]></phrase>
-		<phrase name="pending_petitions" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pétitions en attente]]></phrase>
-		<phrase name="petition_change_x_accepted" date="1275171389" username="Pitchoune" version="2.1.1"><![CDATA[<span>Cette pétition pour appliquer l'état «</span> {1} <span>» a été</span> accepté.]]></phrase>
-		<phrase name="petition_change_x_pending" date="1275171431" username="Pitchoune" version="2.1.1"><![CDATA[<span>Cette pétition pour appliquer l'état «</span> {1} <span>» est actuellement</span> en attente.]]></phrase>
-		<phrase name="petition_change_x_rejected" date="1275171443" username="Pitchoune" version="2.1.1"><![CDATA[<span>Cette pétition pour appliquer l'état «</span> {1} <span>» a été</span> rejeté.]]></phrase>
-		<phrase name="petition_for_change_to_x_by_y" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pétition pour modifier l'état par <span class="shade">{1}</span> par {2}]]></phrase>
-		<phrase name="petition_for_status_change_to" date="1179932638" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pétition pour modifier l'état par]]></phrase>
-		<phrase name="petitions" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pétitions]]></phrase>
-		<phrase name="please_wait" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Veuillez patienter]]></phrase>
-		<phrase name="positive_votes" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Votes positifs]]></phrase>
-		<phrase name="post_new_issue" date="1284886990" username="Pitchoune" version="2.1.2"><![CDATA[Ouvrir une demande]]></phrase>
-		<phrase name="post_reply" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Envoyer une réponse]]></phrase>
-		<phrase name="priority" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Priorité]]></phrase>
-		<phrase name="priority0" date="1323368451" username="Pitchoune" version="2.2.0"><![CDATA[Inconnu(e)]]></phrase>
-		<phrase name="private_message_keep_in_mind" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ceci est un message privé. Veuillez vous en rappeler quand vous répondez !]]></phrase>
-		<phrase name="project" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Projet]]></phrase>
-		<phrase name="project_information" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Informations sur le projet]]></phrase>
-		<phrase name="project_new_issue_notes" date="1323368612" username="Pitchoune" version="2.2.0"><![CDATA[Contient des notes de demande non lus]]></phrase>
-		<phrase name="project_no_new_issue_notes" date="1323368612" username="Pitchoune" version="2.2.0"><![CDATA[Ne contient pas de notes de demande non lus]]></phrase>
-		<phrase name="project_rss_feed" date="1216304668" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Flux RSS de projets]]></phrase>
-		<phrase name="project_statistics" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Statistiques du projet]]></phrase>
-		<phrase name="project_subscriptions" date="1216304668" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Abonnements de projets]]></phrase>
-		<phrase name="project_timeline" date="1180082769" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ligne temporelle]]></phrase>
-		<phrase name="project_tools" date="1261164839" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools]]></phrase>
-		<phrase name="projects_list" date="1281876883" username="Pitchoune" version="2.1.2"><![CDATA[Liste des projets. Séparez chaque identifiant de projet par une virgule.]]></phrase>
-		<phrase name="promote_to_ptissue" date="1323368645" username="Pitchoune" version="2.2.0"><![CDATA[Créer une demande]]></phrase>
-		<phrase name="pt_create_issue" date="1284887043" username="Pitchoune" version="2.1.2"><![CDATA[Créer une demande]]></phrase>
-		<phrase name="pt_explanation_attachment_system" date="1323368793" username="Pitchoune" version="2.2.0"><![CDATA[Pour joindre des pièces jointes, vous devez sélectionner les pièces jointes en cliquant sur le bouton « Gérer les pièces jointes », et une fois terminé, cliquez sur le bouton « Envoyer ».<br />
-<br />
-Ceci est nécessaire car Project Tools utilise un système de pièces jointes particulier et se devait d'être compatible avec le système de pièces jointes de vBulletin 4.]]></phrase>
-		<phrase name="pt_managesubscriptions" date="1275163954" username="Pitchoune" version="2.1.1"><![CDATA[Lister les abonnements]]></phrase>
-		<phrase name="public_reports" date="1284887043" username="Pitchoune" version="2.1.2"><![CDATA[Demandes publiques]]></phrase>
-		<phrase name="quick_reply" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Réponse rapide]]></phrase>
-		<phrase name="reason_for_edit_delete" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Motif de la modification / suppression]]></phrase>
-		<phrase name="removed" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Retiré]]></phrase>
-		<phrase name="repeat_search" date="1209242000" username="Administrateur" version="1.0.3"><![CDATA[Recommencer la recherche]]></phrase>
-		<phrase name="reply_text_sure_submit_attach" date="1209242041" username="Administrateur" version="1.0.3"><![CDATA[Vous avez inséré du texte en tant que réponse. Si vous envoyez cette pièce jointe, ce texte sera perdu. Êtes-vous certain de vouloir continuer ?]]></phrase>
-		<phrase name="reply_to_issue_x" date="1284887069" username="Pitchoune" version="2.1.2"><![CDATA[Répondre à la demande]]></phrase>
-		<phrase name="report_issue_note" date="1284887069" username="Pitchoune" version="2.1.2"><![CDATA[Signaler le commentaire de demande]]></phrase>
-		<phrase name="reports" date="1179933163" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Rapports]]></phrase>
-		<phrase name="request_timed_out_refresh" date="1179933163" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Temps de la requête dépassé. Veuillez actualiser cette page pour voir si la mise à jour a été appliquée.]]></phrase>
-		<phrase name="result_sorting_and_grouping" date="1179933364" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tri et regroupement des résultats]]></phrase>
-		<phrase name="save_report" date="1179933163" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Enregistrer le rapport]]></phrase>
-		<phrase name="save_this_search_as_report" date="1179933163" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Enregistrer cette recherche en tant que rapport]]></phrase>
-		<phrase name="search_group_addressedversionid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes appliquées dans « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="search_group_appliesversionid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes affectées à « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="search_group_assignment" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes assignées à « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="search_group_issuestatusid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes avec l'état « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="search_group_issuetypeid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes avec le type « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="search_group_projectcategoryid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes dans la catégorie « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="search_group_projectid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes dans le projet « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="search_group_tag" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes avec le tag « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="search_only_issues_submitted_by_user" date="1284887215" username="Pitchoune" version="2.1.2"><![CDATA[Rechercher uniquement les demandes envoyées par cet utilisateur]]></phrase>
-		<phrase name="search_results_report_x" date="1275171502" username="Pitchoune" version="2.1.1"><![CDATA[Voir les résultats pour le rapport « {1} »]]></phrase>
-		<phrase name="search_this_milestone" date="1284887215" username="Pitchoune" version="2.1.2"><![CDATA[Rechercher dans cette étape]]></phrase>
-		<phrase name="search_this_project" date="1179933571" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Rechercher dans ce projet]]></phrase>
-		<phrase name="search_tools" date="1209242051" username="Administrateur" version="1.0.3"><![CDATA[Outils de recherche]]></phrase>
-		<phrase name="selected_items" date="1179933571" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Objets sélectionnés]]></phrase>
-		<phrase name="selected_subscriptions" date="1216304742" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Abonnements sélectionnés]]></phrase>
-		<phrase name="setting_ptissues_messagemaxchars_title" date="1284887215" username="Pitchoune" version="2.1.2"><![CDATA[Longueur de l'aperçu du contenu des demandes]]></phrase>
-		<phrase name="show_timeline" date="1180082748" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir la ligne temporelle]]></phrase>
-		<phrase name="soft_delete" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Suppression logique]]></phrase>
-		<phrase name="sort_results_by" date="1275163197" username="Pitchoune" version="2.1.1"><![CDATA[Trier les résultats par]]></phrase>
-		<phrase name="status" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[État]]></phrase>
-		<phrase name="submitted" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Envoyé]]></phrase>
-		<phrase name="submitted_by" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Envoyé par]]></phrase>
-		<phrase name="subscribe" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[S'abonner]]></phrase>
-		<phrase name="subscribe_to_this_issue" date="1284887258" username="Pitchoune" version="2.1.2"><![CDATA[S'abonner à cette demande]]></phrase>
-		<phrase name="subscribe_to_this_project" date="1216304742" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[S'abonner à ce projet]]></phrase>
-		<phrase name="subscription" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Abonnement]]></phrase>
-		<phrase name="subscription_type" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Type d'abonnement]]></phrase>
-		<phrase name="summary" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Résumé]]></phrase>
-		<phrase name="system_message_addressed" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Demande marquée comme étant</span> <em>complété</em>]]></phrase>
-		<phrase name="system_message_addressedversionid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Version appliquée modifiée de</span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
-		<phrase name="system_message_appliesversionid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Version affectée modifiée de </span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
-		<phrase name="system_message_assigneduser" date="1179934545" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Utilisateurs assignés modifiés</span>]]></phrase>
-		<phrase name="system_message_attachment_deleted" date="1179935554" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Pièce jointe </span> <em>{3}</em> <span class="shade">supprimée</span>]]></phrase>
-		<phrase name="system_message_attachment_uploaded" date="1260993437" username="Pitchoune" version="2.0.1"><![CDATA[<span class="shade">Pièce jointe </span> <em>{3}</em> <span class="shade">ajoutée</span>]]></phrase>
-		<phrase name="system_message_default" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">{1} modifié(e) de </span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
-		<phrase name="system_message_issue_exported" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande exportée en tant que discussion</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
-		<phrase name="system_message_issue_exported_issuethread" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande exportée dans la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
-		<phrase name="system_message_issue_exported_post" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande importée dans un message dans la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
-		<phrase name="system_message_issue_imported" date="1323381620" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande importée de la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
-		<phrase name="system_message_issue_imported_issuenote" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue importée en tant que note dans la demande</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
-		<phrase name="system_message_issue_imported_post" date="1323381632" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande importée d'un message de la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
-		<phrase name="system_message_milestoneid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Étape modifiée</span>]]></phrase>
-		<phrase name="system_message_projectcategoryid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Catégorie modifiée de</span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
-		<phrase name="system_message_tags" date="1179934545" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Tags modifiés</span>]]></phrase>
-		<phrase name="system_message_unaddressed" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Demande marquée comme étant</span> <em>non affectée</em>]]></phrase>
-		<phrase name="tags" date="1179934551" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tags]]></phrase>
-		<phrase name="target_date" date="1254167388" username="Pitchoune" version="2.0.1"><![CDATA[Date de fin planifiée]]></phrase>
-		<phrase name="text_location" date="1179936112" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Localisation du texte]]></phrase>
-		<phrase name="this_is_private_issue" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Ceci est une demande privée]]></phrase>
-		<phrase name="this_issue_is_closed" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Cette demande est fermée.]]></phrase>
-		<phrase name="timeline_empty" date="1292862650" username="Pitchoune" version="2.1.2"><![CDATA[La ligne temporelle est vide.]]></phrase>
-		<phrase name="timeline_entry_issue" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Demande créée par <a href="{1}" class="shade">{2}</a>]]></phrase>
-		<phrase name="timeline_entry_petition" date="1275171529" username="Pitchoune" version="2.1.1"><![CDATA[Pétition pour modifier l'état par <a href="{1}" class="shade">{2}</a>]]></phrase>
-		<phrase name="timeline_entry_reply" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Réponse à cette demande par <a href="{1}" class="shade">{2}</a>]]></phrase>
-		<phrase name="timeline_entry_system" date="1284887666" username="Pitchoune" version="2.1.2"><![CDATA[Détails de la demande modifiées par <a href="{1}" class="shade">{2}</a>]]></phrase>
-		<phrase name="timeline_entry_system_specific" date="1284887666" username="Pitchoune" version="2.1.2"><![CDATA[Détails de la demande modifiées par <a href="{1}" class="shade">{2}</a> ({3})]]></phrase>
-		<phrase name="total_active" date="1216304826" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Actifs au total]]></phrase>
-		<phrase name="total_attachments" date="1179936112" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pièces jointes au total]]></phrase>
-		<phrase name="total_completed" date="1216304826" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Achevés au total]]></phrase>
-		<phrase name="total_issues" date="1284887666" username="Pitchoune" version="2.1.2"><![CDATA[Demandes totaux]]></phrase>
-		<phrase name="unaddressed" date="1179936112" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[non adressé]]></phrase>
-		<phrase name="unapplied_tags" date="1179936309" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tags non appliqués]]></phrase>
-		<phrase name="unassigned_users" date="1179936309" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Utilisateurs non assignés]]></phrase>
-		<phrase name="undelete" date="1179936149" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Restaurer]]></phrase>
-		<phrase name="undelete_ellipsis" date="1179936149" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Restauration...]]></phrase>
-		<phrase name="unknown" date="1179936149" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Inconnu]]></phrase>
-		<phrase name="unsubscribe_from_this_issue" date="1284887740" username="Pitchoune" version="2.1.2"><![CDATA[Se désabonner de cette demande]]></phrase>
-		<phrase name="unsubscribing_personal_report_delete" date="1179936309" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Se désabonner d'un rapport personnel le supprimera automatiquement.]]></phrase>
-		<phrase name="update_subscriptions" date="1179936309" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Mettre à jour les abonnements]]></phrase>
-		<phrase name="upload_file" date="1260993423" username="Pitchoune" version="2.0.1"><![CDATA[Ajouter un fichier]]></phrase>
-		<phrase name="version" date="1179936158" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Version]]></phrase>
-		<phrase name="version_information" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Information de version]]></phrase>
-		<phrase name="view_all" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tout voir]]></phrase>
-		<phrase name="view_all_issues_in_this_milestone" date="1284887740" username="Pitchoune" version="2.1.2"><![CDATA[Voir toutes les demandes dans cette étape]]></phrase>
-		<phrase name="view_changes" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir les modifications]]></phrase>
-		<phrase name="view_comments" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir les commentaires]]></phrase>
-		<phrase name="view_complete_issue_list" date="1284887772" username="Pitchoune" version="2.1.2"><![CDATA[Voir la liste complète des demandes]]></phrase>
-		<phrase name="view_first_unread" date="1275163248" username="Pitchoune" version="2.1.1"><![CDATA[Voir le premier message non lu]]></phrase>
-		<phrase name="view_highlighted_patch" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir les lignes du patch]]></phrase>
-		<phrase name="view_milestones" date="1284887772" username="Pitchoune" version="2.1.2"><![CDATA[Voir les étapes]]></phrase>
-		<phrase name="view_more_results" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir plus de résultats]]></phrase>
-		<phrase name="view_patch" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir le patch]]></phrase>
-		<phrase name="what_makes_good_issue_description" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Comment faire une bonne description ?]]></phrase>
-		<phrase name="what_want_do_issue" date="1284887772" username="Pitchoune" version="2.1.2"><![CDATA[Que souhaitez-vous effectuer avec cette demande ?]]></phrase>
-		<phrase name="what_want_do_message" date="1179936499" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Que souhaitez-vous effectuer avec ce message ?]]></phrase>
-		<phrase name="x_percent_completed" date="1216304907" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[{1}% achevé]]></phrase>
-		<phrase name="x_results" date="1179936465" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[{1} résultat(s)]]></phrase>
-		<phrase name="you_are_searching_within_a_single_milestone" date="1284887859" username="Pitchoune" version="2.1.2"><![CDATA[Vous êtes en train d'effectuer une recherche dans une seule étape.]]></phrase>
-		<phrase name="you_assigned_issue" date="1284887859" username="Pitchoune" version="2.1.2"><![CDATA[Vous êtes assigné à cette demande.]]></phrase>
-		<phrase name="you_have_voted_issue" date="1284887868" username="Pitchoune" version="2.1.2"><![CDATA[Vous avez voté pour cette demande.]]></phrase>
-		<phrase name="you_not_subscribed_issues" date="1284887859" username="Pitchoune" version="2.1.2"><![CDATA[Vous êtes abonné à aucune demande.]]></phrase>
-		<phrase name="you_subscribed_issue" date="1284887859" username="Pitchoune" version="2.1.2"><![CDATA[Vous êtes abonné à cette demande.]]></phrase>
-		<phrase name="your_personal_reports" date="1179936465" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Vos rapports personnels]]></phrase>
-	</phrasetype>
-	<phrasetype name="Project Tools (Admin)" fieldname="projecttoolsadmin">
-		<phrase name="are_you_sure_want_to_delete_project_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer projet appelé « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="add_issue_status" date="1284887908" username="Pitchoune" version="2.1.2"><![CDATA[Ajouter un état de demande]]></phrase>
-		<phrase name="add_issue_type" date="1284887908" username="Pitchoune" version="2.1.2"><![CDATA[Ajouter un type de demande]]></phrase>
-		<phrase name="add_milestone" date="1284887908" username="Pitchoune" version="2.1.2"><![CDATA[Ajouter une étape]]></phrase>
-		<phrase name="add_project" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter un projet]]></phrase>
-		<phrase name="add_project_category" date="1179990266" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter une catégorie de projet]]></phrase>
-		<phrase name="add_project_group" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Ajouter un groupe de projets]]></phrase>
-		<phrase name="add_project_magic_select" date="1335735199" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter une option du sélecteur magique]]></phrase>
-		<phrase name="add_project_magic_select_group" date="1335735199" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter un sélecteur magique]]></phrase>
-		<phrase name="add_project_priority" date="1323368939" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter une priorité de projet]]></phrase>
-		<phrase name="add_project_version" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter une version de projet]]></phrase>
-		<phrase name="add_project_version_group" date="1182465050" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Ajouter un groupe de version de projet]]></phrase>
-		<phrase name="add_status" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter un état]]></phrase>
-		<phrase name="add_tag" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter un tag]]></phrase>
-		<phrase name="add_version" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter une version]]></phrase>
-		<phrase name="addressed_version_example" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée<dfn>Exemple : Version corrigée</dfn>]]></phrase>
-		<phrase name="applicable_version_example" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Version affectée<dfn>Exemple : Version affectée</dfn>]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_issuestatus_x" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer l'état de demande appelé « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_issuetype_x" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le type de demande appelé « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_milestone_x" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer l'étape appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_projectcategory_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer la catégorie de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_projectgroup_x" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le groupe de projet nommé « {1} » ?<br /><span class="smallfont">({2} : {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_projectmagicselect_x" date="1327528499" username="Pitchoune" version="2.2.0"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le sélecteur magique de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_projectmagicselectgroup_x" date="1327528499" username="Pitchoune" version="2.2.0"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le groupe de sélecteur magique de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_projectpriority_x" date="1323368986" username="Pitchoune" version="2.2.0"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer la priorité de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_projectversion_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer la version de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="are_you_sure_want_to_delete_projectversiongroup_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le groupe de version de projet appelé « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
-		<phrase name="available_issue_types" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Types de demande disponibles]]></phrase>
-		<phrase name="base_permissions_off_existing_project" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions de base d'un projet existant]]></phrase>
-		<phrase name="base_permissions_off_existing_type" date="1323431614" username="Pitchoune" version="2.2.0"><![CDATA[Permissions de base d'un type existant<dfn>Si vous sélectionnez « (aucun) », personne ne pourra utiliser ce type par défaut.</dfn>]]></phrase>
-		<phrase name="can_create_petitions_from_this_status" date="1182164571" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Peut lancer des pétitions depuis cet état ?]]></phrase>
-		<phrase name="categories" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégories]]></phrase>
-		<phrase name="categories_for_x" date="1216297855" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Catégories pour « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="chose_delete_types_project" date="1284888366" username="Pitchoune" version="2.1.2"><![CDATA[Vous avez choisi de supprimer un ou plusieurs types de demande pour ce projet. Pour achever ce processus, vous devrez choisir un nouveau type de demande et d'état pour déplacer les demandes se trouvant dans les types de demande que vous souhaitez supprimer. 
-<p>Si vous n'effectuez pas ceci, les rapports resteront mais deviendront inaccessibles jusqu'à ce que leur type soit de nouveau actif pour ce projet. Pour ignorer cette procédure et retourner à la liste des projets, <a href="project.php?do=projectlist">cliquez ici</a>.</p>]]></phrase>
-		<phrase name="completed_date_desc" date="1284888366" username="Pitchoune" version="2.1.2"><![CDATA[Si vous spécifiez une date ici, cette étape sera déplacée dans la liste des étapes achevées.]]></phrase>
-		<phrase name="default_value" date="1323369083" username="Pitchoune" version="2.2.0"><![CDATA[Valeur par défaut
-<dfn>Cette option est nécessaire uniquement si vous souhaitez appliquer par défaut cette valeur mais par par l'utilisateur (de manière automatique). Vous pouvez définir si cette option est requise dans la page de modification du projet.</dfn>]]></phrase>
-		<phrase name="default_version_group" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Groupe de version par défaut]]></phrase>
-		<phrase name="default_version_number" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Numéro de version par défaut]]></phrase>
-		<phrase name="deleted_issue_type" date="1284888366" username="Pitchoune" version="2.1.2"><![CDATA[Type de demande supprimé]]></phrase>
-		<phrase name="denote_as_next_version" date="1284888529" username="Pitchoune" version="2.1.2"><![CDATA[Dénoter sur la prochaine version ?<dfn>Si ceci est paramétré sur « Oui », tous les rapports avec comme indication pour la version appliquée « Prochaine version » seront associés à cette version.</dfn>]]></phrase>
-		<phrase name="display_after_forums" date="1323381309" username="Pitchoune" version="2.2.0"><![CDATA[Afficher après les forums
-<dfn>Les informations de ce projet apparaîtront dans la liste des forums après les forums sélectionnés.
-<br /><br />
-<span class="modlasttendays">Pour afficher un forum dans un sous-forum, vous avez besoin de sélectionner le forum parent, pas le dernier forum où vous souhaitez afficher le projet. Si le forum parent n'est pas visible pour certains groupes d'utilisateurs, ces utilisateurs ne pourront pas voir le projet.</span></dfn>]]></phrase>
-		<phrase name="do_not_change_meta" date="1209242403" username="Administrateur" version="1.0.3"><![CDATA[(ne pas modifier)]]></phrase>
-		<phrase name="do_not_use_meta" date="1179989720" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(ne pas utiliser)]]></phrase>
-		<phrase name="double_click_permission_quick_set" date="1284888529" username="Pitchoune" version="2.1.2"><![CDATA[Astuce : Vous pouvez double-cliquer sur une permission pour rapidement autoriser ou refuser cette permission pour tous les types de demande !]]></phrase>
-		<phrase name="edit_link_colored_custom_permissions" date="1179989720" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Le lien « [Modifier] » sera visible de la couleur suivante si des permissions personnalisées existent.]]></phrase>
-		<phrase name="edit_milestone" date="1323369448" username="Pitchoune" version="2.2.0"><![CDATA[Modifier l'étape « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_permissions_for_x" date="1216297870" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier les permissions pour « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_permissions_for_x_in_y" date="1216297888" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier les permissions pour « <span class="normal">{1}</span> » dans « <span class="normal">{2}</span> »]]></phrase>
-		<phrase name="edit_project_category" date="1323369448" username="Pitchoune" version="2.2.0"><![CDATA[Modifier la catégorie du projet « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_project_group_x" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Modification du groupe de projets <span class="normal">« {1} »</span>]]></phrase>
-		<phrase name="edit_project_magic_select" date="1335735308" username="Pitchoune" version="2.2.0"><![CDATA[Modifier l'option du sélecteur magique « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_project_magic_select_group" date="1335735308" username="Pitchoune" version="2.2.0"><![CDATA[Modifier le sélecteur magique « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_project_priority" date="1323369128" username="Pitchoune" version="2.2.0"><![CDATA[Modifier la priorité du projet « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_project_version" date="1323369128" username="Pitchoune" version="2.2.0"><![CDATA[Modifier la version du projet « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_project_version_group" date="1323369128" username="Pitchoune" version="2.2.0"><![CDATA[Modifier le groupe de version du projet « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_project_x" date="1216297906" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier le projet « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_status_x" date="1216297922" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier l'état « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="edit_type_x" date="1216297936" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier le type « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="existing_affected_issues_updated_delete_select_category" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mises à jour quand ceci est supprimé. Choisissez une nouvelle catégorie pour ces demandes :]]></phrase>
-		<phrase name="existing_affected_issues_updated_delete_select_milestone" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mis à jour quand ceci est supprimé. Sélectionnez une nouvelle étape pour ces demandes :]]></phrase>
-		<phrase name="existing_affected_issues_updated_delete_select_priority" date="1327528587" username="Pitchoune" version="2.2.0"><![CDATA[Ceci étant, les demandes affectées doivent être mis à jour quand ceci est supprimé. Sélectionnez une nouvelle priorité pour ces demandes :]]></phrase>
-		<phrase name="existing_affected_issues_updated_delete_select_status" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mises à jour quand ceci est supprimé. Choisissez un nouvel état pour ces demandes :]]></phrase>
-		<phrase name="existing_affected_issues_updated_delete_select_versions_x_y" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mises à jour quand ceci est supprimé.<ol style="margin-top: 0px; margin-bottom: 0px;">
-<li>Choisissez une nouvelle version affectée : {1}</li>
-<li>Choisissez une nouvelle version appliquée : {2}</select></li>
-</ol>]]></phrase>
-		<phrase name="filename_for_icon" date="1179989888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Nom de fichier pour l'icône<dfn>Ceci doit être placé dans le répertoire des icônes (par défaut : images/statusicon).</dfn>]]></phrase>
-		<phrase name="force_to_be_custom" date="1179990517" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forcer la personnalisation ?
-<dfn>Définissez ceci si vous souhaitez forcer un jeu de permissions à être crée pour ce projet même sans effectuer de modifications. Si vous effectuez des modifications, un jeu de permissions sera automatiquement crée.</dfn>]]></phrase>
-		<phrase name="global_project_permissions" date="1216308724" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Permissions globales des projets]]></phrase>
-		<phrase name="global_project_tools_permissions" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Permissions globales de Project Tools]]></phrase>
-		<phrase name="hide_globally_disabled_groups" date="1179989888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Cacher les groupes d'utilisateurs globalement désactivés]]></phrase>
-		<phrase name="html_is_allowed" date="1181508179" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Le code HTML est autorisée]]></phrase>
-		<phrase name="id_of_issue" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Identifiant de la demande (issueid)]]></phrase>
-		<phrase name="issue_closed" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Demande fermée]]></phrase>
-		<phrase name="issue_completed" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Demande achevée]]></phrase>
-		<phrase name="issue_type_key_alphanumeric_only" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Clef du type de demande<dfn>A-Z, 0-9, et le sous-tiret ( _ ) uniquement.</dfn>]]></phrase>
-		<phrase name="issue_type_manager" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Gestionnaire de type de demande]]></phrase>
-		<phrase name="issue_types_deleted_for_project_x" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Types de demande supprimés pour le projet « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="magic_select_group_title" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé du sélecteur magique]]></phrase>
-		<phrase name="magic_select_title" date="1335734732" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé de l'option du sélecteur magique]]></phrase>
-		<phrase name="magicselects" date="1327528637" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteurs magiques]]></phrase>
-		<phrase name="milestones_for_x_html" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Étapes pour « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="move_issues_into" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Déplacer les demandes dans]]></phrase>
-		<phrase name="need_manually_select_projects_type" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Souvenez-vous que vous avez besoin de sélectionner les projets manuellement qui doivent utiliser ce type une fois que ce dernier est crée !]]></phrase>
-		<phrase name="negative_vote_count_example" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Compteur de votes négatifs<dfn>Exemple : Utilisateurs ne reproduisant pas ce bug</dfn>]]></phrase>
-		<phrase name="no_categories_defined_project" date="1181508179" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Aucune catégorie n'est définie pour ce projet !]]></phrase>
-		<phrase name="no_magic_selects_defined_in_this_group" date="1327528637" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun sélecteur magique défini dans ce groupe.]]></phrase>
-		<phrase name="no_milestones_defined_for_this_project" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Aucune étape défini pour ce projet !]]></phrase>
-		<phrase name="no_priorities_defined_project" date="1327528981" username="Pitchoune" version="2.2.0"><![CDATA[Aucune priorité définie pour ce projet ! <a href="projectpriority.php?do=add&amp:projectid={1}">Cliquez ici pour en ajouter un !</a>]]></phrase>
-		<phrase name="no_project_defined_in_this_group" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Il n'y a pas de projet pour ce groupe !]]></phrase>
-		<phrase name="no_project_group_defined" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Il n'y a pas de projet ou de groupe de projets !]]></phrase>
-		<phrase name="no_project_magic_select_defined_click_here_to_add_one" date="1327528710" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun sélecteur magique de défini. <a href="projectmagicselect.php?do=groupadd&amp;projectid={1}">Cliquez ici pour en ajouter un !</a>]]></phrase>
-		<phrase name="no_projects_defined_click_here_to_add_one" date="1327528981" username="Pitchoune" version="2.2.0"><![CDATA[Aucun projet défini. <a href="project.php?do=add">Cliquez ici pour en ajouter un !</a>]]></phrase>
-		<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1327529055" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun état de ce type défini. Ce type ne sera pas utilisable jusqu'à ce que vous ajoutiez un état. <a href="projecttype.php?do=statusadd&amp;type={1}">Cliquez ici pour en ajouter un !</a>]]></phrase>
-		<phrase name="no_tags_defined" date="1324052157" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun tag défini.]]></phrase>
-		<phrase name="no_versions_defined_in_this_group" date="1324052171" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucune version définie dans ce groupe.]]></phrase>
-		<phrase name="no_versions_groups_defined_project" date="1324052185" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucune version ou groupe de version n'est définie pour ce projet !]]></phrase>
-		<phrase name="note_a_larger_value_will_be_displayed_first" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Remarque : une valeur plus grande sera affichée en premier !]]></phrase>
-		<phrase name="note_higer_display_orders_first" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Remarque : Plus l'ordre d'affichage est grand, plus il sera en haut de liste !]]></phrase>
-		<phrase name="permission_apply_all_projects_unless_custom" date="1179992354" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ces permissions s'appliqueront à tous les projets tant que vous ne spécifiez pas de permissions personnalisé pour un projet et un groupe d'utilisateur spécifique.]]></phrase>
-		<phrase name="permissions_for_project_x" date="1216298113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Permissions pour le projet « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="plural_form_example" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forme au pluriel<dfn>Exemple : Bugs</dfn>]]></phrase>
-		<phrase name="positive_vote_count_example" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Compteur de vote positifs<dfn>Exemple : Utilisateurs pouvant reproduire le bug.</dfn>]]></phrase>
-		<phrase name="post_new_issue_example" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Ouvrir une nouvelle demande
-<dfn>Exemple : Ouvrir un nouveau bug</dfn>]]></phrase>
-		<phrase name="priorities" date="1323375971" username="Pitchoune" version="2.2.0"><![CDATA[Priorités]]></phrase>
-		<phrase name="priorities_for_x" date="1323375971" username="Pitchoune" version="2.2.0"><![CDATA[Priorités pour « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="project_group" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Groupe de projets]]></phrase>
-		<phrase name="project_list" date="1179991052" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Liste des projets]]></phrase>
-		<phrase name="project_magic_select" date="1323375971" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteur magique]]></phrase>
-		<phrase name="project_magic_select_list" date="1327529092" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteurs magiques pour « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="project_permission_values_apply" date="1284889825" username="Pitchoune" version="2.1.2"><![CDATA[Valeurs de la permission du projet appliquée comme souhaité.]]></phrase>
-		<phrase name="project_permission_values_do_not_apply" date="1284889825" username="Pitchoune" version="2.1.2"><![CDATA[Les valeurs de la permission du projet ne s'applique pas. L'accès de cet utilisateur à Project Tools a été globalement désactivé.]]></phrase>
-		<phrase name="project_permissions" date="1179991052" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions du projet]]></phrase>
-		<phrase name="project_specific_permissions" date="1179991052" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions spécifiques au projet]]></phrase>
-		<phrase name="project_tools_install_info" date="1261164814" username="Pitchoune" version="2.0.1"><![CDATA[Vous avez installé avec succès Project Tools version <em>{1}</em>.]]></phrase>
-		<phrase name="project_tools_installed_successfully" date="1261164867" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools installé avec succès !]]></phrase>
-		<phrase name="project_tools_options" date="1261164878" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools]]></phrase>
-		<phrase name="project_tools_permissions_for_x" date="1261164894" username="Pitchoune" version="2.0.1"><![CDATA[Permissions de Project Tools pour « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="project_tools_upgrade_info" date="1261164910" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools a été mis à jour avec succès de la version <em>{1}</em> à la version <em>{2}</em>.]]></phrase>
-		<phrase name="project_tools_upgrade_info_1_2" date="1284889963" username="Pitchoune" version="2.1.2"><![CDATA[Après avoir mis à jour à partir de Project Tools 1.0, il est recommandé de :
-<ul style="margin-top:0px; margin-bottom:0px">
-	<li>Activer l'option « Envoyer un email pour les assignations de demande » pour les projets souhaités.</li>
-	<li>Définir l'état « Demande achevée » sur les <a href="project.php?do=typelist">états de demande</a> si nécessaire.</li>
-	<li>Vérifier les nouvelles <a href="projectpermission.php?do=list">permissions de projets</a> pour être certain qu'ils correspondent à vos utilisateurs.</li>
-	<li><a href="project.php?do=counters">Régénérer les compteurs de demande</a> suivi par les compteurs de projet pour garder un avantage sur le suivi des commentaires privés.</li>
-</ul>]]></phrase>
-		<phrase name="project_tools_upgraded_successfully" date="1261164922" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools mis à jour avec succès !]]></phrase>
-		<phrase name="project_versions_for_x" date="1216298178" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Versions de projet pour « <span class="normal">{1}</span> »]]></phrase>
-		<phrase name="ptperm_can_assign_edit" date="1179991195" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les utilisateurs assignés]]></phrase>
-		<phrase name="ptperm_can_assign_edit_others" date="1179991195" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les utilisateurs assignés des autres]]></phrase>
-		<phrase name="ptperm_can_assigned" date="1179991195" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut être assigné]]></phrase>
-		<phrase name="ptperm_can_attach" date="1181511667" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Peut envoyer des pièces jointes]]></phrase>
-		<phrase name="ptperm_can_attach_edit" date="1179991236" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les pièces jointes]]></phrase>
-		<phrase name="ptperm_can_attach_edit_others" date="1179991227" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les pièces jointes des autres]]></phrase>
-		<phrase name="ptperm_can_attach_view" date="1179991335" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut voir les pièces jointes]]></phrase>
-		<phrase name="ptperm_can_change_milestone" date="1216305731" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Peut modifier les suivis d'étapes des rapports]]></phrase>
-		<phrase name="ptperm_can_change_priority" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Peut modifier la priorité]]></phrase>
-		<phrase name="ptperm_can_change_priority_others" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Peut modifier la priorité des demandes des autres]]></phrase>
-		<phrase name="ptperm_can_create_private" date="1284889995" username="Pitchoune" version="2.1.2"><![CDATA[Peut créer des demandes / notes privées pendant sa création]]></phrase>
-		<phrase name="ptperm_can_delete_issue" date="1284889995" username="Pitchoune" version="2.1.2"><![CDATA[Peut supprimer des demandes]]></phrase>
-		<phrase name="ptperm_can_delete_issue_others" date="1284889995" username="Pitchoune" version="2.1.2"><![CDATA[Peut supprimer les demandes des autres]]></phrase>
-		<phrase name="ptperm_can_delete_note" date="1179991335" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut supprimer des notes]]></phrase>
-		<phrase name="ptperm_can_delete_note_others" date="1179991335" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut supprimer les notes des autres]]></phrase>
-		<phrase name="ptperm_can_edit_issue" date="1284889995" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les informations de demande]]></phrase>
-		<phrase name="ptperm_can_edit_issue_others" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les informations de demande des autres]]></phrase>
-		<phrase name="ptperm_can_edit_note" date="1179991335" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier des notes]]></phrase>
-		<phrase name="ptperm_can_edit_note_others" date="1179991470" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les notes des autres]]></phrase>
-		<phrase name="ptperm_can_edit_private" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier l'état privé après la création d'une demande]]></phrase>
-		<phrase name="ptperm_can_manage" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut gérer les demandes / notes
-<dfn>Permet la gestion des états supprimés et de l'affichage de l'adresse IP.</dfn>]]></phrase>
-		<phrase name="ptperm_can_move_issue" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut déplacer les demandes]]></phrase>
-		<phrase name="ptperm_can_open_close_issue" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut ouvrir / fermer les demandes]]></phrase>
-		<phrase name="ptperm_can_petition" date="1179991470" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut lancer une pétition pour modifier l'état]]></phrase>
-		<phrase name="ptperm_can_post_new" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut ouvrir de nouvelles demandes]]></phrase>
-		<phrase name="ptperm_can_reply" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut répondre aux demandes]]></phrase>
-		<phrase name="ptperm_can_reply_others" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut répondre aux demandes des autres]]></phrase>
-		<phrase name="ptperm_can_search" date="1179991470" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut effectuer une recherche]]></phrase>
-		<phrase name="ptperm_can_status_assigned" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les états de demande quand un utilisateur est assigné]]></phrase>
-		<phrase name="ptperm_can_status_unassigned" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les états de demande quand un utilisateur n'est pas assigné]]></phrase>
-		<phrase name="ptperm_can_tags_assigned" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les tags de demande quand un utilisateur est assigné]]></phrase>
-		<phrase name="ptperm_can_tags_unassigned" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les tags de demande quand un utilisateur n'est pas assigné]]></phrase>
-		<phrase name="ptperm_can_view" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser les demandes]]></phrase>
-		<phrase name="ptperm_can_view_milestones" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser les étapes]]></phrase>
-		<phrase name="ptperm_can_view_others" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser les demandes des autres]]></phrase>
-		<phrase name="ptperm_can_view_private_others" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser les demandes / notes privées des autres]]></phrase>
-		<phrase name="ptperm_can_view_private_own" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser ses propres demandes / notes privées]]></phrase>
-		<phrase name="ptperm_can_view_replies" date="1393794673" username="Pitchoune" version="2.2.1"><![CDATA[Peut visualiser les réponses]]></phrase>
-		<phrase name="ptperm_can_vote" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Peut voter sur les demandes]]></phrase>
-		<phrase name="ptstatus" date="1335733454" username="Pitchoune" version="2.2.0"><![CDATA[État]]></phrase>
-		<phrase name="rebuild_issue_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de demande]]></phrase>
-		<phrase name="rebuild_milestone_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs d'étape]]></phrase>
-		<phrase name="rebuild_profile_issue_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs du nombre de demande]]></phrase>
-		<phrase name="rebuild_project_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de projet]]></phrase>
-		<phrase name="rebuilding_issue_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de demande mettra à jour certains champs variés en relation à une demande qui peut être dépassé mais qui peut être régénéré.]]></phrase>
-		<phrase name="rebuilding_milestone_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs d'étape mettra à jour certains champs variés en relation à une étape qui peut être dépassé mais qui peut être régénéré.]]></phrase>
-		<phrase name="rebuilding_profile_issue_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs du nombre de demande mettra à jour le nombre de demandes que chaque utilisateur a crée.]]></phrase>
-		<phrase name="rebuilding_project_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de projet mettra à jour certains champs variés en relation à une demande qui peut être dépassé mais qui peut être régénéré. Exécutez ceci une fois que les compteurs de demande ont été régénérés.]]></phrase>
-		<phrase name="required_default_not_user_value" date="1323376242" username="Pitchoune" version="2.2.0"><![CDATA[Oui, utiliser une valeur par défaut (non défini par l'utilisateur)]]></phrase>
-		<phrase name="required_fields_issue_submit" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Champs requis<dfn>Quand vous ouvrez une demande, les champs suivants seront obligatoire.</dfn>]]></phrase>
-		<phrase name="required_not_required" date="1323376242" username="Pitchoune" version="2.2.0"><![CDATA[Oui, non requis]]></phrase>
-		<phrase name="required_not_use" date="1323376242" username="Pitchoune" version="2.2.0"><![CDATA[Non, ne pas utiliser]]></phrase>
-		<phrase name="required_requireappliesversion" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée]]></phrase>
-		<phrase name="required_requirecategory" date="1179991672" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégorie]]></phrase>
-		<phrase name="required_required" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Oui, requis]]></phrase>
-		<phrase name="required_requirepriority" date="1179991672" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Priorité]]></phrase>
-		<phrase name="revert_to_default_permissions" date="1216308740" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Réinitialiser les permissions par défaut ?
-<dfn>Si vous choisissez cette option, les jeux de permission sélectionnés seront supprimés et les utilisateurs de ce groupe utiliseront les permissions globales des projets.</dfn>]]></phrase>
-		<phrase name="save_and_reload" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Enregistrer et recharger]]></phrase>
-		<phrase name="select_start_status_for_types_available" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Sélectionnez l'état par défaut pour les types de demande que vous souhaitez rendre disponible pour ce projet.]]></phrase>
-		<phrase name="send_email_on_issueassignment" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Envoyer un email pour les assignations de demande
-<dfn>Choisissez cette option si vous voulez que vos utilisateurs reçoivent un email quand ils sont assignés à une demande par un autre utilisateur.</dfn>]]></phrase>
-		<phrase name="send_pm_on_issueassignment" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Envoyer un message privé pour les assignations de demande
-<dfn>Choisissez cette option si vous voulez que vos utilisateurs reçoivent un message privé quand ils sont assignés à une demande par un autre utilisateur.</dfn>]]></phrase>
-		<phrase name="severitycolor_darkstyles" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles sombres]]></phrase>
-		<phrase name="severitycolor_lightstyles" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles clairs]]></phrase>
-		<phrase name="show_globally_disabled_groups" date="1179991708" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir les groupes d'utilisateurs globalement désactivés]]></phrase>
-		<phrase name="singular_form_example" date="1179991708" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forme au singulier<dfn>Exemple : Bug</dfn>]]></phrase>
-		<phrase name="some_issue_fields_not_editable_frontend" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[Certains champs de demande, comme le projet et le type de demande, ne sont pas modifiables sur la partie public. Ce système vous permet de le faire.]]></phrase>
-		<phrase name="status_color_dark_styles" date="1323376325" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles sombres]]></phrase>
-		<phrase name="status_color_light_styles" date="1323376325" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles clairs]]></phrase>
-		<phrase name="status_represents_completed_issue" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[L'état représente une demande achevé ?]]></phrase>
-		<phrase name="tag_list" date="1179992047" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Liste des tags]]></phrase>
-		<phrase name="target_date_desc" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[Utilisez cette option pour spécifier une date butoir (ou une ligne de fin) pour cette étape.]]></phrase>
-		<phrase name="title_in_forum_list" date="1180997508" username="Pitchoune" version="1.0.0 Beta 3"><![CDATA[Intitulé dans la liste des forums
-<dfn>Si vous affichez ce projet dans la liste des forums, vous pouvez utiliser ceci pour outrepasser le nom du projet dans la liste.</dfn>]]></phrase>
-		<phrase name="upgrade_script_42_description" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Ceci va ajouter tout le nécessaire pour pouvoir utiliser Project Tools correctement avec vBulletin 4.2.0+.]]></phrase>
-		<phrase name="upgrade_script_42_title" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Script de mise à jour pour vBulletin 4.2.x.]]></phrase>
-		<phrase name="use_selected_project_sets" date="1281452217" username="Pitchoune" version="2.1.2"><![CDATA[Utiliser la couleur dans les styles]]></phrase>
-		<phrase name="usergroups_access_globally_disabled" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[L'accès pour ce groupe d'utilisateurs à Project Tools est globalement désactivé. Les modifications que vous effectuerez ici ne seront pas appliqués jusqu'à ce que ce groupe d'utilisateurs puisse y accéder globalement.]]></phrase>
-		<phrase name="value" date="1327529260" username="Pitchoune" version="2.2.0"><![CDATA[Valeur
-<dfn>La valeur doit être un nombre entier positif proche de 0 <b>et</b> supérieure à 0.</dfn>]]></phrase>
-		<phrase name="version_group" date="1179992047" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Groupe de version]]></phrase>
-		<phrase name="versions" date="1179992442" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Versions]]></phrase>
-		<phrase name="vote_question_example" date="1179992047" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Question de vote<dfn>Exemple : Pouvez-vous reproduire ce bug ?</dfn>]]></phrase>
-		<phrase name="what_are_reports" date="1181508665" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Que sont les rapports ?]]></phrase>
-	</phrasetype>
+<language name="Français" vbversion="4.2.3 Beta 3" product="vbprojecttools" type="custom">
+	<settings>
+		<options><![CDATA[1]]></options>
+		<languagecode><![CDATA[fr]]></languagecode>
+		<charset><![CDATA[ISO-8859-1]]></charset>
+		<imagesoverride />
+		<dateoverride><![CDATA[%d/%m/%Y]]></dateoverride>
+		<timeoverride><![CDATA[%Hh%M]]></timeoverride>
+		<registereddateoverride><![CDATA[%B %Y]]></registereddateoverride>
+		<calformat1override><![CDATA[%d %B %Y]]></calformat1override>
+		<calformat2override><![CDATA[%d %B]]></calformat2override>
+		<logdateoverride><![CDATA[%Y-%m-%d %X]]></logdateoverride>
+		<locale><![CDATA[french]]></locale>
+		<decimalsep><![CDATA[,]]></decimalsep>
+		<thousandsep><![CDATA[_]]></thousandsep>
+		<phrasegroupinfo><![CDATA[a:1:{s:8:"ckeditor";a:1:{s:11:"maxdateline";s:10:"1347745390";}}]]></phrasegroupinfo>
+	</settings>
 	<phrasetype name="Activity Stream" fieldname="activitystream">
 		<phrase name="x_made_a_petition_in_the_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> a lancé une pétition dans la demande <a href="{3}">{4}</a> dans le projet <a href="{5}">{6}</a>]]></phrase>
 		<phrase name="x_made_changes_in_the_issue_y_in_z" date="1347746541" username="Pitchoune" version="2.2.0"><![CDATA[<a href="{1}">{2}</a> a effectué quelques changements dans la demande <a href="{3}">{4}</a> dans le projet <a href="{5}">{6}</a>]]></phrase>
@@ -1057,6 +499,10 @@ Envoyé par : [url=$vboptions[bburl]/member.php?u=$reportinfo[puserid]]$reportinf
 	<phrasetype name="Error Messages" fieldname="error">
 		<phrase name="after_upgrade_40_update_pt_attachment" date="1323365387" username="Pitchoune" version="2.2.0"><![CDATA[<strong>Mise à jour vBulletin Project Tools 2.2</strong>
 <p>Vous devez mettre à jour les pièces jointes de Project Tools au format de vBulletin 4.</p>]]></phrase>
+		<phrase name="after_upgrade_pt222_update_perm_canviewreplies" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Depuis Project Tools 2.2.1, il existe une nouvelle permission appelé « Peut visualiser les réponses » que vous devez en vérifier les permissions. Si vous ne le faites pas, certains utilisateurs ne seront pas capable de visualiser les réponses aux demandes.
+<br />
+<br />
+Veuillez remarquer que les utilisateurs inscrits ne pourront pas visualiser toutes les réponses.]]></phrase>
 		<phrase name="applicable_version_missing_contact_administrator" date="1335731144" username="Pitchoune" version="2.2.0"><![CDATA[La version affectée est manquante et est requise. Veuillez contacter l'<a href="{1}">administrateur</a>.]]></phrase>
 		<phrase name="applicable_version_required" date="1335731166" username="Pitchoune" version="2.2.0"><![CDATA[Vous devez sélectionner une version affectée pour cette demande. Si il n'y a pas de version affectée à sélectionner, veuillez contacter l'<a href="{1}">administrateur</a>.]]></phrase>
 		<phrase name="category_missing_contact_administrator" date="1323365456" username="Pitchoune" version="2.2.0"><![CDATA[La catégorie est manquante et est requise. Veuillez contacter l'<a href="{1}">administrateur</a>.]]></phrase>
@@ -1194,6 +640,21 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="pt_subscriptions_updated" date="1284851407" username="Pitchoune" version="2.1.2"><![CDATA[Les abonnements ont été mis à jour avec succès.]]></phrase>
 		<phrase name="pt_vote_cast" date="1284851407" username="Pitchoune" version="2.1.2"><![CDATA[Le vote a été pris en compte avec succès.]]></phrase>
 	</phrasetype>
+	<phrasetype name="GLOBAL" fieldname="global">
+		<phrase name="addressversion" date="1323433709" username="Pitchoune" version="2.2.0"><![CDATA[Version appliquée]]></phrase>
+		<phrase name="applyversion" date="1323433719" username="Pitchoune" version="2.2.0"><![CDATA[Version affectée]]></phrase>
+		<phrase name="category" date="1323433796" username="Pitchoune" version="2.2.0"><![CDATA[Catégorie]]></phrase>
+		<phrase name="doubleclick_project_markread" date="1216302547" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Double-cliquez sur cette icône pour marquer ce projet et son contenu comme lu.]]></phrase>
+		<phrase name="issue" date="1323433825" username="Pitchoune" version="2.2.0"><![CDATA[Demande]]></phrase>
+		<phrase name="priority" date="1323433846" username="Pitchoune" version="2.2.0"><![CDATA[Priorité]]></phrase>
+		<phrase name="projects" date="1185036771" username="Pitchoune" version="1.0.0"><![CDATA[Projets]]></phrase>
+		<phrase name="search_projects" date="1184849035" username="Pitchoune" version="1.0.0"><![CDATA[Recherche dans les projets]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_faq_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[FAQ]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_myreports_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Mes rapports]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Abonnements aux demandes]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_timeline_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Ligne temporelle]]></phrase>
+		<phrase name="vb_navigation_tab_vbtab_project_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Projets]]></phrase>
+	</phrasetype>
 	<phrasetype name="Notices" fieldname="notice">
 		<phrase name="is_browsing_project_tools_criteria" date="1281450959" username="Pitchoune" version="2.1.2"><![CDATA[L'utilisateur visualise Project Tools]]></phrase>
 		<phrase name="is_browsing_project_x_criteria" date="1281450959" username="Pitchoune" version="2.1.2"><![CDATA[L'utilisateur visualise le projet {1} de Project Tools]]></phrase>
@@ -1202,6 +663,514 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="promote_to_ptissue" date="1284847719" username="Pitchoune" version="2.1.2"><![CDATA[Créer une demande]]></phrase>
 		<phrase name="pt_create_issue" date="1284847719" username="Pitchoune" version="2.1.2"><![CDATA[Créer une demande]]></phrase>
 		<phrase name="pt_post_made_as_issue" date="1284851458" username="Pitchoune" version="2.1.2"><![CDATA[Ce message a été promu dans une demande]]></phrase>
+	</phrasetype>
+	<phrasetype name="Project Tools" fieldname="projecttools">
+		<phrase name="accept_petition_change_status_x" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Accepter la pétition et modifier l'état en</span> {1}<span class="shade"> ?</span>]]></phrase>
+		<phrase name="active" date="1327528281" username="Pitchoune" version="2.2.0"><![CDATA[Actif]]></phrase>
+		<phrase name="active_issues" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Demandes actives]]></phrase>
+		<phrase name="active_issues_in_milestone_x_html" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Demandes actives dans l'étape « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="active_milestones" date="1284885407" username="Pitchoune" version="2.1.2"><![CDATA[Étapes actives]]></phrase>
+		<phrase name="activity_voting" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Activité / Vote]]></phrase>
+		<phrase name="added" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouté]]></phrase>
+		<phrase name="addressed_version" date="1284885473" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée]]></phrase>
+		<phrase name="all" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tout]]></phrase>
+		<phrase name="allow_report_viewable_to_all" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permettre à ce que ce rapport soit visible par tous les utilisateurs ? Si non, il n'y aura que vous qui pourrez visualiser ce rapport.]]></phrase>
+		<phrase name="any" date="1216302897" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[N'importe quel]]></phrase>
+		<phrase name="any_active_meta" date="1284885473" username="Pitchoune" version="2.1.2"><![CDATA[(n'importe quelle demande active)]]></phrase>
+		<phrase name="any_meta" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(n'importe quel)]]></phrase>
+		<phrase name="anywhere_meta" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(n'importe où)]]></phrase>
+		<phrase name="applicable_version" date="1335731128" username="Pitchoune" version="2.2.0"><![CDATA[Version affectée]]></phrase>
+		<phrase name="applied_tags" date="1179929453" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tags appliqués]]></phrase>
+		<phrase name="ascending" date="1284760098" username="Pitchoune" version="2.1.2"><![CDATA[Croissant]]></phrase>
+		<phrase name="assign_to_self" date="1281451669" username="Pitchoune" version="2.1.2"><![CDATA[Vous assigner]]></phrase>
+		<phrase name="assign_yourself_to_issue" date="1284885515" username="Pitchoune" version="2.1.2"><![CDATA[Vous assigner à cette demande]]></phrase>
+		<phrase name="assigned_users" date="1179929669" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Utilisateurs assignés]]></phrase>
+		<phrase name="available_items" date="1179929669" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Objets disponibles]]></phrase>
+		<phrase name="category" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégorie]]></phrase>
+		<phrase name="change_status_to" date="1180986761" username="Pitchoune" version="1.0.0 Beta 3"><![CDATA[Modifier l'état]]></phrase>
+		<phrase name="changes" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Modifications]]></phrase>
+		<phrase name="click_here_to_view_x_completed_milestones" date="1284885515" username="Pitchoune" version="2.1.2"><![CDATA[Cliquez ici pour afficher les {1} étape(s) achevées !]]></phrase>
+		<phrase name="close_this_issue" date="1284885515" username="Pitchoune" version="2.1.2"><![CDATA[Fermer cette demande]]></phrase>
+		<phrase name="closed" date="1216303113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Fermé]]></phrase>
+		<phrase name="comments" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Commentaires]]></phrase>
+		<phrase name="completed" date="1216303212" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Achevé]]></phrase>
+		<phrase name="completed_date" date="1254167284" username="Pitchoune" version="2.0.1"><![CDATA[Date de fin effective]]></phrase>
+		<phrase name="completed_issues_in_milestone_x_html" date="1284885595" username="Pitchoune" version="2.1.2"><![CDATA[Demandes achevées dans l'étape « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="completed_milestones" date="1284885595" username="Pitchoune" version="2.1.2"><![CDATA[Étapes achevées]]></phrase>
+		<phrase name="contains_text" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Texte contenant]]></phrase>
+		<phrase name="continue" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Continuer]]></phrase>
+		<phrase name="current_version" date="1181505208" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Version actuelle]]></phrase>
+		<phrase name="dates_x_to_y" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[{1} à {2}]]></phrase>
+		<phrase name="delete_issue_in_manner" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Supprimer la demande de la manière suivante]]></phrase>
+		<phrase name="delete_issue_note_check_appropriate_option" date="1275163296" username="Pitchoune" version="2.1.1"><![CDATA[Sélectionnez les options appropriées et cliquez sur le bouton « Enregistrer ».]]></phrase>
+		<phrase name="delete_issue_note_in_manner" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Supprimer la note de la manière suivante]]></phrase>
+		<phrase name="delete_this_attachment" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Supprimer cette pièce jointe]]></phrase>
+		<phrase name="delete_this_issue" date="1284885622" username="Pitchoune" version="2.1.2"><![CDATA[Supprimer la demande]]></phrase>
+		<phrase name="delete_this_note" date="1275163314" username="Pitchoune" version="2.1.1"><![CDATA[Supprimer la réponse]]></phrase>
+		<phrase name="descending" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Décroissant]]></phrase>
+		<phrase name="description" date="1179929715" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Description]]></phrase>
+		<phrase name="download" date="1179929709" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Télécharger]]></phrase>
+		<phrase name="download_patch_file" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Télécharger le fichier patch]]></phrase>
+		<phrase name="edit_history" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Modifier l'historique]]></phrase>
+		<phrase name="edit_issue" date="1284885622" username="Pitchoune" version="2.1.2"><![CDATA[Modifier la demande]]></phrase>
+		<phrase name="edit_reply" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Modifier la réponse]]></phrase>
+		<phrase name="edit_reply_to_issue_x" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Modifier la réponse de la demande]]></phrase>
+		<phrase name="edit_this_issue" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Modifier cette demande]]></phrase>
+		<phrase name="edited_by_x" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Modifié par</span> {1}]]></phrase>
+		<phrase name="export_as_post" date="1323367556" username="Pitchoune" version="2.2.0"><![CDATA[Exporter en tant que message]]></phrase>
+		<phrase name="export_as_thread" date="1323367556" username="Pitchoune" version="2.2.0"><![CDATA[Exporter en tant que discussion]]></phrase>
+		<phrase name="export_issue" date="1323367556" username="Pitchoune" version="2.2.0"><![CDATA[Exporter la demande]]></phrase>
+		<phrase name="export_issue_post" date="1323367625" username="Pitchoune" version="2.2.0"><![CDATA[Message]]></phrase>
+		<phrase name="export_issue_thread" date="1323367625" username="Pitchoune" version="2.2.0"><![CDATA[Discussion]]></phrase>
+		<phrase name="export_this_issue" date="1323367625" username="Pitchoune" version="2.2.0"><![CDATA[Exporter cette demande]]></phrase>
+		<phrase name="field_addressedversionid" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée]]></phrase>
+		<phrase name="field_appliesversionid" date="1284885713" username="Pitchoune" version="2.1.2"><![CDATA[Version affectée]]></phrase>
+		<phrase name="field_assigneduser" date="1179929793" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Utilisateurs assignés]]></phrase>
+		<phrase name="field_attachment_deleted" date="1179936605" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pièce jointe supprimée]]></phrase>
+		<phrase name="field_attachment_uploaded" date="1216303258" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Pièce jointe envoyée]]></phrase>
+		<phrase name="field_isaddressed" date="1284885696" username="Pitchoune" version="2.1.2"><![CDATA[Appliqué]]></phrase>
+		<phrase name="field_issuestatusid" date="1179929914" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[État]]></phrase>
+		<phrase name="field_issuetypeid" date="1179930715" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Types]]></phrase>
+		<phrase name="field_milestoneid" date="1284885748" username="Pitchoune" version="2.1.2"><![CDATA[Étape]]></phrase>
+		<phrase name="field_priority" date="1179929914" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Priorité]]></phrase>
+		<phrase name="field_projectcategoryid" date="1179929914" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégorie]]></phrase>
+		<phrase name="field_tags" date="1179930781" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tags]]></phrase>
+		<phrase name="field_title" date="1179929914" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Intitulé]]></phrase>
+		<phrase name="filter_responses_to_show" date="1179930724" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Filtrer les réponses à voir]]></phrase>
+		<phrase name="find_issues_from" date="1284885748" username="Pitchoune" version="2.1.2"><![CDATA[Trouver les demandes de]]></phrase>
+		<phrase name="find_issues_with" date="1284885748" username="Pitchoune" version="2.1.2"><![CDATA[Trouver les demandes avec]]></phrase>
+		<phrase name="find_new_issues" date="1284885748" username="Pitchoune" version="2.1.2"><![CDATA[Trouver les nouveaux demandes]]></phrase>
+		<phrase name="force" date="1179931451" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forcer]]></phrase>
+		<phrase name="group_by" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Grouper par]]></phrase>
+		<phrase name="hard_delete" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Suppression physique]]></phrase>
+		<phrase name="has_pending_petitions" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[En attente de pétition]]></phrase>
+		<phrase name="hostname_ip_x_y" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[L'hôte de {1} est <strong>{2}</strong>.]]></phrase>
+		<phrase name="initial_report" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Rapport initial]]></phrase>
+		<phrase name="ip_address_logged_x" date="1179930888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[L'adresse IP enregistrée est <strong>{1}</strong>.]]></phrase>
+		<phrase name="issue" date="1284885800" username="Pitchoune" version="2.1.2"><![CDATA[Demande]]></phrase>
+		<phrase name="issue_been_deleted" date="1284885800" username="Pitchoune" version="2.1.2"><![CDATA[Cette demande a été supprimée]]></phrase>
+		<phrase name="issue_changed_by_system" date="1284885800" username="Pitchoune" version="2.1.2"><![CDATA[Demande modifiée par Système]]></phrase>
+		<phrase name="issue_changed_by_x" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Demande modifiée par {1}]]></phrase>
+		<phrase name="issue_deleted" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Demande supprimée]]></phrase>
+		<phrase name="issue_details" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Détails de la demande]]></phrase>
+		<phrase name="issue_has_been_deleted" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Cette demande a été supprimée]]></phrase>
+		<phrase name="issue_list" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Liste des demandes]]></phrase>
+		<phrase name="issue_must_have_attachments" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[La demande doit contenir des pièces jointes]]></phrase>
+		<phrase name="issue_must_have_pending_petitions" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[La demande doit avoir des pétitions en attente]]></phrase>
+		<phrase name="issue_note" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Note de la demande]]></phrase>
+		<phrase name="issue_number" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Demande #]]></phrase>
+		<phrase name="issue_properties" date="1284885961" username="Pitchoune" version="2.1.2"><![CDATA[Propriétés de la demande]]></phrase>
+		<phrase name="issue_report" date="1209241988" username="Administrateur" version="1.0.3"><![CDATA[Rapport]]></phrase>
+		<phrase name="issue_state" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[État de la demande]]></phrase>
+		<phrase name="issue_status" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[État de la demande]]></phrase>
+		<phrase name="issue_subscriptions" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Abonnements aux demandes]]></phrase>
+		<phrase name="issue_tools" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Outils de la demande]]></phrase>
+		<phrase name="issue_type" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Type de demande]]></phrase>
+		<phrase name="issuenote_made_as_issue" date="1323368416" username="Pitchoune" version="2.2.0"><![CDATA[Cette note a été crée en tant que demande.]]></phrase>
+		<phrase name="issues_in_milestone_x_html" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Demandes dans l'étape « {1} »]]></phrase>
+		<phrase name="issues_with_recent_replies" date="1284886019" username="Pitchoune" version="2.1.2"><![CDATA[Demandes avec des réponses récentes]]></phrase>
+		<phrase name="last_updated_x_at_y" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Dernière mise à jour : {1} à {2}]]></phrase>
+		<phrase name="last_x_actions" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[{1} dernières actions]]></phrase>
+		<phrase name="latest_issues_in_this_milestone" date="1284886133" username="Pitchoune" version="2.1.2"><![CDATA[Dernières demandes dans cette étape]]></phrase>
+		<phrase name="learn_more_about_reports" date="1179932210" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Apprenez-en plus à propos des rapports !]]></phrase>
+		<phrase name="loading" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Chargement]]></phrase>
+		<phrase name="make_this_issue_private" date="1284886133" username="Pitchoune" version="2.1.2"><![CDATA[Rendre la demande privée]]></phrase>
+		<phrase name="make_this_issue_public" date="1284886133" username="Pitchoune" version="2.1.2"><![CDATA[Rendre la demande publique]]></phrase>
+		<phrase name="manage_attachment" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Gérer la pièce jointe]]></phrase>
+		<phrase name="manage_project_subscription" date="1216304478" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Gérer les abonnements aux projets]]></phrase>
+		<phrase name="manage_subscription" date="1179932192" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Gérer l'abonnement]]></phrase>
+		<phrase name="mark_all_issues_read" date="1284886133" username="Pitchoune" version="2.1.2"><![CDATA[Marquer les demandes comme lues]]></phrase>
+		<phrase name="mark_all_x_read" date="1216304478" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Marquer tou(te)s les « {1} » comme lu(e)s]]></phrase>
+		<phrase name="mark_attachment_current" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Marquer cette pièce jointe comme étant correcte]]></phrase>
+		<phrase name="mark_attachment_obsolete" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Marquer cette pièce jointe comme étant obsolète]]></phrase>
+		<phrase name="message_has_been_deleted" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ce message a été supprimé]]></phrase>
+		<phrase name="milestone" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Étape]]></phrase>
+		<phrase name="milestone_x_html" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Étape : {1}]]></phrase>
+		<phrase name="milestones" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Étapes]]></phrase>
+		<phrase name="move_issue" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Déplacer la demande]]></phrase>
+		<phrase name="move_this_issue" date="1284886224" username="Pitchoune" version="2.1.2"><![CDATA[Déplacer cette demande]]></phrase>
+		<phrase name="my_reports" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Mes rapports]]></phrase>
+		<phrase name="negative_votes" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Votes négatifs]]></phrase>
+		<phrase name="new_content_type" date="1323368438" username="Pitchoune" version="2.2.0"><![CDATA[Nouveau type de contenu]]></phrase>
+		<phrase name="new_project_and_issue_type" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Nouveau projet et type de demande]]></phrase>
+		<phrase name="new_subscribed_issues" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Nouveaux abonnements aux demandes]]></phrase>
+		<phrase name="next_release" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Prochaine version]]></phrase>
+		<phrase name="no_issues_matching_criteria" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Aucune demande ne correspond à ce critère.]]></phrase>
+		<phrase name="no_more_replies_may_be_made" date="1246559080" username="Pitchoune" version="2.0.1"><![CDATA[Aucun nouveau message ne peut être crée.]]></phrase>
+		<phrase name="no_reports_defined" date="1180082896" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Il n'y a aucun rapport défini. <a href="faq.php?{1}faq=pt_faq#faq_pt_faq_report">Cliquez ici pour savoir comment ouvrir un rapport.</a>]]></phrase>
+		<phrase name="no_target_date" date="1216304611" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Aucune date butoir]]></phrase>
+		<phrase name="none_meta" date="1179932331" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(aucun)]]></phrase>
+		<phrase name="note" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Note :]]></phrase>
+		<phrase name="number_reported_issues_by_x" date="1284886929" username="Pitchoune" version="2.1.2"><![CDATA[Nombre de demandes signalées par {1}]]></phrase>
+		<phrase name="obsolete" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Obsolète]]></phrase>
+		<phrase name="open_this_issue" date="1284886965" username="Pitchoune" version="2.1.2"><![CDATA[Ouvrir cette demande]]></phrase>
+		<phrase name="order_by" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Trier par]]></phrase>
+		<phrase name="overdue" date="1216304594" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[En retard]]></phrase>
+		<phrase name="patch_lines_x_on" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Lignes {1} et précédentes]]></phrase>
+		<phrase name="patch_lines_x_to_y" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Lignes {1} à {2}]]></phrase>
+		<phrase name="pending_petitions" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pétitions en attente]]></phrase>
+		<phrase name="petition_change_x_accepted" date="1275171389" username="Pitchoune" version="2.1.1"><![CDATA[<span>Cette pétition pour appliquer l'état «</span> {1} <span>» a été</span> accepté.]]></phrase>
+		<phrase name="petition_change_x_pending" date="1275171431" username="Pitchoune" version="2.1.1"><![CDATA[<span>Cette pétition pour appliquer l'état «</span> {1} <span>» est actuellement</span> en attente.]]></phrase>
+		<phrase name="petition_change_x_rejected" date="1275171443" username="Pitchoune" version="2.1.1"><![CDATA[<span>Cette pétition pour appliquer l'état «</span> {1} <span>» a été</span> rejeté.]]></phrase>
+		<phrase name="petition_for_change_to_x_by_y" date="1179932629" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pétition pour modifier l'état par <span class="shade">{1}</span> par {2}]]></phrase>
+		<phrase name="petition_for_status_change_to" date="1179932638" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pétition pour modifier l'état par]]></phrase>
+		<phrase name="petitions" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pétitions]]></phrase>
+		<phrase name="please_wait" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Veuillez patienter]]></phrase>
+		<phrase name="positive_votes" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Votes positifs]]></phrase>
+		<phrase name="post_new_issue" date="1284886990" username="Pitchoune" version="2.1.2"><![CDATA[Ouvrir une demande]]></phrase>
+		<phrase name="post_reply" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Envoyer une réponse]]></phrase>
+		<phrase name="priority" date="1179932736" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Priorité]]></phrase>
+		<phrase name="priority0" date="1323368451" username="Pitchoune" version="2.2.0"><![CDATA[Inconnu(e)]]></phrase>
+		<phrase name="private_message_keep_in_mind" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ceci est un message privé. Veuillez vous en rappeler quand vous répondez !]]></phrase>
+		<phrase name="project" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Projet]]></phrase>
+		<phrase name="project_information" date="1179932808" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Informations sur le projet]]></phrase>
+		<phrase name="project_new_issue_notes" date="1323368612" username="Pitchoune" version="2.2.0"><![CDATA[Contient des notes de demande non lus]]></phrase>
+		<phrase name="project_no_new_issue_notes" date="1323368612" username="Pitchoune" version="2.2.0"><![CDATA[Ne contient pas de notes de demande non lus]]></phrase>
+		<phrase name="project_rss_feed" date="1216304668" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Flux RSS de projets]]></phrase>
+		<phrase name="project_statistics" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Statistiques du projet]]></phrase>
+		<phrase name="project_subscriptions" date="1216304668" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Abonnements de projets]]></phrase>
+		<phrase name="project_timeline" date="1180082769" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ligne temporelle]]></phrase>
+		<phrase name="project_tools" date="1261164839" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools]]></phrase>
+		<phrase name="projects_list" date="1281876883" username="Pitchoune" version="2.1.2"><![CDATA[Liste des projets. Séparez chaque identifiant de projet par une virgule.]]></phrase>
+		<phrase name="promote_to_ptissue" date="1323368645" username="Pitchoune" version="2.2.0"><![CDATA[Créer une demande]]></phrase>
+		<phrase name="pt_create_issue" date="1284887043" username="Pitchoune" version="2.1.2"><![CDATA[Créer une demande]]></phrase>
+		<phrase name="pt_explanation_attachment_system" date="1323368793" username="Pitchoune" version="2.2.0"><![CDATA[Pour joindre des pièces jointes, vous devez sélectionner les pièces jointes en cliquant sur le bouton « Gérer les pièces jointes », et une fois terminé, cliquez sur le bouton « Envoyer ».<br />
+<br />
+Ceci est nécessaire car Project Tools utilise un système de pièces jointes particulier et se devait d'être compatible avec le système de pièces jointes de vBulletin 4.]]></phrase>
+		<phrase name="pt_managesubscriptions" date="1275163954" username="Pitchoune" version="2.1.1"><![CDATA[Lister les abonnements]]></phrase>
+		<phrase name="public_reports" date="1284887043" username="Pitchoune" version="2.1.2"><![CDATA[Demandes publiques]]></phrase>
+		<phrase name="quick_reply" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Réponse rapide]]></phrase>
+		<phrase name="reason_for_edit_delete" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Motif de la modification / suppression]]></phrase>
+		<phrase name="removed" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Retiré]]></phrase>
+		<phrase name="repeat_search" date="1209242000" username="Administrateur" version="1.0.3"><![CDATA[Recommencer la recherche]]></phrase>
+		<phrase name="replies_exist_but_not_visible" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Cette demande contient des réposnes mais il semblerait que vous n'ayez pas le permission de les visualiser. Pour pouvoir les visualiser, vous devez vous identifier.
+<br />
+<br />
+Une fois identifié, si l'administrateur l'a décidé, vous ne pourrez toujours pas visualiser les réponses.]]></phrase>
+		<phrase name="reply_text_sure_submit_attach" date="1209242041" username="Administrateur" version="1.0.3"><![CDATA[Vous avez inséré du texte en tant que réponse. Si vous envoyez cette pièce jointe, ce texte sera perdu. Êtes-vous certain de vouloir continuer ?]]></phrase>
+		<phrase name="reply_to_issue_x" date="1284887069" username="Pitchoune" version="2.1.2"><![CDATA[Répondre à la demande]]></phrase>
+		<phrase name="report_issue_note" date="1284887069" username="Pitchoune" version="2.1.2"><![CDATA[Signaler le commentaire de demande]]></phrase>
+		<phrase name="reports" date="1179933163" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Rapports]]></phrase>
+		<phrase name="request_timed_out_refresh" date="1179933163" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Temps de la requête dépassé. Veuillez actualiser cette page pour voir si la mise à jour a été appliquée.]]></phrase>
+		<phrase name="result_sorting_and_grouping" date="1179933364" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tri et regroupement des résultats]]></phrase>
+		<phrase name="save_report" date="1179933163" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Enregistrer le rapport]]></phrase>
+		<phrase name="save_this_search_as_report" date="1179933163" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Enregistrer cette recherche en tant que rapport]]></phrase>
+		<phrase name="search_group_addressedversionid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes appliquées dans « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="search_group_appliesversionid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes affectées à « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="search_group_assignment" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes assignées à « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="search_group_issuestatusid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes avec l'état « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="search_group_issuetypeid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes avec le type « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="search_group_projectcategoryid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes dans la catégorie « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="search_group_projectid" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes dans le projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="search_group_tag" date="1284887164" username="Pitchoune" version="2.1.2"><![CDATA[Demandes avec le tag « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="search_only_issues_submitted_by_user" date="1284887215" username="Pitchoune" version="2.1.2"><![CDATA[Rechercher uniquement les demandes envoyées par cet utilisateur]]></phrase>
+		<phrase name="search_results_report_x" date="1275171502" username="Pitchoune" version="2.1.1"><![CDATA[Voir les résultats pour le rapport « {1} »]]></phrase>
+		<phrase name="search_this_milestone" date="1284887215" username="Pitchoune" version="2.1.2"><![CDATA[Rechercher dans cette étape]]></phrase>
+		<phrase name="search_this_project" date="1179933571" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Rechercher dans ce projet]]></phrase>
+		<phrase name="search_tools" date="1209242051" username="Administrateur" version="1.0.3"><![CDATA[Outils de recherche]]></phrase>
+		<phrase name="selected_items" date="1179933571" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Objets sélectionnés]]></phrase>
+		<phrase name="selected_subscriptions" date="1216304742" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Abonnements sélectionnés]]></phrase>
+		<phrase name="setting_ptissues_messagemaxchars_title" date="1284887215" username="Pitchoune" version="2.1.2"><![CDATA[Longueur de l'aperçu du contenu des demandes]]></phrase>
+		<phrase name="show_timeline" date="1180082748" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir la ligne temporelle]]></phrase>
+		<phrase name="soft_delete" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Suppression logique]]></phrase>
+		<phrase name="sort_results_by" date="1275163197" username="Pitchoune" version="2.1.1"><![CDATA[Trier les résultats par]]></phrase>
+		<phrase name="status" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[État]]></phrase>
+		<phrase name="submitted" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Envoyé]]></phrase>
+		<phrase name="submitted_by" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Envoyé par]]></phrase>
+		<phrase name="subscribe" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[S'abonner]]></phrase>
+		<phrase name="subscribe_to_this_issue" date="1284887258" username="Pitchoune" version="2.1.2"><![CDATA[S'abonner à cette demande]]></phrase>
+		<phrase name="subscribe_to_this_project" date="1216304742" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[S'abonner à ce projet]]></phrase>
+		<phrase name="subscription" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Abonnement]]></phrase>
+		<phrase name="subscription_type" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Type d'abonnement]]></phrase>
+		<phrase name="summary" date="1179933858" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Résumé]]></phrase>
+		<phrase name="system_message_addressed" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Demande marquée comme étant</span> <em>complété</em>]]></phrase>
+		<phrase name="system_message_addressedversionid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Version appliquée modifiée de</span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
+		<phrase name="system_message_appliesversionid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Version affectée modifiée de </span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
+		<phrase name="system_message_assigneduser" date="1179934545" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Utilisateurs assignés modifiés</span>]]></phrase>
+		<phrase name="system_message_attachment_deleted" date="1179935554" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Pièce jointe </span> <em>{3}</em> <span class="shade">supprimée</span>]]></phrase>
+		<phrase name="system_message_attachment_uploaded" date="1260993437" username="Pitchoune" version="2.0.1"><![CDATA[<span class="shade">Pièce jointe </span> <em>{3}</em> <span class="shade">ajoutée</span>]]></phrase>
+		<phrase name="system_message_default" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">{1} modifié(e) de </span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
+		<phrase name="system_message_issue_exported" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande exportée en tant que discussion</span> <em><a href="{2}" alt="">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_exported_issuethread" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande exportée dans la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_exported_post" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande importée dans un message dans la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_imported" date="1323381620" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande importée de la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_imported_issuenote" date="1323368897" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Issue importée en tant que note dans la demande</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_issue_imported_post" date="1323381632" username="Pitchoune" version="2.2.0"><![CDATA[<span class="shade">Demande importée d'un message de la discussion</span> <em><a href="{2}">{3}</a></em>.]]></phrase>
+		<phrase name="system_message_milestoneid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Étape modifiée</span>]]></phrase>
+		<phrase name="system_message_projectcategoryid" date="1284887481" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Catégorie modifiée de</span> <em>{2}</em> <span class="shade">pour</span> <em>{3}</em>]]></phrase>
+		<phrase name="system_message_tags" date="1179934545" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[<span class="shade">Tags modifiés</span>]]></phrase>
+		<phrase name="system_message_unaddressed" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[<span class="shade">Demande marquée comme étant</span> <em>non affectée</em>]]></phrase>
+		<phrase name="tags" date="1179934551" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tags]]></phrase>
+		<phrase name="target_date" date="1254167388" username="Pitchoune" version="2.0.1"><![CDATA[Date de fin planifiée]]></phrase>
+		<phrase name="text_location" date="1179936112" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Localisation du texte]]></phrase>
+		<phrase name="this_is_private_issue" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Ceci est une demande privée]]></phrase>
+		<phrase name="this_issue_is_closed" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Cette demande est fermée.]]></phrase>
+		<phrase name="timeline_empty" date="1292862650" username="Pitchoune" version="2.1.2"><![CDATA[La ligne temporelle est vide.]]></phrase>
+		<phrase name="timeline_entry_issue" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Demande créée par <a href="{1}" class="shade">{2}</a>]]></phrase>
+		<phrase name="timeline_entry_petition" date="1275171529" username="Pitchoune" version="2.1.1"><![CDATA[Pétition pour modifier l'état par <a href="{1}" class="shade">{2}</a>]]></phrase>
+		<phrase name="timeline_entry_reply" date="1284887561" username="Pitchoune" version="2.1.2"><![CDATA[Réponse à cette demande par <a href="{1}" class="shade">{2}</a>]]></phrase>
+		<phrase name="timeline_entry_system" date="1284887666" username="Pitchoune" version="2.1.2"><![CDATA[Détails de la demande modifiées par <a href="{1}" class="shade">{2}</a>]]></phrase>
+		<phrase name="timeline_entry_system_specific" date="1284887666" username="Pitchoune" version="2.1.2"><![CDATA[Détails de la demande modifiées par <a href="{1}" class="shade">{2}</a> ({3})]]></phrase>
+		<phrase name="total_active" date="1216304826" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Actifs au total]]></phrase>
+		<phrase name="total_attachments" date="1179936112" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Pièces jointes au total]]></phrase>
+		<phrase name="total_completed" date="1216304826" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Achevés au total]]></phrase>
+		<phrase name="total_issues" date="1284887666" username="Pitchoune" version="2.1.2"><![CDATA[Demandes totaux]]></phrase>
+		<phrase name="unaddressed" date="1179936112" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[non adressé]]></phrase>
+		<phrase name="unapplied_tags" date="1179936309" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tags non appliqués]]></phrase>
+		<phrase name="unassigned_users" date="1179936309" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Utilisateurs non assignés]]></phrase>
+		<phrase name="undelete" date="1179936149" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Restaurer]]></phrase>
+		<phrase name="undelete_ellipsis" date="1179936149" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Restauration...]]></phrase>
+		<phrase name="unknown" date="1179936149" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Inconnu]]></phrase>
+		<phrase name="unsubscribe_from_this_issue" date="1284887740" username="Pitchoune" version="2.1.2"><![CDATA[Se désabonner de cette demande]]></phrase>
+		<phrase name="unsubscribing_personal_report_delete" date="1179936309" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Se désabonner d'un rapport personnel le supprimera automatiquement.]]></phrase>
+		<phrase name="update_subscriptions" date="1179936309" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Mettre à jour les abonnements]]></phrase>
+		<phrase name="upload_file" date="1260993423" username="Pitchoune" version="2.0.1"><![CDATA[Ajouter un fichier]]></phrase>
+		<phrase name="version" date="1179936158" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Version]]></phrase>
+		<phrase name="version_information" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Information de version]]></phrase>
+		<phrase name="view_all" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Tout voir]]></phrase>
+		<phrase name="view_all_issues_in_this_milestone" date="1284887740" username="Pitchoune" version="2.1.2"><![CDATA[Voir toutes les demandes dans cette étape]]></phrase>
+		<phrase name="view_changes" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir les modifications]]></phrase>
+		<phrase name="view_comments" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir les commentaires]]></phrase>
+		<phrase name="view_complete_issue_list" date="1284887772" username="Pitchoune" version="2.1.2"><![CDATA[Voir la liste complète des demandes]]></phrase>
+		<phrase name="view_first_unread" date="1275163248" username="Pitchoune" version="2.1.1"><![CDATA[Voir le premier message non lu]]></phrase>
+		<phrase name="view_highlighted_patch" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir les lignes du patch]]></phrase>
+		<phrase name="view_milestones" date="1284887772" username="Pitchoune" version="2.1.2"><![CDATA[Voir les étapes]]></phrase>
+		<phrase name="view_more_results" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir plus de résultats]]></phrase>
+		<phrase name="view_patch" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir le patch]]></phrase>
+		<phrase name="what_makes_good_issue_description" date="1179936407" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Comment faire une bonne description ?]]></phrase>
+		<phrase name="what_want_do_issue" date="1284887772" username="Pitchoune" version="2.1.2"><![CDATA[Que souhaitez-vous effectuer avec cette demande ?]]></phrase>
+		<phrase name="what_want_do_message" date="1179936499" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Que souhaitez-vous effectuer avec ce message ?]]></phrase>
+		<phrase name="x_percent_completed" date="1216304907" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[{1}% achevé]]></phrase>
+		<phrase name="x_results" date="1179936465" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[{1} résultat(s)]]></phrase>
+		<phrase name="you_are_searching_within_a_single_milestone" date="1284887859" username="Pitchoune" version="2.1.2"><![CDATA[Vous êtes en train d'effectuer une recherche dans une seule étape.]]></phrase>
+		<phrase name="you_assigned_issue" date="1284887859" username="Pitchoune" version="2.1.2"><![CDATA[Vous êtes assigné à cette demande.]]></phrase>
+		<phrase name="you_have_voted_issue" date="1284887868" username="Pitchoune" version="2.1.2"><![CDATA[Vous avez voté pour cette demande.]]></phrase>
+		<phrase name="you_not_subscribed_issues" date="1284887859" username="Pitchoune" version="2.1.2"><![CDATA[Vous êtes abonné à aucune demande.]]></phrase>
+		<phrase name="you_subscribed_issue" date="1284887859" username="Pitchoune" version="2.1.2"><![CDATA[Vous êtes abonné à cette demande.]]></phrase>
+		<phrase name="your_personal_reports" date="1179936465" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Vos rapports personnels]]></phrase>
+	</phrasetype>
+	<phrasetype name="Project Tools (Admin)" fieldname="projecttoolsadmin">
+		<phrase name="add_issue_status" date="1284887908" username="Pitchoune" version="2.1.2"><![CDATA[Ajouter un état de demande]]></phrase>
+		<phrase name="add_issue_type" date="1284887908" username="Pitchoune" version="2.1.2"><![CDATA[Ajouter un type de demande]]></phrase>
+		<phrase name="add_milestone" date="1284887908" username="Pitchoune" version="2.1.2"><![CDATA[Ajouter une étape]]></phrase>
+		<phrase name="add_project" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter un projet]]></phrase>
+		<phrase name="add_project_category" date="1179990266" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter une catégorie de projet]]></phrase>
+		<phrase name="add_project_group" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Ajouter un groupe de projets]]></phrase>
+		<phrase name="add_project_magic_select" date="1335735199" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter une option du sélecteur magique]]></phrase>
+		<phrase name="add_project_magic_select_group" date="1335735199" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter un sélecteur magique]]></phrase>
+		<phrase name="add_project_priority" date="1323368939" username="Pitchoune" version="2.2.0"><![CDATA[Ajouter une priorité de projet]]></phrase>
+		<phrase name="add_project_version" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter une version de projet]]></phrase>
+		<phrase name="add_project_version_group" date="1182465050" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Ajouter un groupe de version de projet]]></phrase>
+		<phrase name="add_status" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter un état]]></phrase>
+		<phrase name="add_tag" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter un tag]]></phrase>
+		<phrase name="add_version" date="1179988925" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ajouter une version]]></phrase>
+		<phrase name="addressed_version_example" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée<dfn>Exemple : Version corrigée</dfn>]]></phrase>
+		<phrase name="applicable_version_example" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Version affectée<dfn>Exemple : Version affectée</dfn>]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_issuestatus_x" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer l'état de demande appelé « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_issuetype_x" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le type de demande appelé « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_milestone_x" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer l'étape appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectcategory_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer la catégorie de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectgroup_x" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le groupe de projet nommé « {1} » ?<br /><span class="smallfont">({2} : {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectmagicselect_x" date="1327528499" username="Pitchoune" version="2.2.0"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le sélecteur magique de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectmagicselectgroup_x" date="1327528499" username="Pitchoune" version="2.2.0"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le groupe de sélecteur magique de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectpriority_x" date="1323368986" username="Pitchoune" version="2.2.0"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer la priorité de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectversion_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer la version de projet appelée « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="are_you_sure_want_to_delete_projectversiongroup_x" date="1216305113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Êtes-vous <b>certain</b> de vouloir supprimer le groupe de version de projet appelé « {1} » ?<br /><span class="smallfont">({2}: {3})</span><br /><br /> {4} Cette action est irréversible.]]></phrase>
+		<phrase name="available_issue_types" date="1284887985" username="Pitchoune" version="2.1.2"><![CDATA[Types de demande disponibles]]></phrase>
+		<phrase name="base_permissions_off_existing_project" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions de base d'un projet existant]]></phrase>
+		<phrase name="base_permissions_off_existing_type" date="1323431614" username="Pitchoune" version="2.2.0"><![CDATA[Permissions de base d'un type existant<dfn>Si vous sélectionnez « (aucun) », personne ne pourra utiliser ce type par défaut.</dfn>]]></phrase>
+		<phrase name="can_create_petitions_from_this_status" date="1182164571" username="Pitchoune" version="1.0.0 Release Candidate 1"><![CDATA[Peut lancer des pétitions depuis cet état ?]]></phrase>
+		<phrase name="categories" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégories]]></phrase>
+		<phrase name="categories_for_x" date="1216297855" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Catégories pour « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="chose_delete_types_project" date="1284888366" username="Pitchoune" version="2.1.2"><![CDATA[Vous avez choisi de supprimer un ou plusieurs types de demande pour ce projet. Pour achever ce processus, vous devrez choisir un nouveau type de demande et d'état pour déplacer les demandes se trouvant dans les types de demande que vous souhaitez supprimer. 
+<p>Si vous n'effectuez pas ceci, les rapports resteront mais deviendront inaccessibles jusqu'à ce que leur type soit de nouveau actif pour ce projet. Pour ignorer cette procédure et retourner à la liste des projets, <a href="project.php?do=projectlist">cliquez ici</a>.</p>]]></phrase>
+		<phrase name="completed_date_desc" date="1284888366" username="Pitchoune" version="2.1.2"><![CDATA[Si vous spécifiez une date ici, cette étape sera déplacée dans la liste des étapes achevées.]]></phrase>
+		<phrase name="default_value" date="1323369083" username="Pitchoune" version="2.2.0"><![CDATA[Valeur par défaut
+<dfn>Cette option est nécessaire uniquement si vous souhaitez appliquer par défaut cette valeur mais par par l'utilisateur (de manière automatique). Vous pouvez définir si cette option est requise dans la page de modification du projet.</dfn>]]></phrase>
+		<phrase name="default_version_group" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Groupe de version par défaut]]></phrase>
+		<phrase name="default_version_number" date="1179989273" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Numéro de version par défaut]]></phrase>
+		<phrase name="deleted_issue_type" date="1284888366" username="Pitchoune" version="2.1.2"><![CDATA[Type de demande supprimé]]></phrase>
+		<phrase name="denote_as_next_version" date="1284888529" username="Pitchoune" version="2.1.2"><![CDATA[Dénoter sur la prochaine version ?<dfn>Si ceci est paramétré sur « Oui », tous les rapports avec comme indication pour la version appliquée « Prochaine version » seront associés à cette version.</dfn>]]></phrase>
+		<phrase name="display_after_forums" date="1323381309" username="Pitchoune" version="2.2.0"><![CDATA[Afficher après les forums
+<dfn>Les informations de ce projet apparaîtront dans la liste des forums après les forums sélectionnés.
+<br /><br />
+<span class="modlasttendays">Pour afficher un forum dans un sous-forum, vous avez besoin de sélectionner le forum parent, pas le dernier forum où vous souhaitez afficher le projet. Si le forum parent n'est pas visible pour certains groupes d'utilisateurs, ces utilisateurs ne pourront pas voir le projet.</span></dfn>]]></phrase>
+		<phrase name="do_not_change_meta" date="1209242403" username="Administrateur" version="1.0.3"><![CDATA[(ne pas modifier)]]></phrase>
+		<phrase name="do_not_use_meta" date="1179989720" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[(ne pas utiliser)]]></phrase>
+		<phrase name="double_click_permission_quick_set" date="1284888529" username="Pitchoune" version="2.1.2"><![CDATA[Astuce : Vous pouvez double-cliquer sur une permission pour rapidement autoriser ou refuser cette permission pour tous les types de demande !]]></phrase>
+		<phrase name="edit_link_colored_custom_permissions" date="1179989720" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Le lien « [Modifier] » sera visible de la couleur suivante si des permissions personnalisées existent.]]></phrase>
+		<phrase name="edit_milestone" date="1323369448" username="Pitchoune" version="2.2.0"><![CDATA[Modifier l'étape « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_permissions_for_x" date="1216297870" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier les permissions pour « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_permissions_for_x_in_y" date="1216297888" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier les permissions pour « <span class="normal">{1}</span> » dans « <span class="normal">{2}</span> »]]></phrase>
+		<phrase name="edit_project_category" date="1323369448" username="Pitchoune" version="2.2.0"><![CDATA[Modifier la catégorie du projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_group_x" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Modification du groupe de projets <span class="normal">« {1} »</span>]]></phrase>
+		<phrase name="edit_project_magic_select" date="1335735308" username="Pitchoune" version="2.2.0"><![CDATA[Modifier l'option du sélecteur magique « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_magic_select_group" date="1335735308" username="Pitchoune" version="2.2.0"><![CDATA[Modifier le sélecteur magique « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_priority" date="1323369128" username="Pitchoune" version="2.2.0"><![CDATA[Modifier la priorité du projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_version" date="1323369128" username="Pitchoune" version="2.2.0"><![CDATA[Modifier la version du projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_version_group" date="1323369128" username="Pitchoune" version="2.2.0"><![CDATA[Modifier le groupe de version du projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_project_x" date="1216297906" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier le projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_status_x" date="1216297922" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier l'état « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="edit_type_x" date="1216297936" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Modifier le type « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_category" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mises à jour quand ceci est supprimé. Choisissez une nouvelle catégorie pour ces demandes :]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_milestone" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mis à jour quand ceci est supprimé. Sélectionnez une nouvelle étape pour ces demandes :]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_priority" date="1327528587" username="Pitchoune" version="2.2.0"><![CDATA[Ceci étant, les demandes affectées doivent être mis à jour quand ceci est supprimé. Sélectionnez une nouvelle priorité pour ces demandes :]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_status" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mises à jour quand ceci est supprimé. Choisissez un nouvel état pour ces demandes :]]></phrase>
+		<phrase name="existing_affected_issues_updated_delete_select_versions_x_y" date="1284888609" username="Pitchoune" version="2.1.2"><![CDATA[Ceci étant, les demandes affectées doivent être mises à jour quand ceci est supprimé.<ol style="margin-top: 0px; margin-bottom: 0px;">
+<li>Choisissez une nouvelle version affectée : {1}</li>
+<li>Choisissez une nouvelle version appliquée : {2}</select></li>
+</ol>]]></phrase>
+		<phrase name="filename_for_icon" date="1179989888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Nom de fichier pour l'icône<dfn>Ceci doit être placé dans le répertoire des icônes (par défaut : images/statusicon).</dfn>]]></phrase>
+		<phrase name="force_to_be_custom" date="1179990517" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forcer la personnalisation ?
+<dfn>Définissez ceci si vous souhaitez forcer un jeu de permissions à être crée pour ce projet même sans effectuer de modifications. Si vous effectuez des modifications, un jeu de permissions sera automatiquement crée.</dfn>]]></phrase>
+		<phrase name="global_project_permissions" date="1216308724" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Permissions globales des projets]]></phrase>
+		<phrase name="global_project_tools_permissions" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Permissions globales de Project Tools]]></phrase>
+		<phrase name="hide_globally_disabled_groups" date="1179989888" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Cacher les groupes d'utilisateurs globalement désactivés]]></phrase>
+		<phrase name="html_is_allowed" date="1181508179" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Le code HTML est autorisée]]></phrase>
+		<phrase name="id_of_issue" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Identifiant de la demande (issueid)]]></phrase>
+		<phrase name="issue_closed" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Demande fermée]]></phrase>
+		<phrase name="issue_completed" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Demande achevée]]></phrase>
+		<phrase name="issue_type_key_alphanumeric_only" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Clef du type de demande<dfn>A-Z, 0-9, et le sous-tiret ( _ ) uniquement.</dfn>]]></phrase>
+		<phrase name="issue_type_manager" date="1284888730" username="Pitchoune" version="2.1.2"><![CDATA[Gestionnaire de type de demande]]></phrase>
+		<phrase name="issue_types_deleted_for_project_x" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Types de demande supprimés pour le projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="magic_select_group_title" date="1335730280" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé du sélecteur magique]]></phrase>
+		<phrase name="magic_select_title" date="1335734732" username="Pitchoune" version="2.2.0"><![CDATA[Intitulé de l'option du sélecteur magique]]></phrase>
+		<phrase name="magicselects" date="1327528637" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteurs magiques]]></phrase>
+		<phrase name="milestones_for_x_html" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Étapes pour « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="move_issues_into" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Déplacer les demandes dans]]></phrase>
+		<phrase name="need_manually_select_projects_type" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Souvenez-vous que vous avez besoin de sélectionner les projets manuellement qui doivent utiliser ce type une fois que ce dernier est crée !]]></phrase>
+		<phrase name="negative_vote_count_example" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Compteur de votes négatifs<dfn>Exemple : Utilisateurs ne reproduisant pas ce bug</dfn>]]></phrase>
+		<phrase name="no_categories_defined_project" date="1181508179" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Aucune catégorie n'est définie pour ce projet !]]></phrase>
+		<phrase name="no_magic_selects_defined_in_this_group" date="1327528637" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun sélecteur magique défini dans ce groupe.]]></phrase>
+		<phrase name="no_milestones_defined_for_this_project" date="1284888796" username="Pitchoune" version="2.1.2"><![CDATA[Aucune étape défini pour ce projet !]]></phrase>
+		<phrase name="no_priorities_defined_project" date="1327528981" username="Pitchoune" version="2.2.0"><![CDATA[Aucune priorité définie pour ce projet ! <a href="projectpriority.php?do=add&amp:projectid={1}">Cliquez ici pour en ajouter un !</a>]]></phrase>
+		<phrase name="no_project_defined_in_this_group" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Il n'y a pas de projet pour ce groupe !]]></phrase>
+		<phrase name="no_project_group_defined" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Il n'y a pas de projet ou de groupe de projets !]]></phrase>
+		<phrase name="no_project_magic_select_defined_click_here_to_add_one" date="1327528710" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun sélecteur magique de défini. <a href="projectmagicselect.php?do=groupadd&amp;projectid={1}">Cliquez ici pour en ajouter un !</a>]]></phrase>
+		<phrase name="no_projects_defined_click_here_to_add_one" date="1327528981" username="Pitchoune" version="2.2.0"><![CDATA[Aucun projet défini. <a href="project.php?do=add">Cliquez ici pour en ajouter un !</a>]]></phrase>
+		<phrase name="no_statuses_of_this_type_defined_click_here_to_add" date="1327529055" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun état de ce type défini. Ce type ne sera pas utilisable jusqu'à ce que vous ajoutiez un état. <a href="projecttype.php?do=statusadd&amp;type={1}">Cliquez ici pour en ajouter un !</a>]]></phrase>
+		<phrase name="no_tags_defined" date="1324052157" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucun tag défini.]]></phrase>
+		<phrase name="no_versions_defined_in_this_group" date="1324052171" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucune version définie dans ce groupe.]]></phrase>
+		<phrase name="no_versions_groups_defined_project" date="1324052185" username="Pitchoune" version="2.2.0"><![CDATA[Il n'y a aucune version ou groupe de version n'est définie pour ce projet !]]></phrase>
+		<phrase name="note_a_larger_value_will_be_displayed_first" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Remarque : une valeur plus grande sera affichée en premier !]]></phrase>
+		<phrase name="note_higer_display_orders_first" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Remarque : Plus l'ordre d'affichage est grand, plus il sera en haut de liste !]]></phrase>
+		<phrase name="permission_apply_all_projects_unless_custom" date="1179992354" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Ces permissions s'appliqueront à tous les projets tant que vous ne spécifiez pas de permissions personnalisé pour un projet et un groupe d'utilisateur spécifique.]]></phrase>
+		<phrase name="permissions_for_project_x" date="1216298113" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Permissions pour le projet « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="plural_form_example" date="1179990897" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forme au pluriel<dfn>Exemple : Bugs</dfn>]]></phrase>
+		<phrase name="positive_vote_count_example" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Compteur de vote positifs<dfn>Exemple : Utilisateurs pouvant reproduire le bug.</dfn>]]></phrase>
+		<phrase name="post_new_issue_example" date="1284888867" username="Pitchoune" version="2.1.2"><![CDATA[Ouvrir une nouvelle demande
+<dfn>Exemple : Ouvrir un nouveau bug</dfn>]]></phrase>
+		<phrase name="priorities" date="1323375971" username="Pitchoune" version="2.2.0"><![CDATA[Priorités]]></phrase>
+		<phrase name="priorities_for_x" date="1323375971" username="Pitchoune" version="2.2.0"><![CDATA[Priorités pour « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="project_group" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Groupe de projets]]></phrase>
+		<phrase name="project_list" date="1179991052" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Liste des projets]]></phrase>
+		<phrase name="project_magic_select" date="1323375971" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteur magique]]></phrase>
+		<phrase name="project_magic_select_list" date="1327529092" username="Pitchoune" version="2.2.0"><![CDATA[Sélecteurs magiques pour « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="project_permission_values_apply" date="1284889825" username="Pitchoune" version="2.1.2"><![CDATA[Valeurs de la permission du projet appliquée comme souhaité.]]></phrase>
+		<phrase name="project_permission_values_do_not_apply" date="1284889825" username="Pitchoune" version="2.1.2"><![CDATA[Les valeurs de la permission du projet ne s'applique pas. L'accès de cet utilisateur à Project Tools a été globalement désactivé.]]></phrase>
+		<phrase name="project_permissions" date="1179991052" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions du projet]]></phrase>
+		<phrase name="project_specific_permissions" date="1179991052" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Permissions spécifiques au projet]]></phrase>
+		<phrase name="project_tools_install_info" date="1261164814" username="Pitchoune" version="2.0.1"><![CDATA[Vous avez installé avec succès Project Tools version <em>{1}</em>.]]></phrase>
+		<phrase name="project_tools_installed_successfully" date="1261164867" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools installé avec succès !]]></phrase>
+		<phrase name="project_tools_options" date="1261164878" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools]]></phrase>
+		<phrase name="project_tools_permissions_for_x" date="1261164894" username="Pitchoune" version="2.0.1"><![CDATA[Permissions de Project Tools pour « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="project_tools_upgrade_info" date="1261164910" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools a été mis à jour avec succès de la version <em>{1}</em> à la version <em>{2}</em>.]]></phrase>
+		<phrase name="project_tools_upgrade_info_1_2" date="1284889963" username="Pitchoune" version="2.1.2"><![CDATA[Après avoir mis à jour à partir de Project Tools 1.0, il est recommandé de :
+<ul style="margin-top:0px; margin-bottom:0px">
+	<li>Activer l'option « Envoyer un email pour les assignations de demande » pour les projets souhaités.</li>
+	<li>Définir l'état « Demande achevée » sur les <a href="project.php?do=typelist">états de demande</a> si nécessaire.</li>
+	<li>Vérifier les nouvelles <a href="projectpermission.php?do=list">permissions de projets</a> pour être certain qu'ils correspondent à vos utilisateurs.</li>
+	<li><a href="project.php?do=counters">Régénérer les compteurs de demande</a> suivi par les compteurs de projet pour garder un avantage sur le suivi des commentaires privés.</li>
+</ul>]]></phrase>
+		<phrase name="project_tools_upgraded_successfully" date="1261164922" username="Pitchoune" version="2.0.1"><![CDATA[Project Tools mis à jour avec succès !]]></phrase>
+		<phrase name="project_versions_for_x" date="1216298178" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Versions de projet pour « <span class="normal">{1}</span> »]]></phrase>
+		<phrase name="ptperm_can_assign_edit" date="1179991195" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les utilisateurs assignés]]></phrase>
+		<phrase name="ptperm_can_assign_edit_others" date="1179991195" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les utilisateurs assignés des autres]]></phrase>
+		<phrase name="ptperm_can_assigned" date="1179991195" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut être assigné]]></phrase>
+		<phrase name="ptperm_can_attach" date="1181511667" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Peut envoyer des pièces jointes]]></phrase>
+		<phrase name="ptperm_can_attach_edit" date="1179991236" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les pièces jointes]]></phrase>
+		<phrase name="ptperm_can_attach_edit_others" date="1179991227" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les pièces jointes des autres]]></phrase>
+		<phrase name="ptperm_can_attach_view" date="1179991335" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut voir les pièces jointes]]></phrase>
+		<phrase name="ptperm_can_change_milestone" date="1216305731" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Peut modifier les suivis d'étapes des rapports]]></phrase>
+		<phrase name="ptperm_can_change_priority" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Peut modifier la priorité]]></phrase>
+		<phrase name="ptperm_can_change_priority_others" date="1393794639" username="Pitchoune" version="2.2.1"><![CDATA[Peut modifier la priorité des demandes des autres]]></phrase>
+		<phrase name="ptperm_can_create_private" date="1284889995" username="Pitchoune" version="2.1.2"><![CDATA[Peut créer des demandes / notes privées pendant sa création]]></phrase>
+		<phrase name="ptperm_can_delete_issue" date="1284889995" username="Pitchoune" version="2.1.2"><![CDATA[Peut supprimer des demandes]]></phrase>
+		<phrase name="ptperm_can_delete_issue_others" date="1284889995" username="Pitchoune" version="2.1.2"><![CDATA[Peut supprimer les demandes des autres]]></phrase>
+		<phrase name="ptperm_can_delete_note" date="1179991335" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut supprimer des notes]]></phrase>
+		<phrase name="ptperm_can_delete_note_others" date="1179991335" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut supprimer les notes des autres]]></phrase>
+		<phrase name="ptperm_can_edit_issue" date="1284889995" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les informations de demande]]></phrase>
+		<phrase name="ptperm_can_edit_issue_others" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les informations de demande des autres]]></phrase>
+		<phrase name="ptperm_can_edit_note" date="1179991335" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier des notes]]></phrase>
+		<phrase name="ptperm_can_edit_note_others" date="1179991470" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut modifier les notes des autres]]></phrase>
+		<phrase name="ptperm_can_edit_private" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier l'état privé après la création d'une demande]]></phrase>
+		<phrase name="ptperm_can_manage" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut gérer les demandes / notes
+<dfn>Permet la gestion des états supprimés et de l'affichage de l'adresse IP.</dfn>]]></phrase>
+		<phrase name="ptperm_can_move_issue" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut déplacer les demandes]]></phrase>
+		<phrase name="ptperm_can_open_close_issue" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut ouvrir / fermer les demandes]]></phrase>
+		<phrase name="ptperm_can_petition" date="1179991470" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut lancer une pétition pour modifier l'état]]></phrase>
+		<phrase name="ptperm_can_post_new" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut ouvrir de nouvelles demandes]]></phrase>
+		<phrase name="ptperm_can_reply" date="1284890036" username="Pitchoune" version="2.1.2"><![CDATA[Peut répondre aux demandes]]></phrase>
+		<phrase name="ptperm_can_reply_others" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut répondre aux demandes des autres]]></phrase>
+		<phrase name="ptperm_can_search" date="1179991470" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Peut effectuer une recherche]]></phrase>
+		<phrase name="ptperm_can_status_assigned" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les états de demande quand un utilisateur est assigné]]></phrase>
+		<phrase name="ptperm_can_status_unassigned" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les états de demande quand un utilisateur n'est pas assigné]]></phrase>
+		<phrase name="ptperm_can_tags_assigned" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les tags de demande quand un utilisateur est assigné]]></phrase>
+		<phrase name="ptperm_can_tags_unassigned" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut modifier les tags de demande quand un utilisateur n'est pas assigné]]></phrase>
+		<phrase name="ptperm_can_view" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser les demandes]]></phrase>
+		<phrase name="ptperm_can_view_milestones" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser les étapes]]></phrase>
+		<phrase name="ptperm_can_view_others" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser les demandes des autres]]></phrase>
+		<phrase name="ptperm_can_view_private_others" date="1284890075" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser les demandes / notes privées des autres]]></phrase>
+		<phrase name="ptperm_can_view_private_own" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Peut visualiser ses propres demandes / notes privées]]></phrase>
+		<phrase name="ptperm_can_view_replies" date="1393794673" username="Pitchoune" version="2.2.1"><![CDATA[Peut visualiser les réponses]]></phrase>
+		<phrase name="ptperm_can_vote" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Peut voter sur les demandes]]></phrase>
+		<phrase name="ptstatus" date="1335733454" username="Pitchoune" version="2.2.0"><![CDATA[État]]></phrase>
+		<phrase name="rebuild_issue_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de demande]]></phrase>
+		<phrase name="rebuild_milestone_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs d'étape]]></phrase>
+		<phrase name="rebuild_profile_issue_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs du nombre de demande]]></phrase>
+		<phrase name="rebuild_project_counters" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de projet]]></phrase>
+		<phrase name="rebuilding_issue_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de demande mettra à jour certains champs variés en relation à une demande qui peut être dépassé mais qui peut être régénéré.]]></phrase>
+		<phrase name="rebuilding_milestone_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs d'étape mettra à jour certains champs variés en relation à une étape qui peut être dépassé mais qui peut être régénéré.]]></phrase>
+		<phrase name="rebuilding_profile_issue_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs du nombre de demande mettra à jour le nombre de demandes que chaque utilisateur a crée.]]></phrase>
+		<phrase name="rebuilding_project_counters_will_update_various_fields" date="1284890175" username="Pitchoune" version="2.1.2"><![CDATA[Régénérer les compteurs de projet mettra à jour certains champs variés en relation à une demande qui peut être dépassé mais qui peut être régénéré. Exécutez ceci une fois que les compteurs de demande ont été régénérés.]]></phrase>
+		<phrase name="required_default_not_user_value" date="1323376242" username="Pitchoune" version="2.2.0"><![CDATA[Oui, utiliser une valeur par défaut (non défini par l'utilisateur)]]></phrase>
+		<phrase name="required_fields_issue_submit" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Champs requis<dfn>Quand vous ouvrez une demande, les champs suivants seront obligatoire.</dfn>]]></phrase>
+		<phrase name="required_not_required" date="1323376242" username="Pitchoune" version="2.2.0"><![CDATA[Oui, non requis]]></phrase>
+		<phrase name="required_not_use" date="1323376242" username="Pitchoune" version="2.2.0"><![CDATA[Non, ne pas utiliser]]></phrase>
+		<phrase name="required_requireappliesversion" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Version appliquée]]></phrase>
+		<phrase name="required_requirecategory" date="1179991672" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Catégorie]]></phrase>
+		<phrase name="required_required" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Oui, requis]]></phrase>
+		<phrase name="required_requirepriority" date="1179991672" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Priorité]]></phrase>
+		<phrase name="revert_to_default_permissions" date="1216308740" username="Pitchoune" version="2.0.0 Beta 1"><![CDATA[Réinitialiser les permissions par défaut ?
+<dfn>Si vous choisissez cette option, les jeux de permission sélectionnés seront supprimés et les utilisateurs de ce groupe utiliseront les permissions globales des projets.</dfn>]]></phrase>
+		<phrase name="save_and_reload" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Enregistrer et recharger]]></phrase>
+		<phrase name="select_start_status_for_types_available" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Sélectionnez l'état par défaut pour les types de demande que vous souhaitez rendre disponible pour ce projet.]]></phrase>
+		<phrase name="send_email_on_issueassignment" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Envoyer un email pour les assignations de demande
+<dfn>Choisissez cette option si vous voulez que vos utilisateurs reçoivent un email quand ils sont assignés à une demande par un autre utilisateur.</dfn>]]></phrase>
+		<phrase name="send_pm_on_issueassignment" date="1284890239" username="Pitchoune" version="2.1.2"><![CDATA[Envoyer un message privé pour les assignations de demande
+<dfn>Choisissez cette option si vous voulez que vos utilisateurs reçoivent un message privé quand ils sont assignés à une demande par un autre utilisateur.</dfn>]]></phrase>
+		<phrase name="severitycolor_darkstyles" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles sombres]]></phrase>
+		<phrase name="severitycolor_lightstyles" date="1323376295" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles clairs]]></phrase>
+		<phrase name="show_globally_disabled_groups" date="1179991708" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Voir les groupes d'utilisateurs globalement désactivés]]></phrase>
+		<phrase name="singular_form_example" date="1179991708" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Forme au singulier<dfn>Exemple : Bug</dfn>]]></phrase>
+		<phrase name="some_issue_fields_not_editable_frontend" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[Certains champs de demande, comme le projet et le type de demande, ne sont pas modifiables sur la partie public. Ce système vous permet de le faire.]]></phrase>
+		<phrase name="status_color_dark_styles" date="1323376325" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles sombres]]></phrase>
+		<phrase name="status_color_light_styles" date="1323376325" username="Pitchoune" version="2.2.0"><![CDATA[Couleur d'arrière-plan - styles clairs]]></phrase>
+		<phrase name="status_represents_completed_issue" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[L'état représente une demande achevé ?]]></phrase>
+		<phrase name="tag_list" date="1179992047" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Liste des tags]]></phrase>
+		<phrase name="target_date_desc" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[Utilisez cette option pour spécifier une date butoir (ou une ligne de fin) pour cette étape.]]></phrase>
+		<phrase name="title_in_forum_list" date="1180997508" username="Pitchoune" version="1.0.0 Beta 3"><![CDATA[Intitulé dans la liste des forums
+<dfn>Si vous affichez ce projet dans la liste des forums, vous pouvez utiliser ceci pour outrepasser le nom du projet dans la liste.</dfn>]]></phrase>
+		<phrase name="upgrade_script_42_description" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Ceci va ajouter tout le nécessaire pour pouvoir utiliser Project Tools correctement avec vBulletin 4.2.0+.]]></phrase>
+		<phrase name="upgrade_script_42_title" date="1347746409" username="Pitchoune" version="2.2.0"><![CDATA[Script de mise à jour pour vBulletin 4.2.x.]]></phrase>
+		<phrase name="use_selected_project_sets" date="1281452217" username="Pitchoune" version="2.1.2"><![CDATA[Utiliser la couleur dans les styles]]></phrase>
+		<phrase name="usergroups_access_globally_disabled" date="1284890293" username="Pitchoune" version="2.1.2"><![CDATA[L'accès pour ce groupe d'utilisateurs à Project Tools est globalement désactivé. Les modifications que vous effectuerez ici ne seront pas appliqués jusqu'à ce que ce groupe d'utilisateurs puisse y accéder globalement.]]></phrase>
+		<phrase name="value" date="1327529260" username="Pitchoune" version="2.2.0"><![CDATA[Valeur
+<dfn>La valeur doit être un nombre entier positif proche de 0 <b>et</b> supérieure à 0.</dfn>]]></phrase>
+		<phrase name="version_group" date="1179992047" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Groupe de version]]></phrase>
+		<phrase name="versions" date="1179992442" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Versions]]></phrase>
+		<phrase name="vote_question_example" date="1179992047" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Question de vote<dfn>Exemple : Pouvez-vous reproduire ce bug ?</dfn>]]></phrase>
+		<phrase name="what_are_reports" date="1181508665" username="Pitchoune" version="1.0.0 Beta 4"><![CDATA[Que sont les rapports ?]]></phrase>
 	</phrasetype>
 	<phrasetype name="Searching" fieldname="search">
 		<phrase name="complete_search" date="1276959051" username="Pitchoune" version="2.1.1"><![CDATA[Rechercher avec des paramètres supplémentaires]]></phrase>
