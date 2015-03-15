@@ -98,7 +98,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => '83ecad7f402e31e70c9bcc4a094dbcb0',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => '2a2c069747a9fd10ad20629f2491bd2b',
-		'product-vbprojecttools.xml' => '30dc89cf4970ee03b9338f9dbfda8a7c',
+		'product-vbprojecttools.xml' => '0954347f5306442fb25ea59e03d6fdd6',
 		'vbulletin-mobile-style-pt.xml' => '23ae28e8dcea6ea36b7bb25d1a23c2a7',
 	),
 	'/packages/vbcms/item/widget' => array(
