@@ -4,7 +4,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -115,7 +115,7 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 		$where = array();
 
 		$select[] = 'issuenote.*';
-		$select[] = 'userfield.*, userfieldtext.*, user.*, IF(displaygroupid=0, user.usergroupid, displaygroupid) AS displaygroupid';
+		$select[] = 'userfield.*, usertextfield.*, user.*, IF(displaygroupid=0, user.usergroupid, displaygroupid) AS displaygroupid';
 
 		$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'user AS user ON (user.userid = issuenote.userid)';
 		$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'userfield AS userfield ON (user.userid = userfield.userid)';
@@ -129,7 +129,7 @@ class vB_Legacy_IssueNote extends vB_Legacy_DataObject
 						customavatar.dateline AS avatardateline, customavatar.width AS width, customavatar.height AS height,
 						customavatar.height_thumb AS height_thumb, customavatar.width_thumb AS width_thumb, customavatar.filedata_thumb';
 			$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'avatar AS avatar ON (avatar.avatarid = user.avatarid)';
-			$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'customavatar AS customavatar ON (customavatar.userid = post.userid)';
+			$joins[] = 'LEFT JOIN ' . TABLE_PREFIX . 'customavatar AS customavatar ON (customavatar.userid = user.userid)';
 		}
 
 		// Get all the issue note and user data in one go
