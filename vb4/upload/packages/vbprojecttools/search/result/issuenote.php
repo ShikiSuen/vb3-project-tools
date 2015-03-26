@@ -4,7 +4,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -40,9 +40,7 @@ class vBProjectTools_Search_Result_IssueNote extends vB_Search_Result
 	{
 		if ($issuenote)
 		{
-			$this->issuenote = $issuenote;
-			$item = new vBProjectTools_Search_Result_IssueNote();
-
+			$item = new vBProjectTools_Search_Result_IssueNote($issuenote);
 			return $item;
 		}
 		else
