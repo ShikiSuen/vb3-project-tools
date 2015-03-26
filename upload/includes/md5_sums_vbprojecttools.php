@@ -115,7 +115,7 @@ $md5_sums = array(
 	),
 	'/packages/vbprojecttools/search/result' => array(
 		'issue.php' => '65bc4f1178a30ffdb4ea16b1b5a81853',
-		'issuenote.php' => '7bd4aec90fcc7570f7333b73da6f1be0',
+		'issuenote.php' => '69afad853aa73308257ebcf50b4ca279',
 		'project.php' => 'fad5a06fa39b79e50825bfff520aaeff',
 	),
 	'/packages/vbprojecttools/search/searchcontroller' => array(
@@ -140,7 +140,7 @@ $md5_sums = array(
 	),
 	'/vb/legacy' => array(
 		'issue.php' => 'eb26f1afee1d194287edd69b6c0cd7d8',
-		'issuenote.php' => '08449da13c0fc4929369005fe1b1f461',
+		'issuenote.php' => 'c2bffb177c6b30948b4fffa0a6482711',
 		'project.php' => 'a2fd01f812132ccd501c375025090b24',
 	),
 );
