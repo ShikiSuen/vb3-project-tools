@@ -2,7 +2,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -42,7 +42,7 @@ function issueattach_submit()
 */
 function IssueNoteBit_Init(obj, issuenoteid)
 {
-	console.log("IssueNoteBit Init: %d", issuenoteid);
+	console.log("IssueNoteBit Init: %s", issuenoteid);
 
 	if (typeof vB_QuickReply != "undefined")
 	{
