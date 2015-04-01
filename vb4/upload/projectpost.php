@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -725,7 +725,14 @@ if ($_POST['do'] == 'postreply')
 				while ($note = $db->fetch_array($notes))
 				{
 					$note_handler =& $factory->create($note);
+					$issue = $note_handler->note;
 					$xml->add_tag('issuenotebit', process_replacement_vars($note_handler->construct($note)), array('issuenoteid' => $note['issuenoteid']));
+				}
+
+				if ($vbulletin->options['threadmarking'])
+				{
+					// Mark automagically it as read the whole issue with your own quick reply. If 'Inactivity/Cookie Based' is defined, it's useless to run it.
+					mark_issue_read($issue, TIMENOW);
 				}
 
 				$xml->add_tag('time', TIMENOW);
