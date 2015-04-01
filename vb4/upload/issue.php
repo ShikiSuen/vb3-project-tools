@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -42,6 +42,8 @@ $specialtemplates = array(
 
 // pre-cache templates used by all actions
 $globaltemplates = array(
+	'facebook_likebutton',
+	'facebook_publishcheckbox',
 	'newpost_attachmentbit',
 	'pt_issue',
 	'pt_issue_firstnote',
