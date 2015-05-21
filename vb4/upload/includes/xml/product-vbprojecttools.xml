@@ -6410,26 +6410,6 @@ vBulletin.register_control("vB_Lightbox_Container", "ptimgs", {vb:raw vboptions.
 	//--> 
 	</script>
 </li>]]></template>
-		<template name="pt_issuenotebit_replies" templatetype="template" date="1421359792" username="Pitchoune" version="2.2.2"><![CDATA[<!-- user note -->
-<li id="issuenote_{vb:raw note.issuenoteid}" class="pt_issue_note">
-	<div class="issue_note">
-		<div class="block">
-			<a name="note{vb:raw note.issuenoteid}"></a>
-			<div class="blockhead">
-				{vb:rawphrase note}
-			</div>
-			<div class="blockbody settings_form_border">
-				<div class="blockrow">
-					<vb:if condition="!$vbulletin->userinfo['userid']">
-						<div class="restore">{vb:rawphrase replies_exist_but_not_visible}</div>
-					<vb:else />
-						<div class="restore">{vb:rawphrase replies_not_visible_admin_permission}</div>
-					</vb:if>
-				</div>
-			</div>
-		</div>
-	</div>
-</li>]]></template>
 		<template name="pt_issuenotebit_system" templatetype="template" date="1382880621" username="Pitchoune" version="2.2.1"><![CDATA[<!-- note system -->
 <li id="issuenote_{vb:raw note.issuenoteid}" class="pt_issue_note">
 	<div class="issue_note<vb:if condition="$show['legacy']">_legacy</vb:if>">
@@ -15406,11 +15386,6 @@ This is needed because Project Tools have a particular attachment system and nee
 			<phrase name="reason_for_edit_delete" date="1175078274" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Reason for edit / delete]]></phrase>
 			<phrase name="removed" date="1175093580" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Removed]]></phrase>
 			<phrase name="repeat_search" date="1182435690" username="Ed Sullivan" version="1.0.0 Release Candidate 2"><![CDATA[Repeat Search]]></phrase>
-			<phrase name="replies_exist_but_not_visible" date="1421359342" username="Pitchoune" version="2.2.2"><![CDATA[This issue contains some replies but it seems you don't have the permission to show them. To see them, you should log in.
-<br />
-<br />
-Once logged in, if the administrator decided it, you can still be able to not see replies.]]></phrase>
-			<phrase name="replies_not_visible_admin_permission" date="1421359567" username="Pitchoune" version="2.2.2"><![CDATA[It seems you don't have access to replies as admin. You should check your admin permissions.]]></phrase>
 			<phrase name="reply_text_sure_submit_attach" date="1183734604" username="Ed Sullivan" version="1.0.1"><![CDATA[You have entered some text as a reply. If you submit this attachment, this text will be lost. Are you sure you want to continue?]]></phrase>
 			<phrase name="reply_to_issue_x" date="1175174815" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Reply to Issue]]></phrase>
 			<phrase name="report_issue_note" date="1213634409" username="Scott" version="2.0.0 Alpha 1"><![CDATA[Report Issue Note]]></phrase>
