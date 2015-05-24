@@ -7,7 +7,7 @@
 
 $md5_sums = array(
 	'/' => array(
-		'issue.php' => '4441c0ed04689a30897e475dcde5f631',
+		'issue.php' => '0f5e9c9c6f22477f2dbf9ee9645930ff',
 		'issuelist.php' => 'f07ccb223782a56ed32b25f890b9707f',
 		'milestone.php' => '0d7780acaea7b8206e54f2e7ac3f9c27',
 		'milestoneissuelist.php' => 'c41c87ad0e58bf65820455ebddf2140c',
@@ -15,7 +15,7 @@ $md5_sums = array(
 		'projectajax.php' => '1e570a8bdd84a6675557dc3a94c57f10',
 		'projectexternal.php' => 'f3b883fd8e801d5a6e0e12658423420c',
 		'projectmilestone.php' => '151cc3483147dff48a5c43677a21c550',
-		'projectpost.php' => '378a7f6abc79323e7217f3f899e5cd0d',
+		'projectpost.php' => 'f7e8eba7fbc23e4355bc2b4795fe40fa',
 		'projectsearch.php' => 'c2dd99fb7782e28263e50c0e2633c861',
 		'projecttimeline.php' => '5508d3ba7d7629a981da8329d246b4d5',
 	),
@@ -38,7 +38,7 @@ $md5_sums = array(
 		'vbulletin_list_builder.js' => 'f2f36b7eb4f8235199cc757338a325ef',
 		'vbulletin_magic_select.js' => '1eda98bf6cb44f7eaf2dcec4071449cc',
 		'vbulletin_pt_ajax_issuelist.js' => '5a5440ccfce0a7964c7f57f0f9630b5f',
-		'vbulletin_pt_issue.js' => 'b00cb635c0ad22427d1e531c5afc868d',
+		'vbulletin_pt_issue.js' => 'a3932b18c8f2bb8ba32c949381bc5190',
 		'vbulletin_pt_issuenote_loader.js' => '5ad6993a311500265b616f118a45ec38',
 		'vbulletin_pt_petition.js' => '140a4002d2616b29e874f3f6c2a4ffae',
 		'vbulletin_pt_quick_reply.js' => '0cff43daa784577c7b83bb6172ebc334',
@@ -98,7 +98,7 @@ $md5_sums = array(
 		'cpnav_vbprojecttools.xml' => '83ecad7f402e31e70c9bcc4a094dbcb0',
 		'cssrollup_vbprojecttools.xml' => '65b969152897feff010c66cde098bce3',
 		'hooks_vbprojecttools.xml' => '2a2c069747a9fd10ad20629f2491bd2b',
-		'product-vbprojecttools.xml' => '0954347f5306442fb25ea59e03d6fdd6',
+		'product-vbprojecttools.xml' => 'db64df949dfa780722218eb92a1b6a6d',
 		'vbulletin-mobile-style-pt.xml' => '23ae28e8dcea6ea36b7bb25d1a23c2a7',
 	),
 	'/packages/vbcms/item/widget' => array(
