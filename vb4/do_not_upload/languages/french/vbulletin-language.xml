@@ -649,11 +649,11 @@ Pour créer votre propre rapport de recherche, effectuez une recherche avec les c
 		<phrase name="priority" date="1323433846" username="Pitchoune" version="2.2.0"><![CDATA[Priorité]]></phrase>
 		<phrase name="projects" date="1185036771" username="Pitchoune" version="1.0.0"><![CDATA[Projets]]></phrase>
 		<phrase name="search_projects" date="1184849035" username="Pitchoune" version="1.0.0"><![CDATA[Recherche dans les projets]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_faq_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[FAQ]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_myreports_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Mes rapports]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Abonnements aux demandes]]></phrase>
-		<phrase name="vb_navigation_link_vbpt_timeline_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Ligne temporelle]]></phrase>
-		<phrase name="vb_navigation_tab_vbtab_project_text" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Projets]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_faq_text" date="1432486122" username="Pitchoune" version="2.2.2"><![CDATA[FAQ]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_myreports_text" date="1432486126" username="Pitchoune" version="2.2.2"><![CDATA[Mes rapports]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_subscriptions_text" date="1432486144" username="Pitchoune" version="2.2.2"><![CDATA[Abonnements aux demandes]]></phrase>
+		<phrase name="vb_navigation_link_vbpt_timeline_text" date="1432486148" username="Pitchoune" version="2.2.2"><![CDATA[Ligne temporelle]]></phrase>
+		<phrase name="vb_navigation_tab_vbtab_project_text" date="1432486154" username="Pitchoune" version="2.2.2"><![CDATA[Projets]]></phrase>
 	</phrasetype>
 	<phrasetype name="Notices" fieldname="notice">
 		<phrase name="is_browsing_project_tools_criteria" date="1281450959" username="Pitchoune" version="2.1.2"><![CDATA[L'utilisateur visualise Project Tools]]></phrase>
@@ -843,10 +843,6 @@ Ceci est nécessaire car Project Tools utilise un système de pièces jointes parti
 		<phrase name="reason_for_edit_delete" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Motif de la modification / suppression]]></phrase>
 		<phrase name="removed" date="1179932928" username="Pitchoune" version="1.0.0 Beta 2"><![CDATA[Retiré]]></phrase>
 		<phrase name="repeat_search" date="1209242000" username="Administrateur" version="1.0.3"><![CDATA[Recommencer la recherche]]></phrase>
-		<phrase name="replies_exist_but_not_visible" date="1426445026" username="Pitchoune" version="2.2.2"><![CDATA[Cette demande contient des réposnes mais il semblerait que vous n'ayez pas le permission de les visualiser. Pour pouvoir les visualiser, vous devez vous identifier.
-<br />
-<br />
-Une fois identifié, si l'administrateur l'a décidé, vous ne pourrez toujours pas visualiser les réponses.]]></phrase>
 		<phrase name="reply_text_sure_submit_attach" date="1209242041" username="Administrateur" version="1.0.3"><![CDATA[Vous avez inséré du texte en tant que réponse. Si vous envoyez cette pièce jointe, ce texte sera perdu. Êtes-vous certain de vouloir continuer ?]]></phrase>
 		<phrase name="reply_to_issue_x" date="1284887069" username="Pitchoune" version="2.1.2"><![CDATA[Répondre à la demande]]></phrase>
 		<phrase name="report_issue_note" date="1284887069" username="Pitchoune" version="2.1.2"><![CDATA[Signaler le commentaire de demande]]></phrase>
