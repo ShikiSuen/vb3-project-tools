@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.2.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -51,7 +51,7 @@ function resolve_grouping($groupby, &$group_title_col, &$group_title_join)
 			break;
 
 		case 'projectcategoryid':
-			$group_title_col = "IF(issuesearchresult.groupid = '0', '" . $db->escape_string($vbphrase['unknown']) . "', projectcategory.title)";
+			$group_title_col = "IF(issuesearchresult.groupid = '0', '" . $db->escape_string($vbphrase['unknown']) . "', projectcategory.projectcategoryid)";
 			$group_title_join = "LEFT JOIN " . TABLE_PREFIX . "pt_projectcategory AS projectcategory ON (projectcategory.projectcategoryid = CAST(issuesearchresult.groupid AS UNSIGNED))";
 			break;
 
@@ -67,7 +67,7 @@ function resolve_grouping($groupby, &$group_title_col, &$group_title_join)
 
 		case 'appliesversionid':
 			$group_title_col = "
-				IF(issue.appliesversionid = 0, '" . $db->escape_string($vbphrase['unknown']) . "', projectversion.versionname)
+				IF(issue.appliesversionid = 0, '" . $db->escape_string($vbphrase['unknown']) . "', projectversion.projectversionid)
 			";
 			$group_title_join = "
 				INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuesearchresult.issueid)
@@ -78,7 +78,7 @@ function resolve_grouping($groupby, &$group_title_col, &$group_title_join)
 		case 'addressedversionid':
 			$group_title_col = "
 				IF(issue.isaddressed = 0, '" . $db->escape_string($vbphrase['unaddressed']) . "',
-					IF(issue.addressedversionid = 0, '" . $db->escape_string($vbphrase['next_release']) . "', projectversion.versionname)
+					IF(issue.addressedversionid = 0, '" . $db->escape_string($vbphrase['next_release']) . "', projectversion.projectversionid)
 				)
 			";
 			$group_title_join = "
