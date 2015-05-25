@@ -3,11 +3,11 @@
 <product productid="vbprojecttools" active="1">
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
-	<version>2.2.2</version>
+	<version>2.3.0</version>
 	<url />
 	<versioncheckurl />
 	<dependencies>
-		<dependency dependencytype="vbulletin" minversion="4.1.4" maxversion="5.0.0 Alpha 1" />
+		<dependency dependencytype="vbulletin" minversion="4.2.0" maxversion="5.0.0 Alpha 1" />
 	</dependencies>
 	<codes>
 		<code version="*">
@@ -10181,7 +10181,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_searchresultgroupbit" templatetype="template" date="1331070734" username="Pitchoune" version="2.2.0"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
+		<template name="pt_searchresultgroupbit" templatetype="template" date="1432535327" username="Pitchoune" version="2.3.0"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
 
 <vb:if condition="$pagenav">
 <div class="pt_issuepopup">
@@ -10199,7 +10199,7 @@ init_project_readmarker_system();
 		<ul id="projectpopups" class="popupgroup projectpopups">
 			<li id="search_tools" class="popupmenu nohovermenu searchprojects">
 				<h6>
-					<a class="popupctrl" rel="nofollow" href="javascript://">{vb:rawphrase search_projects}</a>
+					<a class="popupctrl" rel="nofollow" href="javascript://">{vb:rawphrase search_tools}</a>
 				</h6>
 				<ul class="popupbody">
 					<vb:if condition="$search['issuereportid']">
@@ -15809,8 +15809,8 @@ A value of 0 will hide the recent issues from this page.]]></phrase>
 <br />
 A value of 0 will hide the timeline from this page.]]></phrase>
 			<phrase name="setting_pt_project_timelineentries_title" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[Project View: Timeline Entries]]></phrase>
-			<phrase name="setting_pt_statuscolor_desc" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Which color would you like to use in the issue list?]]></phrase>
-			<phrase name="setting_pt_statuscolor_title" date="1304761657" username="Pitchoune" version="2.2.0"><![CDATA[Issue Color]]></phrase>
+			<phrase name="setting_pt_statuscolor_desc" date="1432534959" username="Pitchoune" version="2.3.0"><![CDATA[Which color would you like to use in the issue list?]]></phrase>
+			<phrase name="setting_pt_statuscolor_title" date="1432534959" username="Pitchoune" version="2.3.0"><![CDATA[Issue Color]]></phrase>
 			<phrase name="setting_pt_timelineperpage_desc" date="1304761628" username="Pitchoune" version="2.2.0"><![CDATA[When viewing the timeline page, this controls the number of entries shown on each page.<br />
 <br />
 A value of 0 will display all entries in the specified time range on one page.]]></phrase>
@@ -15991,7 +15991,7 @@ Separate each style ID with a comma.<br />
 		</settinggroup>
 		<settinggroup name="projecttools_statuscolor" displayorder="820">
 			<setting varname="pt_statuscolor" displayorder="10">
-				<datatype>posint</datatype>
+				<datatype>number</datatype>
 				<optioncode>radio:piped
 0|none
 1|pt_status_color
