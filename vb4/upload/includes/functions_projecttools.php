@@ -1864,7 +1864,7 @@ function fetch_pt_datastore()
 *
 * @return	array	List of columns
 */
-function fetch_issuelist_columns($column, $project = array())
+function fetch_issuelist_columns($column, $project = array(), $bypass = false)
 {
 	$columns = array();
 
@@ -1889,7 +1889,7 @@ function fetch_issuelist_columns($column, $project = array())
 	}
 
 	// Priority
-	if (($column & 4) AND $project['requirepriority'] > 0)
+	if ((($column & 4) AND $project['requirepriority'] > 0) OR $bypass)
 	{
 		$columns['priority'] = true;
 	}
