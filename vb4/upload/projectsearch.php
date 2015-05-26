@@ -709,8 +709,10 @@ if ($_REQUEST['do'] == 'searchresults')
 
 		$group['count'] = vb_number_format($group['count']);
 
+		$project = verify_project($group['projectid']);
+
 		// Definition to display selected columns
-		$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $group['projectid']);
+		$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project['projectid']);
 
 		($hook = vBulletinHook::fetch_hook('projectsearch_results_groupbit')) ? eval($hook) : false;
 
