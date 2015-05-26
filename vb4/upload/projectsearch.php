@@ -709,7 +709,7 @@ if ($_REQUEST['do'] == 'searchresults')
 
 		$group['count'] = vb_number_format($group['count']);
 
-		$project = verify_project($group['projectid']);
+		$project = fetch_project_info($group['projectid']);
 
 		// Definition to display selected columns
 		$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
