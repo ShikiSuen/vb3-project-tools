@@ -585,9 +585,6 @@ if ($_REQUEST['do'] == 'searchresults')
 
 	($hook = vBulletinHook::fetch_hook('projectsearch_results_start')) ? eval($hook) : false;
 
-	// Definition to display selected columns
-	$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns']);
-
 	$groups = prepare_group_filter($search, $vbulletin->GPC['groupid'], $perpage);
 	$request_groupid = urlencode($vbulletin->GPC['groupid']);
 
@@ -711,6 +708,9 @@ if ($_REQUEST['do'] == 'searchresults')
 		}
 
 		$group['count'] = vb_number_format($group['count']);
+
+		// Definition to display selected columns
+		$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $group['projectid']);
 
 		($hook = vBulletinHook::fetch_hook('projectsearch_results_groupbit')) ? eval($hook) : false;
 
