@@ -10132,38 +10132,39 @@ init_project_readmarker_system();
 {vb:raw errorbits}
 </ul>]]></template>
 		<template name="pt_searcherrorbit" templatetype="template" date="1273444813" username="Pitchoune" version="2.1.0 Alpha 1"><![CDATA[<li>{vb:raw error}</li>]]></template>
-		<template name="pt_searchresultbit" templatetype="template" date="1331070364" username="Pitchoune" version="2.2.0"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
+		<template name="pt_searchresultbit" templatetype="template" date="1432665327" username="Pitchoune" version="2.3.0"><![CDATA[<div class="blockrow" style="background-color: {vb:raw issue.statuscolor}">
 	<div class="ptissuelist_statusicon">
 		<vb:if condition="$issue['typeicon']"><img src="{vb:stylevar imgdir_statusicon}/{vb:raw issue.typeicon}" alt="{vb:raw issue.issuetype}" border="0" /><vb:else />&nbsp;</vb:if>
 	</div>
 	<div class="ptissuelist_title">
-		<div>
+		<div class="issuetitle">
 			<vb:if condition="$issue['newflag']"><a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issueid={vb:raw issue.issueid}&amp;goto=firstnew"><img class="inlineimg" src="{vb:stylevar imgdir_button}/firstnew.gif" alt="{vb:rawphrase go_to_first_new_post}" border="0" /></a></vb:if>
 			<a href="{vb:link issue, {vb:raw issue}}" title="{vb:raw issue.summary}" <vb:if condition="$issue['newflag']"> class="boldtext"</vb:if>>{vb:raw issue.title}</a>
 		</div>
+		<div class="issueuser smallfont">
+			<a href="{vb:link member, {vb:raw issue}, null, 'submituserid', 'submitusername'}">{vb:raw issue.submitusername}</a>
+		</div>
 	</div>
-	<div class="ptissuelist_lastpost_search smallfont">
-		{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
-		<p>
-			{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
-			<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
-		</p>
-		<script type="text/javascript">
-		<!--
-		<vb:if condition="$show['status_edit']">vBulletin.register_control("vB_MagicSelect", "ms_stat_{vb:raw issue.issueid}", "issuestatusid", "{vb:raw issue.issueid}");</vb:if>
-		<vb:if condition="$show['edit_issue']">vBulletin.register_control("vB_MagicSelect", "ms_prio_{vb:raw issue.issueid}", "priority", "{vb:raw issue.issueid}");</vb:if>
-		//-->
-		</script>
-	</div>
-	<div class="ptissuelist_replies_search smallfont">
-		{vb:raw issue.replycount}
-	</div>
-	<div class="ptissuelist_priority_search searchiefix smallfont">
-		<div id="ms_prio_{vb:raw issue.issueid}">{vb:raw issue.priority_text}</div>
-	</div>
-	<div class="ptissuelist_status_search smallfont">
-		<div id="ms_stat_{vb:raw issue.issueid}">{vb:raw issue.status}</div>
-	</div>
+	<vb:if condition="$issue['columns']['lastpost']">
+		<div class="ptissuelist_lastpost smallfont">
+			{vb:raw issue.lastpostdate} <span class="time">{vb:raw issue.lastposttime}</span>
+			<p>
+				{vb:rawphrase by_x, {vb:link member, {vb:raw issue}, null, 'lastpostuserid', 'lastpostusername'}, {vb:raw issue.lastpostusername}}
+				<a href="issue.php?{vb:raw session.sessionurl}do=gotonote&amp;issuenoteid={vb:raw issue.lastnoteid}"><img class="inlineimg" src="{vb:stylevar imgdir_button}/lastpost-{vb:stylevar right}.png" alt="{vb:rawphrase go_to_last_post}" border="0" /></a>
+			</p>
+		</div>
+	</vb:if>
+	<vb:if condition="$issue['columns']['replies']">
+		<div class="ptissuelist_replies_search smallfont">
+			{vb:raw issue.replycount}
+		</div>
+	</vb:if>
+	<vb:if condition="$issue['columns']['status']">
+		<div class="ptissuelist_status_search smallfont">
+			{vb:raw issue.status}
+		</div>
+	</vb:if>
+
 	<div class="ptissuelist_icons_search">
 		<div>
 			<div class="smallfont" style="float: {vb:stylevar right}">
@@ -10181,7 +10182,7 @@ init_project_readmarker_system();
 		</div>
 	</div>
 </div>]]></template>
-		<template name="pt_searchresultgroupbit" templatetype="template" date="1432535327" username="Pitchoune" version="2.3.0"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
+		<template name="pt_searchresultgroupbit" templatetype="template" date="1432665313" username="Pitchoune" version="2.3.0"><![CDATA[<vb:if condition="!$show['first_group']"><br /></vb:if>
 
 <vb:if condition="$pagenav">
 <div class="pt_issuepopup">
@@ -10247,33 +10248,9 @@ init_project_readmarker_system();
 				</div>
 			</vb:if>
 
-			<vb:if condition="$columns['priority']">
-				<div class="ptissuelist_priority">
-					<a href="projectsearch.php?{vb:raw session.sessionurl}do=resort&amp;searchid={vb:raw search.issuesearchid}&amp;sort=priority&amp;sortorder=desc<vb:if condition="$request_groupid">&amp;groupid={vb:raw request_groupid}</vb:if>">{vb:rawphrase priority}</a> {vb:raw sort_arrow.priority}
-				</div>
-			</vb:if>
-
 			<vb:if condition="$columns['status']">
 				<div class="ptissuelist_status">
 					{vb:rawphrase status}
-				</div>
-			</vb:if>
-
-			<vb:if condition="$columns['category']">
-				<div class="ptissuelist_category">
-					{vb:rawphrase category}
-				</div>
-			</vb:if>
-
-			<vb:if condition="$columns['addressversion']">
-				<div class="ptissuelist_addressversion">
-					{vb:rawphrase addressversion}
-				</div>
-			</vb:if>
-
-			<vb:if condition="$columns['applyversion']">
-				<div class="ptissuelist_applyversion">
-					{vb:rawphrase applyversion}
 				</div>
 			</vb:if>
 		</div>
@@ -15230,6 +15207,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="assigned_users" date="1174492340" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Assigned Users]]></phrase>
 			<phrase name="available_items" date="1175167097" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Available Items]]></phrase>
 			<phrase name="category" date="1174486701" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Category]]></phrase>
+			<phrase name="category0" date="1432660680" username="Pitchoune" version="2.3.0"><![CDATA[Unknown]]></phrase>
 			<phrase name="change_status_to" date="1180100367" username="Ed Sullivan" version="1.0.0 Beta 2"><![CDATA[Change status to]]></phrase>
 			<phrase name="changes" date="1175077243" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Changes]]></phrase>
 			<phrase name="click_here_to_view_x_completed_milestones" date="1213717680" username="Ed Sullivan" version="2.0.0 Alpha 1"><![CDATA[Click here to view the {1} completed milestone(s)!]]></phrase>

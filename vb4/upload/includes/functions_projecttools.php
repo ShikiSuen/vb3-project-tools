@@ -1901,7 +1901,7 @@ function fetch_issuelist_columns($column, $project = array(), $bypass = false)
 	}
 
 	// Category
-	if (($column & 16) AND $project['requirecategory'] > 0)
+	if ((($column & 16) AND $project['requirecategory'] > 0) OR $bypass)
 	{
 		$columns['category'] = true;
 	}
