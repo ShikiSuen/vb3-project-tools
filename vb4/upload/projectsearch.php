@@ -712,7 +712,7 @@ if ($_REQUEST['do'] == 'searchresults')
 		$project = verify_project($group['projectid']);
 
 		// Definition to display selected columns
-		$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project['projectid']);
+		$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
 
 		($hook = vBulletinHook::fetch_hook('projectsearch_results_groupbit')) ? eval($hook) : false;
 
