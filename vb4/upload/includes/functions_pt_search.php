@@ -815,6 +815,8 @@ function build_pt_search_resultbit($issue)
 
 	$issue = prepare_issue($issue);
 
+	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
+
 	$show['statuscolor'] = false;
 
 	$projectstatusset = $vbulletin->db->query_first("
