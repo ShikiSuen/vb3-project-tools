@@ -51,7 +51,7 @@ function resolve_grouping($groupby, &$group_title_col, &$group_title_join)
 			break;
 
 		case 'projectcategoryid':
-			$group_title_col = "IF(issuesearchresult.groupid = '0', '" . $db->escape_string($vbphrase['unknown']) . "', projectcategory.projectcategoryid)";
+			$group_title_col = "projectcategory.projectid, 1 AS phraseme, 'category*'";
 			$group_title_join = "LEFT JOIN " . TABLE_PREFIX . "pt_projectcategory AS projectcategory ON (projectcategory.projectcategoryid = CAST(issuesearchresult.groupid AS UNSIGNED))";
 			break;
 
