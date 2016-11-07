@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -87,7 +87,7 @@ if ($_POST['do'] == 'kill')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
+	$dataman = datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
 	$dataman->set_existing($magicselect);
 	$dataman->delete();
 
@@ -135,7 +135,7 @@ if ($_POST['do'] == 'insert')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
+	$dataman = datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
 	$dataman->set_info('title', $vbulletin->GPC['title']);
 	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);
 	$dataman->set('projectid', $project['projectid']);
@@ -200,7 +200,7 @@ if ($_POST['do'] == 'update')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$dataman =& datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
+	$dataman = datamanager_init('Pt_MagicSelect', $vbulletin, ERRTYPE_CP);
 	$dataman->set_existing($magicselect);
 	$dataman->set_info('title', $vbulletin->GPC['title']);
 	$dataman->set('displayorder', $vbulletin->GPC['displayorder']);

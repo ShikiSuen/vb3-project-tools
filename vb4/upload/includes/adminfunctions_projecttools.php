@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -425,7 +425,7 @@ function rebuild_project_counters($echo = false)
 	");
 	while ($project = $db->fetch_array($projects))
 	{
-		$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_SILENT);
+		$projectdata = datamanager_init('Pt_Project', $vbulletin, ERRTYPE_SILENT);
 		$projectdata->set_existing($project);
 		$projectdata->rebuild_project_counters();
 		$projectdata->save();
@@ -455,7 +455,7 @@ function rebuild_milestone_counters($echo = false)
 	");
 	while ($milestone = $db->fetch_array($milestones))
 	{
-		$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_SILENT);
+		$milestonedata = datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_SILENT);
 		$milestonedata->set_existing($milestone);
 		$milestonedata->rebuild_milestone_counters();
 		$milestonedata->save();

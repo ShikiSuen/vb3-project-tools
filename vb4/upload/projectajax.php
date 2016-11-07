@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -97,7 +97,7 @@ if ($_POST['do'] == 'updateissuetitle')
 	if ($posting_perms['issue_edit'])
 	{
 		$issuetitle = convert_urlencoded_unicode($vbulletin->GPC['title']);
-		$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_ARRAY);
+		$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_ARRAY);
 		$issuedata->set_existing($issue);
 		$issuedata->set('title', $issuetitle);
 
@@ -198,7 +198,7 @@ function throw_ajax_error($text = '')
 // #######################################################################
 if ($_POST['do'] == 'save')
 {
-	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
+	$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
 	$issuedata->set_existing($issue);
 
 	($hook = vBulletinHook::fetch_hook('projectajax_save_start')) ? eval($hook) : false;
@@ -358,7 +358,7 @@ if ($_POST['do'] == 'save')
 					continue;
 				}
 
-				$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+				$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 				$assign->set_info('project', $project);
 				$assign->set('userid', $userid);
 				$assign->set('issueid', $issue['issueid']);
@@ -368,7 +368,7 @@ if ($_POST['do'] == 'save')
 			foreach ($assign_remove AS $userid)
 			{
 				$data = array('userid' => $userid, 'issueid' => $issue['issueid']);
-				$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+				$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 				$assign->set_existing($data);
 				$assign->delete();
 			}
@@ -392,7 +392,7 @@ if ($_POST['do'] == 'save')
 						WHERE issueid = " . $vbulletin->GPC['issueid'] . "
 					");
 
-					$issuems =& datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_SILENT, 'pt_magicselect');
+					$issuems = datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_SILENT, 'pt_magicselect');
 					$issuems->set_existing($ms_result);
 					$issuems->set('magicselect' . $vbulletin->GPC['field'], $vbulletin->GPC['value']);
 					$issuems->set('fieldid', $vbulletin->GPC['field']); // Required to track changes

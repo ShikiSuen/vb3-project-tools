@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -34,7 +34,7 @@ class vB_BbCodeParser_Pt extends vB_BbCodeParser
 	 */
 	public function __construct(&$registry, $tag_list = array (), $append_custom_tags = true)
 	{
-		parent::vB_BbCodeParser($registry, $tag_list, $append_custom_tags);
+		parent::__construct($registry, $tag_list, $append_custom_tags);
 	}
 
 	/**

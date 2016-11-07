@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -187,7 +187,7 @@ function handle_issue_subscription_change($issueid, $oldvalue, $newvalue, $useri
 		if ($newvalue AND $newvalue != $oldvalue)
 		{
 			// chose to add/change subscription
-			$subscriptiondata =& datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_SILENT);
+			$subscriptiondata = datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_SILENT);
 			$subscriptiondata->set('subscribetype', $newvalue);
 			$subscriptiondata->set('issueid', $issueid);
 			$subscriptiondata->set('userid', $userid);
@@ -204,7 +204,7 @@ function handle_issue_subscription_change($issueid, $oldvalue, $newvalue, $useri
 			");
 			if ($subscription)
 			{
-				$subscriptiondata =& datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_SILENT);
+				$subscriptiondata = datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_SILENT);
 				$subscriptiondata->set_existing($subscription);
 				$subscriptiondata->delete();
 			}
@@ -340,7 +340,7 @@ function process_assignment_changes($input, $posting_perms, $existing_assignment
 				continue;
 			}
 
-			$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+			$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 			$assign->set_info('project', $project);
 			$assign->set('userid', $userid);
 			$assign->set('issueid', $issue['issueid']);
@@ -351,7 +351,7 @@ function process_assignment_changes($input, $posting_perms, $existing_assignment
 		foreach ($assign_remove AS $userid)
 		{
 			$data = array('userid' => $userid, 'issueid' => $issue['issueid']);
-			$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+			$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 			$assign->set_existing($data);
 			$assign->set_info('log_assignment_changes', $log_assignment_changes);
 			$assign->delete();
@@ -363,7 +363,7 @@ function process_assignment_changes($input, $posting_perms, $existing_assignment
 		if ($input['assignself'] AND empty($issue['isassigned']))
 		{
 			// unassigned -> assigned
-			$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+			$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 			$assign->set_info('project', $project);
 			$assign->set('userid', $vbulletin->userinfo['userid']);
 			$assign->set('issueid', $issue['issueid']);
@@ -373,7 +373,7 @@ function process_assignment_changes($input, $posting_perms, $existing_assignment
 		{
 			// assigned -> unassigned
 			$data = array('userid' => $vbulletin->userinfo['userid'], 'issueid' => $issue['issueid']);
-			$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+			$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 			$assign->set_existing($data);
 			$assign->delete();
 		}
@@ -467,7 +467,7 @@ function send_issue_assignment_notification_pm($issueid, $assignee, $assigner)
 	eval(fetch_email_phrases('pt_issueassignment', $assignee_userinfo['languageid']));
 	
 	// Init vB_PM datamanager.
-	$pm =& datamanager_init('PM', $vbulletin, ERRTYPE_SILENT);
+	$pm = datamanager_init('PM', $vbulletin, ERRTYPE_SILENT);
 	$pm->set('fromuserid', $assigner_userinfo['userid']);
 	$pm->set('fromusername', $assigner_userinfo['username']);
 	$pm->set('title', $subject);

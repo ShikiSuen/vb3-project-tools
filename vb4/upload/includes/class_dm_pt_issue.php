@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -135,9 +135,9 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_Issue(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		require_once(DIR . '/includes/class_bootstrap_framework.php');
 		vB_Bootstrap_Framework::init();
@@ -565,7 +565,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					continue;
 				}
 
-				$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_SILENT);
+				$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_SILENT);
 				$change->set('issueid', $this->fetch_field('issueid'));
 				$change->set('userid', $this->registry->userinfo['userid']);
 				$change->set('field', $field);
@@ -581,7 +581,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		if ($this->condition AND (!empty($this->tag_add) OR !empty($this->tag_remove)) AND $this->info['insert_change_log'])
 		{
 			// we updated tags, insert an issue change for this
-			$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+			$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 			$change->set('issueid', $this->fetch_field('issueid'));
 			$change->set('userid', $this->registry->userinfo['userid']);
 			$change->set('field', 'tags');
@@ -638,7 +638,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			");
 			while ($petition = $this->registry->db->fetch_array($petitions))
 			{
-				$petitiondata =& datamanager_init('Pt_IssuePetition', $this->registry, ERRTYPE_STANDARD);
+				$petitiondata = datamanager_init('Pt_IssuePetition', $this->registry, ERRTYPE_STANDARD);
 				$petitiondata->set_existing($petition);
 				$petitiondata->set_info('auto_issue_update', false);
 				$petitiondata->set('resolution', $petition['petitionstatusid'] == $this->fetch_field('issuestatusid') ? 'accepted' : 'rejected');
@@ -662,7 +662,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			{
 				if ($project = fetch_project_info($this->fetch_field('projectid'), false))
 				{
-					$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_STANDARD);
+					$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_STANDARD);
 					$projectdata->set_existing($project);
 					$projectdata->rebuild_project_counters();
 					$projectdata->save();
@@ -671,7 +671,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				// changed project, rebuild the old project counters too
 				if ($this->fetch_field('projectid') != $this->existing['projectid'] AND $project = fetch_project_info($this->existing['projectid'], false))
 				{
-					$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_STANDARD);
+					$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_STANDARD);
 					$projectdata->set_existing($project);
 					$projectdata->rebuild_project_counters();
 					$projectdata->save();
@@ -897,7 +897,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 		if ($project = fetch_project_info($this->fetch_field('projectid'), false))
 		{
-			$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+			$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 			$projectdata->set_existing($project);
 			$projectdata->rebuild_project_counters();
 			$projectdata->save();
@@ -984,7 +984,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 		if ($project = fetch_project_info($this->fetch_field('projectid'), false))
 		{
-			$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+			$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 			$projectdata->set_existing($project);
 			$projectdata->rebuild_project_counters();
 			$projectdata->save();
@@ -1396,7 +1396,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			return;
 		}
 
-		$milestonedata =& datamanager_init('Pt_Milestone', $this->registry, ERRTYPE_SILENT);
+		$milestonedata = datamanager_init('Pt_Milestone', $this->registry, ERRTYPE_SILENT);
 		$milestonedata->set_existing($milestone);
 		$milestonedata->rebuild_milestone_counters();
 		$milestonedata->save();

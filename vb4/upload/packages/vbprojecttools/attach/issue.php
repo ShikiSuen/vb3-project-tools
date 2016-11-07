@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -517,7 +517,7 @@ class vB_Attachment_Dm_vBProjectTools_Issue extends vB_Attachment_Dm
 	*
 	* @return	boolean
 	*/
-	public function pre_delete($list)
+	public function pre_delete($list, $checkperms = true)
 	{
 		@ignore_user_abort(true);
 

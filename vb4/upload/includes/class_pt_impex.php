@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -228,7 +228,7 @@ class vB_Pt_Import
 	public function execute_import_issue()
 	{
 		// prepare issue
-		$this->issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_ARRAY);
+		$this->issuedata = datamanager_init('Pt_Issue', $this->registry, ERRTYPE_ARRAY);
 		$this->issuedata->set_info('project', $this->project);
 
 		$this->issuedata->set('title', $this->registry->GPC['title']);
@@ -317,7 +317,7 @@ class vB_Pt_Import
 			return;
 		}
 
-		$assign =& datamanager_init('Pt_IssueAssign', $this->registry, ERRTYPE_SILENT);
+		$assign = datamanager_init('Pt_IssueAssign', $this->registry, ERRTYPE_SILENT);
 		$assign->set_info('log_assignment_changes', false);
 		$assign->set('userid', $this->registry->userinfo['userid']);
 		$assign->set('issueid', $this->issueid);
@@ -449,7 +449,7 @@ class vB_Pt_Import_Thread extends vB_Pt_Import
 		{
 			while ($post = $this->registry->db->fetch_array($post_query))
 			{
-				$issuenotes[$i] =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
+				$issuenotes[$i] = datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
 				$issuenotes[$i]->set_info('do_floodcheck', false);
 				$issuenotes[$i]->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
 				$issuenotes[$i]->set('userid', $post['userid']);
@@ -501,7 +501,7 @@ class vB_Pt_Import_Thread extends vB_Pt_Import
 			}
 
 			// Custom Magic Selects
-			$issuems =& datamanager_init('Pt_Issue_MagicSelect', $this->registry, ERRTYPE_ARRAY, 'pt_magicselect');
+			$issuems = datamanager_init('Pt_Issue_MagicSelect', $this->registry, ERRTYPE_ARRAY, 'pt_magicselect');
 			$issuems->set('issueid', $this->issueid);
 			$issuems->save();
 
@@ -628,7 +628,7 @@ class vB_Pt_Import_Thread extends vB_Pt_Import
 	{
 		parent::execute_import_insert_notice();
 
-		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 		$change->set('issueid', $this->issueid);
 		$change->set('userid', $this->registry->userinfo['userid']);
 		$change->set('field', 'issue_imported');
@@ -659,7 +659,7 @@ class vB_Pt_Import_Post extends vB_Pt_Import
 			WHERE postid = " . $this->datainfo['postid'] . "
 		");
 
-		$issuenotes =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
+		$issuenotes = datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
 		$issuenotes->set_info('do_floodcheck', false);
 		$issuenotes->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
 		$issuenotes->set('userid', $post['userid']);
@@ -798,7 +798,7 @@ class vB_Pt_Import_Post extends vB_Pt_Import
 	{
 		parent::execute_import_insert_notice();
 
-		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 		$change->set('issueid', $this->issueid);
 		$change->set('userid', $this->registry->userinfo['userid']);
 		$change->set('field', 'issue_imported_post');
@@ -829,7 +829,7 @@ class vB_Pt_Import_Issuenote extends vB_Pt_Import
 			WHERE issuenoteid = " . intval($this->datainfo['issuenoteid']) . "
 		");
 
-		$issuenotes =& datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
+		$issuenotes = datamanager_init('Pt_IssueNote_User', $this->registry, ERRTYPE_ARRAY, 'pt_issuenote');
 		$issuenotes->set_info('do_floodcheck', false);
 		$issuenotes->set_info('parseurl', $this->registry->options['pt_allowbbcode']);
 		$issuenotes->set('userid', $issuenote['userid']);
@@ -958,7 +958,7 @@ class vB_Pt_Import_Issuenote extends vB_Pt_Import
 	{
 		parent::execute_import_insert_notice();
 
-		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 		$change->set('issueid', $this->issueid);
 		$change->set('userid', $this->registry->userinfo['userid']);
 		$change->set('field', 'issue_imported_issuenote');
@@ -1227,7 +1227,7 @@ class vB_Pt_Export_Thread extends vB_Pt_Export
 		$allowsmilies = ($foruminfo['options'] & 512) ? 1 : 0;
 
 		// Export as new thread
-		$thread =& datamanager_init('Thread_FirstPost', $this->registry, ERRTYPE_ARRAY, 'threadpost');
+		$thread = datamanager_init('Thread_FirstPost', $this->registry, ERRTYPE_ARRAY, 'threadpost');
 			$thread->set_info('posthash', $this->datainfo['posthash']);
 			$thread->setr('userid', $userinfo['userid']);
 			$thread->setr('title', $this->datainfo['title']);
@@ -1271,7 +1271,7 @@ class vB_Pt_Export_Thread extends vB_Pt_Export
 			WHERE threadid = " . $this->contentid . "
 		");
 
-		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 		$change->set('issueid', $this->datainfo['issueid']);
 		$change->set('userid', $this->registry->userinfo['userid']);
 		$change->set('field', 'issue_exported');
@@ -1315,7 +1315,7 @@ class vB_Pt_Export_Post extends vB_Pt_Export
 		$allowsignature = ($userinfo['options'] & 1) AND !empty($userinfo['signature']) ? 1 : 0;
 
 		// Export as post in a thread
-		$post =& datamanager_init('Post', $this->registry, ERRTYPE_ARRAY, 'threadpost');
+		$post = datamanager_init('Post', $this->registry, ERRTYPE_ARRAY, 'threadpost');
 			$post->set_info('posthash', $this->datainfo['posthash']);
 			$post->setr('userid', $userinfo['userid']);
 			$post->setr('title', $this->datainfo['title']);
@@ -1400,7 +1400,7 @@ class vB_Pt_Export_Post extends vB_Pt_Export
 			");
 		}
 
-		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 		$change->set('issueid', $this->datainfo['issueid']);
 		$change->set('userid', $this->registry->userinfo['userid']);
 
@@ -1442,7 +1442,7 @@ class vB_Pt_Export_Issuethread extends vB_Pt_Export
 		$allowsmilies = ($foruminfo['options'] & 512) ? 1 : 0;
 
 		// Export as new thread
-		$thread =& datamanager_init('Thread_FirstPost', $this->registry, ERRTYPE_ARRAY, 'threadpost');
+		$thread = datamanager_init('Thread_FirstPost', $this->registry, ERRTYPE_ARRAY, 'threadpost');
 			$thread->set_info('posthash', $this->datainfo['posthash']);
 			$thread->setr('userid', $userinfo['userid']);
 			$thread->setr('title', $this->datainfo['title']);
@@ -1489,7 +1489,7 @@ class vB_Pt_Export_Issuethread extends vB_Pt_Export
 		foreach ($issuenotearray AS $issuenoteid => $issuenote)
 		{
 			// Create a post for each issue note
-			$post =& datamanager_init('Post', $this->registry, ERRTYPE_ARRAY, 'threadpost');
+			$post = datamanager_init('Post', $this->registry, ERRTYPE_ARRAY, 'threadpost');
 				$post->set_info('posthash', $this->datainfo['posthash']);
 				$post->setr('userid', $issuenote['userid']);
 				$post->setr('dateline', $issuenote['dateline']);
@@ -1555,7 +1555,7 @@ class vB_Pt_Export_Issuethread extends vB_Pt_Export
 			WHERE threadid = " . $this->threadid . "
 		");
 
-		$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+		$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 		$change->set('issueid', $this->datainfo['issueid']);
 		$change->set('userid', $this->registry->userinfo['userid']);
 		$change->set('field', 'issue_exported_issuethread');

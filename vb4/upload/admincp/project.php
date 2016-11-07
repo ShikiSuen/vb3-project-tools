@@ -186,7 +186,7 @@ if ($_REQUEST['do'] == 'updateattachments')
 		require_once(DIR . '/includes/class_bootstrap_framework.php');
 		vB_Bootstrap_Framework::init();
 
-		$dataman =& datamanager_init('AttachmentFiledata', $vbulletin, ERRTYPE_STANDARD, 'attachment');
+		$dataman = datamanager_init('AttachmentFiledata', $vbulletin, ERRTYPE_STANDARD, 'attachment');
 		$dataman->set('contenttypeid', vB_Types::instance()->getContentTypeID('vBProjectTools_Issue'));
 		$dataman->set('contentid', $attachment['issueid']);
 		$dataman->set('userid', $attachment['userid']);
@@ -459,7 +459,7 @@ if ($_POST['do'] == 'updateissue')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_CP);
+	$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_CP);
 	$issuedata->set_existing($issue);
 	$issuedata->set_info('perform_activity_updates', false);
 	$issuedata->set_info('insert_change_log', false);
@@ -644,7 +644,7 @@ if ($_POST['do'] == 'update')
 		print_stop_message('one_type_must_be_available');
 	}
 
-	$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_CP);
+	$projectdata = datamanager_init('Pt_Project', $vbulletin, ERRTYPE_CP);
 
 	if ($project)
 	{
@@ -918,7 +918,7 @@ if ($_POST['do'] == 'kill')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_CP);
+	$projectdata = datamanager_init('Pt_Project', $vbulletin, ERRTYPE_CP);
 	$projectdata->set_existing($project);
 	$projectdata->delete();
 
@@ -954,7 +954,7 @@ if ($_POST['do'] == 'groupupdate')
 		WHERE projectgroupid = " . $vbulletin->GPC['projectgroupid'] . "
 	");
 
-	$projectdata =& datamanager_init('Pt_ProjectGroup', $vbulletin, ERRTYPE_CP);
+	$projectdata = datamanager_init('Pt_ProjectGroup', $vbulletin, ERRTYPE_CP);
 
 	if ($group)
 	{
@@ -1032,7 +1032,7 @@ if ($_POST['do'] == 'groupkill')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$projectdata =& datamanager_init('Pt_ProjectGroup', $vbulletin, ERRTYPE_CP);
+	$projectdata = datamanager_init('Pt_ProjectGroup', $vbulletin, ERRTYPE_CP);
 	$projectdata->set_existing($group);
 	$projectdata->delete();
 

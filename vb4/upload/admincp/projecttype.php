@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -109,7 +109,7 @@ if ($_POST['do'] == 'statusupdate')
 		print_stop_message('please_complete_required_fields');
 	}
 
-	$statusdata =& datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_CP);
+	$statusdata = datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_CP);
 
 	if ($vbulletin->GPC['issuestatusid'])
 	{
@@ -331,7 +331,7 @@ if ($_POST['do'] == 'statuskill')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$statusdata =& datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_CP);
+	$statusdata = datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_CP);
 	$statusdata->set_existing($issuestatus);
 	$statusdata->set_info('delete_deststatusid', $vbulletin->GPC['deststatusid']);
 	$statusdata->delete();
@@ -354,7 +354,7 @@ if ($_REQUEST['do'] == 'statusdelete')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$statusdata =& datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_CP);
+	$statusdata = datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_CP);
 	$statusdata->set_existing($issuestatus);
 	$statusdata->pre_delete();
 
@@ -438,7 +438,7 @@ if ($_POST['do'] == 'typeupdate')
 		print_stop_message('please_complete_required_fields');
 	}
 
-	$typedata =& datamanager_init('Pt_IssueType', $vbulletin, ERRTYPE_CP);
+	$typedata = datamanager_init('Pt_IssueType', $vbulletin, ERRTYPE_CP);
 
 	if ($vbulletin->GPC['exists'])
 	{
@@ -694,7 +694,7 @@ if ($_POST['do'] == 'typekill')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$typedata =& datamanager_init('Pt_IssueType', $vbulletin, ERRTYPE_CP);
+	$typedata = datamanager_init('Pt_IssueType', $vbulletin, ERRTYPE_CP);
 	$typedata->set_existing($issuetype);
 	$typedata->set_info('delete_deststatusid', $vbulletin->GPC['deststatusid']);
 	$typedata->delete();
@@ -717,7 +717,7 @@ if ($_REQUEST['do'] == 'typedelete')
 		print_stop_message('invalid_action_specified');
 	}
 
-	$typedata =& datamanager_init('Pt_IssueType', $vbulletin, ERRTYPE_CP);
+	$typedata = datamanager_init('Pt_IssueType', $vbulletin, ERRTYPE_CP);
 	$typedata->set_existing($issuetype);
 	$typedata->pre_delete();
 

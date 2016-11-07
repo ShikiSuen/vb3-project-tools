@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -67,9 +67,9 @@ class vB_DataManager_Pt_MagicSelect extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_MagicSelect(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		($hook = vBulletinHook::fetch_hook('pt_project_magicselect_start')) ? eval($hook) : false;
 	}
@@ -225,9 +225,9 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_Issue_MagicSelect(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		// Custom Magic Selects
 		$magicselects = $this->registry->db->query_read("
@@ -290,7 +290,7 @@ class vB_DataManager_Pt_Issue_MagicSelect extends vB_DataManager
 		// insert issue change only if the issue already exists
 		if ($this->condition)
 		{
-			$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+			$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 			$change->set('issueid', $this->fetch_field('issueid'));
 			$change->set('userid', $this->registry->userinfo['userid']);
 			$change->set('field', 'magicselect' . $this->fieldid);

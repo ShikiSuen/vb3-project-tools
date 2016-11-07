@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -150,7 +150,7 @@ if ($_REQUEST['do'] == 'issuecounters')
 	while ($issue = $db->fetch_array($issues))
 	{
 		$haveissues = true;
-		$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_SILENT);
+		$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_SILENT);
 		$issuedata->set_existing($issue);
 		$issuedata->rebuild_issue_counters();
 		$issuedata->save();

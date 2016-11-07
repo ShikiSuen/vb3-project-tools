@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -792,7 +792,7 @@ if ($_POST['do'] == 'dosavereport')
 		$vbulletin->GPC['public'] = 0;
 	}
 
-	$report =& datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
+	$report = datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
 	$report->set('title', $vbulletin->GPC['title']);
 	$report->set('description', $vbulletin->GPC['description']);
 	$report->set('public', $vbulletin->GPC['public'] ? 1 : 0);
@@ -928,7 +928,7 @@ if ($_POST['do'] == 'reportsubscription')
 				OR ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['candeletepublicreportown'] AND $vbulletin->userinfo['userid'] == $report['userid']));
 			if ($can_delete)
 			{
-				$reportdata =& datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
+				$reportdata = datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
 				$reportdata->set_existing($report);
 				$reportdata->delete();
 			}
@@ -960,7 +960,7 @@ if ($_POST['do'] == 'reportsubscription')
 			else
 			{
 				// this is private and we want to unsubscribe -- delete it
-				$reportdata =& datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
+				$reportdata = datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
 				$reportdata->set_existing($report);
 				$reportdata->delete();
 			}

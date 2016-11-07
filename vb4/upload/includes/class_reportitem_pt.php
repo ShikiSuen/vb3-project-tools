@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -128,7 +128,7 @@ class vB_ReportItem_Pt_IssueNote extends vB_ReportItem
 	 */
 	function update_item_reportid($newthreadid)
 	{
-		$dataman =& datamanager_init(
+		$dataman = datamanager_init(
 			'Pt_IssueNote_User',
 			$this->registry,
 			ERRTYPE_SILENT,

@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -127,7 +127,7 @@ if ($_POST['do'] == 'update')
 		print_stop_message('please_complete_required_fields');
 	}
 
-	$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
+	$milestonedata = datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
 
 	if ($milestone['milestoneid'])
 	{
@@ -231,7 +231,7 @@ if ($_POST['do'] == 'kill')
 		WHERE milestoneid = $milestone[milestoneid]
 	");
 
-	$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
+	$milestonedata = datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
 	$milestonedata->set_existing($milestone);
 	$milestonedata->delete();
 
@@ -244,7 +244,7 @@ if ($_POST['do'] == 'kill')
 
 	if ($dest_milestone)
 	{
-		$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_SILENT);
+		$milestonedata = datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_SILENT);
 		$milestonedata->set_existing($dest_milestone);
 		$milestonedata->rebuild_milestone_counters();
 		$milestonedata->save();

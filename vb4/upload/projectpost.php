@@ -403,7 +403,7 @@ if ($_POST['do'] == 'postreply')
 	}
 
 	// prepare note
-	$issuenotedata =& datamanager_init(
+	$issuenotedata = datamanager_init(
 		$vbulletin->GPC['petitionstatusid'] ? 'Pt_IssueNote_Petition' : 'Pt_IssueNote_User',
 		$vbulletin,
 		ERRTYPE_ARRAY,
@@ -699,7 +699,7 @@ if ($_POST['do'] == 'postreply')
 						$status = $vbulletin->pt_issuestatus[$vbulletin->GPC['changestatusid']];
 						if ($status AND $issue['issuetypeid'] == $status['issuetypeid'])
 						{
-							$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_SILENT);
+							$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_SILENT);
 							$issuedata->set_info('project', $project);
 							$issuedata->set_existing($issue);
 							$issuedata->set('issuestatusid', $vbulletin->GPC['changestatusid']);
@@ -751,7 +751,7 @@ if ($_POST['do'] == 'postreply')
 						$status = $vbulletin->pt_issuestatus[$vbulletin->GPC['changestatusid']];
 						if ($status AND $issue['issuetypeid'] == $status['issuetypeid'])
 						{
-							$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_SILENT);
+							$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_SILENT);
 							$issuedata->set_info('project', $project);
 							$issuedata->set_existing($issue);
 							$issuedata->set('issuestatusid', $vbulletin->GPC['changestatusid']);
@@ -1400,13 +1400,13 @@ if ($_POST['do'] == 'postissue')
 	}
 
 	// prepare issue
-	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_ARRAY);
+	$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_ARRAY);
 	$issuedata->set_info('project', $project);
 
 	// Custom Magic Selects
 	$magiclists = array();
 
-	$issuems =& datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_ARRAY, 'pt_magicselect');
+	$issuems = datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_ARRAY, 'pt_magicselect');
 
 	foreach ($listmagicselect AS $magicselectlist)
 	{
@@ -1569,7 +1569,7 @@ if ($_POST['do'] == 'postissue')
 	}
 
 	// prepare first note
-	$issuenote =& datamanager_init('Pt_IssueNote_User', $vbulletin, ERRTYPE_ARRAY, 'pt_issuenote');
+	$issuenote = datamanager_init('Pt_IssueNote_User', $vbulletin, ERRTYPE_ARRAY, 'pt_issuenote');
 	$issuenote->set_info('do_floodcheck', !can_moderate());
 	$issuenote->set_info('parseurl', $vbulletin->options['pt_allowbbcode']);
 	if ($issue['issueid'])
@@ -2687,7 +2687,7 @@ if ($_POST['do'] == 'updatesubscription')
 
 	if ($vbulletin->GPC['subscribetype'])
 	{
-		$subscriptiondata =& datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_STANDARD);
+		$subscriptiondata = datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_STANDARD);
 		$subscriptiondata->set('subscribetype', $vbulletin->GPC['subscribetype']);
 		$subscriptiondata->set('issueid', $issue['issueid']);
 		$subscriptiondata->set('userid', $vbulletin->userinfo['userid']);
@@ -2703,7 +2703,7 @@ if ($_POST['do'] == 'updatesubscription')
 		);
 		if ($subscription)
 		{
-			$subscriptiondata =& datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_STANDARD);
+			$subscriptiondata = datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_STANDARD);
 			$subscriptiondata->set_existing($subscription);
 			$subscriptiondata->delete();
 		}
@@ -3091,7 +3091,7 @@ if ($_POST['do'] == 'processpetition')
 		standard_error(fetch_error('pt_petition_not_pending'));
 	}
 
-	$petitiondata =& datamanager_init('Pt_IssuePetition', $vbulletin, ERRTYPE_STANDARD);
+	$petitiondata = datamanager_init('Pt_IssuePetition', $vbulletin, ERRTYPE_STANDARD);
 	$petitiondata->set_existing($issuenote);
 	$petitiondata->set('resolution', !empty($vbulletin->GPC['confirm']['yes']) ? 'accepted' : 'rejected');
 
@@ -3283,7 +3283,7 @@ if ($_REQUEST['do'] == 'changeissuestate')
 		));
 	}
 
-	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
+	$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
 	$issuedata->set_info('project', $project);
 	$issuedata->set_existing($issue);
 	$issuedata->set('state', $vbulletin->GPC['fromstate'] == 'open' ? 'closed' : 'open');
@@ -3339,7 +3339,7 @@ if ($_REQUEST['do'] == 'changeissueprivacy')
 		));
 	}
 
-	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
+	$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
 	$issuedata->set_existing($issue);
 	$issuedata->set('visible', $vbulletin->GPC['from'] == 'public' ? 'private' : 'public');
 	$issuedata->save();
@@ -3423,7 +3423,7 @@ if ($_POST['do'] == 'processmoveissue')
 		$vbulletin->GPC['issuestatusid'] = $issue['issuestatusid'];
 	}
 
-	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
+	$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
 	$issuedata->set_existing($issue);
 	$issuedata->set_info('perform_activity_updates', false);
 	$issuedata->set_info('insert_change_log', false);
@@ -3957,7 +3957,7 @@ if ($_REQUEST['do'] == 'assigntoself')
 			}
 			else
 			{
-				$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+				$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 				$assign->set_info('project', $project);
 				$assign->set('userid', $userid);
 				$assign->set('issueid', $issue['issueid']);
@@ -4537,7 +4537,7 @@ if ($_POST['do'] == 'processimportcontent')
 	// Custom Magic Selects
 	$magiclists = array();
 
-	$issuems =& datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_ARRAY, 'pt_magicselect');
+	$issuems = datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_ARRAY, 'pt_magicselect');
 
 	foreach ($listmagicselect AS $magicselectlist)
 	{

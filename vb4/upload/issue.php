@@ -349,7 +349,7 @@ if ($_POST['do'] == 'vote')
 		standard_error(fetch_error('pt_need_vote'));
 	}
 
-	$votedata =& datamanager_init('Pt_IssueVote', $vbulletin, ERRTYPE_STANDARD);
+	$votedata = datamanager_init('Pt_IssueVote', $vbulletin, ERRTYPE_STANDARD);
 	$votedata->set('issueid', $issue['issueid']);
 	$votedata->set('vote', $vbulletin->GPC['vote']);
 

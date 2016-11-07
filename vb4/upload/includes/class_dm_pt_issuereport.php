@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -81,9 +81,9 @@ class vB_DataManager_Pt_IssueReport extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueReport(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		($hook = vBulletinHook::fetch_hook('pt_issuereportdata_start')) ? eval($hook) : false;
 	}

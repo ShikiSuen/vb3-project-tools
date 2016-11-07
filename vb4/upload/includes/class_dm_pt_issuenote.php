@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -88,9 +88,9 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueNote(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		($hook = vBulletinHook::fetch_hook('pt_issuenotedata_start')) ? eval($hook) : false;
 	}
@@ -383,7 +383,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 
 			if ($issue)
 			{
-				$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
+				$issuedata = datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
 				$issuedata->set_existing($issue);
 				$issuedata->rebuild_issue_counters();
 				$issuedata->save();
@@ -396,7 +396,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 
 				if ($project)
 				{
-					$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+					$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 					$projectdata->set_existing($project);
 					$projectdata->rebuild_project_counters();
 					$projectdata->save();
@@ -495,7 +495,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 
 		if ($issue)
 		{
-			$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
+			$issuedata = datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
 			$issuedata->set_existing($issue);
 			$issuedata->rebuild_issue_counters();
 			$issuedata->save();
@@ -508,7 +508,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 
 			if ($project)
 			{
-				$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+				$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 				$projectdata->set_existing($project);
 				$projectdata->rebuild_project_counters();
 				$projectdata->save();
@@ -558,7 +558,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 
 		if ($issue)
 		{
-			$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
+			$issuedata = datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
 			$issuedata->set_existing($issue);
 			$issuedata->rebuild_issue_counters();
 			$issuedata->save();
@@ -571,7 +571,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 
 			if ($project)
 			{
-				$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+				$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 				$projectdata->set_existing($project);
 				$projectdata->rebuild_project_counters();
 				$projectdata->save();
@@ -607,7 +607,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			return false;
 		}
 
-		$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_STANDARD);
+		$issuedata = datamanager_init('Pt_Issue', $this->registry, ERRTYPE_STANDARD);
 		$issuedata->set_existing($issue);
 
 		if ($issue['firstnoteid'] == 0)
@@ -702,9 +702,9 @@ class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueNote_System(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager_Pt_IssueNote($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		$this->info['do_floodcheck'] = false;
 		$this->info['do_dupecheck'] = false;
@@ -814,9 +814,9 @@ class vB_DataManager_Pt_IssueNote_User extends vB_DataManager_Pt_IssueNote
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueNote_User(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager_Pt_IssueNote($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		($hook = vBulletinHook::fetch_hook('pt_issuenoteuserdata_start')) ? eval($hook) : false;
 	}
@@ -898,9 +898,9 @@ class vB_DataManager_Pt_IssueNote_Petition extends vB_DataManager_Pt_IssueNote
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueNote_Petition(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager_Pt_IssueNote($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		$this->info['petitionstatusid'] = 0;
 
@@ -972,7 +972,7 @@ class vB_DataManager_Pt_IssueNote_Petition extends vB_DataManager_Pt_IssueNote
 		// insert into issuepetition table with IssuePetition DM
 		if (!$this->condition)
 		{
-			$petitiondata =& datamanager_init('Pt_IssuePetition', $this->registry, ERRTYPE_SILENT);
+			$petitiondata = datamanager_init('Pt_IssuePetition', $this->registry, ERRTYPE_SILENT);
 			$petitiondata->set('issuenoteid', $this->fetch_field('issuenoteid'));
 			$petitiondata->set('resolution', 'pending');
 			$petitiondata->set('petitionstatusid', $this->info['petitionstatusid']);

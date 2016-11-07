@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.2.2                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -79,9 +79,9 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Attachment_Pt(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		require_once(DIR . '/includes/class_bootstrap_framework.php');
 		vB_Bootstrap_Framework::init();
@@ -231,7 +231,7 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 		if (!$this->condition AND $this->fetch_field('visible'))
 		{
 			// insert issue change
-			$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+			$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 			$change->set_info('roll_post_time_limit', 0); // disable folding for attachment uploads
 			$change->set('issueid', $this->fetch_field('issueid'));
 			$change->set('userid', $this->registry->userinfo['userid']);
@@ -368,7 +368,7 @@ class vB_DataManager_Attachment_Pt extends vB_DataManager
 		if ($this->fetch_field('visible'))
 		{
 			// insert issue change
-			$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+			$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 			$change->set_info('roll_post_time_limit', 0); // disable folding for attachment deletes
 			$change->set('issueid', $this->fetch_field('issueid'));
 			$change->set('userid', $this->registry->userinfo['userid']);
