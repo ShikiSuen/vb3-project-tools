@@ -3871,7 +3871,7 @@ if ($_REQUEST['do'] == 'moveissue')
 				continue;
 			}
 
-			$option['value'] = $projectinfo['projectid'] . '-' . $type;
+			$option['value'] = $projectinfo['projects']["$projectid"]['projectid'] . '-' . $type;
 			$option['title'] = $vbphrase["issuetype_{$type}_singular"];
 			$option['selected'] = (($issue['issuetypeid'] == $type AND $issue['projectid'] == $projectid) ? ' selected="selected"' : '');
 
