@@ -2595,6 +2595,23 @@ require_once(DIR . '/includes/adminfunctions_projecttools.php');
 build_project_cache();]]></installcode>
 			<uninstallcode />
 		</code>
+		<code version="2.3.0">
+			<installcode><![CDATA[// Add missing field if it doesn't exist
+if ($installed_version !== null)
+{
+	$cs = $db->query_read("DESCRIBE " . TABLE_PREFIX . "pt_issuealign");
+	$columcount = $db->num_rows($cs);
+
+	if ($column_count == '14')
+	{
+		$db->query_write("
+			ALTER TABLE " . TABLE_PREFIX . "pt_issuealign
+			ADD userid INT UNSIGNED NOT NULL DEFAULT '0'
+		");
+	}
+}]]></installcode>
+			<uninstallcode />
+		</code>
 	</codes>
 	<templates>
 		<template name="activitystream_project_issue" templatetype="template" date="1337106668" username="Pitchoune" version="2.2.0"><![CDATA[<li class="activitybit project_issue userprof_content userprof_content_border">
