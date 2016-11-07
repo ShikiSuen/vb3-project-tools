@@ -1,7 +1,7 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.2.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
 || # Copyright �2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
