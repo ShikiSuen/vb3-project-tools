@@ -113,7 +113,7 @@ if ($_REQUEST['do'] == 'delete')
 
 	print_delete_confirmation(
 		'pt_projectmagicselect',
-		$projectmagicselect['projectmagicselectid'],
+		$magicselect['projectmagicselectid'],
 		'projectmagicselect',
 		'kill'
 	);
