@@ -16,12 +16,12 @@ if (!class_exists('vB_DataManager'))
 }
 
 /**
-* Class to do data save/delete operations for PT issue assignments.
+* Class to do data save/delete operations for PT issue subscriptiosn.
 *
 * @package	vBulletin Project Tools
-* @date		$Date$
+* @date		$Date: 2010-05-31 01:15:07 +0100 (Mon, 31 May 2010) $
 */
-class vB_DataManager_Pt_IssueAssign extends vB_DataManager
+class vB_DataManager_Pt_IssueSubscribe extends vB_DataManager
 {
 	/**
 	* Array of recognized/required fields and their types
@@ -29,9 +29,9 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 	* @var	array
 	*/
 	var $validfields = array(
-		'issueid'  => array(TYPE_UINT,     REQ_YES),
-		'userid'   => array(TYPE_UINT,     REQ_YES),
-		'dateline' => array(TYPE_UNIXTIME, REQ_AUTO)
+		'issueid'       => array(TYPE_UINT, REQ_YES),
+		'userid'        => array(TYPE_UINT, REQ_YES),
+		'subscribetype' => array(TYPE_STR,  REQ_YES, 'if (!in_array($data, array("instant", "daily", "weekly", "none"))) { $data = "none"; } return true;')
 	);
 
 	/**
@@ -39,24 +39,21 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 	*
 	* @var	array
 	*/
-	var $info = array(
-		'log_assignment_changes' => true,
-		'project' => array()
-	);
+	var $info = array();
 
 	/**
 	* The main table this class deals with
 	*
 	* @var	string
 	*/
-	var $table = 'pt_issueassign';
+	var $table = 'pt_issuesubscribe';
 
 	/**
 	* Arrays to store stuff to save to admin-related tables
 	*
 	* @var	array
 	*/
-	var $pt_issueassign = array();
+	var $pt_issuesubscribe = array();
 
 	/**
 	* Condition for update query
@@ -71,11 +68,11 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueAssign(&$registry, $errtype = ERRTYPE_STANDARD)
+	function vB_DataManager_Pt_IssueSubscribe(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
 		parent::vB_DataManager($registry, $errtype);
 
-		($hook = vBulletinHook::fetch_hook('pt_issueassigndata_start')) ? eval($hook) : false;
+		($hook = vBulletinHook::fetch_hook('pt_issuesubscribedata_start')) ? eval($hook) : false;
 	}
 
 	/**
@@ -92,12 +89,12 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 			return $this->presave_called;
 		}
 
-		if (!empty($this->pt_issueassign['userid']) OR !empty($this->pt_issueassign['issueid']))
+		if (!empty($this->pt_issuesubscribe['userid']) OR !empty($this->pt_issuesubscribe['issueid']))
 		{
 			// we're changing one of these fields, check for dupes
 			if ($old = $this->registry->db->query_first("
 				SELECT *
-				FROM " . TABLE_PREFIX . "pt_issueassign
+				FROM " . TABLE_PREFIX . "pt_issuesubscribe
 				WHERE issueid = " . $this->fetch_field('issueid') . "
 					AND userid = " . $this->fetch_field('userid')
 			))
@@ -107,14 +104,8 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 			}
 		}
 
-		if (!$this->condition AND empty($this->pt_issueassign['dateline']))
-		{
-			// select the dateline automatically if not specified and not updating
-			$this->set('dateline', TIMENOW);
-		}
-
 		$return_value = true;
-		($hook = vBulletinHook::fetch_hook('pt_issueassigndata_presave')) ? eval($hook) : false;
+		($hook = vBulletinHook::fetch_hook('pt_issuesubscribedata_presave')) ? eval($hook) : false;
 
 		$this->presave_called = $return_value;
 		return $return_value;
@@ -128,28 +119,7 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 	*/
 	function post_save_each($doquery = true)
 	{
-		if (!$this->condition AND $this->info['log_assignment_changes'])
-		{
-			// insert issue change
-			$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
-			$change->set('issueid', $this->fetch_field('issueid'));
-			$change->set('userid', $this->registry->userinfo['userid']);
-			$change->set('field', 'assigneduser');
-			$change->set('newvalue', '');
-			$change->set('oldvalue','');
-			$change->save();
-		}
-
-		if ($this->info['project'] AND (intval($this->info['project']['options']) & $this->registry->bf_misc['pt_projectoptions']['emailonassignment']))
-		{
-			if ($this->fetch_field('userid'))
-			{
-				require_once(DIR . '/includes/functions_pt_posting.php');
-				send_issue_assignment_notification($this->fetch_field('issueid'), $this->fetch_field('userid'), $this->registry->userinfo['userid']);
-			}
-		}
-
-		($hook = vBulletinHook::fetch_hook('pt_issueassigndata_postsave')) ? eval($hook) : false;
+		($hook = vBulletinHook::fetch_hook('pt_issuesubscribedata_postsave')) ? eval($hook) : false;
 
 		return true;
 	}
@@ -161,19 +131,7 @@ class vB_DataManager_Pt_IssueAssign extends vB_DataManager
 	*/
 	function post_delete($doquery = true)
 	{
-		if ($this->info['log_assignment_changes'])
-		{
-			// insert issue change
-			$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
-			$change->set('issueid', $this->fetch_field('issueid'));
-			$change->set('userid', $this->registry->userinfo['userid']);
-			$change->set('field', 'assigneduser');
-			$change->set('newvalue', '');
-			$change->set('oldvalue','');
-			$change->save();
-		}
-
-		($hook = vBulletinHook::fetch_hook('pt_issueassigndata_delete')) ? eval($hook) : false;
+		($hook = vBulletinHook::fetch_hook('pt_issuesubscribedata_delete')) ? eval($hook) : false;
 		return true;
 	}
 }

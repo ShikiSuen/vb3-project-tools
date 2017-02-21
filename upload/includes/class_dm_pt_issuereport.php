@@ -19,7 +19,7 @@ if (!class_exists('vB_DataManager'))
 * Class to do data save/delete operations for PT issue reports.
 *
 * @package	vBulletin Project Tools
-* @date		$Date$
+* @date		$Date: 2010-05-31 01:15:07 +0100 (Mon, 31 May 2010) $
 */
 class vB_DataManager_Pt_IssueReport extends vB_DataManager
 {

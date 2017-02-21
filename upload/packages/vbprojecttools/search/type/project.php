@@ -15,8 +15,8 @@
  * @package vBulletin
  * @subpackage Search
  * @author Kevin Sours, vBulletin Development Team
- * @version $Revision$
- * @since $Date$
+ * @version $Revision: 55 $
+ * @since $Date: 2010-05-31 01:15:07 +0100 (Mon, 31 May 2010) $
  * @copyright Jelsoft Enterprises Ltd.
  */
 
@@ -29,7 +29,7 @@ require_once (DIR . '/vb/search/type.php');
  * @package
  * @author ebrown
  * @copyright Copyright (c) 2009
- * @version $Id$
+ * @version $Id: project.php 55 2010-05-31 00:15:07Z fwhite $
  * @access public
  */
 class vBProjectTools_Search_Type_Project extends vB_Search_Type

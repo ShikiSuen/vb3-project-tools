@@ -19,7 +19,7 @@ if (!class_exists('vB_DataManager'))
 * Class to do data save/delete operations for PT issue notes (generic).
 *
 * @package	vBulletin Project Tools
-* @date		$Date$
+* @date		$Date: 2010-05-31 01:15:07 +0100 (Mon, 31 May 2010) $
 */
 class vB_DataManager_Pt_IssueNote extends vB_DataManager
 {
@@ -666,7 +666,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 * Class to do data save/delete operations for PT issue notes (system).
 *
 * @package	vBulletin Project Tools
-* @date		$Date$
+* @date		$Date: 2010-05-31 01:15:07 +0100 (Mon, 31 May 2010) $
 */
 class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 {
@@ -776,7 +776,7 @@ class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 * Class to do data save/delete operations for PT issue notes (user).
 *
 * @package	vBulletin Project Tools
-* @date		$Date$
+* @date		$Date: 2010-05-31 01:15:07 +0100 (Mon, 31 May 2010) $
 */
 class vB_DataManager_Pt_IssueNote_User extends vB_DataManager_Pt_IssueNote
 {
@@ -858,7 +858,7 @@ class vB_DataManager_Pt_IssueNote_User extends vB_DataManager_Pt_IssueNote
 * Class to do data save/delete operations for PT issue notes (petition).
 *
 * @package	vBulletin Project Tools
-* @date		$Date$
+* @date		$Date: 2010-05-31 01:15:07 +0100 (Mon, 31 May 2010) $
 */
 class vB_DataManager_Pt_IssueNote_Petition extends vB_DataManager_Pt_IssueNote
 {
