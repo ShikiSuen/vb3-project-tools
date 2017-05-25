@@ -3,7 +3,7 @@
 <product productid="vbprojecttools" active="1">
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
-	<version>2.3.0</version>
+	<version>2.3.1</version>
 	<url />
 	<versioncheckurl />
 	<dependencies>
@@ -2599,13 +2599,13 @@ build_project_cache();]]></installcode>
 			<installcode><![CDATA[// Add missing field if it doesn't exist
 if ($installed_version !== null)
 {
-	$cs = $db->query_read("DESCRIBE " . TABLE_PREFIX . "pt_issuealign");
+	$cs = $db->query_read("DESCRIBE " . TABLE_PREFIX . "pt_issueassign");
 	$columcount = $db->num_rows($cs);
 
 	if ($column_count == '14')
 	{
 		$db->query_write("
-			ALTER TABLE " . TABLE_PREFIX . "pt_issuealign
+			ALTER TABLE " . TABLE_PREFIX . "pt_issueassign
 			ADD userid INT UNSIGNED NOT NULL DEFAULT '0'
 		");
 	}
@@ -14172,6 +14172,97 @@ $criteria_options = array_merge($criteria_options, array(
 ));]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
+			<title>Notifications: List new PT notifications</title>
+			<hookname>notifications_list</hookname>
+			<phpcode><![CDATA[require_once(DIR . '/includes/functions_projecttools.php');
+
+if ($vbulletin->userinfo['userid'] > 0)
+{
+	$new_subscribed_threads = 0;
+
+	$marking = ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid']);
+
+	if ($marking)
+	{
+		$issueview_sql = "IF(issueread IS NOT NULL, issueread, " . intval(TIMENOW - ($vbulletin->options['markinglimit'] * 86400)) . ")";
+		$issueview_sql2 = "IF(projectread IS NOT NULL, projectread, " . intval(TIMENOW - ($vbulletin->options['markinglimit'] * 86400)) . ")";
+	}
+	else
+	{
+		$issueview = max(intval(fetch_bbarray_cookie('issue_lastview', $issue['issueid'])), intval(fetch_bbarray_cookie('issue_lastview', $issue['projectid'] . $issue['issuetypeid'])));
+		if (!$issueview)
+		{
+			$issueview = $vbulletin->userinfo['lastvisit'];
+		}
+		$issueview_sql = intval($issueview);
+		$issueview_sql2 = '';
+	}
+
+	build_issue_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $private_lastpost_fields);
+
+	$replycount_clause = fetch_private_replycount_clause($vbulletin->userinfo);
+
+	$subscriptions = $vbulletin->db->query_read("
+		SELECT issue.*, issuesubscribe.subscribetype,
+			project.title_clean
+			" . ($marking ? ", issueread.readtime AS issueread, projectread.readtime AS projectread" : '') . "
+			" . ($private_lastpost_fields ? ", $private_lastpost_fields" : '') . "
+			" . ($replycount_clause ? ", $replycount_clause AS replycount" : '') . "
+		FROM " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe
+		INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuesubscribe.issueid)
+		INNER JOIN " . TABLE_PREFIX . "pt_project AS project ON (project.projectid = issue.projectid)
+		" . ($marking ? "
+			LEFT JOIN " . TABLE_PREFIX . "pt_issueread AS issueread ON (issueread.issueid = issue.issueid AND issueread.userid = " . $vbulletin->userinfo['userid'] . ")
+			LEFT JOIN " . TABLE_PREFIX . "pt_projectread as projectread ON (projectread.projectid = issue.projectid AND projectread.userid = " . $vbulletin->userinfo['userid'] . " AND projectread.issuetypeid = issue.issuetypeid)
+		" : '') . "
+		$private_lastpost_join
+		WHERE issuesubscribe.userid = " . $vbulletin->userinfo['userid'] . "
+		HAVING lastpost > " . intval(TIMENOW - ($vbulletin->options['markinglimit'] * 86400)) . "
+			AND lastpost > " . $issueview_sql . "
+			" . (!empty($issueview_sql2) ? " AND lastpost > " . $issueview_sql2 : '' ) . "
+		ORDER BY lastpost DESC
+	");
+
+	while ($issue = $vbulletin->db->fetch_array($subscriptions))
+	{
+		if ($vbulletin->options['threadmarking'])
+		{
+			$lastread = max($vbulletin->forumcache[$issue['projectid']]['projectread'], TIMENOW - ($vbulletin->options['markinglimit'] * 86400));
+		}
+		else
+		{
+			$lastread = max(intval(fetch_bbarray_cookie('issue_lastview', $issue['projectid'])), $vbulletin->userinfo['lastvisit']);
+		}
+
+		if ($issue['lastpost'] > $lastread)
+		{
+
+			if ($vbulletin->options['threadmarking'] AND $issue['readtime'])
+			{
+				$threadview = intval($issue['readtime']);
+			}
+			else
+			{
+				$threadview = intval(fetch_bbarray_cookie('issue_lastview', $issue['issueid']));
+			}
+
+			if($issue['lastpost'] > $threadview)
+			{
+				$new_subscribed_threads++;
+			}
+		}
+	}
+
+	$vbulletin->userinfo['pt_notifications_count'] = $new_subscribed_threads;
+
+	$notifications['pt_notifications_count'] = array(
+		'phrase' => $vbphrase['pt_notifications'],
+		'link'   => $vbulletin->options['bburl'] . '/usercp.php',
+		'order'  => 50
+	);
+}]]></phpcode>
+		</plugin>
+		<plugin active="1" executionorder="5">
 			<title>Online: Location Preprocessing</title>
 			<hookname>online_location_preprocess</hookname>
 			<phpcode><![CDATA[if (strpos($loc, '/archive/project.php') !== false)
@@ -15185,6 +15276,7 @@ To create your own report, make a search with the criteria that you want and cli
 			<phrase name="issue" date="1295039807" username="Pitchoune" version="2.2.0"><![CDATA[Issue]]></phrase>
 			<phrase name="priority" date="1307022121" username="Pitchoune" version="2.2.0"><![CDATA[Priority]]></phrase>
 			<phrase name="projects" date="1181655523" username="Ed Sullivan" version="1.0.0 Beta 4"><![CDATA[Projects]]></phrase>
+			<phrase name="pt_notifications" date="1478643532" username="Pitchoune" version="2.3.0"><![CDATA[New issues]]></phrase>
 			<phrase name="search_projects" date="1174406531" username="Ed Sullivan" version="1.0.0 Alpha 1"><![CDATA[Search Projects]]></phrase>
 			<phrase name="vb_navigation_link_vbpt_faq_text" date="1337425710" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[FAQ]]></phrase>
 			<phrase name="vb_navigation_link_vbpt_myreports_text" date="1337425527" username="Pitchoune" version="4.2.0 Alpha 1"><![CDATA[My Reports]]></phrase>
