@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -15,10 +15,9 @@
 * Generic handler for displaying a list of issues.
 * Currently, this can only display of a list of issues within one project.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueList
@@ -176,6 +175,21 @@ class vB_Pt_IssueList
 				$this->sort_field = 'issuestatusid';
 				$this->sort_field_sql = array('issuestatus.displayorder', 'issuestatus.issuestatusid');
 				break;
+			
+			case 'category':
+				$this->sort_field = 'projectcategoryid';
+				$this->sort_field_sql = array('issue.projectcategoryid');
+				break;
+
+			case 'applyversion':
+				$this->sort_field = 'applyversion';
+				$this->sort_field_sql = array('issue.appliesversionid');
+				break;
+
+			case 'addressversion':
+				$this->sort_field = 'addressversion';
+				$this->sort_field_sql = array('issue.addressedversionid');
+				break;
 
 			// these are the simple sorts
 			case 'title':
@@ -208,22 +222,22 @@ class vB_Pt_IssueList
 	/**
 	* Fetches an array of info about the sort arrows.
 	*
-	* @param	string	Base sort URL text. Must have a ? in it. Sort and order added automatically.
 	* @param	string	Name of the template to use for the sort arrow.
 	*
 	* @return	array	Array of sort arrow info
 	*/
-	function fetch_sort_arrow_array($sort_url_base, $template_name = 'pt_issuelist_arrow')
+	function fetch_sort_arrow_array($template_name = 'pt_issuelist_arrow')
 	{
 		global $vbphrase, $show;
 
 		$opposite_sort = ($this->sort_order == 'asc' ? 'desc' : 'asc');
 
-		$sort_url = $sort_url_base . "&amp;sort={$this->sort_field}&amp;order=$opposite_sort";
-
 		$sort_arrow = array(
 			'title' => '',
 			'submitusername' => '',
+			'applyversion' => '',
+			'addressversion' => '',
+			'projectcategoryid' => '',
 			'issuestatusid' => '',
 			'priority' => '',
 			'replycount' => '',
@@ -232,7 +246,6 @@ class vB_Pt_IssueList
 
 		$templater = vB_Template::create($template_name);
 			$templater->register('opposite_sort', $opposite_sort);
-			$templater->register('sort_url', $sort_url);
 		$sort_arrow[$this->sort_field] = $templater->render();
 
 		return $sort_arrow;
@@ -247,9 +260,7 @@ class vB_Pt_IssueList
 	*/
 	function exec_query($criteria, $pagenumber, $perpage)
 	{
-		build_issue_private_lastpost_sql_project($this->registry->userinfo, $this->project['projectid'],
-			$private_lastpost_join, $private_lastpost_fields
-		);
+		build_issue_private_lastpost_sql_project($this->registry->userinfo, $this->project['projectid'], $private_lastpost_join, $private_lastpost_fields);
 
 		$replycount_clause = fetch_private_replycount_clause($this->registry->userinfo, $this->project['projectid']);
 
@@ -262,9 +273,7 @@ class vB_Pt_IssueList
 
 		if ($this->sort_field == 'issuestatusid')
 		{
-			$status_join = "LEFT JOIN " . TABLE_PREFIX . "pt_issuestatus AS issuestatus ON
-				(issuestatus.issuestatusid = issue.issuestatusid)
-			";
+			$status_join = "LEFT JOIN " . TABLE_PREFIX . "pt_issuestatus AS issuestatus ON (issuestatus.issuestatusid = issue.issuestatusid)";
 		}
 		else
 		{
@@ -282,6 +291,7 @@ class vB_Pt_IssueList
 			{
 				$pagenumber = 1;
 			}
+
 			$start = ($pagenumber - 1) * $perpage;
 
 			// issue list
@@ -289,6 +299,7 @@ class vB_Pt_IssueList
 				SELECT
 					" . ($this->calc_total_rows ? "SQL_CALC_FOUND_ROWS" : '') . "
 					issue.*, issuedeletionlog.reason AS deletionreason
+					" . ($this->registry->pt_versions ? ", appliesversion.projectversionid AS appliesversion, addressedversion.projectversionid AS addressedversion" : '') . "
 					" . ($this->registry->userinfo['userid'] ? ", issuesubscribe.subscribetype, IF(issueassign.issueid IS NULL, 0, 1) AS isassigned" : '') . "
 					" . ($marking ? ", issueread.readtime AS issueread, projectread.readtime AS projectread" : '') . "
 					" . ($private_lastpost_fields ? ", $private_lastpost_fields" : '') . "
@@ -296,10 +307,16 @@ class vB_Pt_IssueList
 					{$this->extra_fields}
 				FROM " . TABLE_PREFIX . "pt_issue AS issue
 				$status_join
-				LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON
-					(issuedeletionlog.primaryid = issue.issueid AND issuedeletionlog.type = 'issue')
-				LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS projectversion ON
-					(projectversion.projectversionid = issue.appliesversionid)
+					LEFT JOIN " . TABLE_PREFIX . "pt_issuedeletionlog AS issuedeletionlog ON
+						(issuedeletionlog.primaryid = issue.issueid AND issuedeletionlog.type = 'issue')
+					LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS projectversion ON
+						(projectversion.projectversionid = issue.appliesversionid)
+				" . ($this->registry->pt_versions ? "
+					LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS appliesversion ON
+						(appliesversion.projectversionid = issue.appliesversionid)
+					LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS addressedversion ON
+						(addressedversion.projectversionid = issue.addressedversionid)
+				" : '') . "
 				" . ($this->registry->userinfo['userid'] ? "
 					LEFT JOIN " . TABLE_PREFIX . "pt_issuesubscribe AS issuesubscribe ON
 						(issuesubscribe.issueid = issue.issueid AND issuesubscribe.userid = " . $this->registry->userinfo['userid'] . ")
@@ -334,4 +351,5 @@ class vB_Pt_IssueList
 		$this->real_pagenumber = $pagenumber;
 	}
 }
+
 ?>

@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -103,6 +103,33 @@ function build_project_category_cache()
 
 	build_datastore('pt_categories', serialize($cache), 1);
 	$vbulletin->pt_categories = $cache;
+
+	return $cache;
+}
+
+/**
+* Builds the cache of project priorities into $vbulletin->pt_priorities.
+* Accessed as [projectpriorityid] => <info>
+*
+* @return	array	Priority cache
+*/
+function build_project_priority_cache()
+{
+	global $db, $vbulletin;
+
+	$cache = array();
+	$priority_data = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectpriority
+		ORDER BY projectid, displayorder
+	");
+	while ($priority = $db->fetch_array($priority_data))
+	{
+		$cache["$priority[projectpriorityid]"] = $priority;
+	}
+
+	build_datastore('pt_priorities', serialize($cache), 1);
+	$vbulletin->pt_priorities = $cache;
 
 	return $cache;
 }
@@ -241,26 +268,37 @@ function build_project_cache()
 
 	$cache = array();
 
-	$projects = $db->query_read("
+	$projectgroups = $db->query_read("
 		SELECT *
-		FROM " . TABLE_PREFIX . "pt_project
+		FROM " . TABLE_PREFIX . "pt_projectgroup
 		ORDER BY displayorder
 	");
-	while ($project = $db->fetch_array($projects))
+	while ($projectgroup = $db->fetch_array($projectgroups))
 	{
-		$project_types = array();
-		$project_types_query = $db->query_read("
-			SELECT issuetypeid, startstatusid
-			FROM " . TABLE_PREFIX . "pt_projecttype AS projecttype
-			WHERE projecttype.projectid = $project[projectid]
+		$projects = $db->query_read("
+			SELECT *
+			FROM " . TABLE_PREFIX . "pt_project
+			WHERE projectgroupid = " . $projectgroup['projectgroupid'] . "
+			ORDER BY displayorder
 		");
-		while ($project_type = $db->fetch_array($project_types_query))
+		while ($project = $db->fetch_array($projects))
 		{
-			$project_types["$project_type[issuetypeid]"] = $project_type['startstatusid'];
+			$project_types = array();
+			$project_types_query = $db->query_read("
+				SELECT issuetypeid, startstatusid
+				FROM " . TABLE_PREFIX . "pt_projecttype AS projecttype
+				WHERE projecttype.projectid = $project[projectid]
+			");
+			while ($project_type = $db->fetch_array($project_types_query))
+			{
+				$project_types["$project_type[issuetypeid]"] = $project_type['startstatusid'];
+			}
+	
+			$project['types'] = $project_types;
+			$projectgroup['projects']["$project[projectid]"] = $project;
 		}
 
-		$project['types'] = $project_types;
-		$cache["$project[projectid]"] = $project;
+		$cache["$projectgroup[projectgroupid]"] = $projectgroup;
 	}
 
 	build_datastore('pt_projects', serialize($cache), 1);
@@ -345,6 +383,34 @@ function build_version_cache()
 }
 
 /**
+* Builds the cache of magic select cache into $vbulletin->pt_magicselects.
+* Accessed as [projectmagicselectid] => <info>.
+*
+* @return	array	Magic select cache
+*/
+function build_magicselect_cache()
+{
+	global $db, $vbulletin;
+
+	$magicselects = array();
+
+	$magicselect_data = $db->query_read("
+		SELECT *
+		FROM " . TABLE_PREFIX . "pt_projectmagicselect
+		ORDER BY projectid, displayorder DESC
+	");
+	while ($magicselect = $db->fetch_array($magicselect_data))
+	{
+		$magicselects["$magicselect[projectmagicselectid]"] = $magicselect;
+	}
+
+	build_datastore('pt_magicselects', serialize($magicselects), 1);
+
+	return $magicselects;
+}
+
+
+/**
 * Rebuilds all project counters.
 *
 * @param	boolean	True if you want to echo a "." for each project
@@ -359,7 +425,7 @@ function rebuild_project_counters($echo = false)
 	");
 	while ($project = $db->fetch_array($projects))
 	{
-		$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_SILENT);
+		$projectdata = datamanager_init('Pt_Project', $vbulletin, ERRTYPE_SILENT);
 		$projectdata->set_existing($project);
 		$projectdata->rebuild_project_counters();
 		$projectdata->save();
@@ -389,7 +455,7 @@ function rebuild_milestone_counters($echo = false)
 	");
 	while ($milestone = $db->fetch_array($milestones))
 	{
-		$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_SILENT);
+		$milestonedata = datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_SILENT);
 		$milestonedata->set_existing($milestone);
 		$milestonedata->rebuild_milestone_counters();
 		$milestonedata->save();
@@ -556,6 +622,115 @@ function build_pt_user_list($name, $callback)
 	build_datastore($name, serialize($userlist), 1);
 
 	return $userlist;
+}
+
+/**
+* Returns a row containing an input and a color picker widget
+*
+* @param	string	Item varname
+* @param	string	Item value
+* @param	string	CSS class to display with
+* @param	integer	Size of input box
+* @param	boolean	Surround code with <tr> ... </tr> ?
+*
+* @return	string
+*/
+function construct_status_color_row($name, $value, $class = 'bginput', $size = 22, $printtr = true)
+{
+	global $numcolors;
+
+	$value = htmlspecialchars_uni($value);
+
+	$html = '';
+
+	if ($printtr)
+	{
+		$html .= "
+		<tr>\n";
+	}
+
+	$html .= '
+			<table cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<td><input type="text" class="' . $class . '" name="' . $name . '" id="color_' . $numcolors . '" value="' . $value . '" title="$' . $name . '" tabindex="1" size="' . $size . '" onchange="preview_color('. $numcolors . ')" dir="ltr" />&nbsp;</td>
+				<td><div id="preview_' . $numcolors . '" class="colorpreview" onclick="open_color_picker(' . $numcolors . ', event)"></div></td>
+			</tr>
+			</table>
+	';
+
+	if ($printtr)
+	{
+		$html .= "	</tr>\n";
+	}
+
+	$numcolors ++;
+
+	return $html;
+}
+
+
+
+/**
+* Fetches the 'scriptpath' variable - ie: the URI of the current page
+*
+* @return	string
+*/
+function fetch_scriptpath()
+{
+	global $vbulletin;
+
+	if ($vbulletin->scriptpath != '')
+	{
+		return $vbulletin->scriptpath;
+	}
+	else
+	{
+		if ($_SERVER['REQUEST_URI'] OR $_ENV['REQUEST_URI'])
+		{
+			$scriptpath = $_SERVER['REQUEST_URI'] ? $_SERVER['REQUEST_URI'] : $_ENV['REQUEST_URI'];
+		}
+		else
+		{
+			if ($_SERVER['PATH_INFO'] OR $_ENV['PATH_INFO'])
+			{
+				$scriptpath = $_SERVER['PATH_INFO'] ? $_SERVER['PATH_INFO'] : $_ENV['PATH_INFO'];
+			}
+			else if ($_SERVER['REDIRECT_URL'] OR $_ENV['REDIRECT_URL'])
+			{
+				$scriptpath = $_SERVER['REDIRECT_URL'] ? $_SERVER['REDIRECT_URL'] : $_ENV['REDIRECT_URL'];
+			}
+			else
+			{
+				$scriptpath = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_ENV['PHP_SELF'];
+			}
+
+			if ($_SERVER['QUERY_STRING'] OR $_ENV['QUERY_STRING'])
+			{
+				$scriptpath .= '?' . ($_SERVER['QUERY_STRING'] ? $_SERVER['QUERY_STRING'] : $_ENV['QUERY_STRING']);
+			}
+		}
+
+		// in the future we should set $registry->script here too
+		$quest_pos = strpos($scriptpath, '?');
+		if ($quest_pos !== false)
+		{
+			$script = urldecode(substr($scriptpath, 0, $quest_pos));
+			$scriptpath = $script . substr($scriptpath, $quest_pos);
+		}
+		else
+		{
+			$scriptpath = urldecode($scriptpath);
+		}
+
+		// store a version that includes the sessionhash
+		$vbulletin->reloadurl = $vbulletin->input->xss_clean($scriptpath);
+
+		$scriptpath = $vbulletin->input->strip_sessionhash($scriptpath);
+		$scriptpath = $vbulletin->input->xss_clean($scriptpath);
+		$vbulletin->scriptpath = $scriptpath;
+
+		return $scriptpath;
+	}
 }
 
 ?>

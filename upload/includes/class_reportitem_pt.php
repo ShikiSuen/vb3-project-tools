@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -21,10 +21,9 @@ require_once(DIR . '/includes/class_reportitem.php');
 /**
 * Report Issue Note Message Class
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_ReportItem_Pt_IssueNote extends vB_ReportItem
@@ -93,7 +92,7 @@ class vB_ReportItem_Pt_IssueNote extends vB_ReportItem
 			'reporttype'   => $vbphrase['issue_note'],
 			'description'  => $vbphrase['only_used_to_report'],
 			'itemname'     => $this->extrainfo['issue']['title'],
-			'itemlink'     => "project.php?" . $this->registry->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$iteminfo[issuenoteid]",
+			'itemlink'     => "issue.php?" . $this->registry->session->vars['sessionurl'] . "do=gotonote&amp;issuenoteid=$iteminfo[issuenoteid]",
 		);
 
 		$this->set_reporting_hidden_value('issuenoteid', $iteminfo['issuenoteid']);
@@ -129,7 +128,7 @@ class vB_ReportItem_Pt_IssueNote extends vB_ReportItem
 	 */
 	function update_item_reportid($newthreadid)
 	{
-		$dataman =& datamanager_init(
+		$dataman = datamanager_init(
 			'Pt_IssueNote_User',
 			$this->registry,
 			ERRTYPE_SILENT,
@@ -164,4 +163,5 @@ class vB_ReportItem_Pt_IssueNote extends vB_ReportItem
 		}
 	}
 }
+
 ?>

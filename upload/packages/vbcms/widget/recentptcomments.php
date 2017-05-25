@@ -1,9 +1,9 @@
 <?php if (!defined('VB_ENTRY')) die('Access denied.');
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -14,10 +14,9 @@
 /**
 * Test Widget Controller
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vBCms_Widget_RecentPTComments extends vBCms_Widget
@@ -61,10 +60,10 @@ class vBCms_Widget_RecentPTComments extends vBCms_Widget
 	 * @param	vB_Widget	$widget
 	 * @return vBCms_View_Widget				- The view result
 	 */
-	public function getConfigView($widget = false)
+	public function getConfigView()
 	{
 		$this->assertWidget();
-		require_once DIR . '/includes/functions_databuild.php';
+		require_once(DIR . '/includes/functions_databuild.php');
 		fetch_phrase_group('cpcms');
 		fetch_phrase_group('vbblock');
 		fetch_phrase_group('vbblocksettings');
@@ -342,15 +341,26 @@ class vBCms_Widget_RecentPTComments extends vBCms_Widget
 
 			while ($issueresult = vB::$db->fetch_array($issueids))
 			{
-				$issueid = verify_issue($issueresult['issueid'], true, array('avatar', 'vote', 'milestone'));
+				$issueid = fetch_issue_info($issueresult['issueid'], array('avatar', 'vote', 'milestone'));
+
+				if (!$issueid)
+				{
+					standard_error(fetch_error('invalidid', $vbphrase['issue'], $vbulletin->options['contactuslink']));
+				}
+
+				if (verify_issue_perms($issueid, $vbulletin->userinfo) === false)
+				{
+					// If some permission is not allowed, remove the issue from the list
+					$issueresult['issueid'] == '';
+				}
 
 				$issueperms = fetch_project_permissions(vB::$vbulletin->userinfo, $project['projectid'], $issueid['issuetypeid']);
 
 				$viewable_note_types = fetch_viewable_note_types($issueperms, $private_text);
 
 				// Create code for permissions settings of the query
-				$issuelist[] = "issuenote.issueid = $issueid[issueid]
-					AND issuenote.issuenoteid <> $issueid[firstnoteid]
+				$issuelist[] = "issuenote.issueid = " . $issueid['issueid'] . "
+					AND issuenote.issuenoteid <> " . $issueid['firstnoteid'] . "
 					AND (issuenote.visible IN (" . implode(',', $viewable_note_types) . ")$private_text)";
 			}
 		}
@@ -407,7 +417,8 @@ class vBCms_Widget_RecentPTComments extends vBCms_Widget
 
 		//figure out how to handle the 'cancelwords'
 		$display['highlight'] = array();
-		$page_text =  preg_replace('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siUe', "process_quote_removal('\\3', \$display['highlight'])", $pagetext);
+		/*$page_text =  preg_replace('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siUe', "process_quote_removal('\\3', \$display['highlight'])", $pagetext);*/
+		$page_text = preg_replace_callback('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siU', "process_quote_removal_callback", $pagetext);
 
 		$strip_quotes = true;
 

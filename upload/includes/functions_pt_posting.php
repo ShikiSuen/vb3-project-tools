@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -187,7 +187,7 @@ function handle_issue_subscription_change($issueid, $oldvalue, $newvalue, $useri
 		if ($newvalue AND $newvalue != $oldvalue)
 		{
 			// chose to add/change subscription
-			$subscriptiondata =& datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_SILENT);
+			$subscriptiondata = datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_SILENT);
 			$subscriptiondata->set('subscribetype', $newvalue);
 			$subscriptiondata->set('issueid', $issueid);
 			$subscriptiondata->set('userid', $userid);
@@ -204,7 +204,7 @@ function handle_issue_subscription_change($issueid, $oldvalue, $newvalue, $useri
 			");
 			if ($subscription)
 			{
-				$subscriptiondata =& datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_SILENT);
+				$subscriptiondata = datamanager_init('Pt_IssueSubscribe', $vbulletin, ERRTYPE_SILENT);
 				$subscriptiondata->set_existing($subscription);
 				$subscriptiondata->delete();
 			}
@@ -340,7 +340,7 @@ function process_assignment_changes($input, $posting_perms, $existing_assignment
 				continue;
 			}
 
-			$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+			$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 			$assign->set_info('project', $project);
 			$assign->set('userid', $userid);
 			$assign->set('issueid', $issue['issueid']);
@@ -351,7 +351,7 @@ function process_assignment_changes($input, $posting_perms, $existing_assignment
 		foreach ($assign_remove AS $userid)
 		{
 			$data = array('userid' => $userid, 'issueid' => $issue['issueid']);
-			$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+			$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 			$assign->set_existing($data);
 			$assign->set_info('log_assignment_changes', $log_assignment_changes);
 			$assign->delete();
@@ -363,7 +363,7 @@ function process_assignment_changes($input, $posting_perms, $existing_assignment
 		if ($input['assignself'] AND empty($issue['isassigned']))
 		{
 			// unassigned -> assigned
-			$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+			$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 			$assign->set_info('project', $project);
 			$assign->set('userid', $vbulletin->userinfo['userid']);
 			$assign->set('issueid', $issue['issueid']);
@@ -373,7 +373,7 @@ function process_assignment_changes($input, $posting_perms, $existing_assignment
 		{
 			// assigned -> unassigned
 			$data = array('userid' => $vbulletin->userinfo['userid'], 'issueid' => $issue['issueid']);
-			$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+			$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 			$assign->set_existing($data);
 			$assign->delete();
 		}
@@ -467,7 +467,7 @@ function send_issue_assignment_notification_pm($issueid, $assignee, $assigner)
 	eval(fetch_email_phrases('pt_issueassignment', $assignee_userinfo['languageid']));
 	
 	// Init vB_PM datamanager.
-	$pm =& datamanager_init('PM', $vbulletin, ERRTYPE_SILENT);
+	$pm = datamanager_init('PM', $vbulletin, ERRTYPE_SILENT);
 	$pm->set('fromuserid', $assigner_userinfo['userid']);
 	$pm->set('fromusername', $assigner_userinfo['username']);
 	$pm->set('title', $subject);
@@ -499,7 +499,7 @@ function fetch_milestone_select_list($projectid, $skip_ids = array())
 	$no_targets = array();
 
 	$milestone_data = $vbulletin->db->query_read("
-		SELECT milestoneid, title_clean, completeddate, targetdate
+		SELECT milestoneid, completeddate, targetdate
 		FROM " . TABLE_PREFIX . "pt_milestone
 		WHERE projectid = $projectid
 			" . ($skip_ids ? "AND milestoneid NOT IN (" . implode(',', $skip_ids) . ")" : '') . "
@@ -509,15 +509,15 @@ function fetch_milestone_select_list($projectid, $skip_ids = array())
 	{
 		if ($milestone['completeddate'])
 		{
-			$milestones["$vbphrase[completed_milestones]"]["$milestone[milestoneid]"] = $milestone['title_clean'];
+			$milestones["$vbphrase[completed_milestones]"]["$milestone[milestoneid]"] = htmlspecialchars_uni($vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
 		}
 		else if (!$milestone['targetdate'])
 		{
-			$no_targets["$milestone[milestoneid]"] = $milestone['title_clean'];
+			$no_targets["$milestone[milestoneid]"] = htmlspecialchars_uni($vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
 		}
 		else
 		{
-			$milestones["$vbphrase[active_milestones]"]["$milestone[milestoneid]"] = $milestone['title_clean'];
+			$milestones["$vbphrase[active_milestones]"]["$milestone[milestoneid]"] = htmlspecialchars_uni($vbphrase['milestone_' . $milestone['milestoneid'] . '_name']);
 		}
 	}
 
@@ -550,32 +550,34 @@ function fetch_milestone_select($projectid, $selected_milestone = 0, $skip_ids =
 	global $vbulletin, $vbphrase, $show;
 
 	$milestone_array = fetch_milestone_select_list($projectid, $skip_ids);
-	$milestone_options = '';
+	$milestone_options = $milestone_none = array();
 
 	foreach ($milestone_array AS $optgroup_label => $option_container)
 	{
+		$option = array();
+
 		if (!is_array($option_container))
 		{
-			$optionvalue = $optgroup_label;
-			$optiontitle = $option_container;
-			$optionselected = ($selected_milestone == $optionvalue ? ' selected="selected"' : '');
-			$milestone_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+			// Here, it corresponds only to the '(none)' milestone
+			// All others options are 'Active Milestones' and 'Completed Milestones'
+			// This is now hardcoded in template 'pt_postissue'
 		}
 		else if (!empty($option_container))
 		{
-			$optgroup_options = '';
+			$optgroup = $option = $optiongroup = array();
 
 			foreach ($option_container AS $optionvalue => $optiontitle)
 			{
-				$optionselected = ($selected_milestone == $optionvalue ? ' selected="selected"' : '');
-				$optgroup_options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+				$option['title'] = $optiontitle;
+				$option['value'] = $optionvalue;
+				$option['selected'] = ($selected_milestone == $option['value'] ? ' selected="selected"' : '');
+				$optgroup[] = $option;
 			}
 
-			$templater = vB_Template::create('optgroup');
-				$templater->register('optgroup_extra', $optgroup_extra);
-				$templater->register('optgroup_label', $optgroup_label);
-				$templater->register('optgroup_options', $optgroup_options);
-			$milestone_options .= $templater->render();
+			$optiongroup['label'] = $optgroup_label;
+			$optiongroup['group'] = $optgroup;
+
+			$milestone_options[] = $optiongroup;
 		}
 	}
 

@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -32,6 +32,7 @@ $specialtemplates = array(
 	'pt_assignable',
 	'pt_projects',
 	'pt_categories',
+	'pt_priorities',
 	'pt_versions',
 	'smiliecache',
 	'bbcodecache',
@@ -43,14 +44,19 @@ $globaltemplates = array(
 );
 
 // pre-cache templates used by specific actions
-$actiontemplates = array(
-);
+$actiontemplates = array();
 
 // ######################### REQUIRE BACK-END ############################
 require_once('./global.php');
+
 if (empty($vbulletin->products['vbprojecttools']))
 {
 	standard_error(fetch_error('product_not_installed_disabled'));
+}
+
+if ($vbulletin->options['pt_maintenancemode'] AND !$show['admincplink'])
+{
+	standard_error(fetch_error('pt_in_maintenance_mode'));
 }
 
 require_once(DIR . '/includes/functions_projecttools.php');
@@ -66,10 +72,100 @@ if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_
 // #######################################################################
 
 $vbulletin->input->clean_array_gpc('p', array(
+	'projectid' => TYPE_UINT,
 	'issueid' => TYPE_UINT,
 	'field' => TYPE_NOHTML,
 	'value' => TYPE_NOCLEAN // might be an array, might be a scalar
 ));
+
+// #############################################################################
+if ($_POST['do'] == 'updateissuetitle')
+{
+	$vbulletin->input->clean_array_gpc('p', array(
+		'issueid' => TYPE_UINT,
+		'title'    => TYPE_STR
+	));
+
+	$issue = verify_issue($vbulletin->GPC['issueid']);
+	$project = verify_project($issue['projectid']);
+
+	$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
+	$issueperms = $projectperms["$issue[issuetypeid]"];
+	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
+
+	// allow edit if...
+	if ($posting_perms['issue_edit'])
+	{
+		$issuetitle = convert_urlencoded_unicode($vbulletin->GPC['title']);
+		$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_ARRAY);
+		$issuedata->set_existing($issue);
+		$issuedata->set('title', $issuetitle);
+
+		if ($issuedata->save())
+		{
+			$issue['title'] = $issuedata->fetch_field('title');
+
+			// we do not appear to log thread title updates
+			$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+			$xml->add_group('foo');
+				$xml->add_tag('linkhtml', $issue['title']);
+				$xml->add_tag('linkhref', fetch_seo_url('issue', $issue));
+			$xml->close_group('foo');
+			$xml->print_xml();
+			exit;
+		}
+	}
+
+	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+	$xml->add_tag('linkhtml', $issue['title']);
+	$xml->print_xml();
+}
+
+// #######################################################################
+if ($_REQUEST['do'] == 'markread')
+{
+	$vbulletin->input->clean_gpc('r', 'issuetypeid', TYPE_NOHTML);
+
+	$project = verify_project($vbulletin->GPC['projectid']);
+
+	if ($vbulletin->GPC['issuetypeid'])
+	{
+		verify_issuetypeid($vbulletin->GPC['issuetypeid'], $project['projectid']);
+
+		mark_project_read($project['projectid'], $vbulletin->GPC['issuetypeid'], TIMENOW);
+
+		$issuetypes = array($vbulletin->GPC['issuetypeid']);
+	}
+	else
+	{
+		$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
+
+		$issuetypes = array();
+
+		foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
+		{
+			if ($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview'])
+			{
+				mark_project_read($project['projectid'], $issuetypeid, TIMENOW);
+				$issuetypes[] = $issuetypeid;
+			}
+		}
+	}
+
+	require_once(DIR . '/includes/class_xml.php');
+	$xml = new vB_AJAX_XML_Builder($vbulletin, 'text/xml');
+	$xml->add_group('readmarker');
+
+	$xml->add_group('project', array('projectid' => $project['projectid']));
+	foreach ($issuetypes AS $issuetypeid)
+	{
+		$xml->add_tag('issuetype', $issuetypeid);
+	}
+	$xml->close_group();
+
+	$xml->close_group();
+	$xml->print_xml();
+}
 
 if (is_string($vbulletin->GPC['value']))
 {
@@ -90,7 +186,6 @@ $can_edit_issue = $posting_perms['issue_edit'];
 ($hook = vBulletinHook::fetch_hook('projectajax_start')) ? eval($hook) : false;
 
 // #######################################################################
-
 function throw_ajax_error($text = '')
 {
 	global $vbulletin;
@@ -103,7 +198,7 @@ function throw_ajax_error($text = '')
 // #######################################################################
 if ($_POST['do'] == 'save')
 {
-	$issuedata =& datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
+	$issuedata = datamanager_init('Pt_Issue', $vbulletin, ERRTYPE_STANDARD);
 	$issuedata->set_existing($issue);
 
 	($hook = vBulletinHook::fetch_hook('projectajax_save_start')) ? eval($hook) : false;
@@ -191,9 +286,7 @@ if ($_POST['do'] == 'save')
 				throw_ajax_error('');
 			}
 
-			$vbulletin->input->clean_array_gpc('p', array(
-				'value' => TYPE_ARRAY_NOHTML
-			));
+			$vbulletin->input->clean_gpc('p', 'value', TYPE_ARRAY_NOHTML);
 
 			foreach ($vbulletin->GPC['value'] AS $key => $value)
 			{
@@ -236,9 +329,7 @@ if ($_POST['do'] == 'save')
 				throw_ajax_error('');
 			}
 
-			$vbulletin->input->clean_array_gpc('p', array(
-				'value' => TYPE_ARRAY_NOHTML
-			));
+			$vbulletin->input->clean_gpc('p', 'value', TYPE_ARRAY_NOHTML);
 
 			$vbulletin->GPC['value'] = array_keys($vbulletin->GPC['value']);
 
@@ -267,7 +358,7 @@ if ($_POST['do'] == 'save')
 					continue;
 				}
 
-				$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+				$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 				$assign->set_info('project', $project);
 				$assign->set('userid', $userid);
 				$assign->set('issueid', $issue['issueid']);
@@ -277,10 +368,39 @@ if ($_POST['do'] == 'save')
 			foreach ($assign_remove AS $userid)
 			{
 				$data = array('userid' => $userid, 'issueid' => $issue['issueid']);
-				$assign =& datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
+				$assign = datamanager_init('Pt_IssueAssign', $vbulletin, ERRTYPE_SILENT);
 				$assign->set_existing($data);
 				$assign->delete();
 			}
+			break;
+		default:
+			// Magic Select
+			// Select all existing magic select and make a simple array
+			$ms_all = $db->query_read("
+				SELECT projectmagicselectgroupid
+				FROM " . TABLE_PREFIX . "pt_projectmagicselectgroup
+				ORDER BY projectmagicselectgroupid ASC
+			");
+
+			while ($msgroupid = $db->fetch_array($ms_all))
+			{
+				if ($msgroupid['projectmagicselectgroupid'] == $vbulletin->GPC['field'])
+				{
+					$ms_result = $db->query_first("
+						SELECT issueid, magicselect" . $vbulletin->GPC['field'] . "
+						FROM " . TABLE_PREFIX . "pt_issuemagicselect
+						WHERE issueid = " . $vbulletin->GPC['issueid'] . "
+					");
+
+					$issuems = datamanager_init('Pt_Issue_MagicSelect', $vbulletin, ERRTYPE_SILENT, 'pt_magicselect');
+					$issuems->set_existing($ms_result);
+					$issuems->set('magicselect' . $vbulletin->GPC['field'], $vbulletin->GPC['value']);
+					$issuems->set('fieldid', $vbulletin->GPC['field']); // Required to track changes
+					$issuems->set('valueid', $vbulletin->GPC['value']); // Required to track changes
+					$issuems->save();
+				}
+			}
+
 			break;
 	}
 
@@ -331,13 +451,19 @@ if ($_POST['do'] == 'fetch')
 			else
 			{
 				$xml->add_group('items');
-					for ($i = 0; $i <= 10; $i++)
+				$xml->add_tag('item', $vbphrase['unknown'], array('itemid' => 0, 'selected' => ($issue['priority'] == 0 ? 'yes' : 'no')));
+
+				foreach ($vbulletin->pt_priorities AS $priority)
+				{
+					if ($priority['projectid'] != $issue['projectid'])
 					{
-						$xml->add_tag('item', $vbphrase["priority_$i"], array(
-							'itemid' => $i,
-							'selected' => ($issue['priority'] == $i ? 'yes' : 'no')
-						));
+						continue;
 					}
+					$xml->add_tag('item', $vbphrase['priority' . $priority['projectpriorityid'] . ''], array(
+						'itemid' => $priority['projectpriorityid'],
+						'selected' => ($issue['priority'] == $priority['projectpriorityid'] ? 'yes' : 'no')
+					));
+				}
 				$xml->close_group();
 			}
 			break;
@@ -359,7 +485,7 @@ if ($_POST['do'] == 'fetch')
 					{
 						continue;
 					}
-					$xml->add_tag('item', $category['title'], array(
+					$xml->add_tag('item', $vbphrase['category' . $category['projectcategoryid'] . ''], array(
 						'itemid' => $category['projectcategoryid'],
 						'selected' => ($issue['projectcategoryid'] == $category['projectcategoryid'] ? 'yes' : 'no')
 					));
@@ -380,7 +506,7 @@ if ($_POST['do'] == 'fetch')
 				// group versions as necessary, ordered by their effective order
 				$version_groups = array();
 				$version_query = $db->query_read("
-					SELECT projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname
+					SELECT projectversion.projectversionid, projectversiongroup.projectversiongroupid
 					FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
 					INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
 						(projectversion.projectversiongroupid = projectversiongroup.projectversiongroupid)
@@ -389,7 +515,7 @@ if ($_POST['do'] == 'fetch')
 				");
 				while ($version = $db->fetch_array($version_query))
 				{
-					$version_groups["$version[groupname]"]["$version[projectversionid]"] = $version['versionname'];
+					$version_groups["$version[projectversiongroupid]"]["$version[projectversionid]"] = $version['projectversionid'];
 				}
 
 				$xml->add_group('items');
@@ -411,12 +537,12 @@ if ($_POST['do'] == 'fetch')
 				// search the groups
 				foreach ($version_groups AS $label => $versions)
 				{
-					$xml->add_group('itemgroup', array('label' => $label));
+					$xml->add_group('itemgroup', array('label' => $vbphrase['versiongroup' . $label . '']));
 
 					// then the versions in them
 					foreach ($versions AS $versionid => $versionname)
 					{
-						$xml->add_tag('item', $versionname, array(
+						$xml->add_tag('item', $vbphrase['version' . $versionid . ''], array(
 							'itemid' => $versionid,
 							'selected' => ($issue[$vbulletin->GPC['field']] == $versionid ? 'yes' : 'no')
 						));
@@ -590,6 +716,34 @@ if ($_POST['do'] == 'fetch')
 
 				$xml->add_tag('noneword', $vbphrase['none_meta']);
 			}
+			break;
+		default:
+			$magicselects = $db->query_read("
+				SELECT *
+				FROM " . TABLE_PREFIX . "pt_projectmagicselect
+				WHERE projectid = " . intval($project['projectid']) . "
+					AND projectmagicselectgroupid = " . $vbulletin->GPC['field'] . "
+			");
+
+			$xml->add_group('items');
+
+			while ($magicselect = $db->fetch_array($magicselects))
+			{
+				$items[$magicselect['value']] = $magicselect;
+			}
+
+			if (!isset($items[0]))
+			{
+				$xml->add_tag('item', $vbphrase['none'], array('itemid' => 0, 'selected' => 'yes')); // Selected set to yes will not disturb following values, latest is used by browsers
+			}
+
+			foreach ($items AS $magicselect)
+			{
+				$xml->add_tag('item', $vbphrase['magicselect' . $magicselect['projectmagicselectid']], array('itemid' => $magicselect['value'], 'selected' => ($issue['magicselect' . $magicselect['projectmagicselectgroupid']] == $magicselect['value'] ? 'yes' : 'no')));
+			}
+
+			$xml->close_group();
+
 			break;
 		// #### END SWITCH ####
 	}

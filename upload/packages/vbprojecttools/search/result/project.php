@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -13,12 +13,10 @@
 \*======================================================================*/
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
+ * @package		vBulletin Project Tools
+ * @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+ * @version		$Rev: 897 $
+ * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
  */
 
 require_once(DIR . '/vb/search/result.php');
@@ -59,19 +57,25 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 		$phrase = new vB_Legacy_Phrase();
 		$phrase->add_phrase_groups(array('projecttools'));
 
+		// Do a query for adding the project group
+		$projectgroup = $vbulletin->db->query_first("
+			SELECT projectgroupid
+			FROM " . TABLE_PREFIX . "pt_project
+			WHERE projectid = " . $this->projectid . "
+		");
+
 		// We only have projectid, so displaying project id line
-		$project = $vbulletin->pt_projects["$this->projectid"];
+		$project = $vbulletin->pt_projects[$projectgroup['projectgroupid']]['projects'][$this->projectid];
 
 		// type counts
 		$perms_query = build_issue_permissions_query($vbulletin->userinfo);
+
 		if (empty($perms_query))
 		{
 			print_no_permission();
 		}
 
-		build_project_private_lastpost_sql_all($vbulletin->userinfo,
-			$private_lastpost_join, $private_lastpost_fields
-		);
+		build_project_private_lastpost_sql_all($vbulletin->userinfo, $private_lastpost_join, $private_lastpost_fields);
 
 		$project_types = array();
 		$project_types_query = $vbulletin->db->query_read("
@@ -83,6 +87,7 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 			WHERE projecttype.projectid = " . $this->projectid . "
 			ORDER BY issuetype.displayorder
 		");
+
 		while ($project_type = $vbulletin->db->fetch_array($project_types_query))
 		{
 			$project_types["$project_type[projectid]"][] = $project_type;
@@ -98,7 +103,8 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 		$show['private_lastpost'] = false;
 		$project['newflag'] = false;
 
-		$type_counts = '';
+		$type_counts = array();
+
 		foreach ($project_types["$project[projectid]"] AS $type)
 		{
 			if (!($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
@@ -123,7 +129,7 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 				$show['private_lastpost'] = (($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewothers']) ? false : true);
 			}
 
-			$typename = $vbphrase["issuetype_$type[issuetypeid]_plural"];
+			$type['name'] = $vbphrase["issuetype_$type[issuetypeid]_plural"];
 			$type['issuecount'] = vb_number_format($type['issuecount']);
 			$type['issuecountactive'] = vb_number_format($type['issuecountactive']);
 
@@ -134,25 +140,24 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 			else
 			{
 				$projettypeview = intval(fetch_bbarray_cookie('project_lastview', $project['projectid'] . $type['issuetypeid']));
+
 				if (!$projettypeview)
 				{
 					$projettypeview = $vbulletin->userinfo['lastvisit'];
 				}
 			}
+
 			if ($type['lastpost'] > $projettypeview)
 			{
 				$type['newflag'] = true;
 				$project['newflag'] = true;
 			}
+
 			$project['projectread'] = max($project['projectread'], $projettypeview);
 
 			$type['countid'] = "project_typecount_$project[projectid]_$type[issuetypeid]";
 
-			$templater = vB_Template::create('pt_projectbit_typecount');
-				$templater->register('project', $project);
-				$templater->register('type', $type);
-				$templater->register('typename', $typename);
-			$type_counts .= $templater->render();
+			$type_counts[] = $type;
 		}
 
 		if (!$type_counts)
@@ -164,7 +169,6 @@ class vBProjectTools_Search_Result_Project extends vB_Search_Result
 			$template->register('project', $project);
 			$template->register('type_counts', $type_counts);
 		return $template->render();
-
 	}
 }
 

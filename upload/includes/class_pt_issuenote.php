@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -14,10 +14,9 @@
 /**
 * Issue note factory. Create/call this when you need to create a number of issue note objects.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNoteFactory
@@ -77,6 +76,7 @@ class vB_Pt_IssueNoteFactory
 		{
 			case 'system':   $class_name = 'vB_Pt_IssueNote_System';   break;
 			case 'petition': $class_name = 'vB_Pt_IssueNote_Petition'; break;
+			case 'firstnote': $class_name = 'vB_Pt_IssueNote_Firstnote'; break;
 			case 'user':
 			default:
 				$class_name = 'vB_Pt_IssueNote_User';
@@ -91,8 +91,10 @@ class vB_Pt_IssueNoteFactory
 /**
 * Generic issue note class.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNote
 {
@@ -179,6 +181,7 @@ class vB_Pt_IssueNote
 	function construct()
 	{
 		global $show;
+
 		// preparation for display...
 		$this->prepare_start();
 		$this->process_date();
@@ -200,10 +203,19 @@ class vB_Pt_IssueNote
 		$issue =& $this->issue;
 		$note =& $this->note;
 
-		global $show, $vbphrase;
-		global $spacer_open, $spacer_close;
+		if ($note['type'] == 'firstnote')
+		{
+			// This is needed to workaround some issues in quick reply main issue text
+  			$issue['musername'] = $note['musername'];
+  			$issue['note_date'] = $note['note_date'];
+  			$issue['note_time'] = $note['note_time'];
+  			$issue['message'] = $note['message'];
+  			$issue['lastedit_date'] = $note['lastedit_date'];
+  			$issue['lastedit_time'] = $note['lastedit_time'];
+  			$issue['noteipaddress'] = $note['noteipaddress'];
+		}
 
-		global $bgclass, $altbgclass;
+		global $vbphrase;
 
 		($hook = vBulletinHook::fetch_hook('project_issue_notebit')) ? eval($hook) : false;
 
@@ -388,12 +400,8 @@ class vB_Pt_IssueNote
 
 		$show['edit_note'] = can_edit_issue_note($this->issue, $this->note, $issueperms);
 		$show['edit_history'] = ($this->note['lasteditdate'] AND $show['edit_note']);
-
-		$show['reply_note'] = (
-			($this->issue['state'] == 'open' OR $issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancloseissue'])
-			AND	$this->note['visible'] != 'deleted'
-		);
-
+		$show['reply_note'] = (($this->issue['state'] == 'open' OR $issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancloseissue']) AND $this->note['visible'] != 'deleted');
+		$show['export_note'] = ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp['ptpermissions']['canexportfromissues']);
 		$this->note['newflag'] = ($this->note['dateline'] > issue_lastview($this->issue));
 	}
 }
@@ -401,8 +409,10 @@ class vB_Pt_IssueNote
 /**
 * Generic issue note class for a user note.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNote_User extends vB_Pt_IssueNote
 {
@@ -424,14 +434,53 @@ class vB_Pt_IssueNote_User extends vB_Pt_IssueNote
 			AND ($this->registry->options['rpforumid'] OR
 				($this->registry->options['enableemail'] AND $this->registry->options['rpemail']))
 		);
+
+		$show['import_note'] = ($this->registry->userinfo['permissions']['ptpermissions'] & $this->registry->bf_ugp['ptpermissions']['canimportintoissues']);
+
+		$import = $this->registry->db->query_first("
+			SELECT data
+			FROM " . TABLE_PREFIX . "pt_issueimport
+			WHERE contentid = " . intval($this->note['issuenoteid']) . "
+		");
+
+		if ($import)
+		{
+			$unserialized_data = unserialize($import['data']);
+
+			if ($unserialized_data['visible'] == 'visible')
+			{
+				$this->note['import_issueid'] = $unserialized_data['pt_issueid'];
+
+				// Need to create another query... I don't like that
+				$import_title = $this->registry->db->query_first("
+					SELECT title
+					FROM " . TABLE_PREFIX . "pt_issue
+					WHERE issueid = " . intval($this->note['import_issueid']) . "
+				");
+
+				$this->note['import_title'] = $import_title['title'];
+
+				$this->note['import_seo'] = fetch_seo_url('issue', $this->note, null, 'import_issueid', 'import_title');
+			}
+		}
+
+		// Vertical postbit?
+		$show['legacy'] = false;
+
+		if ($this->registry->options['pt_legacytemplate'])
+		{
+			$show['legacy'] = true;
+		}
 	}
 }
 
 /**
 * Generic issue note class for a petition note.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNote_Petition extends vB_Pt_IssueNote_User
 {
@@ -465,14 +514,24 @@ class vB_Pt_IssueNote_Petition extends vB_Pt_IssueNote_User
 		$show['process_petition'] = ($this->note['petitionresolution'] == 'pending' AND $show['status_edit']);
 
 		$this->note['petition_text'] = construct_phrase($vbphrase['petition_change_x_' . $this->note['petitionresolution']], $this->note['petitionstatus']);
+
+		// Vertical postbit?
+		$show['legacy'] = false;
+
+		if ($this->registry->options['pt_legacytemplate'])
+		{
+			$show['legacy'] = true;
+		}
 	}
 }
 
 /**
 * Generic issue note class for a system note.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueNote_System extends vB_Pt_IssueNote
 {
@@ -497,14 +556,39 @@ class vB_Pt_IssueNote_System extends vB_Pt_IssueNote
 			return;
 		}
 
-		$this->note['message'] = '';
+		$this->note['message'] = array();
 
 		foreach (translate_system_note($changes) AS $entry)
 		{
-			$templater = vB_Template::create('pt_issuenotebit_systembit');
-				$templater->register('entry', $entry);
-			$this->note['message'] .= $templater->render();
+			$this->note['message'][] = $entry;
+		}
+
+		// Vertical postbit?
+		$show['legacy'] = false;
+
+		if ($this->registry->options['pt_legacytemplate'])
+		{
+			$show['legacy'] = true;
 		}
 	}
 }
+
+/**
+* Generic issue note class for the first issue note
+*
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
+*/
+class vB_Pt_IssueNote_Firstnote extends vB_Pt_IssueNote_User
+{
+	/**
+	* The template that will be used for outputting
+	*
+	* @var	string
+	*/
+	var $template = 'pt_issue_firstnote';
+}
+
 ?>

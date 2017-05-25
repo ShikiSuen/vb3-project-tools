@@ -11,6 +11,8 @@
 				<bitfield name="candeletepublicreportothers" group="project_tools_permissions" phrase="can_delete_public_report_others" install="5,6,7">8</bitfield>
 				<bitfield name="cancustomtag" group="project_tools_permissions" phrase="can_create_custom_tags" install="5,6,7">32</bitfield>
 				<bitfield name="canusehumancheck" group="project_tools_permissions" phrase="can_use_humancheck" install="1,2,3,4,5,6,7">64</bitfield>
+				<bitfield name="canimportintoissues" group="project_tools_permissions" phrase="can_import_into_issues" install="5,6,7">128</bitfield>
+				<bitfield name="canexportfromissues" group="project_tools_permissions" phrase="can_export_from_issues" install="5,6,7">256</bitfield>
 			</group>
 		</group>
 		<group name="pt_permissions">
@@ -31,6 +33,9 @@
 				<bitfield group="general_edit" name="canstatusunassigned" phrase="ptperm_can_status_unassigned" install="5,6,7">1024</bitfield>
 				<bitfield group="general_edit" name="cantagsassigned" phrase="ptperm_can_tags_assigned" install="5,6,7">2048</bitfield>
 				<bitfield group="general_edit" name="cantagsunassigned" phrase="ptperm_can_tags_unassigned" install="5,6,7">4096</bitfield>
+				<bitfield group="general_edit" name="canchangepriority" phrase="ptperm_can_change_priority" install="5,6,7">8192</bitfield>
+				<bitfield group="general_edit" name="canchangepriorityothers" phrase="ptperm_can_change_priority_others" install="5,6,7">131072</bitfield>
+				<bitfield group="general" name="canviewreplies" phrase="ptperm_can_view_replies" install="1,2,3,4,5,6,7">262144</bitfield>
 			</group>
 			<group name="post">
 				<bitfield group="issue_post" name="canpostnew" phrase="ptperm_can_post_new" install="2,5,6,7">1</bitfield>
@@ -58,15 +63,17 @@
 			</group>
 		</group>
 		<group name="misc">
-			<group name="pt_projectoptions">
-				<bitfield name="requireappliesversion">1</bitfield>
-				<bitfield name="requirecategory">2</bitfield>
-				<bitfield name="requirepriority">4</bitfield>
-				<bitfield name="emailonassignment">8</bitfield>
-				<bitfield name="pmonassignment">16</bitfield>
-			</group>
 			<group name="pt_hvcheck">
 				<bitfield name="post">1</bitfield>
+			</group>
+			<group name="pt_columns">
+				<bitfield name="last_post">1</bitfield>
+				<bitfield name="replies">2</bitfield>
+				<bitfield name="priority">4</bitfield>
+				<bitfield name="status">8</bitfield>
+				<bitfield name="category">16</bitfield>
+				<bitfield name="applyversion">32</bitfield>
+				<bitfield name="addressversion">64</bitfield>
 			</group>
 		</group>
 		<group name="nocache">
@@ -79,4 +86,4 @@
 	</bitfielddefs>
 </bitfields>
 
-<!-- CVS: $RCSfile$ - $Revision: 15806 $ -->
+<!-- CVS: bitfield_vbprojecttools.xml - $Revision: 825 $ -->

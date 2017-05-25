@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -172,6 +172,9 @@ function verify_milestone($milestoneid)
 	{
 		standard_error(fetch_error('invalidid', $vbphrase['milestone'], $vbulletin->options['contactuslink']));
 	}
+
+	$milestone['title'] = $milestone['title_clean'] = $vbphrase['milestone_' . $milestone['milestoneid'] . '_name'];
+	$milestone['description'] = $vbphrase['milestone_' . $milestone['milestoneid'] . '_description'];
 
 	return $milestone;
 }

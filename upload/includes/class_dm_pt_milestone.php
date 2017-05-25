@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -19,10 +19,9 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT milestones.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_Milestone extends vB_DataManager
@@ -34,12 +33,11 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	*/
 	var $validfields = array(
 		'milestoneid'   => array(TYPE_UINT,       REQ_INCR),
-		'title'         => array(TYPE_STR,        REQ_YES),
 		'title_clean'   => array(TYPE_NOHTMLCOND, REQ_AUTO),
-		'description'   => array(TYPE_STR,        REQ_NO),
 		'projectid'     => array(TYPE_UINT,       REQ_YES),
 		'targetdate'    => array(TYPE_UNIXTIME,   REQ_NO),
 		'completeddate' => array(TYPE_UNIXTIME,   REQ_NO),
+		'displayorder'	=> array(TYPE_UINT,		  REQ_NO),
 	);
 
 	/**
@@ -47,7 +45,24 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	*
 	* @var	array
 	*/
-	var $info = array();
+	var $info = array(
+		'title'			=> null,
+		'description'	=> null,
+
+		'delete_deststatusid' => 0, // if deleting, ID of status to move all affected issues to
+		'rebuild_caches' => true,
+	);
+
+	/**
+	* The relationship between the phrases in $info and their actual names.
+	* Values are passed through sprintf and %s is replaced with the issuetypeid.
+	*
+	* @param	array	Key: $info key, value: phrase name
+	*/
+	var $info_phrase = array(
+		'title' => 'milestone_%d_name',
+		'description' => 'milestone_%d_description'
+	);
 
 	/**
 	* The main table this class deals with
@@ -76,9 +91,9 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_Milestone(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		($hook = vBulletinHook::fetch_hook('pt_milestonedata_start')) ? eval($hook) : false;
 	}
@@ -117,6 +132,41 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	*/
 	function post_save_each($doquery = true)
 	{
+		// replace (master) phrase entry
+		require_once(DIR . '/includes/adminfunctions.php');
+		$full_product_info = fetch_product_list(true);
+
+		foreach ($this->info_phrase AS $info_name => $phrase_name)
+		{
+			if ($this->info["$info_name"] !== null)
+			{
+				$phrase = sprintf($phrase_name, $this->fetch_field('milestoneid'));
+
+				// Phrase for milestones
+				$this->registry->db->query_write("
+					REPLACE INTO " . TABLE_PREFIX . "phrase
+						(languageid, fieldname, varname, text, product, username, dateline, version)
+					VALUES
+						(
+							0,
+							'projecttools',
+							'" . $this->registry->db->escape_string($phrase) . "',
+							'" . $this->registry->db->escape_string($this->info["$info_name"]) . "',
+							'vbprojecttools',
+							'" . $this->registry->db->escape_string($this->registry->userinfo['username']) . "',
+							" . TIMENOW . ",
+							'" . $this->registry->db->escape_string($full_product_info['vbprojecttools']['version']) . "'
+						)
+				");
+			}
+		}
+
+		if ($this->info['rebuild_caches'])
+		{
+			require_once(DIR . '/includes/adminfunctions_language.php');
+			build_language();
+		}
+
 		if (!$this->condition)
 		{
 			$this->rebuild_project_milestone_counters();
@@ -134,10 +184,29 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 	*/
 	function post_delete($doquery = true)
 	{
+		$del_phrases = array();
+
+		foreach ($this->info_phrase AS $phrase_name)
+		{
+			$del_phrases[] = sprintf($phrase_name, intval($this->fetch_field('milestoneid')));
+		}
+
+		$this->registry->db->query_write("
+			DELETE FROM " . TABLE_PREFIX . "phrase
+			WHERE varname IN ('" . implode('", "', $del_phrases) . "')
+				AND fieldname = 'projecttools'
+		");
+
 		$this->registry->db->query_write("
 			DELETE FROM " . TABLE_PREFIX . "pt_milestonetypecount
 			WHERE milestoneid = " . $this->fetch_field('milestoneid')
 		);
+
+		if ($this->info['rebuild_caches'])
+		{
+			require_once(DIR . '/includes/adminfunctions_language.php');
+			build_language();
+		}
 
 		$this->rebuild_project_milestone_counters();
 
@@ -219,4 +288,5 @@ class vB_DataManager_Pt_Milestone extends vB_DataManager
 		build_project_cache();
 	}
 }
+
 ?>

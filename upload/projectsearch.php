@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -87,6 +87,11 @@ if (empty($vbulletin->products['vbprojecttools']))
 	standard_error(fetch_error('product_not_installed_disabled'));
 }
 
+if ($vbulletin->options['pt_maintenancemode'] AND !$show['admincplink'])
+{
+	standard_error(fetch_error('pt_in_maintenance_mode'));
+}
+
 require_once(DIR . '/includes/functions_projecttools.php');
 require_once(DIR . '/includes/functions_pt_search.php');
 
@@ -151,6 +156,11 @@ if ($_REQUEST['do'] == 'search')
 		$vbulletin->GPC['projectid'] = $milestone['projectid'];
 	}
 
+	// These settings are on by default - they are turning off if projectid is specified in url
+	$show['category'] = true;
+	$show['appliesversionid'] = true;
+	$show['priority'] = true;
+
 	// cache for project names - [projectid] = title_clean
 	$project_names = array();
 
@@ -197,6 +207,10 @@ if ($_REQUEST['do'] == 'search')
 				$optionchecked .= ' disabled="disabled"';
 			}
 		}
+
+		$show['category'] = ($project['requirecategory'] > 0);
+		$show['appliesversionid'] = ($project['requireappliesversion'] > 0);
+		$show['priority'] = ($project['requirepriority'] > 0);
 
 		$templater = vB_Template::create('pt_checkbox_option');
 			$templater->register('optionchecked', $optionchecked);
@@ -306,7 +320,18 @@ if ($_REQUEST['do'] == 'search')
 	fetch_pt_search_versions($appliesversion_options, $addressedversion_options, $project_names);
 
 	// setup categories
-	$category_options = fetch_pt_search_categories($project_names);
+	$category_options = '';
+	if ($show['category'])
+	{
+		$category_options = fetch_pt_search_categories($project_names);
+	}
+
+	// setup priorities
+	$priority_options = '';
+	if ($show['priority'])
+	{
+		$priority_options = fetch_pt_search_priorities($project_names);
+	}
 
 	// navbar and output
 	$navbits = construct_navbits(array(
@@ -326,6 +351,7 @@ if ($_REQUEST['do'] == 'search')
 		$templater->register('contenttypeid', intval($vbulletin->GPC['contenttypeid']));
 		$templater->register('milestone', $milestone);
 		$templater->register('navbar', $navbar);
+		$templater->register('priority_options', $priority_options);
 		$templater->register('project_options', $project_options);
 		$templater->register('status_options', $status_options);
 		$templater->register('tag_options', $tag_options);
@@ -350,9 +376,6 @@ if ($_REQUEST['do'] == 'dosearch')
 
 		'user' => TYPE_NOHTML,
 		'user_issue' => TYPE_NOHTML,
-
-		'priority_gteq' => TYPE_INT,
-		'priority_lteq' => TYPE_INT,
 
 		'searchdate_gteq' => TYPE_INT,
 		'searchdate_lteq' => TYPE_INT,
@@ -384,6 +407,7 @@ if ($_REQUEST['do'] == 'dosearch')
 		'addressedmix'     => TYPE_ARRAY,
 
 		'projectcategoryid' => TYPE_ARRAY_INT,
+		'projectpriorityid' => TYPE_ARRAY_INT,
 
 		'needsattachments'      => TYPE_UINT,
 		'needspendingpetitions' => TYPE_UINT,
@@ -397,9 +421,6 @@ if ($_REQUEST['do'] == 'dosearch')
 
 		'textlocation'    => TYPE_STR,
 		'userissuesonly'  => TYPE_NOHTML,
-
-		'priority'        => TYPE_INT,
-		'priority_type'   => TYPE_STR,
 
 		'searchdate'      => TYPE_INT,
 		'searchdate_type' => TYPE_STR,
@@ -418,8 +439,7 @@ if ($_REQUEST['do'] == 'dosearch')
 
 	$vbulletin->input->clean_array_gpc('r', $search_fields + $aux_fields);
 
-	if ($vbulletin->GPC['gotoissueinteger'] AND preg_match('#^\d+$#', $vbulletin->GPC['text'])
-		AND $db->query_first("SELECT issueid FROM " . TABLE_PREFIX . "pt_issue WHERE issueid = " . intval($vbulletin->GPC['text'])))
+	if ($vbulletin->GPC['gotoissueinteger'] AND preg_match('#^\d+$#', $vbulletin->GPC['text']) AND $db->query_first("SELECT issueid FROM " . TABLE_PREFIX . "pt_issue WHERE issueid = " . intval($vbulletin->GPC['text'])))
 	{
 		exec_header_redirect("project.php?" . $vbulletin->session->vars['sessionurl_js'] . "issueid=" . intval($vbulletin->GPC['text']));
 		exit;
@@ -541,9 +561,7 @@ if ($_REQUEST['do'] == 'resort')
 		handle_pt_search_errors($search_query->generator->errors);
 	}
 
-	$vbulletin->url = 'projectsearch.php?' . $vbulletin->session->vars['sessionurl'] . "do=searchresults&searchid=$searchid"
-		. ($vbulletin->GPC['groupid'] ? "&groupid=" . urlencode($vbulletin->GPC['groupid']) : '');
-
+	$vbulletin->url = 'projectsearch.php?' . $vbulletin->session->vars['sessionurl'] . "do=searchresults&searchid=$searchid" . ($vbulletin->GPC['groupid'] ? "&groupid=" . urlencode($vbulletin->GPC['groupid']) : '');
 	eval(print_standard_redirect('pt_searchexecuted'));
 }
 
@@ -691,9 +709,17 @@ if ($_REQUEST['do'] == 'searchresults')
 
 		$group['count'] = vb_number_format($group['count']);
 
+		$project = fetch_project_info($group['projectid']);
+
+		$bypass = (($group['groupid'] == 0));
+
+		// Definition to display selected columns
+		$columns = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project, $bypass);
+
 		($hook = vBulletinHook::fetch_hook('projectsearch_results_groupbit')) ? eval($hook) : false;
 
 		$templater = vB_Template::create('pt_searchresultgroupbit');
+			$templater->register('columns', $columns);
 			$templater->register('group', $group);
 			$templater->register('groupid', $groupid);
 			$templater->register('group_header', $group_header);
@@ -717,7 +743,7 @@ if ($_REQUEST['do'] == 'searchresults')
 	$navbits = construct_navbits(array(
 		'project.php' . $vbulletin->session->vars['sessionurl_q'] => $vbphrase['projects'],
 		'projectsearch.php?' . $vbulletin->session->var['sessionurl'] . 'do=search' => $vbphrase['search'],
-		'' => ($search['issuereportid'] ? construct_phrase($vbphrase['search_results_report_x'], $search['reporttitle']) : $vbphrase['search_results'])// $vbphrase['search_results']
+		'' => ($search['issuereportid'] ? construct_phrase($vbphrase['search_results_report_x'], $search['reporttitle']) : $vbphrase['search_results'])
 	));
 	$navbar = render_navbar_template($navbits);
 
@@ -743,6 +769,7 @@ if ($_POST['do'] == 'dosavereport' OR $_REQUEST['do'] == 'savereport')
 	{
 		print_no_permission();
 	}
+
 	if (!($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['cancreatereport']))
 	{
 		print_no_permission();
@@ -765,7 +792,7 @@ if ($_POST['do'] == 'dosavereport')
 		$vbulletin->GPC['public'] = 0;
 	}
 
-	$report =& datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
+	$report = datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
 	$report->set('title', $vbulletin->GPC['title']);
 	$report->set('description', $vbulletin->GPC['description']);
 	$report->set('public', $vbulletin->GPC['public'] ? 1 : 0);
@@ -809,9 +836,7 @@ if ($_REQUEST['do'] == 'savereport')
 // #######################################################################
 if ($_REQUEST['do'] == 'viewreport')
 {
-	$vbulletin->input->clean_array_gpc('r', array(
-		'issuereportid' => TYPE_UINT
-	));
+	$vbulletin->input->clean_gpc('r', 'issuereportid', TYPE_UINT);
 
 	if (!$search_perms = build_issue_permissions_query($vbulletin->userinfo, 'cansearch'))
 	{
@@ -829,6 +854,7 @@ if ($_REQUEST['do'] == 'viewreport')
 		WHERE issuereport.issuereportid = " . $vbulletin->GPC['issuereportid'] . "
 			AND (issuereport.public = 1 OR (issuereport.public = 0 AND issuereport.userid = " . $vbulletin->userinfo['userid'] . "))
 	");
+
 	if (!$report)
 	{
 		standard_error(fetch_error('invalidid', $vbphrase['issue_report'], $vbulletin->options['contactuslink']));
@@ -902,7 +928,7 @@ if ($_POST['do'] == 'reportsubscription')
 				OR ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['candeletepublicreportown'] AND $vbulletin->userinfo['userid'] == $report['userid']));
 			if ($can_delete)
 			{
-				$reportdata =& datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
+				$reportdata = datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
 				$reportdata->set_existing($report);
 				$reportdata->delete();
 			}
@@ -934,7 +960,7 @@ if ($_POST['do'] == 'reportsubscription')
 			else
 			{
 				// this is private and we want to unsubscribe -- delete it
-				$reportdata =& datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
+				$reportdata = datamanager_init('Pt_IssueReport', $vbulletin, ERRTYPE_STANDARD);
 				$reportdata->set_existing($report);
 				$reportdata->delete();
 			}

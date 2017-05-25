@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -19,10 +19,9 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT issue notes (generic).
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueNote extends vB_DataManager
@@ -89,9 +88,9 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueNote(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		($hook = vBulletinHook::fetch_hook('pt_issuenotedata_start')) ? eval($hook) : false;
 	}
@@ -114,8 +113,18 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	*/
 	function verify_ipaddress(&$ipaddress)
 	{
-		// need to run it through sprintf to get the integer representation
-		$ipaddress = sprintf('%u', ip2long($ipaddress));
+		// Log IP Address only if defined in the corresponding vB option
+		if ($this->registry->options['logip'])
+		{
+			// need to run it through sprintf to get the integer representation
+			$ipaddress = sprintf('%u', ip2long($ipaddress));
+		}
+		else
+		{
+			// Do not save IP address - define $ipaddress as an empty variable
+			$ipaddress = '';
+		}
+
 		return true;
 	}
 
@@ -126,7 +135,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	*
 	* @param	bool	Whether the text is valid
 	*/
-	function verify_pagetext(&$pagetext)
+	function verify_pagetext(&$pagetext, $noshouting = true)
 	{
 		if (vbstrlen(strip_bbcode($pagetext, $this->registry->options['ignorequotechars'])) < 1)
 		{
@@ -134,7 +143,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			return false;
 		}
 
-		return parent::verify_pagetext($pagetext);
+		return parent::verify_pagetext($pagetext, $noshouting);
 	}
 
 	/**
@@ -221,8 +230,8 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			$this->info['reason'] = $this->registry->input->clean($this->info['reason'], TYPE_NOHTMLCOND);
 
 			$insert_history = ($this->info['reason'] !== '');
-			if ((isset($this->pt_issuenote['pagetext']) AND $this->pt_issuenote['pagetext'] != $this->existing['pagetext'])
-				OR (isset($this->pt_issuenote['visible']) AND $this->pt_issuenote['visible'] != $this->existing['visible']))
+
+			if ((isset($this->pt_issuenote['pagetext']) AND $this->pt_issuenote['pagetext'] != $this->existing['pagetext']) OR (isset($this->pt_issuenote['visible']) AND $this->pt_issuenote['visible'] != $this->existing['visible']))
 			{
 				$insert_history = true;
 			}
@@ -247,6 +256,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	function is_flooding()
 	{
 		$floodmintime = TIMENOW - $this->registry->options['floodchecktime'];
+
 		if ($this->fetch_field('dateline') > $floodmintime)
 		{
 			$flood = $this->registry->db->query_first("
@@ -257,13 +267,10 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				ORDER BY dateline DESC
 				LIMIT 1
 			");
+
 			if ($flood)
 			{
-				$this->error(
-					'postfloodcheck',
-					$this->registry->options['floodchecktime'],
-					$flood['dateline'] - $floodmintime
-				);
+				$this->error('postfloodcheck', $this->registry->options['floodchecktime'], $flood['dateline'] - $floodmintime);
 				return true;
 			}
 		}
@@ -279,9 +286,11 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	function is_duplicate()
 	{
 		$dupemintime = TIMENOW - 300;
+
 		if ($this->fetch_field('dateline') > $dupemintime)
 		{
 			$dupehash = md5($this->fetch_field('issueid') . $this->fetch_field('pagetext') . $this->fetch_field('userid') .  $this->fetch_field('visible'));
+
 			$dupe = $this->registry->db->query_first("
 				SELECT dateline
 				FROM " . TABLE_PREFIX . "pt_issuenotehash
@@ -291,6 +300,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				ORDER BY dateline DESC
 				LIMIT 1
 			");
+
 			if ($dupe)
 			{
 				$this->error('duplicate_post');
@@ -316,8 +326,8 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			$this->info['reason'] = $this->registry->input->clean($this->info['reason'], TYPE_NOHTMLCOND);
 
 			$insert_history = ($this->info['reason'] !== '');
-			if ((isset($this->pt_issuenote['pagetext']) AND $this->pt_issuenote['pagetext'] != $this->existing['pagetext'])
-				OR (isset($this->pt_issuenote['visible']) AND $this->pt_issuenote['visible'] != $this->existing['visible']))
+
+			if ((isset($this->pt_issuenote['pagetext']) AND $this->pt_issuenote['pagetext'] != $this->existing['pagetext']) OR (isset($this->pt_issuenote['visible']) AND $this->pt_issuenote['visible'] != $this->existing['visible']))
 			{
 				$insert_history = true;
 			}
@@ -349,6 +359,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			{
 				// insert the duplicate note hash
 				$dupehash = md5($this->fetch_field('issueid') . $this->fetch_field('pagetext') . $this->fetch_field('userid') .  $this->fetch_field('visible'));
+
 				$this->registry->db->query_write("
 					REPLACE INTO " . TABLE_PREFIX . "pt_issuenotehash
 						(issuenoteid, userid, issueid, dupehash, dateline)
@@ -369,9 +380,10 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				FROM " . TABLE_PREFIX . "pt_issue
 				WHERE issueid = " . intval($this->fetch_field('issueid'))
 			);
+
 			if ($issue)
 			{
-				$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
+				$issuedata = datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
 				$issuedata->set_existing($issue);
 				$issuedata->rebuild_issue_counters();
 				$issuedata->save();
@@ -381,15 +393,19 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 					FROM " . TABLE_PREFIX . "pt_project
 					WHERE projectid = $issue[projectid]
 				");
+
 				if ($project)
 				{
-					$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+					$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 					$projectdata->set_existing($project);
 					$projectdata->rebuild_project_counters();
 					$projectdata->save();
 				}
 			}
 		}
+
+		require_once(DIR . '/vb/search/indexcontroller/queue.php');
+		vb_Search_Indexcontroller_Queue::indexQueue('vBProjectTools', 'IssueNote', 'index', intval($this->fetch_field('issuenoteid')));
 
 		return true;
 	}
@@ -399,7 +415,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	*
 	* @return	integer	The number of rows deleted
 	*/
-	function delete($hard_delete = false)
+	function delete($doquery = true)
 	{
 		if (empty($this->condition))
 		{
@@ -419,9 +435,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				return false;
 			}
 
-			$this->info['hard_delete'] = $hard_delete;
-
-			if ($this->info['hard_delete'])
+			if ($this->existing['delete'])
 			{
 				$return = $this->db_delete(TABLE_PREFIX, $this->table, $this->condition, true);
 			}
@@ -478,9 +492,10 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			FROM " . TABLE_PREFIX . "pt_issue
 			WHERE issueid = " . intval($this->fetch_field('issueid'))
 		);
+
 		if ($issue)
 		{
-			$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
+			$issuedata = datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
 			$issuedata->set_existing($issue);
 			$issuedata->rebuild_issue_counters();
 			$issuedata->save();
@@ -490,14 +505,18 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				FROM " . TABLE_PREFIX . "pt_project
 				WHERE projectid = $issue[projectid]
 			");
+
 			if ($project)
 			{
-				$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+				$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 				$projectdata->set_existing($project);
 				$projectdata->rebuild_project_counters();
 				$projectdata->save();
 			}
 		}
+
+		require_once(DIR . '/vb/search/indexcontroller/queue.php');
+		vb_Search_Indexcontroller_Queue::indexQueue('vBProjectTools', 'IssueNote', 'delete', intval($this->fetch_field('issuenoteid')));
 
 		($hook = vBulletinHook::fetch_hook('pt_issuenotedata_delete')) ? eval($hook) : false;
 		return true;
@@ -511,6 +530,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 	function undelete()
 	{
 		$issuenoteid = intval($this->fetch_field('issuenoteid'));
+
 		if (!$issuenoteid)
 		{
 			return false;
@@ -535,9 +555,10 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			FROM " . TABLE_PREFIX . "pt_issue
 			WHERE issueid = " . intval($this->fetch_field('issueid'))
 		);
+
 		if ($issue)
 		{
-			$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
+			$issuedata = datamanager_init('Pt_Issue', $this->registry, ERRTYPE_SILENT);
 			$issuedata->set_existing($issue);
 			$issuedata->rebuild_issue_counters();
 			$issuedata->save();
@@ -547,9 +568,10 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				FROM " . TABLE_PREFIX . "pt_project
 				WHERE projectid = $issue[projectid]
 			");
+
 			if ($project)
 			{
-				$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+				$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 				$projectdata->set_existing($project);
 				$projectdata->rebuild_project_counters();
 				$projectdata->save();
@@ -579,12 +601,13 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 			FROM " . TABLE_PREFIX . "pt_issue
 			WHERE issueid = " . intval($this->fetch_field('issueid'))
 		);
+
 		if (!$issue)
 		{
 			return false;
 		}
 
-		$issuedata =& datamanager_init('Pt_Issue', $this->registry, ERRTYPE_STANDARD);
+		$issuedata = datamanager_init('Pt_Issue', $this->registry, ERRTYPE_STANDARD);
 		$issuedata->set_existing($issue);
 
 		if ($issue['firstnoteid'] == 0)
@@ -626,10 +649,7 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 				$issuedata->set('lastpostuserid', $this->fetch_field('userid'));
 				$issuedata->set('lastpostusername', $this->fetch_field('username'));
 
-				$this->registry->db->query_write("
-					DELETE FROM " . TABLE_PREFIX . "pt_issueprivatelastpost
-					WHERE issueid = $issue[issueid]
-				");
+				$this->registry->db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueprivatelastpost WHERE issueid = $issue[issueid]");
 
 				if ($issue['visible'] == 'private')
 				{
@@ -669,8 +689,10 @@ class vB_DataManager_Pt_IssueNote extends vB_DataManager
 /**
 * Class to do data save/delete operations for PT issue notes (system).
 *
-* @package	vBulletin Project Tools
-* @date		$Date$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 {
@@ -680,9 +702,9 @@ class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueNote_System(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager_Pt_IssueNote($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		$this->info['do_floodcheck'] = false;
 		$this->info['do_dupecheck'] = false;
@@ -695,7 +717,7 @@ class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 	*
 	* @param	string	Serialized string of changes
 	*/
-	function verify_pagetext(&$pagetext)
+	function verify_pagetext(&$pagetext, $noshouting = true)
 	{
 		if (!@unserialize($pagetext))
 		{
@@ -779,8 +801,10 @@ class vB_DataManager_Pt_IssueNote_System extends vB_DataManager_Pt_IssueNote
 /**
 * Class to do data save/delete operations for PT issue notes (user).
 *
-* @package	vBulletin Project Tools
-* @date		$Date$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueNote_User extends vB_DataManager_Pt_IssueNote
 {
@@ -790,9 +814,9 @@ class vB_DataManager_Pt_IssueNote_User extends vB_DataManager_Pt_IssueNote
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueNote_User(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager_Pt_IssueNote($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		($hook = vBulletinHook::fetch_hook('pt_issuenoteuserdata_start')) ? eval($hook) : false;
 	}
@@ -861,8 +885,10 @@ class vB_DataManager_Pt_IssueNote_User extends vB_DataManager_Pt_IssueNote
 /**
 * Class to do data save/delete operations for PT issue notes (petition).
 *
-* @package	vBulletin Project Tools
-* @date		$Date$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueNote_Petition extends vB_DataManager_Pt_IssueNote
 {
@@ -872,9 +898,9 @@ class vB_DataManager_Pt_IssueNote_Petition extends vB_DataManager_Pt_IssueNote
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueNote_Petition(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager_Pt_IssueNote($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		$this->info['petitionstatusid'] = 0;
 
@@ -946,7 +972,7 @@ class vB_DataManager_Pt_IssueNote_Petition extends vB_DataManager_Pt_IssueNote
 		// insert into issuepetition table with IssuePetition DM
 		if (!$this->condition)
 		{
-			$petitiondata =& datamanager_init('Pt_IssuePetition', $this->registry, ERRTYPE_SILENT);
+			$petitiondata = datamanager_init('Pt_IssuePetition', $this->registry, ERRTYPE_SILENT);
 			$petitiondata->set('issuenoteid', $this->fetch_field('issuenoteid'));
 			$petitiondata->set('resolution', 'pending');
 			$petitiondata->set('petitionstatusid', $this->info['petitionstatusid']);
@@ -968,4 +994,5 @@ class vB_DataManager_Pt_IssueNote_Petition extends vB_DataManager_Pt_IssueNote
 		($hook = vBulletinHook::fetch_hook('pt_issuenotepetitiondata_delete')) ? eval($hook) : false;
 	}
 }
+
 ?>

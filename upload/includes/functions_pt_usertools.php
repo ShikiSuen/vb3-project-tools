@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -135,6 +135,12 @@ function process_pt_user_merge($destinfo, $sourceinfo)
 			userid = $destinfo[userid]
 		WHERE userid = $sourceinfo[userid]
 	");
+
+	$db->query_write("
+		UPDATE " . TABLE_PREFIX . "pt_user SET
+			userid = $destinfo[userid]
+		WHERE userid = $sourceinfo[userid]
+	");
 }
 
 /**
@@ -208,6 +214,11 @@ function process_pt_user_delete(&$dataman)
 		DELETE FROM " . TABLE_PREFIX . "pt_projecttypesubscribe
 		WHERE userid = " . $dataman->existing['userid']
 	);
+
+	$db->query_write("
+		DELETE FROM " . TABLE_PREFIX . "pt_user
+		WHERE userid = " . $dataman->existing['userid'] . "
+	");
 
 	require_once(DIR . '/includes/adminfunctions_projecttools.php');
 	build_assignable_users();

@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -12,36 +12,25 @@
 || #################################################################### ||
 \*======================================================================*/
 
-/**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
-
 require_once (DIR . '/vb/search/type.php');
 
 /**
  * vBProjectTools_Search_Type_Project
  *
- * @package vBulletin Project Tools
- * @author $Author$
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
+ * @package		vBulletin Project Tools
+ * @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+ * @version		$Rev: 897 $
+ * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
  */
 class vBProjectTools_Search_Type_Project extends vB_Search_Type
 {
-
-	// ###################### Start create_item ######################
 	/**
-	* This creates the type object
-	*
-	* @param integer $id
-	* @return object vBProjectTools_Search_Result_Project
-	*/
+	 * This creates the type object
+	 *
+	 * @param integer $id
+	 *
+	 * @return object vBProjectTools_Search_Result_Project
+	 */
 	public function create_item($id)
 	{
 		global $vbulletin;
@@ -74,52 +63,68 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 	}
 
 	/**
-	* This returns the display name
-	*
-	* @return string
-	*/
+	 * This returns the display name
+	 *
+	 * @return string
+	 */
 	public function get_display_name()
 	{
-		return $GLOBALS['vbphrase']['project'];
+		return new vB_Phrase('search', 'searchtype_projects');
 	}
 
 	/**
-	* Each search type has some responsibilities, one of which is to tell
-	* whether it is searchable
-	*
-	* @return true
-	*/
+	 * Each search type has some responsibilities, one of which is to tell
+	 * whether it is searchable
+	 *
+	 * @return true
+	 */
 	public function cansearch()
 	{
+		$cansearch = $db->query_read("
+			SELECT cansearch
+			FROM " . TABLE_PREFIX . "contenttype
+			WHERE contenttypeid = " . vB_Search_Core::get_instance()->get_contenttypeid('vBProjectTools', 'Issue') . "
+		");
+
+		if (!$cansearch)
+		{
+			return false;
+		}
+
 		return true;
 	}
 	/**
-	* This prepares the HTML for the user to search for forums
-	*
-	* @return $html: complete html for the search elements
-	*/
-	public function listUi($prefs = null)
+	 * This prepares the HTML for the user to search for forums
+	 *
+	 * @param	array	Preferences
+	 *
+	 * @return $html: complete html for the search elements
+	 */
+	public function listUi($prefs = null, $contenttypeid = null, $registers = null, $template_name = null)
 	{
-		echo $id;
 		global $vbulletin, $show;
+
 		$template = vB_Template::create('search_input_project');
-		$template->register('securitytoken', $vbulletin->userinfo['securitytoken']);
-		$template->register('contenttypeid', vB_Search_Core::get_instance()->get_contenttypeid('vBProjectTools', 'Project'));
-		$template->register('show', $show);
-		$this->setPrefs($template, $prefs,  array(
-			'select'=> array('titleonly', 'threadless', 'forumdateline', 'beforeafter', 'postless'),
-			'cb' => array('nocache'),
-		 	'value' => array('query', 'threadlimit', 'postlimit') ) );
+			$template->register('securitytoken', $vbulletin->userinfo['securitytoken']);
+			$template->register('contenttypeid', vB_Search_Core::get_instance()->get_contenttypeid('vBProjectTools', 'Project'));
+			$template->register('show', $show);
+
+			$this->setPrefs($template, $prefs,  array(
+				'select'=> array('titleonly', 'threadless', 'forumdateline', 'beforeafter', 'postless'),
+				'cb' => array('nocache'),
+				'value' => array('query', 'threadlimit', 'postlimit') ) );
+
 		vB_Search_Searchtools::searchIntroRegisterHumanVerify($template);
+
 		return $template->render();
 	}
 
 	/**
-	* Each search type has some responsibilities, one of which is to tell
-	* what are its defaults
-	*
-	* @return array
-	*/
+	 * Each search type has some responsibilities, one of which is to tell
+	 * what are its defaults
+	 *
+	 * @return array
+	 */
 	public function additional_pref_defaults()
 	{
 		return array(
@@ -128,18 +133,20 @@ class vBProjectTools_Search_Type_Project extends vB_Search_Type
 			'tags'     => 0,
 			'nocache'  => '',
 			'lastpost' => 0,
-			'beforeafter'  => 'after');
+			'beforeafter'  => 'after'
+		);
 	}
 
 	protected $package = "vBProjectTools";
 	protected $class = "Project";
 
-	protected $type_globals = array (
+	protected $type_globals = array(
 		'threadless'     => TYPE_UINT,
 		'threadlimit'    => TYPE_UINT,
 		'forumdateline'  => TYPE_NOHTML,
 		'postless'       => TYPE_UINT,
 		'postlimit'      => TYPE_UINT,
-		'beforeafter'    => TYPE_NOHTML);
+		'beforeafter'    => TYPE_NOHTML
+	);
 }
 

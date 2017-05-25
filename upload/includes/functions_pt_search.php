@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -51,7 +51,7 @@ function resolve_grouping($groupby, &$group_title_col, &$group_title_join)
 			break;
 
 		case 'projectcategoryid':
-			$group_title_col = "IF(issuesearchresult.groupid = '0', '" . $db->escape_string($vbphrase['unknown']) . "', projectcategory.title)";
+			$group_title_col = "projectcategory.projectid, 1 AS phraseme, 'category*'";
 			$group_title_join = "LEFT JOIN " . TABLE_PREFIX . "pt_projectcategory AS projectcategory ON (projectcategory.projectcategoryid = CAST(issuesearchresult.groupid AS UNSIGNED))";
 			break;
 
@@ -67,7 +67,7 @@ function resolve_grouping($groupby, &$group_title_col, &$group_title_join)
 
 		case 'appliesversionid':
 			$group_title_col = "
-				IF(issue.appliesversionid = 0, '" . $db->escape_string($vbphrase['unknown']) . "', projectversion.versionname)
+				IF(issue.appliesversionid = 0, '" . $db->escape_string($vbphrase['unknown']) . "', projectversion.projectversionid)
 			";
 			$group_title_join = "
 				INNER JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issue.issueid = issuesearchresult.issueid)
@@ -78,7 +78,7 @@ function resolve_grouping($groupby, &$group_title_col, &$group_title_join)
 		case 'addressedversionid':
 			$group_title_col = "
 				IF(issue.isaddressed = 0, '" . $db->escape_string($vbphrase['unaddressed']) . "',
-					IF(issue.addressedversionid = 0, '" . $db->escape_string($vbphrase['next_release']) . "', projectversion.versionname)
+					IF(issue.addressedversionid = 0, '" . $db->escape_string($vbphrase['next_release']) . "', projectversion.projectversionid)
 				)
 			";
 			$group_title_join = "
@@ -138,7 +138,7 @@ function fetch_pt_search_versions(&$appliesversion_options, &$addressedversion_o
 	$version_groups = array();
 	$version_group_names = array();
 	$version_query = $db->query_read("
-		SELECT projectversiongroup.projectversiongroupid, projectversion.projectversionid, projectversion.versionname, projectversiongroup.groupname,
+		SELECT projectversiongroup.projectversiongroupid, projectversion.projectversionid,
 			project.title_clean, project.projectid
 		FROM " . TABLE_PREFIX . "pt_projectversion AS projectversion
 		INNER JOIN " . TABLE_PREFIX . "pt_projectversiongroup AS projectversiongroup ON
@@ -149,8 +149,8 @@ function fetch_pt_search_versions(&$appliesversion_options, &$addressedversion_o
 	");
 	while ($version = $db->fetch_array($version_query))
 	{
-		$version_groups["$version[projectid]"]["$version[projectversiongroupid]"]["$version[projectversionid]"] = $version['versionname'];
-		$version_group_names["$version[projectversiongroupid]"] = $version['groupname'];
+		$version_groups["$version[projectid]"]["$version[projectversiongroupid]"]["$version[projectversionid]"] = $vbphrase['version' . $version['projectversionid'] . ''];
+		$version_group_names["$version[projectversiongroupid]"] = $vbphrase['versiongroup' . $version['projectversiongroupid'] . ''];
 	}
 
 	$appliesversion_options = '';
@@ -224,6 +224,73 @@ function fetch_pt_search_versions(&$appliesversion_options, &$addressedversion_o
 }
 
 /**
+* Prepare the project priorities for display.
+*
+* @param	array	Array of project names
+*
+* @return	string	Priorities prepared
+*/
+function fetch_pt_search_priorities($project_names)
+{
+	global $vbulletin, $db, $show, $vbphrase, $template_hook;
+
+	$priorities = array();
+	$priority_query = $db->query_read("
+		SELECT projectpriority.projectpriorityid, project.title_clean, project.projectid
+		FROM " . TABLE_PREFIX . "pt_projectpriority AS projectpriority
+		INNER JOIN " . TABLE_PREFIX . "pt_project AS project ON
+			(project.projectid = projectpriority.projectid)
+		ORDER BY project.displayorder, projectpriority.displayorder
+	");
+	while ($priority = $db->fetch_array($priority_query))
+	{
+		$priorities["$priority[projectid]"]["$priority[projectpriorityid]"] = $vbphrase['priority' . $priority['projectpriorityid']];
+	}
+
+	$priority_options = '';
+	$optionclass = '';
+	$optionselected = '';
+	foreach ($priorities AS $projectid => $project_priorities)
+	{
+		if (!isset($project_names["$projectid"]))
+		{
+			continue;
+		}
+
+		$optgroup_options = '';
+		foreach ($project_priorities AS $optionvalue => $optiontitle)
+		{
+			$optionname = 'projectpriorityid[]';
+			$optionid = "projectpriority_$optionvalue";
+			$templater = vB_Template::create('pt_checkbox_option');
+				$templater->register('optionchecked', $optionchecked);
+				$templater->register('optionid', $optionid);
+				$templater->register('optionname', $optionname);
+				$templater->register('optiontitle', $optiontitle);
+				$templater->register('optionvalue', $optionvalue);
+			$optgroup_options .= $templater->render();
+		}
+
+		$show['optgroup_checkbox'] = false;
+		$optgroup_value = '';
+		$optgroup_name = '';
+		$optgroup_id = "project_{$projectid}_priorities";
+		$optgroup_label = $project_names["$projectid"];
+		$optgroup_extra = " id=\"projectpriorityid,$projectid\"";
+		$templater = vB_Template::create('pt_checkbox_optgroup');
+			$templater->register('optgroup_id', $optgroup_id);
+			$templater->register('optgroup_label', $optgroup_label);
+			$templater->register('optgroup_name', $optgroup_name);
+			$templater->register('optgroup_options', $optgroup_options);
+			$templater->register('optgroup_value', $optgroup_value);
+			$templater->register('optionchecked', $optionchecked);
+		$priority_options .= $templater->render();
+	}
+
+	return $priority_options;
+}
+
+/**
 * Prepare the project categories for display.
 *
 * @param	array	Array of project names
@@ -236,7 +303,7 @@ function fetch_pt_search_categories($project_names)
 
 	$categories = array();
 	$category_query = $db->query_read("
-		SELECT projectcategory.projectcategoryid, projectcategory.title, project.title_clean, project.projectid
+		SELECT projectcategory.projectcategoryid, project.title_clean, project.projectid
 		FROM " . TABLE_PREFIX . "pt_projectcategory AS projectcategory
 		INNER JOIN " . TABLE_PREFIX . "pt_project AS project ON
 			(project.projectid = projectcategory.projectid)
@@ -244,7 +311,7 @@ function fetch_pt_search_categories($project_names)
 	");
 	while ($category = $db->fetch_array($category_query))
 	{
-		$categories["$category[projectid]"]["$category[projectcategoryid]"] = $category['title'];
+		$categories["$category[projectid]"]["$category[projectcategoryid]"] = $vbphrase['category' . $category['projectcategoryid']];
 	}
 
 	$category_options = '';
@@ -732,14 +799,23 @@ function build_pt_search_resultbit($issue)
 		$projectperms["$issue[projectid]"] = fetch_project_permissions($vbulletin->userinfo, $issue['projectid']);
 	}
 
-	$project = $vbulletin->pt_projects["$issue[projectid]"];
-	$issueperms = $projectperms["$issue[projectid]"]["$issue[issuetypeid]"];
+	// Do a query for adding the project group
+	$projectgroup = $vbulletin->db->query_first("
+		SELECT projectgroupid
+		FROM " . TABLE_PREFIX . "pt_project
+		WHERE projectid = " . $issue['projectid'] . "
+	");
+
+	$project = $vbulletin->pt_projects[$projectgroup['projectgroupid']]['projects'][$issue['projectid']];
+	$issueperms = $projectperms[$issue['projectid']][$issue['issuetypeid']];
 	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 
 	$show['edit_issue'] = $posting_perms['issue_edit'];
 	$show['status_edit'] = $posting_perms['status_edit'];
 
 	$issue = prepare_issue($issue);
+
+	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
 
 	$show['statuscolor'] = false;
 
@@ -871,6 +947,11 @@ function generate_repeat_search_field($crit_name, $crit_value)
 	{
 		return '&amp;' . $crit_name . '=' . urlencode($crit_value);
 	}
+}
+
+function stripslashes_callback($matches)
+{
+	return stripslashes(str_replace(' ' , '*', $matches[0]));
 }
 
 ?>

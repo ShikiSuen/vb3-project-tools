@@ -1,0 +1,13 @@
+For nginx rewrite rules, you need to use first the rewrite rules given at this url:
+https://www.vbulletin.com/forum/showthread.php?t=384741&p=2193644&viewfull=1#post2193644
+
+This done, you can add these rules inside the 'location @rewrite {' statement:
+
+		# Project Tools
+		rewrite /project/.*				/project.php?$uri&$args				last;
+		rewrite /issuelist/.*			/issuelist.php?$uri&$args			last;
+		rewrite /issue/.*				/issue.php?$uri&$args				last;
+		rewrite /projecttimeline/.*		/projecttimeline.php?$uri&$args		last;
+		rewrite /projectmilestone/.*	/projectmilestone.php?$uri&$args	last;
+		rewrite /milestone/.*			/milestone.php?$uri&$args			last;
+		rewrite /msissuelist/.*			/milestoneissuelist.php?$uri&$args	last;

@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -99,7 +99,13 @@ function process_new_subscribed_issues()
 	$templater = vB_Template::create('pt_usercp_subscriptions');
 		$templater->register('subscriptionbits', $subscriptionbits);
 	$return = $templater->render();
-	return $return;
+
+	// Add a defined value for CSS template parsing
+	if (!empty($return))
+	{
+		define('PT_SUBSCRIPTION', '1');
+		return $return;
+	}
 }
 
 ?>

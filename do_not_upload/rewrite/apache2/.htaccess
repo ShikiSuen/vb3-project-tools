@@ -1,0 +1,11 @@
+# Add these definitions in your htaccess file
+# To handle rewritten URLs in Project Tools
+
+# Project
+RewriteRule ^project/.* project.php [QSA]
+RewriteRule ^issuelist/.* issuelist.php [QSA]
+RewriteRule ^issue/.* issue.php [QSA]
+RewriteRule ^projecttimeline/.* projecttimeline.php [QSA]
+RewriteRule ^projectmilestone/.* projectmilestone.php [QSA]
+RewriteRule ^milestone/.* milestone.php [QSA]
+RewriteRule ^msissuelist/.* milestoneissuelist.php [QSA]

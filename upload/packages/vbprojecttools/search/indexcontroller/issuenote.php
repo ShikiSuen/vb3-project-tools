@@ -2,9 +2,9 @@
 
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2014 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -22,19 +22,12 @@ require_once(DIR . '/vb/legacy/issuenote.php');
 require_once(DIR . '/vb/search/core.php');
 
 /**
- * @package vBulletin Project Tools
- * @subpackage Search
- * @author $Author
- * @version $Revision$
- * @since $Date$
- * @copyright http://www.vbulletin.org/open_source_license_agreement.php
- */
-
-/**
  * Index controller for issue notes
  *
- * @package vBulletin Project Tools
- * @subpackage Search
+ * @package		vBulletin Project Tools
+ * @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+ * @version		$Rev: 897 $
+ * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
  */
 class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexController
 {
@@ -73,13 +66,12 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 	public function index($id)
 	{
 		global $vbulletin;
-
 		$issuenote = vB_Legacy_IssueNote::create_from_id($id, true);
 
 		if ($issuenote)
 		{
 			$indexer = vB_Search_Core::get_instance()->get_core_indexer();
-			$fields = $this->issuenote_to_indexfields($issuenote);
+			$fields = $this->post_to_indexfields($issuenote);
 			$indexer->index($fields);
 		}
 	}
@@ -93,14 +85,12 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 	public function index_id_range($start, $end)
 	{
 		global $vbulletin;
-
 		$indexer = vB_Search_Core::get_instance()->get_core_indexer();
 
 		$issuenote_fields = vB_Legacy_IssueNote::get_field_names();
 		$issue_fields = vB_Legacy_Issue::get_field_names();
 
 		$select = array();
-
 		foreach ($issuenote_fields AS $field)
 		{
 			$select[] = 'issuenote.' . $field;
@@ -117,7 +107,6 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 				JOIN " . TABLE_PREFIX . "pt_issue AS issue ON (issuenote.issueid = issue.issueid)
 			WHERE issuenote.issuenoteid >= " . intval($start) . "
 				AND issuenote.issuenoteid <= " . intval($end) . "
-			ORDER BY issuenote.issueid, issuenote.issuenoteid ASC
 		");
 
 		while ($row = $vbulletin->db->fetch_row($set))
@@ -130,9 +119,7 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 			$issue_data = array_combine($issue_fields, array_slice($row, count($issuenote_fields)));
 
 			$issuenote = vB_Legacy_IssueNote::create_from_record($issuenote_data, $issue_data);
-
-			$fields = $this->issuenote_to_indexfields($issuenote);
-
+			$fields = $this->post_to_indexfields($issuenote);
 			if ($fields)
 			{
 				$indexer->index($fields);
@@ -263,7 +250,9 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		global $vbulletin;
 
 		$set = $vbulletin->db->query_read("
-			SELECT issueid FROM " . TABLE_PREFIX . "pt_issue WHERE projectid = " . intval($id) . "
+			SELECT issueid
+			FROM " . TABLE_PREFIX . "pt_issue
+			WHERE projectid = " . intval($id) . "
 		");
 
 		while ($row = $vbulletin->db->fetch_array($set))
@@ -298,7 +287,9 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		global $vbulletin;
 
 		$set = $vbulletin->db->query_read("
-			SELECT issueid FROM " . TABLE_PREFIX . "pt_issue WHERE projectid = " . intval($id) . "
+			SELECT issueid
+			FROM " . TABLE_PREFIX . "pt_issue
+			WHERE projectid = " . intval($id) . "
 		");
 
 		while ($row = $vbulletin->db->fetch_array($set))
@@ -319,7 +310,7 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 	*
 	* @return	array		The index fields
 	*/
-	private function issuenote_to_indexfields($issuenote)
+	private function post_to_indexfields($issuenote)
 	{
 		// Don't try to index inconsistent records
 		$issue = $issuenote->get_issue();
@@ -349,6 +340,7 @@ class vBProjectTools_Search_IndexController_IssueNote extends vB_Search_IndexCon
 		$fields['groupusername'] = $issue->get_field('submitusername');
 		$fields['defaultusername'] = $fields['username'];
 		$fields['ipaddress'] = $issuenote->get_ipstring();
+		$fields['title'] = $issue->get_field('title');
 
 		if ($issue->get_field('summary'))
 		{

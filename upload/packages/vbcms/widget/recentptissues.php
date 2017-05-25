@@ -1,9 +1,9 @@
 <?php if (!defined('VB_ENTRY')) die('Access denied.');
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -14,10 +14,9 @@
 /**
 * Test Widget Controller
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vBCms_Widget_RecentPTIssues extends vBCms_Widget
@@ -61,10 +60,10 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 	 * @param	vB_Widget	$widget
 	 * @return vBCms_View_Widget				- The view result
 	 */
-	public function getConfigView($widget = false)
+	public function getConfigView()
 	{
 		$this->assertWidget();
-		require_once DIR . '/includes/functions_databuild.php';
+		require_once(DIR . '/includes/functions_databuild.php');
 		fetch_phrase_group('cpcms');
 		fetch_phrase_group('vbblock');
 		fetch_phrase_group('vbblocksettings');
@@ -382,7 +381,7 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 				$private_lastpost_join
 			WHERE " . implode(' OR ', $criteria) . "
 				AND (issue.submitdate > " . (TIMENOW - (86400 * $this->config['days'])) .  ")
-			ORDER BY issue.lastpost DESC
+			ORDER BY issue.submitdate DESC
 			LIMIT 0, " . $this->config['count'] . "
 		");
 
@@ -412,8 +411,8 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 		require_once(DIR . '/includes/functions_search.php');
 
 		//figure out how to handle the 'cancelwords'
-		$display['highlight'] = array();
-		$page_text =  preg_replace('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siUe', "process_quote_removal('\\3', \$display['highlight'])", $pagetext);
+		$this->display['highlight'] = array();
+		$page_text = preg_replace_callback('#\[quote(=(&quot;|"|\'|)??.*\\2)?\](((?>[^\[]*?|(?R)|.))*)\[/quote\]#siU', array($this, 'process_quote_removal_callback'), $pagetext);
 
 		$strip_quotes = true;
 
@@ -432,7 +431,7 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 	 *
 	 * @return	string
 	 */
-	protected function getHash()
+	protected function getHash($widgetid = false, $nodeid = false)
 	{
 		$context = new vB_Context('widget', array(
 			'widgetid' => $this->widget->getId(),
@@ -440,6 +439,14 @@ class vBCms_Widget_RecentPTIssues extends vBCms_Widget
 		);
 
 		return strval($context);
+	}
+
+	/**
+	* This functions fixes a php 5.5+ issue
+	*/
+	protected function process_quote_removal_callback($matches)
+	{
+		return process_quote_removal($matches[3], $this->display['highlight']);
 	}
 }
 

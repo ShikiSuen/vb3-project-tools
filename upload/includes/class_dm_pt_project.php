@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -19,10 +19,9 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT issue assignments.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_Project extends vB_DataManager
@@ -33,16 +32,22 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 	* @var	array
 	*/
 	var $validfields = array(
-		'projectid'      => array(TYPE_UINT,       REQ_INCR),
-		'displayorder'   => array(TYPE_UINT,       REQ_NO),
-		'title'          => array(TYPE_STR,        REQ_YES),
-		'title_clean'    => array(TYPE_NOHTMLCOND, REQ_AUTO),
-		'summary'        => array(TYPE_STR,        REQ_NO),
-		'summary_clean'  => array(TYPE_NOHTMLCOND, REQ_AUTO),
-		'description'    => array(TYPE_STR,        REQ_NO),
-		'options'        => array(TYPE_UINT,       REQ_NO),
-		'afterforumids'  => array(TYPE_STR,        REQ_NO, VF_METHOD, 'verify_commalist'),
-		'forumtitle'     => array(TYPE_STR,        REQ_NO)
+		'projectid'				=> array(TYPE_UINT, REQ_INCR),
+		'displayorder'			=> array(TYPE_UINT, REQ_NO),
+		'projectgroupid'		=> array(TYPE_UINT, REQ_YES),
+		'title'					=> array(TYPE_STR, REQ_YES),
+		'title_clean'			=> array(TYPE_NOHTMLCOND, REQ_AUTO),
+		'summary'				=> array(TYPE_STR, REQ_NO),
+		'summary_clean'			=> array(TYPE_NOHTMLCOND, REQ_AUTO),
+		'description'			=> array(TYPE_STR, REQ_NO),
+		'options'				=> array(TYPE_UINT, REQ_NO), 
+		'requireappliesversion'	=> array(TYPE_UINT, REQ_NO),
+		'requirecategory'		=> array(TYPE_UINT, REQ_NO),
+		'requirepriority'		=> array(TYPE_UINT, REQ_NO),
+		'afterforumids'			=> array(TYPE_STR, REQ_NO, VF_METHOD, 'verify_commalist'),
+		'forumtitle'			=> array(TYPE_STR, REQ_NO),
+		'pmonassignment'		=> array(TYPE_BOOL, REQ_NO),
+		'emailonassignment'		=> array(TYPE_BOOL, REQ_NO)
 	);
 
 	/**
@@ -79,9 +84,9 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_Project(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		($hook = vBulletinHook::fetch_hook('pt_projectdata_start')) ? eval($hook) : false;
 	}
@@ -223,11 +228,6 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 			DELETE FROM " . TABLE_PREFIX . "pt_projectcategory
 			WHERE projectid = $projectid
 		");
-
-		// MySQL 4 needs to use the non-aliased tables in multi-table deletes (#23024)
-		// No longer needed as of PT 2.1.x/vB 4.0.x. (#100)
-		// $mysqlversion = $db->query_first("SELECT version() AS version");
-		// $include_prefix = version_compare($mysqlversion['version'], '4.1.0', '<');
 
 		// clear out all the issue data
 		$db->query_write("
@@ -433,4 +433,5 @@ class vB_DataManager_Pt_Project extends vB_DataManager
 		");
 	}
 }
+
 ?>

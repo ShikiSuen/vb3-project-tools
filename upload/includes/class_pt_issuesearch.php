@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -18,10 +18,9 @@ define('PT_SEARCHGEN_CRITERIA_UNNECESSARY', 3);
 /**
 * Performs issue searches
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueSearch
@@ -228,7 +227,7 @@ class vB_Pt_IssueSearch
 				(userid, ipaddress, criteria, sortby, sortorder, groupby, searchtime, resultcount, dateline, completed, issuereportid)
 			VALUES
 				(" . $this->registry->userinfo['userid'] . ",
-				'" . $db->escape_string(IPADDRESS) . "',
+				'" . ($this->registry->options['logip'] ? $db->escape_string(IPADDRESS) : '') . "',
 				'" . $db->escape_string(serialize($this->criteria_raw)) . "',
 				'" . $db->escape_string($this->sort_raw) . "',
 				'" . $db->escape_string($this->sortorder_raw) . "',
@@ -337,8 +336,10 @@ class vB_Pt_IssueSearch
 /**
 * Resorts searches based on existing search results
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueSearch_Resort extends vB_Pt_IssueSearch
 {
@@ -428,8 +429,10 @@ class vB_Pt_IssueSearch_Resort extends vB_Pt_IssueSearch
 /**
 * Generates issue search criteria. Atom is issue.issueid. That table must be available in the final query.
 *
-* @package 		vBulletin Project Tools
-* @copyright 	http://www.vbulletin.com/license.html
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
+* @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_Pt_IssueSearchGenerator
 {
@@ -455,9 +458,6 @@ class vB_Pt_IssueSearchGenerator
 		'user'       => 'add_user',       // string - post by user
 		'user_issue' => 'add_user_issue', // string - issue started by user
 
-		'priority_gteq' => 'add_priority_gteq', // int - priority >=
-		'priority_lteq' => 'add_priority_lteq', // int - priority <=
-
 		'searchdate_gteq' => 'add_searchdate_gteq', // int - search date >=
 		'searchdate_lteq' => 'add_searchdate_lteq', // int - search date <=
 
@@ -482,6 +482,8 @@ class vB_Pt_IssueSearchGenerator
 
 		'projectcategoryid' => 'add_projectcategoryid',
 
+		'projectpriorityid' => 'add_projectpriorityid',
+
 		'tag' => 'add_tag', // string/array - has tags
 
 		'newonly' => 'add_newonly', // boolean(0/1)
@@ -496,7 +498,7 @@ class vB_Pt_IssueSearchGenerator
 	var $valid_sort = array(
 		'lastpost'     => 'lastpost',
 		'title'        => 'issue.title',
-		'priority'     => 'IF(issue.priority = 0, 11, issue.priority)',
+		'priority'     => 'issue.priority',
 		'replies'      => 'replycount',
 		'submitdate'   => 'issue.submitdate',
 		'votepositive' => 'issue.votepositive',
@@ -518,6 +520,7 @@ class vB_Pt_IssueSearchGenerator
 		'appliesversionid'   => 'add_group_appliesversionid',
 		'addressedversionid' => 'add_group_addressedversionid',
 		'projectcategoryid'  => 'add_group_projectcategoryid',
+		'projectpriorityid'  => 'add_group_projectpriorityid'
 	);
 
 	/**
@@ -861,6 +864,33 @@ class vB_Pt_IssueSearchGenerator
 	}
 
 	/**
+	* Adds priority ID criteria
+	*
+	* @param	string
+	* @param	integer|array
+	*
+	* @return	boolean	True on success
+	*/
+	function add_projectpriorityid($name, $value)
+	{
+		$id = $this->prepare_scalar_array($value, 'intval', ',');
+		if (!$id)
+		{
+			return PT_SEARCHGEN_CRITERIA_UNNECESSARY;
+		}
+
+		$ids = explode(',', $id);
+		if (($unknown_value = array_search(-1, $ids)) !== false)
+		{
+			// -1 is the "unknown" entry, which actually needs to be 0
+			$ids["$unknown_value"] = 0;
+		}
+
+		$this->where['projectpriorityid'] = "issue.priority IN (" . implode(',', $ids) . ")";
+		return PT_SEARCHGEN_CRITERIA_ADDED;
+	}
+
+	/**
 	* Adds tag criteria
 	*
 	* @param	string
@@ -1026,13 +1056,19 @@ class vB_Pt_IssueSearchGenerator
 			}
 		}
 
-		$query_text = preg_replace(
+		/*$query_text = preg_replace(
 			'#"([^"]+)"#sie',
 			"stripslashes(str_replace(' ' , '*', '\\0'))",
 			$query_text
-		);
+		);*/
 
 		require_once(DIR . '/includes/functions_search.php');
+		$query_text = preg_replace_callback(
+			'#"([^"]+)"#si',
+			"stripslashes_callback",
+			$query_text
+		);
+
 		$query_text = sanitize_search_query($query_text, $errors);
 
 		if (!$errors)
@@ -1211,58 +1247,6 @@ class vB_Pt_IssueSearchGenerator
 
 		$this->where['text'] = trim("
 			(MATCH(issue.title, issue.summary) AGAINST ('$value' IN BOOLEAN MODE) OR MATCH(issuenote.pagetext) AGAINST ('$value' IN BOOLEAN MODE))
-		");
-
-		return PT_SEARCHGEN_CRITERIA_ADDED;
-	}
-
-	/**
-	* Adds priority >= criteria
-	*
-	* @param	string
-	* @param	integer
-	*
-	* @return	boolean	True on success
-	*/
-	function add_priority_gteq($name, $value)
-	{
-		$value = intval($value);
-		if ($value <= 0)
-		{
-			return PT_SEARCHGEN_CRITERIA_UNNECESSARY;
-		}
-
-		$this->where['priority'] = trim("
-			issue.priority >= $value
-		");
-
-		return PT_SEARCHGEN_CRITERIA_ADDED;
-	}
-
-	/**
-	* Adds priority <= criteria
-	*
-	* @param	string
-	* @param	integer
-	*
-	* @return	boolean	True on success
-	*/
-	function add_priority_lteq($name, $value)
-	{
-		$value = intval($value);
-
-		if ($value == 0)
-		{
-			return PT_SEARCHGEN_CRITERIA_UNNECESSARY;
-		}
-
-		if ($value <= -1)
-		{
-			$value = 0;
-		}
-
-		$this->where['priority'] = trim("
-			issue.priority <= $value
 		");
 
 		return PT_SEARCHGEN_CRITERIA_ADDED;
@@ -2027,5 +2011,18 @@ class vB_Pt_IssueSearchGenerator
 		$group = 'issue.projectcategoryid, issue.issueid';
 		$groupid_col = 'issue.projectcategoryid';
 	}
+
+	/**
+	* Add grouping by priority
+	*
+	* @param	string	(Output) Grouping method
+	* @param	qtring	(Output) Column for group ID value
+	*/
+	function add_group_projectpriorityid(&$groupid, &$groupid_col)
+	{
+		$group = 'issue.priority, issue.issueid';
+		$groupid_col = 'issue.priority';
+	}
 }
+
 ?>

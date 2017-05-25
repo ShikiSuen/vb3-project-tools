@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -19,10 +19,9 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT issues.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_Issue extends vB_DataManager
@@ -45,7 +44,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		'appliesversionid'   => array(TYPE_UINT,       REQ_NO),
 		'isaddressed'        => array(TYPE_UINT,       REQ_NO, 'if ($data > 1) { $data = 1; } return true;'),
 		'addressedversionid' => array(TYPE_UINT,       REQ_NO),
-		'priority'           => array(TYPE_UINT,       REQ_NO, 'if ($data < 0) { $data = 0; } else if ($data > 10) { $data = 10; } return true;'),
+		'priority'           => array(TYPE_UINT,       REQ_NO),
 		'visible'            => array(TYPE_STR,        REQ_NO, 'if (!in_array($data, array("moderation", "visible", "private", "deleted"))) { $data = "visible"; } return true;'),
 		'lastpost'           => array(TYPE_UNIXTIME,   REQ_NO),
 		'lastactivity'       => array(TYPE_UNIXTIME,   REQ_NO),
@@ -61,7 +60,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		'votenegative'       => array(TYPE_UINT,       REQ_NO),
 		'projectcategoryid'  => array(TYPE_UINT,       REQ_NO),
 		'state'              => array(TYPE_STR,        REQ_NO, 'if (!in_array($data, array("open", "closed"))) { $data = "open"; } return true;'),
-		'milestoneid'        => array(TYPE_UINT,       REQ_NO)
+		'milestoneid'        => array(TYPE_UINT,       REQ_NO),
 	);
 
 	/**
@@ -120,7 +119,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		'addressedversionid',
 		'priority',
 		'projectcategoryid',
-		'milestoneid'
+		'milestoneid',
 	);
 
 	/**
@@ -136,9 +135,12 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_Issue(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
+
+		require_once(DIR . '/includes/class_bootstrap_framework.php');
+		vB_Bootstrap_Framework::init();
 
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_start')) ? eval($hook) : false;
 	}
@@ -191,53 +193,30 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			return false;
 		}
 
-		if ($title == '')
+		if (!$this->registry->GPC['ajax'])
 		{
-			$this->error('nosubject');
-			return false;
+			if ($title == '')
+			{
+				$this->error('nosubject');
+				return false;
+			}
+		}
+		else
+		{
+			if ($title == '')
+			{
+				$title_result = $this->registry->db->query_first("
+					SELECT title
+					FROM " . TABLE_PREFIX . "pt_issue
+					WHERE issueid = " . $this->registry->GPC['issueid'] . "
+				");
+
+				$title = $title_result['title'];
+				return true;
+			}
 		}
 
 		return true;
-	}
-
-	/**
-	* Validates that the specified issue status is valid for this issue.
-	* Issue type and project come from the DM's settings.
-	*
-	* @param	integer	Issue status ID
-	*
-	* @return	boolean
-	*/
-	function validate_issuestatusid($issuestatusid)
-	{
-		$status_result = $this->registry->db->query_first("
-			SELECT issuestatusid
-			FROM " . TABLE_PREFIX . "pt_issuestatus
-			WHERE issuestatusid = " . intval($issuestatusid) . "
-				AND issuetypeid = '" . $this->registry->db->escape_string($this->fetch_field('issuetypeid')) . "'
-		");
-
-		return ($status_result ? true : false);
-	}
-
-	/**
-	* Validates that the specified milestone is valid for this issue.
-	* Issue type and project come from the DM's settings.
-	*
-	* @param	integer	Milestone ID
-	*
-	* @return	boolean
-	*/
-	function validate_milestoneid($milestoneid)
-	{
-		$milestone_result = $this->registry->db->query_first("
-			SELECT milestoneid
-			FROM " . TABLE_PREFIX . "pt_milestone
-			WHERE milestoneid = " . intval($milestoneid) . "
-				AND projectid = " . intval($this->fetch_field('projectid')) . "
-		");
-
-		return ($milestone_result ? true : false);
 	}
 
 	/**
@@ -283,9 +262,14 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		}
 
 		// confirm that the status is valid for this type
-		if (isset($this->pt_issue['issuestatusid']))
+		if (!empty($this->pt_issue['issuestatusid']))
 		{
-			if (!$this->validate_issuestatusid($this->pt_issue['issuestatusid']))
+			if (!$this->registry->db->query_first("
+				SELECT issuestatusid
+				FROM " . TABLE_PREFIX . "pt_issuestatus
+				WHERE issuestatusid = " . intval($this->pt_issue['issuestatusid']) . "
+					AND issuetypeid = '" . $this->registry->db->escape_string($this->fetch_field('issuetypeid')) . "'
+			"))
 			{
 				global $vbphrase;
 				$this->error('invalidid', $vbphrase['issue_status'], $this->registry->options['contactuslink']);
@@ -293,7 +277,23 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
-		// confirm that the category is valid for this type
+		// confirm that the priority is valid for this project
+		if (!empty($this->pt_issue['priority']))
+		{
+			if (!$this->registry->db->query_first("
+				SELECT projectpriorityid
+				FROM " . TABLE_PREFIX . "pt_projectpriority
+				WHERE projectpriorityid = " . intval($this->pt_issue['priority']) . "
+					AND projectid = " . intval($this->fetch_field('projectid')) . "
+			"))
+			{
+				global $vbphrase;
+				$this->error('invalidid', $vbphrase['priority'], $this->registry->options['contactuslink']);
+				return false;
+			}
+		}
+
+		// confirm that the category is valid for this project
 		if (!empty($this->pt_issue['projectcategoryid']))
 		{
 			if (!$this->registry->db->query_first("
@@ -309,7 +309,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
-		// confirm that the versions are valid for this project
+		// confirm that the aplies version is valid for this project
 		if (!empty($this->pt_issue['appliesversionid']))
 		{
 			if (!$this->registry->db->query_first("
@@ -325,6 +325,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
+		// confirm that the addressed version is valid for this project
 		if (!empty($this->pt_issue['addressedversionid']))
 		{
 			if (!$this->registry->db->query_first("
@@ -340,9 +341,15 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			}
 		}
 
+		// confirm that the milestone is valid for this project
 		if (!empty($this->pt_issue['milestoneid']))
 		{
-			if (!$this->validate_milestoneid($this->pt_issue['milestoneid']))
+			if (!$this->registry->db->query_first("
+				SELECT milestoneid
+				FROM " . TABLE_PREFIX . "pt_milestone
+				WHERE milestoneid = " . intval($this->pt_issue['milestoneid']) . "
+					AND projectid = " . intval($this->fetch_field('projectid')) . "
+			"))
 			{
 				global $vbphrase;
 				$this->error('invalidid', $vbphrase['milestone'], $this->registry->options['contactuslink']);
@@ -353,38 +360,135 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		// check for required settings
 		if ($this->info['project'])
 		{
-			$project_options = $this->info['project']['options'];
-			$project_options_bf = $this->registry->bf_misc['pt_projectoptions'];
+			// Specs:
+			// 0 = Off
+			// 1 = On, auto-set from default value
+			// 2 = On, not required
+			// 3 = On, required
+			//
+			// If On (1 || 2 || 3), apply some more checks:
+			// - If auto-set (1), check if it exixts at least 1 item. If not, return error
+			// - If required (3) and not defined (value in(0, empty)), return error
 
-			if ($project_options & $project_options_bf['requireappliesversion'] AND !$this->fetch_field('appliesversionid'))
+			// Applies version
+			if ($this->info['project']['requireappliesversion'] > 0)
 			{
-				if ($this->registry->db->query_first("
-					SELECT projectversionid
-					FROM " . TABLE_PREFIX . "pt_projectversion
-					WHERE projectid = " . intval($this->fetch_field('projectid')) . "
-					LIMIT 1
-				"))
+				if ($this->info['project']['requireappliesversion'] == 1)
 				{
-					$this->error('applicable_version_required');
+					// Defining one automatically
+					$appliesversionid = $this->registry->db->query_first("
+						SELECT projectversionid
+						FROM " . TABLE_PREFIX . "pt_projectversion
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+							AND defaultvalue = 1
+					");
+
+					if (!$appliesversionid)
+					{
+						$this->error('applicable_version_missing_contact_administrator', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('appliesversionid', $appliesversionid['projectversionid']);
+					}
+				}
+				else if ($this->info['project']['requireappliesversion'] == 3 AND (!$this->fetch_field('appliesversionid') OR $this->fetch_field('appliesversionid') == 0))
+				{
+					if ($this->registry->db->query_first("
+						SELECT projectversionid
+						FROM " . TABLE_PREFIX . "pt_projectversion
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+						LIMIT 1
+						"))
+					{
+						global $vbphrase;
+						$this->error('applicable_version_required', $this->registry->options['contactuslink'], $vbphrase["applies_version_" . $this->fetch_field('issuetypeid')]);
+					}
+					else
+					{
+						$this->do_set('appliesversionid', $this->fetch_field('appliesversionid'));
+					}
 				}
 			}
 
-			if ($project_options & $project_options_bf['requirecategory'] AND !$this->fetch_field('projectcategoryid'))
+			// Category
+			if ($this->info['project']['requirecategory'] > 0)
 			{
-				if ($this->registry->db->query_first("
-					SELECT projectcategoryid
-					FROM " . TABLE_PREFIX . "pt_projectcategory
-					WHERE projectid = " . intval($this->fetch_field('projectid')) . "
-					LIMIT 1
-				"))
+				if ($this->info['project']['requirecategory'] == 1)
 				{
-					$this->error('category_required');
+					// Defining one automatically
+					$projectcategoryid = $this->registry->db->query_first("
+						SELECT projectcategoryid
+						FROM " . TABLE_PREFIX . "pt_projectcategory
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+							AND defaultvalue = 1
+					");
+
+					if (!$projectcategoryid)
+					{
+						$this->error('category_missing_contact_administrator', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('projectcategoryid', $projectcategoryid['projectcategoryid']);
+					}
+				}
+				else if ($this->info['project']['requirecategory'] == 3 AND !$this->fetch_field('projectcategoryid'))
+				{
+					if ($this->registry->db->query_first("
+						SELECT projectcategoryid
+						FROM " . TABLE_PREFIX . "pt_projectcategory
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+						LIMIT 1
+					"))
+					{
+						$this->error('category_required', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('projectcategoryid', $this->fetch_field('projectcategoryid'));
+					}
 				}
 			}
 
-			if ($project_options & $project_options_bf['requirepriority'] AND !$this->fetch_field('priority'))
+			// Priority
+			if ($this->info['project']['requirepriority'] > 0)
 			{
-				$this->error('priority_required');
+				if ($this->info['project']['requirepriority'] == 1)
+				{
+					// Defining one automatically
+					$priorityid = $this->registry->db->query_first("
+						SELECT projectpriorityid
+						FROM " . TABLE_PREFIX . "pt_projectpriority
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+							AND defaultvalue = 1
+					");
+
+					if (!$priorityid)
+					{
+						$this->error('priority_missing_contact_administrator', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('priority', $priorityid['projectpriorityid']);
+					}
+				}
+				else if ($this->info['project']['requirepriority'] == 3 AND !$this->fetch_field('priority'))
+				{
+					if ($this->registry->db->query_first("
+						SELECT projectpriorityid
+						FROM " . TABLE_PREFIX . "pt_projectpriority
+						WHERE projectid = " . intval($this->fetch_field('projectid')) . "
+						LIMIT 1
+					"))
+					{
+						$this->error('priority_required', $this->registry->options['contactuslink']);
+					}
+					else
+					{
+						$this->do_set('priority', $this->fetch_field('priority'));
+					}
+				}
 			}
 
 			if ($this->errors)
@@ -441,7 +545,8 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	*/
 	function post_save_each($doquery = true)
 	{
-		require_once (DIR . '/vb/search/indexcontroller/queue.php');
+		require_once(DIR . '/vb/search/indexcontroller/queue.php');
+
 		($hook = vBulletinHook::fetch_hook('pt_issuedata_postsave')) ? eval($hook) : false;
 
 		if ($this->condition AND !empty($this->pt_issue) AND $this->info['insert_change_log'])
@@ -460,7 +565,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					continue;
 				}
 
-				$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_SILENT);
+				$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_SILENT);
 				$change->set('issueid', $this->fetch_field('issueid'));
 				$change->set('userid', $this->registry->userinfo['userid']);
 				$change->set('field', $field);
@@ -476,7 +581,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		if ($this->condition AND (!empty($this->tag_add) OR !empty($this->tag_remove)) AND $this->info['insert_change_log'])
 		{
 			// we updated tags, insert an issue change for this
-			$change =& datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
+			$change = datamanager_init('Pt_IssueChange', $this->registry, ERRTYPE_STANDARD);
 			$change->set('issueid', $this->fetch_field('issueid'));
 			$change->set('userid', $this->registry->userinfo['userid']);
 			$change->set('field', 'tags');
@@ -533,7 +638,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			");
 			while ($petition = $this->registry->db->fetch_array($petitions))
 			{
-				$petitiondata =& datamanager_init('Pt_IssuePetition', $this->registry, ERRTYPE_STANDARD);
+				$petitiondata = datamanager_init('Pt_IssuePetition', $this->registry, ERRTYPE_STANDARD);
 				$petitiondata->set_existing($petition);
 				$petitiondata->set_info('auto_issue_update', false);
 				$petitiondata->set('resolution', $petition['petitionstatusid'] == $this->fetch_field('issuestatusid') ? 'accepted' : 'rejected');
@@ -557,7 +662,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			{
 				if ($project = fetch_project_info($this->fetch_field('projectid'), false))
 				{
-					$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_STANDARD);
+					$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_STANDARD);
 					$projectdata->set_existing($project);
 					$projectdata->rebuild_project_counters();
 					$projectdata->save();
@@ -566,7 +671,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				// changed project, rebuild the old project counters too
 				if ($this->fetch_field('projectid') != $this->existing['projectid'] AND $project = fetch_project_info($this->existing['projectid'], false))
 				{
-					$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_STANDARD);
+					$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_STANDARD);
 					$projectdata->set_existing($project);
 					$projectdata->rebuild_project_counters();
 					$projectdata->save();
@@ -576,12 +681,27 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 		if (!$this->condition)
 		{
-			// Insert new issue - increase 'totalissues' counter in pt_user table for the original user
-			$this->registry->db->query_write("
-				UPDATE " . TABLE_PREFIX . "pt_user SET
-					totalissues = totalissues + 1
-				WHERE userid = " . $this->fetch_field('submituserid') . "
-			");
+			// Insert new issue
+			// Increase 'totalissues' counter in pt_user table for the original user
+			if ($this->fetch_field('submituserid'))
+			{
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "pt_user SET
+						totalissues = totalissues + 1
+					WHERE userid = " . $this->fetch_field('submituserid') . "
+				");
+			}
+
+			// Activity stream
+			if (version_compare($this->registry->options['templateversion'], '4.2', '>='))
+			{
+				$activity = new vB_ActivityStream_Manage('project', 'issue');
+					$activity->set('contentid', $this->fetch_field('issueid'));
+					$activity->set('userid', $this->fetch_field('submituserid'));
+					$activity->set('dateline', $this->fetch_field('submitdate'));
+					$activity->set('action', 'create');
+				$activity->save();
+			}
 		}
 
 		if (!$rebuild_project)
@@ -602,7 +722,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 		{
 			$this->rebuild_milestone_counters($this->fetch_field('milestoneid'));
 		}
-		vb_Search_Indexcontroller_Queue::indexQueue('vBProjectTools', 'Issue', 'index', intval($this->fetch_field('issueid')) );
+		vB_Search_Indexcontroller_Queue::indexQueue('vBProjectTools', 'Issue', 'index', intval($this->fetch_field('issueid')));
 
 		return true;
 	}
@@ -612,7 +732,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	*
 	* @return	integer	The number of rows deleted
 	*/
-	function delete($hard_delete = false)
+	function delete($doquery = true)
 	{
 		if (empty($this->condition))
 		{
@@ -632,9 +752,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				return false;
 			}
 
-			$this->info['hard_delete'] = $hard_delete;
-
-			if ($this->info['hard_delete'])
+			if ($this->existing['delete'])
 			{
 				$return = $this->db_delete(TABLE_PREFIX, $this->table, $this->condition, true);
 			}
@@ -647,12 +765,15 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 				);
 			}
 
-			// Decrement totalissues counter
-			$this->registry->db->query_write("
-				UPDATE " . TABLE_PREFIX . "pt_user SET
-					totalissues = totalissues - 1
-				WHERE userid = " . $this->fetch_field('userid') . "
-			");
+			// Decrement totalissues counter for registered users
+			if ($this->fetch_field('userid'))
+			{
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "pt_user SET
+						totalissues = totalissues - 1
+					WHERE userid = " . $this->fetch_field('userid') . "
+				");
+			}
 
 			$this->post_delete($doquery);
 			return $return;
@@ -666,7 +787,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	*/
 	function post_delete($doquery = true)
 	{
-		require_once DIR . '/vb/search/indexcontroller/queue.php';
+		require_once(DIR . '/vb/search/indexcontroller/queue.php');
 		$issueid = intval($this->fetch_field('issueid'));
 		$db =& $this->registry->db;
 
@@ -677,11 +798,45 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueattach WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuechange WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuedeletionlog WHERE primaryid = $issueid AND type = 'issue'");
+			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuemagicselect WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuenote WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueprivatelastpost WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuesubscribe WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuetag WHERE issueid = $issueid");
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issuevote WHERE issueid = $issueid");
+
+			// Attachments
+			$db->query_write("DELETE FROM " . TABLE_PREFIX . "attachment WHERE contentid = $issueid AND contenttypeid = " . vB_Types::instance()->getContentTypeID('vBProjectTools_Issue') . "");
+			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueattach WHERE issueid = $issueid");
+
+			// Before to hard-delete import infos, we need to open back the thread if the import was from a thread
+			$importdata = $this->registry->db->query_first("
+				SELECT contenttypeid, contentid, data
+				FROM " . TABLE_PREFIX . "pt_issueimport
+				WHERE issueid = " . $issueid . "
+			");
+
+			if ($importdata)
+			{
+				$data = unserialize($importdata['data']);
+
+				// Update the original content - open back thread
+				// We need first to get the content type id about 'vBForum_Thread' - could be not the same in each install
+				$thread_contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+				if ($thread_contenttypeid == $importdata['contenttypeid'] AND $data['pt_forwardmode'] == 1)
+				{
+					// Content type ID are the same, continue
+					// Open back the original thread
+					$this->registry->db->query_write("
+						UPDATE " . TABLE_PREFIX . "thread SET
+							open = 1
+						WHERE threadid = " . $importdata['contentid'] . "
+					");
+				}
+			}
+
+			// Now perform the deletion
 			$db->query_write("DELETE FROM " . TABLE_PREFIX . "pt_issueimport WHERE issueid = $issueid");
 		}
 		else
@@ -698,11 +853,51 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 					'" . $db->escape_string($this->info['reason']) . "',
 					" . TIMENOW . ")
 			");
+
+			// We need to check here if the issue was imported from another content type.
+			// If yes, change the 'visible' value in the serialized data
+			$importdata = $this->registry->db->query_first("
+				SELECT contenttypeid, contentid, data
+				FROM " . TABLE_PREFIX . "pt_issueimport
+				WHERE issueid = " . $issueid . "
+			");
+
+			if ($importdata)
+			{
+				$data = unserialize($importdata['data']);
+
+				// Set the soft-deleted issue as not visible
+				$data['visible'] = 'deleted';
+
+				// Update the original content - open back thread
+				// We need first to get the content type id about 'vBForum_Thread' - could be not the same in each install
+				$thread_contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+				if ($thread_contenttypeid == $importdata['contenttypeid'] AND $data['pt_forwardmode'] == 1)
+				{
+					// Content type ID are the same, continue
+					// Open back the original thread
+					$this->registry->db->query_write("
+						UPDATE " . TABLE_PREFIX . "thread SET
+							open = 1
+						WHERE threadid = " . $importdata['contentid'] . "
+					");
+				}
+
+				$newdata = serialize($data);
+
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "pt_issueimport SET
+						data = '" . $this->registry->db->escape_string($newdata) . "'
+					WHERE issueid = " . $issueid . "
+						AND contentid = " . $importdata['contentid'] . "
+				");
+			}
 		}
 
 		if ($project = fetch_project_info($this->fetch_field('projectid'), false))
 		{
-			$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+			$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 			$projectdata->set_existing($project);
 			$projectdata->rebuild_project_counters();
 			$projectdata->save();
@@ -723,24 +918,62 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 	function undelete()
 	{
 		$issueid = intval($this->fetch_field('issueid'));
+
 		if (!$issueid)
 		{
 			return false;
 		}
 
-		$db =& $this->registry->db;
-
-		$db->query_write("
+		$this->registry->db->query_write("
 			UPDATE " . TABLE_PREFIX . "pt_issue SET
 				visible = 'visible'
 			WHERE issueid = $issueid
 		");
 
-		$db->query_write("
+		$this->registry->db->query_write("
 			DELETE FROM " . TABLE_PREFIX . "pt_issuedeletionlog
 			WHERE primaryid = $issueid
 				AND type = 'issue'
 		");
+
+		// Restore a soft-deleted issue which was imported from a thread need to edit original thread back
+		// Like it was when the thread was imported as an issue
+		$importdata = $this->registry->db->query_first("
+			SELECT contenttypeid, contentid, data
+			FROM " . TABLE_PREFIX . "pt_issueimport
+			WHERE issueid = " . $issueid . "
+		");
+
+		if ($importdata)
+		{
+			$data = unserialize($importdata['data']);
+
+			// Set the import infos back to visible
+			$data['visible'] = 'visible';
+
+			// We need to close the thread again
+			$thread_contenttypeid = vB_Types::instance()->getContentTypeID('vBForum_Thread');
+
+			if ($thread_contenttypeid == $importdata['contenttypeid'] AND $data['pt_forwardmode'] == 1)
+			{
+				// Content type ID are the same, continue
+				// Open back the original thread
+				$this->registry->db->query_write("
+					UPDATE " . TABLE_PREFIX . "thread SET
+						open = 0
+					WHERE threadid = " . $importdata['contentid'] . "
+				");
+			}
+
+			$newdata = serialize($data);
+
+			$this->registry->db->query_write("
+				UPDATE " . TABLE_PREFIX . "pt_issueimport SET
+					data = '" . $this->registry->db->escape_string($newdata) . "'
+				WHERE issueid = " . $issueid . "
+					AND contentid = " . $importdata['contentid'] . "
+			");
+		}
 
 		// Increment totalissues counter
 		$this->registry->db->query_write("
@@ -751,7 +984,7 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 
 		if ($project = fetch_project_info($this->fetch_field('projectid'), false))
 		{
-			$projectdata =& datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
+			$projectdata = datamanager_init('Pt_Project', $this->registry, ERRTYPE_SILENT);
 			$projectdata->set_existing($project);
 			$projectdata->rebuild_project_counters();
 			$projectdata->save();
@@ -1163,10 +1396,11 @@ class vB_DataManager_Pt_Issue extends vB_DataManager
 			return;
 		}
 
-		$milestonedata =& datamanager_init('Pt_Milestone', $this->registry, ERRTYPE_SILENT);
+		$milestonedata = datamanager_init('Pt_Milestone', $this->registry, ERRTYPE_SILENT);
 		$milestonedata->set_existing($milestone);
 		$milestonedata->rebuild_milestone_counters();
 		$milestonedata->save();
 	}
 }
+
 ?>

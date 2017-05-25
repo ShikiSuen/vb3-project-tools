@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -196,34 +196,37 @@ if ($do == 'index')
 
 	// project list
 	$projectbits = '';
-	foreach ($vbulletin->pt_projects AS $project)
+	foreach ($vbulletin->pt_projects AS $projectgroupid => $projectgroupdata)
 	{
-		if (!isset($perms_query["$project[projectid]"]) OR !is_array($project_types["$project[projectid]"]))
+		foreach ($projectgroupdata['projects'] AS $project)
 		{
-			continue;
-		}
-
-		$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
-
-		$have_types = false;
-		foreach ($project_types["$project[projectid]"] AS $type)
-		{
-			if (!($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
+			if (!isset($perms_query["$project[projectid]"]) OR !is_array($project_types["$project[projectid]"]))
 			{
 				continue;
 			}
-
-			$have_types = true;
+	
+			$projectperms = fetch_project_permissions($vbulletin->userinfo, $project['projectid']);
+	
+			$have_types = false;
+			foreach ($project_types["$project[projectid]"] AS $type)
+			{
+				if (!($projectperms["$type[issuetypeid]"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
+				{
+					continue;
+				}
+	
+				$have_types = true;
+			}
+	
+			if (!$have_types)
+			{
+				continue;
+			}
+	
+			($hook = vBulletinHook::fetch_hook('projectarchive_index_project')) ? eval($hook) : false;
+	
+			$projectbits .= "<li><a href=\"" .  $vbulletin->options['bburl'] . '/archive/project.php' . (SLASH_METHOD ? '/' : '?') . "projectid-$project[projectid].html\">$project[title_clean]</a></li>\n";
 		}
-
-		if (!$have_types)
-		{
-			continue;
-		}
-
-		($hook = vBulletinHook::fetch_hook('projectarchive_index_project')) ? eval($hook) : false;
-
-		$projectbits .= "<li><a href=\"" .  $vbulletin->options['bburl'] . '/archive/project.php' . (SLASH_METHOD ? '/' : '?') . "projectid-$project[projectid].html\">$project[title_clean]</a></li>\n";
 	}
 
 	if (!$projectbits)

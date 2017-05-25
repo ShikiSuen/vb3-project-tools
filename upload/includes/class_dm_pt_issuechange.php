@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -19,10 +19,9 @@ if (!class_exists('vB_DataManager'))
 /**
 * Class to do data save/delete operations for PT issue changes.
 *
-* @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @package		vBulletin Project Tools
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_DataManager_Pt_IssueChange extends vB_DataManager
@@ -80,9 +79,9 @@ class vB_DataManager_Pt_IssueChange extends vB_DataManager
 	* @param	vB_Registry	Instance of the vBulletin data registry object - expected to have the database object as one of its $this->db member.
 	* @param	integer		One of the ERRTYPE_x constants
 	*/
-	function vB_DataManager_Pt_IssueChange(&$registry, $errtype = ERRTYPE_STANDARD)
+	function __construct(&$registry, $errtype = ERRTYPE_STANDARD)
 	{
-		parent::vB_DataManager($registry, $errtype);
+		parent::__construct($registry, $errtype);
 
 		($hook = vBulletinHook::fetch_hook('pt_issuechangedata_start')) ? eval($hook) : false;
 	}
@@ -162,7 +161,7 @@ class vB_DataManager_Pt_IssueChange extends vB_DataManager
 				$last_note = array();
 			}
 
-			$notedata =& datamanager_init('Pt_IssueNote_System', $this->registry, ERRTYPE_SILENT, 'pt_issuenote');
+			$notedata = datamanager_init('Pt_IssueNote_System', $this->registry, ERRTYPE_SILENT, 'pt_issuenote');
 
 			if ($last_note)
 			{
@@ -241,7 +240,7 @@ class vB_DataManager_Pt_IssueChange extends vB_DataManager
 				WHERE issuenoteid = " . $this->fetch_field('issuenoteid')
 			);
 
-			$notedata =& datamanager_init('Pt_IssueNote', $this->registry, ERRTYPE_SILENT);
+			$notedata = datamanager_init('Pt_IssueNote', $this->registry, ERRTYPE_SILENT);
 			$notedata->set_existing($note);
 
 			$note_values = unserialize($note['pagetext']);
@@ -275,4 +274,5 @@ class vB_DataManager_Pt_IssueChange extends vB_DataManager
 		return true;
 	}
 }
+
 ?>

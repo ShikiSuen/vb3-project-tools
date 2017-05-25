@@ -1,8 +1,8 @@
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -192,6 +192,14 @@ vB_MagicSelect.prototype.create_option = function(value, html, selected)
 	var option = document.createElement("option");
 
 	option.value = value;
+	option.style.fontWeight = "normal";
+	if (this.fieldname == "appliesversionid" || this.fieldname == "addressedversionid" || this.fieldname == "milestoneid")
+	{
+		if (YAHOO.env.ua.chrome > 0 && option.value > 0)
+		{
+			option.style.paddingLeft = "20px";
+		}
+	}
 	option.innerHTML = html;
 	if (selected == "yes" || selected == true)
 	{
@@ -224,6 +232,7 @@ vB_MagicSelect.prototype.populate_menu = function(ajax, nocreate)
 		}
 
 		this.menu = document.body.appendChild(document.createElement("select"));
+		this.menu.id = this.fieldname;
 		this.menu.style.position = "absolute";
 		this.menu.style.top = "0px";
 		this.menu.style.left = "0px";
@@ -267,6 +276,7 @@ vB_MagicSelect.prototype.populate_menu = function(ajax, nocreate)
 			{
 				var optgroup = document.createElement("optgroup");
 				optgroup.label = groups[i].getAttribute("label");
+				optgroup.style.fontWeight = "bold";
 				var groupoptions = groups[i].getElementsByTagName("item");
 				for (var j = 0; j < groupoptions.length; j++)
 				{

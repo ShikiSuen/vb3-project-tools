@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -126,7 +126,7 @@ function fetch_project_permissions(&$user, $projectid, $type = '')
 */
 function fetch_project_info($projectid, $perm_check = true, $use_cache = true)
 {
-	global $db, $vbulletin;
+	global $vbulletin;
 	static $cache;
 
 	$projectid = intval($projectid);
@@ -135,22 +135,30 @@ function fetch_project_info($projectid, $perm_check = true, $use_cache = true)
 		return false;
 	}
 
-	if ($use_cache AND isset($cache["$projectid"]))
+	// Do a query for adding the project group
+	$projectgroup = $vbulletin->db->query_first("
+		SELECT projectgroupid
+		FROM " . TABLE_PREFIX . "pt_project
+		WHERE projectid = " . $projectid . "
+	");
+
+	if ($use_cache AND isset($cache["$projectgroup[projectgroupid]"]['projects']["$projectid"]))
 	{
-		$project = $cache["$projectid"];
+		$project = $cache["$projectgroup[projectgroupid]"]['projects']["$projectid"];
 	}
-	else if ($use_cache AND isset($vbulletin->pt_projects["$projectid"]))
+	else if ($use_cache AND isset($vbulletin->pt_projects["$projectgroup[projectgroupid]"]['projects']["$projectid"]))
 	{
-		return $vbulletin->pt_projects["$projectid"];
+		return $vbulletin->pt_projects["$projectgroup[projectgroupid]"]['projects']["$projectid"];
 	}
 	else
 	{
-		$project = $db->query_first("
+		// reference through $vbulletin since $db is missing in cron
+		$project = $vbulletin->db->query_first("
 			SELECT *
 			FROM " . TABLE_PREFIX . "pt_project
 			WHERE projectid = $projectid
 		");
-		$cache["$projectid"] = $project;
+		$cache["$projectgroup[projectgroupid]"]['projects']["$projectid"] = $project;
 	}
 
 	if (!$project)
@@ -193,23 +201,20 @@ function verify_project($projectid)
 */
 function fetch_issue_info($issueid, $extra_info = array())
 {
-	global $db, $vbulletin;
+	global $db, $vbulletin, $vbphrase;
 
 	$version_join = empty($vbulletin->pt_versions);
-	$category_join = empty($vbulletin->pt_categories);
 	$browsing_user_joins = ($vbulletin->userinfo['userid'] > 0);
 	$avatar_join = ($vbulletin->options['avatarenabled'] AND in_array('avatar', $extra_info));
 	$vote_join = ($vbulletin->userinfo['userid'] > 0 AND in_array('vote', $extra_info));
-	$milestone_join = in_array('milestone', $extra_info);
 	$marking = ($vbulletin->options['threadmarking'] AND $vbulletin->userinfo['userid']);
 
 	$hook_query_fields = $hook_query_joins = $hook_query_where = '';
 	($hook = vBulletinHook::fetch_hook('project_issue_fetch')) ? eval($hook) : false;
 
 	$issue = $db->query_first("
-		SELECT issuenote.*, issue.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress,
-			" . ($version_join ? "appliesversion.versionname AS appliesversion, addressedversion.versionname AS addressedversion," : '') . "
-			" . ($category_join ? "projectcategory.title AS categorytitle," : '') . "
+		SELECT issuenote.*, issue.*, issuenote.username AS noteusername, issuenote.ipaddress AS noteipaddress, issuemagicselect.*,
+			" . ($version_join ? "appliesversion.projectversionid AS appliesversion, addressedversion.projectversionid AS addressedversion," : '') . "
 			" . ($avatar_join ? 'avatar.avatarpath, NOT ISNULL(customavatar.userid) AS hascustomavatar, customavatar.dateline AS avatardateline,customavatar.width AS avwidth,customavatar.height AS avheight,' : '') . "
 			user.*, userfield.*, usertextfield.*, pt_user.*,
 			IF(user.displaygroupid = 0, user.usergroupid, user.displaygroupid) AS displaygroupid, user.infractiongroupid,
@@ -218,20 +223,17 @@ function fetch_issue_info($issueid, $extra_info = array())
 			issue.visible, issue.lastactivity, issue.lastpost,
 			user.lastactivity AS user_lastactivity
 			" . ($marking ? ", issueread.readtime AS issueread, projectread.readtime AS projectread" : '') . "
-			" . ($milestone_join ? ", milestone.title_clean AS milestonetitle" : '') . "
 			$hook_query_fields
 		FROM " . TABLE_PREFIX . "pt_issue AS issue
 		INNER JOIN " . TABLE_PREFIX . "pt_issuenote AS issuenote ON
 			(issuenote.issuenoteid = issue.firstnoteid)
+		INNER JOIN " . TABLE_PREFIX . "pt_issuemagicselect AS issuemagicselect ON
+			(issuemagicselect.issueid = issue.issueid)
 		" . ($version_join ? "
 			LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS appliesversion ON
 				(appliesversion.projectversionid = issue.appliesversionid)
 			LEFT JOIN " . TABLE_PREFIX . "pt_projectversion AS addressedversion ON
 				(addressedversion.projectversionid = issue.addressedversionid)
-		" : '') . "
-		" . ($category_join ? "
-			LEFT JOIN " . TABLE_PREFIX . "pt_projectcategory AS projectcategory ON
-				(projectcategory.projectcategoryid = issue.projectcategoryid)
 		" : '') . "
 		LEFT JOIN " . TABLE_PREFIX . "user AS user ON (user.userid = issuenote.userid)
 		LEFT JOIN " . TABLE_PREFIX . "userfield AS userfield ON (userfield.userid = user.userid)
@@ -253,9 +255,6 @@ function fetch_issue_info($issueid, $extra_info = array())
 			LEFT JOIN " . TABLE_PREFIX . "pt_issueread AS issueread ON (issueread.issueid = issue.issueid AND issueread.userid = " . $vbulletin->userinfo['userid'] . ")
 			LEFT JOIN " . TABLE_PREFIX . "pt_projectread AS projectread ON (projectread.projectid = issue.projectid AND projectread.userid = " . $vbulletin->userinfo['userid'] . " AND projectread.issuetypeid = issue.issuetypeid)
 		" : '') . "
-		" . ($milestone_join ? "
-			LEFT JOIN " . TABLE_PREFIX . "pt_milestone AS milestone ON (issue.milestoneid = milestone.milestoneid)
-		" : '') . "
 		$hook_query_joins
 		WHERE issue.issueid = " . intval($issueid) . "
 		 $hook_query_where
@@ -267,13 +266,8 @@ function fetch_issue_info($issueid, $extra_info = array())
 
 	if (!$version_join)
 	{
-		$issue['appliesversion'] = ($issue['appliesversionid'] ? $vbulletin->pt_versions["$issue[appliesversionid]"]['versionname'] : '');
-		$issue['addressedversion'] = ($issue['addressedversionid'] ? $vbulletin->pt_versions["$issue[addressedversionid]"]['versionname'] : '');
-	}
-
-	if (!$category_join)
-	{
-		$issue['categorytitle'] = ($issue['projectcategoryid'] ? $vbulletin->pt_categories["$issue[projectcategoryid]"]['title'] : '');
+		$issue['appliesversion'] = ($issue['appliesversionid'] ? $issue['appliesversionid'] : '');
+		$issue['addressedversion'] = ($issue['addressedversionid'] ? $issue['addressedversionid'] : '');
 	}
 
 	if (!$browsing_user_joins)
@@ -429,6 +423,10 @@ function prepare_issue($issue)
 		$issue['submittime'] = '';
 	}
 
+	// Member dropdown feature
+	$issue['lastposter'] = $issue['lastpostusername'];
+	$issue['lastposterid'] = $issue['lastpostuserid'];
+
 	$issue['replycount'] = vb_number_format($issue['replycount']);
 	$issue['attachcount'] = vb_number_format($issue['attachcount']);
 
@@ -445,10 +443,18 @@ function prepare_issue($issue)
 	{
 		$issue['categorytitle'] = $vbphrase['unknown'];
 	}
+	else
+	{
+		$issue['categorytitle'] = $vbphrase["category$issue[projectcategoryid]"];
+	}
 
-	$issue['priority_text'] = $vbphrase["priority_$issue[priority]"];
+	$issue['priority_text'] = $vbphrase["priority$issue[priority]"];
 
-	if (!$issue['milestoneid'])
+	if ($issue['milestoneid'])
+	{
+		$issue['milestonetitle'] = $vbphrase["milestone_$issue[milestoneid]_name"];
+	}
+	else
 	{
 		$issue['milestonetitle'] = $vbphrase['none_meta'];
 	}
@@ -456,9 +462,36 @@ function prepare_issue($issue)
 	$issue['lastread'] = issue_lastview($issue);
 	$issue['newflag'] = ($issue['lastpost'] > $issue['lastread']);
 
-	if ($vbulletin->options['pt_statuscolor'] AND $statuscolor = $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor'])
+	// Status Color
+	if ($vbulletin->options['pt_statuscolor'] == 1)
 	{
-		$issue['statuscolor'] = $statuscolor;
+		// Dark styles
+		if (in_array($vbulletin->userinfo['styleid'], explode(',', $vbulletin->options['statuscolor_darkstyles'])))
+		{
+			$issue['statuscolor'] = $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor'];
+		}
+
+		// Light styles
+		if (in_array($vbulletin->userinfo['styleid'], explode(',', $vbulletin->options['statuscolor_lightstyles'])))
+		{
+			$issue['statuscolor'] = $vbulletin->pt_issuestatus["$issue[issuestatusid]"]['statuscolor2'];
+		}
+	}
+
+	// Severity Color
+	if ($vbulletin->options['pt_statuscolor'] == 2)
+	{
+		// Dark styles
+		if (in_array($vbulletin->userinfo['styleid'], explode(',', $vbulletin->options['statuscolor_darkstyles'])))
+		{
+			$issue['statuscolor'] = $vbulletin->pt_priorities["$issue[priority]"]['statuscolor'];
+		}
+
+		// Light styles
+		if (in_array($vbulletin->userinfo['styleid'], explode(',', $vbulletin->options['statuscolor_lightstyles'])))
+		{
+			$issue['statuscolor'] = $vbulletin->pt_priorities["$issue[priority]"]['statuscolor2'];
+		}
 	}
 
 	($hook = vBulletinHook::fetch_hook('project_issue_prepare')) ? eval($hook) : false;
@@ -481,6 +514,10 @@ function fetch_issue_version_text($issue)
 	{
 		$issue['appliesversion'] = $vbphrase['unknown'];
 	}
+	else
+	{
+		$issue['appliesversion'] = $vbphrase['version' . $issue['appliesversion'] . ''];
+	}
 
 	if (!$issue['isaddressed'])
 	{
@@ -489,6 +526,10 @@ function fetch_issue_version_text($issue)
 	else if ($issue['addressedversionid'] == 0)
 	{
 		$issue['addressedversion'] = $vbphrase['next_release'];
+	}
+	else
+	{
+		$issue['addressedversion'] = $vbphrase['version' . $issue['addressedversion'] . ''];
 	}
 
 	return $issue;
@@ -510,7 +551,14 @@ function verify_issuetypeid($issuetypeid, $projectid)
 		standard_error(fetch_error('invalidid', $vbphrase['issue_type'], $vbulletin->options['contactuslink']));
 	}
 
-	$types = $vbulletin->pt_projects["$project[projectid]"]['types'];
+	// Do a query for adding the project group
+	$projectgroup = $vbulletin->db->query_first("
+		SELECT projectgroupid
+		FROM " . TABLE_PREFIX . "pt_project
+		WHERE projectid = " . $projectid . "
+	");
+
+	$types = $vbulletin->pt_projects["$projectgroup[projectgroupid]"]['projects']["$project[projectid]"]['types'];
 	if (!isset($types["$issuetypeid"]))
 	{
 		standard_error(fetch_error('invalidid', $vbphrase['issue_type'], $vbulletin->options['contactuslink']));
@@ -553,11 +601,14 @@ function translate_system_note($data)
 		{
 			case 'issuestatusid':
 				$entry['oldvalue'] = $vbphrase["issuestatus$entry[oldvalue]"];
+
 				if (empty($entry['oldvalue']))
 				{
 					$entry['oldvalue'] = $vbphrase['unknown'];
 				}
+
 				$entry['newvalue'] = $vbphrase["issuestatus$entry[newvalue]"];
+
 				if (empty($entry['newvalue']))
 				{
 					$entry['newvalue'] = $vbphrase['unknown'];
@@ -565,8 +616,8 @@ function translate_system_note($data)
 				break;
 
 			case 'priority':
-				$entry['oldvalue'] = $vbphrase["priority_$entry[oldvalue]"];
-				$entry['newvalue'] = $vbphrase["priority_$entry[newvalue]"];
+				$entry['oldvalue'] = $vbphrase["priority$entry[oldvalue]"];
+				$entry['newvalue'] = $vbphrase["priority$entry[newvalue]"];
 				break;
 
 			case 'issuetypeid':
@@ -580,26 +631,32 @@ function translate_system_note($data)
 
 			case 'appliesversionid':
 			case 'addressedversionid':
-				$entry['oldvalue'] = $vbulletin->pt_versions["$entry[oldvalue]"]['versionname'];
-				if (empty($entry['oldvalue']))
+				$entry['oldvalue'] = $vbphrase['version' . $vbulletin->pt_versions["$entry[oldvalue]"]['projectversionid'] . ''];
+
+				if ($entry['oldvalue'] == $vbphrase['version'])
 				{
 					$entry['oldvalue'] = $vbphrase['unknown'];
 				}
-				$entry['newvalue'] = $vbulletin->pt_versions["$entry[newvalue]"]['versionname'];
-				if (empty($entry['newvalue']))
+
+				$entry['newvalue'] = $vbphrase['version' . $vbulletin->pt_versions["$entry[newvalue]"]['projectversionid'] . ''];
+
+				if ($entry['newvalue'] == $vbphrase['version'])
 				{
 					$entry['newvalue'] = $vbphrase['unknown'];
 				}
 				break;
 
 			case 'projectcategoryid':
-				$entry['oldvalue'] = $vbulletin->pt_categories["$entry[oldvalue]"]['title'];
-				if (empty($entry['oldvalue']))
+				$entry['oldvalue'] = $vbphrase['category' . $vbulletin->pt_categories["$entry[oldvalue]"]['projectcategoryid'] . ''];
+
+				if ($entry['oldvalue'] == $vbphrase['category'])
 				{
 					$entry['oldvalue'] = $vbphrase['unknown'];
 				}
-				$entry['newvalue'] = $vbulletin->pt_categories["$entry[newvalue]"]['title'];
-				if (empty($entry['newvalue']))
+
+				$entry['newvalue'] = $vbphrase['category' . $vbulletin->pt_categories["$entry[newvalue]"]['projectcategoryid'] . ''];
+
+				if ($entry['newvalue'] == $vbphrase['category'])
 				{
 					$entry['newvalue'] = $vbphrase['unknown'];
 				}
@@ -609,6 +666,7 @@ function translate_system_note($data)
 				// note: if this is changed to show more information, permission data must be available
 				break;
 
+			// PT ImpEx
 			case 'issue_imported':
 				$entry['oldvalue'] = fetch_seo_url('thread', $entry, null, 'oldvalue', 'newvalue');
 				break;
@@ -617,7 +675,36 @@ function translate_system_note($data)
 				$entry['oldvalue'] = fetch_seo_url('thread', $entry, null, 'oldvalue', 'newvalue');
 				break;
 
+			case 'issue_imported_issuenote':
+				$entry['oldvalue'] = fetch_seo_url('issue', $entry, null, 'oldvalue', 'newvalue');
+				break;
+
 			default:
+				$mslist = array();
+
+				$checkmagicselect = $entry['field'];
+
+				if (substr($checkmagicselect, 0, 11) == 'magicselect' AND strlen($checkmagicselect) >= 11)
+				{
+					$fieldid = substr($entry['field'], 11);
+
+					$fieldname = $vbphrase['magicselectgroup' . $fieldid . ''];
+
+					$entry['oldvalue'] = $vbphrase['magicselect' . $entry['oldvalue']];
+
+					if ($entry['oldvalue'] == $vbphrase['magicselect'] OR $entry['oldvalue'] == $vbphrase['magicselect0'])
+					{
+						$entry['oldvalue'] = $vbphrase['unknown'];
+					}
+
+					$entry['newvalue'] = $vbphrase['magicselect' . $entry['newvalue']];
+
+					if ($entry['newvalue'] == $vbphrase['magicselect'] OR $entry['newvalue'] == $vbphrase['magicselect0'])
+					{
+						$entry['newvalue'] = $vbphrase['unknown'];
+					}
+				}
+
 				($hook = vBulletinHook::fetch_hook('project_system_note_translate')) ? eval($hook) : false;
 		}
 		$output[] = construct_phrase($vbphrase["$phrase"], $fieldname, $entry['oldvalue'], $entry['newvalue']);
@@ -1071,7 +1158,8 @@ function prepare_issue_posting_pemissions($issue, $issueperms)
 		'milestone_edit' => false,
 		'issue_close' => false,
 		'can_custom_tag' => false,
-		'can_reply' => false
+		'can_reply' => false,
+		'issue_priority' => false
 	);
 
 	if (is_issue_closed($issue, $issueperms))
@@ -1106,6 +1194,7 @@ function prepare_issue_posting_pemissions($issue, $issueperms)
 		$return['tags_edit'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['cantagsunassigned']);
 	}
 
+	// Create / edit private issues
 	if ($issue['issueid'] == 0)
 	{
 		$return['private_edit'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancreateprivate']);
@@ -1115,24 +1204,23 @@ function prepare_issue_posting_pemissions($issue, $issueperms)
 		$return['private_edit'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditprivate']);
 	}
 
-	$return['issue_edit'] = ($vbulletin->userinfo['userid']
-		AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissue'])
-		AND ($issue['submituserid'] == $vbulletin->userinfo['userid']
-			OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissueothers'])
-		)
-	);
+	// Priority
+	$return['issue_priority'] = ($vbulletin->userinfo['userid'] AND ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canchangepriority']) AND ($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canchangepriorityothers'])));
 
-	$return['milestone_edit'] = (
-		$issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone']
-		AND $issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canchangemilestone']
-	);
+	// Issue edit
+	$return['issue_edit'] = ($vbulletin->userinfo['userid'] AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissue']) AND ($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditissueothers'])));
 
+	// Milestone edit
+	$return['milestone_edit'] = ($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewmilestone'] AND $issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canchangemilestone']);
+
+	// Closed issue
 	$return['issue_close'] = ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['cancloseissue']);
 
+	// Custom tag
 	$return['can_custom_tag'] = ($vbulletin->userinfo['permissions']['ptpermissions'] & $vbulletin->bf_ugp_ptpermissions['cancustomtag']);
 
-	$return['can_reply'] = (($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreply']) AND
-		($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreplyothers'])));
+	// Reply
+	$return['can_reply'] = (($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreply']) AND ($issue['submituserid'] == $vbulletin->userinfo['userid'] OR ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['canreplyothers'])));
 
 	return $return;
 }
@@ -1155,10 +1243,7 @@ function can_edit_issue_note($issue, $issuenote, $issueperms)
 		return false;
 	}
 
-	return ($vbulletin->userinfo['userid']
-		AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditnote'])
-		AND (($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditnoteothers']) OR $issuenote['userid'] == $vbulletin->userinfo['userid'])
-	);
+	return ($vbulletin->userinfo['userid'] AND ($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditnote']) AND (($issueperms['postpermissions'] & $vbulletin->pt_bitfields['post']['caneditnoteothers']) OR $issuenote['userid'] == $vbulletin->userinfo['userid']));
 }
 
 /**
@@ -1189,11 +1274,36 @@ function build_issue_bit($issue, $project, $issueperms)
 {
 	global $vbulletin, $vbphrase, $show, $template_hook;
 
+	$issuelist = '';
+
+	$show['category'] = ($project['requirecategory'] > 0);
+	$show['appliesversionid'] = ($project['requireappliesversion'] > 0);
+	$show['priority'] = ($project['requirepriority'] > 0);
+
 	$posting_perms = prepare_issue_posting_pemissions($issue, $issueperms);
 	$show['edit_issue'] = $posting_perms['issue_edit'];
 	$show['status_edit'] = $posting_perms['status_edit'];
 
 	$issue = prepare_issue($issue);
+
+	$issue['pageinfo_newpost'] = array('goto' => 'newpost', 'do' => 'gotonote');
+
+	// prepare the member action drop-down menu
+	$memberaction_dropdown = construct_memberaction_dropdown(fetch_lastposter_userinfo($issue));
+
+	// Columns to show
+	$issue['columns'] = fetch_issuelist_columns($vbulletin->options['issuelist_columns'], $project);
+
+	// No perm to see replies - set the default date to the issue time & the number of comments to 0
+	if (!($issueperms['generalpermissions'] & $vbulletin->pt_bitfields['general']['canviewreplies']))
+	{
+		$issue['replycount'] = 0;
+		$issue['lastpostdate'] = $issue['submitdate'];
+		$issue['lastposttime'] = $issue['submittime'];
+		$issue['lastpostuserid'] = $issue['lastposterid'];
+		$issue['lastpostusername'] = $issue['lastposter'];
+		$issue['lastnoteid'] = $issue['firstnoteid'];
+	}
 
 	// multipage nav
 	$issue['totalnotes'] = $issue['replycount'];
@@ -1201,58 +1311,72 @@ function build_issue_bit($issue, $project, $issueperms)
 
 	if ($issue['totalnotes'] > $vbulletin->options['pt_notesperpage'] AND $vbulletin->options['linktopages'])
 	{
-		$issue['totalpages'] = ceil($issue['totalnotes'] / $vbulletin->options['pt_notesperpage']);
+		if ($vbulletin->options['pt_notesperpage'] == 0)
+		{
+			$issue['totalpages'] = 1;
+		}
+		else
+		{
+			$issue['totalpages'] = ceil($issue['totalnotes'] / $vbulletin->options['pt_notesperpage']);
+		}
 
 		$curpage = 0;
 
-		$issue['pagenav'] = '';
+		$issue['pagenav'] = $issuepagenav = array();
 		$show['pagenavmore'] = false;
 
 		while ($curpage++ < $issue['totalpages'])
 		{
 			if ($vbulletin->options['maxmultipage'] AND $curpage > $vbulletin->options['maxmultipage'])
 			{
-				$lastpageinfo = array(
-					'page' => $issue['totalpages']
-				);
-				$issue['lastpagelink'] = 'project.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
+				$lastpageinfo = array('page' => $issue['totalpages']);
+				$issue['lastpagelink'] = 'issue.php?' . $vbulletin->session->vars['sessionurl'] . "issueid=$issue[issueid]";
 				$show['pagenavmore'] = true;
 				break;
 			}
 
-			$pagenumbers = fetch_start_end_total_array($curpage, $vbulletin->options['pt_notesperpage'], $issue['totalnotes']);
-			$templater = vB_Template::create('pt_issuebit_pagelink');
-				$templater->register('curpage', $curpage);
-				$templater->register('issue', $issue);
-			$issue['pagenav'] .= ' ' . $templater->render();
+			$issuepagenav['pageinfo'] = array('pagenumber' => $curpage);
+			$issuepagenav['curpage'] = $curpage;
+
+			$issue['pagenav'][] = $issuepagenav;
 		};
 	}
 	else
 	{
-		$issue['pagenav'] = '';
+		$issue['pagenav']	 = '';
 	}
-
-	$template_name = ($issue['visible'] == 'deleted' ? 'pt_issuebit_deleted' : 'pt_issuebit');
 
 	$show['statuscolor'] = false;
 
-	$projectstatusset = $vbulletin->db->query_first("
-		SELECT issuestatusid, projectid
-		FROM " . TABLE_PREFIX . "pt_issuestatusprojectset
-		WHERE projectid = " . $project['projectid'] . "
-			AND issuestatusid = " . $issue['issuestatusid'] . "
-	");
+	if ($vbulletin->options['pt_statuscolor'] == 1)
+	{
+		$projectstatusset = $vbulletin->db->query_first("
+			SELECT issuestatusid, projectid
+			FROM " . TABLE_PREFIX . "pt_issuestatusprojectset
+			WHERE projectid = " . $project['projectid'] . "
+				AND issuestatusid = " . $issue['issuestatusid'] . "
+		");
 
-	if ($issue['statuscolor'] AND $vbulletin->options['pt_statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
+		if ($issue['statuscolor'] AND (isset($projectstatusset['issuestatusid']) AND $issue['issuestatusid'] == $projectstatusset['issuestatusid'] AND $project['projectid'] == $projectstatusset['projectid']))
+		{
+			$show['statuscolor'] = true;
+		}
+	}
+
+	// Corresponding option choosen AND the color is filled in the corresponding priority
+	if ($vbulletin->options['pt_statuscolor'] == 2 AND $issue['statuscolor'])
 	{
 		$show['statuscolor'] = true;
 	}
 
 	($hook = vBulletinHook::fetch_hook('project_issuebit')) ? eval($hook) : false;
 
-	$templater = vB_Template::create($template_name);
+	$templater = vB_Template::create('pt_issuebit');
 		$templater->register('issue', $issue);
-	return $templater->render();
+		$templater->register('memberaction_dropdown', $memberaction_dropdown);
+	$issuelist = $templater->render();
+
+	return $issuelist;
 }
 
 /**
@@ -1268,8 +1392,8 @@ function build_issuestatus_select($statuses, $selectedid = 0, $skipids = array()
 {
 	global $vbulletin, $vbphrase, $show;
 
-	$options = '';
-	$optionclass = '';
+	$options = $option = array();
+
 	foreach ($statuses AS $status)
 	{
 		if (in_array($status['issuestatusid'], $skipids))
@@ -1277,10 +1401,10 @@ function build_issuestatus_select($statuses, $selectedid = 0, $skipids = array()
 			continue;
 		}
 
-		$optionvalue = $status['issuestatusid'];
-		$optiontitle = $vbphrase["issuestatus$status[issuestatusid]"];
-		$optionselected = ($selectedid == $status['issuestatusid'] ? ' selected="selected"' : '');
-		$options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$option['value'] = $status['issuestatusid'];
+		$option['title'] = $vbphrase["issuestatus$status[issuestatusid]"];
+		$option['selected'] = ($selectedid == $status['issuestatusid'] ? ' selected="selected"' : '');
+		$options[] = $option;
 	}
 
 	return $options;
@@ -1299,8 +1423,8 @@ function build_issuetype_select($projectperms, $types, $selectedid = '')
 {
 	global $vbulletin, $vbphrase, $show;
 
-	$options = '';
-	$optionclass = '';
+	$options = array();
+
 	foreach ($types AS $type)
 	{
 		if (!($projectperms["$type"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']))
@@ -1308,10 +1432,10 @@ function build_issuetype_select($projectperms, $types, $selectedid = '')
 			continue;
 		}
 
-		$optionvalue = $type;
-		$optiontitle = $vbphrase["issuetype_{$type}_singular"];
-		$optionselected = ($selectedid == $type ? ' selected="selected"' : '');
-		$options .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$option['value'] = $type;
+		$option['title'] = $vbphrase["issuetype_{$type}_singular"];
+		$option['selected'] = ($selectedid == $type ? ' selected="selected"' : '');
+		$options[] = $option;
 	}
 
 	return $options;
@@ -1344,7 +1468,7 @@ function prepare_subscribed_reports($projectid_limit = 0, $userid = -1)
 
 	$projectid_limit = intval($projectid_limit);
 
-	$reportbits = '';
+	$reportbits = array();
 
 	$subscribed_reports = $db->query_read_slave("
 		SELECT issuereport.issuereportid, issuereport.title, issuereport.projectlist, issuereport.issuetypelist
@@ -1363,16 +1487,12 @@ function prepare_subscribed_reports($projectid_limit = 0, $userid = -1)
 			$projects = explode(',', $report['projectlist']);
 			if (in_array($projectid_limit, $projects))
 			{
-				$templater = vB_Template::create('pt_reportmenubit');
-					$templater->register('report', $report);
-				$reportbits .= $templater->render();
+				$reportbits[] = $report;
 			}
 		}
 		else
 		{
-			$templater = vB_Template::create('pt_reportmenubit');
-				$templater->register('report', $report);
-			$reportbits .= $templater->render();
+			$reportbits[] = $report;
 		}
 	}
 
@@ -1596,8 +1716,7 @@ function fetch_assignable_users_select($projectid)
 		return '';
 	}
 
-	$assignable_users = '';
-	$assignable = array();
+	$assignable_users = $option = $assignable = array();
 
 	// loop through the array once to remove duplicates
 	foreach ($vbulletin->pt_assignable["$projectid"] AS $assign)
@@ -1607,7 +1726,10 @@ function fetch_assignable_users_select($projectid)
 
 	foreach ($assignable AS $optionvalue => $optiontitle)
 	{
-		$assignable_users .= render_option_template($optiontitle, $optionvalue, $optionselected, $optionclass);
+		$option['title'] = $optiontitle;
+		$option['value'] = $optionvalue;
+
+		$assignable_users[] = $option;
 	}
 
 	return $assignable_users;
@@ -1625,17 +1747,20 @@ function fetch_issue_status_search_select($projectperms)
 {
 	global $vbulletin, $vbphrase;
 
-	$status_options = '';
+	$status_options = $optiongroup = array();
+
 	foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
 	{
-		if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview'])
-			OR !($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch']))
+		if (!($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['canview']) OR !($projectperms["$issuetypeid"]['generalpermissions'] & $vbulletin->pt_bitfields['general']['cansearch']))
 		{
 			continue;
 		}
 
-		$optgroup_options = build_issuestatus_select($typeinfo['statuses'], $issue['issuestatusid']);
-		$status_options .= "<optgroup label=\"" . $vbphrase["issuetype_{$issuetypeid}_singular"] . "\" id=\"issuestatus_group_$issuetypeid\">$optgroup_options</optgroup>";
+		$optiongroup['label'] = $vbphrase["issuetype_{$issuetypeid}_singular"];
+		$optiongroup['id'] = 'issuestatus_group_' . $issuetypeid;
+		$optiongroup['group'] = build_issuestatus_select($typeinfo['statuses'], $issue['issuestatusid']);
+
+		$status_options[] = $optiongroup;
 	}
 
 	return $status_options;
@@ -1667,7 +1792,6 @@ function fetch_require_pt_hvcheck($action)
 	}
 }
 
-// #############################################################################
 /**
 * Returns a list of <option> tags representing the list of projects
 *
@@ -1705,12 +1829,110 @@ function construct_project_chooser_options($displayselectproject = false, $topna
 
 	$vbulletin->pt_projects = unserialize($data['data']);
 
-	foreach ($vbulletin->pt_projects AS $projectid => $project)
+	foreach($vbulletin->pt_projects AS $projectgroupid => $projectgroupdata)
 	{
-		$selectoptions["$projectid"] = $project['title'];
+		$selectoptions['projects']["$projectid"] = $project['title'];
 	}
 
 	return $selectoptions;
+}
+
+/**
+* Load the pt_* datastore caches into memory.
+*/
+function fetch_pt_datastore()
+{
+	global $vbulletin;
+
+	if (!isset($vbulletin->pt_permissions))
+	{
+		$vbulletin->datastore->fetch(array(
+			'pt_bitfields',
+			'pt_permissions',
+			'pt_issuestatus',
+			'pt_issuetype',
+			'pt_projects',
+			'pt_categories',
+			'pt_assignable',
+			'pt_versions'
+		));
+	}
+}
+
+/**
+* Returns a list of columns to display
+*
+* @return	array	List of columns
+*/
+function fetch_issuelist_columns($column, $project = array(), $bypass = false)
+{
+	$columns = array();
+
+	$columns['lastpost'] = false;
+	$columns['replies'] = false;
+	$columns['priority'] = false;
+	$columns['status'] = false;
+	$columns['category'] = false;
+	$columns['applyversion'] = false;
+	$columns['addressversion'] = false;
+
+	// Last post
+	if ($column & 1)
+	{
+		$columns['lastpost'] = true;
+	}
+
+	// Replies
+	if ($column & 2)
+	{
+		$columns['replies'] = true;
+	}
+
+	// Priority
+	if ((($column & 4) AND $project['requirepriority'] > 0) OR $bypass)
+	{
+		$columns['priority'] = true;
+	}
+
+	// Status
+	if ($column & 8)
+	{
+		$columns['status'] = true;
+	}
+
+	// Category
+	if ((($column & 16) AND $project['requirecategory'] > 0) OR $bypass)
+	{
+		$columns['category'] = true;
+	}
+
+	// Affect version
+	if (($column & 32) AND $project['requireappliesversion'] > 0)
+	{
+		$columns['applyversion'] = true;
+	}
+
+	// Address version
+	if (($column & 64) AND $project['requireappliesversion'] > 0)
+	{
+		$columns['addressversion'] = true;
+	}
+
+	return $columns;
+}
+
+/**
+ * Callback function for processing the quote removal
+ *
+ * @param  string $matches
+ *
+ * @return [type]
+ */
+function process_quote_removal_callback($matches)
+{
+	$array = array();
+
+	return process_quote_removal($matches[3], array());
 }
 
 ?>

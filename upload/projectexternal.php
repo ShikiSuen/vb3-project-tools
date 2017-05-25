@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright Â©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -47,6 +47,11 @@ $actiontemplates = array();
 // ######################### REQUIRE BACK-END ############################
 require_once('./global.php');
 if (empty($vbulletin->products['vbprojecttools']))
+{
+	exit;
+}
+
+if ($vbulletin->options['pt_maintenancemode'] AND !$show['admincplink'])
 {
 	exit;
 }

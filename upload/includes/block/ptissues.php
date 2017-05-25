@@ -1,9 +1,9 @@
 <?php
 /*======================================================================*\
 || #################################################################### ||
-|| #                  vBulletin Project Tools 2.1.2                   # ||
+|| #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright ©2000-2010 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -17,9 +17,8 @@ require_once(DIR . '/includes/functions_projecttools.php');
 * vBulletin Project Tools Forum Block - Latest PT Issues
 *
 * @package 		vBulletin Project Tools
-* @author		$Author$
-* @since		$Date$
-* @version		$Revision$
+* @since		$Date: 2016-11-07 23:57:06 +0100 (Mon, 07 Nov 2016) $
+* @version		$Rev: 897 $
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
 class vB_BlockType_Ptissues extends vB_BlockType
@@ -187,7 +186,7 @@ $options = construct_project_chooser_options(0, fetch_phrase("all_projects", "vb
 			// query last threads from visible / chosen projects
 			$issues = $this->registry->db->query_read_slave("
 				SELECT issue.issueid, issue.title,
-					issue.submitusername, issue.submitdate AS dateline, issue.lastnoteid, issue.lastpost, issue.lastpostuserid, issue.lastpostusername AS lastposter, issue.replycount,
+					issue.submitusername, issue.submitdate AS dateline, issue.lastnoteid, issue.lastpost AS issuelastpost, issue.lastpostuserid, issue.lastpostusername AS lastposter, issue.replycount,
 					project.projectid, project.title_clean AS projecttitle,
 					issuenote.pagetext AS message, issuenote.issuenoteid,
 					user.*
@@ -222,8 +221,8 @@ $options = construct_project_chooser_options(0, fetch_phrase("all_projects", "vb
 				$issue['date'] = vbdate($this->registry->options['dateformat'], $issue['dateline'], true);
 				$issue['time'] = vbdate($this->registry->options['timeformat'], $issue['dateline']);
 
-				$issue['lastpostdate'] = vbdate($this->registry->options['dateformat'], $issue['lastpost'], true);
-				$issue['lastposttime'] = vbdate($this->registry->options['timeformat'], $issue['lastpost']);
+				$issue['lastpostdate'] = vbdate($this->registry->options['dateformat'], $issue['issuelastpost'], true);
+				$issue['lastposttime'] = vbdate($this->registry->options['timeformat'], $issue['issuelastpost']);
 
 				// get avatar
 				$this->fetch_avatarinfo($issue);
