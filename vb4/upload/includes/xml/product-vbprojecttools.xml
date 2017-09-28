@@ -3,7 +3,7 @@
 <product productid="vbprojecttools" active="1">
 	<title>vBulletin Project Tools</title>
 	<description>Project management tools, integrated with vBulletin.</description>
-	<version>2.3.1</version>
+	<version>2.3.0</version>
 	<url />
 	<versioncheckurl />
 	<dependencies>
@@ -2596,9 +2596,9 @@ build_project_cache();]]></installcode>
 			<uninstallcode />
 		</code>
 		<code version="2.3.0">
-			<installcode><![CDATA[// Add missing field if it doesn't exist
-if ($installed_version !== null)
+			<installcode><![CDATA[if ($installed_version !== null)
 {
+	// Add missing field if it doesn't exist
 	$cs = $db->query_read("DESCRIBE " . TABLE_PREFIX . "pt_issueassign");
 	$columcount = $db->num_rows($cs);
 
@@ -2608,6 +2608,39 @@ if ($installed_version !== null)
 			ALTER TABLE " . TABLE_PREFIX . "pt_issueassign
 			ADD userid INT UNSIGNED NOT NULL DEFAULT '0'
 		");
+	}
+
+	// Update permissions to add 'Can view replies' permissions to usergroups.
+	$data = array();
+
+	$results = $db->query_read("
+		SELECT usergroupid, projectid, issuetypeid, generalpermissions
+		FROM " . TABLE_PREFIX . "pt_projectpermission
+		ORDER BY projectid, usergroupid, issuetypeid ASC
+	");
+
+	while ($result = $bd->fetch_array($results))
+	{
+		$data[$result['usergroupid']][$result['projectid']][$result['issuetypeid']] = $result['generalpermissions']
+	}
+
+	foreach ($data AS $usergroupid => $project)
+	{
+		foreach ($project AS $projectid => $issuetype)
+		{
+			foreach ($issuetype AS $issuetypeid => $value)
+			{
+				$newvalue = $value + 262144;
+
+				$db->query_write("
+					UPDATE " . TABLE_PREFIX . "pt_projectpermission SET
+						generalpermissions = " . intval($newvalue) . "
+					WHERE usergroupid = " . intval($usergroupid) . "
+						AND projectid = " . intval($projectid) . "
+						AND issuetypeid = '" . $db->escape_string($issuetypeid) . "'
+				");
+			}
+		}
 	}
 }]]></installcode>
 			<uninstallcode />
