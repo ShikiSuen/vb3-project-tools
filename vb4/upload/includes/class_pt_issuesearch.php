@@ -105,7 +105,7 @@ class vB_Pt_IssueSearch
 	*
 	* @param	vB_Registry
 	*/
-	function vB_Pt_IssueSearch(&$registry)
+	function __construct(&$registry)
 	{
 		$this->registry =& $registry;
 		$this->generator = new vB_Pt_IssueSearchGenerator($registry);

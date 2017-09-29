@@ -157,7 +157,7 @@ class vB_Pt_IssueNote
 	* @param	array			Project info
 	* @param	array			Note info
 	*/
-	function vB_Pt_IssueNote(&$registry, &$factory, &$bbcode, $issue, $project, $note)
+	public function __construct(&$registry, &$factory, &$bbcode, $issue, $project, $note)
 	{
 		if (!is_subclass_of($this, 'vB_Pt_IssueNote'))
 		{
@@ -178,7 +178,7 @@ class vB_Pt_IssueNote
 	*
 	* @return	string	Templated note output
 	*/
-	function construct()
+	public function construct()
 	{
 		global $show;
 

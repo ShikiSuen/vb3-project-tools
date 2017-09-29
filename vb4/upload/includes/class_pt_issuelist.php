@@ -108,7 +108,7 @@ class vB_Pt_IssueList
 	* @param	array		Project info
 	* @param	vB_Registry	Registry info
 	*/
-	function vB_Pt_IssueList($project, &$registry)
+	function __construct($project, &$registry)
 	{
 		$this->project = $project;
 		$this->registry =& $registry;
