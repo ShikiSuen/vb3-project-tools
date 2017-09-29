@@ -593,7 +593,7 @@ if ($installed_version === null)
 	");
 
 	// setup a default project ...
-	$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_SILENT);
+	$projectdata = datamanager_init('Pt_Project', $vbulletin, ERRTYPE_SILENT);
 	$projectdata->set('title', 'Default Project');
 	$projectdata->set('summary', 'This is a short summary of the project.');
 	$projectdata->set('description', 'This is a description of the project. You may wish to discuss things like goals, timelines, and responsibilities here.');
@@ -658,7 +658,7 @@ if ($installed_version === null)
 
 	foreach ($types AS $issuetypeid => $fields)
 	{
-		$dm =& datamanager_init('Pt_IssueType', $vbulletin, ERRTYPE_SILENT);
+		$dm = datamanager_init('Pt_IssueType', $vbulletin, ERRTYPE_SILENT);
 		$dm->set('issuetypeid', $issuetypeid);
 		$dm->set_info('rebuild_caches', false);
 
@@ -708,7 +708,7 @@ if ($installed_version === null)
 	{
 		foreach ($typestatuses AS $statustitle => $fields)
 		{
-			$dm =& datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_SILENT);
+			$dm = datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_SILENT);
 			$dm->set('issuetypeid', $issuetypeid);
 			$dm->set_info('title', $statustitle);
 			$dm->set_info('rebuild_caches', false);
@@ -1371,7 +1371,7 @@ if ($installed_version !== null)
 
 		if ($issuestatus)
 		{
-			$dm =& datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_SILENT);
+			$dm = datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_SILENT);
 
 			$dm->set_existing($issuestatus);
 			$dm->set_info('rebuild_caches', false);
@@ -1851,7 +1851,7 @@ if ($installed_version !== null)
 		}
 	
 		// Save them!
-		$projectdata =& datamanager_init('Pt_Project', $vbulletin, ERRTYPE_CP);
+		$projectdata = datamanager_init('Pt_Project', $vbulletin, ERRTYPE_CP);
 		if ($projectinfo)
 		{
 			$projectdata->set_existing($projectinfo);
@@ -1977,7 +1977,7 @@ if ($datamilestone)
 
 	while ($milestone = $db->fetch_array($milestone_data))
 	{
-		$milestonedata =& datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
+		$milestonedata = datamanager_init('Pt_Milestone', $vbulletin, ERRTYPE_CP);
 		$milestonedata->set_existing($milestone);
 		$milestonedata->set_info('title', $milestone['title']);
 		$milestonedata->set_info('description', $milestone['description']);
@@ -2164,7 +2164,7 @@ if ($installed_version !== null)
 
 		if ($issuestatus)
 		{
-			$dm =& datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_SILENT);
+			$dm = datamanager_init('Pt_IssueStatus', $vbulletin, ERRTYPE_SILENT);
 
 			$dm->set_existing($issuestatus);
 			$dm->set_info('rebuild_caches', false);
