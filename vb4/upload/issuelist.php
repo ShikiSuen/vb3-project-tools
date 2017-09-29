@@ -3,7 +3,7 @@
 || #################################################################### ||
 || #                  vBulletin Project Tools 2.3.0                   # ||
 || # ---------------------------------------------------------------- # ||
-|| # Copyright �2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
+|| # Copyright ©2000-2015 vBulletin Solutions Inc. All Rights Reserved. ||
 || # This file is part of vBulletin Project Tools and subject to terms# ||
 || #               of the vBulletin Open Source License               # ||
 || # ---------------------------------------------------------------- # ||
@@ -435,6 +435,7 @@ if ($show['appliesversionid'])
 // status options / posting options drop down
 $status_options = array();
 $optiongroup = array();
+$postable_types = array();
 $post_issue_options = '';
 
 foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)

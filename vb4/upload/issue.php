@@ -49,6 +49,7 @@ $globaltemplates = array(
 	'pt_issue_firstnote',
 	'pt_issuenotebit_user',
 	'pt_issuenotebit_petition',
+	'pt_issuenotebit_replies',
 	'pt_issuenotebit_system',
 	'pt_issuenotebit_systembit',
 	'pt_newpost_attachment',
