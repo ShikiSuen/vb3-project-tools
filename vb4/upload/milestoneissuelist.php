@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 // #################### DEFINE IMPORTANT CONSTANTS #######################
 define('THIS_SCRIPT', 'milestoneissuelist');
-define('FRIENDLY_URL_LINK', 'msissuelist');
+define('FRIENDLY_URL_LINK', 'milestoneissuelist');
 define('CSRF_PROTECTION', true);
 define('PROJECT_SCRIPT', true);
 
@@ -203,7 +203,7 @@ $pagenav = construct_page_nav(
 	$pageinfo
 );
 
-verify_seo_url('msissuelist', $milestone, $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber']));
+verify_seo_url('milestoneissuelist', $milestone, $pageinfo + array('pagenumber' => $vbulletin->GPC['pagenumber']));
 
 $issuebits = '';
 

@@ -338,7 +338,7 @@ class vB_Friendly_Url_Milestone extends vB_Friendly_Url
 * @version		$Rev$
 * @copyright 	http://www.vbulletin.org/open_source_license_agreement.php
 */
-class vB_Friendly_Url_Msissuelist extends vB_Friendly_Url_Paged
+class vB_Friendly_Url_Milestoneissuelist extends vB_Friendly_Url_Paged
 {
 	/**
 	* The request variable for the resource id.
@@ -381,7 +381,7 @@ class vB_Friendly_Url_Msissuelist extends vB_Friendly_Url_Paged
 	*
 	* @var string
 	*/
-	protected $rewrite_segment = 'msissuelist';
+	protected $rewrite_segment = 'milestoneissuelist';
 }
 
 ?>
