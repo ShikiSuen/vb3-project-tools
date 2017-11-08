@@ -436,7 +436,7 @@ if ($show['appliesversionid'])
 $status_options = array();
 $optiongroup = array();
 $postable_types = array();
-$post_issue_options = '';
+$post_issue_options = array();
 
 foreach ($vbulletin->pt_issuetype AS $issuetypeid => $typeinfo)
 {
