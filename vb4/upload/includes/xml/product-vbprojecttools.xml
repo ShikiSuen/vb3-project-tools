@@ -9230,7 +9230,7 @@ init_project_readmarker_system();
 </div>
 
 <br />]]></template>
-		<template name="pt_project" templatetype="template" date="1348573016" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_project" templatetype="template" date="1512641166" username="Pitchoune" version="2.3.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -9419,7 +9419,7 @@ init_project_readmarker_system();
 						<a href="{vb:link projecttimeline, {vb:raw project}}" class="shade"><span class="underline">{vb:rawphrase last_activity}</span></a>
 						<vb:if condition="$show['private_lastactivity']">
 							{vb:rawphrase private}
-						<vb:elseif condition="$project[lastactivitydate]" />
+						<vb:elseif condition="$project['lastactivitydate']" />
 							{vb:raw project.lastactivitydate_date}
 						<vb:else />
 							{vb:rawphrase n_a}
