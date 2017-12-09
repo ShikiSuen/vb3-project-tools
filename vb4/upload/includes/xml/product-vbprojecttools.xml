@@ -14092,44 +14092,47 @@ $hook_query_joins .= "LEFT JOIN " . TABLE_PREFIX . "pt_issueimport AS pt_issueim
 		<plugin active="1" executionorder="5">
 			<title>Init: General Project Tools Setup</title>
 			<hookname>init_startup</hookname>
-			<phpcode><![CDATA[switch (THIS_SCRIPT)
+			<phpcode><![CDATA[if (VB_AREA == 'Forum')
 {
-	case 'index':
-	case 'forumdisplay':
-		$GLOBALS['phrasegroups'][] = 'projecttools';
+	switch (THIS_SCRIPT)
+	{
+		case 'index':
+		case 'forumdisplay':
+			$GLOBALS['phrasegroups'][] = 'projecttools';
 
-		if ($vbulletin->options['pt_hasprojectforums'])
-		{
+			if ($vbulletin->options['pt_hasprojectforums'])
+			{
+				$datastore_fetch[] = "'pt_bitfields'";
+				$datastore_fetch[] = "'pt_permissions'";
+				$datastore_fetch[] = "'pt_projects'";
+			}
+			break;
+
+		case 'usercp':
+		case 'member':
+		case 'profile':
+			$GLOBALS['phrasegroups'][] = 'projecttools';
+
+			$datastore_fetch[] = "'pt_bitfields'";
+			$datastore_fetch[] = "'pt_issuestatus'";
+			$datastore_fetch[] = "'pt_issuetype'";
+			$datastore_fetch[] = "'pt_permissions'";
+			break;
+
+		case 'attachment':
+		case 'newattachment':
+			$datastore_fetch[] = "'pt_bitfields'";
+			$datastore_fetch[] = "'pt_permissions'";
+			break;
+
+		case 'activity':
+			$GLOBALS['phrasegroups'][] = 'projecttools';
+
 			$datastore_fetch[] = "'pt_bitfields'";
 			$datastore_fetch[] = "'pt_permissions'";
 			$datastore_fetch[] = "'pt_projects'";
-		}
-		break;
-
-	case 'usercp':
-	case 'member':
-	case 'profile':
-		$GLOBALS['phrasegroups'][] = 'projecttools';
-
-		$datastore_fetch[] = "'pt_bitfields'";
-		$datastore_fetch[] = "'pt_issuestatus'";
-		$datastore_fetch[] = "'pt_issuetype'";
-		$datastore_fetch[] = "'pt_permissions'";
-		break;
-
-	case 'attachment':
-	case 'newattachment':
-		$datastore_fetch[] = "'pt_bitfields'";
-		$datastore_fetch[] = "'pt_permissions'";
-		break;
-
-	case 'activity':
-		$GLOBALS['phrasegroups'][] = 'projecttools';
-
-		$datastore_fetch[] = "'pt_bitfields'";
-		$datastore_fetch[] = "'pt_permissions'";
-		$datastore_fetch[] = "'pt_projects'";
-		break;
+			break;
+	}
 }]]></phpcode>
 		</plugin>
 		<plugin active="1" executionorder="5">
