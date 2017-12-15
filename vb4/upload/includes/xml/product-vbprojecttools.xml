@@ -9880,7 +9880,7 @@ init_project_readmarker_system();
 
 </body>
 </html>]]></template>
-		<template name="pt_search" templatetype="template" date="1333878191" username="Pitchoune" version="2.2.0"><![CDATA[{vb:stylevar htmldoctype}
+		<template name="pt_search" templatetype="template" date="1513373626" username="Pitchoune" version="2.3.0"><![CDATA[{vb:stylevar htmldoctype}
 <html xmlns="http://www.w3.org/1999/xhtml"<vb:if condition="$vboptions['enablefacebookconnect']"> xmlns:fb="http://www.facebook.com/2008/fbml"</vb:if> dir="{vb:stylevar textdirection}" lang="{vb:stylevar languagecode}">
 <head>
 	{vb:raw headinclude}
@@ -9935,10 +9935,10 @@ init_project_readmarker_system();
 						</select>
 					</div>
 
-					<vb:if condition="$tag_options[col1]">
+					<vb:if condition="$tag_options['col1']">
 						<div style="margin-top: 6px">{vb:rawphrase tags}</div>
 						<div class="textbox checkbox_multiselect">
-							<vb:if condition="$tag_options[col2]"><ul id="ptsearch_tag_col2">{vb:raw tag_options.col2}</ul></vb:if>
+							<vb:if condition="$tag_options['col2']"><ul id="ptsearch_tag_col2">{vb:raw tag_options.col2}</ul></vb:if>
 							<ul id="ptsearch_tag_col1">{vb:raw tag_options.col1}</ul>
 						</div>
 					</vb:if>
