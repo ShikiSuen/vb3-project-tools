@@ -292,6 +292,11 @@ class vB_Pt_IssueList
 				$pagenumber = 1;
 			}
 
+			if (strlen($pagenumber) > 12)
+			{
+				$pagenumber = 999999999999;
+			}
+
 			$start = ($pagenumber - 1) * $perpage;
 
 			// issue list
